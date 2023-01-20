@@ -907,7 +907,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                                     .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
                         })
                         .setPos(10, 142))
-                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(getProgress()) + "%")
+                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(getProgress() * 100) + "%")
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setPos(70, 155));
     }
