@@ -46,28 +46,28 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         new ItemStack[] {tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4)},
                         Materials.Tin.getMolten(32),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                        240,
+                    (int) Math.max(aMaterial.getMass(), 1L),
                         calculateRecipeEU(aMaterial, 24));
 
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4)},
                         Materials.Lead.getMolten(48),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                        240,
+                    (int) Math.max(aMaterial.getMass(), 1L),
                         calculateRecipeEU(aMaterial, 24));
 
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4)},
                         Materials.SolderingAlloy.getMolten(16),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                        240,
+                    (int) Math.max(aMaterial.getMass(), 1L),
                     calculateRecipeEU(aMaterial, 24));
             }
             GT_Values.RA.addExtruderRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
                     ItemList.Shape_Extruder_Rotor.get(0L),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                    200,
+                (int) Math.max(aMaterial.getMass(), 1L),
                 calculateRecipeEU(aMaterial, 24));
 
             if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
@@ -75,7 +75,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         ItemList.Shape_Mold_Rotor.get(0L),
                         aMaterial.getMolten(612L),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                        100,
+                    (int) Math.max(aMaterial.getMass(), 1L),
                     calculateRecipeEU(aMaterial, 24));
             }
 
