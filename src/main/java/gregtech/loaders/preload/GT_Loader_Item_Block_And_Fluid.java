@@ -1265,23 +1265,20 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                         ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder(Materials.Space.mName)
-            .withLocalizedName(Materials.Space.mLocalizedName)
-            .withStateAndTemperature(MOLTEN, 0)
-            .buildAndRegister()
-            .configureMaterials(Materials.Space)
-            .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Space, 1L),
-                ItemList.Cell_Empty.get(1L));
+                .withLocalizedName(Materials.Space.mLocalizedName)
+                .withStateAndTemperature(MOLTEN, 0)
+                .buildAndRegister()
+                .configureMaterials(Materials.Space)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Space, 1L), ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder(Materials.Time.mName)
-            .withLocalizedName(Materials.Time.mLocalizedName)
-            .withStateAndTemperature(MOLTEN, 0)
-            .buildAndRegister()
-            .configureMaterials(Materials.Time)
-            .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Time, 1L),
-                ItemList.Cell_Empty.get(1L));
-
+                .withLocalizedName(Materials.Time.mLocalizedName)
+                .withStateAndTemperature(MOLTEN, 0)
+                .buildAndRegister()
+                .configureMaterials(Materials.Time)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Time, 1L), ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("fieryblood")
                 .withLocalizedName("Fiery Blood")

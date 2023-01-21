@@ -1663,15 +1663,15 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
     @Override
     public boolean addForgeHammerRecipe(
-        ItemStack[] ItemInputArray,
-        FluidStack[] FluidInputArray,
-        ItemStack[] ItemOutputArray,
-        FluidStack[] FluidOutputArray,
-        int aDuration,
-        int aEUt) {
+            ItemStack[] ItemInputArray,
+            FluidStack[] FluidInputArray,
+            ItemStack[] ItemOutputArray,
+            FluidStack[] FluidOutputArray,
+            int aDuration,
+            int aEUt) {
 
         GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(
-            true, ItemInputArray, ItemOutputArray, null, FluidInputArray, FluidOutputArray, aDuration, aEUt, 0);
+                true, ItemInputArray, ItemOutputArray, null, FluidInputArray, FluidOutputArray, aDuration, aEUt, 0);
         return true;
     }
 
