@@ -5,6 +5,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
+import gregtech.api.objects.XSTR;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import java.util.Comparator;
@@ -295,8 +296,7 @@ public class GT_ParallelHelper {
             if (mRecipe.mOutputs != null) {
                 mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
                 for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    if (mRecipe.getOutputChance(i)
-                            <= mMachineMeta.getBaseMetaTileEntity().getRandomNumber(10000)) {
+                    if (mRecipe.getOutputChance(i) <= XSTR.XSTR_INSTANCE.nextInt(10000)) {
                         ItemStack tItem = mRecipe.getOutput(i).copy();
                         tItem.stackSize *= mCurrentParallel;
                         mItemOutputs[i] = tItem;
