@@ -1257,21 +1257,11 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_FluidFactory.builder(Materials.RawStarMatter.mName)
                 .withLocalizedName(Materials.RawStarMatter.mLocalizedName)
-                .withStateAndTemperature(LIQUID, 50_000_000)
+                .withStateAndTemperature(LIQUID, 10_000_000)
                 .buildAndRegister()
                 .configureMaterials(Materials.RawStarMatter)
                 .registerBContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cell, Materials.RawStarMatter, 1L),
-                        ItemList.Cell_Empty.get(1L));
-
-        GT_FluidFactory.builder(Materials.MagnetohydrodynamicallyConstrainedStarMatter.mName)
-                .withLocalizedName(Materials.MagnetohydrodynamicallyConstrainedStarMatter.mLocalizedName)
-                .withStateAndTemperature(LIQUID, 70_000_000)
-                .buildAndRegister()
-                .configureMaterials(Materials.MagnetohydrodynamicallyConstrainedStarMatter)
-                .registerBContainers(
-                        GT_OreDictUnificator.get(
-                                OrePrefixes.cell, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L),
                         ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("fieryblood")
@@ -1282,6 +1272,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 .registerBContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
                         ItemList.Cell_Empty.get(1L));
+
         GT_FluidFactory.builder("holywater")
                 .withLocalizedName("Holy Water")
                 .withStateAndTemperature(LIQUID, 295)
