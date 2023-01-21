@@ -295,7 +295,8 @@ public class GT_ParallelHelper {
             if (mRecipe.mOutputs != null) {
                 mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
                 for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    if (mRecipe.getOutputChance(i) <= mMachineMeta.getBaseMetaTileEntity().getRandomNumber(10000)) {
+                    if (mRecipe.getOutputChance(i)
+                            <= mMachineMeta.getBaseMetaTileEntity().getRandomNumber(10000)) {
                         ItemStack tItem = mRecipe.getOutput(i).copy();
                         tItem.stackSize *= mCurrentParallel;
                         mItemOutputs[i] = tItem;
