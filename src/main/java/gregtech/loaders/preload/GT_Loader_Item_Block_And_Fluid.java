@@ -1255,6 +1255,15 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L),
                         ItemList.Cell_Empty.get(1L));
 
+        GT_FluidFactory.builder(Materials.RawStarMatter.mName)
+                .withLocalizedName(Materials.RawStarMatter.mLocalizedName)
+                .withStateAndTemperature(LIQUID, 10_000_000)
+                .buildAndRegister()
+                .configureMaterials(Materials.RawStarMatter)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.RawStarMatter, 1L),
+                        ItemList.Cell_Empty.get(1L));
+
         GT_FluidFactory.builder("fieryblood")
                 .withLocalizedName("Fiery Blood")
                 .withStateAndTemperature(LIQUID, 6400)
@@ -1263,6 +1272,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 .registerBContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
                         ItemList.Cell_Empty.get(1L));
+
         GT_FluidFactory.builder("holywater")
                 .withLocalizedName("Holy Water")
                 .withStateAndTemperature(LIQUID, 295)

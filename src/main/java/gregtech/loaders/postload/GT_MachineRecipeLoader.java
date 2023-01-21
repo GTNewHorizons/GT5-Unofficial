@@ -5243,7 +5243,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack(Items.string, 32),
                 80,
                 48);
-        GT_RecipeRegistrator.registerWiremillRecipes(Materials.SpaceTime, 400, 32000);
+        GT_RecipeRegistrator.registerWiremillRecipes(Materials.SpaceTime, 400, 32_000);
 
         GT_Values.RA.addDistilleryRecipe(
                 GT_Utility.getIntegratedCircuit(24),
@@ -6540,6 +6540,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_ModHandler.addSmeltingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L));
+        GT_ModHandler.addSmeltingRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.WroughtIron, 1L));
         GT_ModHandler.removeFurnaceSmelting(
                 GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
         GT_ModHandler.addSmeltingRecipe(

@@ -1267,7 +1267,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'P',
             ItemList.Electric_Pump_MV
         });
-
         // 1234
         ItemList.Hatch_Energy_ULV.set(
                 new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));

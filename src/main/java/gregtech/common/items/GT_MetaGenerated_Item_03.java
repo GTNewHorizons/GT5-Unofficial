@@ -810,7 +810,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L));
 
         ItemList.NuclearStar.set(addItem(
-                tLastID = 230,
+                230,
                 "Nuclear Star",
                 "BY THE POWERS OF NAUGHTINESS, I COMMAND THIS PARTICULAR STAR, TO BE REALLY, REALLY HOT",
                 SubTag.NO_UNIFICATION));
@@ -820,6 +820,102 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Optically_Perfected_CPU.set(addItem(tLastID = 726, "Optically Perfected CPU", "Perfected CPU!", o));
         ItemList.Optically_Compatible_Memory.set(
                 addItem(tLastID = 725, "Optically Compatible Memory", "Its in the name!", o));
+
+        int whiteDwarfIDs = 729;
+        ItemList.White_Dwarf_Shape_Extruder_Plate.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Plate)", "Ultra Strong Stellar Shape for making Plates"));
+        ItemList.White_Dwarf_Shape_Extruder_Rod.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Rod)", "Ultra Strong Stellar Shape for making Rods"));
+        ItemList.White_Dwarf_Shape_Extruder_Bolt.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Bolt)", "Ultra Strong Stellar Shape for making Bolts"));
+        ItemList.White_Dwarf_Shape_Extruder_Ring.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Ring)", "Ultra Strong Stellar Shape for making Rings"));
+        ItemList.White_Dwarf_Shape_Extruder_Cell.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Cell)", "Ultra Strong Stellar Shape for making Cells"));
+        ItemList.White_Dwarf_Shape_Extruder_Ingot.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Ingot)",
+                "Ultra Strong Stellar Shape for, wait, can't we just use a Furnace?"));
+        ItemList.White_Dwarf_Shape_Extruder_Wire.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Wire)", "Ultra Strong Stellar Shape for making Wires"));
+        ItemList.White_Dwarf_Shape_Extruder_Casing.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Casing)",
+                "Ultra Strong Stellar Shape for making Item Casings"));
+        ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Tiny Pipe)",
+                "Ultra Strong Stellar Shape for making tiny Pipes"));
+        ItemList.White_Dwarf_Shape_Extruder_Pipe_Small.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Small Pipe)",
+                "Ultra Strong Stellar Shape for making small Pipes"));
+        ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Normal Pipe)",
+                "Ultra Strong Stellar Shape for making Pipes"));
+        ItemList.White_Dwarf_Shape_Extruder_Pipe_Large.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Large Pipe)",
+                "Ultra Strong Stellar Shape for making large Pipes"));
+        ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Huge Pipe)",
+                "Ultra Strong Stellar Shape for making full Block Pipes"));
+        ItemList.White_Dwarf_Shape_Extruder_Block.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Block)", "Ultra Strong Stellar Shape for making Blocks"));
+        ItemList.White_Dwarf_Shape_Extruder_Sword.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Sword Blade)",
+                "Ultra Strong Stellar Shape for making Swords"));
+        ItemList.White_Dwarf_Shape_Extruder_Pickaxe.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Pickaxe Head)",
+                "Ultra Strong Stellar Shape for making Pickaxes"));
+        ItemList.White_Dwarf_Shape_Extruder_Shovel.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Shovel Head)",
+                "Ultra Strong Stellar Shape for making Shovels"));
+        ItemList.White_Dwarf_Shape_Extruder_Axe.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Axe Head)",
+                "Ultra Strong Stellar Shape for making Axes"));
+        ItemList.White_Dwarf_Shape_Extruder_Hoe.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Hoe Head)",
+                "Ultra Strong Stellar Shape for making Hoes"));
+        ItemList.White_Dwarf_Shape_Extruder_Hammer.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Hammer Head)",
+                "Ultra Strong Stellar Shape for making Hammers"));
+        ItemList.White_Dwarf_Shape_Extruder_File.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (File Head)",
+                "Ultra Strong Stellar Shape for making Files"));
+        ItemList.White_Dwarf_Shape_Extruder_Saw.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Saw Blade)",
+                "Ultra Strong Stellar Shape for making Saws"));
+        ItemList.White_Dwarf_Shape_Extruder_Gear.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Gear)", "Ultra Strong Stellar Shape for making Gears"));
+        ItemList.White_Dwarf_Shape_Extruder_Bottle.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Bottle)",
+                "Ultra Strong Stellar Shape for making Bottles"));
+        ItemList.White_Dwarf_Shape_Extruder_Rotor.set(addItem(
+                whiteDwarfIDs++, "White Dwarf Extruder Shape (Rotor)", "Ultra Strong Stellar Shape for a Rotor"));
+        ItemList.White_Dwarf_Shape_Extruder_Small_Gear.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Small Gear)",
+                "Ultra Strong Stellar Shape for a Small Gear"));
+        ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade.set(addItem(
+                whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Turbine Blade)",
+                "Ultra Strong Stellar Extruder Shape for a Turbine Blade"));
+        ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill.set(addItem(
+                whiteDwarfIDs,
+                "White Dwarf Extruder Shape (Drill Head)",
+                "White Dwarf Extruder Shape for a Drill Head"));
     }
 
     @Override
