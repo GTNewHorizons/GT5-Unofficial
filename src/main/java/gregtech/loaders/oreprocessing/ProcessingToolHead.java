@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -591,7 +593,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    100000L, 32L, 1L, -1L
+                                    100_000L, 32L, 1L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -616,7 +618,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    75000L, 32L, 1L, -1L
+                                    75_000L, 32L, 1L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -641,7 +643,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    50000L, 32L, 1L, -1L
+                                    50_000L, 32L, 1L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -666,7 +668,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    400000L, 128L, 2L, -1L
+                                    400_000L, 128L, 2L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -691,7 +693,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    300000L, 128L, 2L, -1L
+                                    300_000L, 128L, 2L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -716,7 +718,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    200000L, 128L, 2L, -1L
+                                    200_000L, 128L, 2L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -741,7 +743,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    1600000L, 512L, 3L, -1L
+                                    1_600_000L, 512L, 3L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -766,7 +768,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    1200000L, 512L, 3L, -1L
+                                    1_200_000L, 512L, 3L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -791,7 +793,7 @@ public class ProcessingToolHead
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.DRILL_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    800000L, 512L, 3L, -1L
+                                    800_000L, 512L, 3L, -1L
                                 }),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
@@ -819,7 +821,7 @@ public class ProcessingToolHead
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1600000L, 512L, 3L, -1L}),
+                                new long[] {1_600_000L, 512L, 3L, -1L}),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
@@ -846,7 +848,7 @@ public class ProcessingToolHead
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1200000L, 512L, 3L, -1L}),
+                                new long[] {1_200_000L, 512L, 3L, -1L}),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
@@ -873,7 +875,7 @@ public class ProcessingToolHead
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {800000L, 512L, 3L, -1L}),
+                                new long[] {800_000L, 512L, 3L, -1L}),
                         GT_ModHandler.RecipeBits.DISMANTLEABLE
                                 | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
@@ -913,7 +915,7 @@ public class ProcessingToolHead
                                 aMaterial.getMolten(144 * 4),
                                 GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
                                 5 * 20,
-                                (int) GT_Values.VP[2]);
+                                calculateRecipeEU(aMaterial, (int) GT_Values.VP[2]));
                     }
                     if (aMaterial.getIngots(1) != null) {
                         GT_Values.RA.addExtruderRecipe(
@@ -921,15 +923,42 @@ public class ProcessingToolHead
                                 ItemList.Shape_Extruder_ToolHeadDrill.get(0),
                                 GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
                                 5 * 20,
-                                (int) GT_Values.VP[2]);
+                                calculateRecipeEU(aMaterial, (int) GT_Values.VP[2]));
                     }
                 }
                 break;
             case toolHeadFile:
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.FILE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                    GT_MetaGenerated_Tool_01.FILE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+
+                    if ((!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.BOUNCY))) {
+                        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                            GT_ModHandler.addCraftingRecipe(
+                                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                            GT_MetaGenerated_Tool_01.FILE,
+                                            1,
+                                            aMaterial,
+                                            aMaterial.mHandleMaterial,
+                                            null),
+                                    GT_ModHandler.RecipeBits.MIRRORED
+                                            | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                            | GT_ModHandler.RecipeBits.BUFFERED,
+                                    new Object[] {
+                                        "P",
+                                        "P",
+                                        "S",
+                                        'P',
+                                        OrePrefixes.plate.get(aMaterial),
+                                        'S',
+                                        OrePrefixes.stick.get(aMaterial.mHandleMaterial)
+                                    });
+                        }
+                    }
+                }
+
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
@@ -940,30 +969,16 @@ public class ProcessingToolHead
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.FILE, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         200,
-                        120);
-                if ((!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.BOUNCY))) {
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.FILE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            GT_ModHandler.RecipeBits.MIRRORED
-                                    | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                                    | GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] {
-                                "P",
-                                "P",
-                                "S",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial),
-                                'S',
-                                OrePrefixes.stick.get(aMaterial.mHandleMaterial)
-                            });
-                }
+                        calculateRecipeEU(aMaterial, 120));
+
                 break;
             case toolHeadHoe:
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.HOE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                    GT_MetaGenerated_Tool_01.HOE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                }
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
@@ -974,7 +989,7 @@ public class ProcessingToolHead
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.HOE, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         200,
-                        120);
+                        calculateRecipeEU(aMaterial, 120));
                 if (aSpecialRecipeReq1)
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
@@ -994,10 +1009,33 @@ public class ProcessingToolHead
                             new Object[] {"GG ", "f  ", "   ", 'G', OrePrefixes.gem.get(aMaterial)});
                 break;
             case toolHeadPickaxe:
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.PICKAXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                    GT_MetaGenerated_Tool_01.PICKAXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+
+                    if (aSpecialRecipeReq1)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {
+                                    "PII",
+                                    "f h",
+                                    'P',
+                                    OrePrefixes.plate.get(aMaterial),
+                                    'I',
+                                    OrePrefixes.ingot.get(aMaterial)
+                                });
+
+                    if (!aNoWorking)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {"GGG", "f  ", 'G', OrePrefixes.gem.get(aMaterial)});
+                }
+
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
@@ -1009,29 +1047,29 @@ public class ProcessingToolHead
                                 GT_MetaGenerated_Tool_01.PICKAXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         200,
                         120);
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "PII",
-                                "f h",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial),
-                                'I',
-                                OrePrefixes.ingot.get(aMaterial)
-                            });
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"GGG", "f  ", 'G', OrePrefixes.gem.get(aMaterial)});
+
                 break;
             case toolHeadPlow:
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.PLOW, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                    GT_MetaGenerated_Tool_01.PLOW, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+
+                    if (aSpecialRecipeReq1)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {"PP", "PP", "hf", 'P', OrePrefixes.plate.get(aMaterial)});
+
+                    if (!aNoWorking)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {"GG", "GG", " f", 'G', OrePrefixes.gem.get(aMaterial)});
+                }
+
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
@@ -1042,23 +1080,37 @@ public class ProcessingToolHead
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.PLOW, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         200,
-                        120);
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"PP", "PP", "hf", 'P', OrePrefixes.plate.get(aMaterial)});
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"GG", "GG", " f", 'G', OrePrefixes.gem.get(aMaterial)});
+                        calculateRecipeEU(aMaterial, 120));
+
                 break;
             case toolHeadSaw:
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SAW, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                    GT_MetaGenerated_Tool_01.SAW, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+
+                    if (aSpecialRecipeReq1)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {
+                                    "PP ",
+                                    "fh ",
+                                    'P',
+                                    OrePrefixes.plate.get(aMaterial),
+                                    'I',
+                                    OrePrefixes.ingot.get(aMaterial)
+                                });
+
+                    if (!aNoWorking)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {"GGf", 'G', OrePrefixes.gem.get(aMaterial)});
+                }
+
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
@@ -1069,30 +1121,37 @@ public class ProcessingToolHead
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.SAW, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         200,
-                        120);
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "PP ",
-                                "fh ",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial),
-                                'I',
-                                OrePrefixes.ingot.get(aMaterial)
-                            });
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"GGf", 'G', OrePrefixes.gem.get(aMaterial)});
+                        calculateRecipeEU(aMaterial, 120));
+
                 break;
             case toolHeadSense:
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SENSE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                    GT_MetaGenerated_Tool_01.SENSE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+
+                    if (aSpecialRecipeReq1)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {
+                                    "PPI",
+                                    "hf ",
+                                    'P',
+                                    OrePrefixes.plate.get(aMaterial),
+                                    'I',
+                                    OrePrefixes.ingot.get(aMaterial)
+                                });
+
+                    if (!aNoWorking)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {"GGG", " f ", "   ", 'G', OrePrefixes.gem.get(aMaterial)});
+                }
+
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
@@ -1103,24 +1162,8 @@ public class ProcessingToolHead
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.SENSE, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         200,
-                        120);
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "PPI",
-                                "hf ",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial),
-                                'I',
-                                OrePrefixes.ingot.get(aMaterial)
-                            });
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"GGG", " f ", "   ", 'G', OrePrefixes.gem.get(aMaterial)});
+                        calculateRecipeEU(aMaterial, 120));
+
                 break;
             case toolHeadShovel:
                 GT_ModHandler.addShapelessCraftingRecipe(
@@ -1152,10 +1195,33 @@ public class ProcessingToolHead
                             new Object[] {"fG", 'G', OrePrefixes.gem.get(aMaterial)});
                 break;
             case toolHeadSword:
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SWORD, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                    GT_MetaGenerated_Tool_01.SWORD, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+
+                    if (aSpecialRecipeReq1)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {
+                                    " P ",
+                                    "fPh",
+                                    'P',
+                                    OrePrefixes.plate.get(aMaterial),
+                                    'I',
+                                    OrePrefixes.ingot.get(aMaterial)
+                                });
+
+                    if (!aNoWorking)
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {" G", "fG", 'G', OrePrefixes.gem.get(aMaterial)});
+                }
+
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
@@ -1166,24 +1232,7 @@ public class ProcessingToolHead
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.SWORD, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         200,
-                        120);
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                " P ",
-                                "fPh",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial),
-                                'I',
-                                OrePrefixes.ingot.get(aMaterial)
-                            });
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {" G", "fG", 'G', OrePrefixes.gem.get(aMaterial)});
+                        calculateRecipeEU(aMaterial, 120));
                 break;
             case toolHeadUniversalSpade:
                 GT_ModHandler.addShapelessCraftingRecipe(
@@ -1783,48 +1832,52 @@ public class ProcessingToolHead
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null),
                         160,
-                        100);
+                        calculateRecipeEU(aMaterial, 100));
                 GT_Values.RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null),
                         320,
-                        400);
+                        calculateRecipeEU(aMaterial, 400));
                 GT_Values.RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null),
                         640,
-                        1600);
+                        calculateRecipeEU(aMaterial, 1600));
                 GT_Values.RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null),
                         1280,
-                        6400);
+                        calculateRecipeEU(aMaterial, 6400));
+
                 if (aSpecialRecipeReq2) {
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "fPd",
-                                "SPS",
-                                " P ",
-                                'P',
-                                aMaterial == Materials.Wood
-                                        ? OrePrefixes.plank.get(aMaterial)
-                                        : OrePrefixes.plateDouble.get(aMaterial),
-                                'R',
-                                OrePrefixes.ring.get(aMaterial),
-                                'S',
-                                OrePrefixes.screw.get(aMaterial)
-                            });
+                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                        GT_ModHandler.addCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {
+                                    "fPd",
+                                    "SPS",
+                                    " P ",
+                                    'P',
+                                    aMaterial == Materials.Wood
+                                            ? OrePrefixes.plank.get(aMaterial)
+                                            : OrePrefixes.plateDouble.get(aMaterial),
+                                    'R',
+                                    OrePrefixes.ring.get(aMaterial),
+                                    'S',
+                                    OrePrefixes.screw.get(aMaterial)
+                                });
+                    }
+
                     GT_Values.RA.addFormingPressRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 3L),
                             GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 2L),
                             GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
                             200,
-                            60);
+                            calculateRecipeEU(aMaterial, 60));
                 }
                 break;
             default:
