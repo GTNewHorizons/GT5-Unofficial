@@ -226,6 +226,7 @@ public class GT_Mod implements IGT_Mod {
         registerMaterial(iron);
 
         ModernMaterial copper = new ModernMaterial(new Color(255, 0, 0, 255), "Copper");
+        copper.addPart(Ingot);
         copper.addPart(new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"));
         registerMaterial(copper);
 
