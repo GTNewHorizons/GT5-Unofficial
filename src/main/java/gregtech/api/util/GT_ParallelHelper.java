@@ -283,12 +283,12 @@ public class GT_ParallelHelper {
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (mBatchMode) {
             int tExtraParallels = 0;
-            while (mRecipe.isRecipeInputEqual(true, true, tFluidInputs, tItemInputs)
-                    && tExtraParallels < mCurrentParallel * mBatchModifier) {
+            while (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)
+                    && tExtraParallels < (mCurrentParallel - 1) * mBatchModifier) {
                 tExtraParallels++;
             }
             mCurrentParallel += tExtraParallels;
-            mDurationMultiplier = 1.0f + (float) mBatchModifier / tExtraParallels;
+            mDurationMultiplier = 1.0f + (float) tExtraParallels / mCurrentParallel;
         }
 
         // If we want to calculate outputs we do it here
@@ -296,7 +296,7 @@ public class GT_ParallelHelper {
             if (mRecipe.mOutputs != null) {
                 mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
                 for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    if (mRecipe.getOutputChance(i) <= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                    if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
                         ItemStack tItem = mRecipe.getOutput(i).copy();
                         tItem.stackSize *= mCurrentParallel;
                         mItemOutputs[i] = tItem;
