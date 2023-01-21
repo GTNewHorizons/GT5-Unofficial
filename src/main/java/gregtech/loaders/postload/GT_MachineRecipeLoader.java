@@ -6669,6 +6669,14 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addForgeHammerRecipe(ItemList.Firebrick.get(1), Materials.Brick.getDust(1), 10, 16);
         GT_Values.RA.addForgeHammerRecipe(ItemList.Casing_Firebricks.get(1), ItemList.Firebrick.get(3), 10, 16);
 
+        GT_Values.RA.addForgeHammerRecipe(
+            new ItemStack[] {ItemList.Tesseract.get(1L), GT_ModHandler.getModItem("miscutils", "MU-metaitem.01", 1, 32105)},
+            new FluidStack[] {Materials.SpaceTime.getMolten(2880L)},
+            null,
+            new FluidStack[] {Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L)}, 10*20, (int) Tier.RECIPE_UXV
+            );
+
+
         if (Loader.isModLoaded("HardcoreEnderExpansion")) {
             GT_Values.RA.addForgeHammerRecipe(
                     GT_ModHandler.getModItem("HardcoreEnderExpansion", "endium_ore", 1),
