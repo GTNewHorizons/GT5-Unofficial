@@ -907,6 +907,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials WhiteDwarfMatter = new Materials(585, new TextureSet("WhiteDwarfMatter", true), 1.0F, 0, 2, 1|2|64|128, 255, 255, 255, 255, "WhiteDwarfMatter", "White Dwarf Matter", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple).setHasCorrespondingFluid(true).setProcessingMaterialTierEU(Tier.RECIPE_UXV);
     public static Materials BlackDwarfMatter = new Materials(586, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|64|128, 0, 0, 0, 255, "BlackDwarfMatter", "Black Dwarf Matter", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple).setHasCorrespondingFluid(true).setProcessingMaterialTierEU(Tier.RECIPE_UXV);
 
+    public static Materials Time = new Materials(587, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 100, 1, 255, 255, "Time", "Molten Time", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple);
+    public static Materials Space = new Materials(106, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 100, 1, 255, 255, "Space", "Molten Space", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple);
 
 
     // spotless:on
