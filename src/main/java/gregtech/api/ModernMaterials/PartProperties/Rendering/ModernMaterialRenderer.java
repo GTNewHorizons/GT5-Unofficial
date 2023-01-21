@@ -35,16 +35,15 @@ public class ModernMaterialRenderer implements IItemRenderer {
             if (RenderItem.renderInFrame) {
                 GL11.glScalef(0.85F, 0.85F, 0.85F);
                 GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslated(-0.5D, -0.42D, 0.0D); // todo review this, seems to clip into floor more than normal.
+                GL11.glTranslated(-0.5D, -0.43D, 0.0D); // todo review this, seems to clip into floor more than normal. -0.42D
             } else {
-                GL11.glTranslated(-0.5D, -0.42D, 0.0D);
+                GL11.glTranslated(-0.5D, -0.12D, 0.0D);
             }
         }
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... objects) {
-
         GL11.glPushMatrix();
 
         renderPositionCorrection(type);
