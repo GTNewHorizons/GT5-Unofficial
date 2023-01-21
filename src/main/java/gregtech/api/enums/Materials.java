@@ -1996,7 +1996,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         NetherQuartz.mChemicalFormula = "SiO\u2082";
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
-        SpaceTime.mChemicalFormula = "Reality itself distilled into liquid form";
+        SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(✦◆✦)(⚷⚙⚷ Ni4Ti6)";
