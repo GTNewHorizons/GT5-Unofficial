@@ -4,7 +4,6 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.GT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.multitileentity.MultiTileEntityBlock;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -173,27 +172,6 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
                 ((BaseMetaPipeEntity) tTileEntity)
                         .receiveMetaTileEntityData(
                                 mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
-            else if ((tBlock = aWorld.getBlock(mX, mY, mZ)) instanceof MultiTileEntityBlock) {
-                ((MultiTileEntityBlock) tBlock)
-                        .receiveMultiTileEntityData(
-                                aWorld,
-                                mX,
-                                mY,
-                                mZ,
-                                mRID,
-                                mID,
-                                mC0,
-                                mC1,
-                                mC2,
-                                mC3,
-                                mC4,
-                                mC5,
-                                mTexture,
-                                mTexturePage,
-                                mUpdate,
-                                mRedstone,
-                                mColor);
-            }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
                     "Exception setting tile entity data for tile entity {} at ({}, {}, {})", tTileEntity, mX, mY, mZ);

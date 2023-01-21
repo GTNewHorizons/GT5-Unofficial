@@ -58,11 +58,11 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
                 return aCoverVariable;
             }
         }
-        TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
-        Object fromEntity = aCoverVariable % 2 == 0 ? aTileEntity : tTileEntity,
-                toEntity = aCoverVariable % 2 != 0 ? aTileEntity : tTileEntity;
-        byte fromSide = aCoverVariable % 2 != 0 ? GT_Utility.getOppositeSide(aSide) : aSide,
-                toSide = aCoverVariable % 2 == 0 ? GT_Utility.getOppositeSide(aSide) : aSide;
+        final TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
+        final Object fromEntity = aCoverVariable % 2 == 0 ? aTileEntity : tTileEntity;
+        final Object toEntity = aCoverVariable % 2 != 0 ? aTileEntity : tTileEntity;
+        final byte fromSide = aCoverVariable % 2 != 0 ? GT_Utility.getOppositeSide(aSide) : aSide;
+        final byte toSide = aCoverVariable % 2 == 0 ? GT_Utility.getOppositeSide(aSide) : aSide;
 
         moveMultipleItemStacks(
                 fromEntity,

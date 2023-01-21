@@ -28,6 +28,7 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.enchants.Enchantment_EnderDamage;
+import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Element;
@@ -253,6 +254,7 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PreLoad.loadConfig(tMainConfig);
 
+        new Enchantment_Hazmat();
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
 

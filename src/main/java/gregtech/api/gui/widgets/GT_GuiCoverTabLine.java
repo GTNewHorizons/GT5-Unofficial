@@ -79,7 +79,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      */
     private void setupTabs() {
         for (byte tSide = 0; tSide < 6; tSide++) {
-            ItemStack cover = tile.getCoverItemAtSide(tSide);
+            final ItemStack cover = tile.getCoverItemAtSide(tSide);
             if (cover != null) {
                 addCoverToTabs(tSide, cover);
             }
@@ -114,7 +114,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      * @param cover
      */
     private void addCoverToTabs(byte side, ItemStack cover) {
-        boolean enabled = this.tile.getCoverBehaviorAtSideNew(side).hasCoverGUI();
+        final boolean enabled = this.tile.getCoverBehaviorAtSideNew(side).hasCoverGUI();
         this.setTab(side, cover, null, getTooltipForCoverTab(side, cover, enabled));
         this.setTabEnabled(side, enabled);
     }
@@ -127,7 +127,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      * @return This cover tab's tooltip
      */
     private String[] getTooltipForCoverTab(byte side, ItemStack cover, boolean enabled) {
-        List<String> tooltip = cover.getTooltip(Minecraft.getMinecraft().thePlayer, true);
+        final List<String> tooltip = cover.getTooltip(Minecraft.getMinecraft().thePlayer, true);
         tooltip.set(
                 0,
                 (enabled ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
@@ -158,9 +158,9 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     static class CoverTabLineNEIHandler extends INEIGuiAdapter {
         @Override
         public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h) {
-            Rectangle neiSlotArea = new Rectangle(x, y, w, h);
+            final Rectangle neiSlotArea = new Rectangle(x, y, w, h);
             if (gui instanceof GT_GUIContainerMetaTile_Machine) {
-                GT_GuiTabLine tabLine = ((GT_GUIContainerMetaTile_Machine) gui).coverTabs;
+                final GT_GuiTabLine tabLine = ((GT_GUIContainerMetaTile_Machine) gui).coverTabs;
                 if (!tabLine.visible) {
                     return false;
                 }
