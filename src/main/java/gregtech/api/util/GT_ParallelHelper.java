@@ -167,7 +167,7 @@ public class GT_ParallelHelper {
             throw new IllegalStateException("Tried to build twice");
         }
         mBuilt = true;
-        determnieParallel();
+        determineParallel();
         return this;
     }
 
@@ -219,7 +219,7 @@ public class GT_ParallelHelper {
     /**
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
-    private void determnieParallel() {
+    private void determineParallel() {
         ItemStack[] tItemInputs = null;
         FluidStack[] tFluidInputs = null;
         boolean tMEOutputBus = false;
@@ -292,19 +292,23 @@ public class GT_ParallelHelper {
 
         // If we want to calculate outputs we do it here
         if (mCalculateOutputs) {
-            mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
-            for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                if (mRecipe.mChances[i] <= mMachineMulti.getRandomNumber(10000)) {
-                    ItemStack tItem = mRecipe.getOutput(i).copy();
-                    tItem.stackSize *= mCurrentParallel;
-                    mItemOutputs[i] = tItem;
+            if (mRecipe.mOutputs != null) {
+                mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
+                for (int i = 0; i < mRecipe.mOutputs.length; i++) {
+                    if (mRecipe.getOutputChance(i) <= mMachineMulti.getRandomNumber(10000)) {
+                        ItemStack tItem = mRecipe.getOutput(i).copy();
+                        tItem.stackSize *= mCurrentParallel;
+                        mItemOutputs[i] = tItem;
+                    }
                 }
             }
-            mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
-            for (int i = 0; i < mRecipe.mFluidOutputs.length; i++) {
-                FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
-                tFluid.amount *= mCurrentParallel;
-                mFluidOutputs[i] = tFluid;
+            if (mRecipe.mFluidOutputs != null) {
+                mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
+                for (int i = 0; i < mRecipe.mFluidOutputs.length; i++) {
+                    FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
+                    tFluid.amount *= mCurrentParallel;
+                    mFluidOutputs[i] = tFluid;
+                }
             }
         }
     }
