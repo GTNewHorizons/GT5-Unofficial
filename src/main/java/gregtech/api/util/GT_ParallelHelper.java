@@ -283,7 +283,7 @@ public class GT_ParallelHelper {
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (mBatchMode) {
             int tExtraParallels = 0;
-            while (tExtraParallels < (mCurrentParallel - 1) * mBatchModifier
+            while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
                     && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
                 mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs);
                 tExtraParallels++;
