@@ -36,7 +36,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
+
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 @Mod(
         modid = Reference.MODID,
@@ -232,6 +236,12 @@ public class TecTech {
             pEvent.registerServerCommand(new ChargeCommand());
             pEvent.registerServerCommand(new MassCommand());
         }
+
+        // This must be done after game load otherwise it fails.
+        eyeOfHarmonyRecipeStorage = new EyeOfHarmonyRecipeStorage();
+        // The reason we do this is to force the fields inside the class to instantiate at world load so NEI
+        // displays properly.
+        eyeOfHarmonyRecipeStorage.recipeLookUp(new ItemStack(ModBlocks.blocks.get("Ow")));
     }
 
     public static EyeOfHarmonyRecipeStorage eyeOfHarmonyRecipeStorage = null;
@@ -240,8 +250,5 @@ public class TecTech {
     public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {
         chunkDataHandler.clearData();
         playerPersistence.clearData();
-
-        // This must be done after game load otherwise it fails.
-        eyeOfHarmonyRecipeStorage = new EyeOfHarmonyRecipeStorage();
     }
 }
