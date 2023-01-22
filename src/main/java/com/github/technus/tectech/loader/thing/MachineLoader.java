@@ -175,13 +175,13 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Multi AMP Power INPUTS
         // ===================================================================================================
-        eM_energyMulti4_IV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
+        eM_energyMulti4_EV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
                         15109, "hatch.energymulti04.tier.04", "EV 4A Energy Hatch", 4, 4)
                 .getStackForm(1L));
-        eM_energyMulti16_IV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
+        eM_energyMulti16_EV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
                         15119, "hatch.energymulti16.tier.04", "EV 16A Energy Hatch", 4, 16)
                 .getStackForm(1L));
-        eM_energyMulti64_IV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
+        eM_energyMulti64_EV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
                         15129, "hatch.energymulti64.tier.04", "EV 64A Energy Hatch", 4, 64)
                 .getStackForm(1L));
 
