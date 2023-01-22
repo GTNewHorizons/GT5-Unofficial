@@ -176,13 +176,13 @@ public class MachineLoader implements Runnable {
         // Multi AMP Power INPUTS
         // ===================================================================================================
         eM_energyMulti4_IV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
-                15109, "hatch.energymulti04.tier.04", "EV 4A Energy Hatch", 4, 4)
+                        15109, "hatch.energymulti04.tier.04", "EV 4A Energy Hatch", 4, 4)
                 .getStackForm(1L));
         eM_energyMulti16_IV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
-                15119, "hatch.energymulti16.tier.04", "EV 16A Energy Hatch", 4, 16)
+                        15119, "hatch.energymulti16.tier.04", "EV 16A Energy Hatch", 4, 16)
                 .getStackForm(1L));
         eM_energyMulti64_IV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
-                15129, "hatch.energymulti64.tier.04", "EV 64A Energy Hatch", 4, 64)
+                        15129, "hatch.energymulti64.tier.04", "EV 64A Energy Hatch", 4, 64)
                 .getStackForm(1L));
 
         eM_energyMulti4_IV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
@@ -484,13 +484,13 @@ public class MachineLoader implements Runnable {
         // Multi AMP Power OUTPUTS
         // ===================================================================================================
         eM_dynamoMulti4_EV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(
-                15209, "hatch.dynamomulti04.tier.04", "EV 4A Dynamo Hatch", 4, 4)
+                        15209, "hatch.dynamomulti04.tier.04", "EV 4A Dynamo Hatch", 4, 4)
                 .getStackForm(1L));
         eM_dynamoMulti16_EV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(
-                15219, "hatch.dynamomulti16.tier.04", "EV 16A Dynamo Hatch", 4, 16)
+                        15219, "hatch.dynamomulti16.tier.04", "EV 16A Dynamo Hatch", 4, 16)
                 .getStackForm(1L));
         eM_dynamoMulti64_EV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(
-                15229, "hatch.dynamomulti64.tier.04", "EV 64A Dynamo Hatch", 4, 64)
+                        15229, "hatch.dynamomulti64.tier.04", "EV 64A Dynamo Hatch", 4, 64)
                 .getStackForm(1L));
 
         eM_dynamoMulti4_IV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(

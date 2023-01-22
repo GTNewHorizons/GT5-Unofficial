@@ -500,9 +500,9 @@ public class DreamCraftRecipeLoader {
         // Dynamo Hatches EV-UMV
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                        ItemList.Hatch_Dynamo_EV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2)
+                    ItemList.Hatch_Dynamo_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2)
                 },
                 Materials.Silver.getMolten(144),
                 CustomItemList.eM_dynamoMulti4_EV.get(1),
@@ -510,9 +510,9 @@ public class DreamCraftRecipeLoader {
                 480);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                        CustomItemList.eM_dynamoMulti4_EV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4)
+                    CustomItemList.eM_dynamoMulti4_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4)
                 },
                 Materials.Electrum.getMolten(144),
                 CustomItemList.eM_dynamoMulti16_EV.get(1),
@@ -520,9 +520,9 @@ public class DreamCraftRecipeLoader {
                 480);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                        CustomItemList.eM_dynamoMulti16_EV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6)
+                    CustomItemList.eM_dynamoMulti16_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6)
                 },
                 Materials.Tungsten.getMolten(144),
                 CustomItemList.eM_dynamoMulti64_EV.get(1),
@@ -796,9 +796,9 @@ public class DreamCraftRecipeLoader {
         // Energy Hatches  EV-UIV
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                        ItemList.Hatch_Energy_EV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2)
+                    ItemList.Hatch_Energy_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2)
                 },
                 Materials.Silver.getMolten(144),
                 CustomItemList.eM_energyMulti4_EV.get(1),
@@ -806,9 +806,9 @@ public class DreamCraftRecipeLoader {
                 480);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                        CustomItemList.eM_energyMulti4_EV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4)
+                    CustomItemList.eM_energyMulti4_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4)
                 },
                 Materials.Electrum.getMolten(144),
                 CustomItemList.eM_energyMulti16_EV.get(1),
@@ -816,9 +816,9 @@ public class DreamCraftRecipeLoader {
                 480);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                        CustomItemList.eM_energyMulti16_EV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6)
+                    CustomItemList.eM_energyMulti16_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6)
                 },
                 Materials.Tungsten.getMolten(144),
                 CustomItemList.eM_energyMulti64_EV.get(1),
