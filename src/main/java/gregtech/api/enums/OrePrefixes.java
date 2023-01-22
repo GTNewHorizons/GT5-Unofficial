@@ -3261,6 +3261,19 @@ public enum OrePrefixes {
         ingot.mNotGeneratedItems.add(Materials.BrickNether);
         ingot.mNotGeneratedItems.add(Materials.WoodSealed);
         ingot.mNotGeneratedItems.add(Materials.Wood);
+
+        plateDouble.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        cell.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotDouble.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        turbine.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        dust.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);
@@ -3334,8 +3347,16 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Silver);
         nanite.mGeneratedItems.add(Materials.TranscendentMetal);
         nanite.mGeneratedItems.add(Materials.Neutronium);
+        nanite.mGeneratedItems.add(Materials.WhiteDwarfMatter);
+        nanite.mGeneratedItems.add(Materials.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
         // -----
+
+        gear.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingot.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        toolHeadHammer.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frame.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frameGt.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -4162,8 +4183,16 @@ public enum OrePrefixes {
     }
 
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aMaterial != null
-                && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
+
+        if (aMaterial == null) {
+            return;
+        }
+
+        if (aMaterial.contains(SubTag.NO_RECIPES)) {
+            return;
+        }
+
+        if ((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
                 && GT_Utility.isStackValid(aStack)) {
             // if (Materials.mPreventableComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
             for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {

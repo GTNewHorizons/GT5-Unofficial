@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     private static final double log4 = log(4);
 
     private static final int min_input_hatch = 0;
-    private static final int max_input_hatch = 6;
+    private static final int max_input_hatch = 7;
     private static final int min_output_hatch = 0;
     private static final int max_output_hatch = 2;
     private static final int min_input_bus = 0;

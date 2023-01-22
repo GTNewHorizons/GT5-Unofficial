@@ -1392,8 +1392,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         "Precision Laser Engraver",
                         null,
                         RES_PATH_GUI + "basicmachines/LaserEngraverNEI",
-                        2,
-                        1,
+                        4,
+                        4,
                         0,
                         0,
                         1,
@@ -2122,14 +2122,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_EXTRUDER_SHAPE)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRUDE, ProgressBar.Direction.RIGHT);
+
         public static final GT_Recipe_Map sHammerRecipes = new GT_Recipe_Map(
                         new HashSet<>(3800),
                         "gt.recipe.hammer",
                         "Forge Hammer",
                         null,
                         RES_PATH_GUI + "basicmachines/Hammer",
-                        1,
-                        1,
+                        2,
+                        2,
                         1,
                         0,
                         1,
@@ -2138,6 +2139,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
+                .setUsualFluidInputCount(2)
+                .setUsualFluidOutputCount(2)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_HAMMER)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
                 .addSpecialTexture(20, 6, 78, 42, GT_UITextures.PROGRESSBAR_HAMMER_BASE)

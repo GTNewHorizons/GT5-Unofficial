@@ -586,6 +586,15 @@ public interface IGT_RecipeAdder {
      */
     boolean addForgeHammerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
 
+    // Allows fluids as well as multiple items.
+    boolean addForgeHammerRecipe(
+            ItemStack[] ItemInputArray,
+            FluidStack[] FluidInputArray,
+            ItemStack[] ItemOutputArray,
+            FluidStack[] FluidOutputArray,
+            int aDuration,
+            int aEUt);
+
     /**
      * Adds a Wiremill Recipe
      *
