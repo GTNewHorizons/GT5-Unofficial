@@ -10,11 +10,10 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.List;
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * My GT-Meta-IDs are: 13101 - 13500
@@ -22,16 +21,16 @@ import java.util.Set;
  * @author kekzdealer
  */
 @Mod(
-    modid = KekzCore.MODID,
-    name = KekzCore.NAME,
-    version = KekzCore.VERSION,
-    dependencies = "required-after:IC2;"
-        + "required-after:gregtech;"
-        + "required-after:tectech;"
-        + "required-after:Thaumcraft;"
-        + "required-after:ThaumicTinkerer;"
-        + "after:bartworks;"
-        + "after:dreamcraft")
+        modid = KekzCore.MODID,
+        name = KekzCore.NAME,
+        version = KekzCore.VERSION,
+        dependencies = "required-after:IC2;"
+                + "required-after:gregtech;"
+                + "required-after:tectech;"
+                + "required-after:Thaumcraft;"
+                + "required-after:ThaumicTinkerer;"
+                + "after:bartworks;"
+                + "after:dreamcraft")
 public class KekzCore {
 
     public static final String NAME = "KekzTech";
@@ -67,19 +66,17 @@ public class KekzCore {
 
         // intentionally not a static final field to save a bit of ram.
         Set<String> removedBlocks = ImmutableSet.of(
-            "kekztech_tfftcasingblock_block",
-            "kekztech_tfftmultihatch_block",
-            "kekztech_tfftstoragefieldblock1_block",
-            "kekztech_tfftstoragefieldblock2_block",
-            "kekztech_tfftstoragefieldblock3_block",
-            "kekztech_tfftstoragefieldblock4_block",
-            "kekztech_tfftstoragefieldblock5_block"
-            );
+                "kekztech_tfftcasingblock_block",
+                "kekztech_tfftmultihatch_block",
+                "kekztech_tfftstoragefieldblock1_block",
+                "kekztech_tfftstoragefieldblock2_block",
+                "kekztech_tfftstoragefieldblock3_block",
+                "kekztech_tfftstoragefieldblock4_block",
+                "kekztech_tfftstoragefieldblock5_block");
 
         for (FMLMissingMappingsEvent.MissingMapping mapping : missingMappings) {
             if (mapping.type == GameRegistry.Type.BLOCK) {
-                if (removedBlocks.contains(mapping.name))
-                    mapping.ignore();
+                if (removedBlocks.contains(mapping.name)) mapping.ignore();
             }
         }
     }
