@@ -92,6 +92,10 @@ public final class MainMod {
 
     public static BW_Network BW_Network_instance = new BW_Network();
 
+    public MainMod() {
+        GregTech_API.sBeforeGTPreload.add(new BeforeGTPreload());
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
 

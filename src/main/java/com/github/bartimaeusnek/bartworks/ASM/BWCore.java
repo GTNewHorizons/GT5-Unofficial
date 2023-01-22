@@ -62,7 +62,7 @@ public class BWCore extends DummyModContainer {
         shouldTransform[0] = ConfigHandler.enabledPatches[0];
         shouldTransform[1] = ConfigHandler.enabledPatches[1];
         shouldTransform[3] = ConfigHandler.enabledPatches[3];
-        shouldTransform[4] = true;
+        shouldTransform[4] = false;
         shouldTransform[5] = ConfigHandler.enabledPatches[5];
         shouldTransform[6] = ConfigHandler.enabledPatches[6];
         // shouldTransform[6] = true;
@@ -78,7 +78,6 @@ public class BWCore extends DummyModContainer {
         ret.add(new DefaultArtifactVersion("Thaumcraft", true));
         ret.add(new DefaultArtifactVersion("miscutils", true));
         ret.add(new DefaultArtifactVersion("RWG", true));
-        ret.add(new DefaultArtifactVersion("gregtech", true));
         ret.add(new DefaultArtifactVersion(MainMod.MOD_ID, true));
         ret.add(new DefaultArtifactVersion(BartWorksCrossmod.MOD_ID, true));
         return ret;

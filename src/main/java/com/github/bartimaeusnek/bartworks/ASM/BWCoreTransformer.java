@@ -37,7 +37,7 @@ public class BWCoreTransformer implements IClassTransformer {
         "REMVOING CREATURES FROM LAST MILLENIUM (EXU)",
         "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
         "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
-        "PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API",
+        "[UNUSED] PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API",
         "DUCTTAPING RWG WORLDEN FAILS",
         "PATCHING CRAFTING MANAGER FOR CACHING RECIPES"
         // "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
@@ -293,37 +293,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     }
                 }
                 case 4: {
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
-                    String name_deObfs = "<clinit>";
-                    for (MethodNode toPatch : methods) {
-                        if (ASMUtils.isCorrectMethod(toPatch, name_deObfs) && (toPatch.access & ACC_STATIC) != 0) {
-                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
-                            InsnList nu = new InsnList();
-                            LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
-                            for (int j = 0; j < 2; j++) {
-                                nu.add(toPatch.instructions.get(j));
-                            }
-                            nu.add(new FieldInsnNode(
-                                    GETSTATIC, "gregtech/api/GregTech_API", "sBeforeGTPreload", "Ljava/util/List;"));
-                            nu.add(new TypeInsnNode(
-                                    NEW, "com/github/bartimaeusnek/bartworks/common/loaders/BeforeGTPreload"));
-                            nu.add(new InsnNode(DUP));
-                            nu.add(new MethodInsnNode(
-                                    INVOKESPECIAL,
-                                    "com/github/bartimaeusnek/bartworks/common/loaders/BeforeGTPreload",
-                                    "<init>",
-                                    "()V",
-                                    false));
-                            nu.add(new MethodInsnNode(
-                                    INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true));
-                            nu.add(new InsnNode(POP));
-                            for (int j = 2; j < toPatch.instructions.size(); j++) {
-                                nu.add(toPatch.instructions.get(j));
-                            }
-                            toPatch.instructions = nu;
-                            break scase;
-                        }
-                    }
+                    break;
                 }
                 case 5: {
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
