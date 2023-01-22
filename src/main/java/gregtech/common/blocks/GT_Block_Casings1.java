@@ -19,7 +19,7 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
      * Textures.BlockIcons.casingTexturePages[4][0-127] - Free
      * Textures.BlockIcons.casingTexturePages[5][0-127] - Free
      * Textures.BlockIcons.casingTexturePages[6][0-127] - Free
-     * Textures.BlockIcons.casingTexturePages[7][0-127] - Free
+     * Textures.BlockIcons.casingTexturePages[7][0-127] - TecTech
      * Textures.BlockIcons.casingTexturePages[8][0-127] - TecTech
      */
     public GT_Block_Casings1() {
