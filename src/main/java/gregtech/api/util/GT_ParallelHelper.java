@@ -231,14 +231,22 @@ public class GT_ParallelHelper {
             tItemInputs = mItemInputs;
             tFluidInputs = mFluidInputs;
         } else {
-            tItemInputs = new ItemStack[mItemInputs.length];
-            for (int i = 0; i < mItemInputs.length; i++) {
-                tItemInputs[i] = mItemInputs[i].copy();
+            if (mItemInputs == null) {
+                tItemInputs = new ItemStack[] {};
+            } else {
+                tItemInputs = new ItemStack[mItemInputs.length];
+                for (int i = 0; i < mItemInputs.length; i++) {
+                    tItemInputs[i] = mItemInputs[i].copy();
+                }
             }
 
-            tFluidInputs = new FluidStack[mFluidInputs.length];
-            for (int i = 0; i < mFluidInputs.length; i++) {
-                tFluidInputs[i] = mFluidInputs[i].copy();
+            if (mFluidInputs == null) {
+                mFluidInputs = new FluidStack[] {};
+            } else {
+                tFluidInputs = new FluidStack[mFluidInputs.length];
+                for (int i = 0; i < mFluidInputs.length; i++) {
+                    tFluidInputs[i] = mFluidInputs[i].copy();
+                }
             }
         }
         if (mBatchMode) {
