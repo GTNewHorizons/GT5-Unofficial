@@ -86,8 +86,8 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         CustomItemList.tM_TeslaToroid.set(new ItemStack(this, 1, 7));
         CustomItemList.tM_TeslaSecondary.set(new ItemStack(this, 1, 8));
 
-        CustomItemList.EOH_INNER.set(new ItemStack(this, 1, 10));
-        CustomItemList.EOH_OUTER.set(new ItemStack(this, 1, 11));
+        CustomItemList.EOH_Temporal_Boundary_Casing.set(new ItemStack(this, 1, 10));
+        CustomItemList.EOH_Reinforced_Spacetime_Casing.set(new ItemStack(this, 1, 11));
         CustomItemList.EOH_INFINITE.set(new ItemStack(this, 1, 12));
     }
 

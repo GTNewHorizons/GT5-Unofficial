@@ -29,6 +29,11 @@ public class ThingsLoader implements Runnable {
         if (Textures.BlockIcons.casingTexturePages[tectechTexturePage1] == null) {
             Textures.BlockIcons.casingTexturePages[tectechTexturePage1] = new ITexture[128];
         }
+
+        if (Textures.BlockIcons.casingTexturePages[7] == null) {
+            Textures.BlockIcons.casingTexturePages[7] = new ITexture[128];
+        }
+
         TecTech.LOGGER.info("Added texture page if was null");
         if (!Loader.isModLoaded(Reference.DREAMCRAFT)) {
             TT_Container_Casings.sBlockCasingsNH = new GT_Block_CasingsNH();
