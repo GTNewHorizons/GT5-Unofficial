@@ -127,7 +127,7 @@ public class EyeOfHarmonyRecipe {
 
         // Add a bonus fluid of compressed star matter.
         // todo replace with Bonus star matter when added to GT5.
-        fluidStackArrayList.add(Materials.Infinity.getMolten((this.spacetimeCasingTierRequired + 1) * 100_000));
+        fluidStackArrayList.add(Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000));
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
