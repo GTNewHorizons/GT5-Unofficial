@@ -33,7 +33,7 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon textureTier8;
     private static final int MAX_BLOCK_TIER = 9;
 
-    private static final byte START_INDEX = 64;
+    private static final byte START_INDEX = 48;
 
     public TimeAccelerationFieldCasing() {
         super(
@@ -41,7 +41,7 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
                 "gt.time_acceleration_field_generator",
                 GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] =
+            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] =
                     new GT_CopiedBlockTexture(this, 6, b);
         }
 

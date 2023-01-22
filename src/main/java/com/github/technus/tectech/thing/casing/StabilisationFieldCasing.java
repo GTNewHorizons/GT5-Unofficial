@@ -38,7 +38,7 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
     public StabilisationFieldCasing() {
         super(GT_Item_Casings_Stabilisation.class, "gt.stabilisation_field_generator", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] =
+            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] =
                     new GT_CopiedBlockTexture(this, 6, b);
         }
 
