@@ -1,47 +1,46 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
-import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
-
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
+
+import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 
 public class CustomPartInfo {
 
-    public final PartsEnum partsEnum;
-    private TextureType textureType = Metallic;
-    private String textureName;
-    private boolean animated;
+    public final PartsEnum mPart;
+    private TextureType mTextureType = Metallic;
+    private String mTextureName;
+    private boolean mAnimated;
 
-    public CustomPartInfo(PartsEnum partsEnum) {
-        this.partsEnum = partsEnum;
-        this.textureName = partsEnum.partName;
+    public CustomPartInfo(PartsEnum aPart) {
+        mPart = aPart;
+        mTextureName = aPart.partName;
     }
 
-    public TextureType getTextureType() {
-        return textureType;
+    public TextureType getmTextureType() {
+        return mTextureType;
     }
 
-    public CustomPartInfo setTextureType(final TextureType textureType) {
-        this.textureType = textureType;
+    public CustomPartInfo setTextureType(final TextureType aTextureType) {
+        mTextureType = aTextureType;
         return this;
     }
 
     public boolean isNotAnimated() {
-        return !animated;
+        return !mAnimated;
     }
 
     public CustomPartInfo enableCustomTexture() {
-        this.animated = true;
+        mAnimated = true;
         return this;
     }
 
-    public CustomPartInfo setCustomPartTextureOverride(final String filename) {
-        this.animated = true;
-        this.textureName = filename;
+    public CustomPartInfo setCustomPartTextureOverride(final String aFileName) {
+        mAnimated = true;
+        mTextureName = aFileName;
         return this;
     }
 
-    public String getTextureName() {
-        return textureName;
+    public String getmTextureName() {
+        return mTextureName;
     }
-
 }

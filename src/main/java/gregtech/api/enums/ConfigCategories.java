@@ -64,4 +64,8 @@ public enum ConfigCategories {
         hammerquintupleplate,
         scoop;
     }
+
+    public enum ModernMaterials {
+        materialID;
+    }
 }

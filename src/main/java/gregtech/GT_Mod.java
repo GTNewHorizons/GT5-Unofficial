@@ -5,7 +5,6 @@ import static gregtech.api.ModernMaterials.ModernMaterials.registerAllMaterials;
 import static gregtech.api.ModernMaterials.ModernMaterials.registerMaterial;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Custom;
 import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.Gear;
-import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.Ingot;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
 import appeng.api.AEApi;
@@ -25,7 +24,6 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
@@ -46,6 +44,7 @@ import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
+import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Forestry_Compat;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
@@ -79,8 +78,8 @@ import gregtech.loaders.preload.*;
 import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
-
 import java.awt.*;
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -220,17 +219,38 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
 
-        ModernMaterial iron = new ModernMaterial(new Color(0, 255, 255, 255), "Iron");
-        iron.addAllParts();
-        iron.addPart(new CustomPartInfo(Gear).setTextureType(Custom));
-        registerMaterial(iron);
-
-        ModernMaterial copper = new ModernMaterial(new Color(255, 0, 0, 255), "Copper");
-        copper.addPart(new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"));
+        GregTech_API.sModernMaterialIDs = new GT_Config(new Configuration(
+                new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "ModerMaterialIDs.cfg")));
+        GregTech_API.mLastMaterialID = GregTech_API.sModernMaterialIDs
+                .mConfig
+                .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0)
+                .getInt();
+        ModernMaterial tIron = new ModernMaterial()
+                .setName("Iron")
+                .setColor(0, 255, 255, 255)
+                .addAllParts()
+                .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom))
+                .build();
+        ModernMaterial tin = new ModernMaterial()
+                .setName("Tin")
+                .setColor(190, 190, 190, 255)
+                .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom))
+                .build();
+        ModernMaterial copper = new ModernMaterial()
+                .setName("Copper")
+                .setColor(new Color(255, 0, 0, 255))
+                .addPartsCustom(
+                        new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
+                .build();
+        registerMaterial(tIron);
+        // registerMaterial(tin);
         registerMaterial(copper);
 
         registerAllMaterials();
-
+        GregTech_API.sModernMaterialIDs
+                .mConfig
+                .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0)
+                .set(GregTech_API.mLastMaterialID);
         Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {
             return;
