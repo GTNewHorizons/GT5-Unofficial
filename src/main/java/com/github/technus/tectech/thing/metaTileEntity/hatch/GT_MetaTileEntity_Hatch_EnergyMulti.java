@@ -107,6 +107,11 @@ public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    public long maxWorkingAmperesIn() {
+        return Amperes;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_EnergyMulti(mName, mTier, Amperes, mDescription, mTextures);
     }
