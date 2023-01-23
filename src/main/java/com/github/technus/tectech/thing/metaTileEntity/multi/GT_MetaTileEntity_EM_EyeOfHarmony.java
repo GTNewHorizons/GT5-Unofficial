@@ -1679,13 +1679,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         updateSlots();
 
-        createRenderBlock();
+        createRenderBlock(currentRecipe);
 
         recipeRunning = true;
         return true;
     }
 
-    private void createRenderBlock() {
+    private void createRenderBlock(final EyeOfHarmonyRecipe currentRecipe) {
 
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
 
