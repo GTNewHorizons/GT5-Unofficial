@@ -37,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -167,9 +168,12 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         transformed = aNBT.getBoolean("transformed");
-        hotName = aNBT.getString("hotName");
-        if (hotName != null) {
+        if (aNBT.hasKey("hotName", Constants.NBT.TAG_STRING)) {
+            hotName = aNBT.getString("hotName");
             tRunningRecipe = MyRecipeAdder.mXHeatExchangerFuelMap.get(new Fluid(hotName));
+        } else {
+            hotName = null;
+            tRunningRecipe = null;
         }
         super.loadNBTData(aNBT);
     }
@@ -177,7 +181,7 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("transformed", transformed);
-        aNBT.setString("hotName", hotName);
+        if (hotName != null) aNBT.setString("hotName", hotName);
         super.saveNBTData(aNBT);
     }
 
