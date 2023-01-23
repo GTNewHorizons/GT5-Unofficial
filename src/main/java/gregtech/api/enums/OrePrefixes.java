@@ -3273,6 +3273,8 @@ public enum OrePrefixes {
         ingotQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         turbine.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         dust.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        dustSmall.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        dustTiny.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
