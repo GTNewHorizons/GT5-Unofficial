@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
@@ -94,8 +92,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWashPlant>builder()
                     .addShape(mName, transpose(new String[][] {
-                        {"CCCCC", "C   C", "C   C", "C   C", "C   C", "C   C", "CCCCC"},
-                        {"CC~CC", "C   C", "C   C", "C   C", "C   C", "C   C", "CCCCC"},
+                        {"CCCCC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC"},
+                        {"CC~CC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC"},
                         {"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
                     }))
                     .addElement(
@@ -106,6 +104,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
                                     .dot(1)
                                     .buildAndChain(onElementPass(
                                             x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                    .addElement(
+                            'w', ofChain(isAir(), ofBlockAnyMeta(Blocks.water), ofBlockAnyMeta(Blocks.flowing_water)))
                     .build();
         }
         return STRUCTURE_DEFINITION;
