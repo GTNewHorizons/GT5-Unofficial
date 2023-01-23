@@ -220,12 +220,18 @@ public class GT_OverclockCalculator {
             }
         }
 
-        while ((mRecipeEUt * mParallel * mRecipeAmps) << mEUtIncrasePerOC < mEUt * mAmps) {
-            if (mDuration <= 1) {
-                break;
+        if (mRecipeEUt <= 16) {
+            int tTier = GT_Utility.getTier(mEUt);
+            mRecipeEUt = (mRecipeEUt * (1L << tTier - 1) * (1L << tTier - 1));
+            mDuration = (mDuration / (1 << tTier - 1));
+        } else {
+            while ((mRecipeEUt * mParallel * mRecipeAmps) << mEUtIncrasePerOC < mEUt * mAmps) {
+                if (mDuration <= 1) {
+                    break;
+                }
+                mRecipeEUt <<= mEUtIncrasePerOC;
+                mDuration >>= mDurationDecreasePerOC;
             }
-            mRecipeEUt <<= mEUtIncrasePerOC;
-            mDuration >>= mDurationDecreasePerOC;
         }
 
         if (mDuration < 1) {
