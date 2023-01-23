@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -14,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_PCBFactoryRecipes {
