@@ -128,7 +128,6 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         this.realOptFlow = aOptFlow * flowMultipliers[0];
         int remainingFlow = GT_Utility.safeInt((long) (realOptFlow * (0.5f * overflowMultiplier + 1.5)));
 
-
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             final FluidStack aFluidStack = aFluids.get(i);
@@ -160,7 +159,8 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         if (totalFlow == (GT_Utility.safeInt((long) realOptFlow))) {
             tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
         } else {
-            float efficiency = getOverflowEfficiency(totalFlow, (GT_Utility.safeInt((long) realOptFlow)), overflowMultiplier);
+            float efficiency =
+                    getOverflowEfficiency(totalFlow, (GT_Utility.safeInt((long) realOptFlow)), overflowMultiplier);
             tEU *= efficiency;
             tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L));
         }
