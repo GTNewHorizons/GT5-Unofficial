@@ -537,6 +537,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     public int getOutputChance(int aIndex) {
+        if (mChances == null) return 10000;
         if (aIndex < 0 || aIndex >= mChances.length) return 10000;
         return mChances[aIndex];
     }
