@@ -36,11 +36,11 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
         if (!aMaterial.contains(SubTag.NO_RECIPES)) {
             // Auto generate frame box recipe in an assembler.
             RA.addAssemblerRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
-                ItemList.Circuit_Integrated.getWithDamage(0, 4),
-                getStackForm(1),
-                64,
-                calculateRecipeEU(aMaterial, 7));
+                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
+                    ItemList.Circuit_Integrated.getWithDamage(0, 4),
+                    getStackForm(1),
+                    64,
+                    calculateRecipeEU(aMaterial, 7));
         }
     }
 
