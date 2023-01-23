@@ -220,7 +220,8 @@ public class GT_OverclockCalculator {
             }
         }
 
-        if (mRecipeEUt <= 16) {
+        int tRecipeTier = GT_Utility.getTier(mRecipeEUt);
+        if (tRecipeTier == 0) {
             int tTier = GT_Utility.getTier(mEUt);
             mRecipeEUt = (mRecipeEUt * (1L << tTier - 1) * (1L << tTier - 1));
             mDuration = (mDuration / (1 << tTier - 1));
