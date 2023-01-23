@@ -33,12 +33,15 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
                     new Object[] {"SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial)});
         }
 
-        RA.addAssemblerRecipe(
+        if (!aMaterial.contains(SubTag.NO_RECIPES)) {
+            // Auto generate frame box recipe in an assembler.
+            RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
                 ItemList.Circuit_Integrated.getWithDamage(0, 4),
                 getStackForm(1),
                 64,
                 calculateRecipeEU(aMaterial, 7));
+        }
     }
 
     public GT_MetaPipeEntity_Frame(String aName, Materials aMaterial) {
