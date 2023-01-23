@@ -235,7 +235,8 @@ public class GT_Values {
             MOD_ID_GC_CORE = "GalacticraftCore",
             MOD_ID_GC_MARS = "GalacticraftMars",
             MOD_ID_GC_PLANETS = "GalacticraftPlanets",
-            MOD_ID_DC = "dreamcraft";
+            MOD_ID_DC = "dreamcraft",
+            MOD_ID_GTPP = "miscutils";
     /**
      * File Paths and Resource Paths
      */

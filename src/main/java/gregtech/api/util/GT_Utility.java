@@ -1926,6 +1926,12 @@ public class GT_Utility {
         return copyAmount(1, tData.filledContainer);
     }
 
+    public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
+        return aMaterial.getProcessingMaterialTierEU() == 0
+                ? defaultRecipeEUPerTick
+                : aMaterial.getProcessingMaterialTierEU();
+    }
+
     public static ItemStack getFluidDisplayStack(Fluid aFluid) {
         return aFluid == null ? null : getFluidDisplayStack(new FluidStack(aFluid, 0), false);
     }

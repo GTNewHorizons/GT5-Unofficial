@@ -1,9 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -24,12 +23,14 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_Utility.copyAmount(1L, aStack),
                     null,
                     (int) Math.max(aMaterial.getMass() / 8L, 1L),
-                    4);
+                    calculateRecipeEU(aMaterial, 4));
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial))
-                GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
-                        GT_Proxy.tBits,
-                        new Object[] {"fX", "X ", 'X', OrePrefixes.bolt.get(aMaterial)});
+                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] {"fX", "X ", 'X', OrePrefixes.bolt.get(aMaterial)});
+                }
         }
     }
 }

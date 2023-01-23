@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.Materials.Void;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -159,7 +160,8 @@ public class GT_RecipeRegistrator {
                 || !aData.hasValidMaterialData()
                 || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
                 || aData.mMaterial.mAmount <= 0
-                || GT_Utility.getFluidForFilledItem(aStack, false) != null) return;
+                || GT_Utility.getFluidForFilledItem(aStack, false) != null
+                || aData.mMaterial.mMaterial.mSubTags.contains(SubTag.NO_RECIPES)) return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
         registerReverseSmelting(
                 GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, true);
@@ -232,9 +234,11 @@ public class GT_RecipeRegistrator {
                 || aMaterial == null
                 || aMaterialAmount <= 0
                 || aMaterial.contains(SubTag.NO_SMELTING)
-                || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))) return;
-        aMaterialAmount /= aStack.stackSize;
+                || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
+                || (aMaterial.getProcessingMaterialTierEU() > Tier.IV)) return;
         if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
+
+        aMaterialAmount /= aStack.stackSize;
 
         boolean tHide = (aMaterial != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
         if (aAllowAlloySmelter)
@@ -597,12 +601,6 @@ public class GT_RecipeRegistrator {
                                     aItemData.mMaterial.mMaterial + "." + sShapesA[i][0],
                                     true)) {
                                 if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
-                                    //
-                                    // GT_Log.out.println("###################################################################################");
-                                    //                                    GT_Log.out.println("registerStickStuff used
-                                    // aPlate: "+aPlate);
-                                    //
-                                    // GT_Log.out.println("###################################################################################");
                                     switch (sShapesA[i].length) {
                                         case 2:
                                             GT_ModHandler.addCraftingRecipe(
@@ -658,9 +656,11 @@ public class GT_RecipeRegistrator {
      * @param aMaterial material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
      * @param aEUt EU/t for recipe
+     * If you provide a proper EU tier for recipe processing then aEUt will be overriden with it.
      */
     public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
-        registerWiremillRecipes(aMaterial, baseDuration, aEUt, OrePrefixes.ingot, OrePrefixes.stick, 2);
+        registerWiremillRecipes(
+                aMaterial, baseDuration, calculateRecipeEU(aMaterial, aEUt), OrePrefixes.ingot, OrePrefixes.stick, 2);
     }
 
     /**

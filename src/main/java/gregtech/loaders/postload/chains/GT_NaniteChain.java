@@ -11,13 +11,15 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+
 public class GT_NaniteChain {
 
     public static void run() {
 
-        ItemStack aUVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0);
-        ItemStack aUHVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.ChromaticLens", 0);
-        ItemStack aUEVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.RadoxPolymerLens", 0);
+        ItemStack aUVTierLens = GT_ModHandler.getModItem(MOD_ID_DC, "item.MysteriousCrystalLens", 0);
+        ItemStack aUHVTierLens = GT_ModHandler.getModItem(MOD_ID_DC, "item.ChromaticLens", 0);
+        ItemStack aUEVTierLens = GT_ModHandler.getModItem(MOD_ID_DC, "item.RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 

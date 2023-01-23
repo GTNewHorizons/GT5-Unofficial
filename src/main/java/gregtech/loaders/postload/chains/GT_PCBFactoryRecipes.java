@@ -15,6 +15,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_PCBFactoryRecipes {
 
@@ -62,7 +64,7 @@ public class GT_PCBFactoryRecipes {
                 (int) GT_Values.VP[9]);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    GT_ModHandler.getModItem("miscutils", "blockFrameGtCelestialTungsten", 1),
+                    GT_ModHandler.getModItem(MOD_ID_GTPP, "blockFrameGtCelestialTungsten", 1),
                     Materials.get("Quantum").getPlates(6)
                 },
                 null,
@@ -71,7 +73,7 @@ public class GT_PCBFactoryRecipes {
                 (int) GT_Values.VP[11]);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    GT_ModHandler.getModItem("miscutils", "blockFrameGtHypogen", 1),
+                    GT_ModHandler.getModItem(MOD_ID_GTPP, "blockFrameGtHypogen", 1),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                     Materials.Thulium.getPlates(6)
                 },
