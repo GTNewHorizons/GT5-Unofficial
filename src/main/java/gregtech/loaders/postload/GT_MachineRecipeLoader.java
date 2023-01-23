@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import static com.google.common.math.LongMath.pow;
 import static gregtech.api.GregTech_API.mGTPlusPlus;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
@@ -2333,21 +2332,11 @@ public class GT_MachineRecipeLoader implements Runnable {
             }
         }
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Dye_SquidInk.get(1L),
-                GT_Values.NI,
-                getFluidStack("squidink", 144),
-                10000,
-                128,
-                4);
+                ItemList.Dye_SquidInk.get(1L), GT_Values.NI, getFluidStack("squidink", 144), 10000, 128, 4);
         GT_Values.RA.addFluidExtractionRecipe(
                 ItemList.Dye_Indigo.get(1L), GT_Values.NI, getFluidStack("indigo", 144), 10000, 128, 4);
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Crop_Drop_Indigo.get(1L),
-                GT_Values.NI,
-                getFluidStack("indigo", 144),
-                10000,
-                128,
-                4);
+                ItemList.Crop_Drop_Indigo.get(1L), GT_Values.NI, getFluidStack("indigo", 144), 10000, 128, 4);
         GT_Values.RA.addFluidExtractionRecipe(
                 ItemList.Crop_Drop_MilkWart.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L),
@@ -6084,218 +6073,97 @@ public class GT_MachineRecipeLoader implements Runnable {
         this.addPotionRecipes("speed", GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L));
         this.addPotionRecipes("strength", GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L));
 
+        GT_Values.RA.addFermentingRecipe(getFluidStack("milk", 50), getFluidStack("potion.mundane", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("milk", 50),
-                getFluidStack("potion.mundane", 25),
-                1024,
-                false);
+                getFluidStack("potion.lemonjuice", 50), getFluidStack("potion.limoncello", 25), 1024, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.lemonjuice", 50),
-                getFluidStack("potion.limoncello", 25),
-                1024,
-                true);
+                getFluidStack("potion.applejuice", 50), getFluidStack("potion.cider", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.applejuice", 50),
-                getFluidStack("potion.cider", 25),
-                1024,
-                false);
+                getFluidStack("potion.goldenapplejuice", 50), getFluidStack("potion.goldencider", 25), 1024, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.goldenapplejuice", 50),
-                getFluidStack("potion.goldencider", 25),
-                1024,
-                true);
+                getFluidStack("potion.idunsapplejuice", 50), getFluidStack("potion.notchesbrew", 25), 1024, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.idunsapplejuice", 50),
-                getFluidStack("potion.notchesbrew", 25),
-                1024,
-                true);
+                getFluidStack("potion.reedwater", 50), getFluidStack("potion.rum", 25), 1024, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.reedwater", 50),
-                getFluidStack("potion.rum", 25),
-                1024,
-                true);
+                getFluidStack("potion.rum", 50), getFluidStack("potion.piratebrew", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.rum", 50),
-                getFluidStack("potion.piratebrew", 10),
-                2048,
-                false);
+                getFluidStack("potion.grapejuice", 50), getFluidStack("potion.wine", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.grapejuice", 50),
-                getFluidStack("potion.wine", 25),
-                1024,
-                false);
+                getFluidStack("potion.wine", 50), getFluidStack("potion.vinegar", 10), 2048, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.wine", 50),
-                getFluidStack("potion.vinegar", 10),
-                2048,
-                true);
+                getFluidStack("potion.wheatyjuice", 50), getFluidStack("potion.scotch", 25), 1024, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.wheatyjuice", 50),
-                getFluidStack("potion.scotch", 25),
-                1024,
-                true);
+                getFluidStack("potion.scotch", 50), getFluidStack("potion.glenmckenner", 10), 2048, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.scotch", 50),
-                getFluidStack("potion.glenmckenner", 10),
-                2048,
-                true);
+                getFluidStack("potion.wheatyhopsjuice", 50), getFluidStack("potion.beer", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.wheatyhopsjuice", 50),
-                getFluidStack("potion.beer", 25),
-                1024,
-                false);
+                getFluidStack("potion.hopsjuice", 50), getFluidStack("potion.darkbeer", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.hopsjuice", 50),
-                getFluidStack("potion.darkbeer", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.darkbeer", 50),
-                getFluidStack("potion.dragonblood", 10),
-                2048,
-                true);
+                getFluidStack("potion.darkbeer", 50), getFluidStack("potion.dragonblood", 10), 2048, true);
 
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.beer", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                false);
+                getFluidStack("potion.beer", 75), getFluidStack("potion.vinegar", 50), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.cider", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                false);
+                getFluidStack("potion.cider", 75), getFluidStack("potion.vinegar", 50), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.goldencider", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                true);
+                getFluidStack("potion.goldencider", 75), getFluidStack("potion.vinegar", 50), 2048, true);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.rum", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                false);
+                getFluidStack("potion.rum", 75), getFluidStack("potion.vinegar", 50), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.wine", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                false);
+                getFluidStack("potion.wine", 75), getFluidStack("potion.vinegar", 50), 2048, false);
 
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.awkward", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
+                getFluidStack("potion.awkward", 50), getFluidStack("potion.weakness", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.mundane", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
+                getFluidStack("potion.mundane", 50), getFluidStack("potion.weakness", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.thick", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
+                getFluidStack("potion.thick", 50), getFluidStack("potion.weakness", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.poison", 50),
-                getFluidStack("potion.damage", 25),
-                1024,
-                false);
+                getFluidStack("potion.poison", 50), getFluidStack("potion.damage", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.health", 50),
-                getFluidStack("potion.damage", 25),
-                1024,
-                false);
+                getFluidStack("potion.health", 50), getFluidStack("potion.damage", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.waterbreathing", 50),
-                getFluidStack("potion.damage", 25),
-                1024,
-                false);
+                getFluidStack("potion.waterbreathing", 50), getFluidStack("potion.damage", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.nightvision", 50),
-                getFluidStack("potion.invisibility", 25),
-                1024,
-                false);
+                getFluidStack("potion.nightvision", 50), getFluidStack("potion.invisibility", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.fireresistance", 50),
-                getFluidStack("potion.slowness", 25),
-                1024,
-                false);
+                getFluidStack("potion.fireresistance", 50), getFluidStack("potion.slowness", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.speed", 50),
-                getFluidStack("potion.slowness", 25),
-                1024,
-                false);
+                getFluidStack("potion.speed", 50), getFluidStack("potion.slowness", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.strength", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
+                getFluidStack("potion.strength", 50), getFluidStack("potion.weakness", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.regen", 50),
-                getFluidStack("potion.poison", 25),
-                1024,
-                false);
+                getFluidStack("potion.regen", 50), getFluidStack("potion.poison", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.poison.strong", 50),
-                getFluidStack("potion.damage.strong", 10),
-                2048,
-                false);
+                getFluidStack("potion.poison.strong", 50), getFluidStack("potion.damage.strong", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.health.strong", 50),
-                getFluidStack("potion.damage.strong", 10),
-                2048,
-                false);
+                getFluidStack("potion.health.strong", 50), getFluidStack("potion.damage.strong", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.speed.strong", 50),
-                getFluidStack("potion.slowness.strong", 10),
-                2048,
-                false);
+                getFluidStack("potion.speed.strong", 50), getFluidStack("potion.slowness.strong", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.strength.strong", 50),
-                getFluidStack("potion.weakness.strong", 10),
-                2048,
-                false);
+                getFluidStack("potion.strength.strong", 50), getFluidStack("potion.weakness.strong", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
                 getFluidStack("potion.nightvision.long", 50),
                 getFluidStack("potion.invisibility.long", 10),
                 2048,
                 false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.regen.strong", 50),
-                getFluidStack("potion.poison.strong", 10),
-                2048,
-                false);
+                getFluidStack("potion.regen.strong", 50), getFluidStack("potion.poison.strong", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.poison.long", 50),
-                getFluidStack("potion.damage.long", 10),
-                2048,
-                false);
+                getFluidStack("potion.poison.long", 50), getFluidStack("potion.damage.long", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.waterbreathing.long", 50),
-                getFluidStack("potion.damage.long", 10),
-                2048,
-                false);
+                getFluidStack("potion.waterbreathing.long", 50), getFluidStack("potion.damage.long", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
                 getFluidStack("potion.fireresistance.long", 50),
                 getFluidStack("potion.slowness.long", 10),
                 2048,
                 false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.speed.long", 50),
-                getFluidStack("potion.slowness.long", 10),
-                2048,
-                false);
+                getFluidStack("potion.speed.long", 50), getFluidStack("potion.slowness.long", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.strength.long", 50),
-                getFluidStack("potion.weakness.long", 10),
-                2048,
-                false);
+                getFluidStack("potion.strength.long", 50), getFluidStack("potion.weakness.long", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.regen.long", 50),
-                getFluidStack("potion.poison.long", 10),
-                2048,
-                false);
+                getFluidStack("potion.regen.long", 50), getFluidStack("potion.poison.long", 10), 2048, false);
 
         GT_ModHandler.addSmeltingRecipe(ItemList.Food_Raw_PotatoChips.get(1L), ItemList.Food_PotatoChips.get(1L));
         GT_ModHandler.addSmeltingRecipe(
@@ -6328,89 +6196,61 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_ModHandler.addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
         if (Loader.isModLoaded(GT_MachineRecipeLoader.aTextEBXL)) {
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "waterplant1", 1, 0),
-                    new ItemStack(Items.dye, 4, 2));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "waterplant1", 1, 0), new ItemStack(Items.dye, 4, 2));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "vines", 1, 0),
-                    new ItemStack(Items.dye, 4, 1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "vines", 1, 0), new ItemStack(Items.dye, 4, 1));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 11),
-                    new ItemStack(Items.dye, 4, 11));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 11), new ItemStack(Items.dye, 4, 11));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 10),
-                    new ItemStack(Items.dye, 4, 5));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 10), new ItemStack(Items.dye, 4, 5));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 9),
-                    new ItemStack(Items.dye, 4, 14));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 9), new ItemStack(Items.dye, 4, 14));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 8),
-                    new ItemStack(Items.dye, 4, 14));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 8), new ItemStack(Items.dye, 4, 14));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 7),
-                    new ItemStack(Items.dye, 4, 1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 7), new ItemStack(Items.dye, 4, 1));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 6),
-                    new ItemStack(Items.dye, 4, 1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 6), new ItemStack(Items.dye, 4, 1));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 5),
-                    new ItemStack(Items.dye, 4, 11));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 5), new ItemStack(Items.dye, 4, 11));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 0),
-                    new ItemStack(Items.dye, 4, 9));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 0), new ItemStack(Items.dye, 4, 9));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 4),
-                    new ItemStack(Items.dye, 4, 11));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 4), new ItemStack(Items.dye, 4, 11));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 3),
-                    new ItemStack(Items.dye, 4, 13));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 3), new ItemStack(Items.dye, 4, 13));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 3),
-                    new ItemStack(Items.dye, 4, 5));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 3), new ItemStack(Items.dye, 4, 5));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 2),
-                    new ItemStack(Items.dye, 4, 5));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 2), new ItemStack(Items.dye, 4, 5));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 1),
-                    new ItemStack(Items.dye, 4, 12));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 1), new ItemStack(Items.dye, 4, 12));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 15),
-                    new ItemStack(Items.dye, 4, 11));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 15), new ItemStack(Items.dye, 4, 11));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 14),
-                    new ItemStack(Items.dye, 4, 1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 14), new ItemStack(Items.dye, 4, 1));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 13),
-                    new ItemStack(Items.dye, 4, 9));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 13), new ItemStack(Items.dye, 4, 9));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 12),
-                    new ItemStack(Items.dye, 4, 14));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 12), new ItemStack(Items.dye, 4, 14));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 11),
-                    new ItemStack(Items.dye, 4, 7));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 11), new ItemStack(Items.dye, 4, 7));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 7),
-                    new ItemStack(Items.dye, 4, 7));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 7), new ItemStack(Items.dye, 4, 7));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 2),
-                    new ItemStack(Items.dye, 4, 11));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower1", 1, 2), new ItemStack(Items.dye, 4, 11));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 13),
-                    new ItemStack(Items.dye, 4, 6));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 13), new ItemStack(Items.dye, 4, 6));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 6),
-                    new ItemStack(Items.dye, 4, 12));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 6), new ItemStack(Items.dye, 4, 12));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 5),
-                    new ItemStack(Items.dye, 4, 10));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 5), new ItemStack(Items.dye, 4, 10));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 2),
-                    new ItemStack(Items.dye, 4, 1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 2), new ItemStack(Items.dye, 4, 1));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 1),
-                    new ItemStack(Items.dye, 4, 9));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 1), new ItemStack(Items.dye, 4, 9));
             GT_ModHandler.addExtractionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 0),
-                    new ItemStack(Items.dye, 4, 13));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 0), new ItemStack(Items.dye, 4, 13));
 
             GT_ModHandler.addExtractionRecipe(
                     getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 7),
@@ -6435,48 +6275,34 @@ public class GT_MachineRecipeLoader implements Runnable {
                     getModItem(GT_MachineRecipeLoader.aTextEBXL, "extrabiomes.dye", 1, 3));
 
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 0),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 0), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 1),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 1), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 2),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 2), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 3),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 3), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 4),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 4), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 5),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 5), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 6),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 6), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 7),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 7), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 0),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 0), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 1),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 1), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 2),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 2), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 3),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 3), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 4),
-                    ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 4), ItemList.IC2_Plantball.get(1));
         }
         GT_ModHandler.addCompressionRecipe(
-                getModItem("miscutils", "blockRainforestOakSapling", 8, 0),
-                ItemList.IC2_Plantball.get(1));
+                getModItem("miscutils", "blockRainforestOakSapling", 8, 0), ItemList.IC2_Plantball.get(1));
 
         GT_Values.RA.addCompressorRecipe(
                 ItemList.IC2_Compressed_Coal_Chunk.get(1L), ItemList.IC2_Industrial_Diamond.get(1L), 300, 2);
@@ -6673,9 +6499,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addForgeHammerRecipe(ItemList.Casing_Firebricks.get(1), ItemList.Firebrick.get(3), 10, 16);
 
         GT_Values.RA.addForgeHammerRecipe(
-                new ItemStack[] {
-                    ItemList.Tesseract.get(1L), getModItem("miscutils", "MU-metaitem.01", 1, 32105)
-                },
+                new ItemStack[] {ItemList.Tesseract.get(1L), getModItem("miscutils", "MU-metaitem.01", 1, 32105)},
                 new FluidStack[] {Materials.SpaceTime.getMolten(2880L)},
                 null,
                 new FluidStack[] {Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L)},
@@ -6722,22 +6546,19 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         // Quantum anomaly recipe bypass for UXV. Avoids RNG.
         GT_Values.RA.addPlasmaForgeRecipe(
-            new ItemStack[] {
-                getModItem("dreamcraft", "item.ChromaticLens", 1),
-                getModItem("GoodGenerator", "huiCircuit", 1, 4)
-            },
-            new FluidStack[] {
-                Materials.WhiteDwarfMatter.getMolten(144),
-                getFluidStack("molten.shirabon", 72),
-                Materials.BlackDwarfMatter.getMolten(144)
-            },
-            new ItemStack[] {
-                getModItem("miscutils", "MU-metaitem.01", 1, 32105)
-            },
-            new FluidStack[] {NF},
-            50*20,
-            (int) Tier.UXV,
-            13_500);
+                new ItemStack[] {
+                    getModItem("dreamcraft", "item.ChromaticLens", 1), getModItem("GoodGenerator", "huiCircuit", 1, 4)
+                },
+                new FluidStack[] {
+                    Materials.WhiteDwarfMatter.getMolten(144),
+                    getFluidStack("molten.shirabon", 72),
+                    Materials.BlackDwarfMatter.getMolten(144)
+                },
+                new ItemStack[] {getModItem("miscutils", "MU-metaitem.01", 1, 32105)},
+                new FluidStack[] {NF},
+                50 * 20,
+                (int) Tier.UXV,
+                13_500);
 
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrapbox.get(1L), 180, 1);
@@ -8129,20 +7950,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         if (Loader.isModLoaded("bartworks")) {
             // xenon
             GT_Values.RA.addFluidExtractionRecipe(
-                    getModItem("gregtech", "gt.comb", 1L, 134),
-                    null,
-                    getFluidStack("xenon", 250),
-                    100 * 100,
-                    50,
-                    8192);
+                    getModItem("gregtech", "gt.comb", 1L, 134), null, getFluidStack("xenon", 250), 100 * 100, 50, 8192);
             // neon
             GT_Values.RA.addFluidExtractionRecipe(
-                    getModItem("gregtech", "gt.comb", 1L, 135),
-                    null,
-                    getFluidStack("neon", 250),
-                    100 * 100,
-                    15,
-                    8192);
+                    getModItem("gregtech", "gt.comb", 1L, 135), null, getFluidStack("neon", 250), 100 * 100, 15, 8192);
             // krpton
             GT_Values.RA.addFluidExtractionRecipe(
                     getModItem("gregtech", "gt.comb", 1L, 136),
@@ -8600,8 +8411,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         for (ItemStack cover : coverIDs) {
             if (loaded) {
                 ItemStack slabWood = getModItem(GT_MachineRecipeLoader.aTextForestry, "slabs", 1, i);
-                ItemStack slabWoodFireproof =
-                        getModItem(GT_MachineRecipeLoader.aTextForestry, "slabsFireproof", 1, i);
+                ItemStack slabWoodFireproof = getModItem(GT_MachineRecipeLoader.aTextForestry, "slabsFireproof", 1, i);
                 GT_ModHandler.addCraftingRecipe(
                         cover,
                         GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
@@ -11100,9 +10910,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_ModHandler.getMaceratorRecipeList(),
                 ItemList.IC2_Plantball.get(1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-                GT_Values.NI,
-                GT_ModHandler.getMaceratorRecipeList(),
-                getModItem("IC2", "itemBiochaff", 1L));
+                GT_Values.NI, GT_ModHandler.getMaceratorRecipeList(), getModItem("IC2", "itemBiochaff", 1L));
 
         GT_Utility.removeSimpleIC2MachineRecipe(
                 new ItemStack(Blocks.cactus, 8, 0),
@@ -19795,9 +19603,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         };
 
         ItemStack[] chests = {
-            Loader.isModLoaded(MOD_ID_DC)
-                    ? getModItem(MOD_ID_DC, "BabyChest", 1)
-                    : new ItemStack(Blocks.chest),
+            Loader.isModLoaded(MOD_ID_DC) ? getModItem(MOD_ID_DC, "BabyChest", 1) : new ItemStack(Blocks.chest),
             new ItemStack(Blocks.chest),
             Loader.isModLoaded("IronChest")
                     ? getModItem("IronChest", "BlockIronChest", 1, 3)
