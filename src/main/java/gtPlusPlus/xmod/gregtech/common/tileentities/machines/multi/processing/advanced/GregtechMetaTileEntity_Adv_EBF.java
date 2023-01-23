@@ -157,7 +157,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() || !mPyrotheumHatches.isEmpty();
+        return super.checkHatch() && !mPyrotheumHatches.isEmpty();
     }
 
     private boolean addPyrotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
