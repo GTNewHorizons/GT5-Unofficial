@@ -3,18 +3,8 @@ package gregtech.api.multitileentity.machine;
 import static com.google.common.primitives.Ints.saturatedCast;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
-
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures;
@@ -26,8 +16,17 @@ import gregtech.api.multitileentity.base.BaseTickableMultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 
 public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
+    protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
     private static final String TEXTURE_LOCATION = "multitileentity/machines/";
     public IIconContainer[] mTexturesInactive = emptyIconContainerArray;
@@ -39,8 +38,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(17);
-    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(15);
+    protected IItemHandlerModifiable mInputInventory = EMPTY_INVENTORY;
+    protected IItemHandlerModifiable mOutputInventory = EMPTY_INVENTORY;
     protected boolean mOutputInventoryChanged = false;
 
     @Override
@@ -99,8 +98,10 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aNBT.hasKey(NBT.ACTIVE)) mActive = aNBT.getBoolean(NBT.ACTIVE);
 
         /* Inventories */
-        loadInventory(aNBT, NBT.INV_INPUT_SIZE, NBT.INV_INPUT_LIST);
-        loadInventory(aNBT, NBT.INV_OUTPUT_SIZE, NBT.INV_OUTPUT_LIST);
+        mInputInventory = new ItemStackHandler(Math.max(aNBT.getInteger(NBT.INV_INPUT_SIZE), 0));
+        mOutputInventory = new ItemStackHandler(Math.max(aNBT.getInteger(NBT.INV_OUTPUT_SIZE), 0));
+        loadInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
+        loadInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
 
         /* Tanks */
         long tCapacity = 1000;
@@ -112,23 +113,22 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
 
         // TODO: See if we need the adjustable map here `.setCapacity(mRecipes, mParallel * 2L)` in place of the
         // `setCapacityMultiplier`
-        for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i] = new FluidTankGT(tCapacity)
-                .setCapacityMultiplier(mParallel * 2L).readFromNBT(aNBT, NBT.TANK_IN + i);
+        for (int i = 0; i < mTanksInput.length; i++)
+            mTanksInput[i] = new FluidTankGT(tCapacity)
+                    .setCapacityMultiplier(mParallel * 2L)
+                    .readFromNBT(aNBT, NBT.TANK_IN + i);
         for (int i = 0; i < mTanksOutput.length; i++)
             mTanksOutput[i] = new FluidTankGT().readFromNBT(aNBT, NBT.TANK_OUT + i);
         for (int i = 0; i < mOutputFluids.length; i++)
             mOutputFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(NBT.FLUID_OUT + "." + i));
     }
 
-    protected void loadInventory(NBTTagCompound aNBT, String sizeTag, String invListTag) {
-        final IItemHandlerModifiable inv = mInputInventory;
-        if (inv != null) {
-            final NBTTagList tList = aNBT.getTagList(invListTag, 10);
-            for (int i = 0; i < tList.tagCount(); i++) {
-                final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-                final int tSlot = tNBT.getShort("s");
-                if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
-            }
+    protected void loadInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
+        final NBTTagList tList = aNBT.getTagList(invListTag, 10);
+        for (int i = 0; i < tList.tagCount(); i++) {
+            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+            final int tSlot = tNBT.getShort("s");
+            if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
         }
     }
 
@@ -137,33 +137,36 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         // Loading the registry
         final String textureName = aNBT.getString(NBT.TEXTURE);
         mTextures = new IIconContainer[] {
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side") };
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side")
+        };
         mTexturesInactive = new IIconContainer[] {
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back") };
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back")
+        };
         mTexturesActive = new IIconContainer[] {
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/front"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/right"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/back") };
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/back")
+        };
     }
 
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-                .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        final TileEntity tCanonicalTileEntity =
+                MultiTileEntityRegistry.getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
         if (tCanonicalTileEntity instanceof MultiTileBasicMachine) {
             mTextures = ((MultiTileBasicMachine) tCanonicalTileEntity).mTextures;
             mTexturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).mTexturesInactive;
@@ -176,9 +179,10 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
         return new ITexture[] {
-                TextureFactory.of(mTextures[GT_Values.FACING_ROTATIONS[mFacing][aSide]], GT_Util.getRGBaArray(mRGBa)),
-                TextureFactory.of(
-                        (mActive ? mTexturesActive : mTexturesInactive)[GT_Values.FACING_ROTATIONS[mFacing][aSide]]) };
+            TextureFactory.of(mTextures[GT_Values.FACING_ROTATIONS[mFacing][aSide]], GT_Util.getRGBaArray(mRGBa)),
+            TextureFactory.of(
+                    (mActive ? mTexturesActive : mTexturesInactive)[GT_Values.FACING_ROTATIONS[mFacing][aSide]])
+        };
     }
 
     /*
@@ -212,7 +216,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
-        return playerOwnsThis(aPlayer, false) && mTickTimer > 40
+        return playerOwnsThis(aPlayer, false)
+                && mTickTimer > 40
                 && getTileEntityOffset(0, 0, 0) == this
                 && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
                 && allowInteraction(aPlayer);
@@ -250,7 +255,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     public IFluidTank getFluidTankFillable(byte aSide, FluidStack aFluidToFill) {
         if (!isLiquidInput(aSide)) return null;
         for (FluidTankGT tankGT : mTanksInput) if (tankGT.contains(aFluidToFill)) return tankGT;
-        // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
+        //        if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
         // mRecipes.mOutputItemsCount))) return null;
         for (FluidTankGT fluidTankGT : mTanksInput) if (fluidTankGT.isEmpty()) return fluidTankGT;
         return null;
