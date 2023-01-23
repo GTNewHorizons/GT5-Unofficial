@@ -2622,6 +2622,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                                         : aMaterial.getMass() > Element.Tc.getMass() * 2
                                                 ? TungstenSteel
                                                 : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
+
+        if (aMaterial == Materials.SpaceTime) {
+            aMaterial.mHandleMaterial = Materials.Infinity;
+        }
+
+        if (aMaterial == Materials.TranscendentMetal) {
+            aMaterial.mHandleMaterial = Materials.DraconiumAwakened;
+        }
     }
 
     private static void addEnchantmentValues(Materials aMaterial, String aConfigPath) {
