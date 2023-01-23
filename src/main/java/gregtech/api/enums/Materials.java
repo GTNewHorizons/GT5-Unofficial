@@ -2298,6 +2298,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Wood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         WoodSealed.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
         Peanutwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+        SpaceTime.add(SubTag.NO_SMELTING);
         LiveRoot.add(
                 SubTag.WOOD,
                 SubTag.FLAMMABLE,
