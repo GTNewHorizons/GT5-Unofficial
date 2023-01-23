@@ -45,6 +45,7 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
+import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -777,10 +778,25 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     /**
      * Item - MultiBlock related Item behaviour.
      */
-    protected boolean registerInventory(String invName, IItemHandlerModifiable inventory) {
-        if (multiBlockInputInventory.containsKey(invName)) return false;
-        multiBlockInputInventory.put(invName, inventory);
-        return true;
+    @Override
+    public void registerInventory(String aName, IItemHandlerModifiable aInventory, int aType) {
+        if (aType == InventoryUpgrade.INPUT) {
+            if (multiBlockInputInventory.containsKey(aName)) return;
+            multiBlockInputInventory.put(aName, aInventory);
+            return;
+        }
+        if (aType == InventoryUpgrade.OUTPUT) {
+            if (multiBlockOutputInventory.containsKey(aName)) return;
+            multiBlockOutputInventory.put(aName, aInventory);
+            return;
+        }
+    }
+
+    @Override
+    public void unregisterInventory(String aName, IItemHandlerModifiable aInventory, int aType) {
+        if (!multiBlockInputInventory.containsKey(aName) || !multiBlockOutputInventory.containsKey(aName)) return;
+        multiBlockInputInventory.remove(aName, aInventory);
+        multiBlockOutputInventory.remove(aName, aInventory);
     }
 
     @Override
