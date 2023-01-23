@@ -180,7 +180,7 @@ public class GTMTE_LapotronicSuperCapacitor
                                                     withChannel(
                                                             "glass",
                                                             BorosilicateGlass.ofBoroGlass(
-                                                                    (byte) -1,
+                                                                    (byte) -2,
                                                                     (te, t) -> te.glassTier = t,
                                                                     te -> te.glassTier)))),
                                     onlyIf(
@@ -518,7 +518,7 @@ public class GTMTE_LapotronicSuperCapacitor
         mMaxEUIn = 0;
         mMaxEUOut = 0;
 
-        glassTier = -1;
+        glassTier = -2;
         casingAmount = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_BASE, 2, 1, 0)) return false;
