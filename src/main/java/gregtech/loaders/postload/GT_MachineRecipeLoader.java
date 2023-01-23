@@ -2640,7 +2640,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 800,
                 7920);
 
-        if (!Loader.isModLoaded("miscutils")) {
+        if (!Loader.isModLoaded(MOD_ID_GTPP)) {
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64),
@@ -6302,7 +6302,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 4), ItemList.IC2_Plantball.get(1));
         }
         GT_ModHandler.addCompressionRecipe(
-                getModItem("miscutils", "blockRainforestOakSapling", 8, 0), ItemList.IC2_Plantball.get(1));
+                getModItem(MOD_ID_GTPP, "blockRainforestOakSapling", 8, 0), ItemList.IC2_Plantball.get(1));
 
         GT_Values.RA.addCompressorRecipe(
                 ItemList.IC2_Compressed_Coal_Chunk.get(1L), ItemList.IC2_Industrial_Diamond.get(1L), 300, 2);
@@ -6499,7 +6499,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addForgeHammerRecipe(ItemList.Casing_Firebricks.get(1), ItemList.Firebrick.get(3), 10, 16);
 
         GT_Values.RA.addForgeHammerRecipe(
-                new ItemStack[] {ItemList.Tesseract.get(1L), getModItem("miscutils", "MU-metaitem.01", 1, 32105)},
+                new ItemStack[] {ItemList.Tesseract.get(1L), getModItem(MOD_ID_GTPP, "MU-metaitem.01", 1, 32105)},
                 new FluidStack[] {Materials.SpaceTime.getMolten(2880L)},
                 null,
                 new FluidStack[] {Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L)},
@@ -6547,14 +6547,14 @@ public class GT_MachineRecipeLoader implements Runnable {
         // Quantum anomaly recipe bypass for UXV. Avoids RNG.
         GT_Values.RA.addPlasmaForgeRecipe(
                 new ItemStack[] {
-                    getModItem("dreamcraft", "item.ChromaticLens", 1), getModItem("GoodGenerator", "huiCircuit", 1, 4)
+                    getModItem(MOD_ID_DC, "item.ChromaticLens", 1), getModItem("GoodGenerator", "huiCircuit", 1, 4)
                 },
                 new FluidStack[] {
                     Materials.WhiteDwarfMatter.getMolten(144),
                     getFluidStack("molten.shirabon", 72),
                     Materials.BlackDwarfMatter.getMolten(144)
                 },
-                new ItemStack[] {getModItem("miscutils", "MU-metaitem.01", 1, 32105)},
+                new ItemStack[] {getModItem(MOD_ID_GTPP, "MU-metaitem.01", 1, 32105)},
                 new FluidStack[] {NF},
                 50 * 20,
                 (int) Tier.UXV,
@@ -11158,7 +11158,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L),
                 2500,
                 1920);
-        if (Loader.isModLoaded("gtnhlanth") && (Loader.isModLoaded("miscutils"))) {
+        if (Loader.isModLoaded("gtnhlanth") && (Loader.isModLoaded(MOD_ID_GTPP))) {
             // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
@@ -11356,7 +11356,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     1920);
             // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
             GT_Values.RA.addChemicalRecipe(
-                    getModItem("miscutils", "Formaldehyde", 4L),
+                    getModItem(MOD_ID_GTPP, "Formaldehyde", 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1L),
                     MaterialsKevlar.Acetaldehyde.getGas(1000),
                     Materials.CarbonMonoxide.getGas(1000),
@@ -11426,14 +11426,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                     GT_Utility.getIntegratedCircuit(1),
                     Materials.Water.getFluid(2000L),
                     MaterialsKevlar.Acetylene.getGas(1000L),
-                    getModItem("miscutils", "itemDustCalciumHydroxide", 5L),
+                    getModItem(MOD_ID_GTPP, "itemDustCalciumHydroxide", 5L),
                     300,
                     480);
 
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] {
                         GT_Utility.getIntegratedCircuit(1),
-                        getModItem("miscutils", "itemDustCalciumChloride", 1L),
+                        getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 9L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 9L)
                     },
@@ -11448,7 +11448,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] {
                         GT_Utility.getIntegratedCircuit(9),
-                        getModItem("miscutils", "itemDustCalciumChloride", 7L),
+                        getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 7L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 63L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 63L)
                     },
@@ -11465,7 +11465,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     new ItemStack[] {
                         ItemList.Electric_Pump_EV.get(4L),
                         ItemList.Field_Generator_EV.get(4L),
-                        getModItem("miscutils", "itemPlateInconel690", 4L),
+                        getModItem(MOD_ID_GTPP, "itemPlateInconel690", 4L),
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
@@ -11484,7 +11484,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     GT_Values.NF,
                     GT_Values.NF,
                     MaterialsKevlar.CobaltIIHydroxide.getDust(5),
-                    getModItem("miscutils", "itemDustSodiumNitrate", 10L),
+                    getModItem(MOD_ID_GTPP, "itemDustSodiumNitrate", 10L),
                     100,
                     120);
             // Rh + 3Cl = RhCl3
