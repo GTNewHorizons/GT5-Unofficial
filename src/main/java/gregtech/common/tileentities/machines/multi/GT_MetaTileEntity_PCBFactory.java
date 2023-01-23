@@ -612,7 +612,7 @@ public class GT_MetaTileEntity_PCBFactory
 
                 mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                 ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-                int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
+                int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000.0f);
                 for (int k = 0; k < mCurrentParallel; k++) {
                     int remainingEfficiency = getMaxEfficiency(aStack) < 10000 ? 10000 : getMaxEfficiency(aStack);
                     for (int j = 0; j < repeats; j++) {
