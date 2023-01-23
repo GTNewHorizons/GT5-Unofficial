@@ -13,7 +13,6 @@ import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.*;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
-import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.*;
@@ -752,8 +751,8 @@ public final class ModItems {
         dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
 
         ItemUtils.generateSpecialUseDusts(MISC_MATERIALS.WOODS_GLASS, false);
-        cellHydrogenChlorideMix = new BaseItemCell(
-                "hydrogenchloridemix", "Hydrogen Chloride Mix", MISC_MATERIALS.HYDROGEN_CHLORIDE.getRGB());
+        cellHydrogenChlorideMix =
+                MISC_MATERIALS.HYDROGEN_CHLORIDE_MIX.getCell(1).getItem();
 
         // Nuclear Fuel Dusts
         dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts(

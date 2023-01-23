@@ -311,6 +311,19 @@ public final class MISC_MATERIALS {
             new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
             new MaterialStack(ELEMENT.getInstance().CHLORINE, 1));
 
+    public static final Material HYDROGEN_CHLORIDE_MIX = new Material(
+            "Hydrogen Chloride Mix",
+            MaterialState.PURE_LIQUID, // State
+            null, // Material Colour
+            -1, // Melting Point in C
+            -1, // Boiling Point in C
+            -1, // Protons
+            -1,
+            false, // Uses Blast furnace?
+            // Material Stacks with Percentage of required elements.
+            new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+            new MaterialStack(ELEMENT.getInstance().CHLORINE, 1));
+
     public static final Material SODIUM_CHLORIDE = new Material(
             "Sodium Chloride",
             MaterialState.PURE_GAS,
