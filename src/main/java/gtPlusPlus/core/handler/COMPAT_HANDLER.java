@@ -131,7 +131,6 @@ public class COMPAT_HANDLER {
             GregtechIndustrialThermalCentrifuge.run();
             GregtechIndustrialWashPlant.run();
             GregtechSemiFluidgenerators.run();
-            GregtechAdvancedMixer.run();
             GregtechWirelessChargers.run();
             GregtechIndustrialGeneratorArray.run();
             GregtechIndustrialCuttingFactory.run();

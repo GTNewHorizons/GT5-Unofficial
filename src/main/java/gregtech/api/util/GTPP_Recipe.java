@@ -598,25 +598,6 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                         true)
                 .useModularUI(true);
 
-        // Advanced Mixer
-        public static final GT_Recipe_Map sAdvancedMixerRecipes = new GT_Recipe_Map(
-                        new HashSet<>(1000),
-                        "gtpp.recipe.advanced.mixer",
-                        "Advanced Material Combiner",
-                        null,
-                        "gregtech:textures/gui/basicmachines/MixerAdvanced",
-                        4,
-                        4,
-                        1,
-                        0,
-                        2,
-                        "",
-                        1,
-                        "",
-                        true,
-                        true)
-                .useModularUI(true);
-
         // Mini Fusion
         public static final GT_Recipe_Map sSlowFusionRecipes = new GT_Recipe_Map(
                         new HashSet<>(50),
