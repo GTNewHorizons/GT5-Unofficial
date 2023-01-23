@@ -71,6 +71,9 @@ public enum CustomItemList implements IItemContainer {
     holder_Hatch,
     capacitor_Hatch,
 
+    eM_dynamoMulti4_EV,
+    eM_dynamoMulti16_EV,
+    eM_dynamoMulti64_EV,
     eM_dynamoMulti4_IV,
     eM_dynamoMulti16_IV,
     eM_dynamoMulti64_IV,
@@ -163,6 +166,9 @@ public enum CustomItemList implements IItemContainer {
     eM_dynamoTunnel7_UXV,
     eM_dynamoTunnel9001,
 
+    eM_energyMulti4_EV,
+    eM_energyMulti16_EV,
+    eM_energyMulti64_EV,
     eM_energyMulti4_IV,
     eM_energyMulti16_IV,
     eM_energyMulti64_IV,
