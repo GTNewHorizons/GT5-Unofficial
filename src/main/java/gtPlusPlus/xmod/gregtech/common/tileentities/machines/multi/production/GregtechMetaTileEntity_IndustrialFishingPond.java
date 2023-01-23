@@ -495,7 +495,6 @@ public class GregtechMetaTileEntity_IndustrialFishingPond
 
         // If no core, return false;
         if (aControlCoreTier == 0 && CORE.ConfigSwitches.requireControlCores) {
-            log("Invalid/No Control Core");
             return false;
         }
 
@@ -508,7 +507,6 @@ public class GregtechMetaTileEntity_IndustrialFishingPond
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         long tEnergy = getMaxInputEnergy();
-        log("Running checkRecipeGeneric(0)");
 
         // Check to see if Voltage Tier > Control Core Tier
         if (tTier > aControlCoreTier && CORE.ConfigSwitches.requireControlCores) {
@@ -528,98 +526,44 @@ public class GregtechMetaTileEntity_IndustrialFishingPond
         mFishOutput = removeNulls(mFishOutput);
         GT_Recipe g = new GTPP_Recipe(
                 true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 200, 16, 0);
-        aMaxParallelRecipes = this.canBufferOutputs(g, aMaxParallelRecipes);
-        if (aMaxParallelRecipes == 0) {
-            log("No Space");
+        GT_ParallelHelper helper = new GT_ParallelHelper()
+                .setRecipe(g)
+                .setItemInputs(aItemInputs)
+                .setFluidInputs(aFluidInputs)
+                .setAvailableEUt(tEnergy)
+                .setMaxParallel(aMaxParallelRecipes)
+                .enableConsumption()
+                .enableOutputCalculation();
+        if (!mVoidExcess) {
+            helper.enableVoidProtection(this);
+        }
+
+        if (mUseMultiparallelMode) {
+            helper.enableBatchMode(128);
+        }
+
+        helper.build();
+
+        if (helper.getCurrentParallel() == 0) {
             return false;
         }
-
-        log("Mode: " + this.mMode + " | Is loot valid? " + (mFishOutput != null));
-
-        int jslot = 0;
-        for (ItemStack x : mFishOutput) {
-            if (x != null) {
-                log("Slot " + jslot + " in mFishOutput contains " + x.stackSize + "x " + x.getDisplayName() + ".");
-            } else {
-                log("Slot " + jslot + " in mFishOutput was null.");
-            }
-            jslot++;
-        }
-
-        // EU discount
-        float tRecipeEUt = (8 * aEUPercent) / 100.0f;
-        float tTotalEUt = 0.0f;
-
-        int parallelRecipes = 0;
-
-        log("parallelRecipes: " + parallelRecipes);
-        log("aMaxParallelRecipes: " + aMaxParallelRecipes);
-        log("tTotalEUt: " + tTotalEUt);
-        log("tVoltage: " + tVoltage);
-        log("tRecipeEUt: " + tRecipeEUt);
-        // Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-        for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
-            log("Bumped EU from " + tTotalEUt + " to " + (tTotalEUt + tRecipeEUt) + ".");
-            tTotalEUt += tRecipeEUt;
-        }
-
-        if (parallelRecipes == 0) {
-            log("BAD RETURN - 3");
-            return false;
-        }
-
-        // -- Try not to fail after this point - inputs have already been consumed! --
-
-        // Convert speed bonus to duration multiplier
-        // e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-        aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
-        float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-        this.mMaxProgresstime = (int) (20 * tTimeFactor * 4);
-
-        this.lEUt = (long) Math.ceil(tTotalEUt);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        // Only Overclock as high as the control circuit.
-        byte tTierOld = tTier;
-        tTier = CORE.ConfigSwitches.requireControlCores ? (byte) aControlCoreTier : tTierOld;
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(g.mEUt)
+                .setEUt(tEnergy)
+                .setDuration(g.mDuration)
+                .setEUtDiscount(aEUPercent / 100.0f)
+                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
+                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel()))
+                .calculate();
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
 
-        // Overclock
-        if (this.lEUt <= 16) {
-            this.lEUt = (this.lEUt * (1L << tTier - 1) * (1L << tTier - 1));
-            this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-        } else {
-            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.lEUt *= 4;
-                this.mMaxProgresstime /= 2;
-            }
-        }
-
-        if (this.lEUt > 0) {
-            this.lEUt = (-this.lEUt);
-        }
-
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-        log("Recipe Step. [3]");
-        // Collect output item types
-        ItemStack[] tOutputItems = mFishOutput;
-
-        int rslot = 0;
-        tOutputItems = removeNulls(mFishOutput);
-
-        for (ItemStack x : tOutputItems) {
-            if (x != null) {
-                log("rSlot " + rslot + " in mFishOutput contains " + x.stackSize + "x " + x.getDisplayName() + ".");
-            } else {
-                log("rSlot " + rslot + " in mFishOutput was null.");
-            }
-            rslot++;
-        }
-
-        // Commit outputs
-        this.mOutputItems = tOutputItems;
+        mOutputItems = helper.getItemOutputs();
+        mOutputFluids = helper.getFluidOutputs();
         updateSlots();
 
         // Play sounds (GT++ addition - GT multiblocks play no sounds)

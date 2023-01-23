@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -45,7 +44,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IsaMill>
         implements ISurvivalConstructable {
@@ -522,13 +520,10 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        long tEnergy = getMaxInputEnergy();
-        log("Running checkRecipeGeneric(0)");
 
         // checks if it has a milling ball with enough durability
         ItemStack tMillingBallRecipe = findMillingBall(aItemInputs);
         if (tMillingBallRecipe == null) {
-            log("does not have milling ball");
             return false;
         }
 
@@ -540,149 +535,27 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                 aFluidInputs,
                 aItemInputs);
 
-        log("Running checkRecipeGeneric(1)");
         // Remember last recipe - an optimization for findRecipe()
         this.mLastRecipe = tRecipe;
 
         if (tRecipe == null) {
-            log("BAD RETURN - 1");
             return false;
         }
 
-        aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
-        if (aMaxParallelRecipes == 0) {
-            log("BAD RETURN - 2");
-            return false;
-        }
-
-        // EU discount
-        float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-        float tTotalEUt = 0.0f;
-        log("aEUPercent " + aEUPercent);
-        log("mEUt " + tRecipe.mEUt);
-
-        int parallelRecipes = 0;
-
-        log("parallelRecipes: " + parallelRecipes);
-        log("aMaxParallelRecipes: " + 1);
-        log("tTotalEUt: " + tTotalEUt);
-        log("tVoltage: " + tVoltage);
-        log("tEnergy: " + tEnergy);
-        log("tRecipeEUt: " + tRecipeEUt);
-        // Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-        for (; parallelRecipes < 1 && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
-            if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-                log("Broke at " + parallelRecipes + ".");
-                break;
-            }
-            log("Bumped EU from " + tTotalEUt + " to " + (tTotalEUt + tRecipeEUt) + ".");
-            tTotalEUt += tRecipeEUt;
-        }
-
-        if (parallelRecipes == 0) {
-            log("BAD RETURN - 3");
-            return false;
-        }
-
-        // -- Try not to fail after this point - inputs have already been consumed! --
-
-        // Convert speed bonus to duration multiplier
-        // e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-        aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
-        float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-        this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
-
-        this.lEUt = (long) Math.ceil(tTotalEUt);
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        // Overclock
-        if (this.lEUt <= 16) {
-            this.lEUt = (this.lEUt * (1L << tTier - 1) * (1L << tTier - 1));
-            this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-        } else {
-            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.lEUt *= 4;
-                this.mMaxProgresstime /= 4;
-            }
-        }
-
-        if (this.lEUt > 0) {
-            this.lEUt = (-this.lEUt);
-        }
-
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-        // Collect fluid outputs
-        FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
-        for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
-            if (tRecipe.getFluidOutput(h) != null) {
-                tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
-                tOutputFluids[h].amount *= parallelRecipes;
-            }
-        }
-
-        // Collect output item types
-        ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
-        for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-            if (tRecipe.getOutput(h) != null) {
-                tOutputItems[h] = tRecipe.getOutput(h).copy();
-                tOutputItems[h].stackSize = 0;
-            }
-        }
-
-        // Set output item stack sizes (taking output chance into account)
-        for (int f = 0; f < tOutputItems.length; f++) {
-            if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
-                for (int g = 0; g < parallelRecipes; g++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
-                        tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
-                }
-            }
-        }
-
-        tOutputItems = removeNulls(tOutputItems);
-
-        // Sanitize item stack size, splitting any stacks greater than max stack size
-        List<ItemStack> splitStacks = new ArrayList<ItemStack>();
-        for (ItemStack tItem : tOutputItems) {
-            while (tItem.getMaxStackSize() < tItem.stackSize) {
-                ItemStack tmp = tItem.copy();
-                tmp.stackSize = tmp.getMaxStackSize();
-                tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
-                splitStacks.add(tmp);
-            }
-        }
-
-        if (splitStacks.size() > 0) {
-            ItemStack[] tmp = new ItemStack[splitStacks.size()];
-            tmp = splitStacks.toArray(tmp);
-            tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
-        }
-
-        // Strip empty stacks
-        List<ItemStack> tSList = new ArrayList<ItemStack>();
-        for (ItemStack tS : tOutputItems) {
-            if (tS.stackSize > 0) tSList.add(tS);
-        }
-        tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
+        boolean tSuccess = super.checkRecipeGeneric(
+                aItemInputs,
+                aFluidInputs,
+                aMaxParallelRecipes,
+                aEUPercent,
+                aSpeedBonusPercent,
+                aOutputChanceRoll,
+                tRecipe);
 
         // Damage Milling ball once all is said and done.
-        if (tMillingBallRecipe != null) {
-            log("damaging milling ball");
+        if (tSuccess) {
             damageMillingBall(tMillingBallRecipe);
         }
 
-        // Commit outputs
-        this.mOutputItems = tOutputItems;
-        this.mOutputFluids = tOutputFluids;
-        updateSlots();
-
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-
-        log("GOOD RETURN - 1");
-        return true;
+        return tSuccess;
     }
 }

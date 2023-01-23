@@ -55,7 +55,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     protected int mCraftingTier = 0;
     protected int mFocusingTier = 0;
     private boolean mSeparateInputBusses = false;
-    private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
+    private boolean mFluidMode = false, doFermium = false, doNeptunium = false, mBatchMode;
     private static final Fluid mNeptunium = ELEMENT.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = ELEMENT.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
@@ -715,19 +715,9 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
     private boolean processRecipe(
             ItemStack[] aItemInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aRecipeMap, ItemStack aStack) {
-        int hatches = getExoticAndNormalEnergyHatchList().size();
-        long tVoltage = getMaxInputVoltage() / hatches;
-        long tAmps = getMaxInputAmps();
-        long tTotalEUt = tVoltage * tAmps;
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe = aRecipeMap
-                .findRecipe(
-                        getBaseMetaTileEntity(),
-                        false,
-                        gregtech.api.enums.GT_Values.V[tTier],
-                        aFluidInputs,
-                        aItemInputs)
-                .copy();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(getAverageInputVoltage()));
+        GT_Recipe tRecipe = aRecipeMap.findRecipe(
+                getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
         if (tRecipe != null && tRecipe.mSpecialValue <= getCraftingTier()) {
             ItemStack aRecipeCatalyst = null;
@@ -754,7 +744,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 }
             }
 
-            if (mFermiumHatch != null) {
+            if (mFermiumHatch != null && tRecipe.mSpecialValue <= getFocusingTier()) {
                 if (mFermiumHatch.getFluid() != null
                         && mFermiumHatch.getFluid().isFluidEqual(new FluidStack(mFermium, 1))) {
                     doFermium = true;
@@ -765,19 +755,36 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 doFermium = false;
             }
 
-            while (mCurrentParallel < mCurrentMaxParallel
-                    && tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-                mCurrentParallel++;
+            GT_ParallelHelper helper = new GT_ParallelHelper()
+                    .setRecipe(tRecipe)
+                    .setItemInputs(aItemInputs)
+                    .setFluidInputs(aFluidInputs)
+                    .setAvailableEUt(getMaxInputAmps() * getAverageInputVoltage())
+                    .setMaxParallel(mCurrentMaxParallel)
+                    .enableConsumption();
+
+            if (mBatchMode) {
+                helper.enableBatchMode(128);
             }
+
+            helper.build();
+
+            if (helper.getCurrentParallel() == 0) {
+                return false;
+            }
+
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                    .setRecipeEUt(tRecipe.mEUt)
+                    .setEUt(getAverageInputVoltage())
+                    .setAmperage(getMaxInputAmps())
+                    .setDuration(tRecipe.mDuration)
+                    .setParallel(Math.min(mMaxParallel, helper.getCurrentParallel()))
+                    .calculate();
+            lEUt = -calculator.getConsumption();
+            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
 
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-
-            mMaxProgresstime = tRecipe.mDuration;
-            lEUt = -tRecipe.mEUt * mCurrentParallel;
-
-            calculateOverclockedNessMultiInternal(
-                    tRecipe.mEUt * mCurrentParallel, tRecipe.mDuration, 1, tTotalEUt, false);
 
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 || lEUt == Long.MAX_VALUE - 1) return false;
 
@@ -789,7 +796,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             if (aStack == null
                     || aStack.getItemDamage() == 0
                     || mNeptuniumHatch.getFluid() == null
-                    || !mNeptuniumHatch.getFluid().isFluidEqual(new FluidStack(mNeptunium, 1))) {
+                    || !mNeptuniumHatch.getFluid().isFluidEqual(new FluidStack(mNeptunium, 1))
+                    || tRecipe.mSpecialValue > getFocusingTier()) {
                 doNeptunium = false;
                 tChances = GetChanceOutputs(tRecipe, -1);
             } else {
@@ -989,6 +997,15 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     @Override
     public boolean onWireCutterRightClick(
             byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            mBatchMode = !mBatchMode;
+            if (mBatchMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
+        }
         mSeparateInputBusses = !mSeparateInputBusses;
         GT_Utility.sendChatToPlayer(
                 aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparateInputBusses);
@@ -1041,14 +1058,18 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         aNBT.setBoolean("mSeparateInputBusses", mSeparateInputBusses);
         aNBT.setBoolean("mFluidMode", mFluidMode);
         aNBT.setBoolean("doFermium", doFermium);
+        aNBT.setBoolean("doNeptunium", doNeptunium);
+        aNBT.setBoolean("mBatchMode", mBatchMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.mSeparateInputBusses = aNBT.getBoolean("mSeparateInputBusses");
-        this.mFluidMode = aNBT.getBoolean("mFluidMode");
-        this.doFermium = aNBT.getBoolean("doFermium");
+        mSeparateInputBusses = aNBT.getBoolean("mSeparateInputBusses");
+        mFluidMode = aNBT.getBoolean("mFluidMode");
+        doFermium = aNBT.getBoolean("doFermium");
+        doNeptunium = aNBT.getBoolean("doNeptunium");
+        mBatchMode = aNBT.getBoolean("mBatchMode");
         super.loadNBTData(aNBT);
     }
 
@@ -1082,39 +1103,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
     private ITexture getCasingTexture() {
         return Textures.BlockIcons.getCasingTextureForId(getCasingTextureId());
-    }
-
-    @Override
-    protected void calculateOverclockedNessMultiInternal(
-            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
-        // 5% space for cable loss
-        long zMaxInputVoltage = maxInputVoltage / 100L * 95L;
-        long zTime = aDuration;
-        long zEUt = aEUt;
-        if (zEUt > zMaxInputVoltage) {
-            zTime = Integer.MAX_VALUE - 1;
-            zEUt = Long.MAX_VALUE - 1;
-        }
-        while (zEUt << 2 < zMaxInputVoltage) {
-            zEUt = zEUt << 2;
-            zTime = zTime >> (perfectOC ? 2 : 1);
-            if (zTime <= 0) {
-                break;
-            }
-        }
-        if (zEUt > zMaxInputVoltage) {
-            zEUt = zEUt >> 2;
-            zTime = zTime << (perfectOC ? 2 : 1);
-        }
-        if (zTime <= 0) {
-            zTime = 1;
-        }
-
-        if (zTime > Integer.MAX_VALUE - 1) {
-            zTime = Integer.MAX_VALUE - 1;
-        }
-        this.lEUt = zEUt;
-        this.mMaxProgresstime = (int) zTime;
     }
 
     @SideOnly(Side.CLIENT)

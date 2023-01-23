@@ -348,44 +348,6 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
     }
 
     @Override
-    public int canBufferOutputs(ItemStack[] aItemOutputs, FluidStack[] aFluidOutputs, int aParallelRecipes) {
-        // do void excess checks
-        if (mVoidExcess) return aParallelRecipes;
-        // sb mode. no need to check layered outputs
-        if (mMode == Mode.Distillery) return super.canBufferOutputs(aItemOutputs, aFluidOutputs, aParallelRecipes);
-        // not enough output hatches
-        if (mOutputHatchesByLayer.size() < aFluidOutputs.length) {
-            log("Not enough output layers for distillation towers");
-            return 0;
-        }
-        // first check if item output can be held. We delegate this to super class since we do not have special item
-        // hatches
-        aParallelRecipes = super.canBufferOutputs(aItemOutputs, new FluidStack[0], aParallelRecipes);
-        if (aParallelRecipes == 0) return 0;
-        for (int i = 0; i < aFluidOutputs.length; i++) {
-            FluidStack tFluidOutput = aFluidOutputs[i];
-            FluidStack tCopied = new FluidStack(tFluidOutput, 0);
-            int toFill = tFluidOutput.amount * aParallelRecipes;
-            for (GT_MetaTileEntity_Hatch_Output hatch : mOutputHatchesByLayer.get(i)) {
-                boolean fluidMatch = hatch.isFluidLocked()
-                        ? tFluidOutput.getFluid().getName().equals(hatch.getLockedFluidName())
-                        : hatch.getFluid() == null || hatch.getFluid().isFluidEqual(tFluidOutput);
-
-                if (fluidMatch) {
-                    tCopied.amount = toFill;
-                    toFill -= hatch.fill(tCopied, false);
-                    if (toFill == 0)
-                        // no more current fluid to fill. break out to go to next fluid
-                        break;
-                }
-            }
-            // use ceil div
-            aParallelRecipes -= (toFill + tFluidOutput.amount - 1) / tFluidOutput.amount;
-        }
-        return aParallelRecipes;
-    }
-
-    @Override
     public String getMachineType() {
         return "Distillery, Distillation Tower";
     }
