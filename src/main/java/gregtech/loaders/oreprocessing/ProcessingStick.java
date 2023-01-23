@@ -65,7 +65,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
         }
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                ItemList.Circuit_Integrated.getWithDamage(0L, 2L),
+                GT_Utility.getIntegratedCircuit(2),
                 Materials.SeedOil.getFluid(50L),
                 ItemList.FR_Stick.get(1L),
                 16,
