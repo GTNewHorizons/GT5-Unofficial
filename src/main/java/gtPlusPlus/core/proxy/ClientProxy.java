@@ -12,9 +12,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.australia.entity.model.*;
-import gtPlusPlus.australia.entity.render.*;
-import gtPlusPlus.australia.entity.type.*;
 import gtPlusPlus.core.client.model.ModelGiantChicken;
 import gtPlusPlus.core.client.renderer.*;
 import gtPlusPlus.core.common.CommonProxy;
@@ -144,21 +141,6 @@ public class ClientProxy extends CommonProxy implements Runnable {
         Logger.INFO("Registering Custom Renderer for the Lead Lined Chest.");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
         Logger.INFO("Registering Custom Renderer for the Egg Box.");
-        // ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEggBox.class, ModelEggBox.getRenderer());
-
-        // GT++ Australia
-
-        /**
-         * Entities
-         */
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityAustralianSpiderBase.class, new RenderAustralianSpider());
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityBoar.class, new RenderBoar(new ModelBoar(), new ModelBoar(0.5F), 0.7F));
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityDingo.class, new RenderDingo(new ModelDingo(), new ModelDingo(), 0.5F));
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityOctopus.class, new RenderOctopus(new ModelOctopus(), 0.7F));
 
         /**
          * Items

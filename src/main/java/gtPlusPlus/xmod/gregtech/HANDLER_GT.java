@@ -28,7 +28,6 @@ import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.multi.NoEUBonusMultiBehaviour;
 import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
 import gtPlusPlus.api.objects.minecraft.multi.NoSpeedBonusMultiBehaviour;
-import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -76,11 +75,9 @@ import net.minecraftforge.fluids.FluidStack;
 public class HANDLER_GT {
 
     public static GT_Config mMaterialProperties = null;
-
     public static GTPP_Config sCustomWorldgenFile = null;
-    public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<WorldGen_GT>();
-    public static final List<WorldGen_GT_Australia> sWorldgenListAustralia = new ArrayList<WorldGen_GT_Australia>();
-    public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<GTPP_Worldgen>();
+    public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
+    public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<>();
     public static GT_MetaGenerated_Tool sMetaGeneratedToolInstance;
 
     public static void preInit() {
@@ -167,7 +164,6 @@ public class HANDLER_GT {
 
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
         removeCrudeTurbineRotors();
-        // cleanAssemblyLineRecipeMap();
         if (ConfigSwitches.enableHarderRecipesForHighTierCasings) {
             removeOldHighTierCasingRecipes();
         }
@@ -363,7 +359,7 @@ public class HANDLER_GT {
                                     aOldRecipeCopy,
                                     ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 1),
                                     ELEMENT.getInstance().SELENIUM.getPlate(1));
-                            aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
+                            aDataToModify.put(new Pair<>(r, aNewRecipe));
                             aUpdateCount++;
                             continue Outer;
                         }
@@ -373,7 +369,7 @@ public class HANDLER_GT {
                                     aOldRecipeCopy,
                                     ItemUtils.getItemStackOfAmountFromOreDict("plateIridium", 1),
                                     CI.getPlate(aTier_ZPM, 1));
-                            aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
+                            aDataToModify.put(new Pair<>(r, aNewRecipe));
                             aUpdateCount++;
                             continue Outer;
                         }
@@ -383,16 +379,10 @@ public class HANDLER_GT {
                                     aOldRecipeCopy,
                                     ItemUtils.getItemStackOfAmountFromOreDict("plateOsmium", 1),
                                     CI.getPlate(aTier_UV, 1));
-                            aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
+                            aDataToModify.put(new Pair<>(r, aNewRecipe));
                             aUpdateCount++;
                             continue Outer;
-                        }
-                        // else if (aOldRecipeCopy.mOutputs[0] == aCasing_LUV) {
-                        //	aOldRecipeCopy = replaceItemInRecipeWithAnother(aOldRecipeCopy,
-                        // ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 8), CI.getPlate(aTier_MAX, 8));
-                        //  updateRecipeMap(aOldRecipeCopy, aNewRecipe, GT_Recipe.GT_Recipe_Map.sAssemblerRecipes);
-                        // }
-                        else {
+                        } else {
                             continue Inner;
                         }
                     }
@@ -410,7 +400,7 @@ public class HANDLER_GT {
                                     aOldRecipeCopy,
                                     ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 1),
                                     ELEMENT.getInstance().SELENIUM.getPlate(1));
-                            aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
+                            aDataToModify.put(new Pair<>(r, aNewRecipe));
                             aUpdateCount++;
                             continue Outer;
                         }
@@ -420,7 +410,7 @@ public class HANDLER_GT {
                                     aOldRecipeCopy,
                                     ItemUtils.getItemStackOfAmountFromOreDict("plateIridium", 1),
                                     CI.getPlate(aTier_ZPM, 1));
-                            aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
+                            aDataToModify.put(new Pair<>(r, aNewRecipe));
                             aUpdateCount++;
                             continue Outer;
                         }
@@ -430,16 +420,10 @@ public class HANDLER_GT {
                                     aOldRecipeCopy,
                                     ItemUtils.getItemStackOfAmountFromOreDict("plateOsmium", 1),
                                     CI.getPlate(aTier_UV, 1));
-                            aDataToModify.put(new Pair<GT_Recipe, GT_Recipe>(r, aNewRecipe));
+                            aDataToModify.put(new Pair<>(r, aNewRecipe));
                             aUpdateCount++;
                             continue Outer;
-                        }
-                        // else if (aOldRecipeCopy.mOutputs[0] == aHull_LUV) {
-                        //	aOldRecipeCopy = replaceItemInRecipeWithAnother(aOldRecipeCopy,
-                        // ItemUtils.getItemStackOfAmountFromOreDict("plateChrome", 8), CI.getPlate(aTier_MAX, 8));
-                        //  updateRecipeMap(aOldRecipeCopy, aNewRecipe, GT_Recipe.GT_Recipe_Map.sAssemblerRecipes);
-                        // }
-                        else {
+                        } else {
                             continue Inner;
                         }
                     }
@@ -464,8 +448,6 @@ public class HANDLER_GT {
                 ItemList.Casing_ZPM.get(1), bits, new Object[] {"PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_ZPM, 1)});
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Casing_UV.get(1), bits, new Object[] {"PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_UV, 1)});
-        // GT_ModHandler.addCraftingRecipe(ItemList.Casing_MAX.get(1), bits, new Object[]{"PPP", "PwP", "PPP", 'P',
-        // OrePrefixes.plate.get(Materials.Neutronium)});
 
         if (!aHardCasings) {
             Logger.INFO("Adding new easy Shaped recipes for Hulls.");
@@ -481,9 +463,6 @@ public class HANDLER_GT {
                     ItemList.Hull_UV.get(1), RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED, new Object[] {
                         "CMC", 'M', ItemList.Casing_UV, 'C', OrePrefixes.wireGt04.get(Materials.NaquadahAlloy)
                     });
-            /*GT_ModHandler.addCraftingRecipe(ItemList.Hull_MAX.get(1),
-            RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED, new Object[]{"CMC", 'M', ItemList.Casing_MAX, 'C',
-                    OrePrefixes.wireGt01.get(Materials.Superconductor)});*/
         } else {
 
             Materials aPolytetrafluoroethylene = MaterialUtils.getMaterial("Polytetrafluoroethylene", "Plastic");
@@ -528,58 +507,7 @@ public class HANDLER_GT {
                         'P',
                         OrePrefixes.plate.get(aPolytetrafluoroethylene)
                     });
-            /*GT_ModHandler.addCraftingRecipe(ItemList.Hull_MAX.get(1),
-            RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
-            new Object[]{"PHP", "CMC", 'M', ItemList.Casing_MAX, 'C',
-                    OrePrefixes.wireGt01.get(Materials.Superconductor), 'H',
-                    OrePrefixes.plate.get(Materials.Neutronium), 'P',
-                    OrePrefixes.plate.get(Materials.Polytetrafluoroethylene)});*/
         }
-
-        // Casings
-
-        /*GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 8L),
-        		ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]),
-        		ItemList.Casing_LuV.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 8L),
-        		ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]),
-        		ItemList.Casing_ZPM.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 8L),
-        		ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]),
-        		ItemList.Casing_UV.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8L),
-        		ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]),
-        		ItemList.Casing_MAX.get(1), 50, 16);	*/
-
-        // Hulls
-
-        // Hard Hulls
-        /*GT_Values.RA.addAssemblerRecipe(
-        		GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.VanadiumGallium, 2L),
-        		ItemList.Casing_LuV.get(1), Materials.Plastic.getMolten(288L),
-        		ItemList.Hull_LuV.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2L),
-        		ItemList.Casing_ZPM.get(1), Materials.Polytetrafluoroethylene.getMolten(288L),
-        		ItemList.Hull_ZPM.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2L),
-        		ItemList.Casing_UV.get(1), Materials.Polytetrafluoroethylene.getMolten(288L),
-        		ItemList.Hull_UV.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(
-        		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 2L),
-        		ItemList.Casing_MAX.get(1), Materials.Polytetrafluoroethylene.getMolten(288L),
-        		ItemList.Hull_MAX.get(1), 50, 16);*/
-
-        // Easy Hulls
-        /*GT_Values.RA.addAssemblerRecipe(
-        		GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.VanadiumGallium, 2L),
-        		ItemList.Casing_LuV.get(1), ItemList.Hull_LuV.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2L),
-        		ItemList.Casing_ZPM.get(1), ItemList.Hull_ZPM.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2L),
-        		ItemList.Casing_UV.get(1), ItemList.Hull_UV.get(1), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(
-        		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 2L),
-        		ItemList.Casing_MAX.get(1), ItemList.Hull_MAX.get(1), 50, 16);*/
     }
 
     private static int removeCrudeTurbineRotors() {
@@ -603,7 +531,6 @@ public class HANDLER_GT {
                         }
                         if (aU instanceof GT_MetaGenerated_Tool_01) {
                             int aMeta = aI.getItemDamage();
-                            // Logger.INFO("Found assembler recipe outputting a GT Tool with a meta value of "+aMeta);
                             if (aMeta >= 170 && aMeta <= 176) {
                                 // Found a Turbine
                                 int aCutoff = aMeta == 170
@@ -615,8 +542,6 @@ public class HANDLER_GT {
                                 Materials aMainMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(aI);
                                 Materials aSecondaryMaterial = GT_MetaGenerated_Tool.getSecondaryMaterial(aI);
                                 long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(aI);
-                                // Logger.INFO("Found "+aType+"Turbine made out of "+getMaterialName(aMainMaterial)+",
-                                // using "+getMaterialName(aSecondaryMaterial));
                                 if (rotorDurabilityMax < aCutoff) {
                                     Logger.WARNING("[Turbine Cleanup] " + getMaterialName(aMainMaterial) + " " + aType
                                             + "Turbines have " + rotorDurabilityMax
@@ -626,18 +551,11 @@ public class HANDLER_GT {
                                     aG.mCanBeBuffered = false;
                                     aRemoved++;
                                 } else {
-                                    break outputs;
+                                    break;
                                 }
-
-                            } else {
-                                continue outputs;
                             }
-                        } else {
-                            continue outputs;
                         }
                     }
-                } else {
-                    continue recipe;
                 }
             }
         }
@@ -645,78 +563,5 @@ public class HANDLER_GT {
         Logger.INFO("Removed " + aRemoved + " useless Turbines.");
 
         return aRemoved;
-    }
-
-    /**
-     * Should clean out any invalid Assembly Line recipes, if the map actually exists.
-     * Prevents NPE's being thrown by GT's AL handler. (Fucking Annoying)
-     * @return - Amount of Recipes removed, which were invalid in some way.
-     */
-    private static int cleanAssemblyLineRecipeMap() {
-        GT_Recipe_Map g = StaticFields59.sAssemblylineVisualRecipes;
-        if (g == null) {
-            return 0;
-        } else {
-            AutoMap<GT_Recipe> aNewMap = new AutoMap<GT_Recipe>();
-            AutoMap<GT_Recipe> aBadRecipeTempMap = new AutoMap<GT_Recipe>();
-            for (GT_Recipe r : g.mRecipeList) {
-                if (r != null) {
-                    if (r.mOutputs == null || r.mOutputs.length == 0 || r.mOutputs[0] == null) {
-                        aBadRecipeTempMap.put(r.copy());
-                        continue;
-                    } else {
-                        aNewMap.put(r.copy());
-                    }
-                }
-            }
-            if (aNewMap.size() > 0) {
-                g.mRecipeList.clear();
-                for (GT_Recipe i : aNewMap) {
-                    g.add(i);
-                }
-            }
-            if (aBadRecipeTempMap.size() > 0) {
-                Logger.INFO("Found " + aBadRecipeTempMap.size()
-                        + " bad Assembly Line Recipes, attempting to dump all data about them.");
-                Logger.INFO("This data should be given to the mod author for the recipe in question.");
-                for (GT_Recipe i : aBadRecipeTempMap) {
-                    if (i == null) {
-                        Logger.INFO(
-                                "Found NULL recipe. Impossible to determine who added this one. Please Report to Alkalus on Github.");
-                    } else {
-                        if (i.mOutputs == null || i.mOutputs.length == 0 || i.mOutputs[0] == null) {
-                            Logger.INFO(
-                                    "Found recipe with NULL output array, this will cause some issues. Attempting to determine other info about recipe.");
-                            if (i.mInputs != null && i.mInputs.length > 0) {
-                                Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(i.mInputs));
-                            } else {
-                                Logger.INFO("Recipe had no valid inputs.");
-                            }
-                            Logger.INFO("Time: " + i.mDuration);
-                            Logger.INFO("EU/T: " + i.mEUt);
-                            Logger.INFO("Special: " + i.mSpecialValue);
-                        } else {
-                            Logger.INFO("Found bad recipe, Attempting to determine other info.");
-                            if (i.mInputs != null && i.mInputs.length > 0) {
-                                Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(i.mInputs));
-                            } else {
-                                Logger.INFO("Recipe had no valid inputs.");
-                            }
-                            if (i.mOutputs != null && i.mOutputs.length > 0) {
-                                Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(i.mOutputs));
-                            } else {
-                                Logger.INFO("Recipe had no valid outputs.");
-                            }
-                            Logger.INFO("Time: " + i.mDuration);
-                            Logger.INFO("EU/T: " + i.mEUt);
-                            Logger.INFO("Special: " + i.mSpecialValue);
-                        }
-                    }
-                }
-            } else {
-                Logger.INFO("No bad Assembly Line recipes found, this is great news!");
-            }
-            return aBadRecipeTempMap.size();
-        }
     }
 }

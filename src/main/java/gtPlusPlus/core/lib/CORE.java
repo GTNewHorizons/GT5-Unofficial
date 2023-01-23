@@ -54,14 +54,6 @@ public class CORE {
     // Tweakables
     public static int EVERGLADES_ID = 227;
     public static int EVERGLADESBIOME_ID = 238;
-    public static int AUSTRALIA_ID = 228;
-    public static int AUSTRALIA_BIOME_DESERT_1_ID = 239;
-    public static int AUSTRALIA_BIOME_DESERT_2_ID = 240;
-    public static int AUSTRALIA_BIOME_DESERT_3_ID = 241;
-    public static int AUSTRALIA_BIOME_PLAINS_ID = 242;
-    public static int AUSTRALIA_BIOME_OUTBACK_ID = 243;
-    public static int AUSTRALIA_BIOME_OCEAN_ID = 244;
-    public static int AUSTRALIA_BIOME_FOREST_ID = 245;
 
     // GT Vars;
     public static final int GREG_FIRST_ID = 760;
@@ -98,9 +90,9 @@ public class CORE {
 
     // TesseractMaps
     public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>> sTesseractGeneratorOwnershipMap =
-            new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>>();
+            new HashMap<>();
     public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>> sTesseractTerminalOwnershipMap =
-            new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>>();
+            new HashMap<>();
 
     // BookMap
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<String, ItemStack>();
@@ -299,12 +291,6 @@ public class CORE {
     public static class Everglades {
         public static final String MODID = "ToxicEverglades";
         public static final String NAME = "GT++ Toxic Everglades";
-        public static final String VERSION = "GRADLETOKEN_VERSION";
-    }
-
-    public static class Australia {
-        public static final String MODID = "Australia";
-        public static final String NAME = "GT++ Australia";
         public static final String VERSION = "GRADLETOKEN_VERSION";
     }
 

@@ -85,26 +85,10 @@ public class Biome_Everglades {
         private synchronized boolean setBiomeID() {
             try {
                 Field mInternalBiomeList = ReflectionUtils.getField(BiomeGenBase.class, "biomeList");
-                Field mClone = mInternalBiomeList;
                 BiomeGenBase[] mOriginalList = (BiomeGenBase[]) mInternalBiomeList.get(null);
                 BiomeGenBase[] mTempList = new BiomeGenBase[mOriginalList.length];
                 for (int index = 0; index < mTempList.length; index++) {
                     mTempList[index] = mOriginalList[index];
-                }
-                if (mTempList != null) {
-                    mTempList[CORE.AUSTRALIA_BIOME_DESERT_1_ID] = this;
-                    mInternalBiomeList.set(null, mTempList);
-                    if (mTempList != mInternalBiomeList.get(null)) {
-                        ReflectionUtils.setFinalFieldValue(BiomeGenBase.class, mInternalBiomeList, mTempList);
-                        Logger.REFLECTION(
-                                "Set Biome ID for " + this.biomeName + " Biome internally in 'biomeList' field from "
-                                        + BiomeGenBase.class.getCanonicalName() + ".");
-                        return true;
-                    } else {
-                        Logger.REFLECTION("Failed to set Biome ID for " + this.biomeName
-                                + " Biome internally in 'biomeList' field from " + BiomeGenBase.class.getCanonicalName()
-                                + ".");
-                    }
                 }
                 return false;
             } catch (Exception e) {
