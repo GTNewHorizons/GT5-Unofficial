@@ -3304,6 +3304,10 @@ public enum OrePrefixes {
         block.mNotGeneratedItems.add(Materials.Diamond);
         block.mNotGeneratedItems.add(Materials.Coal);
         toolHeadArrow.mNotGeneratedItems.add(Materials.Glass);
+        toolHeadArrow.mNotGeneratedItems.add(Materials.TranscendentMetal);
+        arrowGtPlastic.mNotGeneratedItems.add(Materials.TranscendentMetal);
+        arrow.mNotGeneratedItems.add(Materials.TranscendentMetal);
+        arrowGtWood.mNotGeneratedItems.add(Materials.TranscendentMetal);
 
         // -----
 
