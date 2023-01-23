@@ -1,7 +1,6 @@
 package gregtech.api.multitileentity.interfaces;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-
 import net.minecraft.util.ChunkCoordinates;
 
 public interface IMultiBlockPart extends IMultiTileEntity {
@@ -13,6 +12,7 @@ public interface IMultiBlockPart extends IMultiTileEntity {
 
     public interface IMBP_InventoryUpgrade {
         String getInventoryName();
+
         IItemHandlerModifiable getInventory();
     }
 }

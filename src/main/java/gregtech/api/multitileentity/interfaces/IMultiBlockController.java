@@ -1,9 +1,6 @@
 package gregtech.api.multitileentity.interfaces;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,6 +25,6 @@ public interface IMultiBlockController
     void unregisterCoveredPartOnSide(final int aSide, IMultiBlockPart part);
 
     void registerInventory(String aName, IItemHandlerModifiable aInventory, int aType);
-    
+
     void unregisterInventory(String aName, IItemHandlerModifiable aInventory, int aType);
 }

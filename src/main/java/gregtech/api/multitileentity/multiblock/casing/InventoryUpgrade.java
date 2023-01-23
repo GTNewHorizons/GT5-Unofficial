@@ -2,7 +2,6 @@ package gregtech.api.multitileentity.multiblock.casing;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,13 +14,13 @@ public class InventoryUpgrade extends AdvancedCasing {
     private int mInventorySize = 16;
     private IItemHandlerModifiable mInputInventory;
     private IItemHandlerModifiable mOutputInventory;
-    
+
     @Override
     protected void customWork(IMultiBlockController aTarget) {
         aTarget.registerInventory(mInventoryName, mInputInventory, INPUT);
         aTarget.registerInventory(mInventoryName, mOutputInventory, OUTPUT);
     }
-    
+
     @Override
     public String getTileEntityName() {
         return "gt.multitileentity.multiblock.inventory";

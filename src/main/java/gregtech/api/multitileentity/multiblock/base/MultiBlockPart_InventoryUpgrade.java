@@ -1,7 +1,6 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.base.BaseNontickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -11,7 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 
-public class MultiBlockPart_InventoryUpgrade extends BaseNontickableMultiTileEntity implements IMultiBlockPart, IMBP_InventoryUpgrade {
+public class MultiBlockPart_InventoryUpgrade extends BaseNontickableMultiTileEntity
+        implements IMultiBlockPart, IMBP_InventoryUpgrade {
 
     protected ChunkCoordinates mTargetPos = null;
     protected IMultiBlockController mTarget = null;
@@ -54,7 +54,7 @@ public class MultiBlockPart_InventoryUpgrade extends BaseNontickableMultiTileEnt
     public ChunkCoordinates getTargetPos() {
         return mTargetPos;
     }
-    
+
     @Override
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         if (mTargetPos != null) {
