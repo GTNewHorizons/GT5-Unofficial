@@ -36,10 +36,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 @Mod(

@@ -1,6 +1,5 @@
 package com.github.technus.tectech.thing.casing;
 
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static net.minecraft.util.EnumChatFormatting.*;
 
@@ -41,8 +40,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
                 "gt.spacetime_compression_field_generator",
                 GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] =
-                    new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
