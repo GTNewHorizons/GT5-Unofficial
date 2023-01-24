@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util.reflect;
 
 import com.google.common.reflect.ClassPath;
+import com.gtnewhorizon.gtnhlib.reflect.Fields;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.data.StringUtils;
 import java.io.IOException;
@@ -20,12 +21,14 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.ArrayUtils;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ReflectionUtils {
 
-    public static Map<String, Class<?>> mCachedClasses = new LinkedHashMap<String, Class<?>>();
-    public static Map<String, CachedMethod> mCachedMethods = new LinkedHashMap<String, CachedMethod>();
-    public static Map<String, CachedField> mCachedFields = new LinkedHashMap<String, CachedField>();
-    public static Map<String, CachedConstructor> mCachedConstructors = new LinkedHashMap<String, CachedConstructor>();
+    public static Map<String, Class<?>> mCachedClasses = new LinkedHashMap<>();
+    public static Map<String, CachedMethod> mCachedMethods = new LinkedHashMap<>();
+    public static Map<String, CachedField> mCachedFields = new LinkedHashMap<>();
+    public static Map<String, CachedConstructor> mCachedConstructors = new LinkedHashMap<>();
+    public static Map<Field, Fields.ClassFields.Field> mCachedFieldAccessors = new LinkedHashMap<>();
 
     private static class CachedConstructor {
 
@@ -76,6 +79,11 @@ public class ReflectionUtils {
         public boolean type() {
             return STATIC;
         }
+    }
+
+    private static Fields.ClassFields.Field cacheAccessor(Field f) {
+        return mCachedFieldAccessors.computeIfAbsent(f, (field) -> Fields.ofClass(field.getDeclaringClass())
+                .getUntypedField(Fields.LookupType.DECLARED_IN_HIERARCHY, field.getName()));
     }
 
     private static boolean cacheClass(Class<?> aClass) {
@@ -448,29 +456,12 @@ public class ReflectionUtils {
 
     @Deprecated
     public static void setFinalStatic(Field field, Object newValue) throws Exception {
-        field.setAccessible(true);
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.set(null, newValue);
+        cacheAccessor(field).setValue(null, newValue);
     }
 
     public static void setByte(Object clazz, String fieldName, byte newValue) throws Exception {
         Field nameField = getField(clazz.getClass(), fieldName);
-        nameField.setAccessible(true);
-        int modifiers = nameField.getModifiers();
-        Field modifierField = nameField.getClass().getDeclaredField("modifiers");
-        modifiers = modifiers & ~Modifier.FINAL;
-        modifierField.setAccessible(true);
-        modifierField.setInt(nameField, modifiers);
-        // Utils.LOG_INFO("O-"+(byte) nameField.get(clazz) + " | "+newValue);
-        nameField.setByte(clazz, newValue);
-        // Utils.LOG_INFO("N-"+(byte) nameField.get(clazz));
-
-        /*final Field fieldA = getField(clazz.getClass(), fieldName);
-        fieldA.setAccessible(true);
-        fieldA.setByte(clazz, newValue);*/
-
+        cacheAccessor(nameField).setValue(null, newValue);
     }
 
     public static boolean invoke(Object objectInstance, String methodName, Class[] parameters, Object[] values) {
@@ -808,11 +799,6 @@ public class ReflectionUtils {
             m = aClass.getDeclaredMethod(aMethodName, aTypes);
             if (m != null) {
                 m.setAccessible(true);
-                int modifiers = m.getModifiers();
-                Field modifierField = m.getClass().getDeclaredField("modifiers");
-                modifiers = modifiers & ~Modifier.FINAL;
-                modifierField.setAccessible(true);
-                modifierField.setInt(m, modifiers);
             }
         } catch (Throwable t) {
             Logger.REFLECTION("Method: Internal Lookup Failed: " + aMethodName);
@@ -834,11 +820,6 @@ public class ReflectionUtils {
             c = aClass.getDeclaredConstructor(aTypes);
             if (c != null) {
                 c.setAccessible(true);
-                int modifiers = c.getModifiers();
-                Field modifierField = c.getClass().getDeclaredField("modifiers");
-                modifiers = modifiers & ~Modifier.FINAL;
-                modifierField.setAccessible(true);
-                modifierField.setInt(c, modifiers);
             }
         } catch (Throwable t) {
             Logger.REFLECTION("Constructor: Internal Lookup Failed: " + aClass.getName());
@@ -859,14 +840,9 @@ public class ReflectionUtils {
             Constructor<?> c = aClass.getConstructor(aTypes);
             if (c != null) {
                 c.setAccessible(true);
-                int modifiers = c.getModifiers();
-                Field modifierField = c.getClass().getDeclaredField("modifiers");
-                modifiers = modifiers & ~Modifier.FINAL;
-                modifierField.setAccessible(true);
-                modifierField.setInt(c, modifiers);
             }
             return c;
-        } catch (final NoSuchMethodException | IllegalArgumentException | IllegalAccessException e) {
+        } catch (final NoSuchMethodException | IllegalArgumentException e) {
             final Class<?> superClass = aClass.getSuperclass();
             if (superClass == null || superClass == Object.class) {
                 throw e;
@@ -1018,18 +994,7 @@ public class ReflectionUtils {
      * Set the value of a field reflectively.
      */
     private static void setFieldValue_Internal(Object owner, Field field, Object value) throws Exception {
-        makeModifiable(field);
-        field.set(owner, value);
-    }
-
-    /**
-     * Force the field to be modifiable and accessible.
-     */
-    private static void makeModifiable(Field nameField) throws Exception {
-        nameField.setAccessible(true);
-        Field modifiers = getField(Field.class, "modifiers");
-        modifiers.setAccessible(true);
-        modifiers.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
+        cacheAccessor(field).setValue(owner, value);
     }
 
     public static boolean doesFieldExist(String clazz, String string) {

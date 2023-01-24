@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import com.gtnewhorizon.gtnhlib.reflect.Fields;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -13,13 +14,10 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -208,6 +206,8 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
         super.loadNBTData(aNBT);
     }
 
+    private static Fields.ClassFields<GregtechMetaCreativeEnergyBuffer>.Field<ITexture[][][]> mTexturesAccessor;
+
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (KeyboardUtils.isShiftKeyDown()) {
@@ -220,18 +220,17 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
             }
             this.markDirty();
             try {
-                Field field = ReflectionUtils.getField(this.getClass(), "mTextures");
-                field.setAccessible(true);
-                Field modifiersField = Field.class.getDeclaredField("modifiers");
-                modifiersField.setAccessible(true);
-                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+                if (mTexturesAccessor == null) {
+                    mTexturesAccessor = Fields.ofClass(GregtechMetaCreativeEnergyBuffer.class)
+                            .getField(Fields.LookupType.PUBLIC, "mTextures", ITexture[][][].class);
+                }
                 ITexture[][][] V = getTextureSet(null);
                 if (V != null) {
                     Logger.REFLECTION("Got Valid Textures.");
                     if (this.getBaseMetaTileEntity().isClientSide()) {
                         Logger.REFLECTION("Clientside Call.");
                         Logger.REFLECTION("Refreshing Textures on buffer.");
-                        field.set(this, V);
+                        mTexturesAccessor.setValue(this, V);
                         Logger.REFLECTION("Refreshed Textures on buffer.");
                     } else {
                         Logger.REFLECTION("Serverside Call.");
