@@ -150,8 +150,8 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
                     aUMVTierLens,
-                    getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36),
-                    getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105),
+                    GT_OreDictUnificator.get("lensMagnetoResonatic", 0),
+                    getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105), //Quantum Anomaly, couldn't find any better naming
                     Materials.WhiteDwarfMatter.getBlocks(8),
                     getModItem("dreamcraft", "item.PicoWafer", 32),
                     getModItem("GoodGenerator", "huiCircuit", 1, 4)
@@ -172,8 +172,8 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
                     aUMVTierLens,
-                    getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36),
-                    getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105),
+                    GT_OreDictUnificator.get("lensMagnetoResonatic", 0),
+                    getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105), //Quantum Anomaly, couldn't find any better naming
                     Materials.BlackDwarfMatter.getBlocks(8),
                     getModItem("dreamcraft", "item.PicoWafer", 32),
                     getModItem("GoodGenerator", "huiCircuit", 1, 4)
