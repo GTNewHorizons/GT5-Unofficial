@@ -697,7 +697,7 @@ public class GT_ModHandler {
             boolean aExcludeGTIC2Items) {
         Map<ItemStack, ItemStack> aRecipesToRemove = new HashMap<>();
         for (Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : aIC2RecipeList.entrySet()) {
-            if ((iRecipeInputRecipeOutputEntry.getValue()).items.size() > 0) {
+            if (!iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()) {
                 for (ItemStack tStack : (iRecipeInputRecipeOutputEntry.getKey()).getInputs()) {
                     if (GT_Utility.isStackValid(tStack)) {
                         if (aAddGTRecipe
@@ -717,11 +717,15 @@ public class GT_ModHandler {
                                                 true,
                                                 new ItemStack[] {
                                                     GT_Utility.copyAmount(
-                                                            (iRecipeInputRecipeOutputEntry.getKey()).getAmount(),
+                                                            iRecipeInputRecipeOutputEntry
+                                                                    .getKey()
+                                                                    .getAmount(),
                                                             tStack)
                                                 },
-                                                (ItemStack[])
-                                                        (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(),
+                                                iRecipeInputRecipeOutputEntry
+                                                        .getValue()
+                                                        .items
+                                                        .toArray(new ItemStack[0]),
                                                 null,
                                                 null,
                                                 null,
@@ -735,11 +739,15 @@ public class GT_ModHandler {
                                                 true,
                                                 new ItemStack[] {
                                                     GT_Utility.copyAmount(
-                                                            (iRecipeInputRecipeOutputEntry.getKey()).getAmount(),
+                                                            iRecipeInputRecipeOutputEntry
+                                                                    .getKey()
+                                                                    .getAmount(),
                                                             tStack)
                                                 },
-                                                (ItemStack[])
-                                                        (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(),
+                                                iRecipeInputRecipeOutputEntry
+                                                        .getValue()
+                                                        .items
+                                                        .toArray(new ItemStack[0]),
                                                 null,
                                                 null,
                                                 null,
@@ -755,7 +763,11 @@ public class GT_ModHandler {
                         }
                         if (aRemoveIC2Recipe)
                             aRecipesToRemove.put(
-                                    tStack, ((RecipeOutput) iRecipeInputRecipeOutputEntry.getValue()).items.get(0));
+                                    tStack,
+                                    iRecipeInputRecipeOutputEntry
+                                            .getValue()
+                                            .items
+                                            .get(0));
                     }
                 }
             }
