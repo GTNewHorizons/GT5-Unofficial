@@ -73,7 +73,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
                     return 0;
                 }
 
-                return (Byte) signals.values().toArray()[0];
+                return signals.values().iterator().next();
             default:
                 return 0;
         }
