@@ -2476,7 +2476,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         false,
                         true)
                 .useModularUI(true)
-                .setUsualFluidInputCount(1)
+                .setUsualFluidInputCount(3)
                 .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_LENS)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 

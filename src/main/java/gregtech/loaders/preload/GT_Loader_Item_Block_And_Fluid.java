@@ -724,7 +724,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     MaterialsKevlar.NickelAluminide,
                     Materials.SpaceTime,
                     Materials.TranscendentMetal,
-                    Materials.Oriharukon
+                    Materials.Oriharukon,
+                    Materials.WhiteDwarfMatter,
+                    Materials.BlackDwarfMatter
                 },
                 OrePrefixes.block,
                 gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
