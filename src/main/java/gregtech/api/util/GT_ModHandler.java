@@ -717,11 +717,15 @@ public class GT_ModHandler {
                                                 true,
                                                 new ItemStack[] {
                                                     GT_Utility.copyAmount(
-                                                            (iRecipeInputRecipeOutputEntry.getKey()).getAmount(),
+                                                            iRecipeInputRecipeOutputEntry
+                                                                    .getKey()
+                                                                    .getAmount(),
                                                             tStack)
                                                 },
-                                                (iRecipeInputRecipeOutputEntry.getValue())
-                                                        .items.toArray(new ItemStack[0]),
+                                                iRecipeInputRecipeOutputEntry
+                                                        .getValue()
+                                                        .items
+                                                        .toArray(new ItemStack[0]),
                                                 null,
                                                 null,
                                                 null,
@@ -735,11 +739,15 @@ public class GT_ModHandler {
                                                 true,
                                                 new ItemStack[] {
                                                     GT_Utility.copyAmount(
-                                                            (iRecipeInputRecipeOutputEntry.getKey()).getAmount(),
+                                                            iRecipeInputRecipeOutputEntry
+                                                                    .getKey()
+                                                                    .getAmount(),
                                                             tStack)
                                                 },
-                                                (iRecipeInputRecipeOutputEntry.getValue())
-                                                        .items.toArray(new ItemStack[0]),
+                                                iRecipeInputRecipeOutputEntry
+                                                        .getValue()
+                                                        .items
+                                                        .toArray(new ItemStack[0]),
                                                 null,
                                                 null,
                                                 null,
@@ -754,7 +762,12 @@ public class GT_ModHandler {
                             }
                         }
                         if (aRemoveIC2Recipe)
-                            aRecipesToRemove.put(tStack, (iRecipeInputRecipeOutputEntry.getValue()).items.get(0));
+                            aRecipesToRemove.put(
+                                    tStack,
+                                    iRecipeInputRecipeOutputEntry
+                                            .getValue()
+                                            .items
+                                            .get(0));
                     }
                 }
             }
