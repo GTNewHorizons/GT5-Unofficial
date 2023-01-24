@@ -170,7 +170,7 @@ public class GT_NaniteChain {
                 null,
                 750 * 20,
                 2_000_000_000,
-                2);
+                3);
 
         // Black Dwarf Matter Nanites.
         GT_Values.RA.addNanoForgeRecipe(
