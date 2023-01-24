@@ -3,7 +3,6 @@ package net.glease.ggfab;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
 import gregtech.api.GregTech_API;
-import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.glease.ggfab.mte.MTE_AdvAssLine;
 import net.glease.ggfab.mte.MTE_LinkedInputBus;
 import net.glease.ggfab.nei.IMCForNEI;
