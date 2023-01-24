@@ -35,4 +35,10 @@ repositories {
         }
 
     }
+
+    // todo remove
+    maven {
+        url = "https://jitpack.io"
+    }
+
 }

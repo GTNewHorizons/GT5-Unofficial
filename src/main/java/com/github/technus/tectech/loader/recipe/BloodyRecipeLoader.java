@@ -2449,7 +2449,6 @@ public class BloodyRecipeLoader {
                 300,
                 2);
 
-
         register_machine_EM_behaviours();
     }
 

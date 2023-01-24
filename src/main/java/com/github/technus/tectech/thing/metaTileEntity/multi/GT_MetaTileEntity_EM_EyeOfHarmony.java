@@ -56,6 +56,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
     private static final boolean EOH_DEBUG_MODE = false;
+    private boolean disableAnimation = false;
 
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
