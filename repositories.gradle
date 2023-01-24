@@ -33,12 +33,5 @@ repositories {
         content {
             includeGroup 'curse.maven'
         }
-
     }
-
-    // todo remove
-    maven {
-        url = "https://jitpack.io"
-    }
-
 }
