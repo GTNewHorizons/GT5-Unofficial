@@ -9,7 +9,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.List;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
@@ -65,19 +64,18 @@ public class KekzCore {
         List<FMLMissingMappingsEvent.MissingMapping> missingMappings = event.get();
 
         // intentionally not a static final field to save a bit of ram.
-        Set<String> removedBlocks = ImmutableSet.of(
-                "kekztech_tfftcasingblock_block",
-                "kekztech_tfftmultihatch_block",
-                "kekztech_tfftstoragefieldblock1_block",
-                "kekztech_tfftstoragefieldblock2_block",
-                "kekztech_tfftstoragefieldblock3_block",
-                "kekztech_tfftstoragefieldblock4_block",
-                "kekztech_tfftstoragefieldblock5_block");
+        Set<String> removedStuff = ImmutableSet.of(
+                MODID + ":kekztech_tfftcasingblock_block",
+                MODID + ":kekztech_tfftmultihatch_block",
+                MODID + ":kekztech_tfftstoragefieldblock1_block",
+                MODID + ":kekztech_tfftstoragefieldblock2_block",
+                MODID + ":kekztech_tfftstoragefieldblock3_block",
+                MODID + ":kekztech_tfftstoragefieldblock4_block",
+                MODID + ":kekztech_tfftstoragefieldblock5_block");
 
         for (FMLMissingMappingsEvent.MissingMapping mapping : missingMappings) {
-            if (mapping.type == GameRegistry.Type.BLOCK) {
-                if (removedBlocks.contains(mapping.name)) mapping.ignore();
-            }
+            if (removedStuff.contains(mapping.name)) mapping.ignore();
+            else mapping.warn(); // we don't know what happened. probably warn the user.
         }
     }
 }
