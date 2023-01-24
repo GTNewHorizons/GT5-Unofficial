@@ -6,7 +6,7 @@ dependencies {
     compile("com.github.GTNewHorizons:TecTech:5.0.67:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.3.20-GTNH:dev")
     compile("com.github.GTNewHorizons:TinkersConstruct:1.9.11-GTNH:dev")
-    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.6:dev")
+    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.7:dev")
     compile("com.github.GTNewHorizons:CodeChickenCore:1.1.7:dev")
     compile("com.github.GTNewHorizons:Galacticraft:3.0.63-GTNH:dev")
     compile("com.github.GTNewHorizons:ModularUI:1.0.38:dev")
@@ -44,6 +44,6 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.9-GTNH:dev") {
         transitive = false
     }
-    runtime("com.github.GTNewHorizons:Yamcl:0.5.84:dev")
-    runtime("com.github.GTNewHorizons:ironchest:6.0.71:dev") //needed for Galacticraft
+    runtimeOnly("com.github.GTNewHorizons:Yamcl:0.5.84:dev")
+    runtimeOnly("com.github.GTNewHorizons:ironchest:6.0.71:dev") //needed for Galacticraft
 }

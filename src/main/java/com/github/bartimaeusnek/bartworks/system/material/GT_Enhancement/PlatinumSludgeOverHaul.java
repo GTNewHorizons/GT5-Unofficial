@@ -48,7 +48,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -956,32 +955,6 @@ public class PlatinumSludgeOverHaul {
         Field in = CachedReflectionUtils.getDeclaredField(recipe.getClass(), inputItemName);
         if (in == null) in = CachedReflectionUtils.getField(recipe.getClass(), inputItemName);
         if (in == null) return;
-
-        // directly copied from the apache commons collection, cause GTNH had problems with that particular function for
-        // some reason?
-        // this part here is NOT MIT LICENSED BUT LICSENSED UNDER THE Apache License, Version 2.0!
-        try {
-            if (Modifier.isFinal(in.getModifiers())) {
-                // Do all JREs implement Field with a private ivar called "modifiers"?
-                Field modifiersField = Field.class.getDeclaredField("modifiers");
-                boolean doForceAccess = !modifiersField.isAccessible();
-                if (doForceAccess) {
-                    modifiersField.setAccessible(true);
-                }
-                try {
-                    modifiersField.setInt(in, in.getModifiers() & ~Modifier.FINAL);
-                } finally {
-                    if (doForceAccess) {
-                        modifiersField.setAccessible(false);
-                    }
-                }
-            }
-        } catch (NoSuchFieldException ignored) {
-            // The field class contains always a modifiers field
-        } catch (IllegalAccessException ignored) {
-            // The modifiers field is made accessible
-        }
-        // END OF APACHE COMMONS COLLECTION COPY
 
         Object input;
         try {

@@ -49,7 +49,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 import net.minecraft.init.Blocks;
@@ -59,7 +58,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 public class StaticRecipeChangeLoaders {
 
@@ -695,27 +693,6 @@ public class StaticRecipeChangeLoaders {
                 || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L))
                 || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("dynamite", 1L))
                 || GT_Utility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L)));
-    }
-
-    public static void patchEBFMapForCircuitUnification() {
-        Field mUsualInputCount = FieldUtils.getField(GT_Recipe.GT_Recipe_Map.class, "mUsualInputCount", true);
-        mUsualInputCount.setAccessible(true);
-
-        try {
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(mUsualInputCount, mUsualInputCount.getModifiers() & ~Modifier.FINAL);
-            mUsualInputCount.setInt(GT_Recipe.GT_Recipe_Map.sBlastRecipes, 3);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void synchroniseCircuitUseMulti() {
-        GT_Recipe.GT_Recipe_Map[] gt_recipe_maps = {
-            GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes, GT_Recipe.GT_Recipe_Map.sBlastRecipes
-        };
-        getRecipesByCircuitID(gt_recipe_maps).forEach(StaticRecipeChangeLoaders::transformCircuitRecipes);
     }
 
     private static int getBlastLogic(GT_Recipe recipe) {
