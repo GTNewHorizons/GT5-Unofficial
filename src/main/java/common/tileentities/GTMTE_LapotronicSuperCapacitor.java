@@ -114,6 +114,7 @@ public class GTMTE_LapotronicSuperCapacitor
     private static final String STRUCTURE_PIECE_LAYER = "slice";
     private static final String STRUCTURE_PIECE_TOP = "top";
     private static final String STRUCTURE_PIECE_MID = "mid";
+    private static final int GLASS_TIER_UNSET = -2;
 
     private static final Block LSC_PART = Blocks.lscLapotronicEnergyUnit;
     private static final Item LSC_PART_ITEM = Item.getItemFromBlock(LSC_PART);
@@ -169,7 +170,7 @@ public class GTMTE_LapotronicSuperCapacitor
                             withChannel(
                                     "glass",
                                     BorosilicateGlass.ofBoroGlass(
-                                            (byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+                                            (byte) GLASS_TIER_UNSET, (te, t) -> te.glassTier = t, te -> te.glassTier)))
                     .addElement(
                             'c',
                             ofChain(
@@ -180,7 +181,7 @@ public class GTMTE_LapotronicSuperCapacitor
                                                     withChannel(
                                                             "glass",
                                                             BorosilicateGlass.ofBoroGlass(
-                                                                    (byte) -2,
+                                                                    (byte) GLASS_TIER_UNSET,
                                                                     (te, t) -> te.glassTier = t,
                                                                     te -> te.glassTier)))),
                                     onlyIf(
@@ -518,7 +519,7 @@ public class GTMTE_LapotronicSuperCapacitor
         mMaxEUIn = 0;
         mMaxEUOut = 0;
 
-        glassTier = -2;
+        glassTier = GLASS_TIER_UNSET;
         casingAmount = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_BASE, 2, 1, 0)) return false;
