@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.glease.ggfab.GGConstants;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,8 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
     public MTE_LinkedInputBus(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, 1, new String[]{
                 SIZE_INVENTORY + " slot input bus linked together wirelessly",
-                "Link does not cross world boundary"
+                "Link does not cross world boundary",
+                GGConstants.GGMARK_TOOLTIP,
         });
     }
 
