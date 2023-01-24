@@ -271,6 +271,9 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
         if (host == null
                 || host.getBaseMetaTileEntity() == null
                 || !host.getBaseMetaTileEntity().isActive()) return 0;
+        if (host.mLockedFluidName != null
+                && !host.mLockedFluidName.equals("")
+                && !host.mLockedFluidName.equals(resource.getFluid().getName())) return 0;
         if (host.mFluidName == null
                 || host.mFluidName.equals("")
                 || host.mFluidName.equals(resource.getFluid().getName())) {
@@ -291,6 +294,9 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
         if (host == null
                 || host.getBaseMetaTileEntity() == null
                 || !host.getBaseMetaTileEntity().isActive()) return 0;
+        if (host.mLockedFluidName != null
+                && !host.mLockedFluidName.equals("")
+                && !host.mLockedFluidName.equals(resource.getFluid().getName())) return 0;
         if (host.mFluidName == null
                 || host.mFluidName.equals("")
                 || host.mFluidName.equals(resource.getFluid().getName())) {

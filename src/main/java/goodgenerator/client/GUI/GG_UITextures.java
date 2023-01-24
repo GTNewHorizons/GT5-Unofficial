@@ -13,4 +13,6 @@ public class GG_UITextures {
             UITexture.fullImage(MODID, "gui/picture/extreme_heat_exchanger");
     public static final UITexture PICTURE_COMPONENT_ASSLINE =
             UITexture.fullImage(MODID, "gui/picture/component_assline");
+    public static final UITexture OVERLAY_BUTTON_LOCK_OFF = UITexture.fullImage(MODID, "gui/overlay_button/lock_off");
+    public static final UITexture OVERLAY_BUTTON_LOCK_ON = UITexture.fullImage(MODID, "gui/overlay_button/lock_on");
 }
