@@ -6,6 +6,7 @@ import gregtech.api.GregTech_API;
 import net.glease.ggfab.mte.MTE_AdvAssLine;
 import net.glease.ggfab.mte.MTE_LinkedInputBus;
 import net.glease.ggfab.nei.IMCForNEI;
+import net.minecraft.launchwrapper.Launch;
 
 @Mod(modid = GGConstants.MODID, version = GGConstants.VERSION, name = GGConstants.MODNAME, acceptedMinecraftVersions = "[1.7.10]", dependencies = "required-after:IC2;required-before:gregtech")
 public class GigaGramFab {
