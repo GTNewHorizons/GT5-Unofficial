@@ -37,9 +37,6 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         return false;
     }
 
-    private static final ArrayList<Materials> BLACKLISTED_FLUID_RENDERERS =
-            new ArrayList<>(Collections.singleton(Materials.TranscendentMetal));
-
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         if (item == null || item.getItem() == null || !(item.getItem() instanceof GT_FluidDisplayItem)) return;
@@ -48,31 +45,23 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        IIcon icon = item.getItem().getIconFromDamage(item.getItemDamage());
-
-        // Handle special rendering of fluids like infinity or universium.
-        try {
-            Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
-            if ((associatedFluidMaterial.renderer != null)
-                    && (!BLACKLISTED_FLUID_RENDERERS.contains(associatedFluidMaterial))) {
-                associatedFluidMaterial.renderer.renderFluidSpecial(type, item, icon);
-            }
-        } catch (Exception ignored) {
+        Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
+        if (associatedFluidMaterial.renderer == null
+                || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
+            IIcon icon = item.getItem().getIconFromDamage(item.getItemDamage());
+            Tessellator tess = Tessellator.instance;
+            tess.startDrawingQuads();
+            // draw a simple rectangle for the inventory icon
+            final float x_min = icon.getMinU();
+            final float x_max = icon.getMaxU();
+            final float y_min = icon.getMinV();
+            final float y_max = icon.getMaxV();
+            tess.addVertexWithUV(0, 16, 0, x_min, y_max);
+            tess.addVertexWithUV(16, 16, 0, x_max, y_max);
+            tess.addVertexWithUV(16, 0, 0, x_max, y_min);
+            tess.addVertexWithUV(0, 0, 0, x_min, y_min);
+            tess.draw();
         }
-        // End special handling.
-
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        // draw a simple rectangle for the inventory icon
-        final float x_min = icon.getMinU();
-        final float x_max = icon.getMaxU();
-        final float y_min = icon.getMinV();
-        final float y_max = icon.getMaxV();
-        tess.addVertexWithUV(0, 16, 0, x_min, y_max);
-        tess.addVertexWithUV(16, 16, 0, x_max, y_max);
-        tess.addVertexWithUV(16, 0, 0, x_max, y_min);
-        tess.addVertexWithUV(0, 0, 0, x_min, y_min);
-        tess.draw();
 
         if (item.getTagCompound() == null) {
             GL11.glDisable(GL11.GL_BLEND);
@@ -94,11 +83,12 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
             float smallTextScale = fontRender.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
             GL11.glDisable(GL11.GL_BLEND);
+            GL11.glPushMatrix();
             GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
 
             fontRender.drawString(
                     amountString, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
-            GL11.glScalef(1f, 1f, 1f);
+            GL11.glPopMatrix();
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
     }

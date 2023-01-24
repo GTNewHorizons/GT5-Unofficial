@@ -35,8 +35,9 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
-        magicRenderMethod(type, aStack, data);
+    public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
+        magicRenderMethod(type, aStack, aStack.getItem().getIconFromDamage(aStack.getItemDamage()), data);
+        return true;
     }
 
     @Override
@@ -78,32 +79,30 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glDisable(GL11.GL_BLEND);
 
         if (tIcon != null) {
-            magicRenderMethod(type, aStack, data);
+            magicRenderMethod(type, aStack, getTrueIcon(aStack), data);
         }
     }
 
-    private void magicRenderMethod(ItemRenderType type, ItemStack tmpTtem, Object... data) {
-
-        IIcon tIcon = getTrueIcon(tmpTtem);
+    private void magicRenderMethod(ItemRenderType type, ItemStack tmpItem, IIcon tIcon, Object... data) {
 
         RenderItem r = RenderItem.getInstance();
         Minecraft mc = Minecraft.getMinecraft();
         Tessellator t = Tessellator.instance;
 
-        this.processLightLevel(type, tmpTtem, data);
+        this.processLightLevel(type, tmpItem, data);
 
         switch (type) {
             case ENTITY: {
                 GL11.glPushMatrix();
-                if (tmpTtem.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
-                render(tmpTtem, null);
+                if (tmpItem.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
+                render(tmpItem, null);
                 GL11.glPopMatrix();
 
                 break;
             }
             case EQUIPPED:
             case EQUIPPED_FIRST_PERSON: {
-                render(tmpTtem, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
+                render(tmpItem, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
                 break;
             }
             case INVENTORY: {
@@ -115,7 +114,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpTtem, 0, 0, true);
+                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpItem, 0, 0, true);
 
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -134,7 +133,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpTtem, 0, 0, true);
+                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpItem, 0, 0, true);
 
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

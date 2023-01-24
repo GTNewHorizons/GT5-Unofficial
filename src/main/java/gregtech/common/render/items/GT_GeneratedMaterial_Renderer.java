@@ -29,9 +29,18 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         return type == ItemRenderType.ENTITY;
     }
 
-    // Do not use this method. Only for GT_FluidDisplayItem.
-    public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
-        renderRegularItem(type, aStack, icon, false);
+    /**
+     * Handle special fluid display rendering. Return false if does not need such kind of handling.
+     * Note: annotations should not be rendered here. Only render the fluid
+     * texture.
+     * Parameters are values passed from {@link IItemRenderer#renderItem(ItemRenderType, ItemStack, Object...)}
+     * verbatim. Do not modify the argument.
+     *
+     * While this is called, BLEND and ALPHA_TEST is on. It is expected that these remain enabled while exit.
+     * @return true if did special fluid display rendering. false otherwise.
+     */
+    public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
+        return false;
     }
 
     @Override
