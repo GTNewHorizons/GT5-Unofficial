@@ -158,7 +158,7 @@ public class GT_NaniteChain {
                             32105), // Quantum Anomaly, couldn't find any better naming
                     Materials.WhiteDwarfMatter.getBlocks(8),
                     getModItem(MOD_ID_DC, "item.PicoWafer", 32),
-                    getModItem("GoodGenerator", "huiCircuit", 1, 4)
+                    getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] {
                     Materials.UUMatter.getFluid(500_000),
@@ -184,7 +184,7 @@ public class GT_NaniteChain {
                             32105), // Quantum Anomaly, couldn't find any better naming
                     Materials.BlackDwarfMatter.getBlocks(8),
                     getModItem(MOD_ID_DC, "item.PicoWafer", 32),
-                    getModItem("GoodGenerator", "huiCircuit", 1, 4)
+                    getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] {
                     Materials.UUMatter.getFluid(500_000),
