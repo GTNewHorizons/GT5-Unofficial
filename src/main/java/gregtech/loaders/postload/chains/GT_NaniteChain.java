@@ -150,7 +150,7 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
                     aUMVTierLens,
-                    GT_OreDictUnificator.get("lensMagnetoResonatic", 0),
+                    getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
                     getModItem(
                             MOD_ID_GTPP,
                             "MU-metaitem.01",
@@ -176,7 +176,7 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
                     aUMVTierLens,
-                    GT_OreDictUnificator.get("lensMagnetoResonatic", 0),
+                    getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
                     getModItem(
                             MOD_ID_GTPP,
                             "MU-metaitem.01",
