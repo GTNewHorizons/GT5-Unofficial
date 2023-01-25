@@ -79,4 +79,14 @@ public class InventoryUpgrade extends AdvancedCasing {
             aNBT.setTag(invListTag, tList);
         }
     }
+
+    @Override
+    protected void onBaseTEDestroyed() {
+        super.onBaseTEDestroyed();
+        IMultiBlockController controller = getTarget(false);
+        if (controller != null) {
+            controller.unregisterInventory(mInventoryName, mInputInventory, INPUT);
+            controller.unregisterInventory(mInventoryName, mOutputInventory, OUTPUT);
+        }
+    }
 }
