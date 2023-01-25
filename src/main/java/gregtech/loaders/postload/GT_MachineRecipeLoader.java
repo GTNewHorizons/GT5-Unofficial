@@ -105,14 +105,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         }
 
 
-        GT_Values.RA.addExtruderRecipe(
-                ItemList.FR_Wax.get(1L), ItemList.Shape_Extruder_Cell.get(0L), ItemList.FR_WaxCapsule.get(1L), 64, 16);
-        GT_Values.RA.addExtruderRecipe(
-                ItemList.FR_RefractoryWax.get(1L),
-                ItemList.Shape_Extruder_Cell.get(0L),
-                ItemList.FR_RefractoryCapsule.get(1L),
-                128,
-                16);
+
 
         GT_Values.RA.addFluidCannerRecipe(
                 ItemList.Battery_Hull_LV.get(1L),
