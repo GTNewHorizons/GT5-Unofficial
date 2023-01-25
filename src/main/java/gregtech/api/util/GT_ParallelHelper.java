@@ -329,7 +329,8 @@ public class GT_ParallelHelper {
     private int calculateMaxParallelsForHatches() {
         // For now we are gonna ignore MuTEs existence as there are no recipes for them
         if (mMachineMeta != null && mMachineMeta.mOutputHatches.size() >= mRecipe.mFluidOutputs.length) {
-            // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually the
+            // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
+            // the
             // recipe outputs.
             Map<FluidStack, Integer> tFluidOutputMap = new HashMap<>();
 
