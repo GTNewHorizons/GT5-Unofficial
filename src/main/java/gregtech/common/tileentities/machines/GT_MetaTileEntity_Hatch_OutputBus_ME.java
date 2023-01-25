@@ -58,8 +58,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 1,
                 new String[] {
                     "Item Output for Multiblocks", "Stores directly into ME",
-                    "To use in GT++ multiblocks", "  turn off overflow control",
-                    "  with a soldering iron."
                 },
                 0);
     }
