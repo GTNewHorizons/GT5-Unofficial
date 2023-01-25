@@ -2294,11 +2294,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 Sugar,
                 FreshWater);
 
-        //        TranscendentMetal.add(SubTag.NO_SMELTING);
+        BlackDwarfMatter.add(SubTag.NO_SMELTING);
+        WhiteDwarfMatter.add(SubTag.NO_SMELTING);
+        SpaceTime.add(SubTag.NO_SMELTING);
+
         Wood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         WoodSealed.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
         Peanutwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        SpaceTime.add(SubTag.NO_SMELTING);
         LiveRoot.add(
                 SubTag.WOOD,
                 SubTag.FLAMMABLE,
