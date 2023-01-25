@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTI
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
@@ -41,8 +42,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@Optional.Interface(iface = "appeng.api.implementations.IPowerChannelState", modid = "appliedenergistics2")
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
-        implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
+        implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState {
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
@@ -110,6 +112,18 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
