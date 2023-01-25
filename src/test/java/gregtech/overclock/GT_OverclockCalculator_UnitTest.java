@@ -331,4 +331,31 @@ class GT_OverclockCalculator_UnitTest {
         assertEquals(1, calculator.getDuration(), messageDuration);
         assertEquals(480 >> 6, calculator.getConsumption(), messageEUt);
     }
+
+    @Test
+    void ulvRecipeWithDiscount_Test() {
+        long correctConsumption = (long) Math.ceil((VP[0] << 10) * 0.9f);
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[0])
+                .setEUt(V[6])
+                .setEUtDiscount(0.9f)
+                .setDuration(1024)
+                .calculate();
+        assertEquals(1024 >> 5, calculator.getDuration(), messageDuration);
+        assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeWithDiscountWithParallel_Test() {
+        long correctConsumption = (long) Math.ceil((VP[0] << 6) * 14 * 0.9f);
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[0])
+                .setEUt(V[5])
+                .setEUtDiscount(0.9f)
+                .setParallel(14)
+                .setDuration(1024)
+                .calculate();
+        assertEquals(1024 >> 3, calculator.getDuration(), messageDuration);
+        assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
+    }
 }

@@ -23,7 +23,7 @@ public class GT_OverclockCalculator {
      * @mMultiHeat - The heat the multi has when starting the recipe
      * @mHeatPerfectOC - How much the bits should be moved to the right for each 1800 above recipe heat (Used for duration)
      */
-    private int mEUtIncrasePerOC = 2,
+    private int mEUtIncreasePerOC = 2,
             mDurationDecreasePerOC = 1,
             mDuration = 0,
             mParallel = 1,
@@ -170,7 +170,7 @@ public class GT_OverclockCalculator {
      *  Sets the amount that the EUt increases per overclock. This uses BitShifting! Default is 2, which is a 4x increase
      */
     public GT_OverclockCalculator setEUtIncreasePerOC(int aEUtIncreasePerOC) {
-        mEUtIncrasePerOC = aEUtIncreasePerOC;
+        mEUtIncreasePerOC = aEUtIncreasePerOC;
         return this;
     }
 
@@ -206,7 +206,6 @@ public class GT_OverclockCalculator {
             return;
         }
         int heatDiscounts = (mMultiHeat - mRecipeHeat) / HEAT_DISCOUNT_THRESHOLD;
-        mRecipeEUt = (long) Math.ceil(mRecipeEUt * mEUtDiscount);
         mDuration = (int) Math.ceil(mDuration * mSpeedBoost);
         if (mHeatOC) {
             while (mRecipeHeat + HEAT_PERFECT_OVERCLOCK_THRESHOLD <= mMultiHeat
@@ -214,7 +213,7 @@ public class GT_OverclockCalculator {
                 if (mDuration < 1) {
                     break;
                 }
-                mRecipeEUt <<= mEUtIncrasePerOC;
+                mRecipeEUt <<= mEUtIncreasePerOC;
                 mDuration >>= mHeatPerfectOC;
                 mRecipeHeat += HEAT_PERFECT_OVERCLOCK_THRESHOLD;
             }
@@ -223,15 +222,25 @@ public class GT_OverclockCalculator {
         int tRecipeTier = GT_Utility.getTier(mRecipeEUt);
         if (tRecipeTier == 0) {
             int tTier = GT_Utility.getTier(mEUt);
-            mRecipeEUt = (mRecipeEUt * (1L << tTier - 1) * (1L << tTier - 1));
-            mDuration = (mDuration / (1 << tTier - 1));
+            int tTierDifference = tTier - 1;
+            long tNextConsumption =
+                    ((long) Math.ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount)) << mEUtIncreasePerOC;
+            while (tTierDifference > 0 && tNextConsumption < mEUt * mAmps) {
+                mRecipeEUt <<= mEUtIncreasePerOC;
+                mDuration >>= mDurationDecreasePerOC;
+                tNextConsumption <<= mEUtIncreasePerOC;
+                tTierDifference--;
+            }
         } else {
-            while ((mRecipeEUt * mParallel * mRecipeAmps) << mEUtIncrasePerOC < mEUt * mAmps) {
+            long tNextConsumption =
+                    ((long) Math.ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount)) << mEUtIncreasePerOC;
+            while (tNextConsumption < mEUt * mAmps) {
                 if (mDuration <= 1) {
                     break;
                 }
-                mRecipeEUt <<= mEUtIncrasePerOC;
+                mRecipeEUt <<= mEUtIncreasePerOC;
                 mDuration >>= mDurationDecreasePerOC;
+                tNextConsumption <<= mEUtIncreasePerOC;
             }
         }
 
@@ -251,7 +260,7 @@ public class GT_OverclockCalculator {
             }
         }
 
-        mRecipeEUt *= mParallel * mRecipeAmps;
+        mRecipeEUt = (long) Math.ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount);
     }
 
     /**
