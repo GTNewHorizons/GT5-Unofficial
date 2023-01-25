@@ -38,7 +38,7 @@ public class GregtechMetaTileEntity_IndustrialWireMill
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
-    private boolean isBussesSeparate;
+    private boolean isBussesSeparate = true;
 
     public GregtechMetaTileEntity_IndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
