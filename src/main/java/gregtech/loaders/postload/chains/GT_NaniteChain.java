@@ -146,7 +146,7 @@ public class GT_NaniteChain {
                 1_000_000_000,
                 2);
 
-        // White Dwarf Matter Nanites.
+        // White Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
                     aUMVTierLens,
@@ -157,7 +157,7 @@ public class GT_NaniteChain {
                             0,
                             32105), // Quantum Anomaly, couldn't find any better naming
                     Materials.WhiteDwarfMatter.getBlocks(8),
-                    getModItem("dreamcraft", "item.PicoWafer", 32),
+                    getModItem(MOD_ID_DC, "item.PicoWafer", 32),
                     getModItem("GoodGenerator", "huiCircuit", 1, 4)
                 },
                 new FluidStack[] {
@@ -172,7 +172,7 @@ public class GT_NaniteChain {
                 2_000_000_000,
                 3);
 
-        // Black Dwarf Matter Nanites.
+        // Black Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
                     aUMVTierLens,
@@ -183,7 +183,7 @@ public class GT_NaniteChain {
                             0,
                             32105), // Quantum Anomaly, couldn't find any better naming
                     Materials.BlackDwarfMatter.getBlocks(8),
-                    getModItem("dreamcraft", "item.PicoWafer", 32),
+                    getModItem(MOD_ID_DC, "item.PicoWafer", 32),
                     getModItem("GoodGenerator", "huiCircuit", 1, 4)
                 },
                 new FluidStack[] {
@@ -196,6 +196,6 @@ public class GT_NaniteChain {
                 null,
                 750 * 20,
                 2_000_000_000,
-                2);
+                3);
     }
 }
