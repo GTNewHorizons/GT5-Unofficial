@@ -87,6 +87,11 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     }
 
     public String getLockedInventory() {
+        issueClientUpdate();
+        IMultiBlockController controller = getTarget(false);
+        if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
+            mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
+        }
         return mLockedInventory.equals("") ? null : mLockedInventory;
     }
 
@@ -206,6 +211,16 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (mLockedInventoryIndex != 0) {
             aNBT.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
         }
+    }
+
+    @Override
+    public void setLockedInventoryIndex(int aIndex) {
+        mLockedInventoryIndex = aIndex;
+    }
+
+    @Override
+    public int getLockedInventoryIndex() {
+        return mLockedInventoryIndex;
     }
 
     @Override
