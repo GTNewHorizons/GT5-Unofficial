@@ -45,6 +45,7 @@ import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileE
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserHatch;
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_Pipe_Energy_LowPower;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -274,6 +275,9 @@ public class ItemRegistry {
                             "ElectricImplosionCompressor",
                             "Electric Implosion Compressor")
                     .getStackForm(1L);
+            // EIC depend on neutronium block to pass on structure updates
+            int bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal5, 0) | (1 << 2);
+            GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
             ItemRegistry.THTR = new GT_TileEntity_THTR(
                             ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5,
                             "THTR",
