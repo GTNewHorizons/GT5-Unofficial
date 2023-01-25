@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTI
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.security.BaseActionSource;
@@ -45,7 +46,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output {
+@Optional.Interface(iface = "appeng.api.implementations.IPowerChannelState", modid = "appliedenergistics2")
+public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
     IItemList<IAEFluidStack> fluidCache =
@@ -200,6 +202,18 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             lastOutputFailed = true;
         }
         lastOutputTick = tickCounter;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
     }
 
     @Override
