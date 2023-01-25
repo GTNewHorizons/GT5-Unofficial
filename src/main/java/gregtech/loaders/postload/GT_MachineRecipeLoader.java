@@ -105,194 +105,6 @@ public class GT_MachineRecipeLoader implements Runnable {
         }
 
 
-
-
-
-
-        Materials tMaterial = Materials.Iron;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Iron.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.WroughtIron;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Iron.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.Gold;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Gold.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.Bronze;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Bronze.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.Copper;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Copper.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.AnnealedCopper;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Copper.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.Tin;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Tin.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.Lead;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Lead.get(1L),
-                    16,
-                    8);
-        }
-        tMaterial = Materials.Steel;
-        if (tMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    tMaterial.getMolten(72L),
-                    ItemList.IC2_Item_Casing_Steel.get(1L),
-                    16,
-                    8);
-        }
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                Materials.Mercury.getFluid(1000L),
-                getModItem("Thaumcraft", "ItemResource", 1, 3),
-                128,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                Materials.Mercury.getFluid(1000L),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L),
-                128,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                Materials.Water.getFluid(250L),
-                new ItemStack(Items.snowball, 1, 0),
-                128,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                GT_ModHandler.getDistilledWater(250L),
-                new ItemStack(Items.snowball, 1, 0),
-                128,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.Water.getFluid(1000L),
-                new ItemStack(Blocks.snow, 1, 0),
-                512,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                GT_ModHandler.getDistilledWater(1000L),
-                new ItemStack(Blocks.snow, 1, 0),
-                512,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.Lava.getFluid(1000L),
-                new ItemStack(Blocks.obsidian, 1, 0),
-                1024,
-                16);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.Concrete.getMolten(144L),
-                new ItemStack(GregTech_API.sBlockConcretes, 1, 8),
-                12,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.Glowstone.getMolten(576L),
-                new ItemStack(Blocks.glowstone, 1, 0),
-                12,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.Glass.getMolten(144L),
-                new ItemStack(Blocks.glass, 1, 0),
-                12,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Plate.get(0L),
-                Materials.Glass.getMolten(144L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Glass, 1L),
-                12,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Bottle.get(0L),
-                Materials.Glass.getMolten(144L),
-                ItemList.Bottle_Empty.get(1L),
-                12,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Cylinder.get(0L),
-                Materials.Milk.getFluid(250L),
-                ItemList.Food_Cheese.get(1L),
-                1024,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Cylinder.get(0L),
-                Materials.Cheese.getMolten(144L),
-                ItemList.Food_Cheese.get(1L),
-                64,
-                8);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Anvil.get(0L),
-                Materials.Iron.getMolten(4464L),
-                new ItemStack(Blocks.anvil, 1, 0),
-                128,
-                16);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Anvil.get(0L),
-                Materials.WroughtIron.getMolten(4464L),
-                new ItemStack(Blocks.anvil, 1, 0),
-                128,
-                16);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Boron.getMolten(144L),
-                Materials.Boron.getDust(1),
-                30,
-                30);
-
         GT_Values.RA.addChemicalBathRecipe(
                 ItemList.Food_Raw_Fries.get(1L),
                 Materials.FryingOilHot.getFluid(10L),
@@ -2229,37 +2041,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 128,
                 4);
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Cylinder.get(0),
-                Materials.Polytetrafluoroethylene.getMolten(36),
-                ItemList.Circuit_Parts_PetriDish.get(1),
-                160,
-                16);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Cylinder.get(0),
-                Materials.Polystyrene.getMolten(36),
-                ItemList.Circuit_Parts_PetriDish.get(1),
-                160,
-                16);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Cylinder.get(0),
-                Materials.BorosilicateGlass.getMolten(72),
-                ItemList.Circuit_Parts_PetriDish.get(1),
-                160,
-                16);
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Plate.get(0L),
-                Materials.ReinforceGlass.getMolten(72),
-                getModItem(MOD_ID_DC, "item.ReinforcedGlassPlate", 1L, 0),
-                160,
-                1920);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.ReinforceGlass.getMolten(144),
-                getModItem("IC2", "blockAlloyGlass", 1L),
-                160,
-                1920);
 
         GT_Values.RA.addChemicalRecipe(
                 getModItem("GalaxySpace", "item.UnknowCrystal", 4L),
@@ -3632,68 +3414,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 24,
                 false);
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                Materials.Glass.getMolten(144),
-                ItemList.Circuit_Parts_Glass_Tube.get(1),
-                200,
-                24);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                Materials.ReinforceGlass.getMolten(288),
-                ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(1),
-                200,
-                240);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                getFluidStack("glass.molten", 1000),
-                ItemList.Circuit_Parts_Glass_Tube.get(1),
-                200,
-                24);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ball.get(0L),
-                new FluidStack(ItemList.sToluene, 100),
-                ItemList.GelledToluene.get(1),
-                100,
-                16);
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Nugget.get(0L),
-                Materials.AnnealedCopper.getMolten(16),
-                GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 1L),
-                16,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ingot.get(0L),
-                Materials.AnnealedCopper.getMolten(144),
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L),
-                32,
-                8);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.AnnealedCopper.getMolten(1296),
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Copper, 1L),
-                288,
-                8);
-
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Nugget.get(0L),
-                Materials.WroughtIron.getMolten(16),
-                GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 1L),
-                16,
-                4);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Ingot.get(0L),
-                Materials.WroughtIron.getMolten(144),
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
-                32,
-                8);
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Block.get(0L),
-                Materials.WroughtIron.getMolten(1296),
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
-                288,
-                8);
 
 
         GT_Values.RA.addChemicalRecipe(
@@ -10193,12 +9914,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 400,
                 1920);
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Spinneret.get(0L),
-                MaterialsKevlar.LiquidCrystalKevlar.getFluid(144L),
-                ItemList.KevlarFiber.get(8L),
-                800,
-                1920);
+
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {ItemList.KevlarFiber.get(8L), GT_Utility.getIntegratedCircuit(8)},
                 GT_Values.NF,
@@ -20186,12 +19902,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 100,
                 4);
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-                ItemList.Shape_Mold_Anvil.get(0L),
-                Materials.Steel.getMolten(4464L),
-                getModItem(MOD_ID_RC, "tile.railcraft.anvil", 1L, 0),
-                128,
-                16);
+
 
         GT_ModHandler.addPulverisationRecipe(
                 getModItem(MOD_ID_RC, "cube.crushed.obsidian", 1L),
