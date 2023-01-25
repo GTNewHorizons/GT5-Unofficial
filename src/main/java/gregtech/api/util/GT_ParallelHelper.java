@@ -33,7 +33,7 @@ public class GT_ParallelHelper {
      */
     private GT_Recipe mRecipe;
     /**
-     * @mAvailtableEUt EUt available to the multiblock (This should be the total eut available)
+     * @mAvailableEUt EUt available to the multiblock (This should be the total eut available)
      */
     private long mAvailableEUt;
     /**
@@ -53,7 +53,7 @@ public class GT_ParallelHelper {
      */
     private FluidStack[] mFluidInputs, mFluidOutputs;
     /**
-     * @mVoidProtection Does the multi have void protectio enabled
+     * @mVoidProtection Does the multi have void protection enabled
      * @mConsume Should the Parallel Helper automatically consume for the multi
      * @mBatchMode Is batch mode turned on?
      * @mCalculateOutputs Should the Parallel Helper automatically calculate the outputs of the recipe with current parallel
@@ -62,9 +62,9 @@ public class GT_ParallelHelper {
     private boolean mVoidProtection, mConsume, mBatchMode, mCalculateOutputs, mBuilt;
     /**
      * @mDurationMultiplier What is the duration multiplier with batch mode enabled
-     * @mEUtModifer Modifier which is applied on the recipe eut. Usefull for GT++ machines
+     * @mEUtModifier Modifier which is applied on the recipe eut. Useful for GT++ machines
      */
-    private float mDurationMultiplier, mEUtModifer = 1;
+    private float mDurationMultiplier, mEUtModifier = 1;
 
     public GT_ParallelHelper() {}
 
@@ -122,7 +122,7 @@ public class GT_ParallelHelper {
      * Sets the modifier for recipe eut. 1 does nothing 0.9 is 10% less. 1.1 is 10% more
      */
     public GT_ParallelHelper setEUtModifier(float aEUtModifier) {
-        mEUtModifer = aEUtModifier;
+        mEUtModifier = aEUtModifier;
         return this;
     }
 
@@ -276,7 +276,7 @@ public class GT_ParallelHelper {
             }
         }
 
-        float tRecipeEUt = mRecipe.mEUt * mEUtModifer;
+        float tRecipeEUt = mRecipe.mEUt * mEUtModifier;
         // Consume inputs to determine normal parallel
         for (;
                 mCurrentParallel < mMaxParallel / mBatchModifier && tCurrentUsage < (mAvailableEUt - tRecipeEUt);
@@ -329,7 +329,7 @@ public class GT_ParallelHelper {
     private int calculateMaxParallelsForHatches() {
         // For now we are gonna ignore MuTEs existence as there are no recipes for them
         if (mMachineMeta != null && mMachineMeta.mOutputHatches.size() >= mRecipe.mFluidOutputs.length) {
-            // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
+            // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually the
             // recipe outputs.
             Map<FluidStack, Integer> tFluidOutputMap = new HashMap<>();
 
