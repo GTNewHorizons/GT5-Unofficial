@@ -14,7 +14,6 @@ public class InventoryUpgrade extends AdvancedCasing {
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
     private String mInventoryName = "inventory";
-    private int mTier = 0;
     private int mInventorySize = 16;
     private IItemHandlerModifiable mInputInventory;
     private IItemHandlerModifiable mOutputInventory;
@@ -34,7 +33,6 @@ public class InventoryUpgrade extends AdvancedCasing {
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
         mInventorySize = aNBT.getInteger("mInventorySize");
-        mTier = aNBT.getInteger("mTier");
         mInventoryName = "inventory" + GT_Values.VN[mTier];
         mInputInventory = new ItemStackHandler(mInventorySize);
         mOutputInventory = new ItemStackHandler(mInventorySize);
@@ -47,7 +45,6 @@ public class InventoryUpgrade extends AdvancedCasing {
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
         aNBT.setInteger("mInventorySize", mInventorySize);
-        aNBT.setInteger("mTier", mTier);
 
         writeInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
         writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
