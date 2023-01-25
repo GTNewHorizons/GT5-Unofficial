@@ -91,6 +91,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         IMultiBlockController controller = getTarget(false);
         if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
             mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
+            if (mLockedInventory.equals("all")) {
+                mLockedInventory = "";
+            }
         }
         return mLockedInventory.equals("") ? null : mLockedInventory;
     }

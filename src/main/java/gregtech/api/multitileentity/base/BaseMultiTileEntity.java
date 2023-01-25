@@ -1010,9 +1010,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 final ChunkCoordinates aTarget = mtePart.getTargetPos();
                 packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
             }
-            if (mtePart.getLockedInventoryIndex() != 0) {
-                packet.setInventoryIndex(mtePart.getLockedInventoryIndex());
-            }
+            packet.setInventoryIndex(mtePart.getLockedInventoryIndex());
         }
 
         return packet;
