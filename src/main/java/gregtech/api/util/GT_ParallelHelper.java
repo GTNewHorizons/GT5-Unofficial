@@ -5,6 +5,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
+import gregtech.api.objects.XSTR;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import java.util.Comparator;
@@ -167,7 +168,7 @@ public class GT_ParallelHelper {
             throw new IllegalStateException("Tried to build twice");
         }
         mBuilt = true;
-        determnieParallel();
+        determineParallel();
         return this;
     }
 
@@ -219,7 +220,7 @@ public class GT_ParallelHelper {
     /**
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
-    private void determnieParallel() {
+    private void determineParallel() {
         ItemStack[] tItemInputs = null;
         FluidStack[] tFluidInputs = null;
         boolean tMEOutputBus = false;
@@ -230,14 +231,22 @@ public class GT_ParallelHelper {
             tItemInputs = mItemInputs;
             tFluidInputs = mFluidInputs;
         } else {
-            tItemInputs = new ItemStack[mItemInputs.length];
-            for (int i = 0; i < mItemInputs.length; i++) {
-                tItemInputs[i] = mItemInputs[i].copy();
+            if (mItemInputs == null) {
+                tItemInputs = new ItemStack[] {};
+            } else {
+                tItemInputs = new ItemStack[mItemInputs.length];
+                for (int i = 0; i < mItemInputs.length; i++) {
+                    tItemInputs[i] = mItemInputs[i].copy();
+                }
             }
 
-            tFluidInputs = new FluidStack[mFluidInputs.length];
-            for (int i = 0; i < mFluidInputs.length; i++) {
-                tFluidInputs[i] = mFluidInputs[i].copy();
+            if (mFluidInputs == null) {
+                mFluidInputs = new FluidStack[] {};
+            } else {
+                tFluidInputs = new FluidStack[mFluidInputs.length];
+                for (int i = 0; i < mFluidInputs.length; i++) {
+                    tFluidInputs[i] = mFluidInputs[i].copy();
+                }
             }
         }
         if (mBatchMode) {
@@ -282,29 +291,34 @@ public class GT_ParallelHelper {
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (mBatchMode) {
             int tExtraParallels = 0;
-            while (mRecipe.isRecipeInputEqual(true, true, tFluidInputs, tItemInputs)
-                    && tExtraParallels < mCurrentParallel * mBatchModifier) {
+            while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
+                    && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
+                mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs);
                 tExtraParallels++;
             }
+            mDurationMultiplier = 1.0f + (float) tExtraParallels / mCurrentParallel;
             mCurrentParallel += tExtraParallels;
-            mDurationMultiplier = 1.0f + (float) mBatchModifier / tExtraParallels;
         }
 
         // If we want to calculate outputs we do it here
         if (mCalculateOutputs) {
-            mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
-            for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                if (mRecipe.mChances[i] <= mMachineMulti.getRandomNumber(10000)) {
-                    ItemStack tItem = mRecipe.getOutput(i).copy();
-                    tItem.stackSize *= mCurrentParallel;
-                    mItemOutputs[i] = tItem;
+            if (mRecipe.mOutputs != null) {
+                mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
+                for (int i = 0; i < mRecipe.mOutputs.length; i++) {
+                    if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                        ItemStack tItem = mRecipe.getOutput(i).copy();
+                        tItem.stackSize *= mCurrentParallel;
+                        mItemOutputs[i] = tItem;
+                    }
                 }
             }
-            mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
-            for (int i = 0; i < mRecipe.mFluidOutputs.length; i++) {
-                FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
-                tFluid.amount *= mCurrentParallel;
-                mFluidOutputs[i] = tFluid;
+            if (mRecipe.mFluidOutputs != null) {
+                mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
+                for (int i = 0; i < mRecipe.mFluidOutputs.length; i++) {
+                    FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
+                    tFluid.amount *= mCurrentParallel;
+                    mFluidOutputs[i] = tFluid;
+                }
             }
         }
     }

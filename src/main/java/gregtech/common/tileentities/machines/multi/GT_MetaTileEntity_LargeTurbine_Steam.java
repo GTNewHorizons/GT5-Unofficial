@@ -133,8 +133,8 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         // - 200% if it is 2
         // - 250% if it is 3
         // Variable required outside of loop for multi-hatch scenarios.
-        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * (0.5f * overflowMultiplier + 1)));
         this.realOptFlow = aOptFlow * flowMultipliers[0];
+        int remainingFlow = GT_Utility.safeInt((long) (realOptFlow * (0.5f * overflowMultiplier + 1)));
 
         storedFluid = 0;
         for (int i = 0;
@@ -164,10 +164,11 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         tEU = totalFlow;
         int waterToOutput = condenseSteam(totalFlow);
         addOutput(GT_ModHandler.getDistilledWater(waterToOutput));
-        if (totalFlow == aOptFlow) {
+        if (totalFlow == (GT_Utility.safeInt((long) realOptFlow))) {
             tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 20000L);
         } else {
-            float efficiency = getOverflowEfficiency(totalFlow, aOptFlow, overflowMultiplier);
+            float efficiency =
+                    getOverflowEfficiency(totalFlow, (GT_Utility.safeInt((long) realOptFlow)), overflowMultiplier);
             tEU *= efficiency;
             tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 20000L));
         }

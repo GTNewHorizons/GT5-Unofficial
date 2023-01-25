@@ -47,6 +47,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -444,13 +445,15 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public String[] getDescription() {
         return new String[] {
-            "Max Voltage: %%%" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mVoltage) + " ("
+            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": %%%" + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(mVoltage) + " ("
                     + GT_Utility.getColoredTierNameFromVoltage(mVoltage)
                     + EnumChatFormatting.GREEN + ")" + EnumChatFormatting.GRAY,
-            "Max Amperage: %%%" + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mAmperage)
-                    + EnumChatFormatting.GRAY,
-            "Loss/Meter/Ampere: %%%" + EnumChatFormatting.RED + GT_Utility.formatNumbers(mCableLossPerMeter)
-                    + EnumChatFormatting.GRAY + "%%% EU-Volt"
+            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%" + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(mAmperage) + EnumChatFormatting.GRAY,
+            StatCollector.translateToLocal("GT5U.item.cable.loss") + ": %%%" + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(mCableLossPerMeter) + EnumChatFormatting.GRAY + "%%% "
+                    + StatCollector.translateToLocal("GT5U.item.cable.eu_volt")
         };
     }
 

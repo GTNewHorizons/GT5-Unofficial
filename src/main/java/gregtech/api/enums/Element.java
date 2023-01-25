@@ -141,7 +141,7 @@ public enum Element {
 
     Ma(0, 0, 100, -1, null, "Magic", false),
     Nq(130, 200, 0, -1, null, "Naquadah", false),
-    Nt(0, 1000, 0, -1, null, "Neutronium", false),
+    Nt(0, 100, 0, -1, null, "Neutronium", false),
 
     $H(-1, -0, 0, -1, null, "Anti-Hydrogen", false),
     $D(-1, -1, 0, -1, "H", "Anti-Deuterium", true),

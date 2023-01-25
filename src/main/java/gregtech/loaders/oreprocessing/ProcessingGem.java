@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
@@ -54,46 +56,48 @@ public class ProcessingGem
                             GT_Utility.copyAmount(1L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
                             (int) Math.max(aMaterialMass, 1L),
-                            16);
+                            calculateRecipeEU(aMaterial, 16));
                     GT_Values.RA.addBenderRecipe(
                             GT_Utility.copyAmount(1L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 2L, 1L),
-                            24);
+                            calculateRecipeEU(aMaterial, 24));
                     GT_Values.RA.addBenderRecipe(
                             GT_Utility.copyAmount(2L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 2L, 1L),
-                            96);
+                            calculateRecipeEU(aMaterial, 96));
                     GT_Values.RA.addBenderRecipe(
                             GT_Utility.copyAmount(3L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 3L, 1L),
-                            96);
+                            calculateRecipeEU(aMaterial, 96));
                     GT_Values.RA.addBenderRecipe(
                             GT_Utility.copyAmount(4L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 4L, 1L),
-                            96);
+                            calculateRecipeEU(aMaterial, 96));
                     GT_Values.RA.addBenderRecipe(
                             GT_Utility.copyAmount(5L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 5L, 1L),
-                            96);
+                            calculateRecipeEU(aMaterial, 96));
                     GT_Values.RA.addBenderRecipe(
                             GT_Utility.copyAmount(9L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 9L, 1L),
-                            96);
+                            calculateRecipeEU(aMaterial, 96));
                 }
 
                 if (aNoWorking) {
-                    GT_Values.RA.addLatheRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L),
-                            (int) Math.max(aMaterialMass, 1L),
-                            16);
+                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                        GT_Values.RA.addLatheRecipe(
+                                GT_Utility.copyAmount(1L, aStack),
+                                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L),
+                                (int) Math.max(aMaterialMass, 1L),
+                                calculateRecipeEU(aMaterial, 16));
+                    }
                 } else {
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         GT_ModHandler.addCraftingRecipe(
