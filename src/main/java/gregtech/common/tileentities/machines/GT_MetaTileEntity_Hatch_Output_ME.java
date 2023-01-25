@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTI
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.security.BaseActionSource;
@@ -45,7 +46,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output {
+@Optional.Interface(iface = "appeng.api.implementations.IPowerChannelState", modid = "appliedenergistics2")
+public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
     IItemList<IAEFluidStack> fluidCache =
@@ -63,8 +65,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 1,
                 new String[] {
                     "Fluid Output for Multiblocks", "Stores directly into ME",
-                    "To use in GT++ multiblocks", "  turn off overflow control",
-                    "  with a soldering iron."
                 },
                 0);
     }
@@ -151,13 +151,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         // Don't allow to lock fluid in me fluid hatch
-        if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
-                .isGUIClickable(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                        getBaseMetaTileEntity())) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
         infiniteCache = !infiniteCache;
         GT_Utility.sendChatToPlayer(
                 aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
@@ -208,6 +202,18 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             lastOutputFailed = true;
         }
         lastOutputTick = tickCounter;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
     }
 
     @Override

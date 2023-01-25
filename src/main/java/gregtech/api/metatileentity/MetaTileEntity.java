@@ -2,11 +2,14 @@ package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
+import appeng.core.localization.WailaText;
 import appeng.me.helpers.AENetworkProxy;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,6 +35,7 @@ import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
+import gregtech.common.covers.CoverInfo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -871,43 +875,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        TIntList tList = new TIntArrayList();
-        IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        boolean tSkip = tTileEntity
-                        .getCoverBehaviorAtSideNew((byte) aSide)
-                        .letsItemsIn(
-                                (byte) aSide,
-                                tTileEntity.getCoverIDAtSide((byte) aSide),
-                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                -2,
-                                tTileEntity)
-                || tTileEntity
-                        .getCoverBehaviorAtSideNew((byte) aSide)
-                        .letsItemsOut(
-                                (byte) aSide,
-                                tTileEntity.getCoverIDAtSide((byte) aSide),
-                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                -2,
-                                tTileEntity);
-        for (int i = 0; i < getSizeInventory(); i++)
-            if (isValidSlot(i)
-                    && (tSkip
-                            || tTileEntity
-                                    .getCoverBehaviorAtSideNew((byte) aSide)
-                                    .letsItemsOut(
-                                            (byte) aSide,
-                                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                                            tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                            i,
-                                            tTileEntity)
-                            || tTileEntity
-                                    .getCoverBehaviorAtSideNew((byte) aSide)
-                                    .letsItemsIn(
-                                            (byte) aSide,
-                                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                                            tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                            i,
-                                            tTileEntity))) tList.add(i);
+        final TIntList tList = new TIntArrayList();
+        final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
+        final CoverInfo tileCoverInfo = tTileEntity.getCoverInfoAtSide((byte) aSide);
+        final boolean tSkip = tileCoverInfo.letsItemsIn(-2) || tileCoverInfo.letsItemsOut(-2);
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (isValidSlot(i) && (tSkip || tileCoverInfo.letsItemsOut(i) || tileCoverInfo.letsItemsIn(i))) {
+                tList.add(i);
+            }
+        }
         return tList.toArray();
     }
 
@@ -1216,12 +1192,40 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 "Facing: %s",
                 ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
                         .name()));
+
+        if (Loader.isModLoaded("appliedenergistics2") && this instanceof IPowerChannelState) {
+            // adapted from PowerStateWailaDataProvider
+            final IPowerChannelState state = (IPowerChannelState) this;
+            NBTTagCompound tag = accessor.getNBTData();
+            final boolean isActive = tag.getBoolean("isActive");
+            final boolean isPowered = tag.getBoolean("isPowered");
+            final boolean isBooting = tag.getBoolean("isBooting");
+
+            if (isBooting) {
+                currenttip.add(WailaText.Booting.getLocal());
+            } else if (isActive && isPowered) {
+                currenttip.add(WailaText.DeviceOnline.getLocal());
+            } else if (isPowered) {
+                currenttip.add(WailaText.DeviceMissingChannel.getLocal());
+            } else {
+                currenttip.add(WailaText.DeviceOffline.getLocal());
+            }
+        }
     }
 
     @Override
     public void getWailaNBTData(
             EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
-        /* Empty */
+        if (Loader.isModLoaded("appliedenergistics2") && this instanceof IPowerChannelState) {
+            // adapted from PowerStateWailaDataProvider
+            final IPowerChannelState state = (IPowerChannelState) this;
+            final boolean isActive = state.isActive();
+            final boolean isPowered = state.isPowered();
+            final boolean isBooting = state.isBooting();
+            tag.setBoolean("isActive", isActive);
+            tag.setBoolean("isPowered", isPowered);
+            tag.setBoolean("isBooting", isBooting);
+        }
     }
 
     @Optional.Method(modid = "appliedenergistics2")

@@ -85,6 +85,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag NO_SMASHING = getNewSubTag("NO_SMASHING");
     /**
+     * This Material will have no associated recipes in any format.
+     */
+    public static final SubTag NO_RECIPES = getNewSubTag("NO_RECIPES");
+    /**
      * This Material cannot be unificated
      */
     public static final SubTag NO_UNIFICATION = getNewSubTag("NO_UNIFICATION");

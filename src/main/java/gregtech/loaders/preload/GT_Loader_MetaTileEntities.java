@@ -1267,7 +1267,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'P',
             ItemList.Electric_Pump_MV
         });
-
         // 1234
         ItemList.Hatch_Energy_ULV.set(
                 new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
@@ -1376,6 +1375,15 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UV.set(new GT_MetaTileEntity_Hatch_MultiInput(
                         713, 4, "hatch.multi.input.tier.05", "Quadruple Input Hatch (UV)", 8)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_Multi_2x2_UHV.set(new GT_MetaTileEntity_Hatch_MultiInput(
+                        714, 4, "hatch.multi.input.tier.06", "Quadruple Input Hatch (UHV)", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_Multi_2x2_UEV.set(new GT_MetaTileEntity_Hatch_MultiInput(
+                        715, 4, "hatch.multi.input.tier.07", "Quadruple Input Hatch (UEV)", 10)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_Multi_2x2_UIV.set(new GT_MetaTileEntity_Hatch_MultiInput(
+                        716, 4, "hatch.multi.input.tier.08", "Quadruple Input Hatch (UIV)", 11)
                 .getStackForm(1L));
 
         ItemList.Hatch_Output_ULV.set(
