@@ -330,9 +330,9 @@ public class TextureSet {
         }
     }
 
-    public TextureSet(String aSetName, boolean is_custom) {
+    public TextureSet(String aSetName, boolean isCustom) {
         this("CUSTOM/" + aSetName);
-        this.is_custom = is_custom;
+        this.is_custom = isCustom;
     }
 
     /**

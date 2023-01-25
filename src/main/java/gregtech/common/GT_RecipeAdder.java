@@ -1,6 +1,7 @@
 package gregtech.common;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -772,11 +773,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     0,
                     0);
         }
-        if (Loader.isModLoaded("miscutils")) {
+        if (Loader.isModLoaded(MOD_ID_GTPP)) {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] {
-                        aInput1, aInput2, GT_ModHandler.getModItem("miscutils", "itemCactusCoke", (aCoalAmount * 2L))
+                        aInput1, aInput2, GT_ModHandler.getModItem(MOD_ID_GTPP, "itemCactusCoke", (aCoalAmount * 2L))
                     },
                     new ItemStack[] {aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2)},
                     null,
@@ -789,7 +790,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] {
-                        aInput1, aInput2, GT_ModHandler.getModItem("miscutils", "itemSugarCoke", (aCoalAmount * 2L))
+                        aInput1, aInput2, GT_ModHandler.getModItem(MOD_ID_GTPP, "itemSugarCoke", (aCoalAmount * 2L))
                     },
                     new ItemStack[] {aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2)},
                     null,
@@ -1658,6 +1659,20 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(
                 true, new ItemStack[] {aInput1}, new ItemStack[] {aOutput1}, null, null, null, aDuration, aEUt, 0);
+        return true;
+    }
+
+    @Override
+    public boolean addForgeHammerRecipe(
+            ItemStack[] ItemInputArray,
+            FluidStack[] FluidInputArray,
+            ItemStack[] ItemOutputArray,
+            FluidStack[] FluidOutputArray,
+            int aDuration,
+            int aEUt) {
+
+        GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(
+                true, ItemInputArray, ItemOutputArray, null, FluidInputArray, FluidOutputArray, aDuration, aEUt, 0);
         return true;
     }
 
