@@ -118,6 +118,25 @@ public class GT_NaniteChain {
                 100_000_000,
                 1);
 
+        // Glowstone Nanites - Used in the optical circuit line
+        GT_Values.RA.addNanoForgeRecipe(
+                new ItemStack[] {
+                    aUEVTierLens,
+                    getModItem(
+                            MOD_ID_GTPP,
+                            "blockCompressedObsidian",
+                            8,
+                            7), // Double compressed glowstone blocks (yes, it's not obsidian)
+                    ItemList.Circuit_Chip_SoC2.get(64)
+                },
+                new FluidStack[] {Materials.UUMatter.getFluid(50000)},
+                new ItemStack[] {Materials.Glowstone.getNanite(64)},
+                null,
+                null,
+                200 * 20,
+                50_000_000,
+                2);
+
         // Gold Nanites - Used in Tier 3 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {aUMVTierLens, Materials.Gold.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
