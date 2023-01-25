@@ -1372,7 +1372,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         "Forming Press",
                         null,
                         RES_PATH_GUI + "basicmachines/Press",
-                        2,
+                        6,
                         1,
                         2,
                         0,
