@@ -10,7 +10,7 @@ public class GT_OverclockCalculator {
     private long mAmps = 1, mEUt = 0, mRecipeEUt = 0, mRecipeAmps = 1;
     /**
      * @mEUtDiscount - Discount for EUt at the beginning of calculating overclocks, like GT++ machines
-     * @mSpeedBoost - Speeding/Slowing up/down the duration of a recipe at the beginnign of calculating overclocks, like GT++ machines
+     * @mSpeedBoost - Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like GT++ machines
      * @mHeatDiscountAmont - The value used for discount final eut per 900 heat
      */
     private float mEUtDiscount = 1, mSpeedBoost = 1, mHeatDiscountAmount = 0.95f;
@@ -31,10 +31,10 @@ public class GT_OverclockCalculator {
             mMultiHeat = 0,
             mHeatPerfectOC = 2;
     /**
-     * @mHeatOC - Wheather to enable overlcocking with heat like the EBF every 1800 heat difference
-     * @mOneTickDiscount - Wheather to give EUt Discount when the duration goes below one tick
-     * @calculates - variable to check wheater the overclocks have been calculated
-     * @mHeatDiscount - Wheather to enable heat discounts every 900 heat difference
+     * @mHeatOC - Whether to enable overclocking with heat like the EBF every 1800 heat difference
+     * @mOneTickDiscount - Whether to give EUt Discount when the duration goes below one tick
+     * @calculates - variable to check whether the overclocks have been calculated
+     * @mHeatDiscount - Whether to enable heat discounts every 900 heat difference
      */
     private boolean mHeatOC, mOneTickDiscount, calculated, mHeatDiscount;
 
@@ -134,7 +134,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets a Speed Boost for the multiblock. 0.9 is 10% faser. 1.1 is 10% slower
+     * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
      */
     public GT_OverclockCalculator setSpeedBoost(float aSpeedBoost) {
         mSpeedBoost = aSpeedBoost;
@@ -253,8 +253,8 @@ public class GT_OverclockCalculator {
         }
 
         if (mOneTickDiscount) {
-            int voltageDifferece = GT_Utility.getTier(mEUt) - GT_Utility.getTier(mRecipeEUt);
-            mRecipeEUt >>= voltageDifferece * mDurationDecreasePerOC;
+            int voltageDifference = GT_Utility.getTier(mEUt) - GT_Utility.getTier(mRecipeEUt);
+            mRecipeEUt >>= voltageDifference * mDurationDecreasePerOC;
             if (mRecipeEUt < 1) {
                 mRecipeEUt = 1;
             }
@@ -264,7 +264,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * @return The consumtipn after overclock has been calculated
+     * @return The consumption after overclock has been calculated
      */
     public long getConsumption() {
         if (!calculated) {
