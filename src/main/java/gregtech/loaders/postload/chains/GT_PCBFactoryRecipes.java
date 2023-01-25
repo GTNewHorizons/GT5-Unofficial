@@ -1,7 +1,8 @@
 package gregtech.loaders.postload.chains;
 
-import cpw.mods.fml.common.Loader;
 import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
