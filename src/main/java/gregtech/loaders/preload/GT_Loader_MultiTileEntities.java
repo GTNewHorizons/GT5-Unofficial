@@ -10,7 +10,7 @@ import net.minecraft.block.material.Material;
 public class GT_Loader_MultiTileEntities implements Runnable {
     @Override
     public void run() {
-        GT_FML_LOGGER.info("GT_Mod: Regisering MultiTileEntities");
+        GT_FML_LOGGER.info("GT_Mod: Registering MultiTileEntities");
         final MultiTileEntityRegistry aRegistry = new MultiTileEntityRegistry("gt.multitileentity");
         final MultiTileEntityBlock aMachine = MultiTileEntityBlock.getOrCreate(
                 "GregTech", "machine", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
