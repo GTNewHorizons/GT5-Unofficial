@@ -455,14 +455,6 @@ public class GT_Utility {
         return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
     }
 
-    public static String getColoredTierNameFromVoltage(long voltage) {
-        return getColoredTierNameFromTier(getTier(voltage));
-    }
-
-    public static String getColoredTierNameFromTier(byte tier) {
-        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
-    }
-
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
