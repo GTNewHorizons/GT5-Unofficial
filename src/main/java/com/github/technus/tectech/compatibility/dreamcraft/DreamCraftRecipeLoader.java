@@ -4644,6 +4644,22 @@ public class DreamCraftRecipeLoader {
 
         // region items
 
+        // Optical Processor
+        GT_Values.RA.addCircuitAssemblerRecipe(
+                new ItemStack[] {
+                    ItemList.Optically_Perfected_CPU.get(1L),
+                    ItemList.Optically_Compatible_Memory.get(2L),
+                    ItemList.Circuit_Parts_CapacitorXSMD.get(16L),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(16L),
+                    CustomItemList.DATApipe.get(4L),
+                    GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 16)
+                },
+                new FluidStack(solderUEV, 288),
+                ItemList.Circuit_OpticalProcessor.get(1L),
+                20 * 20,
+                614400,
+                true);
+
         // Parametrizer Memory Card
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
