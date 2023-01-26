@@ -96,31 +96,6 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrapbox.get(1L), 180, 1);
 
-        GT_Values.RA.addBoxingRecipe(
-                ItemList.IC2_Scrap.get(9L), ItemList.Schematic_3by3.get(0L), ItemList.IC2_Scrapbox.get(1L), 16, 1);
-        GT_Values.RA.addBoxingRecipe(
-                ItemList.Food_Fries.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L),
-                ItemList.Food_Packaged_Fries.get(1L),
-                64,
-                16);
-        GT_Values.RA.addBoxingRecipe(
-                ItemList.Food_PotatoChips.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
-                ItemList.Food_Packaged_PotatoChips.get(1L),
-                64,
-                16);
-        GT_Values.RA.addBoxingRecipe(
-                ItemList.Food_ChiliChips.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
-                ItemList.Food_Packaged_ChiliChips.get(1L),
-                64,
-                16);
-
-
-
-
-
         for (int g = 0; g < 16; g++) {
             if (!GT_MachineRecipeLoader.isNEILoaded) {
                 break;
@@ -141,7 +116,6 @@ public class GT_MachineRecipeLoader implements Runnable {
     }
 
     public void run2() {
-
         GT_NaniteChain.run();
         GT_PCBFactoryRecipes.load();
 
