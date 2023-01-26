@@ -1,14 +1,14 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.util.GT_ModHandler.getModItem;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.util.GT_ModHandler.getModItem;
-
-public class FuelRecipes implements Runnable{
+public class FuelRecipes implements Runnable {
     @Override
     public void run() {
         if (!GregTech_API.mIC2Classic) {
@@ -31,6 +31,5 @@ public class FuelRecipes implements Runnable{
         GT_Values.RA.addFuel(getModItem("TaintedMagic", "EldritchShard", 1L), null, 720, 5);
         GT_Values.RA.addFuel(getModItem("ThaumicTinkerer", "kamiResource", 1L, 6), null, 720, 5);
         GT_Values.RA.addFuel(getModItem("ThaumicTinkerer", "kamiResource", 1L, 7), null, 720, 5);
-
     }
 }

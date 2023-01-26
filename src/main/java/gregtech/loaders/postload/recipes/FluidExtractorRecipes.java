@@ -400,38 +400,38 @@ public class FluidExtractorRecipes implements Runnable {
                 ItemList.Crop_Drop_Rape.get(1), null, Materials.SeedOil.getFluid(125), 10000, 32, 2);
 
         GT_Values.RA.addFluidSmelterRecipe(
-            new ItemStack(Items.snowball, 1, 0), GT_Values.NI, Materials.Water.getFluid(250L), 10000, 32, 4);
+                new ItemStack(Items.snowball, 1, 0), GT_Values.NI, Materials.Water.getFluid(250L), 10000, 32, 4);
         GT_Values.RA.addFluidSmelterRecipe(
-            new ItemStack(Blocks.snow, 1, 0), GT_Values.NI, Materials.Water.getFluid(1000L), 10000, 128, 4);
+                new ItemStack(Blocks.snow, 1, 0), GT_Values.NI, Materials.Water.getFluid(1000L), 10000, 128, 4);
         GT_Values.RA.addFluidSmelterRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L),
-            GT_Values.NI,
-            Materials.Ice.getSolid(1000L),
-            10000,
-            128,
-            4);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L),
+                GT_Values.NI,
+                Materials.Ice.getSolid(1000L),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidSmelterRecipe(
-            getModItem(GT_MachineRecipeLoader.aTextForestry, "phosphor", 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
-            Materials.Lava.getFluid(800L),
-            1000,
-            256,
-            128);
+                getModItem(GT_MachineRecipeLoader.aTextForestry, "phosphor", 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
+                Materials.Lava.getFluid(800L),
+                1000,
+                256,
+                128);
 
         try {
             GT_DummyWorld tWorld = (GT_DummyWorld) GT_Values.DW;
             while (tWorld.mRandom.mIterationStep > 0) {
                 GT_Values.RA.addFluidExtractionRecipe(
-                    GT_Utility.copyAmount(1L, ForgeHooks.getGrassSeed(tWorld)),
-                    GT_Values.NI,
-                    Materials.SeedOil.getFluid(5L),
-                    10000,
-                    64,
-                    2);
+                        GT_Utility.copyAmount(1L, ForgeHooks.getGrassSeed(tWorld)),
+                        GT_Values.NI,
+                        Materials.SeedOil.getFluid(5L),
+                        10000,
+                        64,
+                        2);
             }
         } catch (Throwable e) {
             GT_Log.out.println(
-                "GT_Mod: failed to iterate somehow, maybe it's your Forge Version causing it. But it's not that important\n");
+                    "GT_Mod: failed to iterate somehow, maybe it's your Forge Version causing it. But it's not that important\n");
             e.printStackTrace(GT_Log.err);
         }
 

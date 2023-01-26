@@ -1,33 +1,12 @@
 package gregtech.loaders.postload;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.util.GT_ModHandler.getModItem;
 
-import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.util.*;
-import gregtech.common.GT_DummyWorld;
-import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
 import gregtech.loaders.postload.chains.GT_NaniteChain;
 import gregtech.loaders.postload.chains.GT_PCBFactoryRecipes;
 import gregtech.loaders.postload.recipes.*;
-import ic2.api.recipe.ILiquidHeatExchangerManager;
-import ic2.api.recipe.Recipes;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MachineRecipeLoader implements Runnable {
 

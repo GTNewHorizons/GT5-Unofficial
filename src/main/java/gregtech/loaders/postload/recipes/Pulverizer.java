@@ -446,73 +446,73 @@ public class Pulverizer implements Runnable {
                 1200,
                 480);
 
-        if (isRailcraftLoaded){
+        if (isRailcraftLoaded) {
             GT_ModHandler.addPulverisationRecipe(
-                getModItem(MOD_ID_RC, "cube.crushed.obsidian", 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L),
-                GT_Values.NI,
-                0,
-                true);
+                    getModItem(MOD_ID_RC, "cube.crushed.obsidian", 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L),
+                    GT_Values.NI,
+                    0,
+                    true);
         }
 
         GT_ModHandler.addPulverisationRecipe(
-            getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyStone", 1L, 32767),
-            getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 45),
-            GT_Values.NI,
-            0,
-            false);
+                getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyStone", 1L, 32767),
+                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 45),
+                GT_Values.NI,
+                0,
+                false);
         GT_ModHandler.addPulverisationRecipe(
-            getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyChest", 1L, 32767),
-            getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 8L, 45),
-            GT_Values.NI,
-            0,
-            false);
+                getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyChest", 1L, 32767),
+                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 8L, 45),
+                GT_Values.NI,
+                0,
+                false);
         GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Items.blaze_rod, 1),
-            new ItemStack(Items.blaze_powder, 3),
-            new ItemStack(Items.blaze_powder, 1),
-            50,
-            false);
+                new ItemStack(Items.blaze_rod, 1),
+                new ItemStack(Items.blaze_powder, 3),
+                new ItemStack(Items.blaze_powder, 1),
+                50,
+                false);
         GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.web, 1, 0),
-            new ItemStack(Items.string, 1),
-            new ItemStack(Items.string, 1),
-            50,
-            false);
+                new ItemStack(Blocks.web, 1, 0),
+                new ItemStack(Items.string, 1),
+                new ItemStack(Items.string, 1),
+                50,
+                false);
         GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.red_mushroom, 1, 32767), ItemList.IC2_Grin_Powder.get(1L));
+                new ItemStack(Blocks.red_mushroom, 1, 32767), ItemList.IC2_Grin_Powder.get(1L));
         GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Items.item_frame, 1, 32767),
-            new ItemStack(Items.leather, 1),
-            GT_OreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 4L),
-            95,
-            false);
+                new ItemStack(Items.item_frame, 1, 32767),
+                new ItemStack(Items.leather, 1),
+                GT_OreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 4L),
+                95,
+                false);
         GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Items.bow, 1, 0),
-            new ItemStack(Items.string, 3),
-            GT_OreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 3L),
-            95,
-            false);
+                new ItemStack(Items.bow, 1, 0),
+                new ItemStack(Items.string, 3),
+                GT_OreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 3L),
+                95,
+                false);
         GT_ModHandler.addPulverisationRecipe(Materials.Brick.getIngots(1), Materials.Brick.getDustSmall(1));
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.brick_stairs, 1, 0), Materials.Brick.getDustSmall(6));
         GT_ModHandler.addPulverisationRecipe(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDustSmall(1));
         GT_ModHandler.addPulverisationRecipe(ItemList.Firebrick.get(1), Materials.Brick.getDust(1));
         GT_ModHandler.addPulverisationRecipe(ItemList.Casing_Firebricks.get(1), Materials.Brick.getDust(4));
         GT_ModHandler.addPulverisationRecipe(
-            ItemList.Machine_Bricked_BlastFurnace.get(1),
-            Materials.Brick.getDust(8),
-            Materials.Iron.getDust(1),
-            true);
+                ItemList.Machine_Bricked_BlastFurnace.get(1),
+                Materials.Brick.getDust(8),
+                Materials.Iron.getDust(1),
+                true);
 
         if (Loader.isModLoaded("HardcoreEnderExpansion")) {
             GT_ModHandler.addPulverisationRecipe(
-                getModItem("HardcoreEnderExpansion", "endium_ore", 1),
-                GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 2),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1),
-                50,
-                GT_Values.NI,
-                0,
-                true);
+                    getModItem("HardcoreEnderExpansion", "endium_ore", 1),
+                    GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1),
+                    50,
+                    GT_Values.NI,
+                    0,
+                    true);
         }
     }
 }

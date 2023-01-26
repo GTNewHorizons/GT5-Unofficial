@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.util.GT_ModHandler.getModItem;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -10,16 +12,13 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.api.recipe.ILiquidHeatExchangerManager;
 import ic2.api.recipe.Recipes;
+import java.util.Iterator;
+import java.util.Map;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-import java.util.Map;
-
-import static gregtech.api.util.GT_ModHandler.getModItem;
-
-public class RecipeRemover implements Runnable{
+public class RecipeRemover implements Runnable {
     @Override
     public void run() {
         GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L));
@@ -28,80 +27,80 @@ public class RecipeRemover implements Runnable{
         removeIC2Recipes();
     }
 
-    public void removeCrafting(){
+    public void removeCrafting() {
         GT_ModHandler.removeRecipe(new ItemStack(Items.lava_bucket), ItemList.Cell_Empty.get(1L));
         GT_ModHandler.removeRecipe(new ItemStack(Items.water_bucket), ItemList.Cell_Empty.get(1L));
     }
 
-    public void removeIC2Recipes(){
+    public void removeIC2Recipes() {
 
         try {
             GT_Utility.removeSimpleIC2MachineRecipe(
-                GT_Values.NI,
-                ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(),
-                ItemList.Cell_Empty.get(3L));
+                    GT_Values.NI,
+                    ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(),
+                    ItemList.Cell_Empty.get(3L));
             GT_Utility.removeSimpleIC2MachineRecipe(
-                ItemList.IC2_Energium_Dust.get(1L), ic2.api.recipe.Recipes.compressor.getRecipes(), GT_Values.NI);
+                    ItemList.IC2_Energium_Dust.get(1L), ic2.api.recipe.Recipes.compressor.getRecipes(), GT_Values.NI);
             GT_Utility.removeSimpleIC2MachineRecipe(
-                new ItemStack(Items.gunpowder), ic2.api.recipe.Recipes.extractor.getRecipes(), GT_Values.NI);
+                    new ItemStack(Items.gunpowder), ic2.api.recipe.Recipes.extractor.getRecipes(), GT_Values.NI);
             GT_Utility.removeSimpleIC2MachineRecipe(
-                new ItemStack(Blocks.wool, 1, 32767), ic2.api.recipe.Recipes.extractor.getRecipes(), GT_Values.NI);
+                    new ItemStack(Blocks.wool, 1, 32767), ic2.api.recipe.Recipes.extractor.getRecipes(), GT_Values.NI);
             GT_Utility.removeSimpleIC2MachineRecipe(
-                new ItemStack(Blocks.gravel), ic2.api.recipe.Recipes.oreWashing.getRecipes(), GT_Values.NI);
+                    new ItemStack(Blocks.gravel), ic2.api.recipe.Recipes.oreWashing.getRecipes(), GT_Values.NI);
         } catch (Throwable ignored) {
         }
         GT_Utility.removeIC2BottleRecipe(
-            GT_ModHandler.getIC2Item("fuelRod", 1),
-            GT_ModHandler.getIC2Item("UranFuel", 1),
-            ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
-            GT_ModHandler.getIC2Item("reactorUraniumSimple", 1, 1));
+                GT_ModHandler.getIC2Item("fuelRod", 1),
+                GT_ModHandler.getIC2Item("UranFuel", 1),
+                ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
+                GT_ModHandler.getIC2Item("reactorUraniumSimple", 1, 1));
         GT_Utility.removeIC2BottleRecipe(
-            GT_ModHandler.getIC2Item("fuelRod", 1),
-            GT_ModHandler.getIC2Item("MOXFuel", 1),
-            ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
-            GT_ModHandler.getIC2Item("reactorMOXSimple", 1, 1));
+                GT_ModHandler.getIC2Item("fuelRod", 1),
+                GT_ModHandler.getIC2Item("MOXFuel", 1),
+                ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
+                GT_ModHandler.getIC2Item("reactorMOXSimple", 1, 1));
 
         GT_Utility.removeSimpleIC2MachineRecipe(
-            new ItemStack(Blocks.cobblestone),
-            GT_ModHandler.getMaceratorRecipeList(),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
+                new ItemStack(Blocks.cobblestone),
+                GT_ModHandler.getMaceratorRecipeList(),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
-            GT_ModHandler.getMaceratorRecipeList(),
-            ItemList.IC2_Plantball.get(1L));
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
+                GT_ModHandler.getMaceratorRecipeList(),
+                ItemList.IC2_Plantball.get(1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-            GT_ModHandler.getMaceratorRecipeList(),
-            ItemList.IC2_Plantball.get(1L));
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                GT_ModHandler.getMaceratorRecipeList(),
+                ItemList.IC2_Plantball.get(1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
-            GT_ModHandler.getMaceratorRecipeList(),
-            ItemList.IC2_Plantball.get(1L));
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
+                GT_ModHandler.getMaceratorRecipeList(),
+                ItemList.IC2_Plantball.get(1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            GT_Values.NI, GT_ModHandler.getMaceratorRecipeList(), getModItem("IC2", "itemBiochaff", 1L));
+                GT_Values.NI, GT_ModHandler.getMaceratorRecipeList(), getModItem("IC2", "itemBiochaff", 1L));
 
         GT_Utility.removeSimpleIC2MachineRecipe(
-            new ItemStack(Blocks.cactus, 8, 0),
-            GT_ModHandler.getCompressorRecipeList(),
-            getModItem("IC2", "itemFuelPlantBall", 1L));
+                new ItemStack(Blocks.cactus, 8, 0),
+                GT_ModHandler.getCompressorRecipeList(),
+                getModItem("IC2", "itemFuelPlantBall", 1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            getModItem("ExtraTrees", "food", 8L, 24),
-            GT_ModHandler.getCompressorRecipeList(),
-            getModItem("IC2", "itemFuelPlantBall", 1L));
+                getModItem("ExtraTrees", "food", 8L, 24),
+                GT_ModHandler.getCompressorRecipeList(),
+                getModItem("IC2", "itemFuelPlantBall", 1L));
 
         GT_Utility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_BobsYerUncleRanks.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
+                ItemList.Crop_Drop_BobsYerUncleRanks.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
         GT_Utility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_Ferru.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
+                ItemList.Crop_Drop_Ferru.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
         GT_Utility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_Aurelia.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
+                ItemList.Crop_Drop_Aurelia.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
 
         if (!GregTech_API.mIC2Classic) {
             try {
                 Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange =
-                    ic2.api.recipe.Recipes.liquidCooldownManager.getHeatExchangeProperties();
+                        ic2.api.recipe.Recipes.liquidCooldownManager.getHeatExchangeProperties();
                 Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator =
-                    tLiqExchange.entrySet().iterator();
+                        tLiqExchange.entrySet().iterator();
                 while (tIterator.hasNext()) {
                     Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
                     if (tEntry.getKey().equals("ic2hotcoolant")) {
@@ -115,9 +114,9 @@ public class RecipeRemover implements Runnable{
 
             try {
                 Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange =
-                    ic2.api.recipe.Recipes.liquidHeatupManager.getHeatExchangeProperties();
+                        ic2.api.recipe.Recipes.liquidHeatupManager.getHeatExchangeProperties();
                 Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator =
-                    tLiqExchange.entrySet().iterator();
+                        tLiqExchange.entrySet().iterator();
                 while (tIterator.hasNext()) {
                     Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
                     if (tEntry.getKey().equals("ic2coolant")) {
@@ -134,12 +133,12 @@ public class RecipeRemover implements Runnable{
     public void removeSmelting() {
         GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(
-            GT_OreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
+                GT_OreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(
-            GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
+                GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(
-            GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
+                GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(ItemList.IC2_Resin.get(1L));
     }
 }

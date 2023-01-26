@@ -416,11 +416,11 @@ public class ArcFurnaceRecipes implements Runnable {
                 360);
 
         GT_Values.RA.addSimpleArcFurnaceRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
-            Materials.Oxygen.getGas(2000L),
-            new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
-            null,
-            1200,
-            30);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                Materials.Oxygen.getGas(2000L),
+                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
+                null,
+                1200,
+                30);
     }
 }
