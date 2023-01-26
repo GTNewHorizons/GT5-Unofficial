@@ -1,6 +1,7 @@
 package gregtech.common.render.items;
 
 import codechicken.lib.render.TextureUtils;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.common.render.GT_RenderUtil;
@@ -36,7 +37,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     @Override
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        magicRenderMethod(type, aStack, aStack.getItem().getIconFromDamage(aStack.getItemDamage()), data);
+        magicRenderMethod(type, ItemList.Emitter_UEV.get(1), aStack.getItem().getIconFromDamage(aStack.getItemDamage()), data);
         return true;
     }
 
