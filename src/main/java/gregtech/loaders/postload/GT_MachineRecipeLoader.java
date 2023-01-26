@@ -62,15 +62,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 1200,
                 30);
 
-        if (Loader.isModLoaded("HardcoreEnderExpansion")) {
-            GT_OreDictUnificator.set(
-                    OrePrefixes.ingot,
-                    Materials.HeeEndium,
-                    getModItem("HardcoreEnderExpansion", "endium_ingot", 1),
-                    true,
-                    true);
-        }
-
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrapbox.get(1L), 180, 1);
 
