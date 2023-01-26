@@ -135,15 +135,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         this.run2();
 
-
-
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L),
-                new ItemStack(Items.string, 32),
-                80,
-                48);
-        GT_RecipeRegistrator.registerWiremillRecipes(Materials.SpaceTime, 400, 32_000);
-
         GT_Values.RA.addBrewingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
                 FluidRegistry.getFluid("oil"),
@@ -840,8 +831,7 @@ public class GT_MachineRecipeLoader implements Runnable {
     public void run2() {
 
 
-        GT_RecipeRegistrator.registerWiremillRecipes(
-                Materials.Graphene, 400, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
+
 
         GT_ModHandler.removeRecipe(new ItemStack(Items.lava_bucket), ItemList.Cell_Empty.get(1L));
         GT_ModHandler.removeRecipe(new ItemStack(Items.water_bucket), ItemList.Cell_Empty.get(1L));
