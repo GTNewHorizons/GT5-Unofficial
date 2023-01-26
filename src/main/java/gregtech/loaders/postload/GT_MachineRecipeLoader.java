@@ -118,39 +118,5 @@ public class GT_MachineRecipeLoader implements Runnable {
     public void run2() {
         GT_NaniteChain.run();
         GT_PCBFactoryRecipes.load();
-
-        if (!GregTech_API.mIC2Classic) {
-            try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange =
-                    ic2.api.recipe.Recipes.liquidCooldownManager.getHeatExchangeProperties();
-                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator =
-                    tLiqExchange.entrySet().iterator();
-                while (tIterator.hasNext()) {
-                    Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
-                    if (tEntry.getKey().equals("ic2hotcoolant")) {
-                        tIterator.remove();
-                        Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
-                    }
-                }
-            } catch (Throwable e) {
-                /*Do nothing*/
-            }
-
-            try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange =
-                    ic2.api.recipe.Recipes.liquidHeatupManager.getHeatExchangeProperties();
-                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator =
-                    tLiqExchange.entrySet().iterator();
-                while (tIterator.hasNext()) {
-                    Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
-                    if (tEntry.getKey().equals("ic2coolant")) {
-                        tIterator.remove();
-                        Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
-                    }
-                }
-            } catch (Throwable e) {
-                /*Do nothing*/
-            }
-        }
     }
 }
