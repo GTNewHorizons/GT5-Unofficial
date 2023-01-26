@@ -250,46 +250,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 7680,
                 true);
 
-        GT_Values.RA.addLaserEngraverRecipe(
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L)},
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.ExcitedDTCC.getFluid(1000L)},
-                50_000,
-                125_000,
-                true);
-
-        GT_Values.RA.addLaserEngraverRecipe(
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)},
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.ExcitedDTPC.getFluid(1000L)},
-                50_000,
-                125_000 * 4,
-                true);
-
-        GT_Values.RA.addLaserEngraverRecipe(
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L)},
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.ExcitedDTRC.getFluid(1000L)},
-                50_000,
-                125_000 * 16,
-                true);
-
-        GT_Values.RA.addLaserEngraverRecipe(
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L)},
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.ExcitedDTEC.getFluid(1000L)},
-                50_000,
-                125_000 * 64,
-                true);
-
-        // -----------------------------------------------------------------------------------------------------------------------------
-
-
-
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
