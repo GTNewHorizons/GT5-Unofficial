@@ -1736,7 +1736,7 @@ public class MixerRecipes implements Runnable {
         }
     }
 
-    public void addMixerPotionRecipes(String aName, ItemStack aItem) {
+    public static void addMixerPotionRecipes(String aName, ItemStack aItem) {
         // splash
         if (!(FluidRegistry.getFluid("potion." + aName) == null
                 || FluidRegistry.getFluid("potion." + aName + ".splash") == null))

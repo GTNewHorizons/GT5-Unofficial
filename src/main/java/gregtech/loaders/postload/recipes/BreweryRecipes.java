@@ -383,5 +383,7 @@ public class BreweryRecipes implements Runnable {
                 FluidRegistry.getFluid("potion." + aName),
                 FluidRegistry.getFluid("potion." + aName + ".long"),
                 false);
+
+        MixerRecipes.addMixerPotionRecipes(aName, aItem);
     }
 }
