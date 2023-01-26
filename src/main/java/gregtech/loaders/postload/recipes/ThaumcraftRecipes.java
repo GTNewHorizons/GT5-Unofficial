@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_TC;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 
@@ -22,8 +23,19 @@ public class ThaumcraftRecipes implements Runnable{
     @Override
     public void run() {
         if (isThaumcraftLoaded){
+            // Add Recipe for TC Crucible: Salis Mundus to Balanced Shards
+            String tKey = "GT_BALANCE_SHARD_RECIPE";
+            GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
+                "TB.SM",
+                getModItem(MOD_ID_TC, "ItemResource", 1L, 14),
+                getModItem(MOD_ID_TC, "ItemShard", 1L, 6),
+                Arrays.asList(
+                    new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L),
+                    new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
+
             if (GregTech_API.sThaumcraftCompat != null) {
-                String tKey = "GT_WOOD_TO_CHARCOAL";
+
+                tKey = "GT_WOOD_TO_CHARCOAL";
                 GT_LanguageManager.addStringLocalization(
                     GT_MachineRecipeLoader.aTextTCGTPage + tKey,
                     "You have discovered a way of making charcoal magically instead of using regular ovens for this purpose.<BR><BR>To create charcoal from wood you first need an air-free environment, some vacuus essentia is needed for that, then you need to incinerate the wood using ignis essentia and wait until all the water inside the wood is burned away.<BR><BR>This method however doesn't create creosote oil as byproduct.");

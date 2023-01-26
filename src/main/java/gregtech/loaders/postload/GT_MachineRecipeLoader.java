@@ -264,20 +264,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L));
 
-
-        if (isThaumcraftLoaded) {
-
-            // Add Recipe for TC Crucible: Salis Mundus to Balanced Shards
-            String tKey = "GT_BALANCE_SHARD_RECIPE";
-            GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
-                    "TB.SM",
-                    getModItem(MOD_ID_TC, "ItemResource", 1L, 14),
-                    getModItem(MOD_ID_TC, "ItemShard", 1L, 6),
-                    Arrays.asList(
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
-        }
-
         for (int g = 0; g < 16; g++) {
             if (!GT_MachineRecipeLoader.isNEILoaded) {
                 break;
