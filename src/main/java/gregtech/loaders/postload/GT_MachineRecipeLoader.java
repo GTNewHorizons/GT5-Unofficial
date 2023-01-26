@@ -2137,7 +2137,6 @@ public class GT_MachineRecipeLoader implements Runnable {
             API.hideItem(new ItemStack(GT_MetaGenerated_Item_03.INSTANCE, 1, g));
         }
 
-
         GT_Values.RA.addElectromagneticSeparatorRecipe(
                 MaterialsOreAlum.SluiceSand.getDust(1),
                 Materials.Iron.getDust(1),
@@ -2180,8 +2179,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 50,
                 8);
 
-
-
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_Values.RA.addWiremillRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1L),
@@ -2217,48 +2214,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_RecipeRegistrator.registerWiremillRecipes(
                 Materials.Graphene, 400, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
 
-
-
-
-
-
         GT_ModHandler.removeRecipe(new ItemStack(Items.lava_bucket), ItemList.Cell_Empty.get(1L));
         GT_ModHandler.removeRecipe(new ItemStack(Items.water_bucket), ItemList.Cell_Empty.get(1L));
 
         GT_ModHandler.removeFurnaceSmelting(ItemList.IC2_Resin.get(1L));
-        if (!GregTech_API.mIC2Classic)
-            GT_Values.RA.addPyrolyseRecipe(
-                    GT_ModHandler.getIC2Item("biochaff", 4L),
-                    Materials.Water.getFluid(4000),
-                    1,
-                    GT_Values.NI,
-                    new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000),
-                    900,
-                    10);
-        if (Loader.isModLoaded(MOD_ID_FR)) {
-            GT_Values.RA.addPyrolyseRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextForestry, "fertilizerBio", 4L),
-                    Materials.Water.getFluid(4000),
-                    1,
-                    GT_Values.NI,
-                    Materials.Biomass.getFluid(5000),
-                    900,
-                    10);
-            GT_Values.RA.addPyrolyseRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextForestry, "mulch", 32L),
-                    Materials.Water.getFluid(4000),
-                    1,
-                    GT_Values.NI,
-                    Materials.Biomass.getFluid(5000),
-                    900,
-                    10);
-        }
-        /* Recycling Recipes for EBF Coils Adding hatches/buses at a later date*/
-
-
-
-
-
 
         this.run3();
 
@@ -4559,31 +4518,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 150,
                 false);
 
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_ModHandler.getIC2Item("biochaff", 1),
-                Materials.Water.getFluid(1500),
-                2,
-                GT_Values.NI,
-                Materials.FermentedBiomass.getFluid(1500),
-                200,
-                10);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_Values.NI,
-                new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1000),
-                2,
-                GT_Values.NI,
-                Materials.FermentedBiomass.getFluid(1000),
-                100,
-                10);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_Values.NI,
-                Materials.Biomass.getFluid(1000),
-                2,
-                GT_Values.NI,
-                Materials.FermentedBiomass.getFluid(1000),
-                100,
-                10);
-
         GT_Values.RA.addDistillationTowerRecipe(
                 Materials.FermentedBiomass.getFluid(1000),
                 new FluidStack[] {
@@ -4668,23 +4602,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 160,
                 8,
                 false);
-
-        GT_Values.RA.addPyrolyseRecipe(
-                Materials.Sugar.getDust(23),
-                GT_Values.NF,
-                1,
-                Materials.Charcoal.getDust(12),
-                Materials.Water.getFluid(1500),
-                320,
-                64);
-        GT_Values.RA.addPyrolyseRecipe(
-                Materials.Sugar.getDust(23),
-                Materials.Nitrogen.getGas(500),
-                2,
-                Materials.Charcoal.getDust(12),
-                Materials.Water.getFluid(1500),
-                160,
-                96);
 
         GT_Values.RA.addUniversalDistillationRecipewithCircuit(
                 Materials.CharcoalByproducts.getGas(1000),
@@ -5622,38 +5539,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 0,
                 true);
 
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
-                GT_Values.NF,
-                1,
-                RailcraftToolItems.getCoalCoke(16),
-                Materials.Creosote.getFluid(8000),
-                640,
-                64);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
-                Materials.Nitrogen.getGas(1000),
-                2,
-                RailcraftToolItems.getCoalCoke(16),
-                Materials.Creosote.getFluid(8000),
-                320,
-                96);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
-                GT_Values.NF,
-                1,
-                EnumCube.COKE_BLOCK.getItem(8),
-                Materials.Creosote.getFluid(32000),
-                2560,
-                64);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
-                Materials.Nitrogen.getGas(1000),
-                2,
-                EnumCube.COKE_BLOCK.getItem(8),
-                Materials.Creosote.getFluid(32000),
-                1280,
-                96);
+
 
 
         GT_Values.RA.addCompressorRecipe(RailcraftToolItems.getCoalCoke(9), EnumCube.COKE_BLOCK.getItem(), 300, 2);
