@@ -54,9 +54,6 @@ public class GT_MachineRecipeLoader implements Runnable {
     @Override
     public void run() {
 
-        GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
-        GT_Values.RA.addAmplifier(ItemList.IC2_Scrapbox.get(1L), 180, 1);
-
         GT_Values.RA.addElectromagneticSeparatorRecipe(
                 MaterialsOreAlum.SluiceSand.getDust(1),
                 Materials.Iron.getDust(1),
