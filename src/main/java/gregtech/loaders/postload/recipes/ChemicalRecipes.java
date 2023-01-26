@@ -20,6 +20,9 @@ public class ChemicalRecipes implements Runnable{
 
     @Override
     public void run() {
+        singleBlockOnly();
+        multiblockOnly();
+        polymerizationRecipes();
         GT_Values.RA.addChemicalRecipe(
             new ItemStack(Items.paper, 1),
             new ItemStack(Items.string, 1),
@@ -3460,6 +3463,27 @@ public class ChemicalRecipes implements Runnable{
         }
     }
 
+    public void polymerizationRecipes(){
+        GT_Values.RA.addDefaultPolymerizationRecipes(
+            Materials.VinylAcetate.mFluid, Materials.VinylAcetate.getCells(1), Materials.PolyvinylAcetate.mFluid);
+
+        GT_Values.RA.addDefaultPolymerizationRecipes(
+            Materials.Ethylene.mGas, Materials.Ethylene.getCells(1), Materials.Plastic.mStandardMoltenFluid);
+
+        GT_Values.RA.addDefaultPolymerizationRecipes(
+            Materials.Tetrafluoroethylene.mGas,
+            Materials.Tetrafluoroethylene.getCells(1),
+            Materials.Polytetrafluoroethylene.mStandardMoltenFluid);
+
+        GT_Values.RA.addDefaultPolymerizationRecipes(
+            Materials.VinylChloride.mGas,
+            Materials.VinylChloride.getCells(1),
+            Materials.PolyvinylChloride.mStandardMoltenFluid);
+
+        GT_Values.RA.addDefaultPolymerizationRecipes(
+            Materials.Styrene.mFluid, Materials.Styrene.getCells(1), Materials.Polystyrene.mStandardMoltenFluid);
+
+    }
     public void singleBlockOnly(){
         // S + 2Cl = SCl2
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(

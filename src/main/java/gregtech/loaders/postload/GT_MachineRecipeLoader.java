@@ -1066,15 +1066,6 @@ public class GT_MachineRecipeLoader implements Runnable {
         this.addProcess(tCrop, Materials.Emerald, 100, true);
         this.addProcess(tCrop, Materials.Beryllium, 100, false);
 
-        this.addRecipesApril2017ChemistryUpdate();
-
-
-
-
-
-
-
-
         this.addKevlarLineRecipes();
 
         loadRailcraftRecipes();
@@ -2980,44 +2971,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     }
 
-    /**
-     * Adds recipes related to the processing of Charcoal Byproducts, Fermented Biomass
-     * Adds recipes related to the production of Advanced Glue, Gunpowder, Polyvinyl Chloride
-     * Adds replacement recipes for Epoxy Resin, Nitric Acid, Polyethylene, Polydimethylsiloxane (Silicone), Polytetrafluoroethylene, Rocket Fuel, Sulfuric Acid
-     * Instrumental materials are not mentioned here.
-     */
-    private void addRecipesApril2017ChemistryUpdate() {
-
-
-
-
-        GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.VinylAcetate.mFluid, Materials.VinylAcetate.getCells(1), Materials.PolyvinylAcetate.mFluid);
-
-        GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.Ethylene.mGas, Materials.Ethylene.getCells(1), Materials.Plastic.mStandardMoltenFluid);
-
-
-        GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.Tetrafluoroethylene.mGas,
-                Materials.Tetrafluoroethylene.getCells(1),
-                Materials.Polytetrafluoroethylene.mStandardMoltenFluid);
-
-
-
-        GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.VinylChloride.mGas,
-                Materials.VinylChloride.getCells(1),
-                Materials.PolyvinylChloride.mStandardMoltenFluid);
-
-
-
-        GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.Styrene.mFluid, Materials.Styrene.getCells(1), Materials.Polystyrene.mStandardMoltenFluid);
-
-
-
-    }
 
 
     public void addPotionRecipes(String aName, ItemStack aItem) {
