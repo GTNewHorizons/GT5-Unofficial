@@ -3637,7 +3637,8 @@ public class DreamCraftRecipeLoader {
                     ItemList.Circuit_Parts_ResistorXSMD.get(20L),
                     ItemList.Circuit_Chip_NOR.get(32L),
                     ItemList.Circuit_Chip_Ram.get(64L),
-                    GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 24L, 10101), // Fine Lumiium Wire
+                    GT_ModHandler.getModItem(
+                            "bartworks", "gt.bwMetaGeneratedwireFine", 24L, 10101), // Fine Lumiium Wire
                     new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
                 },
                 new FluidStack[] {
@@ -3666,7 +3667,8 @@ public class DreamCraftRecipeLoader {
                     ItemList.Circuit_Parts_DiodeXSMD.get(24L),
                     ItemList.Circuit_Chip_NOR.get(64L),
                     ItemList.Circuit_Chip_SoC2.get(32L),
-                    GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 32L, 10101), // Fine Lumiium Wire
+                    GT_ModHandler.getModItem(
+                            "bartworks", "gt.bwMetaGeneratedwireFine", 32L, 10101), // Fine Lumiium Wire
                     new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
                 },
