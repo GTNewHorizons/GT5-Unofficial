@@ -221,35 +221,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                     getModItem(GT_MachineRecipeLoader.aTextEBXL, "extrabiomes.dye", 1, 3));
         }
 
-
-
-        GT_Values.RA.addSifterRecipe(
-                new ItemStack(Blocks.gravel, 1, 0),
-                new ItemStack[] {
-                    new ItemStack(Items.flint, 1, 0),
-                    new ItemStack(Items.flint, 1, 0),
-                    new ItemStack(Items.flint, 1, 0),
-                    new ItemStack(Items.flint, 1, 0),
-                    new ItemStack(Items.flint, 1, 0),
-                    new ItemStack(Items.flint, 1, 0)
-                },
-                new int[] {10000, 9000, 8000, 6000, 3300, 2500},
-                600,
-                16);
-        GT_Values.RA.addSifterRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L),
-                new ItemStack[] {
-                    new ItemStack(Items.coal, 1, 0),
-                    new ItemStack(Items.coal, 1, 0),
-                    new ItemStack(Items.coal, 1, 0),
-                    new ItemStack(Items.coal, 1, 0),
-                    new ItemStack(Items.coal, 1, 0),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L)
-                },
-                new int[] {10000, 9000, 8000, 7000, 6000, 5000},
-                600,
-                16);
-
         GT_Values.RA.addForgeHammerRecipe(
                 new ItemStack(Blocks.stonebrick, 1, 0), new ItemStack(Blocks.stonebrick, 1, 2), 10, 16);
         GT_Values.RA.addForgeHammerRecipe(
@@ -308,7 +279,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 1),
                     16,
                     10);
-            
+
             GT_OreDictUnificator.set(
                     OrePrefixes.ingot,
                     Materials.HeeEndium,
