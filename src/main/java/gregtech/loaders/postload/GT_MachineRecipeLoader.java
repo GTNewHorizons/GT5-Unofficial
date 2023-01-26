@@ -117,13 +117,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 64,
                 16);
 
-        RA.addThermalCentrifugeRecipe(
-                ItemList.SunnariumCell.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1L),
-                new ItemStack(Items.glowstone_dust, 2),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
-                500,
-                48);
+
 
 
 
