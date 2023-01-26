@@ -20,6 +20,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
+import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Element;
@@ -231,6 +232,7 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PreLoad.loadConfig(tMainConfig);
 
+        new Enchantment_Hazmat();
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
 

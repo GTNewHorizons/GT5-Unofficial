@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.NBT;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -13,12 +14,26 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
+import com.gtnewhorizons.modularui.api.screen.*;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TabButton;
+import com.gtnewhorizons.modularui.common.widget.TabContainer;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
@@ -26,14 +41,19 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockFluidHandler;
 import gregtech.api.multitileentity.interfaces.IMultiBlockInventory;
+import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -65,15 +85,24 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     protected BuildState buildState = new BuildState();
 
-    // The 0th slot is the default inventory of the MultiBlock; any other has been added by an Inventory Extender of
-    // sorts
-    protected List<ItemStack[]> multiBlockInventory = new ArrayList<>();
+    protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
+    protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
     private int mMaxProgresstime = 0, mProgresstime = 0;
     private boolean mStructureOkay = false, mStructureChanged = false;
     private boolean mWorks = true, mWorkUpdate = false, mWasShutdown = false, mActive = false;
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
+
+    // A list of sides
+    //   Each side has a list of parts that have a cover that need to be ticked
+    protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredCoveredParts = Arrays.asList(
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>());
 
     /** Registry ID of the required casing */
     public abstract short getCasingRegistryID();
@@ -125,7 +154,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         // Multiblock inventories are a collection of inventories.  The first inventory is the default internal
         // inventory,
         // and the others are added by inventory extending blocks.
-        if (mInventory != null) multiBlockInventory.add(mInventory);
+        if (mInputInventory != null) multiBlockInputInventory.put("controller", mInputInventory);
+        if (mOutputInventory != null) multiBlockOutputInventory.put("controller", mOutputInventory);
 
         mStructureOkay = aNBT.getBoolean(NBT.STRUCTURE_OK);
         mExtendedFacing = ExtendedFacing.of(
@@ -159,12 +189,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     protected GT_Multiblock_Tooltip_Builder getTooltip() {
         return createTooltip();
-        //        final int tooltipId = getToolTipID();
-        //        final GT_Multiblock_Tooltip_Builder tt = tooltip.get(tooltipId);
-        //        if (tt == null) {
-        //            return tooltip.computeIfAbsent(tooltipId, k -> createTooltip());
-        //        }
-        //        return tt;
     }
 
     @Override
@@ -277,8 +301,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             return super.onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
             // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
-            // horizontally
-            // allowing an extra round of flip make it hard to draw meaningful flip markers in GT_Proxy#drawGrid
+            // horizontally allowing an extra round of flip make it hard to draw meaningful flip markers in
+            // GT_Proxy#drawGrid
             toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
         } else {
             toolSetRotation(null);
@@ -287,10 +311,57 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
+    public void registerCoveredPartOnSide(final int aSide, IMultiBlockPart part) {
+        if (aSide < 0 || aSide >= 6) return;
+
+        final LinkedList<WeakReference<IMultiBlockPart>> registeredCovers = registeredCoveredParts.get(aSide);
+        // TODO: Make sure that we're not already registered on this side
+        registeredCovers.add(new WeakReference<>(part));
+    }
+
+    @Override
+    public void unregisterCoveredPartOnSide(final int aSide, IMultiBlockPart aPart) {
+        if (aSide < 0 || aSide >= 6) return;
+
+        final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = registeredCoveredParts.get(aSide);
+        final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
+        while (it.hasNext()) {
+            final IMultiBlockPart part = (it.next()).get();
+            if (part == null || part == aPart) it.remove();
+        }
+    }
+
+    @Override
     public void onFirstTick(boolean aIsServerSide) {
         super.onFirstTick(aIsServerSide);
         if (aIsServerSide) checkStructure(true);
         else StructureLibAPI.queryAlignment(this);
+    }
+
+    private boolean tickCovers() {
+        for (byte side : ALL_VALID_SIDES) {
+            // TODO: Tick controller covers, if any
+            final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = this.registeredCoveredParts.get(side);
+            final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
+            while (it.hasNext()) {
+                final IMultiBlockPart part = (it.next()).get();
+                if (part == null) {
+                    it.remove();
+                    continue;
+                }
+                if (!part.tickCoverAtSide(side, mTickTimer)) it.remove();
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onTick(long aTimer, boolean isServerSide) {
+        // Tick all covers!
+        if (!tickCovers()) {
+            return;
+        }
     }
 
     @Override
@@ -489,7 +560,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon());
                     //                    Arrays.fill(mIcons, getTexture(aCasing);
-                    //                    for (int i = 0; i < 6; i++) {
+                    //                    for (byte i : ALL_VALID_SIDES) {
                     //                        mIcons[i] = aCasing.getIcon(i, aMeta);
                     //                    }
                 }
@@ -598,6 +669,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return rInfo;
     }
 
+    @Override
+    public IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart) {
+        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return mTanksInput;
+        if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return mTanksOutput;
+        return GT_Values.emptyFluidTank;
+    }
+
     /**
      * Energy - MultiBlock related Energy behavior
      */
@@ -699,15 +777,37 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     /**
      * Item - MultiBlock related Item behaviour.
      */
+    protected boolean registerInventory(String invName, IItemHandlerModifiable inventory) {
+        if (multiBlockInputInventory.containsKey(invName)) return false;
+        multiBlockInputInventory.put(invName, inventory);
+        return true;
+    }
+
     @Override
     public boolean hasInventoryBeenModified(MultiBlockPart aPart) {
-        // TODO: MultiInventory - Figure this out based on locked & the part
-        return hasInventoryBeenModified();
+        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return hasInventoryBeenModified();
+        else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return hasOutputInventoryBeenModified();
+
+        return false;
     }
 
     @Override
     public boolean isValidSlot(MultiBlockPart aPart, int aIndex) {
         return false;
+    }
+
+    @Override
+    public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
+        if (multiBlockInventory == null) return null;
+
+        final String lockedInventory = aPart.getLockedInventory();
+        if (lockedInventory == null) {
+            return new ListItemHandler(multiBlockInventory.values());
+        } else {
+            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
+            return inv != null ? inv : null;
+        }
     }
 
     @Override
@@ -720,15 +820,25 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return false;
     }
 
-    protected Pair<ItemStack[], Integer> getInventory(int lockedInventory, int aSlot) {
-        if (lockedInventory != -1) return new ImmutablePair<>(multiBlockInventory.get(lockedInventory), aSlot);
+    protected Map<String, IItemHandlerModifiable> getMultiBlockInventory(MultiBlockPart aPart) {
+        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventory;
+        else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventory;
+        return null;
+    }
+
+    protected Pair<IItemHandlerModifiable, Integer> getInventory(MultiBlockPart aPart, int aSlot) {
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
+        if (multiBlockInventory == null) return null;
+
+        final String invName = aPart.getLockedInventory();
+        if (invName != null && !invName.isEmpty()) return new ImmutablePair<>(multiBlockInventory.get(invName), aSlot);
 
         int start = 0;
-        for (ItemStack[] inv : multiBlockInventory) {
-            if (aSlot > start && aSlot < start + inv.length) {
+        for (IItemHandlerModifiable inv : multiBlockInventory.values()) {
+            if (aSlot >= start && aSlot < start + inv.getSlots()) {
                 return new ImmutablePair<>(inv, aSlot - start);
             }
-            start += inv.length;
+            start += inv.getSlots();
         }
         return null;
     }
@@ -736,16 +846,22 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public int[] getAccessibleSlotsFromSide(MultiBlockPart aPart, byte aSide) {
         final TIntList tList = new TIntArrayList();
-        final int lockedInventory = aPart.getLockedInventory();
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
+        if (multiBlockInventory == null) return tList.toArray();
+
+        final String lockedInventory = aPart.getLockedInventory();
+        // Item in --> input inv
+        // Item out --> output inv
 
         int start = 0;
-        if (lockedInventory == -1) {
-            for (ItemStack[] inv : multiBlockInventory) {
-                for (int i = start; i < inv.length + start; i++) tList.add(i);
-                start += inv.length;
+        if (lockedInventory == null) {
+            for (IItemHandlerModifiable inv : multiBlockInventory.values()) {
+                for (int i = start; i < inv.getSlots() + start; i++) tList.add(i);
+                start += inv.getSlots();
             }
         } else {
-            final int len = multiBlockInventory.get(lockedInventory).length;
+            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
+            final int len = inv != null ? inv.getSlots() : 0;
             for (int i = 0; i < len; i++) tList.add(i);
         }
         return tList.toArray();
@@ -753,64 +869,59 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public boolean canInsertItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide) {
-        final int lockedInventory = aPart.getLockedInventory(), tSlot;
-        final ItemStack[] inv;
-        if (lockedInventory == -1) {
-            final Pair<ItemStack[], Integer> tInv = getInventory(lockedInventory, aSlot);
-            if (tInv == null) return false;
-            inv = tInv.getLeft();
-            tSlot = tInv.getRight();
-        } else {
-            inv = multiBlockInventory.get(lockedInventory);
-            tSlot = aSlot;
-        }
-        return inv[tSlot] == null
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
+        if (tInv == null) return false;
+
+        final int tSlot = tInv.getRight();
+        final IItemHandlerModifiable inv = tInv.getLeft();
+        ;
+
+        return inv.getStackInSlot(tSlot) == null
                 || GT_Utility.areStacksEqual(
-                        aStack, inv[tSlot]); // && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack)
+                        aStack,
+                        inv.getStackInSlot(
+                                tSlot)); // && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack)
     }
 
     @Override
     public boolean canExtractItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide) {
-        final int lockedInventory = aPart.getLockedInventory(), tSlot;
-        final ItemStack[] inv;
-        if (lockedInventory == -1) {
-            final Pair<ItemStack[], Integer> tInv = getInventory(lockedInventory, aSlot);
-            if (tInv == null) return false;
-            inv = tInv.getLeft();
-            tSlot = tInv.getRight();
-        } else {
-            inv = multiBlockInventory.get(lockedInventory);
-            tSlot = aSlot;
-        }
-        return inv[tSlot] != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
+        if (tInv == null) return false;
+
+        final int tSlot = tInv.getRight();
+        final IItemHandlerModifiable inv = tInv.getLeft();
+        ;
+
+        return inv.getStackInSlot(tSlot)
+                != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
     public int getSizeInventory(MultiBlockPart aPart) {
-        final int lockedInventory = aPart.getLockedInventory();
-        if (lockedInventory == -1) {
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
+        if (multiBlockInventory == null) return 0;
+
+        final String lockedInventory = aPart.getLockedInventory();
+        if (lockedInventory == null) {
             int len = 0;
-            for (ItemStack[] inv : multiBlockInventory) len += inv.length;
+            for (IItemHandlerModifiable inv : multiBlockInventory.values()) len += inv.getSlots();
             return len;
         } else {
-            return multiBlockInventory.get(lockedInventory).length;
+            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
+            return inv != null ? inv.getSlots() : 0;
         }
     }
 
     @Override
     public ItemStack getStackInSlot(MultiBlockPart aPart, int aSlot) {
-        final int lockedInventory = aPart.getLockedInventory(), tSlot;
-        final ItemStack[] inv;
-        if (lockedInventory == -1) {
-            final Pair<ItemStack[], Integer> tInv = getInventory(lockedInventory, aSlot);
-            if (tInv == null) return null;
-            inv = tInv.getLeft();
-            tSlot = tInv.getRight();
-        } else {
-            inv = multiBlockInventory.get(lockedInventory);
-            tSlot = aSlot;
-        }
-        return inv[tSlot];
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
+        if (tInv == null) return null;
+
+        final int tSlot = tInv.getRight();
+        final IItemHandlerModifiable inv = tInv.getLeft();
+        if (inv == null) return null;
+
+        return inv.getStackInSlot(tSlot);
     }
 
     @Override
@@ -819,10 +930,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         ItemStack rStack = GT_Utility.copyOrNull(tStack);
         if (tStack != null) {
             if (tStack.stackSize <= aDecrement) {
-                setInventorySlotContents(aSlot, null);
+                setInventorySlotContents(aPart, aSlot, null);
             } else {
                 rStack = tStack.splitStack(aDecrement);
-                if (tStack.stackSize == 0) setInventorySlotContents(aSlot, null);
+                if (tStack.stackSize == 0) setInventorySlotContents(aPart, aSlot, null);
             }
         }
         return rStack;
@@ -830,30 +941,52 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public ItemStack getStackInSlotOnClosing(MultiBlockPart aPart, int aSlot) {
-        final Pair<ItemStack[], Integer> tInv = getInventory(aPart.getLockedInventory(), aSlot);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return null;
 
-        final ItemStack[] inv = tInv.getLeft();
+        final IItemHandlerModifiable inv = tInv.getLeft();
         final int tSlot = tInv.getRight();
 
-        final ItemStack rStack = inv[tSlot];
-        inv[tSlot] = null;
+        final ItemStack rStack = inv.getStackInSlot(tSlot);
+        inv.setStackInSlot(tSlot, null);
         return rStack;
     }
 
     @Override
     public void setInventorySlotContents(MultiBlockPart aPart, int aSlot, ItemStack aStack) {
-        final Pair<ItemStack[], Integer> tInv = getInventory(aPart.getLockedInventory(), aSlot);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return;
 
-        final ItemStack[] inv = tInv.getLeft();
+        final IItemHandlerModifiable inv = tInv.getLeft();
         final int tSlot = tInv.getRight();
-        inv[tSlot] = aStack;
+        inv.setStackInSlot(tSlot, aStack);
+    }
+
+    @Override
+    public List<String> getInventoryNames(MultiBlockPart aPart) {
+        final List<String> inventoryNames = new ArrayList<>();
+        inventoryNames.add("all");
+        inventoryNames.addAll(getMultiBlockInventory(aPart).keySet());
+        return inventoryNames;
     }
 
     @Override
     public String getInventoryName(MultiBlockPart aPart) {
-        return getInventoryName(); // TODO: MultiInventory: Include part Name?
+        final StringBuilder str = new StringBuilder();
+        str.append(getInventoryName());
+        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) {
+            str.append(" Input");
+        } else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) {
+            str.append(" Output");
+        } else {
+            str.append(" Unknown");
+        }
+        final String lockedInventory = aPart.getLockedInventory();
+        if (lockedInventory != null && !lockedInventory.equals("")) {
+            str.append(" [Locked: ").append(lockedInventory).append("]");
+        }
+
+        return str.toString();
     }
 
     @Override
@@ -868,9 +1001,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public void markDirty(MultiBlockPart aPart) {
-        // TODO: MultiInventory - Consider the part?
         markDirty();
-        markInventoryBeenModified();
+        if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) markOutputInventoryBeenModified();
+        else markInventoryBeenModified();
     }
 
     @Override
@@ -893,5 +1026,166 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public boolean isItemValidForSlot(MultiBlockPart aPart, int aSlot, ItemStack aStack) {
         return isItemValidForSlot(aSlot, aStack);
+    }
+
+    /**
+     * GUI Work - Multiblock GUI related methods
+     */
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext buildContext) {
+        System.out.println("MultiBlockController::createWindow");
+        return super.createWindow(buildContext);
+    }
+
+    @Override
+    public boolean hasGui(byte aSide) {
+        return true;
+    }
+
+    @Override
+    protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
+        // leave empty
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(148, 60));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new TabContainer()
+                        .setButtonSize(20, 24)
+                        .addTabButton(new TabButton(0)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .addTooltip(getLocalName())
+                                .setPos(0, -20))
+                        .addTabButton(new TabButton(1)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(20, -20))
+                        .addTabButton(new TabButton(2)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(40, -20))
+                        .addTabButton(new TabButton(3)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(60, -20))
+                        .addTabButton(new TabButton(4)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(80, -20))
+                        .addPage(new MultiChildWidget()
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                        .setPos(7, 4)
+                                        .setSize(160, 75)))
+                        .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
+                        .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI()))
+                        .addPage(new MultiChildWidget().addChild(getFluidInventoryInputGUI()))
+                        .addPage(new MultiChildWidget().addChild(getFluidInventoryOutputGUI())))
+                .widget(new ItemDrawable(getStackForm(1))
+                        .asWidget()
+                        .setSize(16, 16)
+                        .setPos(2, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_ITEM_IN)
+                        .setSize(16, 16)
+                        .setPos(22, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_ITEM_OUT)
+                        .setSize(16, 16)
+                        .setPos(42, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_FLUID_IN)
+                        .setSize(16, 16)
+                        .setPos(62, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_FLUID_OUT)
+                        .setSize(16, 16)
+                        .setPos(82, -16));
+    }
+
+    protected Widget getItemInventoryInputGUI() {
+        final IItemHandlerModifiable inv = getInventoriesForInput();
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                scrollable.widget(new SlotWidget(inv, rows * 4 + column)
+                        .setPos(column * 18, rows * 18)
+                        .setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+    }
+
+    protected Widget getItemInventoryOutputGUI() {
+        final IItemHandlerModifiable inv = getInventoriesForOutput();
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                scrollable.widget(new SlotWidget(inv, rows * 4 + column)
+                        .setPos(column * 18, rows * 18)
+                        .setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+    }
+
+    protected IItemHandlerModifiable getInventoriesForInput() {
+        return new ListItemHandler(multiBlockInputInventory.values());
+    }
+
+    protected IItemHandlerModifiable getInventoriesForOutput() {
+        return new ListItemHandler(multiBlockOutputInventory.values());
+    }
+
+    protected Widget getFluidInventoryInputGUI() {
+        final IFluidTank[] tanks = mTanksInput;
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < tanks.length; rows++) {
+            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+    }
+
+    protected Widget getFluidInventoryOutputGUI() {
+        final IFluidTank[] tanks = mTanksOutput;
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < tanks.length; rows++) {
+            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                fluidSlot.setInteraction(true, false);
+                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
     }
 }

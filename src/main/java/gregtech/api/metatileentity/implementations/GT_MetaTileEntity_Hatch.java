@@ -10,6 +10,13 @@ import net.minecraft.nbt.NBTTagCompound;
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
 public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTank {
+
+    public enum ConnectionType {
+        CABLE,
+        WIRELESS,
+        LASER
+    }
+
     /**
      * Uses new texture changing methods to avoid limitations of byte as texture index...
      */
@@ -140,6 +147,22 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
         actualTexture = (byte) (aValue & 0x7F);
         mMachineBlock = actualTexture;
         mTexturePage = 0;
+    }
+
+    /** Get the maximum amount of amperes to work with, which excludes the additional amps in for loss
+     *
+     * @return Working amps
+     */
+    public long maxWorkingAmperesIn() {
+        return maxAmperesIn();
+    }
+
+    /** Get the type of connection this hatch allows
+     *
+     * @return Connection type
+     */
+    public ConnectionType getConnectionType() {
+        return ConnectionType.CABLE;
     }
 
     @Override

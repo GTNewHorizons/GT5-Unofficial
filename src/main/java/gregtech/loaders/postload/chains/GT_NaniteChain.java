@@ -1,10 +1,13 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.util.GT_ModHandler.getModItem;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -15,9 +18,9 @@ public class GT_NaniteChain {
 
     public static void run() {
 
-        ItemStack aUVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0);
-        ItemStack aUHVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.ChromaticLens", 0);
-        ItemStack aUEVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.RadoxPolymerLens", 0);
+        ItemStack aUVTierLens = getModItem(MOD_ID_DC, "item.MysteriousCrystalLens", 0);
+        ItemStack aUHVTierLens = getModItem(MOD_ID_DC, "item.ChromaticLens", 0);
+        ItemStack aUEVTierLens = getModItem(MOD_ID_DC, "item.RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
@@ -75,17 +78,17 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
                     aUVTierLens,
-                    GT_ModHandler.getModItem("bartworks", "bw.werkstoffblockscasingadvanced.01", 8, 31776),
+                    getModItem("bartworks", "bw.werkstoffblockscasingadvanced.01", 8, 31776),
                     ItemList.Circuit_Chip_SoC.get(64)
                 },
-                new FluidStack[] {Materials.UUMatter.getFluid(200000)},
+                new FluidStack[] {Materials.UUMatter.getFluid(200_000)},
                 new ItemStack[] {
                     Materials.Carbon.getNanite(64),
                 },
                 null,
                 null,
                 500 * 20,
-                10000000,
+                10_000_000,
                 1);
 
         // Silver Nanites - Used in Tier 2 PCB Factory to improve board production
@@ -96,7 +99,7 @@ public class GT_NaniteChain {
                 null,
                 null,
                 750 * 20,
-                10000000,
+                10_000_000,
                 2);
 
         // Neutronium Nanites - Used to upgrade the Nano Forge to Tier 2
@@ -112,7 +115,7 @@ public class GT_NaniteChain {
                 null,
                 null,
                 100 * 20,
-                100000000,
+                100_000_000,
                 1);
 
         // Gold Nanites - Used in Tier 3 PCB Factory to improve board production
@@ -122,8 +125,8 @@ public class GT_NaniteChain {
                 new ItemStack[] {Materials.Gold.getNanite(1)},
                 null,
                 null,
-                1000 * 20,
-                100000000,
+                1_000 * 20,
+                100_000_000,
                 3);
 
         // Transcendent Metal Nanites - Used to upgrade the Nano Forge to Tier 3
@@ -140,7 +143,59 @@ public class GT_NaniteChain {
                 null,
                 null,
                 750 * 20,
-                1000000000,
+                1_000_000_000,
                 2);
+
+        // White Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
+        GT_Values.RA.addNanoForgeRecipe(
+                new ItemStack[] {
+                    aUMVTierLens,
+                    getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
+                    getModItem(
+                            MOD_ID_GTPP,
+                            "MU-metaitem.01",
+                            0,
+                            32105), // Quantum Anomaly, couldn't find any better naming
+                    Materials.WhiteDwarfMatter.getBlocks(8),
+                    getModItem(MOD_ID_DC, "item.PicoWafer", 32),
+                    getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
+                },
+                new FluidStack[] {
+                    Materials.UUMatter.getFluid(500_000),
+                    Materials.RawStarMatter.getFluid(50_000),
+                    FluidRegistry.getFluidStack("space", 720),
+                },
+                new ItemStack[] {Materials.WhiteDwarfMatter.getNanite(4)},
+                null,
+                null,
+                750 * 20,
+                2_000_000_000,
+                3);
+
+        // Black Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
+        GT_Values.RA.addNanoForgeRecipe(
+                new ItemStack[] {
+                    aUMVTierLens,
+                    getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
+                    getModItem(
+                            MOD_ID_GTPP,
+                            "MU-metaitem.01",
+                            0,
+                            32105), // Quantum Anomaly, couldn't find any better naming
+                    Materials.BlackDwarfMatter.getBlocks(8),
+                    getModItem(MOD_ID_DC, "item.PicoWafer", 32),
+                    getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
+                },
+                new FluidStack[] {
+                    Materials.UUMatter.getFluid(500_000),
+                    Materials.RawStarMatter.getFluid(50_000),
+                    FluidRegistry.getFluidStack("time", 720),
+                },
+                new ItemStack[] {Materials.BlackDwarfMatter.getNanite(4)},
+                null,
+                null,
+                750 * 20,
+                2_000_000_000,
+                3);
     }
 }

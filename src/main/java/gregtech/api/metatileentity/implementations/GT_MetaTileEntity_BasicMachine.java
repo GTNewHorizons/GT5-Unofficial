@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -527,8 +528,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             }
             return true;
         }
-        for (byte i = 0; i < 6; i++) {
-            if (aBaseMetaTileEntity.getAirAtSide(i)) {
+        for (byte tSide : ALL_VALID_SIDES) {
+            if (aBaseMetaTileEntity.getAirAtSide(tSide)) {
                 if (useModularUI()) {
                     GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
                 } else {
@@ -590,8 +591,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (mFluidOut != null) aNBT.setTag("mFluidOut", mFluidOut.writeToNBT(new NBTTagCompound()));
 
         for (int i = 0; i < mOutputItems.length; i++)
-            if (mOutputItems[i] != null)
-                aNBT.setTag("mOutputItem" + i, mOutputItems[i].writeToNBT(new NBTTagCompound()));
+            if (mOutputItems[i] != null) GT_Utility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
     }
 
     @Override

@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 
 import appeng.api.AEApi;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
@@ -40,7 +41,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus {
+@Optional.Interface(iface = "appeng.api.implementations.IPowerChannelState", modid = "appliedenergistics2")
+public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus
+        implements IPowerChannelState {
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
     IItemList<IAEItemStack> itemCache =
@@ -58,8 +61,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 1,
                 new String[] {
                     "Item Output for Multiblocks", "Stores directly into ME",
-                    "To use in GT++ multiblocks", "  turn off overflow control",
-                    "  with a soldering iron."
                 },
                 0);
     }
@@ -129,13 +130,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
-                .isGUIClickable(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                        getBaseMetaTileEntity())) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
         infiniteCache = !infiniteCache;
         GT_Utility.sendChatToPlayer(
                 aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCache." + infiniteCache));
@@ -186,6 +181,18 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             lastOutputFailed = true;
         }
         lastOutputTick = tickCounter;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
     }
 
     @Override

@@ -97,6 +97,11 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
+    public ConnectionType getConnectionType() {
+        return ConnectionType.WIRELESS;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Wireless_Dynamo(mName, mTier, new String[] {""}, mTextures);
     }

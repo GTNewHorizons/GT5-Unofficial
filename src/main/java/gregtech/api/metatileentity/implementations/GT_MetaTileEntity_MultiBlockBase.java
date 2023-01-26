@@ -195,9 +195,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
             for (int i = 0; i < mOutputItems.length; i++)
                 if (mOutputItems[i] != null) {
-                    NBTTagCompound tNBT = new NBTTagCompound();
-                    mOutputItems[i].writeToNBT(tNBT);
-                    aNBT.setTag("mOutputItem" + i, tNBT);
+                    GT_Utility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
                 }
         }
         if (mOutputFluids != null) {

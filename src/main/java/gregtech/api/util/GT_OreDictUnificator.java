@@ -176,9 +176,12 @@ public class GT_OreDictUnificator {
     }
 
     public static ItemStack get(boolean aUseBlackList, ItemStack aStack) {
+        return get(aUseBlackList, aStack, false);
+    }
+
+    public static ItemStack get(boolean aUseBlackList, ItemStack aStack, boolean unsafe) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
-        ItemStack rStack = null;
         if (tPrefixMaterial == null
                 || !tPrefixMaterial.hasValidPrefixMaterialData()
                 || (aUseBlackList && tPrefixMaterial.mBlackListed)) return GT_Utility.copyOrNull(aStack);
@@ -188,11 +191,14 @@ public class GT_OreDictUnificator {
         }
         if (tPrefixMaterial.mUnificationTarget == null)
             tPrefixMaterial.mUnificationTarget = sName2StackMap.get(tPrefixMaterial.toString());
-        rStack = tPrefixMaterial.mUnificationTarget;
+        ItemStack rStack = tPrefixMaterial.mUnificationTarget;
         if (GT_Utility.isStackInvalid(rStack)) return GT_Utility.copyOrNull(aStack);
-        assert rStack != null;
         rStack.setTagCompound(aStack.getTagCompound());
-        return GT_Utility.copyAmount(aStack.stackSize, rStack);
+        if (unsafe) {
+            return GT_Utility.copyAmountUnsafe(aStack.stackSize, rStack);
+        } else {
+            return GT_Utility.copyAmount(aStack.stackSize, rStack);
+        }
     }
 
     /** Doesn't copy the returned stack or set quantity. Be careful and do not mutate it;

@@ -25,6 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
+import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
 import gregtech.api.events.BlockScanningEvent;
@@ -104,6 +105,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -442,7 +444,15 @@ public class GT_Utility {
     public static byte getTier(long l) {
         byte i = -1;
         while (++i < V.length) if (l <= V[i]) return i;
-        return i;
+        return (byte) (V.length - 1);
+    }
+
+    public static String getColoredTierNameFromVoltage(long voltage) {
+        return getColoredTierNameFromTier(getTier(voltage));
+    }
+
+    public static String getColoredTierNameFromTier(byte tier) {
+        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
     }
 
     public static String getColoredTierNameFromVoltage(long voltage) {
@@ -797,11 +807,11 @@ public class GT_Utility {
                 || aMaxStackTransfer == 0) return 0;
 
         // find where to take from
-        int[] tGrabSlots = new int[aTileEntity1.getSizeInventory()];
+        final int[] tGrabSlots = new int[aTileEntity1.getSizeInventory()];
         int tGrabSlotsSize = 0;
         if (aTileEntity1 instanceof ISidedInventory) {
             for (int i : ((ISidedInventory) aTileEntity1).getAccessibleSlotsFromSide(aGrabFrom)) {
-                ItemStack s = aTileEntity1.getStackInSlot(i);
+                final ItemStack s = aTileEntity1.getStackInSlot(i);
                 if (s == null
                         || !isAllowedToTakeFromSlot(aTileEntity1, i, aGrabFrom, s)
                         || s.stackSize < aMinMoveAtOnce
@@ -838,15 +848,15 @@ public class GT_Utility {
 
         // if target is an inventory, e.g. chest, machine, drawers...
         if (aTileEntity2 instanceof IInventory) {
-            IInventory tPutInventory = (IInventory) aTileEntity2;
+            final IInventory tPutInventory = (IInventory) aTileEntity2;
 
             // partially filled slot spare space mapping.
             // value is the sum of all spare space left not counting completely empty slot
-            HashMap<ItemId, Integer> tPutItems = new HashMap<>(tPutInventory.getSizeInventory());
+            final HashMap<ItemId, Integer> tPutItems = new HashMap<>(tPutInventory.getSizeInventory());
             // partially filled slot contents
-            HashMap<ItemId, List<ItemStack>> tPutItemStacks = new HashMap<>(tPutInventory.getSizeInventory());
+            final HashMap<ItemId, List<ItemStack>> tPutItemStacks = new HashMap<>(tPutInventory.getSizeInventory());
             // completely empty slots
-            List<Integer> tPutFreeSlots = new ArrayList<>(tPutInventory.getSizeInventory());
+            final List<Integer> tPutFreeSlots = new ArrayList<>(tPutInventory.getSizeInventory());
 
             // find possible target slots
             int[] accessibleSlots = null;
@@ -894,28 +904,28 @@ public class GT_Utility {
             // go over source stacks one by one
             int tStacksMoved = 0, tTotalItemsMoved = 0;
             for (int j = 0; j < tGrabSlotsSize; j++) {
-                int grabSlot = tGrabSlots[j];
+                final int grabSlot = tGrabSlots[j];
                 int tMovedItems;
                 int tStackSize;
                 do {
                     tMovedItems = 0;
-                    ItemStack tGrabStack = aTileEntity1.getStackInSlot(grabSlot);
+                    final ItemStack tGrabStack = aTileEntity1.getStackInSlot(grabSlot);
                     if (tGrabStack == null) break;
                     tStackSize = tGrabStack.stackSize;
-                    ItemId sID = ItemId.createNoCopy(tGrabStack);
+                    final ItemId sID = ItemId.createNoCopy(tGrabStack);
 
                     if (tPutItems.containsKey(sID)) {
                         // there is a partially filled slot, try merging
-                        int canPut = Math.min(tPutItems.get(sID), aMaxMoveAtOnce);
+                        final int canPut = Math.min(tPutItems.get(sID), aMaxMoveAtOnce);
                         if (canPut >= aMinMoveAtOnce) {
-                            List<ItemStack> putStack = tPutItemStacks.get(sID);
+                            final List<ItemStack> putStack = tPutItemStacks.get(sID);
                             if (!putStack.isEmpty()) {
                                 // can move, do merge
                                 int toPut = Math.min(canPut, tStackSize);
                                 tMovedItems = toPut;
                                 for (int i = 0; i < putStack.size(); i++) {
-                                    ItemStack s = putStack.get(i);
-                                    int sToPut = Math.min(
+                                    final ItemStack s = putStack.get(i);
+                                    final int sToPut = Math.min(
                                             Math.min(
                                                     Math.min(toPut, s.getMaxStackSize() - s.stackSize),
                                                     tPutInventory.getInventoryStackLimit() - s.stackSize),
@@ -952,10 +962,10 @@ public class GT_Utility {
                     // still stuff to move & have completely empty slots
                     if (tStackSize > 0 && !tPutFreeSlots.isEmpty()) {
                         for (int i = 0; i < tPutFreeSlots.size(); i++) {
-                            int tPutSlot = tPutFreeSlots.get(i);
+                            final int tPutSlot = tPutFreeSlots.get(i);
                             if (isAllowedToPutIntoSlot(tPutInventory, tPutSlot, aPutTo, tGrabStack, (byte) 64)) {
                                 // allowed, now do moving
-                                int tMoved = moveStackFromSlotAToSlotB(
+                                final int tMoved = moveStackFromSlotAToSlotB(
                                         aTileEntity1,
                                         tPutInventory,
                                         grabSlot,
@@ -965,15 +975,15 @@ public class GT_Utility {
                                         (byte) (aMaxMoveAtOnce - tMovedItems),
                                         aMinMoveAtOnce);
                                 if (tMoved > 0) {
-                                    ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
+                                    final ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
                                     if (s != null) {
                                         // s might be null if tPutInventory is very special, e.g. infinity chest
                                         // if s is null, we will not mark this slot as target candidate for anything
-                                        int spare =
+                                        final int spare =
                                                 Math.min(s.getMaxStackSize(), tPutInventory.getInventoryStackLimit())
                                                         - s.stackSize;
                                         if (spare > 0) {
-                                            ItemId ssID = ItemId.createNoCopy(s);
+                                            final ItemId ssID = ItemId.createNoCopy(s);
                                             // add back to spare space count
                                             tPutItems.merge(ssID, spare, Integer::sum);
                                             // add to partially filled slot list
@@ -1006,7 +1016,7 @@ public class GT_Utility {
 
             // check if source is a double chest, if yes, try move from the adjacent as well
             if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest) {
-                int tAmount = moveFromAdjacentChests(
+                final int tAmount = moveFromAdjacentChests(
                         (TileEntityChest) aTileEntity1,
                         aTileEntity2,
                         aGrabFrom,
@@ -1023,7 +1033,7 @@ public class GT_Utility {
 
             // check if target is a double chest, if yes, try move to the adjacent as well
             if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest) {
-                int tAmount = moveToAdjacentChests(
+                final int tAmount = moveToAdjacentChests(
                         aTileEntity1,
                         (TileEntityChest) aTileEntity2,
                         aGrabFrom,
@@ -1043,9 +1053,9 @@ public class GT_Utility {
         // there should be a function to transfer more than 1 stack in a pipe
         // however I do not see any ways to improve it. too much work for what it is worth
         int tTotalItemsMoved = 0;
-        int tGrabInventorySize = tGrabSlots.length;
+        final int tGrabInventorySize = tGrabSlots.length;
         for (int i = 0; i < tGrabInventorySize; i++) {
-            int tMoved = moveStackIntoPipe(
+            final int tMoved = moveStackIntoPipe(
                     aTileEntity1,
                     aTileEntity2,
                     tGrabSlots,
@@ -1925,6 +1935,12 @@ public class GT_Utility {
         return copyAmount(1, tData.filledContainer);
     }
 
+    public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
+        return aMaterial.getProcessingMaterialTierEU() == 0
+                ? defaultRecipeEUPerTick
+                : aMaterial.getProcessingMaterialTierEU();
+    }
+
     public static ItemStack getFluidDisplayStack(Fluid aFluid) {
         return aFluid == null ? null : getFluidDisplayStack(new FluidStack(aFluid, 0), false);
     }
@@ -2658,39 +2674,81 @@ public class GT_Utility {
     }
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sFrostHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sFrostHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sHeatHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sHeatHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sBioHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sBioHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sRadioHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sRadioHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sElectroHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sElectroHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sGasHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sGasHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
+    }
+
+    public static boolean hasHazmatEnchant(ItemStack aStack) {
+        if (aStack == null) return false;
+        Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
+        Integer tLevel = tEnchantments.get(Enchantment_Hazmat.INSTANCE.effectId);
+
+        if (tLevel != null && tLevel.intValue() >= 1) {
+            return true;
+        }
+        return false;
     }
 
     public static float getHeatDamageFromItem(ItemStack aStack) {
@@ -2909,7 +2967,29 @@ public class GT_Utility {
      */
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
-        return GT_OreDictUnificator.get(true, ItemStack.loadItemStackFromNBT(aNBT));
+        ItemStack tRawStack = ItemStack.loadItemStackFromNBT(aNBT);
+        int tRealStackSize = 0;
+        if (tRawStack != null && aNBT.hasKey("Count", Constants.NBT.TAG_INT)) {
+            tRealStackSize = aNBT.getInteger("Count");
+            tRawStack.stackSize = tRealStackSize;
+        } else if (tRawStack != null) {
+            tRealStackSize = tRawStack.stackSize;
+        }
+        ItemStack tRet = GT_OreDictUnificator.get(true, tRawStack);
+        if (tRet != null) tRet.stackSize = tRealStackSize;
+        return tRet;
+    }
+
+    public static void saveItem(NBTTagCompound aParentTag, String aTagName, ItemStack aStack) {
+        if (aStack != null) aParentTag.setTag(aTagName, saveItem(aStack));
+    }
+
+    public static NBTTagCompound saveItem(ItemStack aStack) {
+        if (aStack == null) return new NBTTagCompound();
+        NBTTagCompound t = new NBTTagCompound();
+        aStack.writeToNBT(t);
+        if (aStack.stackSize > Byte.MAX_VALUE) t.setInteger("Count", aStack.stackSize);
+        return t;
     }
 
     /**
@@ -3319,12 +3399,8 @@ public class GT_Utility {
                 if (tTileEntity instanceof ICoverable) {
                     rEUAmount += 300;
                     final String tString = ((ICoverable) tTileEntity)
-                            .getCoverBehaviorAtSideNew((byte) aSide)
-                            .getDescription(
-                                    (byte) aSide,
-                                    ((ICoverable) tTileEntity).getCoverIDAtSide((byte) aSide),
-                                    ((ICoverable) tTileEntity).getComplexCoverDataAtSide((byte) aSide),
-                                    (ICoverable) tTileEntity);
+                            .getCoverInfoAtSide((byte) aSide)
+                            .getBehaviorDescription();
                     if (tString != null && !tString.equals(E)) tList.add(tString);
                 }
             } catch (Throwable e) {
