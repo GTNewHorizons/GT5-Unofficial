@@ -6547,17 +6547,15 @@ public class GT_MachineRecipeLoader implements Runnable {
         // Quantum anomaly recipe bypass for UXV. Avoids RNG.
         GT_Values.RA.addPlasmaForgeRecipe(
                 new ItemStack[] {
-                    getModItem(MOD_ID_DC, "item.ChromaticLens", 1), getModItem("GoodGenerator", "huiCircuit", 1, 4)
+                    getModItem(MOD_ID_DC, "item.ChromaticLens", 1), getModItem("GoodGenerator", "huiCircuit", 0, 4)
                 },
                 new FluidStack[] {
-                    Materials.WhiteDwarfMatter.getMolten(144),
-                    getFluidStack("molten.shirabon", 72),
-                    Materials.BlackDwarfMatter.getMolten(144)
+                    getFluidStack("molten.shirabon", 36),
                 },
-                new ItemStack[] {getModItem(MOD_ID_GTPP, "MU-metaitem.01", 1, 32105)},
+                new ItemStack[] {getModItem(MOD_ID_GTPP, "MU-metaitem.01", 32, 32105)},
                 new FluidStack[] {NF},
-                50 * 20,
-                (int) Tier.UXV,
+                100 * 20,
+                (int) Tier.MAX,
                 13_500);
 
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
