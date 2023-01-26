@@ -54,14 +54,6 @@ public class GT_MachineRecipeLoader implements Runnable {
     @Override
     public void run() {
 
-        GT_Values.RA.addSimpleArcFurnaceRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
-                Materials.Oxygen.getGas(2000L),
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
-                null,
-                1200,
-                30);
-
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrapbox.get(1L), 180, 1);
 
