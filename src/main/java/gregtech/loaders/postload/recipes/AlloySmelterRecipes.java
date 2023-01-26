@@ -9,7 +9,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 
-public class AlloySmelterRecipes implements Runnable{
+public class AlloySmelterRecipes implements Runnable {
     private final MaterialStack[][] mAlloySmelterList = {
         {
             new MaterialStack(Materials.Tetrahedrite, 3L),
@@ -112,6 +112,7 @@ public class AlloySmelterRecipes implements Runnable{
             new MaterialStack(Materials.BorosilicateGlass, 8L)
         }
     };
+
     @Override
     public void run() {
         for (MaterialStack[] tMats : mAlloySmelterList) {
@@ -122,33 +123,33 @@ public class AlloySmelterRecipes implements Runnable{
             ItemStack tOutputIngot = GT_OreDictUnificator.get(OrePrefixes.ingot, tMats[2].mMaterial, tMats[2].mAmount);
             if (tOutputIngot != GT_Values.NI) {
                 GT_ModHandler.addAlloySmelterRecipe(
-                    tIngot1, tDust2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
+                        tIngot1, tDust2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
                 GT_ModHandler.addAlloySmelterRecipe(
-                    tIngot1, tIngot2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
+                        tIngot1, tIngot2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
                 GT_ModHandler.addAlloySmelterRecipe(
-                    tDust1, tIngot2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
+                        tDust1, tIngot2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
                 GT_ModHandler.addAlloySmelterRecipe(
-                    tDust1, tDust2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
+                        tDust1, tDust2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
             }
         }
 
         GT_Values.RA.addAlloySmelterRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L),
-            ItemList.TE_Hardened_Glass.get(2L),
-            200,
-            16);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L),
+                ItemList.TE_Hardened_Glass.get(2L),
+                200,
+                16);
         GT_Values.RA.addAlloySmelterRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L),
-            ItemList.TE_Hardened_Glass.get(2L),
-            200,
-            16);
+                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L),
+                ItemList.TE_Hardened_Glass.get(2L),
+                200,
+                16);
         GT_Values.RA.addAlloySmelterRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L),
-            200,
-            8); // We use rubber
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L),
+                200,
+                8); // We use rubber
     }
 }

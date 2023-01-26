@@ -1,17 +1,13 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.GregTech_API.mGTPlusPlus;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
@@ -24,14 +20,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-
-import javafx.beans.binding.BooleanExpression;
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -58,7 +49,8 @@ public class GT_MachineRecipeLoader implements Runnable {
     public static final Boolean isExtraUtilitiesLoaded = Loader.isModLoaded("ExtraUtilities");
     public static final Boolean isEBXLLoaded = Loader.isModLoaded(GT_MachineRecipeLoader.aTextEBXL);
     public static final Boolean isRailcraftLoaded = Loader.isModLoaded(MOD_ID_RC);
-    public static final Boolean isForestryloaded = Loader.isModLoaded(GT_MachineRecipeLoader.aTextForestry); // TODO OW YEAH NEW PLANK GEN CODE!!!
+    public static final Boolean isForestryloaded =
+            Loader.isModLoaded(GT_MachineRecipeLoader.aTextForestry); // TODO OW YEAH NEW PLANK GEN CODE!!!
 
     @Override
     public void run() {
@@ -227,9 +219,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_ModHandler.addExtractionRecipe(
                     getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower2", 1, 3),
                     getModItem(GT_MachineRecipeLoader.aTextEBXL, "extrabiomes.dye", 1, 3));
-
         }
-
 
         GT_ModHandler.addPulverisationRecipe(
                 getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyStone", 1L, 32767),
@@ -381,7 +371,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                     true);
         }
 
-
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrapbox.get(1L), 180, 1);
 
@@ -406,7 +395,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 64,
                 16);
 
-
         RA.addThermalCentrifugeRecipe(
                 ItemList.SunnariumCell.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1L),
@@ -416,7 +404,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 48);
 
         GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L));
-
 
         if (!GregTech_API.mIC2Classic) {
             GT_Values.RA.addFuel(GT_ModHandler.getIC2Item("biogasCell", 1L), null, 40, 1);
@@ -439,12 +426,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFuel(getModItem("ThaumicTinkerer", "kamiResource", 1L, 6), null, 720, 5);
         GT_Values.RA.addFuel(getModItem("ThaumicTinkerer", "kamiResource", 1L, 7), null, 720, 5);
 
-
-
-
-
         if (isThaumcraftLoaded) {
-
 
             // Add Recipe for TC Crucible: Salis Mundus to Balanced Shards
             String tKey = "GT_BALANCE_SHARD_RECIPE";
@@ -473,15 +455,10 @@ public class GT_MachineRecipeLoader implements Runnable {
                 200,
                 240);
 
-
-
         GT_BauxiteRefineChain.run();
     }
 
     public void run2() {
-
-
-
 
         GT_ModHandler.removeRecipe(new ItemStack(Items.lava_bucket), ItemList.Cell_Empty.get(1L));
         GT_ModHandler.removeRecipe(new ItemStack(Items.water_bucket), ItemList.Cell_Empty.get(1L));
@@ -517,8 +494,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 getModItem("ExtraTrees", "food", 8L, 24),
                 GT_ModHandler.getCompressorRecipeList(),
                 getModItem("IC2", "itemFuelPlantBall", 1L));
-
-
 
         if (!GregTech_API.mIC2Classic) {
             try {
@@ -663,8 +638,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     private void addKevlarLineRecipes() {
         // Kevlar Line
-
-
 
     }
 
@@ -2558,7 +2531,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 64L)))
                     });
         }
-
     }
 
     /**
