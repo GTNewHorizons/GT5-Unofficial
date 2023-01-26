@@ -806,36 +806,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 48);
 
         GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L));
-        GT_Values.RA.addImplosionRecipe(
-                ItemList.IC2_Compressed_Coal_Chunk.get(1L),
-                8,
-                ItemList.IC2_Industrial_Diamond.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L));
 
-        GT_Values.RA.addImplosionRecipe(
-                ItemList.Ingot_IridiumAlloy.get(1L),
-                8,
-                GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L));
-
-        if (isGalacticraftMarsLoaded) {
-
-            GT_Values.RA.addImplosionRecipe(
-                    ItemList.Ingot_Heavy1.get(1L),
-                    8,
-                    getModItem("GalacticraftCore", "item.heavyPlating", 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.StainlessSteel, 1L));
-            GT_Values.RA.addImplosionRecipe(
-                    ItemList.Ingot_Heavy2.get(1L),
-                    16,
-                    getModItem("GalacticraftMars", "item.null", 1L, 3),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 2L));
-            GT_Values.RA.addImplosionRecipe(
-                    ItemList.Ingot_Heavy3.get(1L),
-                    24,
-                    getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Platinum, 3L));
-        }
 
         if (!GregTech_API.mIC2Classic) {
             GT_Values.RA.addFuel(GT_ModHandler.getIC2Item("biogasCell", 1L), null, 40, 1);
