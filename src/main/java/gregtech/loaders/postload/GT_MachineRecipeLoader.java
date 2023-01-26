@@ -130,18 +130,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 1200,
                 30);
 
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.GrowthMediumRaw.getFluid(1000L),
-                Materials.GrowthMediumSterilized.getFluid(1000L),
-                200,
-                7680);
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.BioMediumRaw.getFluid(1000L),
-                Materials.BioMediumSterilized.getFluid(1000L),
-                200,
-                30720);
+
 
 
 
@@ -767,26 +756,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     false);
         }
 
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(6L), Materials.Water.getGas(960L), 30, 30);
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                GT_ModHandler.getDistilledWater(6L),
-                Materials.Water.getGas(960L),
-                30,
-                30);
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.SeedOil.getFluid(16L),
-                Materials.FryingOilHot.getFluid(16L),
-                16,
-                30);
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.FishOil.getFluid(16L),
-                Materials.FryingOilHot.getFluid(16L),
-                16,
-                30);
+
 
         GT_Values.RA.addBrewingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
@@ -4998,22 +4968,13 @@ public class GT_MachineRecipeLoader implements Runnable {
                 20,
                 64);
 
-        // GameRegistry.addSmelting(Materials.CalciumAcetateSolution.getCells(1), Materials.Acetone.getCells(1), 0);
-        // Ca(CH3COO)2 = CH3COCH3 + CaO + CO2
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.CalciumAcetateSolution.getFluid(1000),
-                Materials.Acetone.getFluid(1000),
-                80,
-                30);
+
         GT_Values.RA.addUniversalDistillationRecipe(
                 Materials.CalciumAcetateSolution.getFluid(1000),
                 new FluidStack[] {Materials.Acetone.getFluid(1000), Materials.CarbonDioxide.getGas(1000)},
                 Materials.Quicklime.getDust(2),
                 80,
                 480);
-        // Fluid Sodium
-        GT_Values.RA.addFluidHeaterRecipe(Materials.Sodium.getDust(1), Materials.Sodium.getFluid(1000), 200, 120);
 
 
 
@@ -5241,13 +5202,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Values.NI,
                 80,
                 640);
-        GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Acetone.getFluid(1000),
-                Materials.Ethenone.getGas(1000),
-                160,
-                160);
-
+       
         GT_Values.RA.addDefaultPolymerizationRecipes(
                 Materials.Styrene.mFluid, Materials.Styrene.getCells(1), Materials.Polystyrene.mStandardMoltenFluid);
 
