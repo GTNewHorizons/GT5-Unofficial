@@ -3650,6 +3650,37 @@ public class DreamCraftRecipeLoader {
                 20 * 20,
                 2_000_000);
 
+        //Optical Computer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Circuit_OpticalAssembly.get(1L),
+                384_000,
+                512,
+                4_000_000,
+                32,
+                new Object[] {
+                        ItemList.Circuit_Board_Optical.get(2L),
+                        ItemList.Circuit_OpticalAssembly.get(2L),
+                        ItemList.Circuit_Parts_TransistorXSMD.get(24L),
+                        ItemList.Circuit_Parts_ResistorXSMD.get(24L),
+                        ItemList.Circuit_Parts_CapacitorXSMD.get(24L),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(24L),
+                        ItemList.Circuit_Chip_NOR.get(64L),
+                        ItemList.Circuit_Chip_SoC2.get(32L),
+                        GT_ModHandler.getModItem("bartworks", "gt.MetaGeneratedwireFine", 32L, 10101), //Fine Lumiium Wire
+                        new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
+
+                },
+                new FluidStack[] {
+                        new FluidStack(solderUEV, 1440 * 2),
+                        Materials.Radon.getPlasma(1440L * 2),
+                        Materials.SuperCoolant.getFluid(10_000L * 2),
+                        new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 2)
+                },
+                ItemList.Circuit_OpticalComputer.get(1L),
+                200 * 20,
+                2_000_000);
+
         // GTNH UIV, UMV, UXV Circuits
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Circuit_Biomainframe.get(1L),
