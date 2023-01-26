@@ -15,6 +15,9 @@ import net.minecraftforge.fluids.FluidStack;
 public class BlastFurnaceRecipes implements Runnable {
     @Override
     public void run() {
+
+        this.primitiveBlastFurnaceRecipes();
+
         GT_Values.RA.addBlastRecipe(
                 Materials.Gypsum.getDust(8),
                 GT_Values.NI,

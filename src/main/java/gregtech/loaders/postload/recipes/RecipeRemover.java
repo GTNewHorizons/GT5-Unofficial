@@ -23,8 +23,9 @@ public class RecipeRemover implements Runnable{
     @Override
     public void run() {
         GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L));
-
+        removeCrafting();
         removeSmelting();
+        removeIC2Recipes();
     }
 
     public void removeCrafting(){

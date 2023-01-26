@@ -15,6 +15,9 @@ import net.minecraftforge.fluids.FluidStack;
 public class DistilleryRecipes implements Runnable {
     @Override
     public void run() {
+
+        distillationTowerRecipes();
+
         GT_Values.RA.addDistilleryRecipe(
                 GT_Utility.getIntegratedCircuit(24),
                 Materials.Creosote.getFluid(100L),

@@ -23,6 +23,12 @@ import net.minecraftforge.fluids.FluidStack;
 public class AssemblerRecipes implements Runnable {
     @Override
     public void run() {
+
+        this.withBartWorks();
+        this.withGalacticraftMars();
+        this.withoutGTPPRecipes();
+        this.loadRailcraftRecipes();
+        this.withGalaxySPace();
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1L),
