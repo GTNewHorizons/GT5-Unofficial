@@ -83,7 +83,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("MOXFuel", 1),
                 ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
                 GT_ModHandler.getIC2Item("reactorMOXSimple", 1, 1));
-        
+
         try {
             GT_DummyWorld tWorld = (GT_DummyWorld) GT_Values.DW;
             while (tWorld.mRandom.mIterationStep > 0) {
@@ -137,139 +137,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 256,
                 128);
 
-        GT_Values.RA.addAutoclaveRecipe(
-                ItemList.IC2_Energium_Dust.get(9L),
-                Materials.EnergeticAlloy.getMolten(288),
-                ItemList.IC2_EnergyCrystal.get(1L),
-                10000,
-                600,
-                256);
-        GT_Values.RA.addAutoclaveRecipe(
-                ItemList.IC2_Energium_Dust.get(9L),
-                Materials.ConductiveIron.getMolten(576),
-                ItemList.IC2_EnergyCrystal.get(1L),
-                10000,
-                1200,
-                256);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 0),
-                Materials.Water.getFluid(200L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 10),
-                8000,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 600),
-                Materials.Water.getFluid(200L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 11),
-                8000,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 1200),
-                Materials.Water.getFluid(200L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 12),
-                8000,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 0),
-                GT_ModHandler.getDistilledWater(100L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 10),
-                9000,
-                1000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 600),
-                GT_ModHandler.getDistilledWater(100L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 11),
-                9000,
-                1000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 1200),
-                GT_ModHandler.getDistilledWater(100L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 12),
-                9000,
-                1000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 0),
-                Materials.Void.getMolten(36L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 10),
-                10000,
-                500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 600),
-                Materials.Void.getMolten(36L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 11),
-                10000,
-                500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 1200),
-                Materials.Void.getMolten(36L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 12),
-                10000,
-                500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 32),
-                Materials.Polybenzimidazole.getMolten(36L),
-                GT_ModHandler.getIC2Item("carbonFiber", 64L),
-                10000,
-                150,
-                1920);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
-                Materials.Epoxid.getMolten(144L),
-                GT_ModHandler.getIC2Item("carbonFiber", 64L),
-                10000,
-                300,
-                480);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
-                Materials.Polytetrafluoroethylene.getMolten(288L),
-                GT_ModHandler.getIC2Item("carbonFiber", 32L),
-                10000,
-                400,
-                120);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
-                Materials.Plastic.getMolten(576L),
-                GT_ModHandler.getIC2Item("carbonFiber", 16L),
-                10000,
-                600,
-                30);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1),
-                Materials.UUMatter.getFluid(576L),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1),
-                3333,
-                72000,
-                480);
-
-        GT_Values.RA.addAutoclave4Recipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Water.getFluid(1000L),
-                GT_Values.NF,
-                new ItemStack[] {GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
-                new int[] {0, 7500},
-                1200,
-                30,
-                false);
-        GT_Values.RA.addAutoclave4Recipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GT_Utility.getIntegratedCircuit(1),
-                GT_ModHandler.getDistilledWater(1000L),
-                GT_Values.NF,
-                new ItemStack[] {GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
-                new int[] {0, 9000},
-                1200,
-                30,
-                false);
         GT_Values.RA.addSimpleArcFurnaceRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                 Materials.Oxygen.getGas(2000L),
@@ -278,12 +145,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 1200,
                 30);
 
-
-
-
-
-
-
         // recycling Long Distance Pipes
         GT_Values.RA.addPulveriserRecipe(
                 ItemList.Long_Distance_Pipeline_Fluid.get(1L),
@@ -291,7 +152,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 300,
                 4);
-
 
         GT_Values.RA.addPulveriserRecipe(
                 ItemList.Long_Distance_Pipeline_Item.get(1L),
@@ -302,7 +162,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 300,
                 4);
-
 
         GT_Values.RA.addPulveriserRecipe(
                 ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(1L),
@@ -321,7 +180,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 10,
                 4);
-
 
 
         GT_Values.RA.addCentrifugeRecipe(
@@ -2668,29 +2526,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 100,
                 30);
 
-
-
-
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L)),
-                Materials.Neutronium.getMolten(288),
-                ItemList.Gravistar.get(1L),
-                10000,
-                480,
-                7680);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(ItemList.Gravistar.get(16L)),
-                Materials.Infinity.getMolten(288),
-                ItemList.NuclearStar.get(1L),
-                10000,
-                480,
-                7864320);
-
-
-
-
-
-
         // CaH2 + 2Si = CaSi2 + 2H
         GT_Values.RA.addBlastRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calciumhydride, 3),
@@ -4652,28 +4487,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         this.addRecipesApril2017ChemistryUpdate();
 
-        // SiO2 ->Quartzite
-        GT_Values.RA.addAutoclaveRecipe(
-                Materials.SiliconDioxide.getDust(1),
-                Materials.Water.getFluid(200L),
-                Materials.Quartzite.getGems(1),
-                750,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                Materials.SiliconDioxide.getDust(1),
-                GT_ModHandler.getDistilledWater(100L),
-                Materials.Quartzite.getGems(1),
-                1000,
-                1500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                Materials.SiliconDioxide.getDust(1),
-                Materials.Void.getMolten(36L),
-                Materials.Quartzite.getGems(1),
-                10000,
-                1000,
-                24);
+
 
         // NaOH = Na + O + H
         GT_Values.RA.addElectrolyzerRecipe(
