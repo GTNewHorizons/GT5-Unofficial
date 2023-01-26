@@ -49,7 +49,11 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
                                     getCasingRegistryID(), getCasingMeta(), FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
                     .addElement('C', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
                     .addElement('D', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
-                    .addElement('F', addMultiTileCasing(getCasingRegistryID(), 20001, NOTHING))
+                    .addElement(
+                            'F',
+                            ofChain(
+                                    addMultiTileCasing(getCasingRegistryID(), 20001, NOTHING),
+                                    addMultiTileCasing(getCasingRegistryID(), 20002, NOTHING)))
                     .build();
         }
         return STRUCTURE_DEFINITION;
