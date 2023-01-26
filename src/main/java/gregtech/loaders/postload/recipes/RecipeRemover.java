@@ -94,7 +94,7 @@ public class RecipeRemover implements Runnable{
             ItemList.Crop_Drop_Ferru.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
         GT_Utility.removeSimpleIC2MachineRecipe(
             ItemList.Crop_Drop_Aurelia.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
-        
+
         if (!GregTech_API.mIC2Classic) {
             try {
                 Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange =

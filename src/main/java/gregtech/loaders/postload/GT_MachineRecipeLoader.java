@@ -96,13 +96,6 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrapbox.get(1L), 180, 1);
 
-        for (int g = 0; g < 16; g++) {
-            if (!GT_MachineRecipeLoader.isNEILoaded) {
-                break;
-            }
-            API.hideItem(new ItemStack(GT_MetaGenerated_Item_03.INSTANCE, 1, g));
-        }
-
         GT_Values.RA.addElectromagneticSeparatorRecipe(
                 MaterialsOreAlum.SluiceSand.getDust(1),
                 Materials.Iron.getDust(1),
