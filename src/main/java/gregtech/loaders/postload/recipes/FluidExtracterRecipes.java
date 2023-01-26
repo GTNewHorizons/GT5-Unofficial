@@ -12,6 +12,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.loaders.postload.GT_MachineRecipeLoader;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -392,6 +394,25 @@ public class FluidExtracterRecipes implements Runnable {
                 2);
         GT_Values.RA.addFluidExtractionRecipe(
                 ItemList.Crop_Drop_Rape.get(1), null, Materials.SeedOil.getFluid(125), 10000, 32, 2);
+
+        GT_Values.RA.addFluidSmelterRecipe(
+            new ItemStack(Items.snowball, 1, 0), GT_Values.NI, Materials.Water.getFluid(250L), 10000, 32, 4);
+        GT_Values.RA.addFluidSmelterRecipe(
+            new ItemStack(Blocks.snow, 1, 0), GT_Values.NI, Materials.Water.getFluid(1000L), 10000, 128, 4);
+        GT_Values.RA.addFluidSmelterRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L),
+            GT_Values.NI,
+            Materials.Ice.getSolid(1000L),
+            10000,
+            128,
+            4);
+        GT_Values.RA.addFluidSmelterRecipe(
+            getModItem(GT_MachineRecipeLoader.aTextForestry, "phosphor", 1L),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
+            Materials.Lava.getFluid(800L),
+            1000,
+            256,
+            128);
 
         // Beecombs fluid extractor recipes
         if (isBartWorksLoaded) {

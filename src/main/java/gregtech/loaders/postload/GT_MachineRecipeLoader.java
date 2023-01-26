@@ -73,26 +73,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     "GT_Mod: failed to iterate somehow, maybe it's your Forge Version causing it. But it's not that important\n");
             e.printStackTrace(GT_Log.err);
         }
-
-        GT_Values.RA.addFluidSmelterRecipe(
-                new ItemStack(Items.snowball, 1, 0), GT_Values.NI, Materials.Water.getFluid(250L), 10000, 32, 4);
-        GT_Values.RA.addFluidSmelterRecipe(
-                new ItemStack(Blocks.snow, 1, 0), GT_Values.NI, Materials.Water.getFluid(1000L), 10000, 128, 4);
-        GT_Values.RA.addFluidSmelterRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L),
-                GT_Values.NI,
-                Materials.Ice.getSolid(1000L),
-                10000,
-                128,
-                4);
-        GT_Values.RA.addFluidSmelterRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "phosphor", 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
-                Materials.Lava.getFluid(800L),
-                1000,
-                256,
-                128);
-
+        
         GT_Values.RA.addSimpleArcFurnaceRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                 Materials.Oxygen.getGas(2000L),
