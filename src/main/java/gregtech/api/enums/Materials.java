@@ -909,7 +909,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Time = new Materials(587, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 100, 1, 255, 255, "Time", "Molten Time", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple);
     public static Materials Space = new Materials(106, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 100, 1, 255, 255, "Space", "Molten Space", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple);
 
-    public static Materials Universium = new Materials(139, new TextureSet("universium", true),   1.0F,4*2621440,  25, 1|2|64|128,   200,   200, 200,  255,   "Universium"                ,   "Universium"                      ,    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1)));
+    public static Materials Universium = new Materials(139, new TextureSet("universium", true),   1.0F,4*2621440,  25, 1|2|64|128,   200,   200, 200,  255,   "Universium"                ,   "Universium",    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setProcessingMaterialTierEU(Tier.UMV);
 
     // spotless:on
 

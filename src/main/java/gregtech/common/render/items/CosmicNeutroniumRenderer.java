@@ -30,8 +30,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
     private static final Pos2d point3 = new Pos2d(0  - 10, 17 + 10);
     // spotless:on
 
-    private static void drawHalo(ItemRenderType type) {
-
+    private void drawHalo(ItemRenderType type) {
         // Because when this class is instantiated, making this a static field will cause it to set to null.
         final IIcon haloFuzzy = Textures.ItemIcons.HALO_FUZZY.getIcon();
 
@@ -70,25 +69,19 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        renderRegularItem(type, aStack, aStack.getItem().getIconFromDamage(aStack.getItemDamage()), true);
-//        TextureUtils.bindAtlas(1);
-//        drawHalo(type);
-        return true;
-    }
-
-
-    @Override
     public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
 
         RenderItem r = RenderItem.getInstance();
 
         GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+        }
+
         drawHalo(type);
 
         //spotless:on
