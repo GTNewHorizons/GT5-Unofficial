@@ -11,6 +11,8 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Objects;
+
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
     private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();
@@ -64,10 +66,9 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
             // Handle fluid rendering.
             if (aMaterialRenderer == null) {
-                try {
-                    Materials material = getAssociation(aStack).mMaterial.mMaterial;
+                Materials material = Objects.requireNonNull(getAssociation(aStack)).mMaterial.mMaterial;
+                if (material.renderer != null) {
                     aMaterialRenderer = material.renderer;
-                } catch (Exception ignored) {
                 }
             }
 
