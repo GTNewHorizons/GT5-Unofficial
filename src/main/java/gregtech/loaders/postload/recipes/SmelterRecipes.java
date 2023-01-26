@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 public class SmelterRecipes implements Runnable {
     @Override
     public void run() {
-        removeSmelting();
 
         GT_ModHandler.addSmeltingRecipe(ItemList.Food_Raw_PotatoChips.get(1L), ItemList.Food_PotatoChips.get(1L));
         GT_ModHandler.addSmeltingRecipe(
@@ -47,16 +46,5 @@ public class SmelterRecipes implements Runnable {
         GT_ModHandler.addSmeltingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L));
-    }
-
-    public void removeSmelting() {
-        GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
-        GT_ModHandler.removeFurnaceSmelting(
-                GT_OreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
-        GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
-        GT_ModHandler.removeFurnaceSmelting(
-                GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
-        GT_ModHandler.removeFurnaceSmelting(
-                GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
     }
 }
