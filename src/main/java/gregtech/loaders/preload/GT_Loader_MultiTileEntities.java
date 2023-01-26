@@ -42,5 +42,14 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         //        .texture("metalwall")
         //        .setNBT(new Tuple("mInventorySize", 16), new Tuple("mTier", 1))
         //        .register();
+        // aRegistry
+        //         .create(20002, InventoryUpgrade.class)
+        //         .name("Inventory Upgrade MV")
+        //         .category("MultiBlock Upgrade Casing")
+        //         .setBlock(aMachine)
+        //         .material(Materials.Neutronium)
+        //         .texture("metalwall")
+        //         .setNBT(new Tuple("mInventorySize", 24), new Tuple("mTier", 2))
+        //         .register();
     }
 }
