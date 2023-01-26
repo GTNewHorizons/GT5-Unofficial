@@ -839,25 +839,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     public void run2() {
 
-        GT_Values.RA.addLatheRecipe(
-                new ItemStack(Blocks.wooden_slab, 1, GT_Values.W),
-                new ItemStack(Items.bowl, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1),
-                50,
-                8);
-        GT_Values.RA.addLatheRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "slabs", 1L, GT_Values.W),
-                new ItemStack(Items.bowl, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1),
-                50,
-                8);
-        GT_Values.RA.addLatheRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextEBXL, "woodslab", 1L, GT_Values.W),
-                new ItemStack(Items.bowl, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1),
-                50,
-                8);
-
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_Values.RA.addWiremillRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1L),
