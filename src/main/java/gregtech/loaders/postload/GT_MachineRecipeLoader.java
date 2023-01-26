@@ -130,34 +130,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 1200,
                 30);
 
-        GT_Values.RA.addSlicerRecipe(
-                ItemList.Food_Dough_Chocolate.get(1L),
-                ItemList.Shape_Slicer_Flat.get(0L),
-                ItemList.Food_Raw_Cookie.get(4L),
-                128,
-                4);
-        GT_Values.RA.addSlicerRecipe(
-                ItemList.Food_Baked_Bun.get(1L),
-                ItemList.Shape_Slicer_Flat.get(0L),
-                ItemList.Food_Sliced_Bun.get(2L),
-                128,
-                4);
-        GT_Values.RA.addSlicerRecipe(
-                ItemList.Food_Baked_Bread.get(1L),
-                ItemList.Shape_Slicer_Flat.get(0L),
-                ItemList.Food_Sliced_Bread.get(2L),
-                128,
-                4);
-        GT_Values.RA.addSlicerRecipe(
-                ItemList.Food_Baked_Baguette.get(1L),
-                ItemList.Shape_Slicer_Flat.get(0L),
-                ItemList.Food_Sliced_Baguette.get(2L),
-                128,
-                4);
-
-
-
-
         GT_Values.RA.addFluidHeaterRecipe(
                 GT_Utility.getIntegratedCircuit(1),
                 Materials.GrowthMediumRaw.getFluid(1000L),
@@ -6866,7 +6838,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.RC_Rebar.get(64L),
                 200,
                 15);
-
 
 
         GT_ModHandler.addPulverisationRecipe(
