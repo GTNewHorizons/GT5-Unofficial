@@ -49,30 +49,10 @@ public class GT_MachineRecipeLoader implements Runnable {
     public static final Boolean isExtraUtilitiesLoaded = Loader.isModLoaded("ExtraUtilities");
     public static final Boolean isEBXLLoaded = Loader.isModLoaded(GT_MachineRecipeLoader.aTextEBXL);
     public static final Boolean isRailcraftLoaded = Loader.isModLoaded(MOD_ID_RC);
-    public static final Boolean isForestryloaded =
-            Loader.isModLoaded(GT_MachineRecipeLoader.aTextForestry); // TODO OW YEAH NEW PLANK GEN CODE!!!
+    public static final Boolean isForestryloaded = Loader.isModLoaded(GT_MachineRecipeLoader.aTextForestry);
 
     @Override
     public void run() {
-        GT_Log.out.println("GT_Mod: Adding non-OreDict Machine Recipes.");
-
-
-        try {
-            GT_DummyWorld tWorld = (GT_DummyWorld) GT_Values.DW;
-            while (tWorld.mRandom.mIterationStep > 0) {
-                GT_Values.RA.addFluidExtractionRecipe(
-                        GT_Utility.copyAmount(1L, ForgeHooks.getGrassSeed(tWorld)),
-                        GT_Values.NI,
-                        Materials.SeedOil.getFluid(5L),
-                        10000,
-                        64,
-                        2);
-            }
-        } catch (Throwable e) {
-            GT_Log.out.println(
-                    "GT_Mod: failed to iterate somehow, maybe it's your Forge Version causing it. But it's not that important\n");
-            e.printStackTrace(GT_Log.err);
-        }
 
         GT_Values.RA.addSimpleArcFurnaceRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
@@ -81,8 +61,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 1200,
                 30);
-
-        this.run2();
 
         if (Loader.isModLoaded("HardcoreEnderExpansion")) {
             GT_OreDictUnificator.set(
@@ -106,9 +84,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 240);
 
         GT_BauxiteRefineChain.run();
-    }
-
-    public void run2() {
         GT_NaniteChain.run();
         GT_PCBFactoryRecipes.load();
     }

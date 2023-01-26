@@ -10,14 +10,18 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_DummyWorld;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeHooks;
 
-public class FluidExtracterRecipes implements Runnable {
+public class FluidExtractorRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.addFluidExtractionRecipe(
@@ -413,6 +417,23 @@ public class FluidExtracterRecipes implements Runnable {
             1000,
             256,
             128);
+
+        try {
+            GT_DummyWorld tWorld = (GT_DummyWorld) GT_Values.DW;
+            while (tWorld.mRandom.mIterationStep > 0) {
+                GT_Values.RA.addFluidExtractionRecipe(
+                    GT_Utility.copyAmount(1L, ForgeHooks.getGrassSeed(tWorld)),
+                    GT_Values.NI,
+                    Materials.SeedOil.getFluid(5L),
+                    10000,
+                    64,
+                    2);
+            }
+        } catch (Throwable e) {
+            GT_Log.out.println(
+                "GT_Mod: failed to iterate somehow, maybe it's your Forge Version causing it. But it's not that important\n");
+            e.printStackTrace(GT_Log.err);
+        }
 
         // Beecombs fluid extractor recipes
         if (isBartWorksLoaded) {
