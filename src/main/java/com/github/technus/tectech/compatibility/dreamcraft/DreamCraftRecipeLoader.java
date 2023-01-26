@@ -3681,6 +3681,39 @@ public class DreamCraftRecipeLoader {
                 200 * 20,
                 2_000_000);
 
+        //Optical Mainframe
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Circuit_OpticalComputer.get(1L),
+                768_000,
+                1024,
+                8_000_000,
+                64,
+                new Object[] {
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 8),
+                        ItemList.Circuit_OpticalComputer.get(2L),
+                        ItemList.Circuit_Parts_InductorXSMD.get(32L),
+                        ItemList.Circuit_Parts_TransistorXSMD.get(32L),
+                        ItemList.Circuit_Parts_ResistorXSMD.get(32L),
+                        ItemList.Circuit_Parts_CapacitorXSMD.get(32L),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(32L),
+                        ItemList.Circuit_Chip_SoC2.get(64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 64),
+                        new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                        new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64)
+
+                },
+                new FluidStack[] {
+                        new FluidStack(solderUEV, 1440 * 4),
+                        Materials.Radon.getPlasma(1440L * 4),
+                        Materials.SuperCoolant.getFluid(10_000L * 4),
+                        new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 4)
+                },
+                ItemList.Circuit_OpticalMainframe.get(1L),
+                300 * 20,
+                8_000_000);
+
         // GTNH UIV, UMV, UXV Circuits
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Circuit_Biomainframe.get(1L),
