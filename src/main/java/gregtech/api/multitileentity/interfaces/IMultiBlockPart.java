@@ -13,10 +13,4 @@ public interface IMultiBlockPart extends IMultiTileEntity {
     int getLockedInventoryIndex();
 
     boolean tickCoverAtSide(byte aSide, long aTickTimer);
-
-    public interface IMBP_InventoryUpgrade {
-        String getInventoryName();
-
-        IItemHandlerModifiable getInventory();
-    }
 }
