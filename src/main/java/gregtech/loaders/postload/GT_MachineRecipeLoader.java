@@ -53,16 +53,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     @Override
     public void run() {
-
-        GT_Values.RA.addElectromagneticSeparatorRecipe(
-                MaterialsOreAlum.SluiceSand.getDust(1),
-                Materials.Iron.getDust(1),
-                Materials.Neodymium.getDust(1),
-                Materials.Chrome.getDust(1),
-                new int[] {4000, 2000, 2000},
-                200,
-                240);
-
         GT_BauxiteRefineChain.run();
         GT_NaniteChain.run();
         GT_PCBFactoryRecipes.load();
