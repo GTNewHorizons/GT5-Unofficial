@@ -4644,6 +4644,22 @@ public class DreamCraftRecipeLoader {
 
         // region items
 
+        // Optically Compatible Memory
+        GT_Values.RA.addCircuitAssemblerRecipe(
+                new ItemStack[] {
+                    GT_ModHandler.getModItem("OpenComputers", "item", 1L, 39), // Memory tier 3.5
+                    ItemList.Circuit_Chip_Optical.get(1L),
+                    CustomItemList.DATApipe.get(4L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 8L),
+                    GT_ModHandler.getModItem("supersolarpanel", "solarsplitter", 1L, 0) // Solar Light Splitter
+                },
+                new FluidStack(solderUEV, 288),
+                ItemList.Optically_Compatible_Memory.get(2),
+                10 * 20,
+                7_864_320,
+                false);
+
         // Optical Processor
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
