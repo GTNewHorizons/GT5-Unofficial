@@ -3622,7 +3622,7 @@ public class DreamCraftRecipeLoader {
                 6000,
                 2000000);
 
-        //Optical Assembly
+        // Optical Assembly
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Circuit_OpticalProcessor.get(1L),
                 192_000,
@@ -3630,27 +3630,27 @@ public class DreamCraftRecipeLoader {
                 2_000_000,
                 16,
                 new Object[] {
-                        ItemList.Circuit_Board_Optical.get(1L),
-                        ItemList.Circuit_OpticalProcessor.get(2L),
-                        ItemList.Circuit_Parts_InductorXSMD.get(16L),
-                        ItemList.Circuit_Parts_CapacitorXSMD.get(20L),
-                        ItemList.Circuit_Parts_ResistorXSMD.get(20L),
-                        ItemList.Circuit_Chip_NOR.get(32L),
-                        ItemList.Circuit_Chip_Ram.get(64L),
-                        GT_ModHandler.getModItem("bartworks", "gt.MetaGeneratedwireFine", 24L, 10101), //Fine Lumiium Wire
-                        new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                    ItemList.Circuit_Board_Optical.get(1L),
+                    ItemList.Circuit_OpticalProcessor.get(2L),
+                    ItemList.Circuit_Parts_InductorXSMD.get(16L),
+                    ItemList.Circuit_Parts_CapacitorXSMD.get(20L),
+                    ItemList.Circuit_Parts_ResistorXSMD.get(20L),
+                    ItemList.Circuit_Chip_NOR.get(32L),
+                    ItemList.Circuit_Chip_Ram.get(64L),
+                    GT_ModHandler.getModItem("bartworks", "gt.MetaGeneratedwireFine", 24L, 10101), // Fine Lumiium Wire
+                    new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
                 },
                 new FluidStack[] {
-                        new FluidStack(solderUEV, 1440),
-                        Materials.Radon.getPlasma(1440L),
-                        Materials.SuperCoolant.getFluid(10_000L),
-                        new FluidStack(FluidRegistry.getFluid("oganesson"), 500)
+                    new FluidStack(solderUEV, 1440),
+                    Materials.Radon.getPlasma(1440L),
+                    Materials.SuperCoolant.getFluid(10_000L),
+                    new FluidStack(FluidRegistry.getFluid("oganesson"), 500)
                 },
                 ItemList.Circuit_OpticalAssembly.get(1L),
                 20 * 20,
                 2_000_000);
 
-        //Optical Computer
+        // Optical Computer
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Circuit_OpticalAssembly.get(1L),
                 384_000,
@@ -3658,30 +3658,29 @@ public class DreamCraftRecipeLoader {
                 4_000_000,
                 32,
                 new Object[] {
-                        ItemList.Circuit_Board_Optical.get(2L),
-                        ItemList.Circuit_OpticalAssembly.get(2L),
-                        ItemList.Circuit_Parts_TransistorXSMD.get(24L),
-                        ItemList.Circuit_Parts_ResistorXSMD.get(24L),
-                        ItemList.Circuit_Parts_CapacitorXSMD.get(24L),
-                        ItemList.Circuit_Parts_DiodeXSMD.get(24L),
-                        ItemList.Circuit_Chip_NOR.get(64L),
-                        ItemList.Circuit_Chip_SoC2.get(32L),
-                        GT_ModHandler.getModItem("bartworks", "gt.MetaGeneratedwireFine", 32L, 10101), //Fine Lumiium Wire
-                        new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
-
+                    ItemList.Circuit_Board_Optical.get(2L),
+                    ItemList.Circuit_OpticalAssembly.get(2L),
+                    ItemList.Circuit_Parts_TransistorXSMD.get(24L),
+                    ItemList.Circuit_Parts_ResistorXSMD.get(24L),
+                    ItemList.Circuit_Parts_CapacitorXSMD.get(24L),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(24L),
+                    ItemList.Circuit_Chip_NOR.get(64L),
+                    ItemList.Circuit_Chip_SoC2.get(32L),
+                    GT_ModHandler.getModItem("bartworks", "gt.MetaGeneratedwireFine", 32L, 10101), // Fine Lumiium Wire
+                    new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
                 },
                 new FluidStack[] {
-                        new FluidStack(solderUEV, 1440 * 2),
-                        Materials.Radon.getPlasma(1440L * 2),
-                        Materials.SuperCoolant.getFluid(10_000L * 2),
-                        new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 2)
+                    new FluidStack(solderUEV, 1440 * 2),
+                    Materials.Radon.getPlasma(1440L * 2),
+                    Materials.SuperCoolant.getFluid(10_000L * 2),
+                    new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 2)
                 },
                 ItemList.Circuit_OpticalComputer.get(1L),
                 200 * 20,
                 2_000_000);
 
-        //Optical Mainframe
+        // Optical Mainframe
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Circuit_OpticalComputer.get(1L),
                 768_000,
@@ -3689,26 +3688,25 @@ public class DreamCraftRecipeLoader {
                 8_000_000,
                 64,
                 new Object[] {
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 8),
-                        ItemList.Circuit_OpticalComputer.get(2L),
-                        ItemList.Circuit_Parts_InductorXSMD.get(32L),
-                        ItemList.Circuit_Parts_TransistorXSMD.get(32L),
-                        ItemList.Circuit_Parts_ResistorXSMD.get(32L),
-                        ItemList.Circuit_Parts_CapacitorXSMD.get(32L),
-                        ItemList.Circuit_Parts_DiodeXSMD.get(32L),
-                        ItemList.Circuit_Chip_SoC2.get(64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 64),
-                        new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
-                        new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64)
-
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 8),
+                    ItemList.Circuit_OpticalComputer.get(2L),
+                    ItemList.Circuit_Parts_InductorXSMD.get(32L),
+                    ItemList.Circuit_Parts_TransistorXSMD.get(32L),
+                    ItemList.Circuit_Parts_ResistorXSMD.get(32L),
+                    ItemList.Circuit_Parts_CapacitorXSMD.get(32L),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(32L),
+                    ItemList.Circuit_Chip_SoC2.get(64L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 64),
+                    new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                    new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64)
                 },
                 new FluidStack[] {
-                        new FluidStack(solderUEV, 1440 * 4),
-                        Materials.Radon.getPlasma(1440L * 4),
-                        Materials.SuperCoolant.getFluid(10_000L * 4),
-                        new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 4)
+                    new FluidStack(solderUEV, 1440 * 4),
+                    Materials.Radon.getPlasma(1440L * 4),
+                    Materials.SuperCoolant.getFluid(10_000L * 4),
+                    new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 4)
                 },
                 ItemList.Circuit_OpticalMainframe.get(1L),
                 300 * 20,
