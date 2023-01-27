@@ -1,13 +1,13 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import static com.github.technus.tectech.TecTech.eyeOfHarmonyRecipeStorage;
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorColen;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.*;
 import static net.minecraft.util.EnumChatFormatting.*;
@@ -1283,6 +1283,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                     .addElement('C', ofBlock(sBlockCasingsBA0, 11))
                     .addElement('D', ofBlock(sBlockCasingsBA0, 10))
                     .addElement(
+                            'H',
+                            buildHatchAdder(GT_MetaTileEntity_EM_EyeOfHarmony.class)
+                                    .atLeast(InputHatch, OutputHatch, OutputBus, Maintenance, Energy)
+                                    .casingIndex(13)
+                                    .dot(1)
+                                    .buildAndChain(sBlockCasingsBA0, 13))
+                    .addElement(
                             'E',
                             ofBlocksTiered(
                                     (block, meta) ->
@@ -1300,14 +1307,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                     -1,
                                     (t, meta) -> t.timeAccelerationFieldMetadata = meta,
                                     t -> t.timeAccelerationFieldMetadata))
-                    .addElement(
-                            'H',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_EyeOfHarmony::addClassicToMachineList,
-                                    textureOffset,
-                                    1,
-                                    sBlockCasingsBA0,
-                                    12))
                     .build();
 
     private double hydrogenOverflowProbabilityAdjustment;
