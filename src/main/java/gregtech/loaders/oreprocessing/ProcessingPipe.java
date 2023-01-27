@@ -6,6 +6,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.enums.GT_Values.RA;
+
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingPipe() {
         OrePrefixes.pipeHuge.add(this);
@@ -109,7 +111,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case pipeRestrictiveMedium:
             case pipeRestrictiveSmall:
             case pipeRestrictiveTiny:
-                gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(
+                RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.ring,
@@ -120,22 +122,22 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         4);
                 break;
             case pipeQuadruple:
+
                 GT_ModHandler.addCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
                         GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
                         new Object[] {
-                            "PP ",
-                            "PP ",
+                            "MM ",
+                            "MM ",
                             "   ",
-                            'P',
-                            GT_OreDictUnificator.get(
-                                    aOreDictName.replaceFirst("Quadruple", "Medium"), null, 1L, false, true)
+                            'M',
+                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
                         });
-                gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(
-                        GT_OreDictUnificator.get(
-                                aOreDictName.replaceFirst("Quadruple", "Medium"), null, 4L, false, true),
-                        ItemList.Circuit_Integrated.getWithDamage(0, 4),
-                        GT_Utility.copyAmount(1L, aStack),
+
+                boolean test = RA.addAssemblerRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
+                        GT_Utility.getIntegratedCircuit(4),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
                         40,
                         8);
                 break;
@@ -151,7 +153,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             GT_OreDictUnificator.get(
                                     aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)
                         });
-                gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(
+                RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 9L, false, true),
                         ItemList.Circuit_Integrated.getWithDamage(0, 9),
                         GT_Utility.copyAmount(1L, aStack),
