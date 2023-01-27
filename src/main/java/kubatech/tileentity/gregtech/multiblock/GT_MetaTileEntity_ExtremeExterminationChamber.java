@@ -20,9 +20,9 @@
 package kubatech.tileentity.gregtech.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.*;
 import static kubatech.api.Variables.Author;
 import static kubatech.api.Variables.StructureHologram;
 
@@ -36,7 +36,9 @@ import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -101,7 +103,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_ExtremeExterminationChamber
         extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
-        implements CustomTileEntityPacketHandler {
+        implements CustomTileEntityPacketHandler, ISurvivalConstructable {
 
     public static final HashMap<String, MobRecipeLoader.MobRecipe> MobNameToRecipeMap = new HashMap<>();
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
@@ -146,24 +148,12 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                     .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
                     .addElement(
                             'C',
-                            ofChain(
-                                    onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)),
-                                    ofHatchAdder(
-                                            GT_MetaTileEntity_ExtremeExterminationChamber::addOutputToMachineList,
-                                            CASING_INDEX,
-                                            1),
-                                    ofHatchAdder(
-                                            GT_MetaTileEntity_ExtremeExterminationChamber::addInputToMachineList,
-                                            CASING_INDEX,
-                                            1),
-                                    ofHatchAdder(
-                                            GT_MetaTileEntity_ExtremeExterminationChamber::addEnergyInputToMachineList,
-                                            CASING_INDEX,
-                                            1),
-                                    ofHatchAdder(
-                                            GT_MetaTileEntity_ExtremeExterminationChamber::addMaintenanceToMachineList,
-                                            CASING_INDEX,
-                                            1)))
+                            buildHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber.class)
+                                    .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
+                                    .casingIndex(CASING_INDEX)
+                                    .dot(1)
+                                    .buildAndChain(
+                                            onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0))))
                     .addElement(
                             'g',
                             LoaderReference.Bartworks
@@ -273,6 +263,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 6, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 6, 0, elementBudget, env, true, true);
     }
 
     @Override
