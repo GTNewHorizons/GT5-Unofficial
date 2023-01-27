@@ -1,20 +1,13 @@
 package gregtech.common.render.items;
 
 import static gregtech.common.render.GT_RenderUtil.colorGTItem;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 
-import codechicken.lib.render.TextureUtils;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.common.render.GT_RenderUtil;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;

@@ -5,13 +5,12 @@ import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
+import java.util.Objects;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
-
-import java.util.Objects;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 

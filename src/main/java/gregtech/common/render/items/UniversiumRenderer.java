@@ -37,7 +37,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     @Override
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        magicRenderMethod(type, ItemList.Emitter_UEV.get(1), aStack.getItem().getIconFromDamage(aStack.getItemDamage()), data);
+        magicRenderMethod(
+                type, ItemList.Emitter_UEV.get(1), aStack.getItem().getIconFromDamage(aStack.getItemDamage()), data);
         return true;
     }
 
