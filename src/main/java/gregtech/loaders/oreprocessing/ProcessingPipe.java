@@ -126,20 +126,19 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
-                        GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[]{
-                            "MM ", "MM ", "   ", 'M', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
-                        });
-
+                            GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                            GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+                            new Object[] {
+                                "MM ", "MM ", "   ", 'M', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
+                            });
                 }
 
                 RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 9),
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
-                    60,
-                    calculateRecipeEU(aMaterial, 4));
+                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 9),
+                        GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                        60,
+                        calculateRecipeEU(aMaterial, 4));
                 break;
             case pipeNonuple:
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
