@@ -131,11 +131,11 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         });
 
                 RA.addAssemblerRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
-                        GT_Utility.getIntegratedCircuit(4),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
-                        60,
-                        calculateRecipeEU(aMaterial, 4));
+                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 9),
+                    GT_Utility.getIntegratedCircuit(9),
+                    GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                    60,
+                    calculateRecipeEU(aMaterial, 4));
                 break;
             case pipeNonuple:
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
