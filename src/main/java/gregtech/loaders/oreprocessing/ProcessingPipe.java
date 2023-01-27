@@ -123,12 +123,16 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         4);
                 break;
             case pipeQuadruple:
-                GT_ModHandler.addCraftingRecipe(
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+
+                    GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
                         GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
+                        new Object[]{
                             "MM ", "MM ", "   ", 'M', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
                         });
+
+                }
 
                 RA.addAssemblerRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 9),
