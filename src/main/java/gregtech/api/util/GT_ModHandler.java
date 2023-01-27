@@ -912,10 +912,17 @@ public class GT_ModHandler {
      * IC2-Compressor Recipe. Overloads old Recipes automatically
      */
     public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput) {
+        return addCompressionRecipe(aInput, aOutput, 300, 2);
+    }
+
+    /**
+     * IC2-Compressor Recipe. Overloads old Recipes automatically
+     */
+    public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput, int duration, int EUPerTick) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null || GT_Utility.areStacksEqual(aInput, aOutput, true)) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.compression, aInput, true)) return false;
-        RA.addCompressorRecipe(aInput, aOutput, 300, 2);
+        RA.addCompressorRecipe(aInput, aOutput, duration, EUPerTick);
         return true;
     }
 

@@ -25,7 +25,7 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     (int) Math.max(aMaterial.getMass() / 8L, 1L),
                     calculateRecipeEU(aMaterial, 4));
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial))
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
                             GT_Proxy.tBits,

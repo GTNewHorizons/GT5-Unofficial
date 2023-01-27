@@ -67,7 +67,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (aMaterial.mUnificatable
                         && (aMaterial.mMaterialInto == aMaterial)
                         && !aMaterial.contains(SubTag.NO_WORKING)) {
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_ModHandler.addCraftingRecipe(
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),
                                 GT_Proxy.tBits,
@@ -108,7 +108,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             case wireGt02:
                 cableWidth = 2;
                 correspondingCable = OrePrefixes.cableGt02;
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 2L), new Object[] {aOreDictName});
                     GT_ModHandler.addShapelessCraftingRecipe(
@@ -119,7 +119,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             case wireGt04:
                 cableWidth = 4;
                 correspondingCable = OrePrefixes.cableGt04;
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 4L), new Object[] {aOreDictName});
                     GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aStack), new Object[] {
@@ -136,7 +136,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             case wireGt08:
                 cableWidth = 8;
                 correspondingCable = OrePrefixes.cableGt08;
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 8L), new Object[] {aOreDictName});
                     GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aStack), new Object[] {
@@ -157,7 +157,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             case wireGt12:
                 cableWidth = 12;
                 correspondingCable = OrePrefixes.cableGt12;
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 12L),
                             new Object[] {aOreDictName});
@@ -169,7 +169,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             case wireGt16:
                 cableWidth = 16;
                 correspondingCable = OrePrefixes.cableGt16;
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 16L),

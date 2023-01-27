@@ -26,7 +26,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
         mMaterial = aMaterial;
 
         GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, getStackForm(1));
-        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GT_ModHandler.addCraftingRecipe(
                     getStackForm(2),
                     RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
