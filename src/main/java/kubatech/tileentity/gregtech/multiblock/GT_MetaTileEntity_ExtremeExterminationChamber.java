@@ -38,12 +38,10 @@ import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -58,7 +56,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
@@ -66,11 +63,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Function;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
-import kubatech.api.helpers.GTHelper;
 import kubatech.api.helpers.ReflectionHelper;
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.FastRandom;
@@ -104,7 +100,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_ExtremeExterminationChamber
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
+        extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
         implements CustomTileEntityPacketHandler {
 
     public static final HashMap<String, MobRecipeLoader.MobRecipe> MobNameToRecipeMap = new HashMap<>();
@@ -214,6 +210,16 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     }
 
     @Override
+    public boolean isOverclockingInfinite() {
+        return true;
+    }
+
+    @Override
+    protected int getOverclockTimeLimit() {
+        return 20;
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_ExtremeExterminationChamber> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -310,11 +316,6 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             };
         }
         return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @SideOnly(Side.CLIENT)
@@ -465,7 +466,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         boolean isValid = false;
         ItemID id = null;
         int looting = 0;
-        double attackdamage = 0;
+        double attackDamage = 0;
     }
 
     private final WeaponCache weaponCache = new WeaponCache();
@@ -495,7 +496,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             if (getMaxInputVoltage() < recipe.mEUt / 4) return false;
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 5000)};
             this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops);
-            this.mEUt /= 4;
+            this.lEUt /= 4L;
             this.mMaxProgresstime = 400;
         } else {
             if (getMaxInputVoltage() < recipe.mEUt) return false;
@@ -514,7 +515,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 }
                 try {
                     //noinspection unchecked
-                    weaponCache.attackdamage = ((Multimap<String, AttributeModifier>)
+                    weaponCache.attackDamage = ((Multimap<String, AttributeModifier>)
                                     lootingHolder.getAttributeModifiers())
                             .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).stream()
                                     .mapToDouble(attr -> attr.getAmount()
@@ -529,12 +530,12 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                         EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingHolder);
                 weaponCache.id = ItemID.create_NoCopy(lootingHolder, true, true);
             }
-            if (weaponCache.isValid) attackDamage += weaponCache.attackdamage;
+            if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
 
             this.mOutputItems = recipe.generateOutputs(
                     rand, this, attackDamage, weaponCache.isValid ? weaponCache.looting : 0, mIsProducingInfernalDrops);
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 120)};
-            int times = GTHelper.calculateOverclockedNessMulti(this, this.mEUt, this.mMaxProgresstime, true);
+            int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
             //noinspection ConstantConditions
             if (weaponCache.isValid && lootingHolder.isItemStackDamageable()) {
                 if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
@@ -551,7 +552,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 EECPlayer.currentWeapon = null;
             }
         }
-        if (this.mEUt > 0) this.mEUt = -this.mEUt;
+        if (this.lEUt > 0) this.lEUt = -this.lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
@@ -623,10 +624,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         else {
             info.add("Inserted weapon: " + EnumChatFormatting.YELLOW + (weaponCache.isValid ? "Yes" : "No"));
             if (weaponCache.isValid) {
-                info.add("Weapon attack damage: " + EnumChatFormatting.YELLOW + weaponCache.attackdamage);
+                info.add("Weapon attack damage: " + EnumChatFormatting.YELLOW + weaponCache.attackDamage);
                 info.add("Weapon looting level: " + EnumChatFormatting.YELLOW + weaponCache.looting);
                 info.add("Total attack damage: " + EnumChatFormatting.YELLOW
-                        + (DIAMOND_SPIKES_DAMAGE + weaponCache.attackdamage));
+                        + (DIAMOND_SPIKES_DAMAGE + weaponCache.attackDamage));
             } else info.add("Total attack damage: " + EnumChatFormatting.YELLOW + DIAMOND_SPIKES_DAMAGE);
         }
         return info.toArray(new String[0]);
@@ -637,12 +638,6 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         return true;
     }
 
-    private final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
-    private static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {
-        if (val == 0) return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS};
-        else return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK};
-    };
-
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new DrawableWidget()
@@ -652,18 +647,6 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .setEnabled(widget -> !isFixed.apply(widget)));
         final SlotWidget inventorySlot =
                 new SlotWidget(inventoryHandler, 1).setFilter(stack -> stack.getItem() == poweredSpawnerItem);
-        /*
-        Widget.PosProvider provider = (screenSize, window, parent)->{
-            if(getRepairStatus() == getIdealStatus() && mMachine)
-                return new Pos2d(50, 50);
-            else
-                return new Pos2d(151, 4);
-        };
-        builder.widget(inventorySlot.setPosProvider(provider).setTicker(widget -> {
-            if(!widget.getPos().equals(provider.getPos(null, null, null)))
-                widget.checkNeedsRebuild();
-        }));
-         */
 
         DynamicPositionedColumn configurationElements = new DynamicPositionedColumn();
         addConfigurationWidgets(configurationElements, buildContext, inventorySlot);
@@ -820,21 +803,6 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setEnabled(widget -> !mMachine))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     private static class EECFakePlayer extends FakePlayer {

@@ -42,7 +42,6 @@ import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -58,19 +57,18 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.GTHelper;
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
@@ -85,7 +83,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class GT_MetaTileEntity_MegaIndustrialApiary
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MegaIndustrialApiary>
+        extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_MegaIndustrialApiary>
         implements CustomTileEntityPacketHandler, ISurvivalConstructable {
 
     private byte mGlassTier = 0;
@@ -325,11 +323,6 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mMaxProgresstime > 0) {
             GT_Utility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
@@ -369,7 +362,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
     private void updateMaxSlots() {
         int mOld = mMaxSlots;
-        long v = GTHelper.getMaxInputEU(this);
+        long v = this.getMaxInputEu();
         if (v < GT_Values.V[6]) mMaxSlots = 0;
         else if (mSecondaryMode == 0) mMaxSlots = (int) (v / GT_Values.V[6]);
         else mMaxSlots = 1;
@@ -438,7 +431,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             mMaxProgresstime = 10;
             mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             mEfficiencyIncrease = 10000;
-            mEUt = 0;
+            lEUt = 0;
             return true;
         } else if (mPrimaryMode == 2) {
             if (mMaxSlots > 0 && !mStorage.isEmpty()) {
@@ -483,7 +476,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         stacks.addAll(beeSimulator.getDrops(64_00d * boosted));
                     }
 
-                    this.mEUt = -(int) ((double) GT_Values.V[6] * (double) mMaxSlots * 0.99d);
+                    this.lEUt = -(int) ((double) GT_Values.V[6] * (double) mMaxSlots * 0.99d);
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mMaxProgresstime = 100;
@@ -495,7 +488,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         this.updateSlots();
                         return false;
                     }
-                    calculateOverclockedNessMulti(GT_Values.V[5], 1200, 2, getMaxInputVoltage());
+                    calculateOverclock(GT_Values.V[5] - 2L, 1200);
+                    if (this.lEUt > 0) this.lEUt = -this.lEUt;
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mOutputItems = new ItemStack[] {this.mStorage.get(0).createIgnobleCopy()};
@@ -557,21 +551,6 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_MegaIndustrialApiary(this.mName);
     }
@@ -615,21 +594,14 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    private final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
-
-    @Override
     public void HandleCustomPacket(CustomTileEntityPacket customdata) {
         mMaxSlots = customdata.getDataInt();
     }
 
-    private static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {
-        if (val == 0) return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS};
-        else return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK};
-    };
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

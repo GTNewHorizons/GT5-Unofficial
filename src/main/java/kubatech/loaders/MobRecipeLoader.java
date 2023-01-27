@@ -229,7 +229,7 @@ public class MobRecipeLoader {
                 double attackDamage,
                 int lootinglevel,
                 boolean preferInfernalDrops) {
-            MTE.mEUt = mEUt;
+            MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
             for (MobDrop o : mOutputs) {
@@ -298,7 +298,7 @@ public class MobRecipeLoader {
                     EnchantmentHelper.addRandomEnchantment(
                             rnd, infernalstack, infernalstack.getItem().getItemEnchantability());
                     stacks.add(infernalstack);
-                    MTE.mEUt *= 8;
+                    MTE.mEUt *= 8L;
                     MTE.mMaxProgresstime *= mods * InfernalMobsCore.instance().getMobModHealthFactor();
                 }
             }
