@@ -141,7 +141,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
-        long voltage = getMaxInputVoltage();
+        long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
 
         return new String[] {

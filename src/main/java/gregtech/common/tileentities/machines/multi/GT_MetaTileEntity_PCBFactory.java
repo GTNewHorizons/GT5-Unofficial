@@ -529,7 +529,7 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
-        long voltage = getMaxInputVoltage();
+        long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
         int tier = GT_Utility.getTier(voltage);
 
@@ -873,7 +873,7 @@ public class GT_MetaTileEntity_PCBFactory
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
-        long voltage = getMaxInputVoltage();
+        long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
 
         return new String[] {
