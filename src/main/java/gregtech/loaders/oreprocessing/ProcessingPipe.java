@@ -6,6 +6,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingPipe() {
         OrePrefixes.pipeHuge.add(this);
@@ -26,13 +29,14 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         // These are only generated if a materials tier is < IV.
-        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-            switch (aPrefix) {
-                case pipeHuge:
-                case pipeLarge:
-                case pipeMedium:
-                case pipeSmall:
-                case pipeTiny:
+        switch (aPrefix) {
+            case pipeHuge:
+            case pipeLarge:
+            case pipeMedium:
+            case pipeSmall:
+            case pipeTiny:
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
                             GT_ModHandler.RecipeBits.BUFFERED,
@@ -101,66 +105,70 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
                             GT_ModHandler.RecipeBits.BUFFERED,
                             new Object[] {"DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial)});
-                    break;
-                case pipeRestrictiveHuge:
-                case pipeRestrictiveLarge:
-                case pipeRestrictiveMedium:
-                case pipeRestrictiveSmall:
-                case pipeRestrictiveTiny:
-                    gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(
-                            GT_OreDictUnificator.get(
-                                    aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true),
-                            GT_OreDictUnificator.get(
-                                    OrePrefixes.ring,
-                                    Materials.Steel,
-                                    aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
-                            GT_Utility.copyAmount(1L, aStack),
-                            (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount),
-                            4);
-                    break;
-                case pipeQuadruple:
+                }
+                break;
+            case pipeRestrictiveHuge:
+            case pipeRestrictiveLarge:
+            case pipeRestrictiveMedium:
+            case pipeRestrictiveSmall:
+            case pipeRestrictiveTiny:
+                RA.addAssemblerRecipe(
+                        GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true),
+                        GT_OreDictUnificator.get(
+                                OrePrefixes.ring,
+                                Materials.Steel,
+                                aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
+                        GT_Utility.copyAmount(1L, aStack),
+                        (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount),
+                        4);
+                break;
+            case pipeQuadruple:
+
+                GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                        GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+                        new Object[] {
+                            "MM ",
+                            "MM ",
+                            "   ",
+                            'M',
+                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
+                        });
+
+                RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
+                    GT_Utility.getIntegratedCircuit(4),
+                    GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                    60,
+                    calculateRecipeEU(aMaterial, 4));
+                break;
+            case pipeNonuple:
+
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+
                     GT_ModHandler.addCraftingRecipe(
-                            GT_Utility.copyAmount(1, aStack),
-                            GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] {
-                                "PP ",
-                                "PP ",
-                                "   ",
-                                'P',
-                                GT_OreDictUnificator.get(
-                                        aOreDictName.replaceFirst("Quadruple", "Medium"), null, 1L, false, true)
-                            });
-                    gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(
+                        GT_Utility.copyAmount(1, aStack),
+                        GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+                        new Object[]{
+                            "PPP",
+                            "PPP",
+                            "PPP",
+                            'P',
                             GT_OreDictUnificator.get(
-                                    aOreDictName.replaceFirst("Quadruple", "Medium"), null, 4L, false, true),
-                            ItemList.Circuit_Integrated.getWithDamage(0, 4),
-                            GT_Utility.copyAmount(1L, aStack),
-                            40,
-                            8);
-                    break;
-                case pipeNonuple:
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_Utility.copyAmount(1, aStack),
-                            GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] {
-                                "PPP",
-                                "PPP",
-                                "PPP",
-                                'P',
-                                GT_OreDictUnificator.get(
-                                        aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)
-                            });
-                    gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(
-                            GT_OreDictUnificator.get(
-                                    aOreDictName.replaceFirst("Nonuple", "Small"), null, 9L, false, true),
-                            ItemList.Circuit_Integrated.getWithDamage(0, 9),
-                            GT_Utility.copyAmount(1L, aStack),
-                            60,
-                            8);
-                    break;
-                default:
-                    break;
-            }
+                                aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)
+                        });
+
+                }
+
+                RA.addAssemblerRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
+                        GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1),
+                        60,
+                        calculateRecipeEU(aMaterial, 8));
+                break;
+            default:
+                break;
         }
     }
 }
