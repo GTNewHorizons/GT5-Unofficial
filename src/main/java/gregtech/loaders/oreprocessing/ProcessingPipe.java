@@ -26,7 +26,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         // These are only generated if a materials tier is < IV.
-        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             switch (aPrefix) {
                 case pipeHuge:
                 case pipeLarge:

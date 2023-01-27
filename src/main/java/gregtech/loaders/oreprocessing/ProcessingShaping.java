@@ -43,7 +43,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
 
                     // Allow creation of alloy smelter recipes for material recycling if < IV tier.
-                    if (tTrueVoltage < Tier.IV) {
+                    if (tTrueVoltage < TierEU.IV) {
                         GT_Values.RA.addAlloySmelterRecipe(
                                 GT_Utility.copyAmount(9L, aStack),
                                 ItemList.Shape_Mold_Block.get(0L),
@@ -233,7 +233,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             && !aMaterial.contains(SubTag.NO_SMASHING))
 
                         // If material tier < IV then add manual recipe.
-                        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L),
                                     GT_Proxy.tBits,
@@ -297,7 +297,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
 
                 if (!(aMaterial == Materials.StyreneButadieneRubber || aMaterial == Materials.Silicone)) {
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_Values.RA.addAlloySmelterRecipe(
                                 GT_Utility.copyAmount(2L, aStack),
                                 ItemList.Shape_Mold_Plate.get(0L),
@@ -307,7 +307,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     }
                 } else {
                     // If tier < IV then add ability to turn ingots into plates via alloy smelter.
-                    if (tTrueVoltage < Tier.IV) {
+                    if (tTrueVoltage < TierEU.IV) {
                         GT_Values.RA.addAlloySmelterRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Mold_Plate.get(0L),
@@ -318,7 +318,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 // If tier < IV then add ability to turn ingots into gears via alloy smelter.
-                if (tTrueVoltage < Tier.IV) {
+                if (tTrueVoltage < TierEU.IV) {
                     GT_Values.RA.addAlloySmelterRecipe(
                             GT_Utility.copyAmount(8L, aStack),
                             ItemList.Shape_Mold_Gear.get(0L),

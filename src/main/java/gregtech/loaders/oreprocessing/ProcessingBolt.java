@@ -1,9 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.Tier;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
@@ -17,7 +14,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             if ((aMaterial.mUnificatable)
                     && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)) {
