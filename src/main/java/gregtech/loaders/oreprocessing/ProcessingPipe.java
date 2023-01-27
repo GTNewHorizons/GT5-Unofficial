@@ -7,6 +7,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingPipe() {
@@ -134,31 +135,37 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
                         });
 
-                boolean test = RA.addAssemblerRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
-                        GT_Utility.getIntegratedCircuit(4),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
-                        40,
-                        8);
+                RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
+                    GT_Utility.getIntegratedCircuit(4),
+                    GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                    60,
+                    calculateRecipeEU(aMaterial, 4));
                 break;
             case pipeNonuple:
-                GT_ModHandler.addCraftingRecipe(
+
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+
+                    GT_ModHandler.addCraftingRecipe(
                         GT_Utility.copyAmount(1, aStack),
                         GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
+                        new Object[]{
                             "PPP",
                             "PPP",
                             "PPP",
                             'P',
                             GT_OreDictUnificator.get(
-                                    aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)
+                                aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)
                         });
+
+                }
+
                 RA.addAssemblerRecipe(
-                        GT_OreDictUnificator.get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 9L, false, true),
-                        ItemList.Circuit_Integrated.getWithDamage(0, 9),
-                        GT_Utility.copyAmount(1L, aStack),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
+                        GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1),
                         60,
-                        8);
+                        calculateRecipeEU(aMaterial, 8));
                 break;
             default:
                 break;
