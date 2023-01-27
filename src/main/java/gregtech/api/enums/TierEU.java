@@ -39,5 +39,4 @@ public class TierEU {
     public static final long RECIPE_UMV = GT_Values.VP[12];
     public static final long RECIPE_UXV = GT_Values.VP[13];
     public static final long RECIPE_MAX = GT_Values.VP[14];
-
 }
