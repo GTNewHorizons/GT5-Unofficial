@@ -184,7 +184,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
     }
 
     public long getMaxInputEu() {
-        return GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticEnergyHatches());
+        return GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
     }
 
     @Override
