@@ -1,13 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.enums.GT_Values.RA;
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingPipe() {
@@ -123,41 +123,34 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         4);
                 break;
             case pipeQuadruple:
-
                 GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
                         GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
                         new Object[] {
-                            "MM ",
-                            "MM ",
-                            "   ",
-                            'M',
-                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
+                            "MM ", "MM ", "   ", 'M', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1)
                         });
 
                 RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
-                    GT_Utility.getIntegratedCircuit(4),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
-                    60,
-                    calculateRecipeEU(aMaterial, 4));
+                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
+                        GT_Utility.getIntegratedCircuit(4),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                        60,
+                        calculateRecipeEU(aMaterial, 4));
                 break;
             case pipeNonuple:
-
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[]{
-                            "PPP",
-                            "PPP",
-                            "PPP",
-                            'P',
-                            GT_OreDictUnificator.get(
-                                aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)
-                        });
-
+                            GT_Utility.copyAmount(1, aStack),
+                            GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+                            new Object[] {
+                                "PPP",
+                                "PPP",
+                                "PPP",
+                                'P',
+                                GT_OreDictUnificator.get(
+                                        aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)
+                            });
                 }
 
                 RA.addAssemblerRecipe(
