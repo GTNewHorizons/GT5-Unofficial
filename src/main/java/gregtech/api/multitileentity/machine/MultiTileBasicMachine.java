@@ -36,8 +36,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(17);
-    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(15);
+    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(16);
+    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(16);
     protected boolean mOutputInventoryChanged = false;
 
     @Override
@@ -96,8 +96,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aNBT.hasKey(NBT.ACTIVE)) mActive = aNBT.getBoolean(NBT.ACTIVE);
 
         /* Inventories */
-        loadInventory(aNBT, NBT.INV_INPUT_SIZE, NBT.INV_INPUT_LIST);
-        loadInventory(aNBT, NBT.INV_OUTPUT_SIZE, NBT.INV_OUTPUT_LIST);
+        loadInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
+        loadInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
 
         /* Tanks */
         long tCapacity = 1000;
@@ -119,8 +119,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
             mOutputFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(NBT.FLUID_OUT + "." + i));
     }
 
-    protected void loadInventory(NBTTagCompound aNBT, String sizeTag, String invListTag) {
-        final IItemHandlerModifiable inv = mInputInventory;
+    protected void loadInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
         if (inv != null) {
             final NBTTagList tList = aNBT.getTagList(invListTag, 10);
             for (int i = 0; i < tList.tagCount(); i++) {
