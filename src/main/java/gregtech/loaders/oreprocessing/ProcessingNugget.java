@@ -50,7 +50,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                     GT_Utility.copyAmount(9L, aStack),
                     100,
                     calculateRecipeEU(aMaterial, 1));
-            if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L),
                         GT_ModHandler.RecipeBits.BUFFERED,

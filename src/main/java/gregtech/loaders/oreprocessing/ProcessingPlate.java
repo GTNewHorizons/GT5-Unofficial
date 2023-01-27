@@ -127,7 +127,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if (!aNoSmashing
                     && GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addCraftingRecipe(
                             aMaterial.getPlates(1),
                             tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
@@ -180,7 +180,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE))
                     && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             aMaterial.getDust(1),
                             tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
@@ -212,7 +212,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
                 Object aPlateStack = OrePrefixes.plate.get(aMaterial);
 
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(1L, aStack), DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED, new Object[] {
                                 "I",
@@ -272,7 +272,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     OrePrefixes.plate.get(aMaterial).toString(),
                     true)) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     Object aPlateStack = OrePrefixes.plate.get(aMaterial);
 
@@ -346,7 +346,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     OrePrefixes.plate.get(aMaterial).toString(),
                     true)) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     Object aPlateStack = OrePrefixes.plate.get(aMaterial);
 
                     GT_ModHandler.addCraftingRecipe(
@@ -403,7 +403,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     OrePrefixes.plate.get(aMaterial).toString(),
                     true)) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     Object aPlateStack = OrePrefixes.plate.get(aMaterial);
 
                     GT_ModHandler.addCraftingRecipe(
@@ -484,7 +484,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 && !aNoSmashing
                 && GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
 
-            if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L),
                         tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
