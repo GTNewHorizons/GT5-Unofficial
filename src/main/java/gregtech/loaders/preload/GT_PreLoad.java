@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.MOD_ID_AE;
+import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
 
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
@@ -117,7 +118,7 @@ public class GT_PreLoad {
 
     public static void initCompat() {
         GregTech_API.mIC2Classic = Loader.isModLoaded("IC2-Classic-Spmod");
-        GregTech_API.mGTPlusPlus = Loader.isModLoaded("miscutils");
+        GregTech_API.mGTPlusPlus = Loader.isModLoaded(MOD_ID_GTPP);
         GregTech_API.mTranslocator = Loader.isModLoaded("Translocator");
         GregTech_API.mTConstruct = Loader.isModLoaded("TConstruct");
         GregTech_API.mGalacticraft = Loader.isModLoaded("GalacticraftCore");

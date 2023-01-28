@@ -10,7 +10,7 @@ public class GT_OverclockCalculator {
     private long mAmps = 1, mEUt = 0, mRecipeEUt = 0, mRecipeAmps = 1;
     /**
      * @mEUtDiscount - Discount for EUt at the beginning of calculating overclocks, like GT++ machines
-     * @mSpeedBoost - Speeding/Slowing up/down the duration of a recipe at the beginnign of calculating overclocks, like GT++ machines
+     * @mSpeedBoost - Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like GT++ machines
      * @mHeatDiscountAmont - The value used for discount final eut per 900 heat
      */
     private float mEUtDiscount = 1, mSpeedBoost = 1, mHeatDiscountAmount = 0.95f;
@@ -23,7 +23,7 @@ public class GT_OverclockCalculator {
      * @mMultiHeat - The heat the multi has when starting the recipe
      * @mHeatPerfectOC - How much the bits should be moved to the right for each 1800 above recipe heat (Used for duration)
      */
-    private int mEUtIncrasePerOC = 2,
+    private int mEUtIncreasePerOC = 2,
             mDurationDecreasePerOC = 1,
             mDuration = 0,
             mParallel = 1,
@@ -31,10 +31,10 @@ public class GT_OverclockCalculator {
             mMultiHeat = 0,
             mHeatPerfectOC = 2;
     /**
-     * @mHeatOC - Wheather to enable overlcocking with heat like the EBF every 1800 heat difference
-     * @mOneTickDiscount - Wheather to give EUt Discount when the duration goes below one tick
-     * @calculates - variable to check wheater the overclocks have been calculated
-     * @mHeatDiscount - Wheather to enable heat discounts every 900 heat difference
+     * @mHeatOC - Whether to enable overclocking with heat like the EBF every 1800 heat difference
+     * @mOneTickDiscount - Whether to give EUt Discount when the duration goes below one tick
+     * @calculates - variable to check whether the overclocks have been calculated
+     * @mHeatDiscount - Whether to enable heat discounts every 900 heat difference
      */
     private boolean mHeatOC, mOneTickDiscount, calculated, mHeatDiscount;
 
@@ -134,7 +134,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets a Speed Boost for the multiblock. 0.9 is 10% faser. 1.1 is 10% slower
+     * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
      */
     public GT_OverclockCalculator setSpeedBoost(float aSpeedBoost) {
         mSpeedBoost = aSpeedBoost;
@@ -170,7 +170,7 @@ public class GT_OverclockCalculator {
      *  Sets the amount that the EUt increases per overclock. This uses BitShifting! Default is 2, which is a 4x increase
      */
     public GT_OverclockCalculator setEUtIncreasePerOC(int aEUtIncreasePerOC) {
-        mEUtIncrasePerOC = aEUtIncreasePerOC;
+        mEUtIncreasePerOC = aEUtIncreasePerOC;
         return this;
     }
 
@@ -206,7 +206,6 @@ public class GT_OverclockCalculator {
             return;
         }
         int heatDiscounts = (mMultiHeat - mRecipeHeat) / HEAT_DISCOUNT_THRESHOLD;
-        mRecipeEUt = (long) Math.ceil(mRecipeEUt * mEUtDiscount);
         mDuration = (int) Math.ceil(mDuration * mSpeedBoost);
         if (mHeatOC) {
             while (mRecipeHeat + HEAT_PERFECT_OVERCLOCK_THRESHOLD <= mMultiHeat
@@ -214,18 +213,35 @@ public class GT_OverclockCalculator {
                 if (mDuration < 1) {
                     break;
                 }
-                mRecipeEUt <<= mEUtIncrasePerOC;
+                mRecipeEUt <<= mEUtIncreasePerOC;
                 mDuration >>= mHeatPerfectOC;
                 mRecipeHeat += HEAT_PERFECT_OVERCLOCK_THRESHOLD;
             }
         }
 
-        while ((mRecipeEUt * mParallel * mRecipeAmps) << mEUtIncrasePerOC < mEUt * mAmps) {
-            if (mDuration <= 1) {
-                break;
+        int tRecipeTier = GT_Utility.getTier(mRecipeEUt);
+        if (tRecipeTier == 0) {
+            int tTier = GT_Utility.getTier(mEUt);
+            int tTierDifference = tTier - 1;
+            long tNextConsumption =
+                    ((long) Math.ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount)) << mEUtIncreasePerOC;
+            while (tTierDifference > 0 && tNextConsumption < mEUt * mAmps) {
+                mRecipeEUt <<= mEUtIncreasePerOC;
+                mDuration >>= mDurationDecreasePerOC;
+                tNextConsumption <<= mEUtIncreasePerOC;
+                tTierDifference--;
             }
-            mRecipeEUt <<= mEUtIncrasePerOC;
-            mDuration >>= mDurationDecreasePerOC;
+        } else {
+            long tNextConsumption =
+                    ((long) Math.ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount)) << mEUtIncreasePerOC;
+            while (tNextConsumption < mEUt * mAmps) {
+                if (mDuration <= 1) {
+                    break;
+                }
+                mRecipeEUt <<= mEUtIncreasePerOC;
+                mDuration >>= mDurationDecreasePerOC;
+                tNextConsumption <<= mEUtIncreasePerOC;
+            }
         }
 
         if (mDuration < 1) {
@@ -237,18 +253,18 @@ public class GT_OverclockCalculator {
         }
 
         if (mOneTickDiscount) {
-            int voltageDifferece = GT_Utility.getTier(mEUt) - GT_Utility.getTier(mRecipeEUt);
-            mRecipeEUt >>= voltageDifferece * mDurationDecreasePerOC;
+            int voltageDifference = GT_Utility.getTier(mEUt) - GT_Utility.getTier(mRecipeEUt);
+            mRecipeEUt >>= voltageDifference * mDurationDecreasePerOC;
             if (mRecipeEUt < 1) {
                 mRecipeEUt = 1;
             }
         }
 
-        mRecipeEUt *= mParallel * mRecipeAmps;
+        mRecipeEUt = (long) Math.ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount);
     }
 
     /**
-     * @return The consumtipn after overclock has been calculated
+     * @return The consumption after overclock has been calculated
      */
     public long getConsumption() {
         if (!calculated) {

@@ -18,4 +18,8 @@ public interface IMultiBlockController
     boolean isLiquidInput(byte aSide);
 
     boolean isLiquidOutput(byte aSide);
+
+    void registerCoveredPartOnSide(final int aSide, IMultiBlockPart part);
+
+    void unregisterCoveredPartOnSide(final int aSide, IMultiBlockPart part);
 }

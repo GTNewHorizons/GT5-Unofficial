@@ -218,6 +218,11 @@ GT5U.item.programmed_circuit.no_screwdriver.0=Trying to mangle a CIRCUIT with yo
 GT5U.item.programmed_circuit.no_screwdriver.1=Your thumb is not a screwdriver. Try a real one.
 GT5U.item.programmed_circuit.no_screwdriver.2=Chuck Norris stares at the circuit until it reprograms itself. You do not.
 
+GT5U.item.cable.max_voltage=Max Voltage
+GT5U.item.cable.max_amperage=Max Amperage
+GT5U.item.cable.loss=Loss/Meter/Ampere
+GT5U.item.cable.eu_volt=EU-Volt
+
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
 GT5U.hatch.disableMultiStack.true=Multi Stack Input §cOff§r
@@ -782,6 +787,8 @@ achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item 
 achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
 achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
+achievement.gt.blockmachines.multimachine.oildrilinfinite=Infinite Oil/Gas/Fluid Drilling Rig
+achievement.gt.blockmachines.multimachine.oildrilinfinite.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.oreprocessor=Integrated Ore Factory
 achievement.gt.blockmachines.multimachine.oreprocessor.desc=Processing all those ores.
 

@@ -49,6 +49,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
@@ -499,6 +500,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        mCurrentParallel = 0;
         GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
         FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
         if (mSeparate) {
@@ -520,19 +522,19 @@ public class GT_MetaTileEntity_PCBFactory
     }
 
     private boolean processRecipe(
-            ItemStack aStack, ItemStack[] tItemInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aMap) {
+            ItemStack aStack, ItemStack[] aItemInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aMap) {
         mOutputItems = null;
         mOutputFluids = null;
-        if (tItemInputs == null || aFluidInputs == null) {
+        if (aItemInputs == null || aFluidInputs == null) {
             return false;
         }
 
-        long voltage = getMaxInputVoltage();
+        long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
         int tier = GT_Utility.getTier(voltage);
 
         GT_Recipe tRecipe =
-                aMap.findRecipe(getBaseMetaTileEntity(), null, true, false, V[tier], aFluidInputs, aStack, tItemInputs);
+                aMap.findRecipe(getBaseMetaTileEntity(), null, true, false, V[tier], aFluidInputs, aStack, aItemInputs);
 
         if (tRecipe == null) {
             return false;
@@ -544,7 +546,7 @@ public class GT_MetaTileEntity_PCBFactory
 
         ItemStack aNanite = tRecipe.getRepresentativeInput(1);
         if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
-            for (ItemStack aItem : tItemInputs) {
+            for (ItemStack aItem : aItemInputs) {
                 if (aItem.isItemEqual(aNanite)) {
                     aNanitesOfRecipe += aItem.stackSize;
                 }
@@ -565,22 +567,21 @@ public class GT_MetaTileEntity_PCBFactory
                 && ((recipeBitMap & mBioBitMap) == 0 || ((recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade));
 
         if (recipeAllowed) {
+            GT_ParallelHelper helper = new GT_ParallelHelper()
+                    .setRecipe(tRecipe)
+                    .setItemInputs(aItemInputs)
+                    .setFluidInputs(aFluidInputs)
+                    .setMaxParallel(aMaxParallel)
+                    .setAvailableEUt(getMaxInputEu())
+                    .setEUtModifier(aExtraPower)
+                    .enableConsumption()
+                    .build();
+            mCurrentParallel = helper.getCurrentParallel();
 
-            int aCurrentParallel = 0;
-            for (int i = 0; i < aMaxParallel; i++) {
-                if (tRecipe.isRecipeInputEqual(true, aFluidInputs, tItemInputs)) {
-                    aCurrentParallel++;
-                } else {
-                    break;
-                }
-            }
-
-            mCurrentParallel = aCurrentParallel;
-
-            if (aCurrentParallel > 0) {
+            if (mCurrentParallel > 0) {
                 this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = getMaxEfficiency(aStack);
-                this.lEUt = -(long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
+                this.lEUt = -(long) Math.ceil(tRecipe.mEUt * mCurrentParallel * aExtraPower);
                 this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
                 if (mOCTier1 || mOCTier2) {
@@ -611,8 +612,8 @@ public class GT_MetaTileEntity_PCBFactory
 
                 mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                 ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-                int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
-                for (int k = 0; k < aCurrentParallel; k++) {
+                int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000.0f);
+                for (int k = 0; k < mCurrentParallel; k++) {
                     int remainingEfficiency = getMaxEfficiency(aStack) < 10000 ? 10000 : getMaxEfficiency(aStack);
                     for (int j = 0; j < repeats; j++) {
                         int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
@@ -872,7 +873,7 @@ public class GT_MetaTileEntity_PCBFactory
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
-        long voltage = getMaxInputVoltage();
+        long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
 
         return new String[] {

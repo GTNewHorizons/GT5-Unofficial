@@ -5,6 +5,7 @@
 
 package gregtech.common;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
@@ -328,16 +329,17 @@ public class GT_Client extends GT_Proxy implements Runnable {
         byte tConnections = 0;
         if (tTile instanceof ICoverable) {
             if (showCoverConnections) {
-                for (byte i = 0; i < 6; i++) {
-                    if (((ICoverable) tTile).getCoverIDAtSide(i) > 0) tConnections = (byte) (tConnections + (1 << i));
+                for (byte tSide : ALL_VALID_SIDES) {
+                    if (((ICoverable) tTile).getCoverIDAtSide(tSide) > 0)
+                        tConnections = (byte) (tConnections + (1 << tSide));
                 }
             } else if (tTile instanceof BaseMetaPipeEntity) tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
         }
 
         if (tConnections > 0) {
-            for (byte i = 0; i < 6; i++) {
-                if ((tConnections & (1 << i)) != 0) {
-                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][i]) {
+            for (byte tSide : ALL_VALID_SIDES) {
+                if ((tConnections & (1 << tSide)) != 0) {
+                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide]) {
                         case 0:
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
@@ -585,19 +587,21 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onPostLoad() {
         super.onPostLoad();
 
-        try {
-            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                try {
-                    if (GregTech_API.METATILEENTITIES[i] != null) {
-                        GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
-                        GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
+        if (GregTech_API.sClientDataFile.get("debug", "PrintMetaIDs", false)) {
+            try {
+                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
+                    try {
+                        if (GregTech_API.METATILEENTITIES[i] != null) {
+                            GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
+                            GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
+                        }
+                    } catch (Throwable e) {
+                        e.printStackTrace(GT_Log.err);
                     }
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
                 }
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
         }
 
         if (Loader.isModLoaded("Avaritia")) {
@@ -787,8 +791,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)
                 || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
-                for (byte i = 0; i < 6; i++)
-                    if (((ICoverable) aTileEntity).getCoverIDAtSide(i) > 0) {
+                for (byte tSide : ALL_VALID_SIDES)
+                    if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
                         drawGrid(aEvent, true, false, true);
                         return;
                     }

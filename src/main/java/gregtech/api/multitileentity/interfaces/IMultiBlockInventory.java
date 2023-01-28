@@ -1,6 +1,8 @@
 package gregtech.api.multitileentity.interfaces;
 
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -44,4 +46,8 @@ public interface IMultiBlockInventory {
     void closeInventory(MultiBlockPart aPart);
 
     boolean isItemValidForSlot(MultiBlockPart aPart, int aSlot, ItemStack aStack);
+
+    IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart);
+
+    List<String> getInventoryNames(MultiBlockPart aPart);
 }
