@@ -106,6 +106,11 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     }
 
     @Override
+    public boolean isNewStyleRendering() {
+        return true;
+    }
+
+    @Override
     int fluidIntoPower(
             ArrayList<FluidStack> aFluids,
             int aOptFlow,

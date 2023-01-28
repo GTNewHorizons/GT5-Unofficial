@@ -101,6 +101,11 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         return 16;
     }
 
+    @Override
+    public boolean isNewStyleRendering() {
+        return true;
+    }
+
     private int condenseSteam(int steam) {
         excessWater += steam;
         int water = excessWater / STEAM_PER_WATER;

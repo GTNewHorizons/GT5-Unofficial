@@ -103,6 +103,11 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
+    public boolean isNewStyleRendering() {
+        return true;
+    }
+
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GT_Mod.gregtechproxy.mPollutionLargeGasTurbinePerSecond;
     }

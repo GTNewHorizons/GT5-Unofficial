@@ -101,6 +101,11 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     }
 
     @Override
+    public boolean isNewStyleRendering() {
+        return true;
+    }
+
+    @Override
     int fluidIntoPower(
             ArrayList<FluidStack> aFluids,
             int aOptFlow,

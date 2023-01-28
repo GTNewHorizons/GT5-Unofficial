@@ -1,9 +1,36 @@
 package gregtech.common.render;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 
 public class GT_RenderUtil {
+
+    public static void renderBlockIcon(
+            RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ, IIcon aIcon, byte aSide) {
+        switch (aSide) {
+            case 0:
+                aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
+                return;
+            case 1:
+                aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
+                return;
+            case 2:
+                aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
+                return;
+            case 3:
+                aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
+                return;
+            case 4:
+                aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
+                return;
+            case 5:
+                aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
+                return;
+        }
+    }
+
     public static void renderItemIcon(IIcon icon, double size, double z, float nx, float ny, float nz) {
         renderItemIcon(icon, 0.0D, 0.0D, size, size, z, nx, ny, nz);
     }

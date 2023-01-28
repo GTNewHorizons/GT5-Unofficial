@@ -4,27 +4,39 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
+import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_EMPTY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.enums.Dyes;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.LightingHelper;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.render.GT_RenderUtil;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GT_MetaTileEntity_LargeTurbine
@@ -38,19 +50,19 @@ public abstract class GT_MetaTileEntity_LargeTurbine
                     return StructureDefinition.<GT_MetaTileEntity_LargeTurbine>builder()
                             .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                                 {
-                                    "     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx",
+                                    "     ", "     ", "xxxxx", "xxxxx", "     ",
                                 },
                                 {
-                                    " --- ", "xcccx", "xhhhx", "xhhhx", "xhhhx",
+                                    " --- ", " ccc ", "xhhhx", " hhhx", " hhh ",
                                 },
                                 {
-                                    " --- ", "xc~cx", "xh-hx", "xh-hx", "xhdhx",
+                                    " --- ", " c~c ", "xh-hx", " h-hx", " hdh ",
                                 },
                                 {
-                                    " --- ", "xcccx", "xhhhx", "xhhhx", "xhhhx",
+                                    " --- ", " ccc ", "xhhhx", " hhhx", " hhh ",
                                 },
                                 {
-                                    "     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx",
+                                    "     ", "     ", "xxxxx", "xxxxx", "     ",
                                 },
                             }))
                             .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
@@ -79,6 +91,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     protected boolean looseFit = false;
     protected int overflowMultiplier = 0;
     protected float[] flowMultipliers = new float[] {1, 1, 1};
+
+    // client side stuff
+    protected boolean mHasTurbine;
 
     public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -110,6 +125,86 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     public abstract byte getCasingMeta();
 
     public abstract int getCasingTextureIndex();
+
+    public boolean isNewStyleRendering() {
+        return false;
+    }
+
+    public IIconContainer[] getTurbineTextureActive() {
+        return TURBINE_NEW_ACTIVE;
+    }
+
+    public IIconContainer[] getTurbineTextureFull() {
+        return TURBINE_NEW;
+    }
+
+    public IIconContainer[] getTurbineTextureEmpty() {
+        return TURBINE_NEW_EMPTY;
+    }
+
+    @Override
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+        if (!isNewStyleRendering() || !mMachine) return false;
+        int[] tABCCoord = new int[] {-1, -1, 0};
+        int[] tXYZOffset = new int[3];
+        byte tFacing = getBaseMetaTileEntity().getFrontFacing();
+        ExtendedFacing tExtendedFacing = getExtendedFacing();
+        ForgeDirection tDirection = tExtendedFacing.getDirection();
+        LightingHelper tLighting = new LightingHelper(aRenderer);
+
+        // for some reason +x and -z need this field set to true, but not any other sides
+        if (tFacing == 2 || tFacing == 5) aRenderer.field_152631_f = true;
+        Block tBlock = getCasingBlock();
+
+        IIconContainer[] tTextures;
+        if (getBaseMetaTileEntity().isActive()) tTextures = getTurbineTextureActive();
+        else if (hasTurbine()) tTextures = getTurbineTextureFull();
+        else tTextures = getTurbineTextureEmpty();
+
+        assert tTextures != null && tTextures.length == tABCCoord.length;
+
+        for (int i = 0; i < 9; i++) {
+            if (i != 4) { // do not draw ourselves again.
+                tExtendedFacing.getWorldOffset(tABCCoord, tXYZOffset);
+                // since structure check passed, we can assume it is turbine casing
+                int tX = tXYZOffset[0] + aX;
+                int tY = tXYZOffset[1] + aY;
+                int tZ = tXYZOffset[2] + aZ;
+                // we skip the occlusion test, as we always require a working turbine to have a block of air before it
+                // so the front face cannot be occluded whatsoever in the most cases.
+                Tessellator.instance.setBrightness(tBlock.getMixedBrightnessForBlock(
+                        aWorld, aX + tDirection.offsetX, tY + tDirection.offsetY, aZ + tDirection.offsetZ));
+                tLighting.setupLighting(tBlock, tX, tY, tZ, tFacing).setupColor(tFacing, Dyes._NULL.mRGBa);
+                GT_RenderUtil.renderBlockIcon(
+                        aRenderer,
+                        tBlock,
+                        tX + tDirection.offsetX * 0.001,
+                        tY + tDirection.offsetY * 0.001,
+                        tZ + tDirection.offsetZ * 0.001,
+                        tTextures[i].getIcon(),
+                        tFacing);
+            }
+            if (++tABCCoord[0] == 2) {
+                tABCCoord[0] = -1;
+                tABCCoord[1]++;
+            }
+        }
+
+        aRenderer.field_152631_f = false;
+        return false;
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        mHasTurbine = (aValue & 0x1) != 0;
+        mMachine = (aValue & 0x2) != 0;
+        super.onValueUpdate(aValue);
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) ((hasTurbine() ? 1 : 0) | (mMachine ? 2 : 0));
+    }
 
     @Override
     public boolean addToMachineList(IGregTechTileEntity tTileEntity, int aBaseCasingIndex) {
@@ -328,7 +423,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     }
 
     public boolean hasTurbine() {
-        return this.getMaxEfficiency(mInventory[1]) > 0;
+        return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isClientSide()
+                ? mHasTurbine
+                : this.getMaxEfficiency(mInventory[1]) > 0;
     }
 
     @Override

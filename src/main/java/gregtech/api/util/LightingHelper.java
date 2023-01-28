@@ -313,6 +313,33 @@ public class LightingHelper {
     }
 
     /**
+     * @see #setupLightingXNeg(Block, int, int, int)
+     * @see #setupLightingYNeg(Block, int, int, int)
+     * @see #setupLightingZNeg(Block, int, int, int)
+     * @see #setupLightingXPos(Block, int, int, int)
+     * @see #setupLightingYPos(Block, int, int, int)
+     * @see #setupLightingZPos(Block, int, int, int)
+     */
+    public LightingHelper setupLighting(Block block, int x, int y, int z, byte facing) {
+        switch (facing) {
+            case 0:
+                return setupLightingYNeg(block, x, y, z);
+            case 1:
+                return setupLightingYPos(block, x, y, z);
+            case 2:
+                return setupLightingZNeg(block, x, y, z);
+            case 3:
+                return setupLightingZPos(block, x, y, z);
+            case 4:
+                return setupLightingXNeg(block, x, y, z);
+            case 5:
+                return setupLightingXPos(block, x, y, z);
+            default:
+                throw new IllegalArgumentException("Unknown side: " + facing);
+        }
+    }
+
+    /**
      * Sets up lighting for the West face and returns the {@link LightingHelper}.
      * <p>
      * This is a consolidated <code>method</code> that sets side shading
