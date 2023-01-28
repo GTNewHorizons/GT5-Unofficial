@@ -14480,7 +14480,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         // NaCl + H2O = (NaCl·H2O)
         GT_Values.RA.addMixerRecipe(
                 Materials.Salt.getDust(2),
-                GT_Utility.getIntegratedCircuit(3),
+                GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
                 Materials.Water.getFluid(1000),
