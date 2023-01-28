@@ -702,7 +702,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 new int[] {2000, 3000},
                 1600,
-            (int) Tier.RECIPE_MV);
+                320);
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 9L),
                 GT_Values.NI,
