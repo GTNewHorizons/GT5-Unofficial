@@ -2791,6 +2791,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addFormingPressRecipe(
+            ItemStack[] ItemInputArray, ItemStack[] OutputItemArray, int aDuration, int aEUt) {
+        if ((ItemInputArray == null) || (OutputItemArray == null)) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sPressRecipes.addRecipe(
+                true, ItemInputArray, OutputItemArray, null, null, null, aDuration, aEUt, 0);
+        return true;
+    }
+
+    @Override
     public boolean addFluidHeaterRecipe(ItemStack aItem, FluidStack aOutput, int aDuration, int aEUt) {
         if ((aItem == null) || (aOutput == null)) {
             return false;
