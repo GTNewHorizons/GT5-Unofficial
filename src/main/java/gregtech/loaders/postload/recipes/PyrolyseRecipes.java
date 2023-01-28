@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isForestryLoaded;
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -18,38 +19,40 @@ import net.minecraftforge.fluids.FluidStack;
 public class PyrolyseRecipes implements Runnable {
     @Override
     public void run() {
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
-                GT_Values.NF,
-                1,
-                RailcraftToolItems.getCoalCoke(16),
-                Materials.Creosote.getFluid(8000),
-                640,
-                64);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
-                Materials.Nitrogen.getGas(1000),
-                2,
-                RailcraftToolItems.getCoalCoke(16),
-                Materials.Creosote.getFluid(8000),
-                320,
-                96);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
-                GT_Values.NF,
-                1,
-                EnumCube.COKE_BLOCK.getItem(8),
-                Materials.Creosote.getFluid(32000),
-                2560,
-                64);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
-                Materials.Nitrogen.getGas(1000),
-                2,
-                EnumCube.COKE_BLOCK.getItem(8),
-                Materials.Creosote.getFluid(32000),
-                1280,
-                96);
+        if (isRailcraftLoaded) {
+            GT_Values.RA.addPyrolyseRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
+                    GT_Values.NF,
+                    1,
+                    RailcraftToolItems.getCoalCoke(16),
+                    Materials.Creosote.getFluid(8000),
+                    640,
+                    64);
+            GT_Values.RA.addPyrolyseRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
+                    Materials.Nitrogen.getGas(1000),
+                    2,
+                    RailcraftToolItems.getCoalCoke(16),
+                    Materials.Creosote.getFluid(8000),
+                    320,
+                    96);
+            GT_Values.RA.addPyrolyseRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
+                    GT_Values.NF,
+                    1,
+                    EnumCube.COKE_BLOCK.getItem(8),
+                    Materials.Creosote.getFluid(32000),
+                    2560,
+                    64);
+            GT_Values.RA.addPyrolyseRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
+                    Materials.Nitrogen.getGas(1000),
+                    2,
+                    EnumCube.COKE_BLOCK.getItem(8),
+                    Materials.Creosote.getFluid(32000),
+                    1280,
+                    96);
+        }
 
         if (!GregTech_API.mIC2Classic)
             GT_Values.RA.addPyrolyseRecipe(
