@@ -24,7 +24,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
             ItemStack tRing = GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L);
             if (GT_Utility.isStackValid(tPlate) && GT_Utility.isStackValid(tRing)) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L), GT_Proxy.tBits, new Object[] {

@@ -15,97 +15,97 @@ public class BenderRecipes implements Runnable {
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 48L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 32L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 32L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 24L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 16L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 12L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 9L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 6L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmium, 3L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 2L),
                 (GT_Utility.getIntegratedCircuit(10)),
                 ItemList.RC_Rail_Standard.get(64L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 24L),
                 (GT_Utility.getIntegratedCircuit(11)),
                 ItemList.RC_Rail_Reinforced.get(64L),
                 600,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 12L),
                 (GT_Utility.getIntegratedCircuit(11)),
                 ItemList.RC_Rail_Reinforced.get(64L),
                 600,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 6L),
                 (GT_Utility.getIntegratedCircuit(11)),
                 ItemList.RC_Rail_Reinforced.get(64L),
                 600,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 3L),
                 (GT_Utility.getIntegratedCircuit(11)),
                 ItemList.RC_Rail_Reinforced.get(64L),
                 600,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmium, 1L),
                 (GT_Utility.getIntegratedCircuit(11)),
                 ItemList.RC_Rail_Reinforced.get(64L),
                 600,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Aluminium, 20L),
                 (GT_Utility.getIntegratedCircuit(12)),
@@ -205,6 +205,6 @@ public class BenderRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L),
                 ItemList.IC2_Food_Can_Empty.get(1L),
                 20,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
     }
 }

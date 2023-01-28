@@ -1187,7 +1187,7 @@ public interface IGT_RecipeAdder {
      */
     boolean addSifterRecipe(ItemStack aItemToSift, ItemStack[] aSiftedItems, int[] aChances, int aDuration, int aEUt);
     /**
-     * Adds a Generalised Laser Engraver Recipe.
+     * Adds a Generalised Sifter Recipe.
      *
      * @param ItemInputArray    Array of input items.
      * @param FluidInputArray   Array of output items.
