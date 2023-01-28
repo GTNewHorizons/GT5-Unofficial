@@ -50,19 +50,19 @@ public abstract class GT_MetaTileEntity_LargeTurbine
                     return StructureDefinition.<GT_MetaTileEntity_LargeTurbine>builder()
                             .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                                 {
-                                    "     ", "     ", "xxxxx", "xxxxx", "     ",
+                                    "     ", "     ", "     ", "     ", "     ",
                                 },
                                 {
-                                    " --- ", " ccc ", "xhhhx", " hhhx", " hhh ",
+                                    " --- ", " ccc ", " hhh ", " hhh ", " hhh ",
                                 },
                                 {
-                                    " --- ", " c~c ", "xh-hx", " h-hx", " hdh ",
+                                    " --- ", " c~c ", " h-h ", " h-h ", " hdh ",
                                 },
                                 {
-                                    " --- ", " ccc ", "xhhhx", " hhhx", " hhh ",
+                                    " --- ", " ccc ", " hhh ", " hhh ", " hhh ",
                                 },
                                 {
-                                    "     ", "     ", "xxxxx", "xxxxx", "     ",
+                                    "     ", "     ", "     ", "     ", "     ",
                                 },
                             }))
                             .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
@@ -72,13 +72,6 @@ public abstract class GT_MetaTileEntity_LargeTurbine
                                     .casingIndex(t.getCasingTextureIndex())
                                     .dot(2)
                                     .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
-                            .addElement('x', (IStructureElementCheckOnly<GT_MetaTileEntity_LargeTurbine>)
-                                    (aContext, aWorld, aX, aY, aZ) -> {
-                                        TileEntity tTile = aWorld.getTileEntity(aX, aY, aZ);
-                                        return !(tTile instanceof IGregTechTileEntity)
-                                                || !(((IGregTechTileEntity) tTile).getMetaTileEntity()
-                                                        instanceof GT_MetaTileEntity_LargeTurbine);
-                                    })
                             .build();
                 }
             };
