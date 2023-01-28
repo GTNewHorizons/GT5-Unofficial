@@ -24,7 +24,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 0),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -35,7 +35,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 0),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -46,7 +46,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 1),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -57,7 +57,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 2),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -68,7 +68,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 3),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -79,7 +79,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 3),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -90,7 +90,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 4),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -101,7 +101,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 5),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -112,7 +112,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 6),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -123,7 +123,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 7),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -134,7 +134,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 8),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -145,7 +145,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 9),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -156,7 +156,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 10),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -167,7 +167,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 11),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
@@ -178,7 +178,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 12),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.EnderEye, 1L),
@@ -189,7 +189,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 Materials.Glass.getMolten(576L),
                 getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 13),
                 200,
-                30);
+                (int) Tier.RECIPE_LV);
 
         if (!isRailcraftLoaded) return;
         for (Materials tMat : Materials.values()) {
@@ -208,7 +208,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 4L, 0),
                         300,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Coated_Basic.get(1L),
@@ -218,7 +218,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 4L, 1),
                         300,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Coated_Basic.get(1L),
@@ -228,7 +228,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 4L, 2),
                         300,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Phenolic_Good.get(1L),
@@ -238,7 +238,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 8L, 0),
                         400,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Phenolic_Good.get(1L),
@@ -248,7 +248,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 8L, 1),
                         400,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Phenolic_Good.get(1L),
@@ -258,7 +258,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 8L, 2),
                         400,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Epoxy_Advanced.get(1L),
@@ -268,7 +268,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 16L, 0),
                         500,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Epoxy_Advanced.get(1L),
@@ -278,7 +278,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 16L, 1),
                         500,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Epoxy_Advanced.get(1L),
@@ -288,7 +288,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem(MOD_ID_RC, "part.circuit", 16L, 2),
                         500,
-                        30);
+                        (int) Tier.RECIPE_LV);
             }
         }
 
@@ -309,7 +309,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(1152L * tMultiplier / 2L),
                         getModItem("Forestry", "chipsets", 1L, 0),
                         200,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Coated_Basic.get(1L),
@@ -322,7 +322,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(1152L * tMultiplier / 2L),
                         getModItem("Forestry", "chipsets", 1L, 1),
                         200,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Phenolic_Good.get(1L),
@@ -335,7 +335,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(1152L * tMultiplier / 2L),
                         getModItem("Forestry", "chipsets", 1L, 2),
                         200,
-                        30);
+                        (int) Tier.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] {
                             ItemList.Circuit_Board_Phenolic_Good.get(1L),
@@ -348,7 +348,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         tMat.getMolten(1152L * tMultiplier / 2L),
                         getModItem("Forestry", "chipsets", 1L, 3),
                         200,
-                        30);
+                        (int) Tier.RECIPE_LV);
             }
         }
     }

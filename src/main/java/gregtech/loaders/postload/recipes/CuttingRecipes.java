@@ -4,10 +4,7 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isForestryloaded;
 
 import codechicken.nei.api.API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
@@ -24,7 +21,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 4L)
                 },
                 400,
-                30,
+                (int) Tier.RECIPE_LV,
                 false);
 
         GT_Values.RA.addCutterRecipe(
@@ -34,7 +31,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 8L)
                 },
                 800,
-                120,
+                (int) Tier.RECIPE_MV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
@@ -44,7 +41,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16L)
                 },
                 1600,
-                480,
+                (int) Tier.RECIPE_HV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
@@ -55,7 +52,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32L)
                 },
                 2400,
-                1920,
+                (int) Tier.RECIPE_EV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
@@ -66,7 +63,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64L)
                 },
                 3200,
-                7680,
+                (int) Tier.RECIPE_IV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
