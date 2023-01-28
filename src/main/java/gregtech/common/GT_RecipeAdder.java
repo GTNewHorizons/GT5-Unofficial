@@ -2858,6 +2858,29 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addSifterRecipe(
+            ItemStack[] ItemInputArray,
+            FluidStack[] FluidInputArray,
+            ItemStack[] OutputItemArray,
+            FluidStack[] FluidOutputArray,
+            int aDuration,
+            int aEUt,
+            boolean aCleanroom) {
+        GT_Recipe.GT_Recipe_Map.sSifterRecipes.addRecipe(
+                false,
+                ItemInputArray,
+                OutputItemArray,
+                null,
+                null,
+                FluidInputArray,
+                FluidOutputArray,
+                aDuration,
+                aEUt,
+                aCleanroom ? -200 : 0);
+        return true;
+    }
+
+    @Override
     public boolean addArcFurnaceRecipe(
             ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt) {
         return addArcFurnaceRecipe(aInput, aOutputs, aChances, aDuration, aEUt, false);
