@@ -40,14 +40,14 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             aFacing == aSide
                     ? (aActive
                             ? TextureFactory.builder()
-                                    .addIcon(LARGETURBINE_SS_ACTIVE5)
+                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
                                     .build()
                             : hasTurbine()
                                     ? TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_SS5)
+                                            .addIcon(LARGETURBINE_NEW5)
                                             .build()
                                     : TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_SS_EMPTY5)
+                                            .addIcon(LARGETURBINE_NEW_EMPTY5)
                                             .build())
                     : casingTexturePages[0][58]
         };
@@ -100,6 +100,11 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     @Override
     public int getCasingTextureIndex() {
         return 58;
+    }
+
+    @Override
+    public boolean isNewStyleRendering() {
+        return true;
     }
 
     @Override
