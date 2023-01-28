@@ -738,7 +738,7 @@ public class RecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 8),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 16),
                         ItemList.Circuit_Wafer_PPIC.get(64),
-                        new Object[] {"circuitNano", 1},
+                        new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1L},
                     },
                     new FluidStack[] {
                         WerkstoffLoader.Oganesson.getFluidOrGas(1000),

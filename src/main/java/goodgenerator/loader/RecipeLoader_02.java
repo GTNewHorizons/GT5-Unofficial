@@ -659,8 +659,8 @@ public class RecipeLoader_02 {
                 new Object[] {
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                     ItemRefer.Fluid_Storage_Core_T8.get(2),
-                    new Object[] {OrePrefixes.circuit.get(Materials.Nano), 4L},
-                    new Object[] {OrePrefixes.circuit.get(Materials.Nano), 4L},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 4L},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 4L},
                     ItemList.Electric_Pump_UEV.get(8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),

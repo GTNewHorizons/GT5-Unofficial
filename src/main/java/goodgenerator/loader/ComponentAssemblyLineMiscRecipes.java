@@ -37,7 +37,7 @@ public class ComponentAssemblyLineMiscRecipes {
         "Superconductor",
         "Infinite",
         "Bio",
-        "Nano",
+        "Optical",
         "Piko",
         "Quantum"
     };
@@ -387,7 +387,7 @@ public class ComponentAssemblyLineMiscRecipes {
     }
 
     private static void generateWrapRecipes() {
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 0; i <= 11; i++) {
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {getCircuit(i, 16), GT_Utility.getIntegratedCircuit(16)},
                     Materials.SolderingAlloy.getMolten(72L),
@@ -395,15 +395,6 @@ public class ComponentAssemblyLineMiscRecipes {
                     30 * 20,
                     30);
         }
-        GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] {
-                    GameRegistry.findItemStack("dreamcraft", "item.NanoCircuit", 16),
-                    GT_Utility.getIntegratedCircuit(16)
-                },
-                Materials.SolderingAlloy.getMolten(72L),
-                new ItemStack(Loaders.circuitWrap, 1, 11),
-                30 * 20,
-                30);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GameRegistry.findItemStack("dreamcraft", "item.PikoCircuit", 16),
