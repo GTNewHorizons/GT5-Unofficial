@@ -46,14 +46,14 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
             aFacing == aSide
                     ? (aActive
                             ? TextureFactory.builder()
-                                    .addIcon(LARGETURBINE_TI_ACTIVE5)
+                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
                                     .build()
                             : hasTurbine()
                                     ? TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_TI5)
+                                            .addIcon(LARGETURBINE_NEW5)
                                             .build()
                                     : TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_TI_EMPTY5)
+                                            .addIcon(LARGETURBINE_NEW_EMPTY5)
                                             .build())
                     : casingTexturePages[0][59]
         };
@@ -98,6 +98,11 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     @Override
     public int getCasingTextureIndex() {
         return 59;
+    }
+
+    @Override
+    public boolean isNewStyleRendering() {
+        return true;
     }
 
     @Override

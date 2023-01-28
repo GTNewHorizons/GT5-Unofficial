@@ -860,7 +860,6 @@ public class Textures {
         LARGETURBINE_ST6,
         LARGETURBINE_ST7,
         LARGETURBINE_ST8,
-
         LARGETURBINE_ST9,
         LARGETURBINE_ST_ACTIVE1,
         LARGETURBINE_ST_ACTIVE2,
@@ -869,9 +868,9 @@ public class Textures {
         LARGETURBINE_ST_ACTIVE5,
         LARGETURBINE_ST_ACTIVE6,
         LARGETURBINE_ST_ACTIVE7,
-
         LARGETURBINE_ST_ACTIVE8,
         LARGETURBINE_ST_ACTIVE9,
+
         LARGETURBINE_SS1,
         LARGETURBINE_SS2,
         LARGETURBINE_SS3,
@@ -880,7 +879,6 @@ public class Textures {
         LARGETURBINE_SS6,
         LARGETURBINE_SS7,
         LARGETURBINE_SS8,
-
         LARGETURBINE_SS9,
         LARGETURBINE_SS_ACTIVE1,
         LARGETURBINE_SS_ACTIVE2,
@@ -889,9 +887,9 @@ public class Textures {
         LARGETURBINE_SS_ACTIVE5,
         LARGETURBINE_SS_ACTIVE6,
         LARGETURBINE_SS_ACTIVE7,
-
         LARGETURBINE_SS_ACTIVE8,
         LARGETURBINE_SS_ACTIVE9,
+
         LARGETURBINE_TI1,
         LARGETURBINE_TI2,
         LARGETURBINE_TI3,
@@ -899,7 +897,6 @@ public class Textures {
         LARGETURBINE_TI5,
         LARGETURBINE_TI6,
         LARGETURBINE_TI7,
-
         LARGETURBINE_TI8,
         LARGETURBINE_TI9,
         LARGETURBINE_TI_ACTIVE1,
@@ -908,17 +905,16 @@ public class Textures {
         LARGETURBINE_TI_ACTIVE4,
         LARGETURBINE_TI_ACTIVE5,
         LARGETURBINE_TI_ACTIVE6,
-
         LARGETURBINE_TI_ACTIVE7,
         LARGETURBINE_TI_ACTIVE8,
         LARGETURBINE_TI_ACTIVE9,
+
         LARGETURBINE_TU1,
         LARGETURBINE_TU2,
         LARGETURBINE_TU3,
         LARGETURBINE_TU4,
         LARGETURBINE_TU5,
         LARGETURBINE_TU6,
-
         LARGETURBINE_TU7,
         LARGETURBINE_TU8,
         LARGETURBINE_TU9,
@@ -927,11 +923,11 @@ public class Textures {
         LARGETURBINE_TU_ACTIVE3,
         LARGETURBINE_TU_ACTIVE4,
         LARGETURBINE_TU_ACTIVE5,
-
         LARGETURBINE_TU_ACTIVE6,
         LARGETURBINE_TU_ACTIVE7,
         LARGETURBINE_TU_ACTIVE8,
         LARGETURBINE_TU_ACTIVE9,
+
         MACHINE_CASING_TURBINE,
         MACHINE_CASING_ADVANCEDGAS,
         BLOCK_ADAMANTIUM,
@@ -1316,8 +1312,36 @@ public class Textures {
         MACHINE_CASING_PCB_TIER_1,
         MACHINE_CASING_PCB_TIER_2,
         MACHINE_CASING_PCB_TIER_3,
-        INFINITY_COOLED_CASING;
+        INFINITY_COOLED_CASING,
 
+        LARGETURBINE_NEW1,
+        LARGETURBINE_NEW2,
+        LARGETURBINE_NEW3,
+        LARGETURBINE_NEW4,
+        LARGETURBINE_NEW5,
+        LARGETURBINE_NEW6,
+        LARGETURBINE_NEW7,
+        LARGETURBINE_NEW8,
+        LARGETURBINE_NEW9,
+        LARGETURBINE_NEW_ACTIVE1,
+        LARGETURBINE_NEW_ACTIVE2,
+        LARGETURBINE_NEW_ACTIVE3,
+        LARGETURBINE_NEW_ACTIVE4,
+        LARGETURBINE_NEW_ACTIVE5,
+        LARGETURBINE_NEW_ACTIVE6,
+        LARGETURBINE_NEW_ACTIVE7,
+        LARGETURBINE_NEW_ACTIVE8,
+        LARGETURBINE_NEW_ACTIVE9,
+        LARGETURBINE_NEW_EMPTY1,
+        LARGETURBINE_NEW_EMPTY2,
+        LARGETURBINE_NEW_EMPTY3,
+        LARGETURBINE_NEW_EMPTY4,
+        LARGETURBINE_NEW_EMPTY5,
+        LARGETURBINE_NEW_EMPTY6,
+        LARGETURBINE_NEW_EMPTY7,
+        LARGETURBINE_NEW_EMPTY8,
+        LARGETURBINE_NEW_EMPTY9,
+        ;
         /**
          * Icon for Fresh CFoam
          */
@@ -1497,6 +1521,42 @@ public class Textures {
                             LARGETURBINE_ST_EMPTY7,
                             LARGETURBINE_ST_EMPTY8,
                             LARGETURBINE_ST_EMPTY9
+                        },
+                TURBINE_NEW =
+                        {
+                            LARGETURBINE_NEW1,
+                            LARGETURBINE_NEW2,
+                            LARGETURBINE_NEW3,
+                            LARGETURBINE_NEW4,
+                            LARGETURBINE_NEW5,
+                            LARGETURBINE_NEW6,
+                            LARGETURBINE_NEW7,
+                            LARGETURBINE_NEW8,
+                            LARGETURBINE_NEW9
+                        },
+                TURBINE_NEW_ACTIVE =
+                        {
+                            LARGETURBINE_NEW_ACTIVE1,
+                            LARGETURBINE_NEW_ACTIVE2,
+                            LARGETURBINE_NEW_ACTIVE3,
+                            LARGETURBINE_NEW_ACTIVE4,
+                            LARGETURBINE_NEW_ACTIVE5,
+                            LARGETURBINE_NEW_ACTIVE6,
+                            LARGETURBINE_NEW_ACTIVE7,
+                            LARGETURBINE_NEW_ACTIVE8,
+                            LARGETURBINE_NEW_ACTIVE9
+                        },
+                TURBINE_NEW_EMPTY =
+                        {
+                            LARGETURBINE_NEW_EMPTY1,
+                            LARGETURBINE_NEW_EMPTY2,
+                            LARGETURBINE_NEW_EMPTY3,
+                            LARGETURBINE_NEW_EMPTY4,
+                            LARGETURBINE_NEW_EMPTY5,
+                            LARGETURBINE_NEW_EMPTY6,
+                            LARGETURBINE_NEW_EMPTY7,
+                            LARGETURBINE_NEW_EMPTY8,
+                            LARGETURBINE_NEW_EMPTY9
                         },
                 TURBINE1 =
                         {
