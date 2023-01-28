@@ -19,6 +19,7 @@ public class GT_RenderUtil {
             System.out.println("WARNING: " + aStack.getDisplayName() + " does not have an associated GT colour.");
         }
     }
+
     public static void renderBlockIcon(
             RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ, IIcon aIcon, byte aSide) {
         switch (aSide) {

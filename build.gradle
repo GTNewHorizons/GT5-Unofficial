@@ -1,4 +1,4 @@
-//version: 1674845916
+//version: 1674936541
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -121,10 +121,7 @@ checkPropertyExists("autoUpdateBuildScript")
 checkPropertyExists("minecraftVersion")
 checkPropertyExists("forgeVersion")
 checkPropertyExists("replaceGradleTokenInFile")
-checkPropertyExists("gradleTokenModId")
-checkPropertyExists("gradleTokenModName")
 checkPropertyExists("gradleTokenVersion")
-checkPropertyExists("gradleTokenGroupName")
 checkPropertyExists("apiPackage")
 checkPropertyExists("accessTransformersFile")
 checkPropertyExists("usesMixins")
@@ -145,6 +142,11 @@ propertyDefaultIfUnset("modrinthRelations", "")
 propertyDefaultIfUnset("curseForgeProjectId", "")
 propertyDefaultIfUnset("curseForgeRelations", "")
 propertyDefaultIfUnset("minimizeShadowedDependencies", true)
+
+// Deprecated properties (kept for backwards compat)
+propertyDefaultIfUnset("gradleTokenModId", "")
+propertyDefaultIfUnset("gradleTokenModName", "")
+propertyDefaultIfUnset("gradleTokenGroupName", "")
 
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
@@ -1011,6 +1013,24 @@ def deobf(String sourceURL) {
         return deobf(sourceURL, "$hostName/$fileName")
     } catch (Exception e) {
         return deobf(sourceURL, "deobf/${sourceURL.hashCode()}")
+    }
+}
+
+def deobfMaven(String repoURL, String mavenDep) {
+    if (!repoURL.endsWith("/")) {
+        repoURL += "/"
+    }
+    String[] parts = mavenDep.split(":")
+    parts[0] = parts[0].replace('.', '/')
+    def jarURL = repoURL + parts[0] + "/" + parts[1] + "/" + parts[2] + "/" + parts[1] + "-" + parts[2] + ".jar"
+    return deobf(jarURL)
+}
+
+def deobfCurse(String curseDep) {
+    try {
+        return deobfMaven("https://www.cursemaven.com/", "curse.maven:$curseDep")
+    } catch (Exception ignored) {
+        out.style(Style.Failure).println("Failed to get $curseDep from cursemaven.")
     }
 }
 
