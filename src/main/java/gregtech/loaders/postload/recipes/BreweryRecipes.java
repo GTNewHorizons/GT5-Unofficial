@@ -3,10 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
@@ -271,7 +268,7 @@ public class BreweryRecipes implements Runnable {
                 GT_ModHandler.getDistilledWater(500L),
                 getFluidStack("ic2biomass", 1000),
                 10,
-                30,
+            (int) Tier.RECIPE_LV,
                 false);
 
         GT_Values.RA.addBrewingRecipe(
