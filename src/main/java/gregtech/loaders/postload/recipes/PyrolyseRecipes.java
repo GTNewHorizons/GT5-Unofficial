@@ -1,10 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isForestryLoaded;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;

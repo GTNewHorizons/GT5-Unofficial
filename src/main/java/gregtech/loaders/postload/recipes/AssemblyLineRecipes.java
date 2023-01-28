@@ -547,7 +547,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Energy_ZPM.get(1),
                 600,
-            (int) Tier.ZPM);
+                (int) Tier.ZPM);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Energy_ZPM.get(1, new Object() {}),

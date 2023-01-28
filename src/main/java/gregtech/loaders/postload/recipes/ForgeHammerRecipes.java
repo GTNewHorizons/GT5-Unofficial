@@ -4,7 +4,6 @@ import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isHardcoreEnderExpansionLoaded;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Blocks;

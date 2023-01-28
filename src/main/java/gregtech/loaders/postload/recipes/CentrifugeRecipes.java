@@ -31,7 +31,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 new int[] {10000, 10000, 9000},
                 400,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addCentrifugeRecipe(
                 ItemList.Cell_Empty.get(1),
@@ -76,7 +76,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Antimony.getDust(1),
                 new int[] {10000, 4000, 2000, 2000, 2000, 2000},
                 40,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
 
         // food ->CH4
         GT_Values.RA.addCentrifugeRecipe(
@@ -598,7 +598,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 new int[] {5000, 100, 5000},
                 600,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
         GT_Values.RA.addCentrifugeRecipe(
                 new ItemStack(Blocks.dirt, 1, 32767),
                 GT_Values.NI,
@@ -963,7 +963,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Ilmenite.getDust(2),
                 new int[] {10000, 10000, 10000, 10000, 10000, 10000},
                 13125,
-            (int) Tier.EV);
+                (int) Tier.EV);
 
         GT_Values.RA.addCentrifugeRecipe(
                 null,

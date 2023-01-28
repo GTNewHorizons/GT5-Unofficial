@@ -5,7 +5,6 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isAE2Loaded;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;

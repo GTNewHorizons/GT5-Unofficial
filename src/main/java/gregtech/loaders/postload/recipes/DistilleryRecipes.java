@@ -3,7 +3,6 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isTinkersConstructLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;

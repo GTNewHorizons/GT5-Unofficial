@@ -25,7 +25,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 19L)},
                 null,
                 180,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Long_Distance_Pipeline_Item.get(1L),
@@ -35,14 +35,14 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 180,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(1L),
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 2L)},
                 null,
                 10,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Long_Distance_Pipeline_Item_Pipe.get(1L),
@@ -52,7 +52,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 10,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Casing_Coil_Cupronickel.get(1L),
@@ -195,7 +195,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 2L)},
                 null,
                 180,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
         GT_Values.RA.addArcFurnaceRecipe(
                 getModItem(MOD_ID_RC, "machine.beta", 1L, 14),
                 new ItemStack[] {
@@ -204,7 +204,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 180,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
         GT_Values.RA.addArcFurnaceRecipe(
                 getModItem(MOD_ID_RC, "machine.beta", 1L, 15),
                 new ItemStack[] {
@@ -213,7 +213,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 180,
-            (int) Tier.RECIPE_MV);
+                (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 0),
@@ -418,6 +418,6 @@ public class ArcFurnaceRecipes implements Runnable {
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
                 null,
                 1200,
-            (int) Tier.RECIPE_LV);
+                (int) Tier.RECIPE_LV);
     }
 }

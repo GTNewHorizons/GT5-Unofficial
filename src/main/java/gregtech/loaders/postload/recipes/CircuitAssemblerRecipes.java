@@ -5,7 +5,6 @@ import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;

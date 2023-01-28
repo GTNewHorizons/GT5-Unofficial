@@ -67,49 +67,27 @@ public class VacuumFreezerRecipes implements Runnable {
                 GT_ModHandler.getIC2Item("reactorCoolantSix", 1L, 1),
                 600);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_He_1.getWildcard(1L),
-                ItemList.Reactor_Coolant_He_1.get(1L),
-                600);
+                ItemList.Reactor_Coolant_He_1.getWildcard(1L), ItemList.Reactor_Coolant_He_1.get(1L), 600);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_He_3.getWildcard(1L),
-                ItemList.Reactor_Coolant_He_3.get(1L),
-                1800);
+                ItemList.Reactor_Coolant_He_3.getWildcard(1L), ItemList.Reactor_Coolant_He_3.get(1L), 1800);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_He_6.getWildcard(1L),
-                ItemList.Reactor_Coolant_He_6.get(1L),
-            3600);
+                ItemList.Reactor_Coolant_He_6.getWildcard(1L), ItemList.Reactor_Coolant_He_6.get(1L), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_NaK_1.getWildcard(1L),
-                ItemList.Reactor_Coolant_NaK_1.get(1L),
-            600);
+                ItemList.Reactor_Coolant_NaK_1.getWildcard(1L), ItemList.Reactor_Coolant_NaK_1.get(1L), 600);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_NaK_3.getWildcard(1L),
-                ItemList.Reactor_Coolant_NaK_3.get(1L),
-            1800);
+                ItemList.Reactor_Coolant_NaK_3.getWildcard(1L), ItemList.Reactor_Coolant_NaK_3.get(1L), 1800);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_NaK_6.getWildcard(1L),
-                ItemList.Reactor_Coolant_NaK_6.get(1L),
-            3600);
+                ItemList.Reactor_Coolant_NaK_6.getWildcard(1L), ItemList.Reactor_Coolant_NaK_6.get(1L), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.neutroniumHeatCapacitor.getWildcard(1L),
-                ItemList.neutroniumHeatCapacitor.get(1L),
-            10000000);
+                ItemList.neutroniumHeatCapacitor.getWildcard(1L), ItemList.neutroniumHeatCapacitor.get(1L), 10000000);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_1.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_1.get(1L),
-                1800);
+                ItemList.Reactor_Coolant_Sp_1.getWildcard(1L), ItemList.Reactor_Coolant_Sp_1.get(1L), 1800);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_2.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_2.get(1L),
-                3600);
+                ItemList.Reactor_Coolant_Sp_2.getWildcard(1L), ItemList.Reactor_Coolant_Sp_2.get(1L), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_3.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_3.get(1L),
-                5400);
+                ItemList.Reactor_Coolant_Sp_3.getWildcard(1L), ItemList.Reactor_Coolant_Sp_3.get(1L), 5400);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_6.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_6.get(1L),
-                10800);
+                ItemList.Reactor_Coolant_Sp_6.getWildcard(1L), ItemList.Reactor_Coolant_Sp_6.get(1L), 10800);
 
         // fluid vacuum
         GT_Values.RA.addVacuumFreezerRecipe(
@@ -133,21 +111,13 @@ public class VacuumFreezerRecipes implements Runnable {
                 480);
 
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_1.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_1.get(1L),
-                1800);
+                ItemList.Reactor_Coolant_Sp_1.getWildcard(1L), ItemList.Reactor_Coolant_Sp_1.get(1L), 1800);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_2.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_2.get(1L),
-                3600);
+                ItemList.Reactor_Coolant_Sp_2.getWildcard(1L), ItemList.Reactor_Coolant_Sp_2.get(1L), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_3.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_3.get(1L),
-                5400);
+                ItemList.Reactor_Coolant_Sp_3.getWildcard(1L), ItemList.Reactor_Coolant_Sp_3.get(1L), 5400);
         GT_Values.RA.addVacuumFreezerRecipe(
-                ItemList.Reactor_Coolant_Sp_6.getWildcard(1L),
-                ItemList.Reactor_Coolant_Sp_6.get(1L),
-                10800);
+                ItemList.Reactor_Coolant_Sp_6.getWildcard(1L), ItemList.Reactor_Coolant_Sp_6.get(1L), 10800);
 
         // Freeze superconductors.
         GT_Values.RA.addVacuumFreezerRecipe(
@@ -236,11 +206,7 @@ public class VacuumFreezerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L),
                 110,
                 480);
-        GT_Values.RA.addVacuumFreezerRecipe(
-                Materials.Boron.getPlasma(144L),
-                Materials.Boron.getMolten(144L),
-                20,
-                120);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Boron.getPlasma(144L), Materials.Boron.getMolten(144L), 20, 120);
 
         GT_Values.RA.addVacuumFreezerRecipe(
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L)},

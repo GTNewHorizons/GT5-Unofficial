@@ -268,7 +268,7 @@ public class BreweryRecipes implements Runnable {
                 GT_ModHandler.getDistilledWater(500L),
                 getFluidStack("ic2biomass", 1000),
                 10,
-            (int) Tier.RECIPE_LV,
+                (int) Tier.RECIPE_LV,
                 false);
 
         GT_Values.RA.addBrewingRecipe(
