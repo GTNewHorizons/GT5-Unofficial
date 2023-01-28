@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isGTPPLoaded;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -208,15 +210,17 @@ public class VacuumFreezerRecipes implements Runnable {
                 480);
         GT_Values.RA.addVacuumFreezerRecipe(Materials.Boron.getPlasma(144L), Materials.Boron.getMolten(144L), 20, 120);
 
-        GT_Values.RA.addVacuumFreezerRecipe(
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L)},
-                new FluidStack[] {
-                    new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
-                    Materials.SuperCoolant.getFluid(1000)
-                },
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TranscendentMetal, 1L)},
-                new FluidStack[] {GT_Values.NF},
-                50 * 20,
-                32_000_000);
+        if (isGTPPLoaded) {
+            GT_Values.RA.addVacuumFreezerRecipe(
+                    new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L)},
+                    new FluidStack[] {
+                        new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
+                        Materials.SuperCoolant.getFluid(1000)
+                    },
+                    new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TranscendentMetal, 1L)},
+                    new FluidStack[] {GT_Values.NF},
+                    50 * 20,
+                    32_000_000);
+        }
     }
 }
