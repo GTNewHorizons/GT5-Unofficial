@@ -1,9 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -522,7 +519,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Energy_LuV.get(1),
                 400,
-                30720);
+                (int) Tier.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Energy_LuV.get(1, new Object() {}),
@@ -550,7 +547,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Energy_ZPM.get(1),
                 600,
-                122880);
+            (int) Tier.ZPM);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Energy_ZPM.get(1, new Object() {}),
@@ -620,7 +617,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Dynamo_LuV.get(1),
                 400,
-                30720);
+                (int) Tier.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Dynamo_LuV.get(1, new Object() {}),
@@ -648,7 +645,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Dynamo_ZPM.get(1),
                 600,
-                122880);
+                (int) Tier.RECIPE_ZPM);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Dynamo_ZPM.get(1, new Object() {}),

@@ -3,10 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 
@@ -28,7 +25,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 19L)},
                 null,
                 180,
-                120);
+            (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Long_Distance_Pipeline_Item.get(1L),
@@ -38,14 +35,14 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 180,
-                120);
+            (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(1L),
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 2L)},
                 null,
                 10,
-                120);
+            (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Long_Distance_Pipeline_Item_Pipe.get(1L),
@@ -55,7 +52,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 10,
-                120);
+            (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Casing_Coil_Cupronickel.get(1L),
@@ -198,7 +195,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 2L)},
                 null,
                 180,
-                120);
+            (int) Tier.RECIPE_MV);
         GT_Values.RA.addArcFurnaceRecipe(
                 getModItem(MOD_ID_RC, "machine.beta", 1L, 14),
                 new ItemStack[] {
@@ -207,7 +204,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 180,
-                120);
+            (int) Tier.RECIPE_MV);
         GT_Values.RA.addArcFurnaceRecipe(
                 getModItem(MOD_ID_RC, "machine.beta", 1L, 15),
                 new ItemStack[] {
@@ -216,7 +213,7 @@ public class ArcFurnaceRecipes implements Runnable {
                 },
                 null,
                 180,
-                120);
+            (int) Tier.RECIPE_MV);
 
         GT_Values.RA.addArcFurnaceRecipe(
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 0),
@@ -421,6 +418,6 @@ public class ArcFurnaceRecipes implements Runnable {
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
                 null,
                 1200,
-                30);
+            (int) Tier.RECIPE_LV);
     }
 }

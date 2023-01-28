@@ -2,10 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -98,35 +95,35 @@ public class AutoclaveRecipes implements Runnable {
                 GT_ModHandler.getIC2Item("carbonFiber", 64L),
                 10000,
                 150,
-                1920);
+                (int) Tier.RECIPE_EV);
         GT_Values.RA.addAutoclaveRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
                 Materials.Epoxid.getMolten(144L),
                 GT_ModHandler.getIC2Item("carbonFiber", 64L),
                 10000,
                 300,
-                480);
+            (int) Tier.RECIPE_HV);
         GT_Values.RA.addAutoclaveRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
                 Materials.Polytetrafluoroethylene.getMolten(288L),
                 GT_ModHandler.getIC2Item("carbonFiber", 32L),
                 10000,
                 400,
-                120);
+            (int) Tier.RECIPE_MV);
         GT_Values.RA.addAutoclaveRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
                 Materials.Plastic.getMolten(576L),
                 GT_ModHandler.getIC2Item("carbonFiber", 16L),
                 10000,
                 600,
-                30);
+            (int) Tier.RECIPE_LV);
         GT_Values.RA.addAutoclaveRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1),
                 Materials.UUMatter.getFluid(576L),
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1),
                 3333,
                 72000,
-                480);
+                (int) Tier.RECIPE_HV);
 
         GT_Values.RA.addAutoclaveRecipe(
                 GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L)),
@@ -134,7 +131,7 @@ public class AutoclaveRecipes implements Runnable {
                 ItemList.Gravistar.get(1L),
                 10000,
                 480,
-                7680);
+            (int) Tier.RECIPE_IV);
         GT_Values.RA.addAutoclaveRecipe(
                 GT_OreDictUnificator.get(ItemList.Gravistar.get(16L)),
                 Materials.Infinity.getMolten(288),
@@ -174,7 +171,7 @@ public class AutoclaveRecipes implements Runnable {
                 new ItemStack[] {GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
                 new int[] {0, 7500},
                 1200,
-                30,
+            (int) Tier.RECIPE_LV,
                 false);
         GT_Values.RA.addAutoclave4Recipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
@@ -184,7 +181,7 @@ public class AutoclaveRecipes implements Runnable {
                 new ItemStack[] {GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
                 new int[] {0, 9000},
                 1200,
-                30,
+            (int) Tier.RECIPE_LV,
                 false);
     }
 }
