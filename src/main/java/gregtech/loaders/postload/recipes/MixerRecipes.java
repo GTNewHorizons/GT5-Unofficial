@@ -2,6 +2,8 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import gregtech.api.enums.*;
@@ -823,7 +825,7 @@ public class MixerRecipes implements Runnable {
                 200,
                 600);
 
-        if (GT_MachineRecipeLoader.isThaumcraftLoaded) {
+        if (isThaumcraftLoaded) {
             GT_Values.RA.addMixerRecipe(
                     ItemList.SFMixture.get(20),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.InfusedAir, 1L),
@@ -1683,32 +1685,34 @@ public class MixerRecipes implements Runnable {
                 50,
                 1920);
 
-        GT_Values.RA.addMixerRecipe(
-                EnumCube.COKE_BLOCK.getItem(),
-                ItemList.SFMixture.get(2),
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.NitroFuel.getFluid(300),
-                null,
-                ItemList.Block_SSFUEL.get(1),
-                100,
-                250);
-        GT_Values.RA.addMixerRecipe(
-                EnumCube.COKE_BLOCK.getItem(),
-                ItemList.SFMixture.get(2),
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.GasolinePremium.getFluid(120),
-                null,
-                ItemList.Block_SSFUEL.get(1),
-                100,
-                250);
+        if (isRailcraftLoaded) {
+            GT_Values.RA.addMixerRecipe(
+                    EnumCube.COKE_BLOCK.getItem(),
+                    ItemList.SFMixture.get(2),
+                    GT_Values.NI,
+                    GT_Values.NI,
+                    GT_Values.NI,
+                    GT_Utility.getIntegratedCircuit(1),
+                    Materials.NitroFuel.getFluid(300),
+                    null,
+                    ItemList.Block_SSFUEL.get(1),
+                    100,
+                    250);
+            GT_Values.RA.addMixerRecipe(
+                    EnumCube.COKE_BLOCK.getItem(),
+                    ItemList.SFMixture.get(2),
+                    GT_Values.NI,
+                    GT_Values.NI,
+                    GT_Values.NI,
+                    GT_Utility.getIntegratedCircuit(1),
+                    Materials.GasolinePremium.getFluid(120),
+                    null,
+                    ItemList.Block_SSFUEL.get(1),
+                    100,
+                    250);
+        }
 
-        if (GT_MachineRecipeLoader.isThaumcraftLoaded) {
+        if (isThaumcraftLoaded && isRailcraftLoaded) {
             GT_Values.RA.addMixerRecipe(
                     EnumCube.COKE_BLOCK.getItem(),
                     ItemList.MSFMixture.get(2),
