@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_TC;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isAE2Loaded;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 
 import cpw.mods.fml.common.Loader;
@@ -585,7 +586,7 @@ public class ThaumcraftRecipes implements Runnable {
                                             new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)))
                         });
 
-                if (Loader.isModLoaded("appliedenergistics2")) {
+                if (isAE2Loaded) {
                     tKey = "GT_TRANSSKYSTONE";
                     GT_LanguageManager.addStringLocalization(
                             GT_MachineRecipeLoader.aTextTCGTPage + tKey,

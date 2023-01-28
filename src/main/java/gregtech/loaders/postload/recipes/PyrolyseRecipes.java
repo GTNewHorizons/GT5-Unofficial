@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isForestryLoaded;
 
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
@@ -61,7 +62,7 @@ public class PyrolyseRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000),
                     900,
                     10);
-        if (Loader.isModLoaded(MOD_ID_FR)) {
+        if (isForestryLoaded) {
             GT_Values.RA.addPyrolyseRecipe(
                     getModItem(GT_MachineRecipeLoader.aTextForestry, "fertilizerBio", 4L),
                     Materials.Water.getFluid(4000),

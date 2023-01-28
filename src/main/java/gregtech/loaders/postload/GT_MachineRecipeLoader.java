@@ -30,6 +30,12 @@ public class GT_MachineRecipeLoader implements Runnable {
     public static final Boolean isEBXLLoaded = Loader.isModLoaded(GT_MachineRecipeLoader.aTextEBXL);
     public static final Boolean isRailcraftLoaded = Loader.isModLoaded(MOD_ID_RC);
     public static final Boolean isForestryloaded = Loader.isModLoaded(GT_MachineRecipeLoader.aTextForestry);
+    public static final Boolean isIC2NuclearControlLoaded = Loader.isModLoaded("IC2NuclearControl");
+    public static final Boolean isAvaritiaAddonsLoaded = Loader.isModLoaded("avaritiaddons");
+    public static final Boolean isTinkersConstructLoaded = Loader.isModLoaded("TConstruct");
+    public static final Boolean isHardcoreEnderExpansionLoaded = Loader.isModLoaded("HardcoreEnderExpansion");
+    public static final Boolean isForestryLoaded = Loader.isModLoaded(MOD_ID_FR);
+    public static final Boolean isAE2Loaded = Loader.isModLoaded("appliedenergistics2");
 
     @Override
     public void run() {

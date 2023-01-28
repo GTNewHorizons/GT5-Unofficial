@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isTinkersConstructLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import cpw.mods.fml.common.Loader;
@@ -270,7 +271,7 @@ public class DistilleryRecipes implements Runnable {
                 24,
                 false);
 
-        if (Loader.isModLoaded("TConstruct")) {
+        if (isTinkersConstructLoaded) {
             GT_Values.RA.addDistilleryRecipe(
                     GT_Utility.getIntegratedCircuit(1),
                     Materials.Glue.getFluid(8L),

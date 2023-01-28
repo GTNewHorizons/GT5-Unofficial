@@ -2031,7 +2031,7 @@ public class AssemblerRecipes implements Runnable {
                 400,
                 4);
 
-        if (Loader.isModLoaded("IC2NuclearControl")) { // Card recycling recipes
+        if (isIC2NuclearControlLoaded) { // Card recycling recipes
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemVanillaMachineCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
@@ -2626,9 +2626,7 @@ public class AssemblerRecipes implements Runnable {
             isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 2) : new ItemStack(Blocks.chest),
             isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 5) : new ItemStack(Blocks.chest),
             isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 6) : new ItemStack(Blocks.chest),
-            Loader.isModLoaded("avaritiaddons")
-                    ? getModItem("avaritiaddons", "CompressedChest", 1)
-                    : new ItemStack(Blocks.chest)
+            isAvaritiaAddonsLoaded ? getModItem("avaritiaddons", "CompressedChest", 1) : new ItemStack(Blocks.chest)
         };
         ItemStack[] tanks = {
             GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
@@ -2804,7 +2802,7 @@ public class AssemblerRecipes implements Runnable {
      * Load all Railcraft recipes for GT Machines
      */
     private void loadRailcraftRecipes() {
-        if (!Loader.isModLoaded(MOD_ID_RC)) return;
+        if (!isRailcraftLoaded) return;
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     new ItemStack(Blocks.stone_slab, 1, 0),
