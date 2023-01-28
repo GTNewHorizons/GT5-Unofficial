@@ -7,5 +7,9 @@ public interface IMultiBlockPart extends IMultiTileEntity {
 
     void setTargetPos(ChunkCoordinates aTargetPos);
 
+    void setLockedInventoryIndex(int aIndex);
+
+    int getLockedInventoryIndex();
+
     boolean tickCoverAtSide(byte aSide, long aTickTimer);
 }

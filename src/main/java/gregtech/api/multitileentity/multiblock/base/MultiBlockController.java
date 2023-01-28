@@ -45,6 +45,8 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
+import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -82,7 +84,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 IMultiBlockInventory,
                 IMTE_AddToolTips {
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
-
+    private final List<AdvancedCasing> mUpgradeCasings = new ArrayList<AdvancedCasing>();
     protected BuildState buildState = new BuildState();
 
     protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
@@ -551,6 +553,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 if (tTarget != null && tTarget != MultiBlockController.this) return false;
 
                 part.setTarget(MultiBlockController.this, aModes);
+
+                if (part instanceof AdvancedCasing) {
+                    mUpgradeCasings.add((AdvancedCasing) part);
+                }
                 return true;
             }
 
@@ -587,6 +593,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
                     tContainer.setMultiTile(world, x, y, z);
                     ((MultiBlockPart) te).setTarget(MultiBlockController.this, aModes);
+
+                    if (te instanceof AdvancedCasing) {
+                        mUpgradeCasings.add((AdvancedCasing) te);
+                    }
                 }
 
                 return false;
@@ -777,10 +787,25 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     /**
      * Item - MultiBlock related Item behaviour.
      */
-    protected boolean registerInventory(String invName, IItemHandlerModifiable inventory) {
-        if (multiBlockInputInventory.containsKey(invName)) return false;
-        multiBlockInputInventory.put(invName, inventory);
-        return true;
+    @Override
+    public void registerInventory(String aName, IItemHandlerModifiable aInventory, int aType) {
+        if (aType == InventoryUpgrade.INPUT) {
+            if (multiBlockInputInventory.containsKey(aName)) return;
+            multiBlockInputInventory.put(aName, aInventory);
+            return;
+        }
+        if (aType == InventoryUpgrade.OUTPUT) {
+            if (multiBlockOutputInventory.containsKey(aName)) return;
+            multiBlockOutputInventory.put(aName, aInventory);
+            return;
+        }
+    }
+
+    @Override
+    public void unregisterInventory(String aName, IItemHandlerModifiable aInventory, int aType) {
+        if (!multiBlockInputInventory.containsKey(aName) || !multiBlockOutputInventory.containsKey(aName)) return;
+        multiBlockInputInventory.remove(aName, aInventory);
+        multiBlockOutputInventory.remove(aName, aInventory);
     }
 
     @Override
@@ -798,6 +823,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
+        if (isServerSide()) {
+            for (AdvancedCasing tPart : mUpgradeCasings) {
+                tPart.issueClientUpdate();
+            }
+        }
         final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
         if (multiBlockInventory == null) return null;
 
@@ -1062,6 +1092,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (isServerSide()) {
+            for (AdvancedCasing tPart : mUpgradeCasings) {
+                tPart.issueClientUpdate();
+            }
+        }
         builder.widget(new TabContainer()
                         .setButtonSize(20, 24)
                         .addTabButton(new TabButton(0)

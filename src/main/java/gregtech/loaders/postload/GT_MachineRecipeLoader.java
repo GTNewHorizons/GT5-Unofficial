@@ -6504,7 +6504,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 new FluidStack[] {Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L)},
                 10 * 20,
-                (int) Tier.RECIPE_UXV);
+                (int) TierEU.RECIPE_UXV);
 
         if (Loader.isModLoaded("HardcoreEnderExpansion")) {
             GT_Values.RA.addForgeHammerRecipe(
@@ -6557,7 +6557,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack[] {getModItem(MOD_ID_GTPP, "MU-metaitem.01", 1, 32105)},
                 new FluidStack[] {NF},
                 50 * 20,
-                (int) Tier.UXV,
+                (int) TierEU.UXV,
                 13_500);
 
         GT_Values.RA.addAmplifier(ItemList.IC2_Scrap.get(9L), 180, 1);

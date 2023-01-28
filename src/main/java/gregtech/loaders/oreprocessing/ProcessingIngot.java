@@ -73,7 +73,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
 
                 if (!aNoSmashing) {
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_Values.RA.addForgeHammerRecipe(
                                 GT_Utility.copyAmount(3L, aStack),
                                 GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
@@ -133,7 +133,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             calculateRecipeEU(aMaterial, 96));
 
                     // Enable crafting with hammer if tier is < IV.
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         if (aSpecialRecipeReq
                                 && GregTech_API.sRecipeFile.get(
                                         ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
@@ -157,7 +157,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 3L, 1L),
                             calculateRecipeEU(aMaterial, 96));
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         if (aSpecialRecipeReq
                                 && GregTech_API.sRecipeFile.get(
                                         ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
@@ -186,7 +186,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             calculateRecipeEU(aMaterial, 96));
 
                     // If tier < IV add manual crafting.
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         if (aSpecialRecipeReq
                                 && GregTech_API.sRecipeFile.get(
                                         ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
@@ -214,7 +214,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             (int) Math.max(aMaterialMass, 1L),
                             calculateRecipeEU(aMaterial, 96));
 
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         if (aSpecialRecipeReq
                                 && GregTech_API.sRecipeFile.get(
                                         ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {

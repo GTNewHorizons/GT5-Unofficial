@@ -17,7 +17,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L),
                     GT_ModHandler.RecipeBits.BUFFERED,
@@ -31,7 +31,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     (int) Math.max(aMaterial.getMass(), 1L),
                     calculateRecipeEU(aMaterial, 4));
             if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                             GT_Proxy.tBits,
@@ -50,7 +50,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     200,
                     calculateRecipeEU(aMaterial, 16));
             if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial))
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                             GT_Proxy.tBits,
