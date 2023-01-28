@@ -26,7 +26,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Quicklime.getDust(1),
                 GT_Values.NI,
                 200,
-                480,
+            (int) Tier.RECIPE_HV,
                 3200);
 
         // Carbothermic Reduction
@@ -41,7 +41,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Copper.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.RoastedAntimony.getDust(2),
@@ -51,7 +51,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Antimony.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.RoastedIron.getDust(2),
@@ -61,7 +61,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Iron.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.RoastedNickel.getDust(2),
@@ -71,7 +71,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Nickel.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.RoastedZinc.getDust(2),
@@ -81,7 +81,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Zinc.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.RoastedCobalt.getDust(2),
@@ -91,7 +91,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Cobalt.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.RoastedArsenic.getDust(2),
@@ -101,7 +101,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Arsenic.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.RoastedLead.getDust(2),
@@ -111,7 +111,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Lead.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -122,7 +122,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Copper.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.Magnetite.getDust(2),
@@ -132,7 +132,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Iron.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.YellowLimonite.getDust(2),
@@ -142,7 +142,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Iron.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.BrownLimonite.getDust(2),
@@ -152,7 +152,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Iron.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.BasalticMineralSand.getDust(2),
@@ -162,7 +162,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Iron.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.GraniticMineralSand.getDust(2),
@@ -172,7 +172,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Iron.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -183,7 +183,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Tin.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
         GT_Values.RA.addBlastRecipe(
                 Materials.CassiteriteSand.getDust(2),
@@ -193,7 +193,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Tin.getIngots(outputIngotAmount),
                 Materials.Ash.getDustTiny(2),
                 240,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -204,7 +204,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.Silicon.getIngots(1),
                 Materials.Ash.getDustTiny(1),
                 80,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
@@ -216,7 +216,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Copper.getIngots(1),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.Malachite.getDust(2),
@@ -226,7 +226,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Copper.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.AntimonyTrioxide.getDust(5),
@@ -236,7 +236,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Antimony.getIngots(2),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.BandedIron.getDust(5),
@@ -246,7 +246,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Iron.getIngots(2),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.Magnetite.getDust(2),
@@ -256,7 +256,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Iron.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.YellowLimonite.getDust(2),
@@ -266,7 +266,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Iron.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.BrownLimonite.getDust(2),
@@ -276,7 +276,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Iron.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.BasalticMineralSand.getDust(2),
@@ -286,7 +286,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Iron.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.GraniticMineralSand.getDust(2),
@@ -296,7 +296,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Iron.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.Cassiterite.getDust(2),
@@ -306,7 +306,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Tin.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.CassiteriteSand.getDust(2),
@@ -316,7 +316,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Tin.getIngots(outputIngotAmount),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.Garnierite.getDust(2),
@@ -326,7 +326,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Nickel.getIngots(1),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.CobaltOxide.getDust(2),
@@ -336,7 +336,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Cobalt.getIngots(1),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.ArsenicTrioxide.getDust(5),
@@ -346,7 +346,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Arsenic.getIngots(2),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
             GT_Values.RA.addBlastRecipe(
                     Materials.Massicot.getDust(2),
@@ -356,7 +356,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.Lead.getIngots(1),
                     Materials.Ash.getDustTiny(2),
                     240,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
         }
 
@@ -372,7 +372,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 9000,
-                120,
+            (int) Tier.RECIPE_MV,
                 1784);
 
         GT_Values.RA.addBlastRecipe(
@@ -387,7 +387,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 12000,
-                480,
+            (int) Tier.RECIPE_HV,
                 2484);
 
         GT_Values.RA.addBlastRecipe(
@@ -402,7 +402,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 15000,
-                1920,
+            (int) Tier.RECIPE_EV,
                 4484);
 
         GT_Values.RA.addBlastRecipe(
@@ -417,7 +417,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 18000,
-                7680,
+            (int) Tier.RECIPE_IV,
                 6484);
 
         GT_Values.RA.addBlastRecipe(
@@ -432,7 +432,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 21000,
-                30720,
+            (int) Tier.RECIPE_LuV,
                 9000);
 
         // CaH2 + 2Si = CaSi2 + 2H
@@ -444,7 +444,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 3),
                 GT_Values.NI,
                 300,
-                120,
+            (int) Tier.RECIPE_MV,
                 1273);
 
         GT_Values.RA.addBlastRecipe(
@@ -455,7 +455,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1L),
                 GT_Values.NI,
                 19660,
-                122880 * 4,
+                (int) Tier.RECIPE_UV,
                 11800);
 
         GT_Values.RA.addBlastRecipe(
@@ -466,7 +466,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1L),
                 GT_Values.NI,
                 8847,
-                122880 * 4,
+                (int) Tier.RECIPE_UV,
                 11800); // 0.45 * 19660 = 8847
 
         GT_Values.RA.addBlastRecipe(
@@ -477,7 +477,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1L),
                 GT_Values.NI,
                 19660,
-                491520 * 4,
+                (int) Tier.RECIPE_UHV,
                 12700);
 
         GT_Values.RA.addBlastRecipe(
@@ -488,7 +488,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1L),
                 GT_Values.NI,
                 8847,
-                491520 * 4,
+                (int) Tier.RECIPE_UHV,
                 12700); // 0.45 * 19660 = 8847
 
         GT_Values.RA.addBlastRecipe(
@@ -499,7 +499,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1L),
                 GT_Values.NI,
                 19660,
-                1966080 * 4,
+                (int) Tier.RECIPE_UEV,
                 13600);
 
         GT_Values.RA.addBlastRecipe(
@@ -510,7 +510,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1L),
                 GT_Values.NI,
                 8847,
-                1966080 * 4,
+                (int) Tier.RECIPE_UEV,
                 13600); // 0.45 * 19660 = 8847
 
         // CaO + 3C = CaC2 + CO
@@ -522,7 +522,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialsKevlar.CalciumCarbide.getDust(3),
                 GT_Values.NI,
                 600,
-                480,
+            (int) Tier.RECIPE_HV,
                 2573);
         // Ni + 3Al = NiAl3
         GT_Values.RA.addBlastRecipe(
@@ -533,7 +533,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialsKevlar.NickelAluminide.getIngots(4),
                 GT_Values.NI,
                 900,
-                480,
+            (int) Tier.RECIPE_HV,
                 1688);
 
         ItemStack[] tSiliconDioxide = new ItemStack[] {
@@ -554,7 +554,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     Materials.RoastedCopper.getDust(1),
                     Materials.Ferrosilite.getDust(5),
                     120,
-                    120,
+                (int) Tier.RECIPE_MV,
                     1200);
         }
 
@@ -566,7 +566,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.RoastedCopper.getDust(1),
                 Materials.RoastedAntimony.getDustTiny(3),
                 120,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -577,7 +577,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.RoastedIron.getDust(1),
                 Materials.Ash.getDustTiny(1),
                 120,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -588,7 +588,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.RoastedNickel.getDust(1),
                 Materials.Ash.getDustTiny(1),
                 120,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -599,7 +599,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.RoastedZinc.getDust(1),
                 Materials.Ash.getDustTiny(1),
                 120,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -610,7 +610,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.RoastedCobalt.getDust(1),
                 Materials.RoastedArsenic.getDust(1),
                 120,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -621,7 +621,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.RoastedAntimony.getDust(1),
                 Materials.Ash.getDustTiny(1),
                 120,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         GT_Values.RA.addBlastRecipe(
@@ -632,7 +632,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 Materials.RoastedLead.getDust(1),
                 Materials.Ash.getDustTiny(1),
                 120,
-                120,
+            (int) Tier.RECIPE_MV,
                 1200);
 
         if (isGTNHLanthanidLoaded && isGTPPLoaded) {
@@ -657,7 +657,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialsKevlar.RhodiumChloride.getDust(4),
                     GT_Values.NI,
                     600,
-                    480,
+                (int) Tier.RECIPE_HV,
                     573);
         }
     }
