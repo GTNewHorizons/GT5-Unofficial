@@ -117,7 +117,7 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer outputInventorySize(int aSize) {
-        mParameters.setInteger(NBT.INV_INPUT_SIZE, aSize);
+        mParameters.setInteger(NBT.INV_OUTPUT_SIZE, aSize);
         return this;
     }
 
@@ -127,14 +127,14 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer tier(int aTier) {
-        verifyDecendentOf(AdvancedCasing.class);
+        verifyDescendentOf(AdvancedCasing.class);
 
         mParameters.setInteger(NBT.TIER, aTier);
         return this;
     }
 
     public MultiTileEntityClassContainer upgradeInventorySize(int aSize) {
-        verifyDecendentOf(AdvancedCasing.class);
+        verifyDescendentOf(AdvancedCasing.class);
 
         mParameters.setInteger(NBT.UPGRADE_INVENTORY_SIZE, aSize);
         return this;
@@ -151,10 +151,11 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
-    private void verifyDecendentOf(Class<?> cls) {
-        if (!mClass.isAssignableFrom(cls)) {
+    private void verifyDescendentOf(Class<?> cls) {
+        // Check if cls is extended by mClass
+        if (!cls.isAssignableFrom(mClass)) {
             throw new IllegalArgumentException(
-                    "Expected a decendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+                    "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
         }
     }
 }

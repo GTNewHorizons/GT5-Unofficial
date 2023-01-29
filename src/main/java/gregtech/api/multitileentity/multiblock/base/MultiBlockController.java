@@ -17,6 +17,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
 import com.gtnewhorizons.modularui.api.screen.*;
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -148,7 +149,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         aNBT.setBoolean(NBT.STRUCTURE_OK, mStructureOkay);
         aNBT.setByte(NBT.ROTATION, (byte) mExtendedFacing.getRotation().getIndex());
         aNBT.setByte(NBT.FLIP, (byte) mExtendedFacing.getFlip().getIndex());
+
+        saveUpgradeInventoriesToNBT(aNBT);
     }
+
+    private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {}
 
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
@@ -164,7 +169,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 ForgeDirection.getOrientation(getFrontFacing()),
                 Rotation.byIndex(aNBT.getByte(NBT.ROTATION)),
                 Flip.byIndex(aNBT.getByte(NBT.FLIP)));
+
+        getUpgradeInventoriesFromNBT(aNBT);
     }
+
+    private void getUpgradeInventoriesFromNBT(NBTTagCompound aNBT) {}
 
     @Override
     public void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H) {
@@ -788,24 +797,27 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      * Item - MultiBlock related Item behaviour.
      */
     @Override
-    public void registerInventory(String aName, IItemHandlerModifiable aInventory, int aType) {
+    public void registerInventory(String aName, int aInventorySize, int aType) {
         if (aType == InventoryUpgrade.INPUT) {
             if (multiBlockInputInventory.containsKey(aName)) return;
-            multiBlockInputInventory.put(aName, aInventory);
+            multiBlockInputInventory.put(aName, new ItemStackHandler(aInventorySize));
             return;
         }
         if (aType == InventoryUpgrade.OUTPUT) {
             if (multiBlockOutputInventory.containsKey(aName)) return;
-            multiBlockOutputInventory.put(aName, aInventory);
+            multiBlockOutputInventory.put(aName, new ItemStackHandler(aInventorySize));
             return;
         }
     }
 
     @Override
-    public void unregisterInventory(String aName, IItemHandlerModifiable aInventory, int aType) {
-        if (!multiBlockInputInventory.containsKey(aName) || !multiBlockOutputInventory.containsKey(aName)) return;
-        multiBlockInputInventory.remove(aName, aInventory);
-        multiBlockOutputInventory.remove(aName, aInventory);
+    public void unregisterInventory(String aName, int aType) {
+        if (aType == InventoryUpgrade.INPUT && multiBlockInputInventory.containsKey(aName)) {
+            multiBlockInputInventory.remove(aName, multiBlockInputInventory.get(aName));
+        }
+        if (aType == InventoryUpgrade.OUTPUT && multiBlockOutputInventory.containsKey(aName)) {
+            multiBlockOutputInventory.remove(aName, multiBlockOutputInventory.get(aName));
+        }
     }
 
     @Override
@@ -825,6 +837,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
         if (isServerSide()) {
             for (AdvancedCasing tPart : mUpgradeCasings) {
+                if (!(tPart instanceof InventoryUpgrade)) continue;
                 tPart.issueClientUpdate();
             }
         }
@@ -1094,6 +1107,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (isServerSide()) {
             for (AdvancedCasing tPart : mUpgradeCasings) {
+                if (!(tPart instanceof InventoryUpgrade)) continue;
                 tPart.issueClientUpdate();
             }
         }

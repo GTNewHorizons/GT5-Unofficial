@@ -1,24 +1,22 @@
 package gregtech.api.multitileentity.multiblock.casing;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
+import java.util.UUID;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class InventoryUpgrade extends AdvancedCasing {
+    public UUID mInventoryID;
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
     private String mInventoryName = "inventory";
     private int mInventorySize = 16;
-    private IItemHandlerModifiable mInputInventory;
-    private IItemHandlerModifiable mOutputInventory;
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {
-        aTarget.registerInventory(mInventoryName, mInputInventory, INPUT);
-        aTarget.registerInventory(mInventoryName, mOutputInventory, OUTPUT);
+        aTarget.registerInventory(mInventoryID.toString(), mInventorySize, INPUT);
+        aTarget.registerInventory(mInventoryID.toString(), mInventorySize, OUTPUT);
     }
 
     @Override
@@ -29,15 +27,19 @@ public class InventoryUpgrade extends AdvancedCasing {
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
+        if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_UUID)) {
+            mInventoryID = UUID.fromString(aNBT.getString(NBT.UPGRADE_INVENTORY_UUID));
+        } else {
+            mInventoryID = UUID.randomUUID();
+        }
         mInventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
         mInventoryName = "inventory" + GT_Values.VN[mTier];
-        mInputInventory = new ItemStackHandler(mInventorySize);
-        mOutputInventory = new ItemStackHandler(mInventorySize);
     }
 
     @Override
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
+        aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, mInventoryID.toString());
     }
 
     @Override
@@ -45,8 +47,8 @@ public class InventoryUpgrade extends AdvancedCasing {
         super.onBaseTEDestroyed();
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
-            controller.unregisterInventory(mInventoryName, mInputInventory, INPUT);
-            controller.unregisterInventory(mInventoryName, mOutputInventory, OUTPUT);
+            controller.unregisterInventory(mInventoryID.toString(), INPUT);
+            controller.unregisterInventory(mInventoryID.toString(), OUTPUT);
         }
     }
 }
