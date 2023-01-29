@@ -14,6 +14,9 @@ import gregtech.api.enums.Materials;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -103,11 +106,14 @@ public class EyeOfHarmonyRecipe {
         this.recipeTriggerItem = new ItemStack(block);
 
         this.outputItems = validDustGenerator(materialList);
-        //        this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
-        //        Collections.reverse(this.outputItems);
 
         this.sumOfItems =
                 this.outputItems.stream().map(ItemStackLong::getStackSize).reduce(0L, Long::sum);
+
+        this.outputItems.add(new ItemStackLong(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), this.sumOfItems * 3));
+        this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
+        Collections.reverse(this.outputItems);
+
 
         for (ItemStackLong itemStackLong : outputItems) {
             double stackSize = (double) itemStackLong.getStackSize();
