@@ -126,8 +126,33 @@ public class EyeOfHarmonyRecipe {
         }
 
         // Add a bonus fluid of compressed star matter.
-        // todo replace with Bonus star matter when added to GT5.
         fluidStackArrayList.add(Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000));
+
+        // Tier 0 - 576   White
+        // Tier 1 - 2304  White
+        // Tier 2 - 9216  White
+        // Tier 3 - 36864 White
+
+        // Tier 4 - 576   Black
+        // Tier 5 - 2304  Black
+        // Tier 6 - 9216  Black
+        // Tier 7 - 36864 Black
+
+        // Tier 8 - 576   Universium
+        // Tier 9 - 2304  Universium
+
+        if (rocketTierOfRecipe <= 3) {
+            fluidStackArrayList.add(Materials.WhiteDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe - 1)));
+        }
+
+        if ((4 <= rocketTierOfRecipe) && (rocketTierOfRecipe <= 7))  {
+            fluidStackArrayList.add(Materials.BlackDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe)));
+        }
+
+        if (rocketTierOfRecipe >= 8)  {
+            fluidStackArrayList.add(Materials.Universium.getMolten(576L * pow(4, (int) (rocketTierOfRecipe - 8))));
+        }
+
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
@@ -229,7 +254,7 @@ public class EyeOfHarmonyRecipe {
     private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
 
     private static final double[] ORE_MULTIPLIER = {
-        PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
+            PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
     };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
