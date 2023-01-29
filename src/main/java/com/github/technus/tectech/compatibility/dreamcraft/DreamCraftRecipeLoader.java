@@ -4748,8 +4748,8 @@ public class DreamCraftRecipeLoader {
                 },
                 new FluidStack(solderUEV, 288),
                 ItemList.Optically_Compatible_Memory.get(2),
-                10 * 20,
-                7_864_320,
+                20 * 20,
+                1_966_080,
                 false);
 
         // Optical Processor
