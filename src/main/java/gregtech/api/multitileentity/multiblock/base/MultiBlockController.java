@@ -156,9 +156,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         saveUpgradeInventoriesToNBT(aNBT);
     }
 
-    private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {
-        multiBlockInputInventory.forEach();
-    }
+    private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {}
 
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
