@@ -3,17 +3,20 @@ package kubatech.api.enums;
 import static gregtech.api.enums.GT_Values.NI;
 import static gregtech.api.enums.GT_Values.W;
 
+import java.util.Locale;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import java.util.Locale;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public enum ItemList implements IItemContainer {
+
     ExtremeExterminationChamber,
     ExtremeIndustrialApiary,
     LegendaryBlackTea,
@@ -147,10 +150,8 @@ public enum ItemList implements IItemContainer {
         StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
         final String[] tDisplayNameWords = aDisplayName.split("\\W");
         for (String tWord : tDisplayNameWords) {
-            if (tWord.length() > 0)
-                tCamelCasedDisplayNameBuilder.append(tWord.substring(0, 1).toUpperCase(Locale.US));
-            if (tWord.length() > 1)
-                tCamelCasedDisplayNameBuilder.append(tWord.substring(1).toLowerCase(Locale.US));
+            if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(tWord.substring(0, 1).toUpperCase(Locale.US));
+            if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(tWord.substring(1).toLowerCase(Locale.US));
         }
         if (tCamelCasedDisplayNameBuilder.length() == 0) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
@@ -197,9 +198,8 @@ public enum ItemList implements IItemContainer {
     }
 
     /**
-     * Returns the internal stack.
-     * This method is unsafe. It's here only for quick operations.
-     * DON'T CHANGE THE RETURNED VALUE!
+     * Returns the internal stack. This method is unsafe. It's here only for quick operations. DON'T CHANGE THE RETURNED
+     * VALUE!
      */
     public ItemStack getInternalStack_unsafe() {
         return mStack;

@@ -1,32 +1,24 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.loaders;
 
 import static kubatech.api.enums.ItemList.*;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.loaders.item.ItemProxy;
 import kubatech.loaders.item.KubaItems;
 import kubatech.loaders.item.items.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemLoader {
+
     public static final KubaItems kubaitems = new KubaItems();
 
     public static void registerItems() {
@@ -74,8 +66,8 @@ public class ItemLoader {
         BruisedTeaLeaf.set(kubaitems.registerProxyItem(new TeaIngredient("bruised_tea_leaf")));
         PartiallyOxidizedTeaLeaf.set(kubaitems.registerProxyItem(new TeaIngredient("partially_oxidized_tea_leaf")));
 
-        TeaAcceptorResearchNote.set(
-                kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
+        TeaAcceptorResearchNote
+                .set(kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
         Beeeeee.set(kubaitems.registerProxyItem(new ItemProxy("beeeeee", "beeeeee")));
     }
 }

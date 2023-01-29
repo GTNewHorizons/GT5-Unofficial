@@ -1,31 +1,22 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.loaders.item;
 
 import static kubatech.kubatech.KT;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.HashMap;
 import java.util.List;
+
 import kubatech.loaders.ItemLoader;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -36,7 +27,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class KubaItems extends Item {
+
     private static final HashMap<Integer, ItemProxy> items = new HashMap<>();
     private static int idCounter = 0;
 
@@ -67,17 +62,8 @@ public class KubaItems extends Item {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack p_77648_1_,
-            EntityPlayer p_77648_2_,
-            World p_77648_3_,
-            int p_77648_4_,
-            int p_77648_5_,
-            int p_77648_6_,
-            int p_77648_7_,
-            float p_77648_8_,
-            float p_77648_9_,
-            float p_77648_10_) {
+    public boolean onItemUse(ItemStack p_77648_1_, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_,
+            int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         return false;
     }
 
@@ -141,8 +127,8 @@ public class KubaItems extends Item {
     }
 
     @Override
-    public void onUpdate(
-            ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
+    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
+            boolean p_77663_5_) {
         getItem(p_77663_1_).onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 }

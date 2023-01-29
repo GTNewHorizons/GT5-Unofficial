@@ -1,29 +1,22 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.loaders.item.items;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.ItemLoader;
 import kubatech.loaders.item.ItemProxy;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
@@ -41,6 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.AchievementPage;
 
 public class TeaCollection extends ItemProxy {
+
     protected static TeaPage teapage;
     protected static LinkedList<Achievement> achievements;
     protected Achievement achievement;
@@ -51,21 +45,8 @@ public class TeaCollection extends ItemProxy {
         achievementname = "teacollection." + unlocalizedName;
     }
 
-    private static final int[][] achievement_poses = new int[][] {
-        {0, 0},
-        {2, 0},
-        {3, 1},
-        {4, 2},
-        {4, 4},
-        {3, 5},
-        {2, 6},
-        {0, 6},
-        {-1, 5},
-        {-2, 4},
-        {-2, 2},
-        {-1, 1},
-        {1, 3}
-    };
+    private static final int[][] achievement_poses = new int[][] { { 0, 0 }, { 2, 0 }, { 3, 1 }, { 4, 2 }, { 4, 4 },
+            { 3, 5 }, { 2, 6 }, { 0, 6 }, { -1, 5 }, { -2, 4 }, { -2, 2 }, { -1, 1 }, { 1, 3 } };
 
     boolean checkTeaOwner(ItemStack stack, String username) {
         NBTTagCompound tag = stack.stackTagCompound;
@@ -92,25 +73,34 @@ public class TeaCollection extends ItemProxy {
         }
         achievements.add(
                 achievement = new Achievement(
-                                achievementname,
-                                achievementname,
-                                achievement_poses[index][0],
-                                achievement_poses[index][1],
-                                new ItemStack(ItemLoader.kubaitems, 1, index),
-                                null)
-                        .registerStat());
+                        achievementname,
+                        achievementname,
+                        achievement_poses[index][0],
+                        achievement_poses[index][1],
+                        new ItemStack(ItemLoader.kubaitems, 1, index),
+                        null).registerStat());
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         if (!checkTeaOwner(stack, entity.getCommandSenderName())) {
-            tooltipList.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC
-                    + StatCollector.translateToLocal("kubaitem.notyours"));
+            tooltipList.add(
+                    EnumChatFormatting.GRAY + ""
+                            + EnumChatFormatting.BOLD
+                            + ""
+                            + EnumChatFormatting.ITALIC
+                            + StatCollector.translateToLocal("kubaitem.notyours"));
             return;
         }
         tooltipList.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("kubaitem.fromcollection"));
-        tooltipList.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + ""
-                + EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("kubaitem.teacollection"));
+        tooltipList.add(
+                EnumChatFormatting.GRAY + ""
+                        + EnumChatFormatting.BOLD
+                        + ""
+                        + EnumChatFormatting.ITALIC
+                        + ""
+                        + EnumChatFormatting.UNDERLINE
+                        + StatCollector.translateToLocal("kubaitem.teacollection"));
     }
 
     @Override
@@ -129,8 +119,9 @@ public class TeaCollection extends ItemProxy {
     public ItemStack onEaten(ItemStack stack, World world, EntityPlayer entity) {
         if (world.isRemote) return stack;
         if (!(entity instanceof EntityPlayerMP)) return stack;
-        entity.addChatComponentMessage(new ChatComponentText(
-                EnumChatFormatting.GREEN + StatCollector.translateToLocal("kubaitem.teacollection.mmm")));
+        entity.addChatComponentMessage(
+                new ChatComponentText(
+                        EnumChatFormatting.GREEN + StatCollector.translateToLocal("kubaitem.teacollection.mmm")));
         entity.triggerAchievement(achievement);
         return stack;
     }

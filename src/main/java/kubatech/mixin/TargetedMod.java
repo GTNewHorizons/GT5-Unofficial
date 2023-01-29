@@ -1,11 +1,12 @@
 package kubatech.mixin;
 
-import com.google.common.io.Files;
 import java.nio.file.Path;
 
+import com.google.common.io.Files;
+
 public enum TargetedMod {
-    VANILLA("Minecraft", "unused", true),
-    ;
+
+    VANILLA("Minecraft", "unused", true),;
 
     public final String modName;
     public final String jarNamePrefixLowercase;
@@ -29,7 +30,11 @@ public enum TargetedMod {
     @Override
     public String toString() {
         return "TargetedMod{" + "modName='"
-                + modName + '\'' + ", jarNamePrefixLowercase='"
-                + jarNamePrefixLowercase + '\'' + '}';
+                + modName
+                + '\''
+                + ", jarNamePrefixLowercase='"
+                + jarNamePrefixLowercase
+                + '\''
+                + '}';
     }
 }

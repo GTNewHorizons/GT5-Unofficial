@@ -1,40 +1,35 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.commands;
 
 import static forestry.api.apiculture.BeeManager.beeRoot;
 
-import com.google.common.io.Files;
-import forestry.api.apiculture.IAlleleBeeSpecies;
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
 
+import com.google.common.io.Files;
+
+import forestry.api.apiculture.IAlleleBeeSpecies;
+import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
+
 public class CommandBees extends CommandBase {
+
     @Override
     public String getCommandName() {
         return "bees";
@@ -116,9 +111,8 @@ public class CommandBees extends CommandBase {
         chance *= 100f;
         float productionModifier = (float) upgradeCount * 0.25f;
         return (float) (((1f + t / 6f) * Math.sqrt(chance) * 2f * (1f + beeSpeed)
-                        + Math.pow(productionModifier, Math.cbrt(chance))
-                        - 3f)
-                / 100f);
+                + Math.pow(productionModifier, Math.cbrt(chance))
+                - 3f) / 100f);
     }
 
     private double productChanceOld(int upgradeCount, double beeSpeed, double chance) {

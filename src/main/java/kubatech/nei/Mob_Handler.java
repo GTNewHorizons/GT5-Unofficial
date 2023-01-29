@@ -1,34 +1,17 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.nei;
 
 import static kubatech.nei.Mob_Handler.Translations.*;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.*;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
-import gregtech.api.util.GT_Utility;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
@@ -36,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.InfernalHelper;
@@ -47,6 +31,7 @@ import kubatech.config.Config;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -66,6 +51,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
@@ -73,9 +59,19 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIClientUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.*;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
+import gregtech.api.util.GT_Utility;
+
 public class Mob_Handler extends TemplateRecipeHandler {
 
     enum Translations {
+
         NORMAL_DROPS,
         RARE_DROPS,
         ADDITIONAL_DROPS,
@@ -91,8 +87,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
         BOSS,
         LOOTABLE,
         PLAYER_ONLY,
-        EEC_CHANCE,
-        ;
+        EEC_CHANCE,;
+
         final String key;
 
         Translations() {
@@ -125,12 +121,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
     public static void addRecipe(EntityLiving e, List<MobDrop> drop) {
         List<MobPositionedStack> positionedStacks = new ArrayList<>();
-        int xorigin = 7,
-                xoffset = xorigin,
-                yoffset = 95,
-                normaldrops = 0,
-                raredrops = 0,
-                additionaldrops = 0,
+        int xorigin = 7, xoffset = xorigin, yoffset = 95, normaldrops = 0, raredrops = 0, additionaldrops = 0,
                 infernaldrops = 0;
         MobDrop.DropType i = null;
         for (MobDrop d : drop) {
@@ -150,27 +141,23 @@ public class Mob_Handler extends TemplateRecipeHandler {
             else if (d.type == MobDrop.DropType.Rare) raredrops++;
             else if (d.type == MobDrop.DropType.Additional) additionaldrops++;
             else if (d.type == MobDrop.DropType.Infernal) break; // dont render infernal drops
-            positionedStacks.add(new MobPositionedStack(
-                    d.stack.copy(),
-                    xoffset,
-                    yoffset,
-                    d.type,
-                    d.chance,
-                    d.enchantable,
-                    d.damages != null ? new ArrayList<>(d.damages.keySet()) : null,
-                    d.lootable,
-                    d.playerOnly));
+            positionedStacks.add(
+                    new MobPositionedStack(
+                            d.stack.copy(),
+                            xoffset,
+                            yoffset,
+                            d.type,
+                            d.chance,
+                            d.enchantable,
+                            d.damages != null ? new ArrayList<>(d.damages.keySet()) : null,
+                            d.lootable,
+                            d.playerOnly));
         }
         instance.addRecipeInt(e, positionedStacks, normaldrops, raredrops, additionaldrops, infernaldrops);
     }
 
-    private void addRecipeInt(
-            EntityLiving e,
-            List<Mob_Handler.MobPositionedStack> l,
-            int normaldrops,
-            int raredrops,
-            int additionaldrops,
-            int infernalDrops) {
+    private void addRecipeInt(EntityLiving e, List<Mob_Handler.MobPositionedStack> l, int normaldrops, int raredrops,
+            int additionaldrops, int infernalDrops) {
         cachedRecipes.add(new MobCachedRecipe(e, l, normaldrops, raredrops, additionaldrops, infernalDrops));
     }
 
@@ -221,8 +208,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
     static {
         try {
-            mainmodelfield = RendererLivingEntity.class.getDeclaredField(
-                    ModUtils.isDeobfuscatedEnvironment ? "mainModel" : "field_77045_g");
+            mainmodelfield = RendererLivingEntity.class
+                    .getDeclaredField(ModUtils.isDeobfuscatedEnvironment ? "mainModel" : "field_77045_g");
             mainmodelfield.setAccessible(true);
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
@@ -313,13 +300,17 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
             // ARGS: x, y, scale, rot, rot, entity
             GuiInventory.func_147046_a(
-                    mobx, moby, Math.round(scaled), (x + mobx) - mouseX, y + moby - eheight * scaled - mouseZ, e);
+                    mobx,
+                    moby,
+                    Math.round(scaled),
+                    (x + mobx) - mouseX,
+                    y + moby - eheight * scaled - mouseZ,
+                    e);
         } catch (Throwable ex) {
             Tessellator tes = Tessellator.instance;
             try {
                 tes.draw();
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
 
         if (BossStatus.statusBarTime > 0 && currentrecipe.isBoss.isEmpty()) currentrecipe.isBoss = BossStatus.bossName;
@@ -337,9 +328,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
         GL11.glPopAttrib();
 
         int err;
-        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR)
-            if (Config.Debug.showRenderErrors)
-                LOG.error(currentrecipe.mobname + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
+        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors)
+            LOG.error(currentrecipe.mobname + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
     }
@@ -370,8 +360,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
         if (!currentrecipe.isBoss.isEmpty())
             GuiDraw.drawString(EnumChatFormatting.BOLD + "" + BOSS.get(), x, y += yshift, 0xFFD68F00, false);
 
-        MobRecipeLoader.MobRecipe MBRecipe =
-                GT_MetaTileEntity_ExtremeExterminationChamber.MobNameToRecipeMap.get(currentrecipe.mobname);
+        MobRecipeLoader.MobRecipe MBRecipe = GT_MetaTileEntity_ExtremeExterminationChamber.MobNameToRecipeMap
+                .get(currentrecipe.mobname);
         if (MBRecipe != null) {
             if (MBRecipe.isUsable) {
                 GuiDraw.drawString(
@@ -453,15 +443,13 @@ public class Mob_Handler extends TemplateRecipeHandler {
                 loadCraftingRecipes(getOverlayIdentifier(), (Object) null);
                 return;
             }
-            for (MobCachedRecipe r : cachedRecipes)
-                if (r.mInput.stream()
-                        .anyMatch(s -> s.getItem() == ingredient.getItem()
-                                && Objects.equals(
-                                        s.getTagCompound().getString("mobType"),
-                                        ingredient.getTagCompound().getString("mobType")))) arecipes.add(r);
-        } else
-            for (MobCachedRecipe r : cachedRecipes)
-                if (r.mInput.stream().anyMatch(ingredient::isItemEqual)) arecipes.add(r);
+            for (MobCachedRecipe r : cachedRecipes) if (r.mInput.stream().anyMatch(
+                    s -> s.getItem() == ingredient.getItem() && Objects.equals(
+                            s.getTagCompound().getString("mobType"),
+                            ingredient.getTagCompound().getString("mobType"))))
+                arecipes.add(r);
+        } else for (MobCachedRecipe r : cachedRecipes)
+            if (r.mInput.stream().anyMatch(ingredient::isItemEqual)) arecipes.add(r);
     }
 
     @Override
@@ -479,16 +467,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
         public final int enchantmentLevel;
         private final Random rand;
 
-        public MobPositionedStack(
-                Object object,
-                int x,
-                int y,
-                MobDrop.DropType type,
-                int chance,
-                Integer enchantable,
-                List<Integer> damages,
-                boolean lootable,
-                boolean isPlayerOnly) {
+        public MobPositionedStack(Object object, int x, int y, MobDrop.DropType type, int chance, Integer enchantable,
+                List<Integer> damages, boolean lootable, boolean isPlayerOnly) {
             super(object, x, y, false);
             rand = new FastRandom();
             this.type = type;
@@ -506,8 +486,10 @@ public class Mob_Handler extends TemplateRecipeHandler {
             if (lootable) extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + LOOTABLE.get()));
             if (isPlayerOnly) {
                 extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + PLAYER_ONLY.get()));
-                extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET
-                        + EEC_CHANCE.get(((double) chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
+                extratooltip.appendTag(
+                        new NBTTagString(
+                                EnumChatFormatting.RESET + EEC_CHANCE
+                                        .get(((double) chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
             }
             extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + AVERAGE_REMINDER.get()));
 
@@ -558,13 +540,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
         public final int infernalOutputsCount;
         public String isBoss = "";
 
-        public MobCachedRecipe(
-                EntityLiving mob,
-                List<MobPositionedStack> mOutputs,
-                int normalOutputsCount,
-                int rareOutputsCount,
-                int additionalOutputsCount,
-                int infernalOutputsCount) {
+        public MobCachedRecipe(EntityLiving mob, List<MobPositionedStack> mOutputs, int normalOutputsCount,
+                int rareOutputsCount, int additionalOutputsCount, int infernalOutputsCount) {
             super();
             String classname = mob.getClass().getName();
             this.mod = ModUtils.getModNameFromClassName(classname);

@@ -1,32 +1,15 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.config;
 
-import com.dreammaster.main.MainRegistry;
-import com.dreammaster.modcustomdrops.CustomDrops;
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import cpw.mods.fml.common.registry.GameRegistry;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.io.Reader;
 import java.io.Writer;
@@ -35,26 +18,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import kubatech.Tags;
 import kubatech.api.ConstructableItemStack;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.mobhandler.MobDrop;
 import kubatech.api.utils.GSONUtils;
+
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.dreammaster.main.MainRegistry;
+import com.dreammaster.modcustomdrops.CustomDrops;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 public class OverridesConfig {
 
     private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Config-Overrides]");
 
     public static class MobDropSimplified {
+
         @GSONUtils.SkipGSON
         ItemStack stack;
 
@@ -97,6 +94,7 @@ public class OverridesConfig {
     }
 
     public static class MobOverride {
+
         public boolean removeAll = false;
         public List<MobDrop> additions = new ArrayList<>();
         public List<MobDropSimplified> removals = new ArrayList<>();
@@ -144,12 +142,12 @@ public class OverridesConfig {
             overrides.values().forEach(o -> o.additions.forEach(MobDrop::reconstructStack));
             if (LoaderReference.GTNHCoreMod) {
                 LOG.info("Detected GTNH Core Mod, parsing custom drops from there.");
-                CustomDrops coredrops =
-                        ReflectionHelper.getField(MainRegistry.Module_CustomDrops, "_mCustomDrops", null);
+                CustomDrops coredrops = ReflectionHelper
+                        .getField(MainRegistry.Module_CustomDrops, "_mCustomDrops", null);
                 if (coredrops != null) {
                     @SuppressWarnings("unchecked")
-                    ArrayList<CustomDrops.CustomDrop> customdrops = (ArrayList<CustomDrops.CustomDrop>)
-                            ((ArrayList<CustomDrops.CustomDrop>) coredrops.getCustomDrops()).clone();
+                    ArrayList<CustomDrops.CustomDrop> customdrops = (ArrayList<CustomDrops.CustomDrop>) ((ArrayList<CustomDrops.CustomDrop>) coredrops
+                            .getCustomDrops()).clone();
                     for (CustomDrops.CustomDrop customdrop : customdrops) {
                         try {
                             Class<?> eclass = Class.forName(customdrop.getEntityName());
@@ -166,8 +164,7 @@ public class OverridesConfig {
                                 if (pNBT != null && !pNBT.isEmpty()) {
                                     try {
                                         stack.stackTagCompound = (NBTTagCompound) JsonToNBT.func_150315_a(pNBT);
-                                    } catch (Exception ignored) {
-                                    }
+                                    } catch (Exception ignored) {}
                                 }
                                 int chance = drop.getChance() * 100;
                                 int amount = drop.getAmount();
@@ -196,11 +193,9 @@ public class OverridesConfig {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            if (reader != null)
-                try {
-                    reader.close();
-                } catch (Exception ignored) {
-                }
+            if (reader != null) try {
+                reader.close();
+            } catch (Exception ignored) {}
         }
     }
 
@@ -217,19 +212,24 @@ public class OverridesConfig {
             exdamages.put(1, 1);
             exdamages.put(2, 5);
             exdamages.put(3, 10);
-            ex1.additions.add(new MobDrop(
-                    new ItemStack(Items.diamond_sword), MobDrop.DropType.Rare, 500, 20, exdamages, true, false));
+            ex1.additions.add(
+                    new MobDrop(
+                            new ItemStack(Items.diamond_sword),
+                            MobDrop.DropType.Rare,
+                            500,
+                            20,
+                            exdamages,
+                            true,
+                            false));
             example.put("ExampleMob", ex1);
             gson.toJson(example, writer);
             writer.flush();
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            if (writer != null)
-                try {
-                    writer.close();
-                } catch (Exception ignored) {
-                }
+            if (writer != null) try {
+                writer.close();
+            } catch (Exception ignored) {}
         }
     }
 }

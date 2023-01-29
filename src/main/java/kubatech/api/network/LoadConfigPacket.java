@@ -1,35 +1,27 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.api.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import kubatech.config.Config;
 import kubatech.config.OverridesConfig;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
 
 public class LoadConfigPacket implements IMessage {
 
@@ -54,7 +46,8 @@ public class LoadConfigPacket implements IMessage {
                 byte[] sbytes = new byte[buf.readInt()];
                 buf.readBytes(sbytes);
                 mobsOverrides.put(
-                        new String(sbytes, StandardCharsets.UTF_8), OverridesConfig.MobOverride.readFromByteBuf(buf));
+                        new String(sbytes, StandardCharsets.UTF_8),
+                        OverridesConfig.MobOverride.readFromByteBuf(buf));
             }
         }
     }
@@ -81,6 +74,7 @@ public class LoadConfigPacket implements IMessage {
     }
 
     public static class Handler implements IMessageHandler<LoadConfigPacket, IMessage> {
+
         @Override
         public IMessage onMessage(LoadConfigPacket message, MessageContext ctx) {
             kubatech.info("Received Mob Handler config, parsing");

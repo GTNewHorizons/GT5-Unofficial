@@ -1,20 +1,11 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.commands;
@@ -22,6 +13,7 @@ package kubatech.commands;
 import static kubatech.commands.CommandHandler.Translations.*;
 
 import java.util.*;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -31,12 +23,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 public class CommandHandler extends CommandBase {
+
     enum Translations {
+
         INVALID,
         CANT_FIND,
         GENERIC_HELP,
-        USAGE,
-        ;
+        USAGE,;
+
         final String key;
 
         Translations() {
@@ -95,14 +89,13 @@ public class CommandHandler extends CommandBase {
         }
         ICommand cmd = commands.get(p_71515_2_[0]);
         if (!cmd.canCommandSenderUseCommand(p_71515_1_)) {
-            ChatComponentTranslation chatcomponenttranslation2 =
-                    new ChatComponentTranslation("commands.generic.permission");
+            ChatComponentTranslation chatcomponenttranslation2 = new ChatComponentTranslation(
+                    "commands.generic.permission");
             chatcomponenttranslation2.getChatStyle().setColor(EnumChatFormatting.RED);
             p_71515_1_.addChatMessage(chatcomponenttranslation2);
-        } else
-            cmd.processCommand(
-                    p_71515_1_,
-                    p_71515_2_.length > 1 ? Arrays.copyOfRange(p_71515_2_, 1, p_71515_2_.length) : new String[0]);
+        } else cmd.processCommand(
+                p_71515_1_,
+                p_71515_2_.length > 1 ? Arrays.copyOfRange(p_71515_2_, 1, p_71515_2_.length) : new String[0]);
     }
 
     @Override

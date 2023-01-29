@@ -3,6 +3,7 @@ package kubatech.api;
 import cpw.mods.fml.common.Loader;
 
 public class LoaderReference {
+
     public static final boolean BloodMagic = Loader.isModLoaded("AWWayofTime");
     public static final boolean EnderIO = Loader.isModLoaded("EnderIO");
     public static final boolean ExtraUtilities = Loader.isModLoaded("ExtraUtilities");

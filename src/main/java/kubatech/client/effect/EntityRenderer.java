@@ -1,31 +1,21 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.client.effect;
 
 import static net.minecraft.client.renderer.entity.RenderManager.*;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import kubatech.Tags;
 import kubatech.api.utils.MobUtils;
 import kubatech.config.Config;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -35,14 +25,19 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.world.World;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {
+
     private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Entity Renderer]");
     private EntityLiving entityToRender = null;
 
@@ -89,14 +84,8 @@ public class EntityRenderer extends EntityFX {
     }
 
     @Override
-    public void renderParticle(
-            Tessellator p_70539_1_,
-            float p_70539_2_,
-            float p_70539_3_,
-            float p_70539_4_,
-            float p_70539_5_,
-            float p_70539_6_,
-            float p_70539_7_) {
+    public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
+            float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         if (entityToRender == null) return;
 
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -158,7 +147,9 @@ public class EntityRenderer extends EntityFX {
         int stackdepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
         GL11.glPushMatrix();
         GL11.glTranslatef(
-                (float) (this.posX - renderPosX), (float) (this.posY - renderPosY), (float) (this.posZ - renderPosZ));
+                (float) (this.posX - renderPosX),
+                (float) (this.posY - renderPosY),
+                (float) (this.posZ - renderPosZ));
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         float desiredScale = MobUtils.getDesiredScale(entityToRender, 2f);
         if (desiredScale < 1f) GL11.glScalef(desiredScale, desiredScale, desiredScale);
@@ -174,8 +165,7 @@ public class EntityRenderer extends EntityFX {
             Tessellator tes = Tessellator.instance;
             try {
                 tes.draw();
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
 
         BossStatus.healthScale = healthScale;
@@ -191,10 +181,8 @@ public class EntityRenderer extends EntityFX {
         GL11.glPopAttrib();
 
         int err;
-        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR)
-            if (Config.Debug.showRenderErrors)
-                LOG.error(EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / "
-                        + GLU.gluErrorString(err));
+        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG.error(
+                EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_COLOR_MATERIAL);

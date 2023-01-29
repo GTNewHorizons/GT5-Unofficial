@@ -1,40 +1,35 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech;
 
 import static kubatech.api.enums.ItemList.LegendaryRedTea;
 
+import java.util.List;
+
+import kubatech.api.enums.ItemList;
+import kubatech.api.network.CustomTileEntityPacket;
+import kubatech.api.network.LoadConfigPacket;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import java.util.List;
-import kubatech.api.enums.ItemList;
-import kubatech.api.network.CustomTileEntityPacket;
-import kubatech.api.network.LoadConfigPacket;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("unused")
 @Mod(
@@ -43,15 +38,25 @@ import org.apache.logging.log4j.Logger;
         name = Tags.MODNAME,
         acceptedMinecraftVersions = "[1.7.10]",
         dependencies = "required-after: gregtech; " + "required-after: gtnhmixins@[2.0.1,); "
-                + "required-after: modularui; " + "after: EnderIO; "
-                + "after: AWWayofTime; " + "after: ExtraUtilities; " + "after: InfernalMobs; " + "after: Thaumcraft; "
-                + "after: MineTweaker3; " + "after: miscutils; " + "after: harvestcraft; " + "after: Forestry; "
-                + "after: DraconicEvolution; " + "after: Avaritia; " + " after: dreamcraft; ")
+                + "required-after: modularui; "
+                + "after: EnderIO; "
+                + "after: AWWayofTime; "
+                + "after: ExtraUtilities; "
+                + "after: InfernalMobs; "
+                + "after: Thaumcraft; "
+                + "after: MineTweaker3; "
+                + "after: miscutils; "
+                + "after: harvestcraft; "
+                + "after: Forestry; "
+                + "after: DraconicEvolution; "
+                + "after: Avaritia; "
+                + " after: dreamcraft; ")
 public class kubatech {
 
     public static kubatech instance = null;
     public static final SimpleNetworkWrapper NETWORK = new SimpleNetworkWrapper(Tags.MODID);
     public static final CreativeTabs KT = new CreativeTabs(Tags.MODID) {
+
         private ItemStack iconItemStack = null;
 
         @Override

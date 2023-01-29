@@ -1,42 +1,36 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.api;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import java.nio.charset.StandardCharsets;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 public class ConstructableItemStack {
+
     public final GameRegistry.UniqueIdentifier itemIdentifier;
     public final int meta;
     public final int size;
     public final NBTTagCompound tagCompound;
 
-    private ConstructableItemStack(
-            GameRegistry.UniqueIdentifier itemIdentifier, int meta, int size, NBTTagCompound tagCompound) {
+    private ConstructableItemStack(GameRegistry.UniqueIdentifier itemIdentifier, int meta, int size,
+            NBTTagCompound tagCompound) {
         this.itemIdentifier = itemIdentifier;
         this.meta = meta;
         this.size = size;
@@ -107,10 +101,12 @@ public class ConstructableItemStack {
             byteBuf.readBytes(bytes);
             try {
                 nbtTagCompound = CompressedStreamTools.func_152457_a(bytes, new NBTSizeTracker(2097152L));
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
         return new ConstructableItemStack(
-                new GameRegistry.UniqueIdentifier(modid + ":" + name), meta, stacksize, nbtTagCompound);
+                new GameRegistry.UniqueIdentifier(modid + ":" + name),
+                meta,
+                stacksize,
+                nbtTagCompound);
     }
 }

@@ -1,34 +1,28 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.api.helpers;
 
-import atomicstryker.infernalmobs.common.InfernalMobsCore;
-import atomicstryker.infernalmobs.common.mods.api.ModifierLoader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
+import atomicstryker.infernalmobs.common.InfernalMobsCore;
+import atomicstryker.infernalmobs.common.mods.api.ModifierLoader;
+
 @SuppressWarnings("unchecked")
 public class InfernalHelper {
+
     private static Method isClassAllowed = null;
 
     public static boolean isClassAllowed(EntityLivingBase e) {
@@ -49,8 +43,8 @@ public class InfernalHelper {
     public static boolean checkEntityClassForced(EntityLivingBase e) {
         try {
             if (checkEntityClassForced == null) {
-                checkEntityClassForced =
-                        InfernalMobsCore.class.getDeclaredMethod("checkEntityClassForced", EntityLivingBase.class);
+                checkEntityClassForced = InfernalMobsCore.class
+                        .getDeclaredMethod("checkEntityClassForced", EntityLivingBase.class);
                 checkEntityClassForced.setAccessible(true);
             }
             return (boolean) checkEntityClassForced.invoke(InfernalMobsCore.instance(), e);

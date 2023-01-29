@@ -2,12 +2,14 @@ package kubatech.mixin;
 
 import static kubatech.mixin.TargetedMod.VANILLA;
 
-import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
+
 public enum Mixin {
+
     // Minecraft
     EnchantmentHelperMixin("minecraft.EnchantmentHelperMixin", VANILLA),
     WorldMixin("minecraft.WorldMixin", VANILLA);
@@ -29,9 +31,8 @@ public enum Mixin {
     }
 
     public boolean shouldLoad(List<TargetedMod> loadedMods) {
-        return (side == Side.BOTH
-                        || side == Side.SERVER && FMLLaunchHandler.side().isServer()
-                        || side == Side.CLIENT && FMLLaunchHandler.side().isClient())
+        return (side == Side.BOTH || side == Side.SERVER && FMLLaunchHandler.side().isServer()
+                || side == Side.CLIENT && FMLLaunchHandler.side().isClient())
                 && new HashSet<>(loadedMods).containsAll(targetedMods);
     }
 }

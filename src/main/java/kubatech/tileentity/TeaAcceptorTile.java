@@ -1,23 +1,31 @@
 /*
- * KubaTech - Gregtech Addon
- * Copyright (C) 2022 - 2023  kuba6000
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library. If not, see <https://www.gnu.org/licenses/>.
- *
+ * KubaTech - Gregtech Addon Copyright (C) 2022 - 2023 kuba6000 This library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later version. This library is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this library. If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 package kubatech.tileentity;
+
+import java.text.NumberFormat;
+import java.util.function.BiFunction;
+
+import kubatech.api.enums.ItemList;
+import kubatech.api.utils.StringUtils;
+import kubatech.loaders.ItemLoader;
+import kubatech.loaders.block.KubaBlock;
+import kubatech.savedata.PlayerData;
+import kubatech.savedata.PlayerDataManager;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -29,20 +37,6 @@ import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import java.text.NumberFormat;
-import java.util.function.BiFunction;
-import kubatech.api.enums.ItemList;
-import kubatech.api.utils.StringUtils;
-import kubatech.loaders.ItemLoader;
-import kubatech.loaders.block.KubaBlock;
-import kubatech.savedata.PlayerData;
-import kubatech.savedata.PlayerDataManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 
 public class TeaAcceptorTile extends TileEntity
         implements IInventory, ITileWithModularUI, KubaBlock.IModularUIProvider {
@@ -148,8 +142,7 @@ public class TeaAcceptorTile extends TileEntity
 
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return p_94041_2_.getItem() == ItemLoader.kubaitems
-                && p_94041_2_.getItemDamage() >= minDamage
+        return p_94041_2_.getItem() == ItemLoader.kubaitems && p_94041_2_.getItemDamage() >= minDamage
                 && p_94041_2_.getItemDamage() <= maxDamage;
     }
 
@@ -164,9 +157,9 @@ public class TeaAcceptorTile extends TileEntity
         return (TextWidget) textWidget.setPosProvider(posCenteredHorizontallyProvider.apply(textWidget, y));
     }
 
-    private static final BiFunction<TextWidget, Integer, Widget.PosProvider> posCenteredHorizontallyProvider =
-            (TextWidget widget, Integer y) -> (Widget.PosProvider) (screenSize, window, parent) ->
-                    new Pos2d((window.getSize().width / 2) - (widget.getSize().width / 2), y);
+    private static final BiFunction<TextWidget, Integer, Widget.PosProvider> posCenteredHorizontallyProvider = (
+            TextWidget widget, Integer y) -> (Widget.PosProvider) (screenSize, window,
+                    parent) -> new Pos2d((window.getSize().width / 2) - (widget.getSize().width / 2), y);
 
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
@@ -177,26 +170,29 @@ public class TeaAcceptorTile extends TileEntity
         builder.widgets(
                 posCenteredHorizontally(
                         10,
-                        new TextWidget(new Text("Tea Acceptor")
-                                .format(EnumChatFormatting.BOLD)
-                                .format(EnumChatFormatting.DARK_RED))),
+                        new TextWidget(
+                                new Text("Tea Acceptor").format(EnumChatFormatting.BOLD)
+                                        .format(EnumChatFormatting.DARK_RED))),
                 posCenteredHorizontally(30, new DynamicTextWidget(() -> {
                     if (player.getCommandSenderName().equals(tileOwner))
                         return new Text("[Tea]").color(Color.GREEN.normal);
                     else return new Text("This is not your block").color(Color.RED.normal);
                 })),
-                posCenteredHorizontally(40, new DynamicTextWidget(() -> new Text(
-                                (playerData == null
-                                        ? "ERROR"
-                                        : StringUtils.applyRainbow(
-                                                NumberFormat.getInstance().format(playerData.teaAmount),
-                                                (int) ((playerData.teaAmount / Math.max(1, averageInput * 10))
-                                                        % Integer.MAX_VALUE),
-                                                EnumChatFormatting.BOLD.toString())))
-                        .shadow())),
-                posCenteredHorizontally(50, new DynamicTextWidget(() -> new Text("IN: " + averageInput + "/t")
-                                .color(Color.BLACK.normal)))
-                        .addTooltip(new Text("Average input from the last 5 seconds").color(Color.GRAY.normal)));
+                posCenteredHorizontally(
+                        40,
+                        new DynamicTextWidget(
+                                () -> new Text(
+                                        (playerData == null ? "ERROR"
+                                                : StringUtils.applyRainbow(
+                                                        NumberFormat.getInstance().format(playerData.teaAmount),
+                                                        (int) ((playerData.teaAmount / Math.max(1, averageInput * 10))
+                                                                % Integer.MAX_VALUE),
+                                                        EnumChatFormatting.BOLD.toString()))).shadow())),
+                posCenteredHorizontally(
+                        50,
+                        new DynamicTextWidget(() -> new Text("IN: " + averageInput + "/t").color(Color.BLACK.normal)))
+                                .addTooltip(
+                                        new Text("Average input from the last 5 seconds").color(Color.GRAY.normal)));
         return builder.build();
     }
 }
