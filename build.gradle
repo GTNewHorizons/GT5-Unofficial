@@ -1,4 +1,4 @@
-//version: 1674986648
+//version: 1674988119
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -371,6 +371,16 @@ configurations.configureEach {
                 // https://www.curseforge.com/minecraft/mc-mods/industrial-craft/files/2353971
                 project.dependencies.reobfJarConfiguration("curse.maven:ic2-242638:2353971")
             }
+        }
+    }
+}
+
+// Ensure tests have access to minecraft classes
+sourceSets {
+    test {
+        java {
+            compileClasspath += sourceSets.patchedMc.output + sourceSets.mcLauncher.output
+            runtimeClasspath += sourceSets.patchedMc.output + sourceSets.mcLauncher.output
         }
     }
 }
