@@ -395,23 +395,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * Setting available data processing
      */
     public void outputAfterRecipe_EM() {}
-
-    /**
-     * to add fluids into hatches
-     *
-     * @param mOutputFluids
-     */
-    @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids) {
-        int min = Math.min(mOutputFluids.length, mOutputHatches.size());
-        for (int i = 0; i < min; ++i) {
-            if (mOutputHatches.get(i) != null
-                    && mOutputFluids[i] != null
-                    && GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(mOutputHatches.get(i))) {
-                mOutputHatches.get(i).fill(mOutputFluids[i], true);
-            }
-        }
-    }
     // endregion
 
     // region tooltip and scanner result
