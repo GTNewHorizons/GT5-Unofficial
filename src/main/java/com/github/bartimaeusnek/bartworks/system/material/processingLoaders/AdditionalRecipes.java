@@ -189,7 +189,7 @@ public class AdditionalRecipes {
                     },
                     BioItemList.mBioLabParts[4],
                     new int[] {7500, 10000},
-                    new FluidStack[] {new FluidStack(dnaFluid[0].getFluid(), 9000)},
+                    new FluidStack[] {new FluidStack(dnaFluid[0].getFluid(), 8000)},
                     null,
                     500,
                     BW_Util.getMachineVoltageFromTier(6),
