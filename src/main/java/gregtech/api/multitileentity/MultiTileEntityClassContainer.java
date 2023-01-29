@@ -140,7 +140,6 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
-
     @SuppressWarnings("unused")
     public MultiTileEntityClassContainer setNBT(String key, Object val) {
         return setNBT(new Tuple(key, val));
@@ -153,8 +152,9 @@ public class MultiTileEntityClassContainer {
     }
 
     private void verifyDecendentOf(Class<?> cls) {
-        if(!mClass.isAssignableFrom(cls)) {
-            throw new IllegalArgumentException("Expected a decendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+        if (!mClass.isAssignableFrom(cls)) {
+            throw new IllegalArgumentException(
+                    "Expected a decendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
         }
     }
 }

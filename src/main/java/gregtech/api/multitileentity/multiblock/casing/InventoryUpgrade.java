@@ -5,10 +5,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 public class InventoryUpgrade extends AdvancedCasing {
     public static final int INPUT = 0;
