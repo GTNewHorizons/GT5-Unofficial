@@ -3,6 +3,8 @@ package goodgenerator.loader;
 import static goodgenerator.util.ItemRefer.*;
 import static goodgenerator.util.Log.LOGGER;
 
+import java.util.HashMap;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -14,7 +16,6 @@ import org.apache.logging.log4j.Level;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
-import com.google.common.collect.HashBiMap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.util.StackUtils;
@@ -28,14 +29,15 @@ import gtPlusPlus.core.recipe.common.CI;
 
 public class ComponentAssemblyLineMiscRecipes {
 
-    @SuppressWarnings("deprecation")
     public static final String[] circuitTierMaterials = { "Primitive", "Basic", "Good", "Advanced", "Data", "Elite",
             "Master", "Ultimate", "Superconductor", "Infinite", "Bio", "Optical", "Piko", "Quantum" };
 
-    static final HashBiMap<String, Integer> NameToTier = HashBiMap.create();
+    static final HashMap<String, Integer> NameToTier = new HashMap<>();
 
     static void run() {
         for (int i = 0; i < circuitTierMaterials.length; i++) NameToTier.put(circuitTierMaterials[i], i);
+        // Cry about it
+        NameToTier.put("Nano", 11);
 
         generateCasingRecipes();
         generateWrapRecipes();
