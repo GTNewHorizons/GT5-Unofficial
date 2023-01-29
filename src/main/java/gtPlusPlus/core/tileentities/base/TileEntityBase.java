@@ -1,5 +1,20 @@
 package gtPlusPlus.core.tileentities.base;
 
+import java.util.UUID;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -17,19 +32,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BTF_Inventory;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import ic2.api.Direction;
-import java.util.UUID;
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregTechDeviceInformation, IDescribable {
 
@@ -155,8 +157,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     public void setOwnerInformation(String mName, String mUUID, boolean mOP) {
         if (isServerSide()) {
-            if (this.mOwnerName == null
-                    || this.mOwnerUUID == null
+            if (this.mOwnerName == null || this.mOwnerUUID == null
                     || this.mOwnerName.equals("null")
                     || this.mOwnerUUID.equals("null")) {
                 this.mOwnerName = mName;
@@ -255,26 +256,20 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     /**
-     * returns all valid Inventory Slots, no matter which Side (Unless it's covered).
-     * The Side Stuff is done in the following two Functions.
+     * returns all valid Inventory Slots, no matter which Side (Unless it's covered). The Side Stuff is done in the
+     * following two Functions.
      */
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        if (canAccessData()
-                && (getCoverBehaviorAtSide((byte) aSide)
-                                .letsItemsOut(
-                                        (byte) aSide,
-                                        getCoverIDAtSide((byte) aSide),
-                                        getCoverDataAtSide((byte) aSide),
-                                        -1,
-                                        this)
-                        || getCoverBehaviorAtSide((byte) aSide)
-                                .letsItemsIn(
-                                        (byte) aSide,
-                                        getCoverIDAtSide((byte) aSide),
-                                        getCoverDataAtSide((byte) aSide),
-                                        -1,
-                                        this))) return mInventory.getAccessibleSlotsFromSide(aSide);
+        if (canAccessData() && (getCoverBehaviorAtSide((byte) aSide)
+                .letsItemsOut((byte) aSide, getCoverIDAtSide((byte) aSide), getCoverDataAtSide((byte) aSide), -1, this)
+                || getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
+                        (byte) aSide,
+                        getCoverIDAtSide((byte) aSide),
+                        getCoverDataAtSide((byte) aSide),
+                        -1,
+                        this)))
+            return mInventory.getAccessibleSlotsFromSide(aSide);
         return new int[0];
     }
 
@@ -283,15 +278,13 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
      */
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return canAccessData()
-                && (mRunningThroughTick || !mInputDisabled)
-                && getCoverBehaviorAtSide((byte) aSide)
-                        .letsItemsIn(
-                                (byte) aSide,
-                                getCoverIDAtSide((byte) aSide),
-                                getCoverDataAtSide((byte) aSide),
-                                aIndex,
-                                this)
+        return canAccessData() && (mRunningThroughTick || !mInputDisabled)
+                && getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
+                        (byte) aSide,
+                        getCoverIDAtSide((byte) aSide),
+                        getCoverDataAtSide((byte) aSide),
+                        aIndex,
+                        this)
                 && mInventory.canInsertItem(aIndex, aStack, aSide);
     }
 
@@ -300,15 +293,13 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
      */
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return canAccessData()
-                && (mRunningThroughTick || !mOutputDisabled)
-                && getCoverBehaviorAtSide((byte) aSide)
-                        .letsItemsOut(
-                                (byte) aSide,
-                                getCoverIDAtSide((byte) aSide),
-                                getCoverDataAtSide((byte) aSide),
-                                aIndex,
-                                this)
+        return canAccessData() && (mRunningThroughTick || !mOutputDisabled)
+                && getCoverBehaviorAtSide((byte) aSide).letsItemsOut(
+                        (byte) aSide,
+                        getCoverIDAtSide((byte) aSide),
+                        getCoverDataAtSide((byte) aSide),
+                        aIndex,
+                        this)
                 && mInventory.canExtractItem(aIndex, aStack, aSide);
     }
 
@@ -317,24 +308,18 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return this.canAccessData() ? this.mInventory.isValidSlot(aIndex) : false;
     }
 
-    private final GT_CoverBehavior[] mCoverBehaviors = new GT_CoverBehavior[] {
-        GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior
-    };
+    private final GT_CoverBehavior[] mCoverBehaviors = new GT_CoverBehavior[] { GregTech_API.sNoBehavior,
+            GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior,
+            GregTech_API.sNoBehavior };
     protected TileEntityBase mMetaTileEntity;
     protected long mStoredEnergy = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
     protected int[] mAverageEUInput = new int[11], mAverageEUOutput = new int[11];
-    private boolean[] mActiveEUInputs = new boolean[] {false, false, false, false, false, false},
-            mActiveEUOutputs = new boolean[] {false, false, false, false, false, false};
-    private byte[] mSidedRedstone = new byte[] {15, 15, 15, 15, 15, 15};
-    private int[] mCoverSides = new int[] {0, 0, 0, 0, 0, 0},
-            mCoverData = new int[] {0, 0, 0, 0, 0, 0},
+    private boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false },
+            mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
+    private byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
+    private int[] mCoverSides = new int[] { 0, 0, 0, 0, 0, 0 }, mCoverData = new int[] { 0, 0, 0, 0, 0, 0 },
             mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
     private boolean mHasEnoughEnergy = true;
     protected boolean mRunningThroughTick = false;
@@ -353,20 +338,9 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     private boolean mSendClientData = false;
     private boolean oRedstone = false;
     private boolean mEnergyStateReady = false;
-    private byte mColor = 0,
-            oColor = 0,
-            mStrongRedstone = 0,
-            oRedstoneData = 63,
-            oTextureData = 0,
-            oUpdateData = 0,
-            oTexturePage = 0,
-            oLightValueClient = -1,
-            oLightValue = -1,
-            mLightValue = 0,
-            mOtherUpgrades = 0,
-            mFacing = 0,
-            oFacing = 0,
-            mWorkData = 0;
+    private byte mColor = 0, oColor = 0, mStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
+            oTexturePage = 0, oLightValueClient = -1, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0,
+            mFacing = 0, oFacing = 0, mWorkData = 0;
     private int mDisplayErrorCode = 0, oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0, mLagWarningCount = 0;
     private short mID = 0;
     protected long mTickTimer = 0;
@@ -420,15 +394,13 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     public long getInputVoltage() {
-        return this.canAccessData() && this.mMetaTileEntity.isElectric()
-                ? this.mMetaTileEntity.maxEUInput()
+        return this.canAccessData() && this.mMetaTileEntity.isElectric() ? this.mMetaTileEntity.maxEUInput()
                 : 2147483647L;
     }
 
     @Override
     public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLessEnergy) {
-        return !this.canAccessData()
-                ? false
+        return !this.canAccessData() ? false
                 : (this.mHasEnoughEnergy = this.decreaseStoredEU(aEnergy, aIgnoreTooLessEnergy));
     }
 
@@ -446,19 +418,15 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public boolean inputEnergyFrom(byte aSide) {
-        return aSide == 6
-                ? true
-                : (!this.isServerSide()
-                        ? this.isEnergyInputSide(aSide)
+        return aSide == 6 ? true
+                : (!this.isServerSide() ? this.isEnergyInputSide(aSide)
                         : aSide >= 0 && aSide < 6 && this.mActiveEUInputs[aSide] && !this.mReleaseEnergy);
     }
 
     @Override
     public boolean outputsEnergyTo(byte aSide) {
-        return aSide == 6
-                ? true
-                : (!this.isServerSide()
-                        ? this.isEnergyOutputSide(aSide)
+        return aSide == 6 ? true
+                : (!this.isServerSide() ? this.isEnergyOutputSide(aSide)
                         : aSide >= 0 && aSide < 6 && this.mActiveEUOutputs[aSide] || this.mReleaseEnergy);
     }
 
@@ -661,8 +629,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     public final TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance) {
-        return aDistance == 1
-                ? this.getTileEntityAtSide(aSide)
+        return aDistance == 1 ? this.getTileEntityAtSide(aSide)
                 : this.getTileEntity(
                         this.getOffsetX(aSide, aDistance),
                         this.getOffsetY(aSide, aDistance),
@@ -795,11 +762,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
                 this.mBufferedTileEntities[aSide] = null;
                 return this.getTileEntityAtSide(aSide);
             } else {
-                return this.mBufferedTileEntities[aSide].xCoord == tX
-                                && this.mBufferedTileEntities[aSide].yCoord == tY
-                                && this.mBufferedTileEntities[aSide].zCoord == tZ
-                        ? this.mBufferedTileEntities[aSide]
-                        : null;
+                return this.mBufferedTileEntities[aSide].xCoord == tX && this.mBufferedTileEntities[aSide].yCoord == tY
+                        && this.mBufferedTileEntities[aSide].zCoord == tZ ? this.mBufferedTileEntities[aSide] : null;
             }
         } else {
             return null;
@@ -856,29 +820,26 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public byte getInternalInputRedstoneSignal(byte aSide) {
-        return (byte) (getCoverBehaviorAtSide(aSide)
-                        .getRedstoneInput(
-                                aSide,
-                                getInputRedstoneSignal(aSide),
-                                getCoverIDAtSide(aSide),
-                                getCoverDataAtSide(aSide),
-                                this)
-                & 15);
+        return (byte) (getCoverBehaviorAtSide(aSide).getRedstoneInput(
+                aSide,
+                getInputRedstoneSignal(aSide),
+                getCoverIDAtSide(aSide),
+                getCoverDataAtSide(aSide),
+                this) & 15);
     }
 
     @Override
     public byte getInputRedstoneSignal(byte aSide) {
-        return (byte) (worldObj.getIndirectPowerLevelTo(
-                        getOffsetX(aSide, 1), getOffsetY(aSide, 1), getOffsetZ(aSide, 1), aSide)
-                & 15);
+        return (byte) (worldObj
+                .getIndirectPowerLevelTo(getOffsetX(aSide, 1), getOffsetY(aSide, 1), getOffsetZ(aSide, 1), aSide) & 15);
     }
 
     @Override
     public byte getOutputRedstoneSignal(byte aSide) {
         return getCoverBehaviorAtSide(aSide)
-                        .manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this)
-                ? mSidedRedstone[aSide]
-                : getGeneralRS(aSide);
+                .manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this)
+                        ? mSidedRedstone[aSide]
+                        : getGeneralRS(aSide);
     }
 
     public boolean allowGeneralRedstoneOutput() {
@@ -1016,8 +977,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     @Override
     public boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced) {
         if (getCoverBehaviorAtSide(aSide)
-                        .onCoverRemoval(aSide, getCoverIDAtSide(aSide), mCoverData[aSide], this, aForced)
-                || aForced) {
+                .onCoverRemoval(aSide, getCoverIDAtSide(aSide), mCoverData[aSide], this, aForced) || aForced) {
             ItemStack tStack = getCoverBehaviorAtSide(aSide)
                     .getDrop(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this);
             if (tStack != null) {
@@ -1061,8 +1021,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public byte getStrongOutputRedstoneSignal(byte aSide) {
-        return aSide >= 0 && aSide < 6 && (mStrongRedstone & (1 << aSide)) != 0
-                ? (byte) (mSidedRedstone[aSide] & 15)
+        return aSide >= 0 && aSide < 6 && (mStrongRedstone & (1 << aSide)) != 0 ? (byte) (mSidedRedstone[aSide] & 15)
                 : 0;
     }
 
@@ -1074,24 +1033,23 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!canAccessData()
-                || !mMetaTileEntity.isElectric()
+        if (!canAccessData() || !mMetaTileEntity.isElectric()
                 || !inputEnergyFrom(aSide)
                 || aAmperage <= 0
                 || aVoltage <= 0
                 || getStoredEU() >= getEUCapacity()
-                || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return 0;
+                || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes)
+            return 0;
         if (aVoltage > getInputVoltage()) {
             doExplosion(aVoltage);
             return 0;
         }
         if (increaseStoredEnergyUnits(
-                aVoltage
-                        * (aAmperage = Math.min(
-                                aAmperage,
-                                Math.min(
-                                        mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes,
-                                        1 + ((getEUCapacity() - getStoredEU()) / aVoltage)))),
+                aVoltage * (aAmperage = Math.min(
+                        aAmperage,
+                        Math.min(
+                                mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes,
+                                1 + ((getEUCapacity() - getStoredEU()) / aVoltage)))),
                 true)) {
             mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
             mAcceptedAmperes += aAmperage;
@@ -1102,10 +1060,10 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!canAccessData()
-                || !mMetaTileEntity.isElectric()
+        if (!canAccessData() || !mMetaTileEntity.isElectric()
                 || !outputsEnergyTo(aSide)
-                || getStoredEU() - (aVoltage * aAmperage) < mMetaTileEntity.getMinimumStoredEU()) return false;
+                || getStoredEU() - (aVoltage * aAmperage) < mMetaTileEntity.getMinimumStoredEU())
+            return false;
         if (decreaseStoredEU(aVoltage * aAmperage, false)) {
             mAverageEUOutput[mAverageEUOutputIndex] += aVoltage * aAmperage;
             return true;
@@ -1221,9 +1179,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             return true;
         }
         aStack = GT_OreDictUnificator.get(aStack);
-        if (GT_Utility.areStacksEqual(tStack, aStack)
-                && tStack.stackSize + aStack.stackSize
-                        <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
+        if (GT_Utility.areStacksEqual(tStack, aStack) && tStack.stackSize + aStack.stackSize
+                <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             tStack.stackSize += aStack.stackSize;
             return true;
         }
@@ -1279,16 +1236,12 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public void doEnergyExplosion() {
         if (this.getUniversalEnergyCapacity() > 0L
                 && this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 5L) {
-            this.doExplosion(this.oOutput
-                    * (long)
-                            (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity()
-                                    ? 4
-                                    : (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 2L
-                                            ? 2
-                                            : 1)));
+            this.doExplosion(
+                    this.oOutput * (long) (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() ? 4
+                            : (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 2L ? 2 : 1)));
             GT_Mod arg9999 = GT_Mod.instance;
-            GT_Mod.achievements.issueAchievement(
-                    this.getWorldObj().getPlayerEntityByName(this.mOwnerName), "electricproblems");
+            GT_Mod.achievements
+                    .issueAchievement(this.getWorldObj().getPlayerEntityByName(this.mOwnerName), "electricproblems");
         }
     }
 
@@ -1298,8 +1251,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
                 try {
                     this.mReleaseEnergy = true;
                     Util.emitEnergyToNetwork(GT_Values.V[5], Math.max(1L, this.getStoredEU() / GT_Values.V[5]), this);
-                } catch (Exception arg4) {
-                }
+                } catch (Exception arg4) {}
             }
             this.mReleaseEnergy = false;
             this.onExplosion();
@@ -1393,7 +1345,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     /**
-     * Adds support for the newer function added by https://github.com/Blood-Asp/GT5-Unofficial/commit/73ee102b63efd92c0f164a7ed7a79ebcd2619617#diff-3051838621d8ae87aa5ccd1345e1f07d
+     * Adds support for the newer function added by
+     * https://github.com/Blood-Asp/GT5-Unofficial/commit/73ee102b63efd92c0f164a7ed7a79ebcd2619617#diff-3051838621d8ae87aa5ccd1345e1f07d
      */
     public boolean inputEnergyFrom(byte arg0, boolean arg1) {
         // TODO Auto-generated method stub
@@ -1401,7 +1354,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     /**
-     * Adds support for the newer function added by https://github.com/Blood-Asp/GT5-Unofficial/commit/73ee102b63efd92c0f164a7ed7a79ebcd2619617#diff-3051838621d8ae87aa5ccd1345e1f07d
+     * Adds support for the newer function added by
+     * https://github.com/Blood-Asp/GT5-Unofficial/commit/73ee102b63efd92c0f164a7ed7a79ebcd2619617#diff-3051838621d8ae87aa5ccd1345e1f07d
      */
     public boolean outputsEnergyTo(byte arg0, boolean arg1) {
         // TODO Auto-generated method stub

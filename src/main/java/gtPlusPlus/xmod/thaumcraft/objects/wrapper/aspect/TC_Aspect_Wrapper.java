@@ -1,22 +1,24 @@
 package gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect;
 
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.util.GT_LanguageManager;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import net.minecraft.util.ResourceLocation;
 
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.util.GT_LanguageManager;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
+
 /**
- * Wrapper class for Thaumcraft Aspects.
- * Used to avoid compile time dependencies.
+ * Wrapper class for Thaumcraft Aspects. Used to avoid compile time dependencies.
+ * 
  * @author Alkalus
  *
  */
@@ -48,6 +50,7 @@ public class TC_Aspect_Wrapper {
 
     /**
      * Gets the total aspect list from Thaumcraft, which should contain all other registered aspects.
+     * 
      * @return - A LinkedHashMap(String, Aspect);
      */
     public static LinkedHashMap<String, Object> getVanillaAspectList() {
@@ -68,7 +71,8 @@ public class TC_Aspect_Wrapper {
 
     /**
      * Vanilla Aspect Constructor
-     * @param tag - Aspect Name
+     * 
+     * @param tag       - Aspect Name
      * @param color
      * @param chatcolor
      * @param blend
@@ -81,7 +85,8 @@ public class TC_Aspect_Wrapper {
     /**
      *
      * Vanilla Aspect Constructor
-     * @param tag - Aspect Name
+     * 
+     * @param tag        - Aspect Name
      * @param color
      * @param components
      */
@@ -92,7 +97,8 @@ public class TC_Aspect_Wrapper {
     /**
      *
      * Vanilla Aspect Constructor
-     * @param tag - Aspect Name
+     * 
+     * @param tag        - Aspect Name
      * @param color
      * @param components
      * @param blend
@@ -104,20 +110,20 @@ public class TC_Aspect_Wrapper {
     /**
      *
      * Vanilla Aspect Constructor
-     * @param tag - Aspect Name
+     * 
+     * @param tag        - Aspect Name
      * @param color
      * @param components
      * @param image
      * @param blend
      */
-    public TC_Aspect_Wrapper(
-            String tag, int color, TC_Aspect_Wrapper[] components, boolean vanilla, int blend, String aTooltip) {
+    public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, boolean vanilla, int blend,
+            String aTooltip) {
         this(
                 tag,
                 color,
                 components,
-                vanilla
-                        ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png")
+                vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png")
                         : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"),
                 vanilla,
                 blend,
@@ -126,14 +132,8 @@ public class TC_Aspect_Wrapper {
 
     private static int aInternalAspectIDAllocation = 1;
 
-    public TC_Aspect_Wrapper(
-            String tag,
-            int color,
-            TC_Aspect_Wrapper[] components,
-            ResourceLocation image,
-            boolean vanilla,
-            int blend,
-            String aTooltip) {
+    public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, ResourceLocation image,
+            boolean vanilla, int blend, String aTooltip) {
         if (components == null) {
             components = new TC_Aspect_Wrapper[] {};
         }
@@ -183,6 +183,7 @@ public class TC_Aspect_Wrapper {
 
     /**
      * Generates a TC_Aspect from an object, presummed to be a TC Aspect.
+     * 
      * @param aBaseAspect - The TC Aspect to generate from.
      * @return
      * @throws IllegalArgumentException
@@ -207,15 +208,14 @@ public class TC_Aspect_Wrapper {
                         aTag,
                         (int) ReflectionUtils.getField(mClass_Aspect, "color").get(aBaseAspect),
                         generateAspectArrayInternal(
-                                ReflectionUtils.getField(mClass_Aspect, "components"), (aBaseAspect)),
-                        (ResourceLocation)
-                                ReflectionUtils.getField(mClass_Aspect, "image").get(aBaseAspect),
+                                ReflectionUtils.getField(mClass_Aspect, "components"),
+                                (aBaseAspect)),
+                        (ResourceLocation) ReflectionUtils.getField(mClass_Aspect, "image").get(aBaseAspect),
                         true,
                         (int) ReflectionUtils.getField(mClass_Aspect, "blend").get(aBaseAspect),
                         "");
                 if (aTemp != null) {
-                    aTemp.chatcolor = (String)
-                            ReflectionUtils.getField(mClass_Aspect, "chatcolor").get(aBaseAspect);
+                    aTemp.chatcolor = (String) ReflectionUtils.getField(mClass_Aspect, "chatcolor").get(aBaseAspect);
                     return aTemp;
                 } else {
                     return null;
@@ -234,6 +234,7 @@ public class TC_Aspect_Wrapper {
 
     /**
      * Public getter for all TC_Aspects
+     * 
      * @param aAspectName - Aspect Name
      * @return - A GT++ Aspect wrapper or null. (TC_Aspect)
      */
@@ -270,8 +271,7 @@ public class TC_Aspect_Wrapper {
             if (aAspectArray.length > 0) {
                 int i = 0;
                 for (Object g : components) {
-                    aAspectArray[i] = getAspect((String)
-                            ReflectionUtils.getField(mClass_Aspect, "tag").get(g));
+                    aAspectArray[i] = getAspect((String) ReflectionUtils.getField(mClass_Aspect, "tag").get(g));
                     i++;
                 }
             }
@@ -284,6 +284,7 @@ public class TC_Aspect_Wrapper {
 
     /**
      * Tasty code to generate TC Aspects reflectively.
+     * 
      * @return
      */
     public Object generateTcAspect() {
@@ -298,7 +299,11 @@ public class TC_Aspect_Wrapper {
                 }
             }
             Constructor constructor = mClass_Aspect.getConstructor(
-                    String.class, int.class, aAspectArray.getClass(), ResourceLocation.class, int.class);
+                    String.class,
+                    int.class,
+                    aAspectArray.getClass(),
+                    ResourceLocation.class,
+                    int.class);
             Object myObject = constructor.newInstance(tag, color, aAspectArray, image, blend);
 
             // Set chat colour

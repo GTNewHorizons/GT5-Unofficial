@@ -2,6 +2,9 @@ package gtPlusPlus.xmod.ic2.recipe;
 
 import static gtPlusPlus.core.recipe.RECIPES_Tools.*;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -18,8 +21,6 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.item.IC2_Items;
 import ic2.core.Ic2Items;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 
 public class RECIPE_IC2 {
 
@@ -194,52 +195,25 @@ public class RECIPE_IC2 {
         // Shaft Extruder Recipe
         GT_ModHandler.addCraftingRecipe(
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED
-                        | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                         | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] {
-                    "hXS",
-                    "XPX",
-                    "fXd",
-                    Character.valueOf('P'),
-                    ItemList.Shape_Extruder_Rod,
-                    Character.valueOf('X'),
-                    OrePrefixes.plate.get(Materials.DarkSteel),
-                    Character.valueOf('S'),
-                    OrePrefixes.screw.get(Materials.DarkSteel)
-                });
+                new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
+                        Character.valueOf('X'), OrePrefixes.plate.get(Materials.DarkSteel), Character.valueOf('S'),
+                        OrePrefixes.screw.get(Materials.DarkSteel) });
         GT_ModHandler.addCraftingRecipe(
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED
-                        | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                         | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] {
-                    "hXS",
-                    "XPX",
-                    "fXd",
-                    Character.valueOf('P'),
-                    ItemList.Shape_Extruder_Rod,
-                    Character.valueOf('X'),
-                    OrePrefixes.plate.get(Materials.TungstenSteel),
-                    Character.valueOf('S'),
-                    OrePrefixes.screw.get(Materials.TungstenSteel)
-                });
+                new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
+                        Character.valueOf('X'), OrePrefixes.plate.get(Materials.TungstenSteel), Character.valueOf('S'),
+                        OrePrefixes.screw.get(Materials.TungstenSteel) });
         GT_ModHandler.addCraftingRecipe(
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED
-                        | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                         | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] {
-                    "hXS",
-                    "XPX",
-                    "fXd",
-                    Character.valueOf('P'),
-                    ItemList.Shape_Extruder_Rod,
-                    Character.valueOf('X'),
-                    OrePrefixes.plate.get(Materials.Molybdenum),
-                    Character.valueOf('S'),
-                    OrePrefixes.screw.get(Materials.Molybdenum)
-                });
+                new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
+                        Character.valueOf('X'), OrePrefixes.plate.get(Materials.Molybdenum), Character.valueOf('S'),
+                        OrePrefixes.screw.get(Materials.Molybdenum) });
         Logger.INFO("Added recipe item for GT5 Extruder: Shaft Shape");
 
         // Custm Recipes for Iron and Steel
@@ -448,12 +422,8 @@ public class RECIPE_IC2 {
 
     private static void addAdvancedHazmat() {
 
-        ItemStack[] aBasicHazmatPieces = new ItemStack[] {
-            Ic2Items.hazmatHelmet.copy(),
-            Ic2Items.hazmatChestplate.copy(),
-            Ic2Items.hazmatLeggings.copy(),
-            Ic2Items.hazmatBoots.copy()
-        };
+        ItemStack[] aBasicHazmatPieces = new ItemStack[] { Ic2Items.hazmatHelmet.copy(),
+                Ic2Items.hazmatChestplate.copy(), Ic2Items.hazmatLeggings.copy(), Ic2Items.hazmatBoots.copy() };
 
         Material aRubber = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubber);
         ItemStack aYellowWool = ItemUtils.getSimpleStack(Blocks.wool, 4, 1);
@@ -461,62 +431,42 @@ public class RECIPE_IC2 {
         ItemStack aCoilIC2 = Ic2Items.coil;
         ItemStack aPlateCobalt = CI.getTieredComponentOfMaterial(Materials.Cobalt, OrePrefixes.plate, 1);
         ItemStack aGearSmallSteel = CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.gearGtSmall, 1);
-        ItemStack aGearSmallAluminium =
-                CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.gearGtSmall, 1);
+        ItemStack aGearSmallAluminium = CI
+                .getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.gearGtSmall, 1);
         ItemStack aGearPotin = ALLOY.TUMBAGA.getGear(1);
         ItemStack aGearSiliconCarbide = ALLOY.SILICON_CARBIDE.getGear(1);
 
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(2),
-                    aBasicHazmatPieces[0],
-                    ItemUtils.getSimpleStack(aYellowWool, 16),
-                    ItemUtils.getSimpleStack(aPlateCobalt, 4),
-                    ItemUtils.getSimpleStack(aCoilIC2, 8),
-                    ItemUtils.getSimpleStack(aGearSmallAluminium, 4),
-                },
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[0],
+                        ItemUtils.getSimpleStack(aYellowWool, 16), ItemUtils.getSimpleStack(aPlateCobalt, 4),
+                        ItemUtils.getSimpleStack(aCoilIC2, 8), ItemUtils.getSimpleStack(aGearSmallAluminium, 4), },
                 aRubber.getFluidStack(144 * 4),
                 GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1),
                 30 * 20,
                 MaterialUtils.getVoltageForTier(2));
 
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(2),
-                    aBasicHazmatPieces[1],
-                    ItemUtils.getSimpleStack(aYellowWool, 64),
-                    ItemUtils.getSimpleStack(aCoilIC2, 32),
-                    ItemUtils.getSimpleStack(aPlateCobalt, 16),
-                    ItemUtils.getSimpleStack(aGearSiliconCarbide, 8),
-                },
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[1],
+                        ItemUtils.getSimpleStack(aYellowWool, 64), ItemUtils.getSimpleStack(aCoilIC2, 32),
+                        ItemUtils.getSimpleStack(aPlateCobalt, 16), ItemUtils.getSimpleStack(aGearSiliconCarbide, 8), },
                 aRubber.getFluidStack(144 * 10),
                 GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1),
                 90 * 20,
                 MaterialUtils.getVoltageForTier(2));
 
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(2),
-                    aBasicHazmatPieces[2],
-                    ItemUtils.getSimpleStack(aYellowWool, 32),
-                    ItemUtils.getSimpleStack(aCoilIC2, 16),
-                    ItemUtils.getSimpleStack(aPlateCobalt, 8),
-                    ItemUtils.getSimpleStack(aGearSiliconCarbide, 4),
-                },
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[2],
+                        ItemUtils.getSimpleStack(aYellowWool, 32), ItemUtils.getSimpleStack(aCoilIC2, 16),
+                        ItemUtils.getSimpleStack(aPlateCobalt, 8), ItemUtils.getSimpleStack(aGearSiliconCarbide, 4), },
                 aRubber.getFluidStack(144 * 8),
                 GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1),
                 75 * 20,
                 MaterialUtils.getVoltageForTier(2));
 
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(2),
-                    aBasicHazmatPieces[3],
-                    ItemUtils.getSimpleStack(aBlackWool, 16),
-                    ItemUtils.getSimpleStack(aCoilIC2, 6),
-                    ItemUtils.getSimpleStack(aGearSmallSteel, 8),
-                    ItemUtils.getSimpleStack(aGearPotin, 4),
-                },
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[3],
+                        ItemUtils.getSimpleStack(aBlackWool, 16), ItemUtils.getSimpleStack(aCoilIC2, 6),
+                        ItemUtils.getSimpleStack(aGearSmallSteel, 8), ItemUtils.getSimpleStack(aGearPotin, 4), },
                 aRubber.getFluidStack(144 * 6),
                 GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1),
                 45 * 20,

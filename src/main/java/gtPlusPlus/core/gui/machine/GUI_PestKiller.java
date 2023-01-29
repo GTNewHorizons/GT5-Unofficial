@@ -1,13 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.container.Container_PestKiller;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
-import gtPlusPlus.core.util.math.MathUtils;
 import java.awt.Color;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,13 +9,23 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.container.Container_PestKiller;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
+import gtPlusPlus.core.util.math.MathUtils;
 
 @SideOnly(Side.CLIENT)
 public class GUI_PestKiller extends GuiContainer {
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/PestKiller.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/PestKiller.png");
     private final TileEntityPestKiller mTileKiller;
 
     public GUI_PestKiller(final InventoryPlayer player_inventory, final TileEntityPestKiller te) {
@@ -93,8 +97,7 @@ public class GUI_PestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Tier: 1", 4, 18, 4210752);
                     this.fontRendererObj.drawString("Range: 5x5", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
-                    this.fontRendererObj.drawString(
-                            "" + aTile.getTank().getFluid().getLocalizedName(), 4, 54, 4210752);
+                    this.fontRendererObj.drawString("" + aTile.getTank().getFluid().getLocalizedName(), 4, 54, 4210752);
                     this.fontRendererObj.drawString("Amount: " + aTile.getTank().getFluidAmount(), 4, 64, 4210752);
                     didRender = true;
                 } else if (aTier == 2) {
@@ -111,8 +114,7 @@ public class GUI_PestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Tier: 2", 4, 18, 4210752);
                     this.fontRendererObj.drawString("Range: 9x9", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
-                    this.fontRendererObj.drawString(
-                            "" + aTile.getTank().getFluid().getLocalizedName(), 4, 54, 4210752);
+                    this.fontRendererObj.drawString("" + aTile.getTank().getFluid().getLocalizedName(), 4, 54, 4210752);
                     this.fontRendererObj.drawString("Amount: " + aTile.getTank().getFluidAmount(), 4, 64, 4210752);
                     didRender = true;
                 }
@@ -126,13 +128,11 @@ public class GUI_PestKiller extends GuiContainer {
         }
 
         /*
-         * FluidStack fluid = tank.getFluid(); TextureManager manager =
-         * mc.getTextureManager(); if (fluid != null) {
-         * manager.bindTexture(manager.getResourceLocation(0)); float amount =
-         * fluid.amount; float capacity = tank.getCapacity(); float scale = amount /
-         * capacity; int fluidTankHeight = 60; int fluidAmount = (int) (scale *
-         * fluidTankHeight); drawFluid(x, y + fluidTankHeight - fluidAmount,
-         * fluid.getFluid().getIcon(fluid), 16, fluidAmount); }
+         * FluidStack fluid = tank.getFluid(); TextureManager manager = mc.getTextureManager(); if (fluid != null) {
+         * manager.bindTexture(manager.getResourceLocation(0)); float amount = fluid.amount; float capacity =
+         * tank.getCapacity(); float scale = amount / capacity; int fluidTankHeight = 60; int fluidAmount = (int) (scale
+         * * fluidTankHeight); drawFluid(x, y + fluidTankHeight - fluidAmount, fluid.getFluid().getIcon(fluid), 16,
+         * fluidAmount); }
          */
     }
 

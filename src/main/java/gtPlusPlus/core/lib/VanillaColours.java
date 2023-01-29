@@ -3,6 +3,7 @@ package gtPlusPlus.core.lib;
 import gtPlusPlus.core.util.Utils;
 
 public enum VanillaColours {
+
     BONE_MEAL(249, 255, 254),
     INK_BLACK(29, 29, 33),
     COCOA_BEANS(131, 84, 50),
@@ -23,6 +24,7 @@ public enum VanillaColours {
     DYE_DARK_BLUE(60, 68, 170),
     DYE_DARK_PURPLE(137, 50, 184),
     DYE_DARK_GRAY(71, 79, 82);
+
     private final int r, g, b;
 
     private VanillaColours(int aR, int aG, int aB) {
@@ -32,7 +34,7 @@ public enum VanillaColours {
     }
 
     public short[] getAsShort() {
-        return new short[] {(short) r, (short) g, (short) b};
+        return new short[] { (short) r, (short) g, (short) b };
     }
 
     public int getAsInt() {

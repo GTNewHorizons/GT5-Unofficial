@@ -4,6 +4,7 @@ import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeModifier;
 
 public enum MB_FrameType implements IBeeModifier {
+
     // ExtraBees Clone Frames
     // Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)
     COCOA("Chocolate", 240, 1.0f, 1.0f, 0.50f, 1.50f, 1f),
@@ -39,30 +40,14 @@ public enum MB_FrameType implements IBeeModifier {
     private final boolean isSunlit;
     private final boolean isHellish;
 
-    MB_FrameType(
-            final String name,
-            final int damage,
-            final float territory,
-            final float mutation,
-            final float lifespan,
-            final float production,
-            final float geneticDecay) {
+    MB_FrameType(final String name, final int damage, final float territory, final float mutation, final float lifespan,
+            final float production, final float geneticDecay) {
         this(name, damage, territory, mutation, lifespan, production, 1f, geneticDecay, false, false, false, false);
     }
 
-    MB_FrameType(
-            final String name,
-            final int damage,
-            final float territory,
-            final float mutation,
-            final float lifespan,
-            final float production,
-            final float flowering,
-            final float geneticDecay,
-            final boolean sealed,
-            final boolean lit,
-            final boolean sunlit,
-            final boolean hellish) {
+    MB_FrameType(final String name, final int damage, final float territory, final float mutation, final float lifespan,
+            final float production, final float flowering, final float geneticDecay, final boolean sealed,
+            final boolean lit, final boolean sunlit, final boolean hellish) {
         this.frameName = name;
         this.maxDamage = damage;
 

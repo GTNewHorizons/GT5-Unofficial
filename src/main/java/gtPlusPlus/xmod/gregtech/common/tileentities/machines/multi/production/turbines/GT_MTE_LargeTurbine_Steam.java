@@ -2,6 +2,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import static gtPlusPlus.core.lib.CORE.RANDOM;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -11,11 +18,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurbineBase {
@@ -85,18 +87,16 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = MathUtils.safeInt((long) (aOptFlow
-                * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for
+        int remainingFlow = MathUtils.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.
+                                                                          // Variable required outside of loop for
         // multi-hatch scenarios.
         this.realOptFlow = (double) aOptFlow * (double) flowMultipliers[0];
 
         storedFluid = 0;
-        for (int i = 0;
-                i < aFluids.size() && remainingFlow > 0;
-                i++) { // loop through each hatch; extract inputs and track totals.
+        for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and
+                                                                        // track totals.
             String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
-            if (fluidName.equals("fluid.steam")
-                    || fluidName.equals("ic2.fluidSteam")
+            if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam")
                     || fluidName.equals("fluid.mfr.steam.still.name")) {
                 flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
@@ -105,10 +105,8 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
                 totalFlow += flow; // track total input used
                 if (!achievement) {
                     GT_Mod.achievements.issueAchievement(
-                            this.getBaseMetaTileEntity()
-                                    .getWorld()
-                                    .getPlayerEntityByName(
-                                            this.getBaseMetaTileEntity().getOwnerName()),
+                            this.getBaseMetaTileEntity().getWorld()
+                                    .getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()),
                             "muchsteam");
                     achievement = true;
                 }
@@ -141,7 +139,8 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GT_Utility.sendChatToPlayer(
-                    aPlayer, looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
+                    aPlayer,
+                    looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
         }
 
         if (looseFit) {

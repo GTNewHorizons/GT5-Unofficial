@@ -1,5 +1,16 @@
 package gtPlusPlus.core.item.chemistry;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.helpers.MaterialHelper;
@@ -19,15 +30,6 @@ import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class AgriculturalChem extends ItemPackage {
 
@@ -83,31 +85,11 @@ public class AgriculturalChem extends ItemPackage {
     public static Item mAgrichemItem1;
 
     /*
-     * 0 - Algae Biomass
-     * 1 - Green Algae Biomass
-     * 2 - Brown Algae Biomass
-     * 3 - Golden-Brown Algae Biomass
-     * 4 - Red Algae Biomass
-     * 5 - Cellulose Fiber
-     * 6 - Golden-Brown Cellulose Fiber
-     * 7 - Red Cellulose Fiber
-     * 8 - Compost
-     * 9 - Wood Pellet
-     * 10 - Wood Brick
-     * 11 - Cellulose Pulp
-     * 12 - Raw Bio Resin
-     * 13 - Catalyst Carrier
-     * 14 - Green Metal Catalyst
-     * 15 - Alginic Acid
-     * 16 - Alumina
-     * 17 - Aluminium Pellet
-     * 18 - Sodium Aluminate
-     * 19 - Sodium Hydroxide // Exists in Newer GT
-     * 20 - Sodium Carbonate
-     * 21 - Lithium Chloride
-     * 22 - Pellet Mold
-     * 23 - Clean Aluminium Mix
-     * 24 - Pinecone
+     * 0 - Algae Biomass 1 - Green Algae Biomass 2 - Brown Algae Biomass 3 - Golden-Brown Algae Biomass 4 - Red Algae
+     * Biomass 5 - Cellulose Fiber 6 - Golden-Brown Cellulose Fiber 7 - Red Cellulose Fiber 8 - Compost 9 - Wood Pellet
+     * 10 - Wood Brick 11 - Cellulose Pulp 12 - Raw Bio Resin 13 - Catalyst Carrier 14 - Green Metal Catalyst 15 -
+     * Alginic Acid 16 - Alumina 17 - Aluminium Pellet 18 - Sodium Aluminate 19 - Sodium Hydroxide // Exists in Newer GT
+     * 20 - Sodium Carbonate 21 - Lithium Chloride 22 - Pellet Mold 23 - Clean Aluminium Mix 24 - Pinecone
      */
 
     public static ItemStack mAlgaeBiosmass;
@@ -141,11 +123,17 @@ public class AgriculturalChem extends ItemPackage {
     public void items() {
         // Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
         dustManureByproducts = ItemUtils.generateSpecialUseDusts(
-                "ManureByproducts", "Manure Byproduct", "(N2H4O3)N2P2Ca3CuC8", Utils.rgbtoHexValue(110, 75, 25))[0];
+                "ManureByproducts",
+                "Manure Byproduct",
+                "(N2H4O3)N2P2Ca3CuC8",
+                Utils.rgbtoHexValue(110, 75, 25))[0];
 
         // Basically Guano
         dustOrganicFertilizer = ItemUtils.generateSpecialUseDusts(
-                "OrganicFertilizer", "Organic Fertilizer", "Ca5(PO4)3(OH)", Utils.rgbtoHexValue(240, 240, 240))[0];
+                "OrganicFertilizer",
+                "Organic Fertilizer",
+                "Ca5(PO4)3(OH)",
+                Utils.rgbtoHexValue(240, 240, 240))[0];
 
         // Dirt Dust :)
         dustDirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", Utils.rgbtoHexValue(65, 50, 15))[0];
@@ -251,25 +239,43 @@ public class AgriculturalChem extends ItemPackage {
     public void fluids() {
         // Sewage
         PoopJuice = FluidUtils.generateFluidNonMolten(
-                "raw.waste", "Raw Animal Waste", 32 + 175, new short[] {100, 70, 30, 100}, null, null, 0, true);
+                "raw.waste",
+                "Raw Animal Waste",
+                32 + 175,
+                new short[] { 100, 70, 30, 100 },
+                null,
+                null,
+                0,
+                true);
 
         // Sewage
         ManureSlurry = FluidUtils.generateFluidNonMolten(
-                "manure.slurry", "Manure Slurry", 39 + 175, new short[] {75, 45, 15, 100}, null, null, 0, true);
+                "manure.slurry",
+                "Manure Slurry",
+                39 + 175,
+                new short[] { 75, 45, 15, 100 },
+                null,
+                null,
+                0,
+                true);
 
         // Sewage
         FertileManureSlurry = FluidUtils.generateFluidNonMolten(
                 "fertile.manure.slurry",
                 "Fertile Manure Slurry",
                 45 + 175,
-                new short[] {65, 50, 15, 100},
+                new short[] { 65, 50, 15, 100 },
                 null,
                 null,
                 0,
                 true);
 
         RedMud = FluidUtils.generateFluidNoPrefix(
-                "mud.red.slurry", "Red Mud Slurry", 32 + 175, new short[] {180, 35, 25, 100}, true);
+                "mud.red.slurry",
+                "Red Mud Slurry",
+                32 + 175,
+                new short[] { 180, 35, 25, 100 },
+                true);
     }
 
     public AgriculturalChem() {
@@ -309,8 +315,8 @@ public class AgriculturalChem extends ItemPackage {
             } else {
                 aTempBlood = FluidUtils.getWildcardFluidStack("hell_blood", 100);
                 if (aTempBlood == null) {
-                    CustomBlood = FluidUtils.generateFluidNoPrefix(
-                            "blood", "Blood", 32 + 175, new short[] {175, 25, 25, 100}, true);
+                    CustomBlood = FluidUtils
+                            .generateFluidNoPrefix("blood", "Blood", 32 + 175, new short[] { 175, 25, 25, 100 }, true);
                 } else {
                     CustomBlood = aTempBlood.getFluid();
                 }
@@ -416,7 +422,7 @@ public class AgriculturalChem extends ItemPackage {
                 aManureByprod1,
                 aManureByprod1,
                 aManureByprod1,
-                new int[] {2000, 2000, 500, 500, 250, 250}, // Chances
+                new int[] { 2000, 2000, 500, 500, 250, 250 }, // Chances
                 10 * 20, // Time
                 30); // EU
 
@@ -433,7 +439,7 @@ public class AgriculturalChem extends ItemPackage {
                 aManureByprod1,
                 aManureByprod2,
                 aManureByprod2,
-                new int[] {4000, 3000, 1250, 1250, 675, 675}, // Chances
+                new int[] { 4000, 3000, 1250, 1250, 675, 675 }, // Chances
                 20 * 20, // Time
                 60); // EU
     }
@@ -463,7 +469,7 @@ public class AgriculturalChem extends ItemPackage {
                             aEmptyCells, // Output Item
                             20 * 8, // Time?
                             60 // Eu?
-                            );
+                    );
                 }
             }
         }
@@ -522,8 +528,8 @@ public class AgriculturalChem extends ItemPackage {
          * Forestry Support
          */
         if (LoadedMods.Forestry) {
-            Field aItemField =
-                    ReflectionUtils.getField(ReflectionUtils.getClass("forestry.plugins.PluginCore"), "items");
+            Field aItemField = ReflectionUtils
+                    .getField(ReflectionUtils.getClass("forestry.plugins.PluginCore"), "items");
             try {
                 Object aItemRegInstance = aItemField != null ? aItemField.get(aItemField) : null;
                 if (aItemRegInstance != null) {
@@ -533,15 +539,13 @@ public class AgriculturalChem extends ItemPackage {
                         aFertForestry = ItemUtils.getSimpleStack((Item) aItemInstance);
                         Item aForestryFert = (Item) aItemInstance;
                         CORE.RA.addDehydratorRecipe(
-                                new ItemStack[] {
-                                    CI.getNumberedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4)
-                                },
+                                new ItemStack[] { CI.getNumberedCircuit(11),
+                                        ItemUtils.getSimpleStack(aDustOrganicFert, 4) },
                                 null,
                                 null,
-                                new ItemStack[] {
-                                    ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod
-                                },
-                                new int[] {10000, 2000, 2000},
+                                new ItemStack[] { ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod,
+                                        aManureByprod },
+                                new int[] { 10000, 2000, 2000 },
                                 20 * 20,
                                 240);
                     }
@@ -557,20 +561,22 @@ public class AgriculturalChem extends ItemPackage {
         if (LoadedMods.IndustrialCraft2) {
             aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
             CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] {CI.getNumberedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4)},
+                    new ItemStack[] { CI.getNumberedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4) },
                     null,
                     null,
-                    new ItemStack[] {
-                        ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod, aManureByprod
-                    },
-                    new int[] {10000, 2000, 2000},
+                    new ItemStack[] { ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod,
+                            aManureByprod },
+                    new int[] { 10000, 2000, 2000 },
                     20 * 20,
                     240);
         }
 
         // Dirt Production
         CORE.RA.addCompressorRecipe(
-                ItemUtils.getSimpleStack(dustDirt, 9), ItemUtils.getSimpleStack(Blocks.dirt), 20 * 2, 8);
+                ItemUtils.getSimpleStack(dustDirt, 9),
+                ItemUtils.getSimpleStack(Blocks.dirt),
+                20 * 2,
+                8);
 
         // Centrifuge Byproducts
 
@@ -586,7 +592,7 @@ public class AgriculturalChem extends ItemPackage {
                 MaterialHelper.getDust(Materials.Carbon, 1),
                 ItemUtils.getSimpleStack(dustDirt, 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1),
-                new int[] {2500, 2500, 750, 1000, 5000, 250}, // Chances
+                new int[] { 2500, 2500, 750, 1000, 5000, 250 }, // Chances
                 20 * 20, // Time
                 60); // EU
 
@@ -607,7 +613,7 @@ public class AgriculturalChem extends ItemPackage {
                 ELEMENT.getInstance().SULFUR.getSmallDust(1),
                 ELEMENT.getInstance().NICKEL.getTinyDust(1),
                 ELEMENT.getInstance().LEAD.getTinyDust(1),
-                new int[] {3000, 3000, 2000, 2000, 1000, 1000},
+                new int[] { 3000, 3000, 2000, 2000, 1000, 1000 },
                 30 * 20,
                 30);
     }

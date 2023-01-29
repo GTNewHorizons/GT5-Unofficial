@@ -9,6 +9,10 @@ import static gtPlusPlus.core.material.MISC_MATERIALS.SALT_WATER;
 import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_CHLORIDE;
 import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_HYDROXIDE;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -22,9 +26,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPES_RareEarthProcessing {
 
@@ -109,7 +110,7 @@ public class RECIPES_RareEarthProcessing {
                 null,
                 null,
                 null,
-                new int[] {10000, 10000, 10000},
+                new int[] { 10000, 10000, 10000 },
                 20 * 30,
                 120);
 
@@ -174,7 +175,7 @@ public class RECIPES_RareEarthProcessing {
                 RARE_EARTH_LOW.getCrushed(2),
                 RARE_EARTH_LOW.getCrushed(2),
                 RARE_EARTH_LOW.getCrushed(2),
-                new int[] {10000, 10000, 10000},
+                new int[] { 10000, 10000, 10000 },
                 20 * 30,
                 MaterialUtils.getVoltageForTier(1));
 
@@ -185,7 +186,7 @@ public class RECIPES_RareEarthProcessing {
                 RARE_EARTH_MID.getCrushed(4),
                 RARE_EARTH_MID.getCrushed(4),
                 RARE_EARTH_MID.getCrushed(4),
-                new int[] {10000, 9000, 8000},
+                new int[] { 10000, 9000, 8000 },
                 20 * 30,
                 MaterialUtils.getVoltageForTier(3));
 
@@ -196,7 +197,7 @@ public class RECIPES_RareEarthProcessing {
                 RARE_EARTH_HIGH.getCrushed(6),
                 RARE_EARTH_HIGH.getCrushed(6),
                 RARE_EARTH_HIGH.getCrushed(6),
-                new int[] {10000, 9000, 8000},
+                new int[] { 10000, 9000, 8000 },
                 20 * 30,
                 MaterialUtils.getVoltageForTier(5));
 
@@ -208,7 +209,7 @@ public class RECIPES_RareEarthProcessing {
                     RARE_EARTH_HIGH.getCrushed(6),
                     RARE_EARTH_HIGH.getCrushed(6),
                     RARE_EARTH_HIGH.getCrushed(6),
-                    new int[] {9000, 8000, 7000},
+                    new int[] { 9000, 8000, 7000 },
                     20 * 30,
                     MaterialUtils.getVoltageForTier(5));
         }
@@ -217,22 +218,16 @@ public class RECIPES_RareEarthProcessing {
     public static void processCopperRecipes() {
 
         // Rare Earth Processing
-        /*GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRareEarth", 1),
-        		new ItemStack[] {
-        				ELEMENT.getInstance().YTTRIUM.getSmallDust(1),
-        				ELEMENT.getInstance().NEODYMIUM.getSmallDust(1),
-        				ELEMENT.getInstance().LANTHANUM.getSmallDust(1),
-        				ELEMENT.getInstance().CERIUM.getSmallDust(1),
-        				ELEMENT.getInstance().CADMIUM.getSmallDust(1),
-        				ELEMENT.getInstance().CAESIUM.getSmallDust(1),
-        				ORES.SAMARSKITE_YB.getSmallDust(1),
-        				ORES.FLORENCITE.getSmallDust(1),
-        				ORES.FLUORCAPHITE.getSmallDust(1),
-        				//ELEMENT.getInstance().YTTERBIUM.getTinyDust(1),
-        				//ELEMENT.getInstance().SAMARIUM.getTinyDust(1),
-        				//ELEMENT.getInstance().GADOLINIUM.getTinyDust(1)
-        },
-        		new int[] { 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000 }, 20 * 30, 500);*/
+        /*
+         * GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRareEarth", 1), new ItemStack[] {
+         * ELEMENT.getInstance().YTTRIUM.getSmallDust(1), ELEMENT.getInstance().NEODYMIUM.getSmallDust(1),
+         * ELEMENT.getInstance().LANTHANUM.getSmallDust(1), ELEMENT.getInstance().CERIUM.getSmallDust(1),
+         * ELEMENT.getInstance().CADMIUM.getSmallDust(1), ELEMENT.getInstance().CAESIUM.getSmallDust(1),
+         * ORES.SAMARSKITE_YB.getSmallDust(1), ORES.FLORENCITE.getSmallDust(1), ORES.FLUORCAPHITE.getSmallDust(1),
+         * //ELEMENT.getInstance().YTTERBIUM.getTinyDust(1), //ELEMENT.getInstance().SAMARIUM.getTinyDust(1),
+         * //ELEMENT.getInstance().GADOLINIUM.getTinyDust(1) }, new int[] { 2000, 2000, 2000, 2000, 2000, 2000, 2000,
+         * 2000, 2000 }, 20 * 30, 500);
+         */
 
     }
 }

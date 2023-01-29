@@ -1,5 +1,7 @@
 package gtPlusPlus.core.recipe;
 
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -18,49 +20,45 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
 
 public class RECIPES_Old_Circuits implements IOreRecipeRegistrator {
+
     public RECIPES_Old_Circuits() {
         OrePrefixes.crafting.add(this);
     }
 
     @Override
-    public void registerOre(
-            final OrePrefixes aPrefix,
-            final Materials aMaterial,
-            final String aOreDictName,
-            final String aModName,
-            final ItemStack aStack) {
+    public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
+            final String aModName, final ItemStack aStack) {
         if (aOreDictName.equals(OreDictNames.craftingLensRed.toString())) {
             Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 2)");
             GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, 1L),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     GregtechItemList.Old_Circuit_Parts_Wiring_Basic.get(1L, new Object[0]),
                     64,
                     30);
             GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.AnnealedCopper, 1L),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     GregtechItemList.Old_Circuit_Parts_Wiring_Basic.get(1L, new Object[0]),
                     64,
                     30);
             GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     GregtechItemList.Old_Circuit_Parts_Wiring_Advanced.get(1L, new Object[0]),
                     64,
                     120);
             GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 1L),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     GregtechItemList.Old_Circuit_Parts_Wiring_Advanced.get(1L, new Object[0]),
                     64,
                     120);
             GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 1L),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     GregtechItemList.Old_Circuit_Parts_Wiring_Elite.get(1L, new Object[0]),
                     64,
                     480);
@@ -68,82 +66,52 @@ public class RECIPES_Old_Circuits implements IOreRecipeRegistrator {
             Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 3)");
             GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Olivine, 1L),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1L, new Object[0]),
                     256,
                     480);
             GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 1L),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1L, new Object[0]),
                     256,
                     480);
         } else if (aOreDictName.equals(OreDictNames.craftingLensBlue.toString())
                 || aOreDictName.equals(OreDictNames.craftingLensCyan.toString())
                 || aOreDictName.equals(OreDictNames.craftingLensLightBlue.toString())) {
-            Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 4)");
-            GT_Values.RA.addLaserEngraverRecipe(
-                    ItemList.IC2_LapotronCrystal.getWildcard(1L, new Object[0]),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
-                    GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(3L, new Object[0]),
-                    256,
-                    480);
-        }
+                    Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 4)");
+                    GT_Values.RA.addLaserEngraverRecipe(
+                            ItemList.IC2_LapotronCrystal.getWildcard(1L, new Object[0]),
+                            GT_Utility.copyAmount(0L, new Object[] { aStack }),
+                            GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(3L, new Object[0]),
+                            256,
+                            480);
+                }
     }
 
     private static boolean addCircuitRecipes() {
         Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 1)");
         GT_ModHandler.addShapelessCraftingRecipe(
-                GregtechItemList.Old_Circuit_Primitive.get(1L, new Object[0]), new Object[] {
-                    GT_ModHandler.getIC2Item("casingadviron", 1L),
-                    OrePrefixes.wireGt01.get(Materials.RedAlloy),
-                    OrePrefixes.wireGt01.get(Materials.RedAlloy),
-                    OrePrefixes.wireGt01.get(Materials.Tin)
-                });
-        GT_ModHandler.addCraftingRecipe(GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]), new Object[] {
-            "WWW",
-            "CPC",
-            "WWW",
-            'C',
-            OrePrefixes.circuit.get(Materials.Primitive),
-            'W',
-            OreDictNames.craftingWireCopper,
-            'P',
-            OrePrefixes.plate.get(Materials.Steel)
-        });
-        GT_ModHandler.addCraftingRecipe(GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]), new Object[] {
-            "WCW",
-            "WPW",
-            "WCW",
-            'C',
-            OrePrefixes.circuit.get(Materials.Primitive),
-            'W',
-            OreDictNames.craftingWireCopper,
-            'P',
-            OrePrefixes.plate.get(Materials.Steel)
-        });
-        GT_ModHandler.addCraftingRecipe(GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]), new Object[] {
-            "WWW",
-            "CPC",
-            "WWW",
-            'C',
-            OrePrefixes.circuit.get(Materials.Primitive),
-            'W',
-            OrePrefixes.cableGt01.get(Materials.RedAlloy),
-            'P',
-            OrePrefixes.plate.get(Materials.Steel)
-        });
-        GT_ModHandler.addCraftingRecipe(GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]), new Object[] {
-            "WCW",
-            "WPW",
-            "WCW",
-            'C',
-            OrePrefixes.circuit.get(Materials.Primitive),
-            'W',
-            OrePrefixes.cableGt01.get(Materials.RedAlloy),
-            'P',
-            OrePrefixes.plate.get(Materials.Steel)
-        });
+                GregtechItemList.Old_Circuit_Primitive.get(1L, new Object[0]),
+                new Object[] { GT_ModHandler.getIC2Item("casingadviron", 1L),
+                        OrePrefixes.wireGt01.get(Materials.RedAlloy), OrePrefixes.wireGt01.get(Materials.RedAlloy),
+                        OrePrefixes.wireGt01.get(Materials.Tin) });
+        GT_ModHandler.addCraftingRecipe(
+                GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]),
+                new Object[] { "WWW", "CPC", "WWW", 'C', OrePrefixes.circuit.get(Materials.Primitive), 'W',
+                        OreDictNames.craftingWireCopper, 'P', OrePrefixes.plate.get(Materials.Steel) });
+        GT_ModHandler.addCraftingRecipe(
+                GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]),
+                new Object[] { "WCW", "WPW", "WCW", 'C', OrePrefixes.circuit.get(Materials.Primitive), 'W',
+                        OreDictNames.craftingWireCopper, 'P', OrePrefixes.plate.get(Materials.Steel) });
+        GT_ModHandler.addCraftingRecipe(
+                GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]),
+                new Object[] { "WWW", "CPC", "WWW", 'C', OrePrefixes.circuit.get(Materials.Primitive), 'W',
+                        OrePrefixes.cableGt01.get(Materials.RedAlloy), 'P', OrePrefixes.plate.get(Materials.Steel) });
+        GT_ModHandler.addCraftingRecipe(
+                GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]),
+                new Object[] { "WCW", "WPW", "WCW", 'C', OrePrefixes.circuit.get(Materials.Primitive), 'W',
+                        OrePrefixes.cableGt01.get(Materials.RedAlloy), 'P', OrePrefixes.plate.get(Materials.Steel) });
 
         GT_Values.RA.addFormingPressRecipe(
                 GregtechItemList.Old_Empty_Board_Basic.get(1L, new Object[0]),
@@ -180,8 +148,7 @@ public class RECIPES_Old_Circuits implements IOreRecipeRegistrator {
         int tMultiplier;
         for (Materials tMat : Materials.values()) {
             if ((tMat.mStandardMoltenFluid != null) && (tMat.contains(SubTag.SOLDERING_MATERIAL))) {
-                tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_BAD)
-                        ? 4
+                tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4
                         : tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1 : 2;
 
                 GT_Values.RA.addAssemblerRecipe(
@@ -310,8 +277,7 @@ public class RECIPES_Old_Circuits implements IOreRecipeRegistrator {
         try {
             Set.set(Get.get(1));
             return true;
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return false;
     }
 
@@ -462,108 +428,88 @@ public class RECIPES_Old_Circuits implements IOreRecipeRegistrator {
 
         // Primitive
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32700", 32700, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32700", 32700, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitPrimitive", 1));
 
         // Basic
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32701", 32701, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32701", 32701, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 1));
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32078", 32078, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32078", 32078, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 1));
 
         // Good
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32702", 32702, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32702", 32702, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitGood", 1));
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32702", 32702, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32702", 32702, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitGood", 1));
 
         // Advanced
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32703", 32703, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32703", 32703, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitAdvanced", 1));
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32703", 32703, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32703", 32703, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitAdvanced", 1));
 
         // Data
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32704", 32704, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32704", 32704, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitData", 1));
 
         // Elite
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32705", 32705, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32705", 32705, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitElite", 1));
 
         // Master
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32706", 32706, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32706", 32706, 1) },
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 1));
 
         // Components
         // Green Chip
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32713", 32713, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32713", 32713, 1) },
                 GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1));
         // Blue Chip
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32714", 32714, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32714", 32714, 1) },
                 GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(1));
 
         // Basic Board
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32710", 32710, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32710", 32710, 1) },
                 GregtechItemList.Old_Circuit_Board_Basic.get(1));
         // Advanced Board
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32711", 32711, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32711", 32711, 1) },
                 GregtechItemList.Old_Circuit_Board_Advanced.get(1));
         // Elite Board
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32712", 32712, 1)},
+                new ItemStack[] { ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32712", 32712, 1) },
                 GregtechItemList.Old_Circuit_Board_Elite.get(1));
 
         // remove a few recipes
-        /*GT_ModHandler.removeRecipeByOutput(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32070", 32070, 1));
-        GT_ModHandler.removeRecipeByOutput(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32069", 32069, 1));
-        if (LoadedMods.Extra_Utils){
-        	ItemStack EQU = ItemUtils.simpleMetaStack("ExtraUtilities:enderQuarryUpgrade", 0, 1);
-        	if (EQU != null){
-        		GT_ModHandler.removeRecipeByOutput(EQU);
-        		GT_Values.RA.addAssemblerRecipe(
-        				ItemUtils.simpleMetaStack("ExtraUtilities:decorativeBlock1:12", 12, 1),
-        				GregtechItemList.Old_Circuit_Master.get(1),
-        				EQU,
-        				80*20,
-        				2);
-        	}
-        }
-        if (LoadedMods.GalacticraftCore){
-        	ItemStack ACW = ItemUtils.simpleMetaStack("GalacticraftCore:item.basicItem:14", 14, 1);
-        	if (ACW != null){
-        		GT_ModHandler.removeRecipeByOutput(ACW);
-        		GT_Values.RA.addAssemblerRecipe(
-        				ItemUtils.getItemStackOfAmountFromOreDict("gemDiamond", 1),
-        				GregtechItemList.Old_Circuit_Board_Advanced.get(1),
-        				ACW,
-        				160*20,
-        				4);
-        	}
-        	ItemStack ACW2 = ItemUtils.simpleMetaStack("GalacticraftCore:item.basicItem:13", 13, 1);
-        	if (ACW2 != null){
-        		GT_ModHandler.removeRecipeByOutput(ACW2);
-        		GT_Values.RA.addAssemblerRecipe(
-        				ItemUtils.getItemStackOfAmountFromOreDict("gemDiamond", 1),
-        				GregtechItemList.Old_Circuit_Board_Basic.get(1),
-        				ACW2,
-        				80*20,
-        				2);
-        	}
-        }*/
+        /*
+         * GT_ModHandler.removeRecipeByOutput(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32070", 32070, 1));
+         * GT_ModHandler.removeRecipeByOutput(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32069", 32069, 1)); if
+         * (LoadedMods.Extra_Utils){ ItemStack EQU = ItemUtils.simpleMetaStack("ExtraUtilities:enderQuarryUpgrade", 0,
+         * 1); if (EQU != null){ GT_ModHandler.removeRecipeByOutput(EQU); GT_Values.RA.addAssemblerRecipe(
+         * ItemUtils.simpleMetaStack("ExtraUtilities:decorativeBlock1:12", 12, 1),
+         * GregtechItemList.Old_Circuit_Master.get(1), EQU, 80*20, 2); } } if (LoadedMods.GalacticraftCore){ ItemStack
+         * ACW = ItemUtils.simpleMetaStack("GalacticraftCore:item.basicItem:14", 14, 1); if (ACW != null){
+         * GT_ModHandler.removeRecipeByOutput(ACW); GT_Values.RA.addAssemblerRecipe(
+         * ItemUtils.getItemStackOfAmountFromOreDict("gemDiamond", 1),
+         * GregtechItemList.Old_Circuit_Board_Advanced.get(1), ACW, 160*20, 4); } ItemStack ACW2 =
+         * ItemUtils.simpleMetaStack("GalacticraftCore:item.basicItem:13", 13, 1); if (ACW2 != null){
+         * GT_ModHandler.removeRecipeByOutput(ACW2); GT_Values.RA.addAssemblerRecipe(
+         * ItemUtils.getItemStackOfAmountFromOreDict("gemDiamond", 1), GregtechItemList.Old_Circuit_Board_Basic.get(1),
+         * ACW2, 80*20, 2); } }
+         */
 
         return true;
     }
@@ -572,103 +518,39 @@ public class RECIPES_Old_Circuits implements IOreRecipeRegistrator {
         Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
         if (isNEILoaded && !CORE.ConfigSwitches.showHiddenNEIItems) {
             Logger.INFO("[Old Feature - Circuits] Hiding .28+ circuits in NEI.");
-            String[] CircuitToHide = {
-                "Circuit_Board_Basic",
-                "Circuit_Board_Advanced",
-                "Circuit_Board_Elite",
-                "Circuit_Parts_Advanced",
-                "Circuit_Parts_Wiring_Basic",
-                "Circuit_Parts_Wiring_Advanced",
-                "Circuit_Parts_Wiring_Elite",
-                "Circuit_Parts_Crystal_Chip_Elite",
-                "Circuit_Parts_Crystal_Chip_Master",
-                "Circuit_Primitive",
-                "Circuit_Basic",
-                "Circuit_Integrated_Good",
-                "Circuit_Good",
-                "Circuit_Advanced",
-                "Circuit_Data",
-                "Circuit_Elite",
-                "Circuit_Master",
-                "Circuit_Ultimate",
-                "Circuit_Board_Coated",
-                "Circuit_Board_Phenolic",
-                "Circuit_Board_Epoxy",
-                "Circuit_Board_Fiberglass",
-                "Circuit_Board_Multifiberglass",
-                "Circuit_Board_Wetware",
-                "Circuit_Parts_Resistor",
-                "Circuit_Parts_ResistorSMD",
-                "Circuit_Parts_Glass_Tube",
-                "Circuit_Parts_Vacuum_Tube",
-                "Circuit_Parts_Coil",
-                "Circuit_Parts_Diode",
-                "Circuit_Parts_DiodeSMD",
-                "Circuit_Parts_Transistor",
-                "Circuit_Parts_TransistorSMD",
-                "Circuit_Parts_Capacitor",
-                "Circuit_Parts_CapacitorSMD",
-                "Circuit_Silicon_Ingot",
-                "Circuit_Silicon_Ingot2",
-                "Circuit_Silicon_Ingot3",
-                "Circuit_Silicon_Wafer",
-                "Circuit_Silicon_Wafer2",
-                "Circuit_Silicon_Wafer3",
-                "Circuit_Wafer_ILC",
-                "Circuit_Chip_ILC",
-                "Circuit_Wafer_Ram",
-                "Circuit_Chip_Ram",
-                "Circuit_Wafer_NAND",
-                "Circuit_Chip_NAND",
-                "Circuit_Wafer_NOR",
-                "Circuit_Chip_NOR",
-                "Circuit_Wafer_CPU",
-                "Circuit_Chip_CPU",
-                "Circuit_Wafer_SoC",
-                "Circuit_Chip_SoC",
-                "Circuit_Wafer_SoC2",
-                "Circuit_Chip_SoC2",
-                "Circuit_Wafer_PIC",
-                "Circuit_Chip_PIC",
-                "Circuit_Wafer_HPIC",
-                "Circuit_Chip_HPIC",
-                "Circuit_Wafer_NanoCPU",
-                "Circuit_Chip_NanoCPU",
-                "Circuit_Wafer_QuantumCPU",
-                "Circuit_Chip_QuantumCPU",
-                "Circuit_Chip_CrystalCPU",
-                "Circuit_Chip_CrystalSoC",
-                "Circuit_Chip_NeuroCPU",
-                "Circuit_Chip_Stemcell",
-                "Circuit_Processor",
-                "Circuit_Computer",
-                "Circuit_Nanoprocessor",
-                "Circuit_Nanocomputer",
-                "Circuit_Elitenanocomputer",
-                "Circuit_Quantumprocessor",
-                "Circuit_Quantumcomputer",
-                "Circuit_Masterquantumcomputer",
-                "Circuit_Quantummainframe",
-                "Circuit_Crystalprocessor",
-                "Circuit_Crystalcomputer",
-                "Circuit_Ultimatecrystalcomputer",
-                "Circuit_Crystalmainframe",
-                "Circuit_Neuroprocessor",
-                "Circuit_Wetwarecomputer",
-                "Circuit_Wetwaresupercomputer",
-                "Circuit_Wetwaremainframe",
-                "Circuit_Parts_RawCrystalChip",
-                // Circuits Additions in .30/.31
-                "Circuit_Board_Plastic",
-                "Circuit_Parts_GlassFiber",
-                "Circuit_Parts_PetriDish",
-                "Circuit_Microprocessor"
-            };
+            String[] CircuitToHide = { "Circuit_Board_Basic", "Circuit_Board_Advanced", "Circuit_Board_Elite",
+                    "Circuit_Parts_Advanced", "Circuit_Parts_Wiring_Basic", "Circuit_Parts_Wiring_Advanced",
+                    "Circuit_Parts_Wiring_Elite", "Circuit_Parts_Crystal_Chip_Elite",
+                    "Circuit_Parts_Crystal_Chip_Master", "Circuit_Primitive", "Circuit_Basic",
+                    "Circuit_Integrated_Good", "Circuit_Good", "Circuit_Advanced", "Circuit_Data", "Circuit_Elite",
+                    "Circuit_Master", "Circuit_Ultimate", "Circuit_Board_Coated", "Circuit_Board_Phenolic",
+                    "Circuit_Board_Epoxy", "Circuit_Board_Fiberglass", "Circuit_Board_Multifiberglass",
+                    "Circuit_Board_Wetware", "Circuit_Parts_Resistor", "Circuit_Parts_ResistorSMD",
+                    "Circuit_Parts_Glass_Tube", "Circuit_Parts_Vacuum_Tube", "Circuit_Parts_Coil",
+                    "Circuit_Parts_Diode", "Circuit_Parts_DiodeSMD", "Circuit_Parts_Transistor",
+                    "Circuit_Parts_TransistorSMD", "Circuit_Parts_Capacitor", "Circuit_Parts_CapacitorSMD",
+                    "Circuit_Silicon_Ingot", "Circuit_Silicon_Ingot2", "Circuit_Silicon_Ingot3",
+                    "Circuit_Silicon_Wafer", "Circuit_Silicon_Wafer2", "Circuit_Silicon_Wafer3", "Circuit_Wafer_ILC",
+                    "Circuit_Chip_ILC", "Circuit_Wafer_Ram", "Circuit_Chip_Ram", "Circuit_Wafer_NAND",
+                    "Circuit_Chip_NAND", "Circuit_Wafer_NOR", "Circuit_Chip_NOR", "Circuit_Wafer_CPU",
+                    "Circuit_Chip_CPU", "Circuit_Wafer_SoC", "Circuit_Chip_SoC", "Circuit_Wafer_SoC2",
+                    "Circuit_Chip_SoC2", "Circuit_Wafer_PIC", "Circuit_Chip_PIC", "Circuit_Wafer_HPIC",
+                    "Circuit_Chip_HPIC", "Circuit_Wafer_NanoCPU", "Circuit_Chip_NanoCPU", "Circuit_Wafer_QuantumCPU",
+                    "Circuit_Chip_QuantumCPU", "Circuit_Chip_CrystalCPU", "Circuit_Chip_CrystalSoC",
+                    "Circuit_Chip_NeuroCPU", "Circuit_Chip_Stemcell", "Circuit_Processor", "Circuit_Computer",
+                    "Circuit_Nanoprocessor", "Circuit_Nanocomputer", "Circuit_Elitenanocomputer",
+                    "Circuit_Quantumprocessor", "Circuit_Quantumcomputer", "Circuit_Masterquantumcomputer",
+                    "Circuit_Quantummainframe", "Circuit_Crystalprocessor", "Circuit_Crystalcomputer",
+                    "Circuit_Ultimatecrystalcomputer", "Circuit_Crystalmainframe", "Circuit_Neuroprocessor",
+                    "Circuit_Wetwarecomputer", "Circuit_Wetwaresupercomputer", "Circuit_Wetwaremainframe",
+                    "Circuit_Parts_RawCrystalChip",
+                    // Circuits Additions in .30/.31
+                    "Circuit_Board_Plastic", "Circuit_Parts_GlassFiber", "Circuit_Parts_PetriDish",
+                    "Circuit_Microprocessor" };
 
             for (String component : CircuitToHide) {
                 try {
-                    ItemUtils.hideItemFromNEI(
-                            ItemUtils.getValueOfItemList(component, null).get(1L, new Object[0]));
+                    ItemUtils.hideItemFromNEI(ItemUtils.getValueOfItemList(component, null).get(1L, new Object[0]));
                 } catch (IllegalArgumentException I) {
                     Logger.INFO("Could not find " + component + " in the Gregtech item list.");
                     Logger.INFO("This is NOT an error, simply a notification.");

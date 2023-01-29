@@ -28,12 +28,12 @@ public class NONMATERIAL {
     public static final Material WROUGHT_IRON = MaterialUtils.generateMaterialFromGtENUM(Materials.WroughtIron);
 
     // PTFE
-    public static final Material PTFE =
-            MaterialUtils.generateMaterialFromGtENUM(MaterialUtils.getMaterial("Polytetrafluoroethylene", "Plastic"));
+    public static final Material PTFE = MaterialUtils
+            .generateMaterialFromGtENUM(MaterialUtils.getMaterial("Polytetrafluoroethylene", "Plastic"));
 
     // Plastic
-    public static final Material PLASTIC =
-            MaterialUtils.generateMaterialFromGtENUM(MaterialUtils.getMaterial("Plastic", "Rubber"));
+    public static final Material PLASTIC = MaterialUtils
+            .generateMaterialFromGtENUM(MaterialUtils.getMaterial("Plastic", "Rubber"));
 
     static {
         MEAT.setTextureSet(TextureSet.SET_ROUGH);

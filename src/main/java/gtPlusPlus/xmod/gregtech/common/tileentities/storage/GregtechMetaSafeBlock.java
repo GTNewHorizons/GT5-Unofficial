@@ -6,6 +6,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -23,34 +24,29 @@ public class GregtechMetaSafeBlock extends GregtechMetaSafeBlockBase implements 
         super(aID, aName, aNameRegional, aTier, 28, "Protecting your items from sticky fingers.");
     }
 
-    public GregtechMetaSafeBlock(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription) {
+    public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier,
+            final int aInvSlotCount, final String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GregtechMetaSafeBlock(
-            final String aName,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription,
-            final ITexture[][][] aTextures) {
+    public GregtechMetaSafeBlock(final String aName, final int aTier, final int aInvSlotCount,
+            final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, CORE.GT_Tooltip};
+        return new String[] { this.mDescription, CORE.GT_Tooltip };
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaSafeBlock(
-                this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescription,
+                this.mTextures);
     }
 
     @Override
@@ -70,19 +66,15 @@ public class GregtechMetaSafeBlock extends GregtechMetaSafeBlockBase implements 
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 9)
-                        .endAtSlot(26)
-                        .build()
-                        .setPos(7, 4))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> bUnbreakable = !bUnbreakable)
-                        .setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_LOCK)
-                        .setPos(43, 62)
-                        .setSize(18, 18))
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 9).endAtSlot(26).build().setPos(7, 4))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> bUnbreakable = !bUnbreakable)
+                                .setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_LOCK)
+                                .setPos(43, 62).setSize(18, 18))
                 .widget(new TextWidget("Safe Status").setPos(76, 61))
-                .widget(TextWidget.dynamicString(() -> bUnbreakable ? "Locked" : "Unlocked")
-                        .setSynced(false)
-                        .setPos(82, 73))
+                .widget(
+                        TextWidget.dynamicString(() -> bUnbreakable ? "Locked" : "Unlocked").setSynced(false)
+                                .setPos(82, 73))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> bUnbreakable, val -> bUnbreakable = val));
     }
 }

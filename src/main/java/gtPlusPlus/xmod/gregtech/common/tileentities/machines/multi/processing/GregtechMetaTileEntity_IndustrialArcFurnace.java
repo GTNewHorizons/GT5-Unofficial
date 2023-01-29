@@ -5,10 +5,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -23,15 +30,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 
-public class GregtechMetaTileEntity_IndustrialArcFurnace
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialArcFurnace>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialArcFurnace extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialArcFurnace> implements ISurvivalConstructable {
 
     // 862
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
@@ -62,24 +63,14 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for Industrial Arc Furnace")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for Industrial Arc Furnace")
                 .addInfo("250% faster than using single block machines of the same voltage")
                 .addInfo("Processes 8 items per voltage tier * W/L")
-                .addInfo("Max Size required to process Plasma recipes")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .addController("Top center")
-                .addStructureInfo("Size: nx3xn [WxHxL] (Hollow)")
-                .addStructureInfo("n can be 3, 5 or 7")
-                .addCasingInfo(mCasingName, 10)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+                .addInfo("Max Size required to process Plasma recipes").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().addController("Top center").addStructureInfo("Size: nx3xn [WxHxL] (Hollow)")
+                .addStructureInfo("n can be 3, 5 or 7").addCasingInfo(mCasingName, 10).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -87,29 +78,25 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialArcFurnace> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialArcFurnace>builder()
-                    .addShape(mName + "3", new String[][] {
-                        {"CCC", "C~C", "CCC"},
-                        {"CCC", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    })
-                    .addShape(mName + "5", new String[][] {
-                        {"CCCCC", "CCCCC", "CC~CC", "CCCCC", "CCCCC"},
-                        {"CCCCC", "C---C", "C---C", "C---C", "CCCCC"},
-                        {"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
-                    })
-                    .addShape(mName + "7", new String[][] {
-                        {"CCCCCCC", "CCCCCCC", "CCCCCCC", "CCC~CCC", "CCCCCCC", "CCCCCCC", "CCCCCCC"},
-                        {"CCCCCCC", "C-----C", "C-----C", "C-----C", "C-----C", "C-----C", "CCCCCCC"},
-                        {"CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC"},
-                    })
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialArcFurnace>builder().addShape(
+                    mName + "3",
+                    new String[][] { { "CCC", "C~C", "CCC" }, { "CCC", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, })
+                    .addShape(
+                            mName + "5",
+                            new String[][] { { "CCCCC", "CCCCC", "CC~CC", "CCCCC", "CCCCC" },
+                                    { "CCCCC", "C---C", "C---C", "C---C", "CCCCC" },
+                                    { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, })
+                    .addShape(
+                            mName + "7",
+                            new String[][] {
+                                    { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCC~CCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" },
+                                    { "CCCCCCC", "C-----C", "C-----C", "C-----C", "C-----C", "C-----C", "CCCCCCC" },
+                                    { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" }, })
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialArcFurnace.class)
                                     .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 3))))
                     .build();
         }
@@ -148,7 +135,15 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
         if (mMachine) return -1;
         int size = getSizeFromHint(stackSize);
         return survivialBuildPiece(
-                mName + size, stackSize, (size - 1) / 2, (size - 1) / 2, 0, elementBudget, env, false, true);
+                mName + size,
+                stackSize,
+                (size - 1) / 2,
+                (size - 1) / 2,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
     }
 
     @Override
@@ -196,8 +191,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return mPlasmaMode
-                ? GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes
+        return mPlasmaMode ? GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes
                 : GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes;
     }
 
@@ -268,19 +262,34 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
             if (mPlasmaMode) {
                 PlayerUtils.messagePlayer(
                         aPlayer,
-                        "[" + EnumChatFormatting.RED + "MODE" + EnumChatFormatting.RESET + "] "
-                                + EnumChatFormatting.LIGHT_PURPLE + "Plasma" + EnumChatFormatting.RESET);
+                        "[" + EnumChatFormatting.RED
+                                + "MODE"
+                                + EnumChatFormatting.RESET
+                                + "] "
+                                + EnumChatFormatting.LIGHT_PURPLE
+                                + "Plasma"
+                                + EnumChatFormatting.RESET);
             } else {
                 PlayerUtils.messagePlayer(
                         aPlayer,
-                        "[" + EnumChatFormatting.RED + "MODE" + EnumChatFormatting.RESET + "] "
-                                + EnumChatFormatting.YELLOW + "Electric" + EnumChatFormatting.RESET);
+                        "[" + EnumChatFormatting.RED
+                                + "MODE"
+                                + EnumChatFormatting.RESET
+                                + "] "
+                                + EnumChatFormatting.YELLOW
+                                + "Electric"
+                                + EnumChatFormatting.RESET);
             }
         } else {
             PlayerUtils.messagePlayer(
                     aPlayer,
-                    "[" + EnumChatFormatting.RED + "MODE" + EnumChatFormatting.RESET + "] " + EnumChatFormatting.GRAY
-                            + "Cannot change mode, structure not large enough." + EnumChatFormatting.RESET);
+                    "[" + EnumChatFormatting.RED
+                            + "MODE"
+                            + EnumChatFormatting.RESET
+                            + "] "
+                            + EnumChatFormatting.GRAY
+                            + "Cannot change mode, structure not large enough."
+                            + EnumChatFormatting.RESET);
         }
         mLastRecipe = null;
     }

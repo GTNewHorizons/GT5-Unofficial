@@ -7,10 +7,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -24,11 +27,9 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
 
-public class GregtechMetaTileEntity_IndustrialCokeOven
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCokeOven>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialCokeOven extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCokeOven> implements ISurvivalConstructable {
 
     private int mLevel = 0;
     private int mCasing;
@@ -57,25 +58,16 @@ public class GregtechMetaTileEntity_IndustrialCokeOven
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
+        tt.addMachineType(getMachineType()).addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
                 .addInfo("Controller Block for the Industrial Coke Oven")
                 .addInfo("Gain 4% energy discount per voltage tier")
                 .addInfo("Process 12x materials with Heat Resistant Casings")
-                .addInfo("Or 24x materials with Heat Proof Casings")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front middle at bottom")
+                .addInfo("Or 24x materials with Heat Proof Casings").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front middle at bottom")
                 .addCasingInfo("Structural Coke Oven Casings", 8)
-                .addCasingInfo("Heat Resistant/Proof Coke Oven Casings", 8)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+                .addCasingInfo("Heat Resistant/Proof Coke Oven Casings", 8).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -84,28 +76,26 @@ public class GregtechMetaTileEntity_IndustrialCokeOven
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialCokeOven> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCokeOven>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"HHH", "H-H", "HHH"},
-                        {"C~C", "CCC", "CCC"},
-                    }))
-                    .addShape(mName + "1", transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"aaa", "a-a", "aaa"},
-                        {"C~C", "CCC", "CCC"},
-                    }))
-                    .addShape(mName + "2", transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"bbb", "b-b", "bbb"},
-                        {"C~C", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
+                                            { "C~C", "CCC", "CCC" }, }))
+                    .addShape(
+                            mName + "1",
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "aaa", "a-a", "aaa" },
+                                            { "C~C", "CCC", "CCC" }, }))
+                    .addShape(
+                            mName + "2",
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "bbb", "b-b", "bbb" },
+                                            { "C~C", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialCokeOven.class)
                                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(1))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.GTPP_INDEX(1)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 1))))
                     .addElement(
                             'H',
@@ -113,8 +103,7 @@ public class GregtechMetaTileEntity_IndustrialCokeOven
                                     onElementPass(x -> ++x.mCasing1, ofBlock(ModBlocks.blockCasingsMisc, 2)),
                                     onElementPass(x -> ++x.mCasing2, ofBlock(ModBlocks.blockCasingsMisc, 3))))
                     .addElement('a', ofBlock(ModBlocks.blockCasingsMisc, 2))
-                    .addElement('b', ofBlock(ModBlocks.blockCasingsMisc, 3))
-                    .build();
+                    .addElement('b', ofBlock(ModBlocks.blockCasingsMisc, 3)).build();
         }
         return STRUCTURE_DEFINITION;
     }

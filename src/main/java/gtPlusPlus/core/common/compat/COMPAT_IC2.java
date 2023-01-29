@@ -2,11 +2,12 @@ package gtPlusPlus.core.common.compat;
 
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 
 public class COMPAT_IC2 {
 
@@ -38,8 +39,10 @@ public class COMPAT_IC2 {
 
     public static void OreDict() {
         // Get ItemStacks for results
-        /*itemCropnalyzer = UtilsItems.getItemStack("IC2:itemCropnalyzer", 1);
-        itemSolarHelmet = UtilsItems.getItemStack("IC2:itemSolarHelmet", 1);	*/
+        /*
+         * itemCropnalyzer = UtilsItems.getItemStack("IC2:itemCropnalyzer", 1); itemSolarHelmet =
+         * UtilsItems.getItemStack("IC2:itemSolarHelmet", 1);
+         */
         run();
     }
 

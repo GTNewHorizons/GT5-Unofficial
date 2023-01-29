@@ -1,18 +1,21 @@
 package gtPlusPlus.xmod.bartcrops;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bartcrops.crops.Crop_Force;
 import gtPlusPlus.xmod.bartcrops.crops.Crop_Hemp;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 /**
  * Mostly borrowed from the Crops++ Crop Loader.
+ * 
  * @author Alkalus
  */
 public class LoaderOfTheCrops {
@@ -101,8 +104,7 @@ public class LoaderOfTheCrops {
 
         for (int i = 0; i < mCropList.size(); ++i) {
             if (baseseed.get(i) != null && cropObjs().get(i) != null) {
-                Crops.instance.registerBaseSeed(
-                        (ItemStack) baseseed.get(i), (CropCard) cropObjs().get(i), 1, 1, 1, 1);
+                Crops.instance.registerBaseSeed((ItemStack) baseseed.get(i), (CropCard) cropObjs().get(i), 1, 1, 1, 1);
             }
         }
     }

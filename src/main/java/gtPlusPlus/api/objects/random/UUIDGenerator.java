@@ -7,9 +7,8 @@ import java.util.UUID;
 
 /**
  *
- * Implement modified version of Apache's OpenJPA UUID generator.
- * This UUID generator is paired with a Blum-Blum-Shub random number generator
- * which in itself is seeded by custom SecureRandom.
+ * Implement modified version of Apache's OpenJPA UUID generator. This UUID generator is paired with a Blum-Blum-Shub
+ * random number generator which in itself is seeded by custom SecureRandom.
  *
  * The UUID generator class has been converted from a static factory to an instanced factory.
  *
@@ -18,36 +17,24 @@ import java.util.UUID;
 // ========================================= APACHE BLOCK =========================================
 
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE
+ * file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 /**
- * UUID value generator.  Type 1 generator is based on the time-based generator
- * in the Apache Commons Id project:  http://jakarta.apache.org/commons/sandbox
- * /id/uuid.html  The type 4 generator uses the standard Java UUID generator.
+ * UUID value generator. Type 1 generator is based on the time-based generator in the Apache Commons Id project:
+ * http://jakarta.apache.org/commons/sandbox /id/uuid.html The type 4 generator uses the standard Java UUID generator.
  *
- * The type 1 code has been vastly simplified and modified to replace the
- * ethernet address of the host machine with the IP, since we do not want to
- * require native libs and Java cannot access the MAC address directly.
+ * The type 1 code has been vastly simplified and modified to replace the ethernet address of the host machine with the
+ * IP, since we do not want to require native libs and Java cannot access the MAC address directly.
  *
  * In spirit, implements the IETF UUID draft specification, found here:<br />
- * http://www1.ics.uci.edu/~ejw/authoring/uuid-guid/draft-leach-uuids-guids-01
- * .txt
+ * http://www1.ics.uci.edu/~ejw/authoring/uuid-guid/draft-leach-uuids-guids-01 .txt
  *
  * @author Abe White, Kevin Sutter
  * @since 0.3.3
@@ -95,9 +82,9 @@ public class UUIDGenerator {
     private static final int MAX_14BIT = 0x3FFF;
     private short _seq = 0;
     private boolean type1Initialized = false; /*
-	 * Initializer for type 1 UUIDs.  Creates random generator and genenerates
-	 * the node portion of the UUID using the IP address.
-	 */
+                                               * Initializer for type 1 UUIDs. Creates random generator and genenerates
+                                               * the node portion of the UUID using the IP address.
+                                               */
 
     private synchronized void initializeForType1() {
         if (type1Initialized == true) {
@@ -123,6 +110,7 @@ public class UUIDGenerator {
         }
         type1Initialized = true;
     }
+
     /**
      * Return a unique UUID value.
      */
@@ -132,6 +120,7 @@ public class UUIDGenerator {
         }
         return createType1();
     }
+
     /*
      * Creates a type 1 UUID
      */
@@ -142,11 +131,11 @@ public class UUIDGenerator {
         // set ip addr
         byte[] uuid = new byte[16];
         System.arraycopy(IP, 0, uuid, 10, IP.length);
-        // Set time info.  Have to do this processing within a synchronized
+        // Set time info. Have to do this processing within a synchronized
         // block because of the statics...
         long now = 0;
         synchronized (UUIDGenerator.class) {
-            // Get the time to use for this uuid.  This method has the side
+            // Get the time to use for this uuid. This method has the side
             // effect of modifying the clock sequence, as well.
             now = getTime();
             // Insert the resulting clock sequence into the uuid
@@ -166,6 +155,7 @@ public class UUIDGenerator {
         uuid[IDX_TYPE] |= TYPE_TIME_BASED; // 0001 0000
         return uuid;
     }
+
     /*
      * Creates a type 4 UUID
      */
@@ -176,9 +166,9 @@ public class UUIDGenerator {
         longToBytes(type4.getLeastSignificantBits(), uuid, 8);
         return uuid;
     }
+
     /*
-     * Converts a long to byte values, setting them in a byte array
-     * at a given starting position.
+     * Converts a long to byte values, setting them in a byte array at a given starting position.
      */
     private void longToBytes(long longVal, byte[] buf, int sPos) {
         sPos += 7;
@@ -196,15 +186,16 @@ public class UUIDGenerator {
             return new String(bytes);
         }
     }
+
     /**
      * Return the next unique uuid value as a 32-character hex string.
      */
     public String nextHex(int type) {
         return Base16Encoder.encode(next(type));
     }
+
     /**
-     * Get the timestamp to be used for this uuid.  Must be called from
-     * a synchronized block.
+     * Get the timestamp to be used for this uuid. Must be called from a synchronized block.
      *
      * @return long timestamp
      */
@@ -219,12 +210,11 @@ public class UUIDGenerator {
         _lastMillis = newTime;
         return newTime;
     }
+
     /**
-     * Gets the appropriately modified timestamep for the UUID.  Must be called
-     * from a synchronized block.
+     * Gets the appropriately modified timestamep for the UUID. Must be called from a synchronized block.
      *
-     * @return long timestamp in 100ns intervals since the Gregorian change
-     * offset
+     * @return long timestamp in 100ns intervals since the Gregorian change offset
      */
     private long getUUIDTime() {
         if (_currentMillis != System.currentTimeMillis()) {
@@ -233,7 +223,7 @@ public class UUIDGenerator {
         }
         // check to see if we have created too many uuid's for this timestamp
         if (_counter + 1 >= MILLI_MULT) {
-            // Original algorithm threw exception.  Seemed like overkill.
+            // Original algorithm threw exception. Seemed like overkill.
             // Let's just increment the timestamp instead and start over...
             _currentMillis++;
             _counter = 0;
@@ -243,9 +233,9 @@ public class UUIDGenerator {
         // return the uuid time plus the artificial tick counter incremented
         return currentTime + _counter++;
     }
+
     /**
-     * Increments the clock sequence for this uuid.  Must be called from a
-     * synchronized block.
+     * Increments the clock sequence for this uuid. Must be called from a synchronized block.
      */
     private void incrementSequence() {
         // increment, but if it's greater than its 14-bits, reset it
@@ -257,17 +247,22 @@ public class UUIDGenerator {
     // Add Dependant classes internally
 
     /**
-     * This class came from the Apache Commons Id sandbox project in support
-     * of the UUIDGenerator implementation.
+     * This class came from the Apache Commons Id sandbox project in support of the UUIDGenerator implementation.
      *
-     * <p>Static methods for managing byte arrays (all methods follow Big
-     * Endian order where most significant bits are in front).</p>
+     * <p>
+     * Static methods for managing byte arrays (all methods follow Big Endian order where most significant bits are in
+     * front).
+     * </p>
      */
     public static final class Bytes {
+
         /**
-         * <p>Hide constructor in utility class.</p>
+         * <p>
+         * Hide constructor in utility class.
+         * </p>
          */
         private Bytes() {}
+
         /**
          * Appends two bytes array into one.
          *
@@ -281,6 +276,7 @@ public class UUIDGenerator {
             System.arraycopy(b, 0, z, a.length, b.length);
             return z;
         }
+
         /**
          * Returns a 8-byte array built from a long.
          *
@@ -290,9 +286,9 @@ public class UUIDGenerator {
         public static byte[] toBytes(long n) {
             return toBytes(n, new byte[8]);
         }
+
         /**
-         * Build a 8-byte array from a long.  No check is performed on the
-         * array length.
+         * Build a 8-byte array from a long. No check is performed on the array length.
          *
          * @param n The number to convert.
          * @param b The array to fill.
@@ -317,6 +313,7 @@ public class UUIDGenerator {
 
             return b;
         }
+
         /**
          * Build a long from first 8 bytes of the array.
          *
@@ -324,8 +321,7 @@ public class UUIDGenerator {
          * @return A long.
          */
         public static long toLong(byte[] b) {
-            return ((((long) b[7]) & 0xFF)
-                    + ((((long) b[6]) & 0xFF) << 8)
+            return ((((long) b[7]) & 0xFF) + ((((long) b[6]) & 0xFF) << 8)
                     + ((((long) b[5]) & 0xFF) << 16)
                     + ((((long) b[4]) & 0xFF) << 24)
                     + ((((long) b[3]) & 0xFF) << 32)
@@ -333,6 +329,7 @@ public class UUIDGenerator {
                     + ((((long) b[1]) & 0xFF) << 48)
                     + ((((long) b[0]) & 0xFF) << 56));
         }
+
         /**
          * Compares two byte arrays for equality.
          *
@@ -352,14 +349,15 @@ public class UUIDGenerator {
             }
             return true;
         }
+
         /**
-         * <p>Compares two byte arrays as specified by <code>Comparable</code>.
+         * <p>
+         * Compares two byte arrays as specified by <code>Comparable</code>.
          *
          * @param lhs - left hand value in the comparison operation.
          * @param rhs - right hand value in the comparison operation.
-         * @return  a negative integer, zero, or a positive integer as
-         * <code>lhs</code> is less than, equal to, or greater than
-         * <code>rhs</code>.
+         * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or
+         *         greater than <code>rhs</code>.
          */
         public static int compareTo(byte[] lhs, byte[] rhs) {
             if (lhs == rhs) {
@@ -383,6 +381,7 @@ public class UUIDGenerator {
             }
             return 0;
         }
+
         /**
          * Build a short from first 2 bytes of the array.
          *
@@ -393,6 +392,7 @@ public class UUIDGenerator {
             return (short) ((b[1] & 0xFF) + ((b[0] & 0xFF) << 8));
         }
     }
+
     /**
      * Base 16 encoder.
      *
@@ -400,10 +400,9 @@ public class UUIDGenerator {
      */
     public static final class Base16Encoder {
 
-        private static final char[] HEX = new char[] {
-            '0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-        };
+        private static final char[] HEX = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
+                'D', 'E', 'F' };
+
         /**
          * Convert bytes to a base16 string.
          */
@@ -413,6 +412,7 @@ public class UUIDGenerator {
                 for (int j = 1; j >= 0; j--) hexBuffer.append(HEX[(byteArray[i] >> (j * 4)) & 0xF]);
             return hexBuffer.toString();
         }
+
         /**
          * Convert a base16 string into a byte array.
          */

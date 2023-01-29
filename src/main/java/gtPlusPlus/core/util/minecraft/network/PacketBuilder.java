@@ -1,7 +1,8 @@
 package gtPlusPlus.core.util.minecraft.network;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.world.WorldServer;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class PacketBuilder {
 

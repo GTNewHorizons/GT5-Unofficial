@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -16,36 +18,27 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, Runnable {
+
     public ProcessingAngleGrinder() {
         GregtechOrePrefixes.toolAngleGrinder.add(this);
     }
 
     @Override
-    public void registerOre(
-            final GregtechOrePrefixes aPrefix,
-            final Materials aMaterial,
-            final String aOreDictName,
-            final String aModName,
-            final ItemStack aStack) {
+    public void registerOre(final GregtechOrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
+            final String aModName, final ItemStack aStack) {
         if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
             if (aMaterial != Materials.Rubber) {
-                if ((!aMaterial.contains(SubTag.WOOD))
-                        && (!aMaterial.contains(SubTag.BOUNCY))
+                if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
                         && (!aMaterial.contains(SubTag.NO_SMASHING))) {}
             }
         }
     }
 
     @Override
-    public void registerOre(
-            final GregtechOrePrefixes aPrefix,
-            final GT_Materials aMaterial,
-            final String aOreDictName,
-            final String aModName,
-            final ItemStack aStack) {
+    public void registerOre(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial, final String aOreDictName,
+            final String aModName, final ItemStack aStack) {
         // TODO Auto-generated method stub
 
     }
@@ -58,12 +51,10 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
         Materials aMaterial = null;
         for (int r = 0; r < size; r++) {
             aMaterial = i[r];
-            if ((aMaterial != Materials.Stone)
-                    && (aMaterial != Materials.Flint)
+            if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)
                     && (aMaterial != Materials.Rubber)
                     && (aMaterial != Materials._NULL)) {
-                if ((!aMaterial.contains(SubTag.WOOD))
-                        && (!aMaterial.contains(SubTag.BOUNCY))
+                if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
                         && (!aMaterial.contains(SubTag.NO_SMASHING))
                         && (!aMaterial.contains(SubTag.TRANSPARENT))
                         && (!aMaterial.contains(SubTag.FLAMMABLE))
@@ -83,8 +74,11 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
                     } else {
                         Logger.MATERIALS(
                                 "Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial)
-                                        + ", Plate or Long Rod may be invalid. Invalid | Plate? " + (plate == null)
-                                        + " | Rod? " + (longrod == null) + " |");
+                                        + ", Plate or Long Rod may be invalid. Invalid | Plate? "
+                                        + (plate == null)
+                                        + " | Rod? "
+                                        + (longrod == null)
+                                        + " |");
                     }
                     // GT_ModHandler.addCraftingRecipe(,
                     // GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
@@ -113,38 +107,27 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
     public boolean addRecipe(Materials aMaterial, long aBatteryStorage, int aVoltageTier, ItemStack aBattery) {
 
         ItemStack aOutputStack = MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                MetaGeneratedGregtechTools.ANGLE_GRINDER, 1, aMaterial, Materials.Titanium, new long[] {
-                    aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L
-                });
+                MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                1,
+                aMaterial,
+                Materials.Titanium,
+                new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {
-            Logger.MATERIALS("Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial)
-                    + ", Durability: " + aDura);
+            Logger.MATERIALS(
+                    "Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial)
+                            + ", Durability: "
+                            + aDura);
             return false;
         }
 
         return GT_ModHandler.addCraftingRecipe(
                 aOutputStack,
                 RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
-                new Object[] {
-                    "SXL",
-                    "GMG",
-                    "PBP",
-                    'X',
-                    ItemList.Component_Grinder_Tungsten.get(1),
-                    'M',
-                    CI.getElectricMotor(aVoltageTier, 1),
-                    'S',
-                    OrePrefixes.screw.get(Materials.Titanium),
-                    'L',
-                    OrePrefixes.stickLong.get(aMaterial),
-                    'P',
-                    OrePrefixes.plate.get(aMaterial),
-                    'G',
-                    ELEMENT.STANDALONE.BLACK_METAL.getGear(1),
-                    'B',
-                    aBattery
-                });
+                new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
+                        CI.getElectricMotor(aVoltageTier, 1), 'S', OrePrefixes.screw.get(Materials.Titanium), 'L',
+                        OrePrefixes.stickLong.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial), 'G',
+                        ELEMENT.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
     }
 }

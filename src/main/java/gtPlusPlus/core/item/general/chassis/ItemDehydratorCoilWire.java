@@ -1,14 +1,16 @@
 package gtPlusPlus.core.item.general.chassis;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
 
 public class ItemDehydratorCoilWire extends Item {
 
@@ -64,22 +66,12 @@ public class ItemDehydratorCoilWire extends Item {
         return (itemName + suffixName);
     }
 
-    /*	@Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-    	int meta = stack.getItemDamage();
-    	if (meta == 0){
-    		HEX_OxFFFFFF = Utils.rgbtoHexValue(10,110,30);
-    	}
-    	else if (meta == 1){
-    		HEX_OxFFFFFF = Utils.rgbtoHexValue(150,180,35);
-    	}
-    	else if (meta == 2){
-    		HEX_OxFFFFFF = Utils.rgbtoHexValue(200,85,40);
-    	}
-    	else if (meta == 3){
-    		HEX_OxFFFFFF = Utils.rgbtoHexValue(255,150,50);
-    	}
-    	return HEX_OxFFFFFF;
-    }*/
+    /*
+     * @Override public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) { int meta =
+     * stack.getItemDamage(); if (meta == 0){ HEX_OxFFFFFF = Utils.rgbtoHexValue(10,110,30); } else if (meta == 1){
+     * HEX_OxFFFFFF = Utils.rgbtoHexValue(150,180,35); } else if (meta == 2){ HEX_OxFFFFFF =
+     * Utils.rgbtoHexValue(200,85,40); } else if (meta == 3){ HEX_OxFFFFFF = Utils.rgbtoHexValue(255,150,50); } return
+     * HEX_OxFFFFFF; }
+     */
 
 }

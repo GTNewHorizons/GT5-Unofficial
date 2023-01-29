@@ -1,5 +1,12 @@
 package gtPlusPlus.core.container;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.world.World;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
@@ -8,12 +15,6 @@ import gtPlusPlus.core.slots.SlotCraftingNoCollect;
 import gtPlusPlus.core.slots.SlotDataStick;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.world.World;
 
 public class Container_ProjectTable extends Container {
 
@@ -91,7 +92,8 @@ public class Container_ProjectTable extends Container {
     @Override
     public void onCraftMatrixChanged(IInventory p_75130_1_) {
         this.craftResult.setInventorySlotContents(
-                0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
+                0,
+                CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
     }
 
     /**
@@ -111,8 +113,8 @@ public class Container_ProjectTable extends Container {
     }
 
     @Override
-    public ItemStack slotClick(
-            final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
+    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
+            final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
@@ -152,60 +154,18 @@ public class Container_ProjectTable extends Container {
 
         return null;
 
-        /*ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
-
-        if ((var4 != null) && var4.getHasStack())
-        {
-        	final ItemStack var5 = var4.getStack();
-        	var3 = var5.copy();
-
-        	if (par2 == 0)
-        	{
-        		if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, true))
-        		{
-        			return null;
-        		}
-
-        		var4.onSlotChange(var5, var3);
-        	}
-        	else if ((par2 >= InOutputSlotNumber) && (par2 < InventoryOutSlotNumber))
-        	{
-        		if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false))
-        		{
-        			return null;
-        		}
-        	}
-        	else if ((par2 >= InventoryOutSlotNumber) && (par2 < FullSlotNumber))
-        	{
-        		if (!this.mergeItemStack(var5, InOutputSlotNumber, InventoryOutSlotNumber, false))
-        		{
-        			return null;
-        		}
-        	}
-        	else if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, false))
-        	{
-        		return null;
-        	}
-
-        	if (var5.stackSize == 0)
-        	{
-        		var4.putStack((ItemStack)null);
-        	}
-        	else
-        	{
-        		var4.onSlotChanged();
-        	}
-
-        	if (var5.stackSize == var3.stackSize)
-        	{
-        		return null;
-        	}
-
-        	var4.onPickupFromSlot(par1EntityPlayer, var5);
-        }
-
-        return var3;*/
+        /*
+         * ItemStack var3 = null; final Slot var4 = (Slot)this.inventorySlots.get(par2); if ((var4 != null) &&
+         * var4.getHasStack()) { final ItemStack var5 = var4.getStack(); var3 = var5.copy(); if (par2 == 0) { if
+         * (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, true)) { return null; }
+         * var4.onSlotChange(var5, var3); } else if ((par2 >= InOutputSlotNumber) && (par2 < InventoryOutSlotNumber)) {
+         * if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false)) { return null; } } else if
+         * ((par2 >= InventoryOutSlotNumber) && (par2 < FullSlotNumber)) { if (!this.mergeItemStack(var5,
+         * InOutputSlotNumber, InventoryOutSlotNumber, false)) { return null; } } else if (!this.mergeItemStack(var5,
+         * InOutputSlotNumber, FullSlotNumber, false)) { return null; } if (var5.stackSize == 0) {
+         * var4.putStack((ItemStack)null); } else { var4.onSlotChanged(); } if (var5.stackSize == var3.stackSize) {
+         * return null; } var4.onPickupFromSlot(par1EntityPlayer, var5); } return var3;
+         */
     }
 
     // Can merge Slot

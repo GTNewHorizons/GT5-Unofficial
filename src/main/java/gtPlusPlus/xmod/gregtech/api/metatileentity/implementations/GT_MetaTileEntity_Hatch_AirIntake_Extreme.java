@@ -6,13 +6,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT_MetaTileEntity_Hatch_AirIntake_Extreme extends GT_MetaTileEntity_Hatch_AirIntake {
 
-    public GT_MetaTileEntity_Hatch_AirIntake_Extreme(
-            final int aID, final String aName, final String aNameRegional, final int aTier) {
+    public GT_MetaTileEntity_Hatch_AirIntake_Extreme(final int aID, final String aName, final String aNameRegional,
+            final int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_AirIntake_Extreme(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_AirIntake_Extreme(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

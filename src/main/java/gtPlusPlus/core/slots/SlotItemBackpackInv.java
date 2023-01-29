@@ -1,11 +1,13 @@
 package gtPlusPlus.core.slots;
 
-import gtPlusPlus.core.item.base.BaseItemBackpack;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import gtPlusPlus.core.item.base.BaseItemBackpack;
+
 public class SlotItemBackpackInv extends Slot {
+
     public SlotItemBackpackInv(final IInventory inv, final int index, final int xPos, final int yPos) {
         super(inv, index, xPos, yPos);
     }

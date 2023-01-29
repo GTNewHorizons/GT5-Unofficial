@@ -1,5 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
@@ -14,14 +24,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_DeluxeMachine;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import java.util.Random;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEntity_DeluxeMachine {
 
@@ -41,27 +43,27 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
         super(aID, aName, aNameRegional, aTier, 1, "It's like a midget Ra.", 1, 1, "PotionBrewer.png", "");
     }
 
-    public GregtechMetaTileEntity_CompactFusionReactor(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GregtechMetaTileEntity_CompactFusionReactor(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures, String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Not Very Fast, but not very big either.",
-            "Each side pair in/out puts to different slots.",
-            "Top & Bottom Sides are Outputs.",
-            "Front & Back are Input Plasma 1.",
-            "Sides are Input Plasma 2."
-        };
+        return new String[] { this.mDescription, "Not Very Fast, but not very big either.",
+                "Each side pair in/out puts to different slots.", "Top & Bottom Sides are Outputs.",
+                "Front & Back are Input Plasma 1.", "Sides are Input Plasma 2." };
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_CompactFusionReactor(
-                this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
     public int tier() {
@@ -95,21 +97,11 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     @Override
@@ -149,8 +141,10 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
                 this.mCharging = true;
                 this.mCanProcessRecipe = false;
                 if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits((mFusionPoint / 100), false)) {
-                    Logger.MACHINE_INFO("Recipe Tick 1.3 - Charging Internal storage. " + (mFusionPoint / 100) + "/"
-                            + mFusionPoint);
+                    Logger.MACHINE_INFO(
+                            "Recipe Tick 1.3 - Charging Internal storage. " + (mFusionPoint / 100)
+                                    + "/"
+                                    + mFusionPoint);
                     mChargeConsumed += (mFusionPoint / 100);
                 }
             } else {
@@ -195,14 +189,13 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
         }
         if (tFluidList.size() > 1) {
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-            GT_Recipe tRecipe = getRecipeList()
-                    .findRecipe(
-                            this.getBaseMetaTileEntity(),
-                            this.mLastRecipe,
-                            false,
-                            GT_Values.V[8],
-                            tFluids,
-                            new ItemStack[] {});
+            GT_Recipe tRecipe = getRecipeList().findRecipe(
+                    this.getBaseMetaTileEntity(),
+                    this.mLastRecipe,
+                    false,
+                    GT_Values.V[8],
+                    tFluids,
+                    new ItemStack[] {});
             if (tRecipe == null) {
                 return false;
             }
@@ -275,43 +268,36 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         onRunningTickMulti();
-        if ((aBaseMetaTileEntity.isClientSide())
-                && (aBaseMetaTileEntity.isActive())
+        if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
                 && (aBaseMetaTileEntity.getFrontFacing() != 1)
                 && (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0)
                 && (!aBaseMetaTileEntity.getOpacityAtSide((byte) 1))) {
             if (MathUtils.randInt(0, 4) == 4) {
                 final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-                aBaseMetaTileEntity
-                        .getWorld()
-                        .spawnParticle(
-                                "magicCrit",
-                                (aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
-                                aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F),
-                                (aBaseMetaTileEntity.getZCoord() + 1.2F) - (tRandom.nextFloat() * 1.6F),
-                                0.0D,
-                                0.0D,
-                                0.0D);
-                aBaseMetaTileEntity
-                        .getWorld()
-                        .spawnParticle(
-                                "magicCrit",
-                                (aBaseMetaTileEntity.getXCoord() + 0.4F) - (tRandom.nextFloat() * 0.3F),
-                                aBaseMetaTileEntity.getYCoord() + 0.2f + (tRandom.nextFloat() * 0.1F),
-                                (aBaseMetaTileEntity.getZCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
-                                0.0D,
-                                0.0D,
-                                0.0D);
-                aBaseMetaTileEntity
-                        .getWorld()
-                        .spawnParticle(
-                                "magicCrit",
-                                (aBaseMetaTileEntity.getXCoord() + 0.6F) - (tRandom.nextFloat() * 0.9F),
-                                aBaseMetaTileEntity.getYCoord() + 0.4f + (tRandom.nextFloat() * 0.3F),
-                                (aBaseMetaTileEntity.getZCoord() + 1.8F) - (tRandom.nextFloat() * 2.6F),
-                                0.0D,
-                                0.0D,
-                                0.0D);
+                aBaseMetaTileEntity.getWorld().spawnParticle(
+                        "magicCrit",
+                        (aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
+                        aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F),
+                        (aBaseMetaTileEntity.getZCoord() + 1.2F) - (tRandom.nextFloat() * 1.6F),
+                        0.0D,
+                        0.0D,
+                        0.0D);
+                aBaseMetaTileEntity.getWorld().spawnParticle(
+                        "magicCrit",
+                        (aBaseMetaTileEntity.getXCoord() + 0.4F) - (tRandom.nextFloat() * 0.3F),
+                        aBaseMetaTileEntity.getYCoord() + 0.2f + (tRandom.nextFloat() * 0.1F),
+                        (aBaseMetaTileEntity.getZCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
+                        0.0D,
+                        0.0D,
+                        0.0D);
+                aBaseMetaTileEntity.getWorld().spawnParticle(
+                        "magicCrit",
+                        (aBaseMetaTileEntity.getXCoord() + 0.6F) - (tRandom.nextFloat() * 0.9F),
+                        aBaseMetaTileEntity.getYCoord() + 0.4f + (tRandom.nextFloat() * 0.3F),
+                        (aBaseMetaTileEntity.getZCoord() + 1.8F) - (tRandom.nextFloat() * 2.6F),
+                        0.0D,
+                        0.0D,
+                        0.0D);
             }
         }
     }
@@ -366,13 +352,9 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
             }
         }
 
-        return new String[] {
-            "Fusion Reactor MK " + tier,
-            "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + this.getEUVar() + " / " + maxEUStore(),
-            "Plasma Output: " + plasmaOut + "L/t",
-            "Current Recipe: " + fusionName
-        };
+        return new String[] { "Fusion Reactor MK " + tier, "EU Required: " + powerRequired + "EU/t",
+                "Stored EU: " + this.getEUVar() + " / " + maxEUStore(), "Plasma Output: " + plasmaOut + "L/t",
+                "Current Recipe: " + fusionName };
     }
 
     @Override
@@ -381,48 +363,46 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab)};
+        return new ITexture[] { this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[] { this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS)};
+        return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS)};
+        return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
-        };
+        return new ITexture[] { this.getCasingTexture(),
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active)
-        };
+        return new ITexture[] { this.getCasingTexture(),
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[] { this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)};
+        return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)};
+        return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue)
-        };
+        return new ITexture[] { this.getCasingTexture(),
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue) };
     }
 
     @Override
@@ -480,8 +460,7 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
                     } else {
                         // Logger.MACHINE_INFO("8");
                         this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
-                        if (aTick % 100 == 0
-                                || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                        if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
                                 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             Logger.MACHINE_INFO("9");
                             // turnCasingActive(mMaxProgresstime > 0);
@@ -673,8 +652,8 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean onRightclick(
-            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+            float aY, float aZ) {
         // TODO Auto-generated method stub
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
     }
@@ -704,8 +683,8 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient(
-                    (String) GregTech_API.sSoundList.get(Integer.valueOf(212)), 10, 1.0F, aX, aY, aZ);
+            GT_Utility
+                    .doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(212)), 10, 1.0F, aX, aY, aZ);
         }
     }
 }

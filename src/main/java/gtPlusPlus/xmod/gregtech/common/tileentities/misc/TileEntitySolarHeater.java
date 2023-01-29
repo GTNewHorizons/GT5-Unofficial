@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -11,9 +15,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_SolarTower;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock {
 
@@ -23,28 +24,19 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
     private int mTX, mTY, mTZ;
     private Byte mRequiredFacing;
 
-    public TileEntitySolarHeater(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final String aDescription,
-            final int aSlotCount) {
+    public TileEntitySolarHeater(final int aID, final String aName, final String aNameRegional, final int aTier,
+            final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public TileEntitySolarHeater(
-            final String aName,
-            final int aTier,
-            final String aDescription,
-            final ITexture[][][] aTextures,
-            final int aSlotCount) {
+    public TileEntitySolarHeater(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, "Point me at a Solar Tower", CORE.GT_Tooltip};
+        return new String[] { this.mDescription, "Point me at a Solar Tower", CORE.GT_Tooltip };
     }
 
     @Override
@@ -66,79 +58,57 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV)
-        };
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV)
-        };
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV)
-        };
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] {
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV)
-        };
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV)
-        };
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV)
-        };
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     @Override
@@ -158,7 +128,7 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     @Override
     public String[] getInfoData() {
-        return new String[] {this.getLocalName(), "Testificate"};
+        return new String[] { this.getLocalName(), "Testificate" };
     }
 
     @Override
@@ -247,25 +217,19 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        /*aNBT.setBoolean("mHasTower", mHasTower);
-        if (this.mHasTower) {
-        	aNBT.setInteger("mTX", mTX);
-        	aNBT.setInteger("mTY", mTY);
-        	aNBT.setInteger("mTZ", mTZ);
-        }*/
+        /*
+         * aNBT.setBoolean("mHasTower", mHasTower); if (this.mHasTower) { aNBT.setInteger("mTX", mTX);
+         * aNBT.setInteger("mTY", mTY); aNBT.setInteger("mTZ", mTZ); }
+         */
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        /*this.mHasTower = aNBT.getBoolean("mHasTower");
-        if (this.mHasTower) {
-        	if (aNBT.hasKey("mTX"))
-        		this.mTX = aNBT.getInteger("mTX");
-        	if (aNBT.hasKey("mTY"))
-        		this.mTY = aNBT.getInteger("mTY");
-        	if (aNBT.hasKey("mTZ"))
-        		this.mTZ = aNBT.getInteger("mTZ");
-        }*/
+        /*
+         * this.mHasTower = aNBT.getBoolean("mHasTower"); if (this.mHasTower) { if (aNBT.hasKey("mTX")) this.mTX =
+         * aNBT.getInteger("mTX"); if (aNBT.hasKey("mTY")) this.mTY = aNBT.getInteger("mTY"); if (aNBT.hasKey("mTZ"))
+         * this.mTZ = aNBT.getInteger("mTZ"); }
+         */
     }
 
     @Override
@@ -298,12 +262,10 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
     }
 
     public boolean canSeeSky() {
-        if (this.getBaseMetaTileEntity()
-                .getWorld()
-                .canBlockSeeTheSky(
-                        this.getBaseMetaTileEntity().getXCoord(),
-                        this.getBaseMetaTileEntity().getYCoord() + 1,
-                        this.getBaseMetaTileEntity().getZCoord())) {
+        if (this.getBaseMetaTileEntity().getWorld().canBlockSeeTheSky(
+                this.getBaseMetaTileEntity().getXCoord(),
+                this.getBaseMetaTileEntity().getYCoord() + 1,
+                this.getBaseMetaTileEntity().getZCoord())) {
             return true;
         }
         return false;

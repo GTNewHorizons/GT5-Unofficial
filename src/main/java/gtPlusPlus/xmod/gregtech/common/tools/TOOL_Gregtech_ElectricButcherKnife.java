@@ -1,16 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures.ItemIcons;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.common.items.behaviors.Behaviour_None;
-import gregtech.common.tools.GT_Tool;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import java.util.Arrays;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -23,14 +15,24 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures.ItemIcons;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.common.items.behaviors.Behaviour_None;
+import gregtech.common.tools.GT_Tool;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
+
 public class TOOL_Gregtech_ElectricButcherKnife extends GT_Tool {
 
-    public static final List<String> mEffectiveList =
-            Arrays.asList(new String[] {EntityIronGolem.class.getName(), "EntityTowerGuardian"});
+    public static final List<String> mEffectiveList = Arrays
+            .asList(new String[] { EntityIronGolem.class.getName(), "EntityTowerGuardian" });
 
     @Override
-    public float getNormalDamageAgainstEntity(
-            final float aOriginalDamage, final Entity aEntity, final ItemStack aStack, final EntityPlayer aPlayer) {
+    public float getNormalDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack,
+            final EntityPlayer aPlayer) {
         String tName = aEntity.getClass().getName();
         tName = tName.substring(tName.lastIndexOf(".") + 1);
         return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
@@ -136,15 +138,18 @@ public class TOOL_Gregtech_ElectricButcherKnife extends GT_Tool {
         try {
             GT_Mod.achievements.issueAchievement(aPlayer, "tools");
             GT_Mod.achievements.issueAchievement(aPlayer, "unitool");
-        } catch (final Exception e) {
-        }
+        } catch (final Exception e) {}
     }
 
     @Override
     public IChatComponent getDeathMessage(final EntityLivingBase aPlayer, final EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE
-                + " has been Sliced out of existence by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " has been Sliced out of existence by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 
     @Override
@@ -179,6 +184,6 @@ public class TOOL_Gregtech_ElectricButcherKnife extends GT_Tool {
 
     @Override
     public int[] getEnchantmentLevels(ItemStack aStack) {
-        return new int[] {(4 + GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality) / 2};
+        return new int[] { (4 + GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality) / 2 };
     }
 }

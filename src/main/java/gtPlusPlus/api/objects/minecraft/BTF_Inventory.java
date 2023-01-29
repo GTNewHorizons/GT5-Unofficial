@@ -1,12 +1,14 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.data.ArrayUtils;
 import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.util.data.ArrayUtils;
 
 public class BTF_Inventory implements ISidedInventory {
 
@@ -59,7 +61,7 @@ public class BTF_Inventory implements ISidedInventory {
 
     public ItemStack decrStackSize(int aIndex, int aAmount) {
         ItemStack tStack = this.getStackInSlot(aIndex);
-        ItemStack rStack = GT_Utility.copy(new Object[] {tStack});
+        ItemStack rStack = GT_Utility.copy(new Object[] { tStack });
         if (tStack != null) {
             if (tStack.stackSize <= aAmount) {
                 if (this.setStackToZeroInsteadOfNull(aIndex)) {
@@ -81,42 +83,33 @@ public class BTF_Inventory implements ISidedInventory {
     public int[] getAccessibleSlotsFromSide(int aSide) {
         ArrayList<Integer> tList = new ArrayList<Integer>();
         TileEntityBase tTileEntity = this.mTile;
-        boolean tSkip = tTileEntity
-                        .getCoverBehaviorAtSide((byte) aSide)
-                        .letsItemsIn(
-                                (byte) aSide,
-                                tTileEntity.getCoverIDAtSide((byte) aSide),
-                                tTileEntity.getCoverDataAtSide((byte) aSide),
-                                -2,
-                                tTileEntity)
-                || tTileEntity
-                        .getCoverBehaviorAtSide((byte) aSide)
-                        .letsItemsOut(
-                                (byte) aSide,
-                                tTileEntity.getCoverIDAtSide((byte) aSide),
-                                tTileEntity.getCoverDataAtSide((byte) aSide),
-                                -2,
-                                tTileEntity);
+        boolean tSkip = tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
+                (byte) aSide,
+                tTileEntity.getCoverIDAtSide((byte) aSide),
+                tTileEntity.getCoverDataAtSide((byte) aSide),
+                -2,
+                tTileEntity)
+                || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut(
+                        (byte) aSide,
+                        tTileEntity.getCoverIDAtSide((byte) aSide),
+                        tTileEntity.getCoverDataAtSide((byte) aSide),
+                        -2,
+                        tTileEntity);
 
         for (int rArray = 0; rArray < this.getSizeInventory(); ++rArray) {
-            if (this.isValidSlot(rArray)
-                    && (tSkip
-                            || tTileEntity
-                                    .getCoverBehaviorAtSide((byte) aSide)
-                                    .letsItemsOut(
-                                            (byte) aSide,
-                                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                                            tTileEntity.getCoverDataAtSide((byte) aSide),
-                                            rArray,
-                                            tTileEntity)
-                            || tTileEntity
-                                    .getCoverBehaviorAtSide((byte) aSide)
-                                    .letsItemsIn(
-                                            (byte) aSide,
-                                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                                            tTileEntity.getCoverDataAtSide((byte) aSide),
-                                            rArray,
-                                            tTileEntity))) {
+            if (this.isValidSlot(rArray) && (tSkip
+                    || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut(
+                            (byte) aSide,
+                            tTileEntity.getCoverIDAtSide((byte) aSide),
+                            tTileEntity.getCoverDataAtSide((byte) aSide),
+                            rArray,
+                            tTileEntity)
+                    || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
+                            (byte) aSide,
+                            tTileEntity.getCoverIDAtSide((byte) aSide),
+                            tTileEntity.getCoverDataAtSide((byte) aSide),
+                            rArray,
+                            tTileEntity))) {
                 tList.add(Integer.valueOf(rArray));
             }
         }
@@ -131,16 +124,14 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return this.isValidSlot(aIndex)
-                && aStack != null
+        return this.isValidSlot(aIndex) && aStack != null
                 && aIndex < this.mInventory.length
                 && (this.mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, this.mInventory[aIndex]))
                 && this.allowPutStack(this.mTile, aIndex, (byte) aSide, aStack);
     }
 
     public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return this.isValidSlot(aIndex)
-                && aStack != null
+        return this.isValidSlot(aIndex) && aStack != null
                 && aIndex < this.mInventory.length
                 && this.allowPullStack(this.mTile, aIndex, (byte) aSide, aStack);
     }
@@ -209,10 +200,8 @@ public class BTF_Inventory implements ISidedInventory {
             for (int s = 0; s < this.getSizeInventory(); s++) {
                 if (mInventory != null && mInventory[s] != null) {
                     ItemStack slot = mInventory[s];
-                    if (slot == null
-                            || (slot != null
-                                    && GT_Utility.areStacksEqual(aInput, slot)
-                                    && slot.stackSize != slot.getItem().getItemStackLimit(slot))) {
+                    if (slot == null || (slot != null && GT_Utility.areStacksEqual(aInput, slot)
+                            && slot.stackSize != slot.getItem().getItemStackLimit(slot))) {
                         if (slot == null) {
                             slot = aInput.copy();
                         } else {

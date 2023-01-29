@@ -1,5 +1,17 @@
 package gtPlusPlus.core.item.bauble;
 
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
@@ -13,22 +25,10 @@ import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
-import java.util.List;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 @Optional.InterfaceList(
-        value = {
-            @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-            @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")
-        })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
 public abstract class ElectricBaseBauble extends BaseBauble implements IElectricItem, IElectricItemManager, IBauble {
 
     public final int mTier;
@@ -72,11 +72,7 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack itemStack,
-            final World worldObj,
-            final Entity player,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
             final boolean p_77663_5_) {
         super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }
@@ -138,42 +134,52 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
         String aEUT = aEU + "/t";
 
         list.add(EnumChatFormatting.GOLD + aEuInfo + EnumChatFormatting.GRAY);
-        list.add(EnumChatFormatting.GRAY + aTier + ": [" + EnumChatFormatting.YELLOW + this.getTier(stack)
-                + EnumChatFormatting.GRAY + "] " + aInputLimit + ": [" + EnumChatFormatting.YELLOW
-                + this.getTransferLimit(stack) + EnumChatFormatting.GRAY + aEUT + "]");
-        list.add(EnumChatFormatting.GRAY + aCurrentPower + ": [" + EnumChatFormatting.YELLOW
-                + (long) this.getCharge(stack)
-                + EnumChatFormatting.GRAY + aEU + "] [" + EnumChatFormatting.YELLOW
-                + MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)) + EnumChatFormatting.GRAY
-                + "%]");
+        list.add(
+                EnumChatFormatting.GRAY + aTier
+                        + ": ["
+                        + EnumChatFormatting.YELLOW
+                        + this.getTier(stack)
+                        + EnumChatFormatting.GRAY
+                        + "] "
+                        + aInputLimit
+                        + ": ["
+                        + EnumChatFormatting.YELLOW
+                        + this.getTransferLimit(stack)
+                        + EnumChatFormatting.GRAY
+                        + aEUT
+                        + "]");
+        list.add(
+                EnumChatFormatting.GRAY + aCurrentPower
+                        + ": ["
+                        + EnumChatFormatting.YELLOW
+                        + (long) this.getCharge(stack)
+                        + EnumChatFormatting.GRAY
+                        + aEU
+                        + "] ["
+                        + EnumChatFormatting.YELLOW
+                        + MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))
+                        + EnumChatFormatting.GRAY
+                        + "%]");
         super.addInformation(stack, aPlayer, list, bool);
     }
 
     @Override
-    public final double charge(
-            final ItemStack stack,
-            final double amount,
-            final int tier,
-            final boolean ignoreTransferLimit,
-            final boolean simulate) {
-        /*if (!simulate) {
-        	ElectricItem.manager.charge(stack, amount, tier, true, simulate);
-        }*/
+    public final double charge(final ItemStack stack, final double amount, final int tier,
+            final boolean ignoreTransferLimit, final boolean simulate) {
+        /*
+         * if (!simulate) { ElectricItem.manager.charge(stack, amount, tier, true, simulate); }
+         */
 
         return ElectricItem.manager.charge(stack, amount, tier, true, simulate);
     }
 
     @Override
-    public final double discharge(
-            final ItemStack stack,
-            final double amount,
-            final int tier,
-            final boolean ignoreTransferLimit,
-            final boolean externally,
-            final boolean simulate) {
-        /*if (!simulate) {
-        	ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
-        }*/
+    public final double discharge(final ItemStack stack, final double amount, final int tier,
+            final boolean ignoreTransferLimit, final boolean externally, final boolean simulate) {
+        /*
+         * if (!simulate) { ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally,
+         * simulate); }
+         */
 
         return ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
     }

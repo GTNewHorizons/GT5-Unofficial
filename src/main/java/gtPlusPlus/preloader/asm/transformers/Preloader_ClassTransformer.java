@@ -6,11 +6,12 @@ import static org.objectweb.asm.Opcodes.IFEQ;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.RETURN;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class Preloader_ClassTransformer {
 
@@ -46,13 +47,15 @@ public class Preloader_ClassTransformer {
         @Override
         public void visitCode() {
             FMLRelaunchLog.log(
-                    "[GT++ ASM] OreDictTransformer", Level.INFO, "Fixing Forge's poor attempt at an oreDictionary.");
+                    "[GT++ ASM] OreDictTransformer",
+                    Level.INFO,
+                    "Fixing Forge's poor attempt at an oreDictionary.");
             super.visitCode();
             super.visitVarInsn(ALOAD, 0);
             super.visitVarInsn(ALOAD, 1);
             if (!mObfuscated) {
-                FMLRelaunchLog.log(
-                        "[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Unobfuscated]");
+                FMLRelaunchLog
+                        .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Unobfuscated]");
                 super.visitMethodInsn(
                         INVOKESTATIC,
                         "gtPlusPlus/preloader/Preloader_GT_OreDict",
@@ -60,8 +63,8 @@ public class Preloader_ClassTransformer {
                         "(Ljava/lang/String;Lnet/minecraft/item/ItemStack;)Z",
                         false);
             } else {
-                FMLRelaunchLog.log(
-                        "[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Obfuscated]");
+                FMLRelaunchLog
+                        .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Obfuscated]");
                 super.visitMethodInsn(
                         INVOKESTATIC,
                         "gtPlusPlus/preloader/Preloader_GT_OreDict",

@@ -3,9 +3,18 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -20,13 +29,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Adv_HeatExchanger
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_HeatExchanger> {
@@ -34,65 +36,66 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     private static final int CASING_INDEX = TAE.getIndexFromPage(1, 12);
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final IStructureDefinition<GregtechMetaTileEntity_Adv_HeatExchanger> STRUCTURE_DEFINITION =
-            StructureDefinition.<GregtechMetaTileEntity_Adv_HeatExchanger>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-                        {" ccc ", "cCCCc", "cCCCc", "cCCCc", " ccc "},
-                        {" ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc "},
-                        {" ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc "},
-                        {" ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc "},
-                        {" ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc "},
-                        {" c~c ", "cPPPc", "cPPPc", "cPPPc", " ccc "},
-                        {" hhh ", "hHHHh", "hHHHh", "hHHHh", " hhh "},
-                        {" f f ", "f   f", "     ", "f   f", " f f "},
-                        {" f f ", "f   f", "     ", "f   f", " f f "},
-                    }))
-                    .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
-                    .addElement('f', ofBlock(getFrame(), 0))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    ofHatchAdder(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::addColdFluidOutputToMachineList,
-                                            CASING_INDEX,
-                                            2),
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::onCasingAdded,
-                                            ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
-                    .addElement(
-                            'H',
-                            ofChain(
-                                    ofHatchAdder(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::addHotFluidInputToMachineList,
-                                            CASING_INDEX,
-                                            3),
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::onCasingAdded,
-                                            ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
-                    .addElement(
-                            'h',
-                            ofChain(
-                                    ofHatchAdder(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::addInputToMachineList,
-                                            CASING_INDEX,
-                                            1),
-                                    ofHatchAdder(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::addOutputToMachineList,
-                                            CASING_INDEX,
-                                            1),
-                                    ofHatchAdder(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::addMaintenanceToMachineList,
-                                            CASING_INDEX,
-                                            1),
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_HeatExchanger::onCasingAdded,
-                                            ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
-                    .addElement(
-                            'c',
-                            ofChain(onElementPass(
+    private static final IStructureDefinition<GregtechMetaTileEntity_Adv_HeatExchanger> STRUCTURE_DEFINITION = StructureDefinition
+            .<GregtechMetaTileEntity_Adv_HeatExchanger>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { " ccc ", "cCCCc", "cCCCc", "cCCCc", " ccc " },
+                                    { " ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc " },
+                                    { " ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc " },
+                                    { " ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc " },
+                                    { " ccc ", "cPPPc", "cPPPc", "cPPPc", " ccc " },
+                                    { " c~c ", "cPPPc", "cPPPc", "cPPPc", " ccc " },
+                                    { " hhh ", "hHHHh", "hHHHh", "hHHHh", " hhh " },
+                                    { " f f ", "f   f", "     ", "f   f", " f f " },
+                                    { " f f ", "f   f", "     ", "f   f", " f f " }, }))
+            .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15)).addElement('f', ofBlock(getFrame(), 0))
+            .addElement(
+                    'C',
+                    ofChain(
+                            ofHatchAdder(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::addColdFluidOutputToMachineList,
+                                    CASING_INDEX,
+                                    2),
+                            onElementPass(
                                     GregtechMetaTileEntity_Adv_HeatExchanger::onCasingAdded,
                                     ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
-                    .build();
+            .addElement(
+                    'H',
+                    ofChain(
+                            ofHatchAdder(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::addHotFluidInputToMachineList,
+                                    CASING_INDEX,
+                                    3),
+                            onElementPass(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::onCasingAdded,
+                                    ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
+            .addElement(
+                    'h',
+                    ofChain(
+                            ofHatchAdder(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::addInputToMachineList,
+                                    CASING_INDEX,
+                                    1),
+                            ofHatchAdder(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::addOutputToMachineList,
+                                    CASING_INDEX,
+                                    1),
+                            ofHatchAdder(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::addMaintenanceToMachineList,
+                                    CASING_INDEX,
+                                    1),
+                            onElementPass(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::onCasingAdded,
+                                    ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
+            .addElement(
+                    'c',
+                    ofChain(
+                            onElementPass(
+                                    GregtechMetaTileEntity_Adv_HeatExchanger::onCasingAdded,
+                                    ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
+            .build();
     public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-25)
 
     private GT_MetaTileEntity_Hatch_Input mInputHotFluidHatch;
@@ -113,30 +116,23 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the XL Heat Exchanger")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the XL Heat Exchanger")
                 .addInfo("More complicated than a Fusion Reactor. Seriously")
-                .addInfo("But you know this by now, right?")
-                .addInfo("Works as fast as 16 Large Heat Exchangers")
-                .addSeparator()
-                .addInfo("Inputs are Hot Coolant or Lava")
+                .addInfo("But you know this by now, right?").addInfo("Works as fast as 16 Large Heat Exchangers")
+                .addSeparator().addInfo("Inputs are Hot Coolant or Lava")
                 .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
                 .addInfo("Outputs SH Steam if input flow is equal to or above a certain value:")
                 .addInfo("Hot Coolant: 12,800 L/s, maximum 25,600 EU/t, max output 6,400,000 SH Steam/s")
                 .addInfo("Lava: 16,000 L/s, maximum 32,000 EU/t, max output 2,560,000 SH Steam/s")
                 .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
-                .addInfo("2400 L/s reduction and 1.5% efficiency loss per circuit config over 1")
-                .addSeparator()
-                .beginStructureBlock(5, 9, 5, false)
-                .addController("Front bottom")
+                .addInfo("2400 L/s reduction and 1.5% efficiency loss per circuit config over 1").addSeparator()
+                .beginStructureBlock(5, 9, 5, false).addController("Front bottom")
                 .addCasingInfo("Reinforced Heat Exchanger Casing", 90)
                 .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
-                .addMaintenanceHatch("Any casing", 1)
-                .addInputHatch("Hot fluid, bottom center", 2)
+                .addMaintenanceHatch("Any casing", 1).addInputHatch("Hot fluid, bottom center", 2)
                 .addInputHatch("Distilled water, any bottom layer casing", 1)
                 .addOutputHatch("Cold fluid, top center", 3)
-                .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -217,12 +213,12 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
             return false;
         }
 
-        superheated = fluidAmountToConsume
-                >= superheated_threshold; // set the internal superheated flag if we have enough hot fluid.  Used in the
+        superheated = fluidAmountToConsume >= superheated_threshold; // set the internal superheated flag if we have
+                                                                     // enough hot fluid. Used in the
         // onRunningTick method.
-        fluidAmountToConsume = Math.min(
-                fluidAmountToConsume,
-                superheated_threshold * 2); // Don't consume too much hot fluid per second, maximum is 2x SH threshold.
+        fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2); // Don't consume too much hot
+                                                                                          // fluid per second, maximum
+                                                                                          // is 2x SH threshold.
         mInputHotFluidHatch.drain(fluidAmountToConsume, true);
         this.mMaxProgresstime = 20;
         this.lEUt = (long) (fluidAmountToConsume * steam_output_multiplier * efficiency);
@@ -245,8 +241,8 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.lEUt > 0) {
-            int tGeneratedEU =
-                    (int) (this.lEUt * 2L * this.mEfficiency / 10000L); // APPROXIMATELY how much steam to generate.
+            int tGeneratedEU = (int) (this.lEUt * 2L * this.mEfficiency / 10000L); // APPROXIMATELY how much steam to
+                                                                                   // generate.
             if (tGeneratedEU > 0) {
 
                 if (superheated) tGeneratedEU /= 2; // We produce half as much superheated steam if necessary
@@ -259,8 +255,9 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
-                        addOutput(FluidRegistry.getFluidStack(
-                                "ic2superheatedsteam", tGeneratedEU)); // Generate superheated steam
+                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
+                                                                                                     // superheated
+                                                                                                     // steam
                     } else {
                         addOutput(GT_ModHandler.getSteam(tGeneratedEU)); // Generate regular steam
                     }
@@ -344,26 +341,43 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     @Override
     public String[] getExtraInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
-                    + StatCollector.translateToLocal("GT5U.LHE.steam") + ": "
-                    + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                    + GT_Utility.formatNumbers(superheated ? -2 * lEUt : -lEUt) + EnumChatFormatting.RESET + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
-                    + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
-                    + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-                    + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE) + superheated
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-                    + StatCollector.translateToLocal("GT5U.LHE.threshold") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(superheated_threshold) + EnumChatFormatting.RESET
-        };
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
+                        + StatCollector.translateToLocal("GT5U.LHE.steam")
+                        + ": "
+                        + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                        + GT_Utility.formatNumbers(superheated ? -2 * lEUt : -lEUt)
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (getIdealStatus() - getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + mEfficiency / 100.0F
+                        + EnumChatFormatting.RESET
+                        + " %",
+                StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
+                        + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
+                        + superheated
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
+                        + StatCollector.translateToLocal("GT5U.LHE.threshold")
+                        + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(superheated_threshold)
+                        + EnumChatFormatting.RESET };
     }
 
     @Override

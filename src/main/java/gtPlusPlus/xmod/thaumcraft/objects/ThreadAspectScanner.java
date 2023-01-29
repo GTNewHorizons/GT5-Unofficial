@@ -1,12 +1,5 @@
 package gtPlusPlus.xmod.thaumcraft.objects;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.FileUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +7,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.data.FileUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 public class ThreadAspectScanner extends Thread {
 
@@ -55,7 +57,7 @@ public class ThreadAspectScanner extends Thread {
         mAllGameContent.put(nameKey, m);
     }
 
-    @SuppressWarnings({"rawtypes"})
+    @SuppressWarnings({ "rawtypes" })
     @Override
     public void run() {
         if (mDoWeScan) {
@@ -116,8 +118,8 @@ public class ThreadAspectScanner extends Thread {
                         continue;
                     }
                     for (ItemStack stack : group) {
-                        thaumcraft.api.aspects.AspectList a =
-                                thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags(stack);
+                        thaumcraft.api.aspects.AspectList a = thaumcraft.common.lib.crafting.ThaumcraftCraftingManager
+                                .getObjectTags(stack);
                         if (a == null) {
                             continue;
                         } else {
@@ -129,8 +131,11 @@ public class ThreadAspectScanner extends Thread {
                             }
                             try {
                                 List<String> mList = new ArrayList<String>();
-                                mList.add(stack.getDisplayName() + " | Meta: " + stack.getItemDamage() + " | Unlocal: "
-                                        + stack.getUnlocalizedName());
+                                mList.add(
+                                        stack.getDisplayName() + " | Meta: "
+                                                + stack.getItemDamage()
+                                                + " | Unlocal: "
+                                                + stack.getUnlocalizedName());
                                 for (Pair<String, Integer> r : aspectPairs) {
                                     if (r != null) {
                                         mList.add(r.getKey() + " x" + r.getValue());

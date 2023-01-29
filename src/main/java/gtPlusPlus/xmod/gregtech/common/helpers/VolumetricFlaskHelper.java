@@ -1,16 +1,18 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 public class VolumetricFlaskHelper {
 
@@ -89,8 +91,8 @@ public class VolumetricFlaskHelper {
         if (aStack != null && sMethodGetFlaskMaxCapacity != null) {
             Item aItem = aStack.getItem();
             if (sClassVolumetricFlask.isInstance(aItem)) {
-                int aMaxCapacity =
-                        (int) ReflectionUtils.invokeNonBool(aItem, sMethodGetFlaskMaxCapacity, new Object[] {});
+                int aMaxCapacity = (int) ReflectionUtils
+                        .invokeNonBool(aItem, sMethodGetFlaskMaxCapacity, new Object[] {});
                 return aMaxCapacity;
             }
         }
@@ -168,11 +170,11 @@ public class VolumetricFlaskHelper {
     }
 
     public static Item generateNewFlask(String unlocalized, String english, int maxCapacity) {
-        Constructor aFlask = ReflectionUtils.getConstructor(
-                sClassVolumetricFlask, new Class[] {String.class, String.class, int.class});
+        Constructor aFlask = ReflectionUtils
+                .getConstructor(sClassVolumetricFlask, new Class[] { String.class, String.class, int.class });
         if (aFlask != null) {
-            Object aInstance = ReflectionUtils.createNewInstanceFromConstructor(
-                    aFlask, new Object[] {unlocalized, english, maxCapacity});
+            Object aInstance = ReflectionUtils
+                    .createNewInstanceFromConstructor(aFlask, new Object[] { unlocalized, english, maxCapacity });
             if (aInstance != null && aInstance instanceof Item) {
                 Item aNewFlaskItem = (Item) aInstance;
                 return aNewFlaskItem;

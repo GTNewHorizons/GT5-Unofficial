@@ -1,17 +1,18 @@
 package gtPlusPlus.core.item.base.cell;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.Utils;
 
 public class BaseItemPlasmaCell extends BaseItemComponent {
 
@@ -62,11 +63,7 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
             if (!world.isRemote) {

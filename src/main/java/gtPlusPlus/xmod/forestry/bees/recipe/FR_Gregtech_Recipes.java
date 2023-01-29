@@ -1,13 +1,14 @@
 package gtPlusPlus.xmod.forestry.bees.recipe;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class FR_Gregtech_Recipes {
 
@@ -79,7 +80,8 @@ public class FR_Gregtech_Recipes {
         } else {
             if (LoadedMods.MagicBees) {
                 RecipeUtils.addShapelessGregtechRecipe(
-                        new ItemStack[] {hiveFrameVoid}, ItemUtils.getCorrectStacktype("MagicBees:frameOblivion", 1));
+                        new ItemStack[] { hiveFrameVoid },
+                        ItemUtils.getCorrectStacktype("MagicBees:frameOblivion", 1));
             }
         }
         RecipeUtils.addShapedGregtechRecipe(
@@ -109,10 +111,28 @@ public class FR_Gregtech_Recipes {
                     hiveFrameCocoa);
 
             RecipeUtils.addShapedRecipe(
-                    hiveFrameImpregnated, blockIronBars, null, null, null, null, null, null, null, hiveFrameCaged);
+                    hiveFrameImpregnated,
+                    blockIronBars,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    hiveFrameCaged);
 
             RecipeUtils.addShapedRecipe(
-                    hiveFrameImpregnated, blockSoulSand, null, null, null, null, null, null, null, hiveFrameSoul);
+                    hiveFrameImpregnated,
+                    blockSoulSand,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    hiveFrameSoul);
 
             RecipeUtils.addShapedRecipe(
                     null,

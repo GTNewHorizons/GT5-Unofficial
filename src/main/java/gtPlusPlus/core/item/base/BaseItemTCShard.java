@@ -1,18 +1,20 @@
 package gtPlusPlus.core.item.base;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemTCShard extends Item {
 
@@ -30,8 +32,8 @@ public class BaseItemTCShard extends Item {
         this(DisplayName, colour, "", Description);
     }
 
-    public BaseItemTCShard(
-            final String DisplayName, final int colour, final String Description, final String Description2) {
+    public BaseItemTCShard(final String DisplayName, final int colour, final String Description,
+            final String Description2) {
         this.unlocalName = "item" + Utils.sanitizeString(DisplayName);
         this.displayName = DisplayName;
         this.itemColour = colour;
@@ -51,7 +53,7 @@ public class BaseItemTCShard extends Item {
         return (this.displayName + " Shard");
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if ((this.descriptionString != "") || !this.descriptionString.equals("")) {
@@ -68,10 +70,6 @@ public class BaseItemTCShard extends Item {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {}
 }

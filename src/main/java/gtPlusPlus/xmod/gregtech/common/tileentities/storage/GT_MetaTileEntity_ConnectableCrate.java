@@ -1,10 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -22,20 +29,13 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_TieredMachineBlock implements IAddUIWidgets {
 
-    /*sides.put(getUp());
-    sides.put(getDown());
-    sides.put(getXPos());
-    sides.put(getXNeg());
-    sides.put(getZPos());
-    sides.put(getZNeg());*/
+    /*
+     * sides.put(getUp()); sides.put(getDown()); sides.put(getXPos()); sides.put(getXNeg()); sides.put(getZPos());
+     * sides.put(getZNeg());
+     */
 
     public int mItemCount = 0;
     public ItemStack mItemStack = null;
@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
     public static final int SIDE_XNeg = 3;
     public static final int SIDE_ZPos = 4;
     public static final int SIDE_ZNeg = 5;
-    public static final int[] SIDES = new int[] {SIDE_Up, SIDE_Down, SIDE_XPos, SIDE_XNeg, SIDE_ZPos, SIDE_ZNeg};
+    public static final int[] SIDES = new int[] { SIDE_Up, SIDE_Down, SIDE_XPos, SIDE_XNeg, SIDE_ZPos, SIDE_ZNeg };
 
     // Neighbour Cache
     private GT_MetaTileEntity_ConnectableCrate[] mNeighbourCache = new GT_MetaTileEntity_ConnectableCrate[6];
@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
     // Is Master?
     protected boolean mIsMaster = false;
     // Is Connected?
-    protected boolean mIsConnected[] = new boolean[] {false, false, false, false, false, false};
+    protected boolean mIsConnected[] = new boolean[] { false, false, false, false, false, false };
     // How many are connected?
     protected int mConnectedCount = 0;
     // Map of connected locations
@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, CORE.GT_Tooltip};
+        return new String[] { this.mDescription, CORE.GT_Tooltip };
     }
 
     public boolean isSimpleMachine() {
@@ -187,10 +187,8 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
                         // Other Crate was not a Master, but we are, time to inherit it into our connection hivemind.
                         else {
                             // It would appear this controller has another master, time to query it.
-                            if (e.mMasterCrateLocation != null
-                                    && !e.mMasterCrateLocation
-                                            .getUniqueIdentifier()
-                                            .equalsIgnoreCase(this.mMasterCrateLocation.getUniqueIdentifier())) {
+                            if (e.mMasterCrateLocation != null && !e.mMasterCrateLocation.getUniqueIdentifier()
+                                    .equalsIgnoreCase(this.mMasterCrateLocation.getUniqueIdentifier())) {
                                 GT_MetaTileEntity_ConnectableCrate gM = getCrateAtBlockPos(e.mMasterCrateLocation);
                                 if (gM != null) {
                                     // Lets compare controller strengths
@@ -207,8 +205,8 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
                                         if (!this.mIsConnected[e4]) {
                                             this.mIsConnected[e4] = true;
                                         }
-                                        this.mConnectedCache =
-                                                ArrayUtils.mergeTwoMaps(this.mConnectedCache, gM.mConnectedCache);
+                                        this.mConnectedCache = ArrayUtils
+                                                .mergeTwoMaps(this.mConnectedCache, gM.mConnectedCache);
                                         continue;
                                     }
                                     // We lost, time to submit to a new master crate
@@ -221,8 +219,8 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
                                         if (!e.mIsConnected[getOppositeSide(e4)]) {
                                             e.mIsConnected[getOppositeSide(e4)] = true;
                                         }
-                                        gM.mConnectedCache =
-                                                ArrayUtils.mergeTwoMaps(gM.mConnectedCache, this.mConnectedCache);
+                                        gM.mConnectedCache = ArrayUtils
+                                                .mergeTwoMaps(gM.mConnectedCache, this.mConnectedCache);
                                         // Best wipe our cache of connected blocks then, since they no longer hold
                                         // value.
                                         mConnectedCache.clear();
@@ -332,14 +330,10 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
     }
 
     private boolean checkSideForDataType(int aType, int aSide) {
-        BlockPos mPosToCheck = aSide == SIDE_Up
-                ? mCurrentPos.getUp()
-                : aSide == SIDE_Down
-                        ? mCurrentPos.getDown()
-                        : aSide == SIDE_XPos
-                                ? mCurrentPos.getXPos()
-                                : aSide == SIDE_XNeg
-                                        ? mCurrentPos.getXNeg()
+        BlockPos mPosToCheck = aSide == SIDE_Up ? mCurrentPos.getUp()
+                : aSide == SIDE_Down ? mCurrentPos.getDown()
+                        : aSide == SIDE_XPos ? mCurrentPos.getXPos()
+                                : aSide == SIDE_XNeg ? mCurrentPos.getXNeg()
                                         : aSide == SIDE_ZPos ? mCurrentPos.getZPos() : mCurrentPos.getZNeg();
         GT_MetaTileEntity_ConnectableCrate g = getCrateAtBlockPos(mPosToCheck);
         if (g != null) {
@@ -383,8 +377,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
     }
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (this.getBaseMetaTileEntity().isServerSide()
-                && this.getBaseMetaTileEntity().isAllowedToWork()) {
+        if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
             if (this.getItemCount() <= 0) {
                 this.mItemStack = null;
                 this.mItemCount = 0;
@@ -394,8 +387,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
                 this.mItemStack = this.mInventory[0].copy();
             }
 
-            if (this.mInventory[0] != null
-                    && this.mItemCount < this.getMaxItemCount()
+            if (this.mInventory[0] != null && this.mItemCount < this.getMaxItemCount()
                     && GT_Utility.areStacksEqual(this.mInventory[0], this.mItemStack)) {
                 this.mItemCount += this.mInventory[0].stackSize;
                 if (this.mItemCount > this.getMaxItemCount()) {
@@ -410,14 +402,14 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
                 this.mInventory[1] = this.mItemStack.copy();
                 this.mInventory[1].stackSize = Math.min(this.mItemStack.getMaxStackSize(), this.mItemCount);
                 this.mItemCount -= this.mInventory[1].stackSize;
-            } else if (this.mItemCount > 0
-                    && GT_Utility.areStacksEqual(this.mInventory[1], this.mItemStack)
+            } else if (this.mItemCount > 0 && GT_Utility.areStacksEqual(this.mInventory[1], this.mItemStack)
                     && this.mInventory[1].getMaxStackSize() > this.mInventory[1].stackSize) {
-                int tmp =
-                        Math.min(this.mItemCount, this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
-                this.mInventory[1].stackSize += tmp;
-                this.mItemCount -= tmp;
-            }
+                        int tmp = Math.min(
+                                this.mItemCount,
+                                this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
+                        this.mInventory[1].stackSize += tmp;
+                        this.mItemCount -= tmp;
+                    }
 
             if (this.mItemStack != null) {
                 this.mInventory[2] = this.mItemStack.copy();
@@ -437,8 +429,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
     }
 
     public int getProgresstime() {
-        return this.mItemCount
-                + (this.mInventory[0] == null ? 0 : this.mInventory[0].stackSize)
+        return this.mItemCount + (this.mInventory[0] == null ? 0 : this.mInventory[0].stackSize)
                 + (this.mInventory[1] == null ? 0 : this.mInventory[1].stackSize);
     }
 
@@ -460,20 +451,10 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
     public String[] getInfoData() {
         return this.mItemStack == null
-                ? new String[] {
-                    "Super Storage Chest",
-                    "Stored Items:",
-                    "No Items",
-                    Integer.toString(0),
-                    Integer.toString(this.getMaxItemCount())
-                }
-                : new String[] {
-                    "Super Storage Chest",
-                    "Stored Items:",
-                    this.mItemStack.getDisplayName(),
-                    Integer.toString(this.mItemCount),
-                    Integer.toString(this.getMaxItemCount())
-                };
+                ? new String[] { "Super Storage Chest", "Stored Items:", "No Items", Integer.toString(0),
+                        Integer.toString(this.getMaxItemCount()) }
+                : new String[] { "Super Storage Chest", "Stored Items:", this.mItemStack.getDisplayName(),
+                        Integer.toString(this.mItemCount), Integer.toString(this.getMaxItemCount()) };
     }
 
     public boolean isGivingInformation() {
@@ -518,24 +499,15 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
         }
     }
 
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         return aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4
-                ? new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
-                }
+                ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
+                        new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
                 : (aSide == aBaseMetaTileEntity.getFrontFacing()
-                        ? new ITexture[] {
-                            new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
-                            new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
-                        }
-                        : new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON)});
+                        ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
+                                new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
+                        : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON) });
     }
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
@@ -567,26 +539,21 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(7, 16)
-                        .setSize(71, 45))
-                .widget(new SlotWidget(inventoryHandler, 0)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                        .setPos(79, 16))
-                .widget(new SlotWidget(inventoryHandler, 1)
-                        .setAccess(true, false)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                        .setPos(79, 52))
-                .widget(SlotWidget.phantom(inventoryHandler, 2)
-                        .disableInteraction()
-                        .setBackground(GT_UITextures.TRANSPARENT)
-                        .setPos(59, 42))
-                .widget(new TextWidget("Item Amount")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 20))
-                .widget(TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 30));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
+                .widget(
+                        new SlotWidget(inventoryHandler, 0)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                                .setPos(79, 16))
+                .widget(
+                        new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                                .setPos(79, 52))
+                .widget(
+                        SlotWidget.phantom(inventoryHandler, 2).disableInteraction()
+                                .setBackground(GT_UITextures.TRANSPARENT).setPos(59, 42))
+                .widget(new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20)).widget(
+                        TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
     }
 }

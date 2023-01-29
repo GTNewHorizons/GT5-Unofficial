@@ -1,17 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.items.tools;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.*;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -29,14 +22,25 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.*;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
- * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth, null);
+ * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth,
+ * null);
  */
 public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
+
     /**
-     * All instances of this Item Class are listed here.
-     * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
+     * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
+     * Type, if useStandardMetaItemRenderer() returns true.
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
@@ -86,18 +90,17 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID                     The Id of the assigned Tool Class [0 - 32765] (only even Numbers allowed! Uneven ID's are empty electric Items)
+     * @param aID                     The Id of the assigned Tool Class [0 - 32765] (only even Numbers allowed! Uneven
+     *                                ID's are empty electric Items)
      * @param aEnglish                The Default Localized Name of the created Item
-     * @param aToolTip                The Default ToolTip of the created Item, you can also insert null for having no ToolTip
+     * @param aToolTip                The Default ToolTip of the created Item, you can also insert null for having no
+     *                                ToolTip
      * @param aToolStats              The Food Value of this Item. Can be null as well.
-     * @param aOreDictNamesAndAspects The OreDict Names you want to give the Item. Also used to assign Thaumcraft Aspects.
+     * @param aOreDictNamesAndAspects The OreDict Names you want to give the Item. Also used to assign Thaumcraft
+     *                                Aspects.
      * @return An ItemStack containing the newly created Item, but without specific Stats.
      */
-    public final ItemStack addToolEx(
-            final int aID,
-            final String aEnglish,
-            String aToolTip,
-            final IToolStats aToolStats,
+    public final ItemStack addToolEx(final int aID, final String aEnglish, String aToolTip, final IToolStats aToolStats,
             final Object... aOreDictNamesAndAspects) {
         if (aToolTip == null) {
             aToolTip = "";
@@ -106,9 +109,11 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + aID + ".name", aEnglish);
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
             GT_LanguageManager.addStringLocalization(
-                    this.getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
+                    this.getUnlocalizedName() + "." + (aID + 1) + ".name",
+                    aEnglish + " (Empty)");
             GT_LanguageManager.addStringLocalization(
-                    this.getUnlocalizedName() + "." + (aID + 1) + ".tooltip", "You need to recharge it");
+                    this.getUnlocalizedName() + "." + (aID + 1) + ".tooltip",
+                    "You need to recharge it");
             this.mToolStats.put((short) aID, aToolStats);
             this.mToolStats.put((short) (aID + 1), aToolStats);
             aToolStats.onStatsAddedToTool(this, aID);
@@ -138,12 +143,8 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
      * @param aSecondaryMaterial Secondary (Rod/Handle) Material of this Tool
      * @param aElectricArray     The Electric Stats of this Tool (or null if not electric)
      */
-    public final ItemStack getToolWithStatsEx(
-            final int aToolID,
-            final int aAmount,
-            final Materials aPrimaryMaterial,
-            final Materials aSecondaryMaterial,
-            final long[] aElectricArray) {
+    public final ItemStack getToolWithStatsEx(final int aToolID, final int aAmount, final Materials aPrimaryMaterial,
+            final Materials aSecondaryMaterial, final long[] aElectricArray) {
         final ItemStack rStack = new ItemStack(this, aAmount, aToolID);
         final IToolStats tToolStats = this.getToolStats(rStack);
         if (tToolStats != null) {
@@ -177,35 +178,26 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
      * Called by the Block Harvesting Event within the GT_Proxy
      */
     @Override
-    public void onHarvestBlockEvent(
-            final ArrayList<ItemStack> aDrops,
-            final ItemStack aStack,
-            final EntityPlayer aPlayer,
-            final Block aBlock,
-            final int aX,
-            final int aY,
-            final int aZ,
-            final byte aMetaData,
-            final int aFortune,
-            final boolean aSilkTouch,
+    public void onHarvestBlockEvent(final ArrayList<ItemStack> aDrops, final ItemStack aStack,
+            final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ,
+            final byte aMetaData, final int aFortune, final boolean aSilkTouch,
             final BlockEvent.HarvestDropsEvent aEvent) {
         final IToolStats tStats = this.getToolStats(aStack);
         if (this.isItemStackUsable(aStack) && (this.getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)) {
             this.doDamage(
                     aStack,
                     tStats.convertBlockDrops(
-                                    aDrops,
-                                    aStack,
-                                    aPlayer,
-                                    aBlock,
-                                    aX,
-                                    aY,
-                                    aZ,
-                                    aMetaData,
-                                    aFortune,
-                                    aSilkTouch,
-                                    aEvent)
-                            * tStats.getToolDamagePerDropConversion());
+                            aDrops,
+                            aStack,
+                            aPlayer,
+                            aBlock,
+                            aX,
+                            aY,
+                            aZ,
+                            aMetaData,
+                            aFortune,
+                            aSilkTouch,
+                            aEvent) * tStats.getToolDamagePerDropConversion());
         }
     }
 
@@ -220,23 +212,23 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
             return true;
         }
         if (aEntity.canAttackWithItem() && !aEntity.hitByEntity(aPlayer)) {
-            final float tMagicDamage = tStats.getMagicDamageAgainstEntity(
-                    aEntity instanceof EntityLivingBase
-                            ? EnchantmentHelper.getEnchantmentModifierLiving(aPlayer, (EntityLivingBase) aEntity)
-                            : 0.0F,
-                    aEntity,
-                    aStack,
-                    aPlayer);
+            final float tMagicDamage = tStats
+                    .getMagicDamageAgainstEntity(
+                            aEntity instanceof EntityLivingBase
+                                    ? EnchantmentHelper
+                                            .getEnchantmentModifierLiving(aPlayer, (EntityLivingBase) aEntity)
+                                    : 0.0F,
+                            aEntity,
+                            aStack,
+                            aPlayer);
             float tDamage = tStats.getNormalDamageAgainstEntity(
-                    (float) aPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                                    .getAttributeValue()
+                    (float) aPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue()
                             + this.getToolCombatDamage(aStack),
                     aEntity,
                     aStack,
                     aPlayer);
             if ((tDamage + tMagicDamage) > 0.0F) {
-                final boolean tCriticalHit = (aPlayer.fallDistance > 0.0F)
-                        && !aPlayer.onGround
+                final boolean tCriticalHit = (aPlayer.fallDistance > 0.0F) && !aPlayer.onGround
                         && !aPlayer.isOnLadder()
                         && !aPlayer.isInWater()
                         && !aPlayer.isPotionActive(Potion.blindness)
@@ -250,10 +242,9 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
                     if (aEntity instanceof EntityLivingBase) {
                         aEntity.setFire(EnchantmentHelper.getFireAspectModifier(aPlayer) * 4);
                     }
-                    final int tKnockcack = (aPlayer.isSprinting() ? 1 : 0)
-                            + (aEntity instanceof EntityLivingBase
-                                    ? EnchantmentHelper.getKnockbackModifier(aPlayer, (EntityLivingBase) aEntity)
-                                    : 0);
+                    final int tKnockcack = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase
+                            ? EnchantmentHelper.getKnockbackModifier(aPlayer, (EntityLivingBase) aEntity)
+                            : 0);
                     if (tKnockcack > 0) {
                         aEntity.addVelocity(
                                 -MathHelper.sin((aPlayer.rotationYaw * (float) Math.PI) / 180.0F) * tKnockcack * 0.5F,
@@ -280,8 +271,8 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
                     if (aEntity instanceof EntityLivingBase) {
                         aPlayer.addStat(StatList.damageDealtStat, Math.round(tDamage * 10.0F));
                     }
-                    aEntity.hurtResistantTime =
-                            Math.max(1, tStats.getHurtResistanceTime(aEntity.hurtResistantTime, aEntity));
+                    aEntity.hurtResistantTime = Math
+                            .max(1, tStats.getHurtResistanceTime(aEntity.hurtResistantTime, aEntity));
                     aPlayer.addExhaustion(0.3F);
                     this.doDamage(aStack, tStats.getToolDamagePerEntityAttack());
                 }
@@ -313,12 +304,8 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if ((aNBT != null) && aNBT.getBoolean("Electric")) {
-                return new Long[] {
-                    aNBT.getLong("MaxCharge"),
-                    aNBT.getLong("Voltage"),
-                    aNBT.getLong("Tier"),
-                    aNBT.getLong("SpecialData")
-                };
+                return new Long[] { aNBT.getLong("MaxCharge"), aNBT.getLong("Voltage"), aNBT.getLong("Tier"),
+                        aNBT.getLong("SpecialData") };
             }
         }
         return null;
@@ -348,14 +335,8 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
     }
 
     @Override
-    public boolean onBlockDestroyed(
-            final ItemStack aStack,
-            final World aWorld,
-            final Block aBlock,
-            final int aX,
-            final int aY,
-            final int aZ,
-            final EntityLivingBase aPlayer) {
+    public boolean onBlockDestroyed(final ItemStack aStack, final World aWorld, final Block aBlock, final int aX,
+            final int aY, final int aZ, final EntityLivingBase aPlayer) {
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
@@ -364,8 +345,9 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
             return false;
         }
         GT_Utility.doSoundAtClient(tStats.getMiningSound(), 1, 1.0F);
-        this.doDamage(aStack, (int)
-                Math.max(1, aBlock.getBlockHardness(aWorld, aX, aY, aZ) * tStats.getToolDamagePerBlockBreak()));
+        this.doDamage(
+                aStack,
+                (int) Math.max(1, aBlock.getBlockHardness(aWorld, aX, aY, aZ) * tStats.getToolDamagePerBlockBreak()));
         return this.getDigSpeed(aStack, aBlock, aWorld.getBlockMetadata(aX, aY, aZ)) > 0.0F;
     }
 
@@ -398,22 +380,16 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
     }
 
     @Override
-    public float getSaplingModifier(
-            final ItemStack aStack,
-            final World aWorld,
-            final EntityPlayer aPlayer,
-            final int aX,
-            final int aY,
-            final int aZ) {
+    public float getSaplingModifier(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer,
+            final int aX, final int aY, final int aZ) {
         final IToolStats tStats = this.getToolStats(aStack);
-        return (tStats != null) && tStats.isGrafter()
-                ? Math.min(100.0F, (1 + this.getHarvestLevel(aStack, "")) * 20.0F)
+        return (tStats != null) && tStats.isGrafter() ? Math.min(100.0F, (1 + this.getHarvestLevel(aStack, "")) * 20.0F)
                 : 0.0F;
     }
 
     @Override
-    public boolean canWhack(
-            final EntityPlayer aPlayer, final ItemStack aStack, final int aX, final int aY, final int aZ) {
+    public boolean canWhack(final EntityPlayer aPlayer, final ItemStack aStack, final int aX, final int aY,
+            final int aZ) {
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
@@ -562,8 +538,7 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
             }
         }
         for (final Entry<Integer, Integer> tEntry : tMap.entrySet()) {
-            if ((tEntry.getKey() == 33)
-                    || ((tEntry.getKey() == 20) && (tEntry.getValue() > 2))
+            if ((tEntry.getKey() == 33) || ((tEntry.getKey() == 20) && (tEntry.getValue() > 2))
                     || (tEntry.getKey() == Enchantment_Radioactivity.INSTANCE.effectId)) {
                 tResult.put(tEntry.getKey(), tEntry.getValue());
             } else {

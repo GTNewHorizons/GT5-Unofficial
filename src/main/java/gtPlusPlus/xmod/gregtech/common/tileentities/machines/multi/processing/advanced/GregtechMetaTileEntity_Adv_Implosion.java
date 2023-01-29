@@ -4,8 +4,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,7 +18,6 @@ import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
 
 public class GregtechMetaTileEntity_Adv_Implosion
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_Implosion> {
@@ -43,20 +45,13 @@ public class GregtechMetaTileEntity_Adv_Implosion
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Factory Grade Advanced Implosion Compressor")
+        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Implosion Compressor")
                 .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
                 .addInfo("Constructed exactly the same as a normal Implosion Compressor")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Robust TungstenSteel Casing", 10)
-                .addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1)
-                .addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
+                .addController("Front center").addCasingInfo("Robust TungstenSteel Casing", 10)
+                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
+                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -65,11 +60,11 @@ public class GregtechMetaTileEntity_Adv_Implosion
     public IStructureDefinition<GregtechMetaTileEntity_Adv_Implosion> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_Implosion>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             ofChain(

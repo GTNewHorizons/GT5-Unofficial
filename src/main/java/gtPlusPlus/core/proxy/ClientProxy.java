@@ -1,5 +1,20 @@
 package gtPlusPlus.core.proxy;
 
+import java.util.ArrayList;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.entity.RenderFireball;
+import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.*;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -31,19 +46,6 @@ import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.render.*;
 import ic2.core.item.ItemFluidCell;
-import java.util.ArrayList;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.entity.RenderFireball;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fluids.*;
 
 public class ClientProxy extends CommonProxy implements Runnable {
 
@@ -115,22 +117,25 @@ public class ClientProxy extends CommonProxy implements Runnable {
         /**
          * Entities
          */
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
+        RenderingRegistry
+                .registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
         RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
+        RenderingRegistry
+                .registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
         RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
         RenderingRegistry.registerEntityRenderingHandler(
-                EntitySulfuricAcidPotion.class, new RenderSnowball(ModItems.itemSulfuricPotion));
+                EntitySulfuricAcidPotion.class,
+                new RenderSnowball(ModItems.itemSulfuricPotion));
         RenderingRegistry.registerEntityRenderingHandler(
-                EntityHydrofluoricAcidPotion.class, new RenderSnowball(ModItems.itemHydrofluoricPotion));
+                EntityHydrofluoricAcidPotion.class,
+                new RenderSnowball(ModItems.itemHydrofluoricPotion));
         RenderingRegistry.registerEntityRenderingHandler(EntityTeslaTowerLightning.class, new RenderPlasmaBolt());
         RenderingRegistry.registerEntityRenderingHandler(
-                EntityGiantChickenBase.class, new RenderGiantChicken(new ModelGiantChicken(), 1f));
+                EntityGiantChickenBase.class,
+                new RenderGiantChicken(new ModelGiantChicken(), 1f));
         RenderingRegistry.registerEntityRenderingHandler(EntityBatKing.class, new RenderBatKing());
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityThrowableBomb.class, new RenderSnowball(ModItems.itemBomb, 1));
+        RenderingRegistry
+                .registerEntityRenderingHandler(EntityThrowableBomb.class, new RenderSnowball(ModItems.itemBomb, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
 
         /**
@@ -187,36 +192,23 @@ public class ClientProxy extends CommonProxy implements Runnable {
     }
 
     public void onPreLoad() {
-        /*if (ConfigSwitches.enableCustomCapes){
-        	String arr$[] = {
-        			"draknyte1", "fobius"
-        	};
-        	int len$ = arr$.length;
-        	for (int i$ = 0; i$ < len$; i$++) {
-        		String tName = arr$[i$];
-        		mCapeList.add(tName.toLowerCase());
-        	}
-        	(new Thread(this)).start();
-        }*/
+        /*
+         * if (ConfigSwitches.enableCustomCapes){ String arr$[] = { "draknyte1", "fobius" }; int len$ = arr$.length; for
+         * (int i$ = 0; i$ < len$; i$++) { String tName = arr$[i$]; mCapeList.add(tName.toLowerCase()); } (new
+         * Thread(this)).start(); }
+         */
     }
 
     @Override
     public void run() {
-        /*try {
-        	if (ConfigSwitches.enableCustomCapes){
-        		Logger.INFO("GT++ Mod: Downloading Cape List.");
-        		@SuppressWarnings("resource")
-        		Scanner tScanner = new Scanner(new URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream());
-        		while (tScanner.hasNextLine()) {
-        			String tName = tScanner.nextLine();
-        			if (!this.mCapeList.contains(tName.toLowerCase())) {
-        				this.mCapeList.add(tName.toLowerCase());
-        			}
-        		}
-        	}
-        } catch (Throwable e) {
-        	Logger.INFO("Failed to download GT++ cape list.");
-        }*/
+        /*
+         * try { if (ConfigSwitches.enableCustomCapes){ Logger.INFO("GT++ Mod: Downloading Cape List.");
+         * @SuppressWarnings("resource") Scanner tScanner = new Scanner(new
+         * URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream()); while
+         * (tScanner.hasNextLine()) { String tName = tScanner.nextLine(); if
+         * (!this.mCapeList.contains(tName.toLowerCase())) { this.mCapeList.add(tName.toLowerCase()); } } } } catch
+         * (Throwable e) { Logger.INFO("Failed to download GT++ cape list."); }
+         */
     }
 
     @Override

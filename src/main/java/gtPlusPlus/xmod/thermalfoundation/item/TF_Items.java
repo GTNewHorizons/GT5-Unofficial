@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.thermalfoundation.item;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+
 import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
 import cofh.core.util.energy.FurnaceFuelHandler;
@@ -11,9 +15,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class TF_Items {
 
@@ -34,10 +35,10 @@ public class TF_Items {
 
     public static void preInit() {
 
-        itemBucket = (ItemBucket)
-                new ItemBucket("MiscUtils").setUnlocalizedName("bucket").setCreativeTab(AddToCreativeTab.tabMisc);
-        itemMaterial = (ItemBase)
-                new ItemBase("MiscUtils").setUnlocalizedName("material").setCreativeTab(AddToCreativeTab.tabMisc);
+        itemBucket = (ItemBucket) new ItemBucket("MiscUtils").setUnlocalizedName("bucket")
+                .setCreativeTab(AddToCreativeTab.tabMisc);
+        itemMaterial = (ItemBase) new ItemBase("MiscUtils").setUnlocalizedName("material")
+                .setCreativeTab(AddToCreativeTab.tabMisc);
 
         bucketPyrotheum = itemBucket.addOreDictItem(1, "bucketPyrotheum");
         bucketCryotheum = itemBucket.addOreDictItem(2, "bucketCryotheum");
@@ -48,8 +49,8 @@ public class TF_Items {
         dustCryotheum = itemMaterial.addOreDictItem(4, "dustCryotheum");
 
         if (ReflectionUtils.doesClassExist("cofh.core.util.energy.FurnaceFuelHandler")) {
-            FurnaceFuelHandler.registerFuel(
-                    dustPyrotheum, 2400); // cofh.core.util.energy.FurnaceFuelHandler.registerFuel(ItemStack, int)
+            FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400); // cofh.core.util.energy.FurnaceFuelHandler.registerFuel(ItemStack,
+                                                                  // int)
         }
 
         ItemUtils.addItemToOreDictionary(rodBlizz, "stickBlizz");
@@ -65,25 +66,28 @@ public class TF_Items {
         BucketHandler.registerBucket(TF_Blocks.blockFluidPyrotheum, 0, bucketPyrotheum);
         BucketHandler.registerBucket(TF_Blocks.blockFluidCryotheum, 0, bucketCryotheum);
         BucketHandler.registerBucket(TF_Blocks.blockFluidEnder, 0, bucketEnder);
-        FluidContainerRegistry.registerFluidContainer(
-                TF_Fluids.fluidPyrotheum, bucketPyrotheum, FluidContainerRegistry.EMPTY_BUCKET);
-        FluidContainerRegistry.registerFluidContainer(
-                TF_Fluids.fluidCryotheum, bucketCryotheum, FluidContainerRegistry.EMPTY_BUCKET);
-        FluidContainerRegistry.registerFluidContainer(
-                TF_Fluids.fluidEnder, bucketEnder, FluidContainerRegistry.EMPTY_BUCKET);
+        FluidContainerRegistry
+                .registerFluidContainer(TF_Fluids.fluidPyrotheum, bucketPyrotheum, FluidContainerRegistry.EMPTY_BUCKET);
+        FluidContainerRegistry
+                .registerFluidContainer(TF_Fluids.fluidCryotheum, bucketCryotheum, FluidContainerRegistry.EMPTY_BUCKET);
+        FluidContainerRegistry
+                .registerFluidContainer(TF_Fluids.fluidEnder, bucketEnder, FluidContainerRegistry.EMPTY_BUCKET);
     }
 
     public static void postInit() {
         if (!CORE.GTNH) {
-            ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(
-                    ItemHelper.cloneStack(dustPyrotheum, 1),
-                    new Object[] {"dustCoal", "dustSulfur", "dustRedstone", "dustBlaze"}));
-            ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(
-                    ItemHelper.cloneStack(dustCryotheum, 1),
-                    new Object[] {Items.snowball, "dustSaltpeter", "dustRedstone", "dustBlizz"}));
-            ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(
-                    ItemHelper.cloneStack(dustCryotheum, 1),
-                    new Object[] {Items.snowball, "dustNitor", "dustRedstone", "dustBlizz"}));
+            ItemHelper.addRecipe(
+                    ItemHelper.ShapelessRecipe(
+                            ItemHelper.cloneStack(dustPyrotheum, 1),
+                            new Object[] { "dustCoal", "dustSulfur", "dustRedstone", "dustBlaze" }));
+            ItemHelper.addRecipe(
+                    ItemHelper.ShapelessRecipe(
+                            ItemHelper.cloneStack(dustCryotheum, 1),
+                            new Object[] { Items.snowball, "dustSaltpeter", "dustRedstone", "dustBlizz" }));
+            ItemHelper.addRecipe(
+                    ItemHelper.ShapelessRecipe(
+                            ItemHelper.cloneStack(dustCryotheum, 1),
+                            new Object[] { Items.snowball, "dustNitor", "dustRedstone", "dustBlizz" }));
         }
     }
 }

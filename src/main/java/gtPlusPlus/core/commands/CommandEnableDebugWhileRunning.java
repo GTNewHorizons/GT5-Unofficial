@@ -1,19 +1,9 @@
 package gtPlusPlus.core.commands;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.CORE_Preloader;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +15,20 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.asm.AsmConfig;
+
 public class CommandEnableDebugWhileRunning implements ICommand {
+
     private final List<String> aliases;
 
     public CommandEnableDebugWhileRunning() {
@@ -79,7 +82,8 @@ public class CommandEnableDebugWhileRunning implements ICommand {
             PlayerUtils.messagePlayer(P, "hand - Lists information about held item.");
             PlayerUtils.messagePlayer(P, "fuid xxx - Tries to find the fluid in the FluidRegistry.");
             PlayerUtils.messagePlayer(
-                    P, "debug   - Toggles GT++ Debug Mode. Only use when advised, may break everything. (OP)");
+                    P,
+                    "debug   - Toggles GT++ Debug Mode. Only use when advised, may break everything. (OP)");
         } else if (argString[0].toLowerCase().equals("debug")) {
             Logger.INFO("Toggling Debug Mode.");
             final EntityPlayer P = CommandUtils.getPlayer(S);
@@ -93,13 +97,11 @@ public class CommandEnableDebugWhileRunning implements ICommand {
             AsmConfig.disableAllLogging = Utils.invertBoolean(AsmConfig.disableAllLogging);
             PlayerUtils.messagePlayer(P, "Toggled GT++ Logging - Enabled: " + (!AsmConfig.disableAllLogging));
         }
-        /*		else if (argString[0].toLowerCase().equals("test")) {
-        	ItemStack mSemiFluidgen = ItemUtils.simpleMetaStack("IC2:blockGenerator", 7, 1);
-        	final EntityPlayer P = CommandUtils.getPlayer(S);
-        	if(mSemiFluidgen != null) {
-        		PlayerUtils.messagePlayer(P, ItemUtils.getItemName(mSemiFluidgen));
-        	}
-        }*/
+        /*
+         * else if (argString[0].toLowerCase().equals("test")) { ItemStack mSemiFluidgen =
+         * ItemUtils.simpleMetaStack("IC2:blockGenerator", 7, 1); final EntityPlayer P = CommandUtils.getPlayer(S);
+         * if(mSemiFluidgen != null) { PlayerUtils.messagePlayer(P, ItemUtils.getItemName(mSemiFluidgen)); } }
+         */
 
         else if (argString[0].toLowerCase().equals("inv")) {
             final EntityPlayer P = CommandUtils.getPlayer(S);
@@ -109,8 +111,13 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                     if (aItem != null) {
                         String aModID = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).modId;
                         String aRegistryName = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).name;
-                        Logger.INFO(aModID + ":" + aRegistryName + ":" + aItem.getItemDamage() + " | "
-                                + aItem.getDisplayName());
+                        Logger.INFO(
+                                aModID + ":"
+                                        + aRegistryName
+                                        + ":"
+                                        + aItem.getItemDamage()
+                                        + " | "
+                                        + aItem.getDisplayName());
                     }
                 }
                 PlayerUtils.messagePlayer(P, "Dumped Inventory.");
@@ -128,8 +135,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                     int[] aOreIDs = OreDictionary.getOreIDs(aHeldItem);
                     for (int id : aOreIDs) {
                         String aOreNameFromID = OreDictionary.getOreName(id);
-                        if (aOreNameFromID != null
-                                && aOreNameFromID.length() > 0
+                        if (aOreNameFromID != null && aOreNameFromID.length() > 0
                                 && !aOreNameFromID.equals("Unknown")) {
                             aOreDictNames.add(aOreNameFromID);
                         }
@@ -150,12 +156,10 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                     if (aHeldItemFluid != null) {
                         aFluidContainerData.put("FluidStack Unlocal Name: " + aHeldItemFluid.getUnlocalizedName());
                         aFluidContainerData.put("FluidStack Local Name: " + aHeldItemFluid.getLocalizedName());
-                        aFluidContainerData.put("Fluid Unlocal Name: "
-                                + aHeldItemFluid.getFluid().getUnlocalizedName());
-                        aFluidContainerData.put(
-                                "Fluid Local Name: " + aHeldItemFluid.getFluid().getLocalizedName());
-                        aFluidContainerData.put(
-                                "Fluid Name: " + aHeldItemFluid.getFluid().getName());
+                        aFluidContainerData
+                                .put("Fluid Unlocal Name: " + aHeldItemFluid.getFluid().getUnlocalizedName());
+                        aFluidContainerData.put("Fluid Local Name: " + aHeldItemFluid.getFluid().getLocalizedName());
+                        aFluidContainerData.put("Fluid Name: " + aHeldItemFluid.getFluid().getName());
                     }
 
                     PlayerUtils.messagePlayer(P, "[" + aItemUnlocalName + "]" + "[" + aItemDisplayName + "] ");
@@ -255,8 +259,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                     }
                 }
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return "";
     }
 }

@@ -31,8 +31,8 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
         // 3 8
     }
 
-    public GT_MetaTileEntity_Dehydrator(
-            int aID, String aName, String aNameRegional, int aTier, String aDescription, int aTankCapacity) {
+    public GT_MetaTileEntity_Dehydrator(int aID, String aName, String aNameRegional, int aTier, String aDescription,
+            int aTankCapacity) {
         super(
                 aID,
                 aName,
@@ -54,16 +54,9 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
                 null);
     }
 
-    public GT_MetaTileEntity_Dehydrator(
-            String aName,
-            int aTier,
-            String[] aDescription,
-            GT_Recipe.GT_Recipe_Map aRecipes,
-            int aTankCapacity,
-            int aAmperage,
-            ITexture[][][] aTextures,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_Dehydrator(String aName, int aTier, String[] aDescription,
+            GT_Recipe.GT_Recipe_Map aRecipes, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(
                 aName,
                 aTier,
@@ -116,13 +109,8 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return super.getTexture(aBaseMetaTileEntity, aSide, aFacing, aColorIndex, aActive, aRedstone);
         // return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide ==
         // GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
@@ -130,87 +118,79 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
 
     @Override
     public ITexture[] getFrontFacingInactive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[0])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[0]) };
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[2])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[2]) };
     }
 
     @Override
     public ITexture[] getTopFacingInactive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[3])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[3]) };
     }
 
     @Override
     public ITexture[] getSideFacingInactive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[4])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[4]) };
     }
 
     @Override
     public ITexture[] getFrontFacingActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[5])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[5]) };
     }
 
     @Override
     public ITexture[] getBottomFacingActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[7])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[7]) };
     }
 
     @Override
     public ITexture[] getTopFacingActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[8])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[8]) };
     }
 
     @Override
     public ITexture[] getSideFacingActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[9])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(sDehydratorOverlays[9]) };
     }
 
     @Override
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTopFacingPipeActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getSideFacingPipeActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 }

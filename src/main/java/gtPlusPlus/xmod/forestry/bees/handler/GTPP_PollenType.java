@@ -1,12 +1,14 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
-import net.minecraft.item.ItemStack;
 
 public enum GTPP_PollenType {
+
     DRAGONBLOOD(0, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20));
 
     public boolean mShowInList;

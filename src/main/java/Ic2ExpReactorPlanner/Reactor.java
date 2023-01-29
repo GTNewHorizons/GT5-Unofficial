@@ -1,16 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package Ic2ExpReactorPlanner;
 
-import Ic2ExpReactorPlanner.components.ReactorItem;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
 
+import Ic2ExpReactorPlanner.components.ReactorItem;
+
 /**
  * Represents an IndustrialCraft2 Nuclear Reactor.
+ * 
  * @author Brian McCloud
  */
 public class Reactor {
@@ -106,6 +107,7 @@ public class Reactor {
 
     /**
      * Adjust the maximum heat
+     * 
      * @param adjustment the adjustment amount (negative values decrease the max heat).
      */
     public void adjustMaxHeat(final double adjustment) {
@@ -113,7 +115,9 @@ public class Reactor {
     }
 
     /**
-     * Set the current heat of the reactor.  Mainly to be used for simulating a pre-heated reactor, or for resetting to 0 for a new simulation.
+     * Set the current heat of the reactor. Mainly to be used for simulating a pre-heated reactor, or for resetting to 0
+     * for a new simulation.
+     * 
      * @param currentHeat the heat to set
      */
     public void setCurrentHeat(final double currentHeat) {
@@ -122,6 +126,7 @@ public class Reactor {
 
     /**
      * Adjusts the reactor's current heat by a specified amount
+     * 
      * @param adjustment the adjustment amount.
      */
     public void adjustCurrentHeat(final double adjustment) {
@@ -133,6 +138,7 @@ public class Reactor {
 
     /**
      * add some EU output.
+     * 
      * @param amount the amount of EU to output over 1 reactor tick (20 game ticks).
      */
     public void addEUOutput(final double amount) {
@@ -148,6 +154,7 @@ public class Reactor {
 
     /**
      * Gets a list of the materials needed to build the components.
+     * 
      * @return a list of the materials needed to build the components.
      */
     public ArrayList getMaterials() {
@@ -174,7 +181,9 @@ public class Reactor {
     }
 
     /**
-     * Adds to the amount of heat vented this reactor tick, in case it is a new-style reactor with a pressure vessel and outputting heat to fluid instead of EU.
+     * Adds to the amount of heat vented this reactor tick, in case it is a new-style reactor with a pressure vessel and
+     * outputting heat to fluid instead of EU.
+     * 
      * @param amount the amount to add.
      */
     public void ventHeat(final double amount) {
@@ -190,14 +199,18 @@ public class Reactor {
 
     /**
      * Get a code that represents the component set, which can be passed between forum users, etc.
-     * @return a code representing some ids for the components and arrangement.  Passing the same code to setCode() should re-create an identical reactor setup, even if other changes have happened in the meantime.
+     * 
+     * @return a code representing some ids for the components and arrangement. Passing the same code to setCode()
+     *         should re-create an identical reactor setup, even if other changes have happened in the meantime.
      */
     public String getCode() {
         return "erp=" + buildCodeString();
     }
 
     /**
-     * Sets a code to configure the entire grid all at once.  Expects the code to have originally been output by getCode().
+     * Sets a code to configure the entire grid all at once. Expects the code to have originally been output by
+     * getCode().
+     * 
      * @param code the code of the reactor setup to use.
      */
     public void setCode(final String code) {
@@ -329,8 +342,7 @@ public class Reactor {
         } else {
             String tempCode = code;
             if (code.startsWith("http://www.talonfiremage.pwp.blueyonder.co.uk/v3/reactorplanner.html?")) { // NOI18N
-                tempCode = code.replace(
-                        "http://www.talonfiremage.pwp.blueyonder.co.uk/v3/reactorplanner.html?", ""); // NOI18N
+                tempCode = code.replace("http://www.talonfiremage.pwp.blueyonder.co.uk/v3/reactorplanner.html?", ""); // NOI18N
             }
             if (tempCode.matches("[0-9a-z]+")) { // NOI18N
                 // Possibly a code from Talonius's old planner
@@ -569,7 +581,7 @@ public class Reactor {
                 if (component != null) {
                     int id = component.id;
                     // only store automation details for a component if non-default, and add a flag bit to indicate
-                    // their presence.  null components don't even need the flag bit.
+                    // their presence. null components don't even need the flag bit.
                     if (component.getInitialHeat() > 0
                             || component.getAutomationThreshold()
                                     != ComponentFactory.getDefaultComponent(id).getAutomationThreshold()
@@ -605,32 +617,22 @@ public class Reactor {
                 final ReactorItem component = getComponentAt(row, col);
                 final int id = (component != null) ? component.id : 0;
                 result.append(String.format("%02X", id)); // NOI18N
-                if (component != null
-                        && (component.getInitialHeat() > 0
-                                || (automated
-                                        && component.getAutomationThreshold()
-                                                != ComponentFactory.getDefaultComponent(id)
-                                                        .getAutomationThreshold())
-                                || (automated
-                                        && component.getReactorPause()
-                                                != ComponentFactory.getDefaultComponent(id)
-                                                        .getReactorPause()))) {
+                if (component != null && (component.getInitialHeat() > 0
+                        || (automated && component.getAutomationThreshold()
+                                != ComponentFactory.getDefaultComponent(id).getAutomationThreshold())
+                        || (automated && component.getReactorPause()
+                                != ComponentFactory.getDefaultComponent(id).getReactorPause()))) {
                     result.append("(");
                     if (component.getInitialHeat() > 0) {
-                        result.append(String.format(
-                                "h%s,", Integer.toString((int) component.getInitialHeat(), 36))); // NOI18N
+                        result.append(String.format("h%s,", Integer.toString((int) component.getInitialHeat(), 36))); // NOI18N
                     }
-                    if (automated
-                            && component.getAutomationThreshold()
-                                    != ComponentFactory.getDefaultComponent(id).getAutomationThreshold()) {
-                        result.append(String.format(
-                                "a%s,", Integer.toString(component.getAutomationThreshold(), 36))); // NOI18N
+                    if (automated && component.getAutomationThreshold()
+                            != ComponentFactory.getDefaultComponent(id).getAutomationThreshold()) {
+                        result.append(String.format("a%s,", Integer.toString(component.getAutomationThreshold(), 36))); // NOI18N
                     }
-                    if (automated
-                            && component.getReactorPause()
-                                    != ComponentFactory.getDefaultComponent(id).getReactorPause()) {
-                        result.append(
-                                String.format("p%s,", Integer.toString(component.getReactorPause(), 36))); // NOI18N
+                    if (automated && component.getReactorPause()
+                            != ComponentFactory.getDefaultComponent(id).getReactorPause()) {
+                        result.append(String.format("p%s,", Integer.toString(component.getReactorPause(), 36))); // NOI18N
                     }
                     result.setLength(result.length() - 1); // remove the last comma, whichever parameter it came from.
                     result.append(")");
@@ -675,6 +677,7 @@ public class Reactor {
 
     /**
      * Checks whether the reactor is to simulate a fluid-style reactor, rather than a direct EU-output reactor.
+     * 
      * @return true if this was set to be a fluid-style reactor, false if this was set to be direct EU-output reactor.
      */
     public boolean isFluid() {
@@ -683,6 +686,7 @@ public class Reactor {
 
     /**
      * Sets whether the reactor is to simulate a fluid-style reactor, rather than a direct EU-output reactor.
+     * 
      * @param fluid true if this is to be a fluid-style reactor, false if this is to be direct EU-output reactor.
      */
     public void setFluid(final boolean fluid) {
@@ -691,6 +695,7 @@ public class Reactor {
 
     /**
      * Checks whether the reactor is using Reactor Coolant Injectors (RCIs)
+     * 
      * @return true if this reactor was set to use RCIs, false otherwise.
      */
     public boolean isUsingReactorCoolantInjectors() {
@@ -699,6 +704,7 @@ public class Reactor {
 
     /**
      * Sets whether the reactor is to use Reactor Coolant Injectors (RCIs)
+     * 
      * @param usingReactorCoolantInjectors true if this reactor should use RCIs, false otherwise.
      */
     public void setUsingReactorCoolantInjectors(final boolean usingReactorCoolantInjectors) {

@@ -1,16 +1,18 @@
 package gtPlusPlus.core.gui.machine;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.Container_TradeTable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUI_TradeTable extends GuiContainer {
@@ -18,11 +20,12 @@ public class GUI_TradeTable extends GuiContainer {
     TileEntityTradeTable mThisTable;
     String mOwnerName;
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/ProjectTable.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/ProjectTable.png");
 
-    public GUI_TradeTable(
-            final InventoryPlayer player_inventory, final TileEntityTradeTable te, final String mOwnerName) {
+    public GUI_TradeTable(final InventoryPlayer player_inventory, final TileEntityTradeTable te,
+            final String mOwnerName) {
         super(new Container_TradeTable(player_inventory, te));
         if (te.isServerSide()) {
             mThisTable = te;

@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
@@ -8,9 +12,6 @@ import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
 
@@ -26,12 +27,11 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         }
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Centrifuge Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".2.name", "Heat Resistant Coke Oven Casing");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing"); // 60
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".4.name", "Material Press Machine Casing");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Heat Resistant Coke Oven Casing");
+        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing"); // 60
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Material Press Machine Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Electrolyzer Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Wire Factory Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Maceration Stack Casing");
@@ -41,8 +41,8 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Multitank Exterior Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Hastelloy-N Reactor Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Zeron-100 Reactor Shielding");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".14.name", "Blast Smelter Heat Containment Coil ");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Blast Smelter Heat Containment Coil ");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Blast Smelter Casing Block");
         GregtechItemList.Casing_Centrifuge1.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_CokeOven.set(new ItemStack(this, 1, 1));
@@ -69,8 +69,8 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(
-            final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide) {
+    public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
+            final int aSide) {
         final GregtechMetaCasingBlocks i = this;
         return CasingTextureHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i);
     }

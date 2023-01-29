@@ -1,12 +1,13 @@
 package gtPlusPlus.core.util.minecraft;
 
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class FoodUtils {
 

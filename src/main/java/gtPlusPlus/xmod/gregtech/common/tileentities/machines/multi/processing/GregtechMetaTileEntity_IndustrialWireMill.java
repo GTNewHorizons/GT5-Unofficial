@@ -6,10 +6,21 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -23,18 +34,9 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialWireMill
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWireMill>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialWireMill extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWireMill> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
@@ -61,42 +63,32 @@ public class GregtechMetaTileEntity_IndustrialWireMill
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Wire Factory")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Wire Factory")
                 .addInfo("200% faster than using single block machines of the same voltage")
-                .addInfo("Only uses 75% of the EU/t normally required")
-                .addInfo("Processes four items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center")
-                .addCasingInfo("Wire Factory Casings", 20)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
+                .addController("Front Center").addCasingInfo("Wire Factory Casings", 20).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWireMill>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "C-C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC", "CCC", "CCC"},
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWireMill>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" },
+                                    { "C~C", "C-C", "C-C", "C-C", "CCC" }, { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialWireMill.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
                     .build();
         }
         return STRUCTURE_DEFINITION;
@@ -150,8 +142,8 @@ public class GregtechMetaTileEntity_IndustrialWireMill
     }
 
     @Override
-    public boolean checkRecipeGeneric(
-            int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+    public boolean checkRecipeGeneric(int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent,
+            int aOutputChanceRoll) {
         if (!isBussesSeparate)
             return super.checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
         List<ItemStack> buffer = new ArrayList<>(16);
@@ -163,7 +155,12 @@ public class GregtechMetaTileEntity_IndustrialWireMill
             }
             ItemStack[] tItemInputs = buffer.toArray(new ItemStack[0]);
             if (checkRecipeGeneric(
-                    tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll))
+                    tItemInputs,
+                    tFluidInputs,
+                    aMaxParallelRecipes,
+                    aEUPercent,
+                    aSpeedBonusPercent,
+                    aOutputChanceRoll))
                 return true;
             buffer.clear();
         }
@@ -173,8 +170,10 @@ public class GregtechMetaTileEntity_IndustrialWireMill
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         isBussesSeparate = !isBussesSeparate;
-        aPlayer.addChatMessage(new ChatComponentTranslation(
-                isBussesSeparate ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
+        aPlayer.addChatMessage(
+                new ChatComponentTranslation(
+                        isBussesSeparate ? "interaction.separateBusses.enabled"
+                                : "interaction.separateBusses.disabled"));
     }
 
     @Override

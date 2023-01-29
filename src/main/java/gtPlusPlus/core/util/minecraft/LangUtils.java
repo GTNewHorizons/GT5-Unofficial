@@ -1,18 +1,20 @@
 package gtPlusPlus.core.util.minecraft;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import gregtech.api.util.GT_LanguageManager;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import gregtech.api.util.GT_LanguageManager;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class LangUtils {
 
@@ -89,10 +91,9 @@ public class LangUtils {
                     mLocaleCache.remove(mCacheKey);
                     String mNew;
                     try {
-                        mNew = (""
-                                        + StatCollector.translateToLocal(
-                                                aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name"))
-                                .trim();
+                        mNew = ("" + StatCollector
+                                .translateToLocal(aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name"))
+                                        .trim();
                         if (aStack.hasTagCompound()) {
                             if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
                                 NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
@@ -115,13 +116,11 @@ public class LangUtils {
                 Logger.INFO("Cached New Value. UnlocalName: " + unlocalizedName);
                 String blockName = StatCollector.translateToLocal(unlocalizedName + ".name");
                 Logger.INFO("Cached New Value. TranslatedName: " + unlocalizedName);
-                if (blockName.toLowerCase().contains(".name")
-                        || blockName.toLowerCase().contains("|")) {
+                if (blockName.toLowerCase().contains(".name") || blockName.toLowerCase().contains("|")) {
                     try {
-                        blockName = (""
-                                        + StatCollector.translateToLocal(
-                                                aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name"))
-                                .trim();
+                        blockName = ("" + StatCollector
+                                .translateToLocal(aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name"))
+                                        .trim();
                         if (aStack.hasTagCompound()) {
                             if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
                                 NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");

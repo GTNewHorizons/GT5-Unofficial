@@ -1,14 +1,15 @@
 package gtPlusPlus.core.util.math;
 
+import java.text.NumberFormat;
+import java.util.Map;
+import java.util.Random;
+
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import java.text.NumberFormat;
-import java.util.Map;
-import java.util.Random;
 
 public class MathUtils {
 
@@ -22,12 +23,11 @@ public class MathUtils {
     }
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive.
-     * The difference between min and max can be at most
+     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
      * Integer.MAX_VALUE - 1.
      *
      * @param min Minimim value
-     * @param max Maximim value.  Must be greater than min.
+     * @param max Maximim value. Must be greater than min.
      * @return Integer between min and max, inclusive.
      * @see java.util.Random#nextInt(int)
      */
@@ -42,12 +42,11 @@ public class MathUtils {
     }
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive.
-     * The difference between min and max can be at most
+     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
      * Long.MAX_VALUE - 1.
      *
      * @param min Minimim value
-     * @param max Maximim value.  Must be greater than min.
+     * @param max Maximim value. Must be greater than min.
      * @return Long between min and max, inclusive.
      * @see java.util.Random#nextLong(long)
      */
@@ -68,12 +67,11 @@ public class MathUtils {
     }
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive.
-     * The difference between min and max can be at most
+     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
      * Double.MAX_VALUE - 1.
      *
      * @param min Minimim value
-     * @param max Maximim value.  Must be greater than min.
+     * @param max Maximim value. Must be greater than min.
      * @return Double between min and max, inclusive.
      * @see java.util.Random#nextDouble(double)
      */
@@ -94,12 +92,11 @@ public class MathUtils {
     }
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive.
-     * The difference between min and max can be at most
+     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
      * Float.MAX_VALUE - 1.
      *
      * @param min Minimim value
-     * @param max Maximim value.  Must be greater than min.
+     * @param max Maximim value. Must be greater than min.
      * @return Float between min and max, inclusive.
      * @see java.util.Random#nextFloat(float)
      */
@@ -120,12 +117,10 @@ public class MathUtils {
     }
 
     /**
-     * Returns a percentage.
-     * The returned number is the % of X in Y.
-     * Supports Doubles.
+     * Returns a percentage. The returned number is the % of X in Y. Supports Doubles.
      *
      * @param current Current value.
-     * @param max Maximim value.  Must be greater than min.
+     * @param max     Maximim value. Must be greater than min.
      * @return double between min and max, inclusive.
      */
     public static double findPercentage(final double current, final double max) {
@@ -133,12 +128,10 @@ public class MathUtils {
     }
 
     /**
-     * Returns a percentage.
-     * The returned number is the % of X in Y.
-     * Supports Floats.
+     * Returns a percentage. The returned number is the % of X in Y. Supports Floats.
      *
      * @param current Current value.
-     * @param max Maximim value.  Must be greater than min.
+     * @param max     Maximim value. Must be greater than min.
      * @return double between min and max, inclusive.
      */
     public static float findPercentage(final float current, final float max) {
@@ -151,9 +144,7 @@ public class MathUtils {
 
     // Smooth Rounding Function
     /**
-     * Returns a double.
-     * The returned number is d rounded to the nearest d.01.
-     * Supports Doubles.
+     * Returns a double. The returned number is d rounded to the nearest d.01. Supports Doubles.
      *
      * @param current Current value.
      * @return double Rounded value.
@@ -164,9 +155,7 @@ public class MathUtils {
 
     // Smooth Rounding Function (Nearest 5)
     /**
-     * Returns a double.
-     * The returned number is d rounded to the nearest d.5.
-     * Supports Doubles.
+     * Returns a double. The returned number is d rounded to the nearest d.5. Supports Doubles.
      *
      * @param current Current value.
      * @return double Rounded value.
@@ -177,9 +166,7 @@ public class MathUtils {
 
     // Smooth Rounding Function
     /**
-     * Returns a integer.
-     * The returned number is d rounded to the nearest flat integer.
-     * Supports Doubles as input.
+     * Returns a integer. The returned number is d rounded to the nearest flat integer. Supports Doubles as input.
      *
      * @param current Current value.
      * @return integer Rounded value.
@@ -203,9 +190,7 @@ public class MathUtils {
 
     // Smooth Rounding Function
     /**
-     * Returns a long.
-     * The returned number is d rounded to the nearest flat long.
-     * Supports Doubles as input.
+     * Returns a long. The returned number is d rounded to the nearest flat long. Supports Doubles as input.
      *
      * @param current Current value.
      * @return long Rounded value.
@@ -215,12 +200,10 @@ public class MathUtils {
     }
 
     /**
-     * Returns a boolean.
-     * The returned boolean is wether or not X evenly fits in to Y.
-     * Supports ints.
+     * Returns a boolean. The returned boolean is wether or not X evenly fits in to Y. Supports ints.
      *
      * @param x Value A.
-     * @param y Value B.  Must be greater than min.
+     * @param y Value B. Must be greater than min.
      * @return boolean Whether or not it divides evenly.
      */
     public static boolean divideXintoY(final int x, final int y) {
@@ -231,9 +214,7 @@ public class MathUtils {
     }
 
     /**
-     * Returns a boolean.
-     * The returned boolean is based on the odd/eveness of the input.
-     * Supports ints.
+     * Returns a boolean. The returned boolean is based on the odd/eveness of the input. Supports ints.
      *
      * @param x Value A.
      * @return boolean Whether or not it divides evenly.
@@ -246,9 +227,7 @@ public class MathUtils {
     }
 
     /**
-     * Returns an int.
-     * The returned number is the value on i + 273.15F.
-     * Supports ints.
+     * Returns an int. The returned number is the value on i + 273.15F. Supports ints.
      *
      * @param i Temp in Celcius.
      * @return int The celcius temp returned as Kelvin, rounded to the readest whole.
@@ -259,9 +238,7 @@ public class MathUtils {
     }
 
     /**
-     * Returns a hexInteger.
-     * The returned number is the hex value of the input.
-     * Supports ints.
+     * Returns a hexInteger. The returned number is the hex value of the input. Supports ints.
      *
      * @param input Current value.
      * @return hexInteger.
@@ -273,12 +250,10 @@ public class MathUtils {
     }
 
     /**
-     * Returns a hexInteger.
-     * The returned value is between min and max.
-     * Supports ints.
+     * Returns a hexInteger. The returned value is between min and max. Supports ints.
      *
      * @param min Minimum value.
-     * @param max Maximium value.  Must be greater than min.
+     * @param max Maximium value. Must be greater than min.
      * @return hexInteger between min and max, inclusive.
      */
     public static int generateRandomHexValue(final int min, final int max) {
@@ -286,8 +261,7 @@ public class MathUtils {
     }
 
     /**
-     * Returns a random hex value.
-     * The returned value is between 000000-ffffff.
+     * Returns a random hex value. The returned value is between 000000-ffffff.
      *
      * @return hexInteger between min and max, inclusive.
      */
@@ -370,8 +344,7 @@ public class MathUtils {
     }
 
     public static int safeInt(long number) {
-        return number > GT_Values.V[GT_Values.V.length - 1]
-                ? safeInt(GT_Values.V[GT_Values.V.length - 1], 1)
+        return number > GT_Values.V[GT_Values.V.length - 1] ? safeInt(GT_Values.V[GT_Values.V.length - 1], 1)
                 : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
     }
 
@@ -534,6 +507,7 @@ public class MathUtils {
 
     /**
      * Inverts the value, making Positives into Negatives and vice versa.
+     * 
      * @param aPositive - An int value, either positive or negative.
      * @return - Inverted int Value.
      */
@@ -669,9 +643,10 @@ public class MathUtils {
 
     /**
      * Balances a number within a range.
+     * 
      * @param aInput - The number to balance
-     * @param aMin - The minimum bounds
-     * @param aMax - The maximum bounds
+     * @param aMin   - The minimum bounds
+     * @param aMax   - The maximum bounds
      * @return - An Integer which will be between the bounds, or a boundary value.
      */
     public static int balance(int aInput, int aMin, int aMax) {
@@ -680,9 +655,10 @@ public class MathUtils {
 
     /**
      * Balances a number within a range.
+     * 
      * @param aInput - The number to balance
-     * @param aMin - The minimum bounds
-     * @param aMax - The maximum bounds
+     * @param aMin   - The minimum bounds
+     * @param aMax   - The maximum bounds
      * @return - A Number which will be between the bounds, or a boundary value.
      */
     public static Number balance(Number aInput, Number aMin, Number aMax) {
@@ -691,21 +667,23 @@ public class MathUtils {
 
     /**
      * Balances a number within a range.
+     * 
      * @param aInput - The number to balance
-     * @param aMin - The minimum bounds
-     * @param aMax - The maximum bounds
+     * @param aMin   - The minimum bounds
+     * @param aMax   - The maximum bounds
      * @return - An Integer which will be between the bounds, or a boundary value.
      */
     public static int balanceInt(Number aInput, Number aMin, Number aMax) {
-        return MathUtils.safeCast_LongToInt(
-                (long) balance(max(min(aInput, aMax), aMin), Integer.MIN_VALUE, Integer.MAX_VALUE));
+        return MathUtils
+                .safeCast_LongToInt((long) balance(max(min(aInput, aMax), aMin), Integer.MIN_VALUE, Integer.MAX_VALUE));
     }
 
     /**
      * Balances a number within a range.
+     * 
      * @param aInput - The number to balance
-     * @param aMin - The minimum bounds
-     * @param aMax - The maximum bounds
+     * @param aMin   - The minimum bounds
+     * @param aMax   - The maximum bounds
      * @return - A Long which will be between the bounds, or a boundary value.
      */
     public static long balanceLong(Number aInput, Number aMin, Number aMax) {
@@ -724,28 +702,24 @@ public class MathUtils {
     }
 
     /**
-     * Returns the smaller of two {@code Number}s. That is,
-     * the result the argument closer to the value of
-     * {@link Long#MIN_VALUE}.  If the arguments have the same
-     * value, the result is that same value.
+     * Returns the smaller of two {@code Number}s. That is, the result the argument closer to the value of
+     * {@link Long#MIN_VALUE}. If the arguments have the same value, the result is that same value.
      *
-     * @param   a   an argument.
-     * @param   b   another argument.
-     * @return  the smaller of {@code a} and {@code b}.
+     * @param a an argument.
+     * @param b another argument.
+     * @return the smaller of {@code a} and {@code b}.
      */
     public static Number min(Number a, Number b) {
         return (a.longValue() <= b.longValue()) ? a : b;
     }
 
     /**
-     * Returns the greater of two {@code Number}s. That is, the
-     * result is the argument closer to the value of
-     * {@link Long#MAX_VALUE}. If the arguments have the same value,
-     * the result is that same value.
+     * Returns the greater of two {@code Number}s. That is, the result is the argument closer to the value of
+     * {@link Long#MAX_VALUE}. If the arguments have the same value, the result is that same value.
      *
-     * @param   a   an argument.
-     * @param   b   another argument.
-     * @return  the larger of {@code a} and {@code b}.
+     * @param a an argument.
+     * @param b another argument.
+     * @return the larger of {@code a} and {@code b}.
      */
     public static Number max(Number a, Number b) {
         return (a.longValue() >= b.longValue()) ? a : b;
@@ -759,7 +733,7 @@ public class MathUtils {
     public static int[] splitLongIntoTwoIntegers(long aNum) {
         int a = (int) (aNum >> 32);
         int b = (int) aNum;
-        return new int[] {a, b};
+        return new int[] { a, b };
     }
 
     public static String formatNumbers(long aNumber) {

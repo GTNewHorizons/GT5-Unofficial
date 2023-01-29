@@ -28,17 +28,8 @@ public class GTPP_Worldgen_Handler implements Runnable {
                 ore.aSporadic);
     }
 
-    private final GTPP_Worldgen_GT_Ore_Layer generateNewVein(
-            String mOreMixName,
-            int minY,
-            int maxY,
-            int weight,
-            int density,
-            int size,
-            Material aPrimary,
-            Material aSecondary,
-            Material aBetween,
-            Material aSporadic) {
+    private final GTPP_Worldgen_GT_Ore_Layer generateNewVein(String mOreMixName, int minY, int maxY, int weight,
+            int density, int size, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         return new GTPP_Worldgen_GT_Ore_Layer(
                 "ore.mix." + mOreMixName, // String aName,
                 true, // boolean aDefault,

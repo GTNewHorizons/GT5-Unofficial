@@ -1,5 +1,13 @@
 package gtPlusPlus.core.item.crafting;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.ModItems;
@@ -7,16 +15,11 @@ import gtPlusPlus.core.item.general.ItemGenericToken;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 public class ItemDummyResearch extends ItemGenericToken {
 
     public static enum ASSEMBLY_LINE_RESEARCH {
+
         RESEARCH_1_CONTAINMENT("Containment Fields", "Advanced scientific study"),
         RESEARCH_2_BASIC_CHEM("Basic Chemistry", "Time to start at the beginning"),
         RESEARCH_3_ADV_CHEM("Advanced Chemistry", "Best learn more than chemical equations"),
@@ -52,13 +55,13 @@ public class ItemDummyResearch extends ItemGenericToken {
     private int aID = 0;
 
     public ItemDummyResearch() {
-        super("dummyResearch", "Research", new String[] {"This object requires some further study"}, "research");
+        super("dummyResearch", "Research", new String[] { "This object requires some further study" }, "research");
     }
 
     /**
      *
      * @param aResearchType - What is the research for?
-     * @param aDescriptThe - tooltip for this research
+     * @param aDescriptThe  - tooltip for this research
      * @return - Did we register a custom research item?
      */
     public boolean register(String aResearchType, String aDescript) {
@@ -73,7 +76,7 @@ public class ItemDummyResearch extends ItemGenericToken {
                 id,
                 aLocalName,
                 1,
-                new String[] {aDescript, EnumChatFormatting.DARK_GRAY + "Used to further your knowledge"},
+                new String[] { aDescript, EnumChatFormatting.DARK_GRAY + "Used to further your knowledge" },
                 EnumRarity.common,
                 EnumChatFormatting.LIGHT_PURPLE);
     }

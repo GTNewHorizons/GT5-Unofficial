@@ -2,6 +2,19 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -13,17 +26,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_TieredMachineBlock {
 
@@ -35,7 +37,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     private static CustomIcon _mGTIco_Norm_Active;
     private static CustomIcon _mGTIco_TE_Idle;
     private static CustomIcon _mGTIco_TE_Active;
-    private static int[] mAccelerateStatic = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512, 512};
+    private static int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512, 512 };
 
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
@@ -64,18 +66,17 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     @Override
     public String[] getDescription() {
         return new String[] {
-            String.format(
-                    "Accelerating things (Radius: %d EU/t: %d Speed Bonus: x%d)",
-                    mTier, getEnergyDemand(mTier, false), mAccelerateStatic[mTier]),
-            "Use a screwdriver to change mode",
-            "To accelerate TileEntities, this machine has to be adjacent to it",
-            "This machine accepts up to 8 Amps",
-            "Accelerating TileEntities doubles Energy-Demand"
-        };
+                String.format(
+                        "Accelerating things (Radius: %d EU/t: %d Speed Bonus: x%d)",
+                        mTier,
+                        getEnergyDemand(mTier, false),
+                        mAccelerateStatic[mTier]),
+                "Use a screwdriver to change mode", "To accelerate TileEntities, this machine has to be adjacent to it",
+                "This machine accepts up to 8 Amps", "Accelerating TileEntities doubles Energy-Demand" };
     }
 
-    public GT_MetaTileEntity_WorldAccelerator(
-            String pName, int pTier, int pInvSlotCount, String pDescription, ITexture[][][] pTextures) {
+    public GT_MetaTileEntity_WorldAccelerator(String pName, int pTier, int pInvSlotCount, String pDescription,
+            ITexture[][][] pTextures) {
         super(pName, pTier, pInvSlotCount, pDescription, pTextures);
     }
 
@@ -90,29 +91,13 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity pBaseMetaTileEntity,
-            byte pSide,
-            byte pFacing,
-            byte pColorIndex,
-            boolean pActive,
-            boolean pRedstone) {
-        if (mMode == 0)
-            return new ITexture[] {
-                Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1],
-                (pSide < 2)
-                        ? null
-                        : pActive
-                                ? new GT_RenderedTexture(_mGTIco_Norm_Active)
-                                : new GT_RenderedTexture(_mGTIco_Norm_Idle)
-            };
-        else
-            return new ITexture[] {
-                Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1],
-                (pSide < 2)
-                        ? null
-                        : pActive ? new GT_RenderedTexture(_mGTIco_TE_Active) : new GT_RenderedTexture(_mGTIco_TE_Idle)
-            };
+    public ITexture[] getTexture(IGregTechTileEntity pBaseMetaTileEntity, byte pSide, byte pFacing, byte pColorIndex,
+            boolean pActive, boolean pRedstone) {
+        if (mMode == 0) return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1], (pSide < 2)
+                ? null
+                : pActive ? new GT_RenderedTexture(_mGTIco_Norm_Active) : new GT_RenderedTexture(_mGTIco_Norm_Idle) };
+        else return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1], (pSide < 2) ? null
+                : pActive ? new GT_RenderedTexture(_mGTIco_TE_Active) : new GT_RenderedTexture(_mGTIco_TE_Idle) };
     }
 
     @Override
@@ -189,7 +174,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
         return 8;
     }
 
-    private static String[] mModeStr = {"Blocks", "TileEntities"};
+    private static String[] mModeStr = { "Blocks", "TileEntities" };
 
     @Override
     public void onScrewdriverRightClick(byte pSide, EntityPlayer pPlayer, float pX, float pY, float pZ) {
@@ -259,9 +244,9 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
 
         String tSimpleClassName = pTile.getClass().getSimpleName().toLowerCase();
         String tCanonicalName = pTile.getClass().getCanonicalName().toLowerCase();
-        if (tSimpleClassName.contains("conduit")
-                || tSimpleClassName.contains("wire")
-                || tSimpleClassName.contains("cable")) return true;
+        if (tSimpleClassName.contains("conduit") || tSimpleClassName.contains("wire")
+                || tSimpleClassName.contains("cable"))
+            return true;
         if (tCanonicalName.contains("appeng") || tCanonicalName.contains("gregtech"))
             // Don't accelerate ANY Gregtech machines!
             return true;
@@ -273,10 +258,9 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     }
 
     /**
-     * Accelerate normal blocks. Eats some power and adds randomTicks to every
-     * block within its working area (Tier-Number = radius) This does only
-     * affect blocks that implement the "RandomTick" method; Which is mostly
-     * used for grass growth and plants.
+     * Accelerate normal blocks. Eats some power and adds randomTicks to every block within its working area
+     * (Tier-Number = radius) This does only affect blocks that implement the "RandomTick" method; Which is mostly used
+     * for grass growth and plants.
      *
      * @param pBaseMetaTileEntity
      */
@@ -295,9 +279,8 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
         int tZ1 = tZ - mTier;
         int tZ2 = tZ + mTier;
 
-        for (int xi = tX1; xi <= tX2; xi++)
-            for (int yi = tY1; yi <= tY2; yi++)
-                for (int zi = tZ1; zi <= tZ2; zi++) tryTickBlock(pWorld, xi, yi, zi, rnd);
+        for (int xi = tX1; xi <= tX2; xi++) for (int yi = tY1; yi <= tY2; yi++)
+            for (int zi = tZ1; zi <= tZ2; zi++) tryTickBlock(pWorld, xi, yi, zi, rnd);
     }
 
     /**

@@ -2,16 +2,19 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class ClassTransformer_IC2_GetHarvestTool {
 
@@ -72,8 +75,8 @@ public class ClassTransformer_IC2_GetHarvestTool {
                 injectMethod(aName_damageDropped);
             } else if (aClassName.equals("ic2.core.block.generator.block.BlockGenerator")
                     || aClassName.equals("ic2.core.block.machine.BlockMachine")) {
-                injectMethod(aName_damageDropped);
-            }
+                        injectMethod(aName_damageDropped);
+                    }
         }
     }
 
@@ -119,7 +122,11 @@ public class ClassTransformer_IC2_GetHarvestTool {
             didInject = true;
         } else if (aMethodName.equals(aName_getItemDropped)) {
             mv = cw.visitMethod(
-                    ACC_PUBLIC, aName_getItemDropped, "(ILjava/util/Random;I)Lnet/minecraft/item/Item;", null, null);
+                    ACC_PUBLIC,
+                    aName_getItemDropped,
+                    "(ILjava/util/Random;I)Lnet/minecraft/item/Item;",
+                    null,
+                    null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -196,23 +203,23 @@ public class ClassTransformer_IC2_GetHarvestTool {
                 }
             } else if (aClassName.equals("ic2.core.block.generator.block.BlockGenerator")
                     || aClassName.equals("ic2.core.block.machine.BlockMachine")) {
-                if (name.equals(aName_damageDropped)) {
-                    methodVisitor = null;
-                } else if (name.equals("getHarvestTool")) {
-                    methodVisitor = null;
-                } else {
-                    methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
-                }
-            } else {
-                if (name.equals("getHarvestTool")) {
-                    methodVisitor = null;
-                } else {
-                    methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
-                }
-            }
+                        if (name.equals(aName_damageDropped)) {
+                            methodVisitor = null;
+                        } else if (name.equals("getHarvestTool")) {
+                            methodVisitor = null;
+                        } else {
+                            methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+                        }
+                    } else {
+                        if (name.equals("getHarvestTool")) {
+                            methodVisitor = null;
+                        } else {
+                            methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+                        }
+                    }
             if (methodVisitor == null) {
-                FMLRelaunchLog.log(
-                        "[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Found method " + name + ", removing.");
+                FMLRelaunchLog
+                        .log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Found method " + name + ", removing.");
             }
             return methodVisitor;
         }

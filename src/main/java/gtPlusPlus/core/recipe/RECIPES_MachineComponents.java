@@ -725,8 +725,7 @@ public class RECIPES_MachineComponents {
                     1024);
             for (final Materials tMat : Materials.values()) {
                 if ((tMat.mStandardMoltenFluid != null) && (tMat.contains(SubTag.SOLDERING_MATERIAL))) {
-                    final int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD)
-                            ? 1
+                    final int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1
                             : tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
                     GT_Values.RA.addAssemblerRecipe(
                             GregtechItemList.Circuit_Board_IV.get(1L, new Object[0]),

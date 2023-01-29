@@ -1,14 +1,16 @@
 package gtPlusPlus.core.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import java.util.*;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class MobMentality {
 
@@ -26,7 +28,7 @@ public class MobMentality {
             final EntityLivingBase entity = target;
             final Entity attacker = event.source.getSourceOfDamage();
             if (
-            /*this.configuration.shouldIgnoreNeutralMobs() && */ !(entity instanceof IMob)) {
+            /* this.configuration.shouldIgnoreNeutralMobs() && */ !(entity instanceof IMob)) {
                 return;
             }
             if (attacker == null) {

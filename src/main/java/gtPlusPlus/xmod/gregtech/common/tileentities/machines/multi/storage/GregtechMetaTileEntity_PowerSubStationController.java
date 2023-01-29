@@ -9,6 +9,17 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -23,6 +34,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -50,15 +62,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants.NBT;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_PowerSubStationController>
@@ -86,8 +89,8 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private TopState topState = TopState.MayBeTop;
     private static IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> STRUCTURE_DEFINITION = null;
 
-    public GregtechMetaTileEntity_PowerSubStationController(
-            final int aID, final String aName, final String aNameRegional) {
+    public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName,
+            final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -106,48 +109,36 @@ public class GregtechMetaTileEntity_PowerSubStationController
         tt.addMachineType(getMachineType())
                 .addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
                 .addInfo("Does not require maintenance")
-                .addInfo("Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-"
-                        + (CELL_HEIGHT_MAX + 2) + "")
+                .addInfo(
+                        "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2)
+                                + "-"
+                                + (CELL_HEIGHT_MAX + 2)
+                                + "")
                 .addInfo("Hatches can be placed nearly anywhere")
                 .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
-                .addInfo("Supports voltages >= UHV using MAX tier components.")
-                .addSeparator()
-                .addController("Bottom Center")
-                .addCasingInfo("Sub-Station External Casings", 10)
-                .addDynamoHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
+                .addInfo("Supports voltages >= UHV using MAX tier components.").addSeparator()
+                .addController("Bottom Center").addCasingInfo("Sub-Station External Casings", 10)
+                .addDynamoHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addSubChannelUsage("capacitor", "Vanadium Capacitor Cell Tier")
-                .addSubChannelUsage("height", "Height of structure")
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addSubChannelUsage("height", "Height of structure").toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                new GT_RenderedTexture(
-                        aActive
-                                ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
-                                : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER)
-            };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
+                    new GT_RenderedTexture(
+                            aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
+                                    : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
         }
         if (aSide == this.getBaseMetaTileEntity().getBackFacing()) {
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                mIsOutputtingPower
-                        ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[(int) this.getOutputTier()]
-                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[(int) this.getInputTier()]
-            };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
+                    mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[(int) this.getOutputTier()]
+                            : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[(int) this.getInputTier()] };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(23))};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(23)) };
     }
 
     @Override
@@ -232,36 +223,36 @@ public class GregtechMetaTileEntity_PowerSubStationController
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_PowerSubStationController>builder()
                     .addShape(
-                            mName + "bottom", transpose(new String[][] {{"BB~BB", "BBBBB", "BBBBB", "BBBBB", "BBBBB"}}))
+                            mName + "bottom",
+                            transpose(new String[][] { { "BB~BB", "BBBBB", "BBBBB", "BBBBB", "BBBBB" } }))
                     .addShape(
-                            mName + "layer", transpose(new String[][] {{"CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC"}}))
-                    .addShape(mName + "mid", transpose(new String[][] {{"CCCCC", "CHHHC", "CHHHC", "CHHHC", "CCCCC"}}))
-                    .addShape(mName + "top", transpose(new String[][] {{"TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT"}}))
+                            mName + "layer",
+                            transpose(new String[][] { { "CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC" } }))
+                    .addShape(
+                            mName + "mid",
+                            transpose(new String[][] { { "CCCCC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" } }))
+                    .addShape(
+                            mName + "top",
+                            transpose(new String[][] { { "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT" } }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
                                     .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                                     .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                    .casingIndex(TAE.GTPP_INDEX(24))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.GTPP_INDEX(24)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                     .addElement(
                             'B',
                             buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
                                     .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
-                                    .disallowOnly(ForgeDirection.UP)
-                                    .casingIndex(TAE.GTPP_INDEX(24))
-                                    .dot(1)
+                                    .disallowOnly(ForgeDirection.UP).casingIndex(TAE.GTPP_INDEX(24)).dot(1)
                                     .buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                     .addElement(
                             'T',
                             buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
                                     .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
-                                    .disallowOnly(ForgeDirection.DOWN)
-                                    .casingIndex(TAE.GTPP_INDEX(24))
-                                    .dot(1)
+                                    .disallowOnly(ForgeDirection.DOWN).casingIndex(TAE.GTPP_INDEX(24)).dot(1)
                                     .buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                     .addElement(
@@ -274,8 +265,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                                                     onElementPass(
                                                             x -> x.topState = TopState.Top,
                                                             ofHatchAdderOptional(
-                                                                    GregtechMetaTileEntity_PowerSubStationController
-                                                                            ::addPowerSubStationList,
+                                                                    GregtechMetaTileEntity_PowerSubStationController::addPowerSubStationList,
                                                                     TAE.GTPP_INDEX(24),
                                                                     1,
                                                                     ModBlocks.blockCasings2Misc,
@@ -291,15 +281,16 @@ public class GregtechMetaTileEntity_PowerSubStationController
                                                                     onElementPass(x -> ++x.cellCount[3], ofCell(7)),
                                                                     onElementPass(x -> ++x.cellCount[4], ofCell(8)),
                                                                     onElementPass(
-                                                                            x -> ++x.cellCount[5], ofCell(9))))))))
-                    .addElement('H', ofCell(4))
-                    .build();
+                                                                            x -> ++x.cellCount[5],
+                                                                            ofCell(9))))))))
+                    .addElement('H', ofCell(4)).build();
         }
         return STRUCTURE_DEFINITION;
     }
 
     public static <T> IStructureElement<T> ofCell(int aIndex) {
         return new IStructureElement<T>() {
+
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
@@ -338,14 +329,14 @@ public class GregtechMetaTileEntity_PowerSubStationController
 
             @Nullable
             @Override
-            public BlocksToPlace getBlocksToPlace(
-                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                    AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(getBlockFromTier(trigger.stackSize), getMetaFromTier(trigger.stackSize));
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(
-                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                    AutoPlaceEnvironment env) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
                 int tier = getCellTier(block, meta);
@@ -707,41 +698,54 @@ public class GregtechMetaTileEntity_PowerSubStationController
 
         String storedEnergyText;
         if (this.getEUVar() > this.mBatteryCapacity) {
-            storedEnergyText =
-                    EnumChatFormatting.RED + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
+            storedEnergyText = EnumChatFormatting.RED + GT_Utility.formatNumbers(this.getEUVar())
+                    + EnumChatFormatting.RESET;
         } else {
-            storedEnergyText =
-                    EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
+            storedEnergyText = EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar())
+                    + EnumChatFormatting.RESET;
         }
 
         int errorCode = this.getBaseMetaTileEntity().getErrorDisplayID();
         boolean mMaint = (errorCode != 0);
 
-        return new String[] {
-            "Ergon Energy - District Sub-Station",
-            "Stored EU: " + storedEnergyText,
-            "Capacity: " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.maxEUStore())
-                    + EnumChatFormatting.RESET,
-            "Running Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.computeEnergyTax())
-                    + EnumChatFormatting.RESET + " EU/t",
-            "Controller Mode: " + mode,
-            "Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + mMaint
-                    + EnumChatFormatting.RESET + " | Code: ["
-                    + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + errorCode
-                    + EnumChatFormatting.RESET + "]",
-            "----------------------",
-            "Stats for Nerds",
-            "Average Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.getAverageEuAdded())
-                    + EnumChatFormatting.RESET + " EU",
-            "Average Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.getAverageEuConsumed())
-                    + EnumChatFormatting.RESET + " EU",
-            "Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded)
-                    + EnumChatFormatting.RESET + " EU",
-            "Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed)
-                    + EnumChatFormatting.RESET + " EU",
-            "Total Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mTotalEnergyLost)
-                    + EnumChatFormatting.RESET + " EU",
-        };
+        return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
+                "Capacity: " + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(this.maxEUStore())
+                        + EnumChatFormatting.RESET,
+                "Running Costs: " + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(this.computeEnergyTax())
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                "Controller Mode: " + mode,
+                "Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                        + mMaint
+                        + EnumChatFormatting.RESET
+                        + " | Code: ["
+                        + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                        + errorCode
+                        + EnumChatFormatting.RESET
+                        + "]",
+                "----------------------", "Stats for Nerds",
+                "Average Input: " + EnumChatFormatting.BLUE
+                        + GT_Utility.formatNumbers(this.getAverageEuAdded())
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                "Average Output: " + EnumChatFormatting.GOLD
+                        + GT_Utility.formatNumbers(this.getAverageEuConsumed())
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                "Total Input: " + EnumChatFormatting.BLUE
+                        + GT_Utility.formatNumbers(this.mTotalEnergyAdded)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                "Total Output: " + EnumChatFormatting.GOLD
+                        + GT_Utility.formatNumbers(this.mTotalEnergyConsumed)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                "Total Costs: " + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(this.mTotalEnergyLost)
+                        + EnumChatFormatting.RESET
+                        + " EU", };
     }
 
     @Override
@@ -841,79 +845,65 @@ public class GregtechMetaTileEntity_PowerSubStationController
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(175, 166));
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                        .setPos(175, 166));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(4, 4)
-                        .setSize(149, 149))
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(149, 149))
                 .widget(new SlotWidget(inventoryHandler, 0).setPos(154, 4))
-                .widget(new SlotWidget(inventoryHandler, 1)
-                        .setAccess(true, false)
-                        .setPos(154, 22))
-                .widget(SlotGroup.ofItemHandler(new PlayerMainInvWrapper(buildContext.getPlayer().inventory), 9)
-                        .endAtSlot(8)
-                        .build()
-                        .setPos(7, 166))
-                .widget(TextWidget.dynamicString(() -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                                ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
-                                : "")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 8))
-                .widget(new FakeSyncWidget.BooleanSyncer(
-                        () -> getBaseMetaTileEntity().isActive(),
-                        val -> getBaseMetaTileEntity().setActive(val)))
-                .widget(new FakeSyncWidget.IntegerSyncer(
-                        () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                        val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
-                .widget(new TextWidget("In")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(178, 10))
-                .widget(new TextWidget("Out")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(176, 28))
-                .widget(TextWidget.dynamicString(
-                                () -> "Avg In: " + GT_Utility.formatNumbers(getAverageEuAdded()) + " EU")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 20))
-                .widget(TextWidget.dynamicString(
-                                () -> "Avg Out: " + GT_Utility.formatNumbers(getAverageEuConsumed()) + " EU")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 30))
-                .widget(new DrawableWidget()
-                        .setDrawable(GTPP_UITextures.PICTURE_ENERGY_FRAME)
-                        .setPos(4, 155)
-                        .setSize(149, 7))
-                .widget(new ProgressBar()
-                        .setProgress(this::getProgress)
-                        .setTexture(GTPP_UITextures.PROGRESSBAR_PSS_ENERGY, 147)
-                        .setDirection(ProgressBar.Direction.RIGHT)
-                        .setPos(5, 156)
-                        .setSize(147, 5))
-                .widget(new TextWidget("Stored:")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 132))
+                .widget(new SlotWidget(inventoryHandler, 1).setAccess(true, false).setPos(154, 22))
+                .widget(
+                        SlotGroup.ofItemHandler(new PlayerMainInvWrapper(buildContext.getPlayer().inventory), 9)
+                                .endAtSlot(8).build().setPos(7, 166))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                                ? getBaseMetaTileEntity().isActive() ? "Running perfectly"
+                                                        : "Turn on with Mallet"
+                                                : "")
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 8))
+                .widget(
+                        new FakeSyncWidget.BooleanSyncer(
+                                () -> getBaseMetaTileEntity().isActive(),
+                                val -> getBaseMetaTileEntity().setActive(val)))
+                .widget(
+                        new FakeSyncWidget.IntegerSyncer(
+                                () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                                val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+                .widget(new TextWidget("In").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(178, 10))
+                .widget(new TextWidget("Out").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(176, 28))
+                .widget(
+                        TextWidget
+                                .dynamicString(() -> "Avg In: " + GT_Utility.formatNumbers(getAverageEuAdded()) + " EU")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "Avg Out: " + GT_Utility.formatNumbers(getAverageEuConsumed()) + " EU")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30))
+                .widget(
+                        new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_ENERGY_FRAME).setPos(4, 155)
+                                .setSize(149, 7))
+                .widget(
+                        new ProgressBar().setProgress(this::getProgress)
+                                .setTexture(GTPP_UITextures.PROGRESSBAR_PSS_ENERGY, 147)
+                                .setDirection(ProgressBar.Direction.RIGHT).setPos(5, 156).setSize(147, 5))
+                .widget(new TextWidget("Stored:").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 132))
                 .widget(TextWidget.dynamicText(() -> {
-                            int colorScale = (int) (getProgress() * 100 * 2.55);
-                            return new Text(GT_Utility.formatNumbers(
-                                                    getBaseMetaTileEntity().getStoredEU()) + " EU")
-                                    .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
-                        })
-                        .setPos(10, 142))
-                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(getProgress() * 100) + "%")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(70, 155));
+                    int colorScale = (int) (getProgress() * 100 * 2.55);
+                    return new Text(GT_Utility.formatNumbers(getBaseMetaTileEntity().getStoredEU()) + " EU")
+                            .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
+                }).setPos(10, 142)).widget(
+                        TextWidget.dynamicString(() -> GT_Utility.formatNumbers(getProgress() * 100) + "%")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(70, 155));
     }
 
     private float getProgress() {
-        return (float) getBaseMetaTileEntity().getStoredEU()
-                / getBaseMetaTileEntity().getEUCapacity();
+        return (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity();
     }
 }

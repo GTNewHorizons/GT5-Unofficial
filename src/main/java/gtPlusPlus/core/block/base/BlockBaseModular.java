@@ -1,5 +1,13 @@
 package gtPlusPlus.core.block.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,12 +22,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
 
 public class BlockBaseModular extends BasicBlock {
 
@@ -58,12 +60,8 @@ public class BlockBaseModular extends BasicBlock {
         }
     }
 
-    protected BlockBaseModular(
-            final String unlocalizedName,
-            final String blockMaterialString,
-            final net.minecraft.block.material.Material vanillaMaterial,
-            final BlockTypes blockType,
-            final int colour,
+    protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
+            final net.minecraft.block.material.Material vanillaMaterial, final BlockTypes blockType, final int colour,
             final int miningLevel) {
         super(blockType, unlocalizedName, vanillaMaterial, miningLevel);
         this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
@@ -74,18 +72,21 @@ public class BlockBaseModular extends BasicBlock {
         this.thisBlockType = blockType.name().toUpperCase();
         this.setBlockName(this.getUnlocalizedProperName());
         int fx = getBlockTypeMeta();
-        // ItemBlockGtBlock.sNameCache.put("block."+blockMaterial.getUnlocalizedName()+"."+this.thisBlock.name().toLowerCase(), GetProperName());
+        // ItemBlockGtBlock.sNameCache.put("block."+blockMaterial.getUnlocalizedName()+"."+this.thisBlock.name().toLowerCase(),
+        // GetProperName());
         GameRegistry.registerBlock(
-                this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
+                this,
+                ItemBlockGtBlock.class,
+                Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
-            GT_OreDictUnificator.registerOre(
-                    "block" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+            GT_OreDictUnificator
+                    .registerOre("block" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         } else if (fx == 1) {
-            GT_OreDictUnificator.registerOre(
-                    "frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+            GT_OreDictUnificator
+                    .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         } else if (fx == 2) {
-            GT_OreDictUnificator.registerOre(
-                    "frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+            GT_OreDictUnificator
+                    .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         }
     }
 
@@ -106,8 +107,8 @@ public class BlockBaseModular extends BasicBlock {
             aMap = new HashMap<String, ItemStack>();
         }
         int fx = getBlockTypeMeta();
-        String aKey =
-                (fx == 0 ? OrePrefixes.block.name() : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
+        String aKey = (fx == 0 ? OrePrefixes.block.name()
+                : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, ItemUtils.getSimpleStack(this));
@@ -133,8 +134,7 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1
-     * for alpha
+     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
      */
     @Override
     @SideOnly(Side.CLIENT)
@@ -158,24 +158,19 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public String getUnlocalizedProperName() {
-        return getProperName()
-                .replace("%s", "%temp")
-                .replace("%material", this.thisBlockMaterial)
+        return getProperName().replace("%s", "%temp").replace("%material", this.thisBlockMaterial)
                 .replace("%temp", "%s");
     }
 
     @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
-                .replace("%s", "%temp")
-                .replace("%material", this.thisBlockMaterialTranslatedName)
-                .replace("%temp", "%s");
+        return GT_LanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name").replace("%s", "%temp")
+                .replace("%material", this.thisBlockMaterialTranslatedName).replace("%temp", "%s");
     }
 
     @Override
     public String getUnlocalizedName() {
-        return "block." + blockMaterial.getUnlocalizedName() + "."
-                + this.thisBlock.name().toLowerCase();
+        return "block." + blockMaterial.getUnlocalizedName() + "." + this.thisBlock.name().toLowerCase();
     }
 
     @Override
@@ -190,8 +185,7 @@ public class BlockBaseModular extends BasicBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        if (!CORE.ConfigSwitches.useGregtechTextures
-                || this.blockMaterial == null
+        if (!CORE.ConfigSwitches.useGregtechTextures || this.blockMaterial == null
                 || this.thisBlock == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture());
         }

@@ -2,13 +2,14 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generat
 
 import static gregtech.api.enums.GT_Values.V;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_BasicTank {
 
@@ -18,18 +19,13 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
     public int mLossTimer = 0;
     public static int sEnergyPerTick = 16;
 
-    public GregtechMetaSolarGenerator(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final String aDescription,
-            final ITexture... aTextures) {
+    public GregtechMetaSolarGenerator(final int aID, final String aName, final String aNameRegional, final int aTier,
+            final String aDescription, final ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
-    public GregtechMetaSolarGenerator(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GregtechMetaSolarGenerator(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
@@ -52,26 +48,16 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, "Efficiency: " + this.getEfficiency() + "%"};
+        return new String[] { this.mDescription, "Efficiency: " + this.getEfficiency() + "%" };
     }
 
     @Override
@@ -84,23 +70,23 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -165,8 +151,7 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
 
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()
-                && aBaseMetaTileEntity.isAllowedToWork()
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
                 && (aTick > 20L)
                 && (aBaseMetaTileEntity.getUniversalEnergyStored()
                         < (this.maxEUOutput() + aBaseMetaTileEntity.getEUCapacity()))) {
@@ -182,8 +167,7 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
 
             if ((aTick % 25L) == 0L) {
                 if (this.mSolarCharge > 100) {
-                    if ((this.mProcessingEnergy > 0)
-                            && (aBaseMetaTileEntity.isAllowedToWork())
+                    if ((this.mProcessingEnergy > 0) && (aBaseMetaTileEntity.isAllowedToWork())
                             && ((aTick % 256L) == 0L)
                             && (!aBaseMetaTileEntity.getWorld().isThundering()
                                     && (aBaseMetaTileEntity.getUniversalEnergyStored()
@@ -199,21 +183,19 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
                 this.mSolarCharge += 1;
             }
 
-            if ((this.mProcessingEnergy <= 0)
-                    && (aBaseMetaTileEntity.isAllowedToWork())
+            if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork())
                     && ((aTick % 256L) == 0L)
                     && (!aBaseMetaTileEntity.getWorld().isThundering())) {
-                final boolean bRain =
-                        aBaseMetaTileEntity.getWorld().isRaining() && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
+                final boolean bRain = aBaseMetaTileEntity.getWorld().isRaining()
+                        && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
                 this.mProcessingEnergy += (bRain && (aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4))
-                                || !aBaseMetaTileEntity.getSkyAtSide((byte) 1)
-                        ? 0
-                        : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
+                        || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0
+                                : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
             }
 
             if (aBaseMetaTileEntity.isServerSide()) {
-                aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork()
-                        && (aBaseMetaTileEntity.getUniversalEnergyStored()
+                aBaseMetaTileEntity.setActive(
+                        aBaseMetaTileEntity.isAllowedToWork() && (aBaseMetaTileEntity.getUniversalEnergyStored()
                                 >= (this.maxEUOutput() + this.getMinimumStoredEU())));
             }
         }

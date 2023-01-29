@@ -6,9 +6,8 @@ import com.google.common.base.Optional;
 public class EnumUtils {
 
     /**
-     * Returns the value of an Enum if it exists.
-     * If value is not found, case-insensitive search will occur.
-     * If value still not found, an IllegalArgumentException is thrown.
+     * Returns the value of an Enum if it exists. If value is not found, case-insensitive search will occur. If value
+     * still not found, an IllegalArgumentException is thrown.
      **/
     public static <T extends Enum<T>> T getValue(Class<T> enumeration, String name) {
         Optional<T> j = Enums.getIfPresent(enumeration, name);
@@ -22,8 +21,8 @@ public class EnumUtils {
     }
 
     /**
-     * Finds the value of the given enumeration by name, case-insensitive.
-     * Throws an IllegalArgumentException if no match is found.
+     * Finds the value of the given enumeration by name, case-insensitive. Throws an IllegalArgumentException if no
+     * match is found.
      **/
     private static <T extends Enum<T>> T valueOfIgnoreCase(Class<T> enumeration, String name) {
 

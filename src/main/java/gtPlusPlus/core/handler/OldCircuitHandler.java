@@ -2,6 +2,11 @@ package gtPlusPlus.core.handler;
 
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableOldGTcircuits;
 
+import java.lang.reflect.Field;
+import java.util.HashSet;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.EmptyRecipeMap;
 import gregtech.api.util.GT_Recipe;
@@ -11,9 +16,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 public class OldCircuitHandler {
 

@@ -1,16 +1,7 @@
 package gtPlusPlus.core.item.general;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.blocks.GT_Block_Ores;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +14,17 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.common.blocks.GT_Block_Ores;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.block.base.BlockBaseOre;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+
 public class ItemAreaClear extends CoreItem {
 
     public IIcon[] mIcon = new IIcon[1];
@@ -33,7 +35,7 @@ public class ItemAreaClear extends CoreItem {
                 AddToCreativeTab.tabMachines,
                 1,
                 100,
-                new String[] {EnumChatFormatting.OBFUSCATED + "F A N C Y   N A M E"},
+                new String[] { EnumChatFormatting.OBFUSCATED + "F A N C Y   N A M E" },
                 EnumRarity.rare,
                 EnumChatFormatting.BOLD,
                 false,
@@ -148,7 +150,7 @@ public class ItemAreaClear extends CoreItem {
                             }
                         } else {
                             if ((world.getBlock(pos.xPos + i, pos.yPos + j, pos.zPos) == Blocks.glowstone
-                                            && ((pos.yPos + j) > 50))
+                                    && ((pos.yPos + j) > 50))
                                     || world.getBlock(pos.xPos + i, pos.yPos + j, pos.zPos) != Blocks.glowstone) {
                                 world.setBlockToAir(pos.xPos + i, pos.yPos + j, pos.zPos);
                             }

@@ -1,7 +1,8 @@
 package gtPlusPlus.everglades.object;
 
-import gtPlusPlus.api.objects.data.Pair;
 import net.minecraft.block.Block;
+
+import gtPlusPlus.api.objects.data.Pair;
 
 public class BoxedQuad<K, V, C, R> {
 
@@ -11,16 +12,13 @@ public class BoxedQuad<K, V, C, R> {
     private final Pair<Block, Integer> value3;
     private final Pair<Block, Integer>[] mInternalPairArray;
 
-    public BoxedQuad(
-            final Pair<Block, Integer> key,
-            final Pair<Block, Integer> value,
-            final Pair<Block, Integer> value2,
-            final Pair<Block, Integer> value3) {
+    public BoxedQuad(final Pair<Block, Integer> key, final Pair<Block, Integer> value,
+            final Pair<Block, Integer> value2, final Pair<Block, Integer> value3) {
         this.key = key;
         this.value = value;
         this.value2 = value2;
         this.value3 = value3;
-        mInternalPairArray = new Pair[] {key, value, value2, value3};
+        mInternalPairArray = new Pair[] { key, value, value2, value3 };
     }
 
     public final Pair<Block, Integer> getKey() {

@@ -5,31 +5,38 @@ import static gtPlusPlus.core.lib.CORE.*;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import java.io.File;
+
 import net.minecraftforge.common.config.Configuration;
+
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class ConfigHandler {
 
     public static void handleConfigFile(final FMLPreInitializationEvent event) {
-        final Configuration config =
-                new Configuration(new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
+        final Configuration config = new Configuration(
+                new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
         config.load();
 
         // Debug
-        /*		DEBUG = config.getBoolean("debugMode", "debug", false,
-        "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");*/
-        disableEnderIOIntegration =
-                config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
+        /*
+         * DEBUG = config.getBoolean("debugMode", "debug", false,
+         * "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
+         */
+        disableEnderIOIntegration = config
+                .getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
         disableEnderIOIngotTooltips = config.getBoolean(
                 "disableEnderIOIngotTooltips",
                 "debug",
                 false,
                 "Disables EnderIO Ingot Tooltips. These apparently may cause issues for a very small number of users.");
         MACHINE_INFO = config.getBoolean(
-                "enableMachineInfoLogging", "debug", false, "Makes many machines display lots of debug logging.");
-        showHiddenNEIItems =
-                config.getBoolean("showHiddenNEIItems", "debug", false, "Makes all items hidden from NEI display.");
+                "enableMachineInfoLogging",
+                "debug",
+                false,
+                "Makes many machines display lots of debug logging.");
+        showHiddenNEIItems = config
+                .getBoolean("showHiddenNEIItems", "debug", false, "Makes all items hidden from NEI display.");
         dumpItemAndBlockData = config.getBoolean(
                 "dumpItemAndBlockData",
                 "debug",
@@ -52,8 +59,8 @@ public class ConfigHandler {
                 "machines",
                 false,
                 "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
-        enableAlternativeDivisionSigilRecipe = config.getBoolean(
-                "enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
+        enableAlternativeDivisionSigilRecipe = config
+                .getBoolean("enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
         boilerSteamPerSecond = config.getInt(
                 "boilerSteamPerSecond",
                 "machines",
@@ -90,8 +97,8 @@ public class ConfigHandler {
                 "Adds Custom GT Shovels and Pickaxes which mine in a 3x3 style. One of each whill be generated for each Gregtech Material which has Dense Plates and Long Rods available.");
 
         // GT-Fixes
-        enableNitroFix =
-                config.getBoolean("enableNitroFix", "gregtech", false, "Restores the old Nitro-Diesel recipes.");
+        enableNitroFix = config
+                .getBoolean("enableNitroFix", "gregtech", false, "Restores the old Nitro-Diesel recipes.");
         enableSulfuricAcidFix = config.getBoolean(
                 "enableSulfuricAcidFix",
                 "gregtech",
@@ -133,17 +140,20 @@ public class ConfigHandler {
 
         // Single machines
         enableMachine_SolarGenerators = config.getBoolean(
-                "enableSolarGenerators", "gregtech", false, "These may be overpowered, Consult a local electrician.");
-        enableMachine_ComponentAssemblers =
-                config.getBoolean("enableComponentAssemblers", "gregtech", true, "These construct machine components.");
-        enableMachine_Safes =
-                config.getBoolean("enableMachineSafes", "gregtech", true, "These protect your goodies/rare stuff.");
-        enableMachine_Dehydrators =
-                config.getBoolean("enableMachineDehydrators", "gregtech", true, "These dehydrate stuff.");
-        enableMachine_SteamConverter = config.getBoolean(
-                "enableMachineSteamConverter", "gregtech", true, "Converts IC2 steam -> Railcraft steam.");
-        enableMachine_FluidTanks =
-                config.getBoolean("enableMachineFluidTanks", "gregtech", true, "Portable fluid tanks.");
+                "enableSolarGenerators",
+                "gregtech",
+                false,
+                "These may be overpowered, Consult a local electrician.");
+        enableMachine_ComponentAssemblers = config
+                .getBoolean("enableComponentAssemblers", "gregtech", true, "These construct machine components.");
+        enableMachine_Safes = config
+                .getBoolean("enableMachineSafes", "gregtech", true, "These protect your goodies/rare stuff.");
+        enableMachine_Dehydrators = config
+                .getBoolean("enableMachineDehydrators", "gregtech", true, "These dehydrate stuff.");
+        enableMachine_SteamConverter = config
+                .getBoolean("enableMachineSteamConverter", "gregtech", true, "Converts IC2 steam -> Railcraft steam.");
+        enableMachine_FluidTanks = config
+                .getBoolean("enableMachineFluidTanks", "gregtech", true, "Portable fluid tanks.");
         enableMachine_RocketEngines = config.getBoolean(
                 "enableMachineRocketEngines",
                 "gregtech",
@@ -160,11 +170,17 @@ public class ConfigHandler {
                 true,
                 "These allow boosting Block/TileEntity Tick times [OP].");
         enableMachine_Tesseracts = config.getBoolean(
-                "enableMachineTesseracts", "gregtech", true, "Tesseracts for wireless item/fluid movement.");
+                "enableMachineTesseracts",
+                "gregtech",
+                true,
+                "Tesseracts for wireless item/fluid movement.");
         enableMachine_SimpleWasher = config.getBoolean(
-                "enableMachineSimpleWasher", "gregtech", true, "Very basic automated cauldron for dust washing.");
-        enableMachine_Pollution =
-                config.getBoolean("enableMachinePollution", "gregtech", true, "Pollution Detector & Scrubbers.");
+                "enableMachineSimpleWasher",
+                "gregtech",
+                true,
+                "Very basic automated cauldron for dust washing.");
+        enableMachine_Pollution = config
+                .getBoolean("enableMachinePollution", "gregtech", true, "Pollution Detector & Scrubbers.");
         enableMachine_RF_Convetor = config.getBoolean(
                 "enableMachineRFConvetor",
                 "gregtech",
@@ -177,8 +193,8 @@ public class ConfigHandler {
                 "gregtech",
                 true,
                 "Required to smelt most high tier materials from GT++. Also smelts everything else to molten metal.");
-        enableMultiblock_IndustrialCentrifuge =
-                config.getBoolean("enableMultiblockIndustrialCentrifuge", "gregtech", true, "Spin, Spin, Spiiiin.");
+        enableMultiblock_IndustrialCentrifuge = config
+                .getBoolean("enableMultiblockIndustrialCentrifuge", "gregtech", true, "Spin, Spin, Spiiiin.");
         enableMultiblock_IndustrialCokeOven = config.getBoolean(
                 "enableMultiblockIndustrialCokeOven",
                 "gregtech",
@@ -195,35 +211,53 @@ public class ConfigHandler {
                 true,
                 "A hyper efficient maceration tower, nets more bonus outputs.");
         enableMultiblock_IndustrialPlatePress = config.getBoolean(
-                "enableMultiblockIndustrialPlatePress", "gregtech", true, "Industrial bendering machine thingo.");
+                "enableMultiblockIndustrialPlatePress",
+                "gregtech",
+                true,
+                "Industrial bendering machine thingo.");
         enableMultiblock_IndustrialWireMill = config.getBoolean(
-                "enableMultiblockIndustrialWireMill", "gregtech", true, "Produces fine wire and exotic cables.");
-        enableMultiblock_IronBlastFurnace = config.getBoolean(
-                "enableMultiblockIronBlastFurnace", "gregtech", true, "Skip the Bronze age, very slowly.");
-        enableMultiblock_MatterFabricator =
-                config.getBoolean("enableMultiblockMatterFabricator", "gregtech", true, "?FAB?RIC?ATE MA?TT?ER.");
+                "enableMultiblockIndustrialWireMill",
+                "gregtech",
+                true,
+                "Produces fine wire and exotic cables.");
+        enableMultiblock_IronBlastFurnace = config
+                .getBoolean("enableMultiblockIronBlastFurnace", "gregtech", true, "Skip the Bronze age, very slowly.");
+        enableMultiblock_MatterFabricator = config
+                .getBoolean("enableMultiblockMatterFabricator", "gregtech", true, "?FAB?RIC?ATE MA?TT?ER.");
         enableMultiblock_MultiTank = config.getBoolean(
-                "enableMultiblockMultiTank", "gregtech", true, "Tall tanks, each layer adds extra fluid storage.");
-        enableMultiblock_PowerSubstation = config.getBoolean(
-                "enableMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
+                "enableMultiblockMultiTank",
+                "gregtech",
+                true,
+                "Tall tanks, each layer adds extra fluid storage.");
+        enableMultiblock_PowerSubstation = config
+                .getBoolean("enableMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
         enableMultiblock_LiquidFluorideThoriumReactor = config.getBoolean(
-                "enableMultiblockLiquidFluorideThoriumReactor", "gregtech", true, "For supplying large power grids.");
+                "enableMultiblockLiquidFluorideThoriumReactor",
+                "gregtech",
+                true,
+                "For supplying large power grids.");
         enableMultiblock_NuclearFuelRefinery = config.getBoolean(
                 "enableMultiblock_NuclearFuelRefinery",
                 "gregtech",
                 true,
                 "Refines molten chemicals into nuclear fuels.");
-        enableMultiblock_IndustrialSifter =
-                config.getBoolean("enableMultiblock_IndustrialSifter", "gregtech", true, "Large scale sifting.");
+        enableMultiblock_IndustrialSifter = config
+                .getBoolean("enableMultiblock_IndustrialSifter", "gregtech", true, "Large scale sifting.");
         enableMultiblock_LargeAutoCrafter = config.getBoolean(
                 "enableMultiblock_LargeAutoCrafter",
                 "gregtech",
                 true,
                 "Can Assemble, Disassemble and Craft Project data from Data Sticks.");
         enableMultiblock_IndustrialThermalCentrifuge = config.getBoolean(
-                "enableMultiblock_IndustrialThermalCentrifuge", "gregtech", true, "Your warm spin for the ore thing.");
+                "enableMultiblock_IndustrialThermalCentrifuge",
+                "gregtech",
+                true,
+                "Your warm spin for the ore thing.");
         enableMultiblock_IndustrialWashPlant = config.getBoolean(
-                "enableMultiblock_IndustrialWashPlant", "gregtech", true, "Used to wash the dirt, riiiiight offff..");
+                "enableMultiblock_IndustrialWashPlant",
+                "gregtech",
+                true,
+                "Used to wash the dirt, riiiiight offff..");
         enableMultiblock_ThermalBoiler = config.getBoolean(
                 "enableMachineThermalBoiler",
                 "gregtech",
@@ -235,7 +269,10 @@ public class ConfigHandler {
                 true,
                 "Very fast and efficient Cutting Machine.");
         enableMultiblock_IndustrialFishingPort = config.getBoolean(
-                "enableMultiblock_IndustrialFishingPort", "gregtech", true, "Fish the seas, except on land.");
+                "enableMultiblock_IndustrialFishingPort",
+                "gregtech",
+                true,
+                "Fish the seas, except on land.");
         enableMultiblock_IndustrialExtrudingMachine = config.getBoolean(
                 "enableMultiblock_IndustrialExtrudingMachine",
                 "gregtech",
@@ -246,8 +283,8 @@ public class ConfigHandler {
                 "gregtech",
                 true,
                 "Can run recipes for 9 different types of machines.");
-        enableMultiblock_Cyclotron =
-                config.getBoolean("enableMultiblock_Cyclotron", "gregtech", true, "COMET - Scientific Cyclotron.");
+        enableMultiblock_Cyclotron = config
+                .getBoolean("enableMultiblock_Cyclotron", "gregtech", true, "COMET - Scientific Cyclotron.");
 
         // Options
         rfPerEU = config.getInt(
@@ -261,7 +298,10 @@ public class ConfigHandler {
         // Features
         enableCustomCapes = config.getBoolean("enableSupporterCape", "features", true, "Enables Custom GT++ Cape.");
         disableZombieReinforcement = config.getBoolean(
-                "disableZombieReinforcement", "features", false, "Disables Zombie Reinforcement on hard difficutly.");
+                "disableZombieReinforcement",
+                "features",
+                false,
+                "Disables Zombie Reinforcement on hard difficutly.");
         enableWatchdogBGM = config.getInt(
                 "enableWatchdogBGM",
                 "features",
@@ -269,17 +309,17 @@ public class ConfigHandler {
                 0,
                 Short.MAX_VALUE,
                 "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
-        hideUniversalCells = config.getBoolean(
-                "hideUniversalCells", "features", true, "Hides every filled IC2 Universal Cell from NEI.");
+        hideUniversalCells = config
+                .getBoolean("hideUniversalCells", "features", true, "Hides every filled IC2 Universal Cell from NEI.");
 
         // Biomes
         EVERGLADES_ID = config.getInt("darkworld_ID", "worldgen", 227, 1, 254, "The ID of the Dark Dimension.");
-        EVERGLADESBIOME_ID =
-                config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
+        EVERGLADESBIOME_ID = config
+                .getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
 
         // Blacklisted Accelerator TileEntities
-        BlacklistedTileEntiyClassNames =
-                new String[] {"com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry"};
+        BlacklistedTileEntiyClassNames = new String[] {
+                "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry" };
         BlacklistedTileEntiyClassNames = config.getStringList(
                 "BlacklistedTileEntiyClassNames",
                 "gregtech",
@@ -287,318 +327,358 @@ public class ConfigHandler {
                 "The Canonical Class-Names of TileEntities that should be ignored by the WorldAccelerator");
 
         // Pollution
-        pollutionPerSecondMultiPackager = config.get(
+        pollutionPerSecondMultiPackager = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiPackager",
                         pollutionPerSecondMultiPackager,
                         "pollution rate in gibbl/s for the Amazon warehousing depot")
                 .getInt(pollutionPerSecondMultiPackager);
-        pollutionPerSecondMultiIndustrialAlloySmelter = config.get(
+        pollutionPerSecondMultiIndustrialAlloySmelter = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialAlloySmelter",
                         pollutionPerSecondMultiIndustrialAlloySmelter,
                         "pollution rate in gibbl/s for the Alloy blast smelter")
                 .getInt(pollutionPerSecondMultiIndustrialAlloySmelter);
-        pollutionPerSecondMultiIndustrialArcFurnace = config.get(
+        pollutionPerSecondMultiIndustrialArcFurnace = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialArcFurnace",
                         pollutionPerSecondMultiIndustrialArcFurnace,
                         "pollution rate in gibbl/s for the High current arc furnace")
                 .getInt(pollutionPerSecondMultiIndustrialArcFurnace);
-        pollutionPerSecondMultiIndustrialCentrifuge = config.get(
+        pollutionPerSecondMultiIndustrialCentrifuge = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialCentrifuge",
                         pollutionPerSecondMultiIndustrialCentrifuge,
                         "pollution rate in gibbl/s for the Industrial centrifuge")
                 .getInt(pollutionPerSecondMultiIndustrialCentrifuge);
-        pollutionPerSecondMultiIndustrialCokeOven = config.get(
+        pollutionPerSecondMultiIndustrialCokeOven = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialCokeOven",
                         pollutionPerSecondMultiIndustrialCokeOven,
                         "pollution rate in gibbl/s for the Industrial coke oven")
                 .getInt(pollutionPerSecondMultiIndustrialCokeOven);
-        pollutionPerSecondMultiIndustrialCuttingMachine = config.get(
+        pollutionPerSecondMultiIndustrialCuttingMachine = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialCuttingMachine",
                         pollutionPerSecondMultiIndustrialCuttingMachine,
                         "pollution rate in gibbl/s for the Cutting factory")
                 .getInt(pollutionPerSecondMultiIndustrialCuttingMachine);
-        pollutionPerSecondMultiIndustrialDehydrator = config.get(
+        pollutionPerSecondMultiIndustrialDehydrator = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialDehydrator",
                         pollutionPerSecondMultiIndustrialDehydrator,
                         "pollution rate in gibbl/s for the Utupu-Tanuri")
                 .getInt(pollutionPerSecondMultiIndustrialDehydrator);
-        pollutionPerSecondMultiIndustrialElectrolyzer = config.get(
+        pollutionPerSecondMultiIndustrialElectrolyzer = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialElectrolyzer",
                         pollutionPerSecondMultiIndustrialElectrolyzer,
                         "pollution rate in gibbl/s for the Industrial electrolyzer")
                 .getInt(pollutionPerSecondMultiIndustrialElectrolyzer);
-        pollutionPerSecondMultiIndustrialExtruder = config.get(
+        pollutionPerSecondMultiIndustrialExtruder = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialExtruder",
                         pollutionPerSecondMultiIndustrialExtruder,
                         "pollution rate in gibbl/s for the Industrial extrusion machine")
                 .getInt(pollutionPerSecondMultiIndustrialExtruder);
-        pollutionPerSecondMultiIndustrialMacerator = config.get(
+        pollutionPerSecondMultiIndustrialMacerator = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialMacerator",
                         pollutionPerSecondMultiIndustrialMacerator,
                         "pollution rate in gibbl/s for the Maceration stack")
                 .getInt(pollutionPerSecondMultiIndustrialMacerator);
-        pollutionPerSecondMultiIndustrialMixer = config.get(
+        pollutionPerSecondMultiIndustrialMixer = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialMixer",
                         pollutionPerSecondMultiIndustrialMixer,
                         "pollution rate in gibbl/s for the Industrial mixing machine")
                 .getInt(pollutionPerSecondMultiIndustrialMixer);
-        pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal = config.get(
+        pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal",
                         pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal,
                         "pollution rate in gibbl/s for the Large processing factory in metal mode")
                 .getInt(pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal);
-        pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid = config.get(
+        pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid",
                         pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid,
                         "pollution rate in gibbl/s for the Large processing factory in fluid mode")
                 .getInt(pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid);
-        pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc = config.get(
+        pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc",
                         pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc,
                         "pollution rate in gibbl/s for the Large processing factory in misc mode")
                 .getInt(pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc);
-        pollutionPerSecondMultiIndustrialPlatePress_ModeForming = config.get(
+        pollutionPerSecondMultiIndustrialPlatePress_ModeForming = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialPlatePress_ModeForming",
                         pollutionPerSecondMultiIndustrialPlatePress_ModeForming,
                         "pollution rate in gibbl/s for the Industrial material press in forming mode")
                 .getInt(pollutionPerSecondMultiIndustrialPlatePress_ModeForming);
-        pollutionPerSecondMultiIndustrialPlatePress_ModeBending = config.get(
+        pollutionPerSecondMultiIndustrialPlatePress_ModeBending = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialPlatePress_ModeBending",
                         pollutionPerSecondMultiIndustrialPlatePress_ModeBending,
                         "pollution rate in gibbl/s for the Industrial material press in bending mode")
                 .getInt(pollutionPerSecondMultiIndustrialPlatePress_ModeBending);
-        pollutionPerSecondMultiIndustrialForgeHammer = config.get(
+        pollutionPerSecondMultiIndustrialForgeHammer = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialForgeHammer",
                         pollutionPerSecondMultiIndustrialForgeHammer,
                         "pollution rate in gibbl/s for the Industrial Forge Hammer")
                 .getInt(pollutionPerSecondMultiIndustrialForgeHammer);
-        pollutionPerSecondMultiIndustrialSifter = config.get(
+        pollutionPerSecondMultiIndustrialSifter = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialSifter",
                         pollutionPerSecondMultiIndustrialSifter,
                         "pollution rate in gibbl/s for the Large Sifter")
                 .getInt(pollutionPerSecondMultiIndustrialSifter);
-        pollutionPerSecondMultiIndustrialThermalCentrifuge = config.get(
+        pollutionPerSecondMultiIndustrialThermalCentrifuge = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialThermalCentrifuge",
                         pollutionPerSecondMultiIndustrialThermalCentrifuge,
                         "pollution rate in gibbl/s for the Large thermal refinery")
                 .getInt(pollutionPerSecondMultiIndustrialThermalCentrifuge);
-        pollutionPerSecondMultiIndustrialVacuumFreezer = config.get(
+        pollutionPerSecondMultiIndustrialVacuumFreezer = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialVacuumFreezer",
                         pollutionPerSecondMultiIndustrialVacuumFreezer,
                         "pollution rate in gibbl/s for the Cryogenic freezer")
                 .getInt(pollutionPerSecondMultiIndustrialVacuumFreezer);
-        pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath = config.get(
+        pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath",
                         pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath,
                         "pollution rate in gibbl/s for the Ore washing plant in chemical bath mode")
                 .getInt(pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath);
-        pollutionPerSecondMultiIndustrialWashPlant_ModeWasher = config.get(
+        pollutionPerSecondMultiIndustrialWashPlant_ModeWasher = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialWashPlant_ModeWasher",
                         pollutionPerSecondMultiIndustrialWashPlant_ModeWasher,
                         "pollution rate in gibbl/s for the Ore washing plant in ore washer mode")
                 .getInt(pollutionPerSecondMultiIndustrialWashPlant_ModeWasher);
-        pollutionPerSecondMultiIndustrialWireMill = config.get(
+        pollutionPerSecondMultiIndustrialWireMill = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialWireMill",
                         pollutionPerSecondMultiIndustrialWireMill,
                         "pollution rate in gibbl/s for the Wire factory")
                 .getInt(pollutionPerSecondMultiIndustrialWireMill);
-        pollutionPerSecondMultiIsaMill = config.get(
+        pollutionPerSecondMultiIsaMill = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIsaMill",
                         pollutionPerSecondMultiIsaMill,
                         "pollution rate in gibbl/s for the IsaMill grinding machine")
                 .getInt(pollutionPerSecondMultiIsaMill);
-        pollutionPerSecondMultiAdvDistillationTower_ModeDistillery = config.get(
+        pollutionPerSecondMultiAdvDistillationTower_ModeDistillery = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiAdvDistillationTower_ModeDistillery",
                         pollutionPerSecondMultiAdvDistillationTower_ModeDistillery,
                         "pollution rate in gibbl/s for the Dangote distillus in distillery mode")
                 .getInt(pollutionPerSecondMultiAdvDistillationTower_ModeDistillery);
-        pollutionPerSecondMultiAdvDistillationTower_ModeDT = config.get(
+        pollutionPerSecondMultiAdvDistillationTower_ModeDT = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiAdvDistillationTower_ModeDT",
                         pollutionPerSecondMultiAdvDistillationTower_ModeDT,
                         "pollution rate in gibbl/s for the Dangote distillus in distillation tower mode")
                 .getInt(pollutionPerSecondMultiAdvDistillationTower_ModeDT);
         pollutionPerSecondMultiAdvEBF = config.get(
-                        "pollution",
-                        "pollutionPerSecondMultiAdvEBF",
-                        pollutionPerSecondMultiAdvEBF,
-                        "pollution rate in gibbl/s for the Volcanus")
-                .getInt(pollutionPerSecondMultiAdvEBF);
+                "pollution",
+                "pollutionPerSecondMultiAdvEBF",
+                pollutionPerSecondMultiAdvEBF,
+                "pollution rate in gibbl/s for the Volcanus").getInt(pollutionPerSecondMultiAdvEBF);
         pollutionPerSecondMultiAdvImplosion = config.get(
-                        "pollution",
-                        "pollutionPerSecondMultiAdvImplosion",
-                        pollutionPerSecondMultiAdvImplosion,
-                        "pollution rate in gibbl/s for the Density^2")
-                .getInt(pollutionPerSecondMultiAdvImplosion);
+                "pollution",
+                "pollutionPerSecondMultiAdvImplosion",
+                pollutionPerSecondMultiAdvImplosion,
+                "pollution rate in gibbl/s for the Density^2").getInt(pollutionPerSecondMultiAdvImplosion);
         pollutionPerSecondMultiABS = config.get(
-                        "pollution",
-                        "pollutionPerSecondMultiABS",
-                        pollutionPerSecondMultiABS,
-                        "pollution rate in gibbl/s for the Alloy blast furnace")
-                .getInt(pollutionPerSecondMultiABS);
+                "pollution",
+                "pollutionPerSecondMultiABS",
+                pollutionPerSecondMultiABS,
+                "pollution rate in gibbl/s for the Alloy blast furnace").getInt(pollutionPerSecondMultiABS);
         pollutionPerSecondMultiCyclotron = config.get(
-                        "pollution",
-                        "pollutionPerSecondMultiCyclotron",
-                        pollutionPerSecondMultiCyclotron,
-                        "pollution rate in gibbl/s for the Cyclotron")
-                .getInt(pollutionPerSecondMultiCyclotron);
-        pollutionPerSecondMultiIndustrialFishingPond = config.get(
+                "pollution",
+                "pollutionPerSecondMultiCyclotron",
+                pollutionPerSecondMultiCyclotron,
+                "pollution rate in gibbl/s for the Cyclotron").getInt(pollutionPerSecondMultiCyclotron);
+        pollutionPerSecondMultiIndustrialFishingPond = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialFishingPond",
                         pollutionPerSecondMultiIndustrialFishingPond,
                         "pollution rate in gibbl/s for the Zuhai - fishing port")
                 .getInt(pollutionPerSecondMultiIndustrialFishingPond);
         // pollutionPerSecondMultiLargeRocketEngine;
-        pollutionPerSecondMultiLargeSemiFluidGenerator = config.get(
+        pollutionPerSecondMultiLargeSemiFluidGenerator = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiLargeSemiFluidGenerator",
                         pollutionPerSecondMultiLargeSemiFluidGenerator,
                         "pollution rate in gibbl/s for the Large semifluid burner")
                 .getInt(pollutionPerSecondMultiLargeSemiFluidGenerator);
-        pollutionPerSecondMultiMassFabricator = config.get(
+        pollutionPerSecondMultiMassFabricator = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiMassFabricator",
                         pollutionPerSecondMultiMassFabricator,
                         "pollution rate in gibbl/s for the Matter fabrication CPU")
                 .getInt(pollutionPerSecondMultiMassFabricator);
-        pollutionPerSecondMultiRefinery = config.get(
+        pollutionPerSecondMultiRefinery = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiRefinery",
                         pollutionPerSecondMultiRefinery,
                         "pollution rate in gibbl/s for the Reactor fuel processing plant")
                 .getInt(pollutionPerSecondMultiRefinery);
         // pollutionPerSecondMultiGeneratorArray;
-        pollutionPerSecondMultiIndustrialRockBreaker = config.get(
+        pollutionPerSecondMultiIndustrialRockBreaker = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialRockBreaker",
                         pollutionPerSecondMultiIndustrialRockBreaker,
                         "pollution rate in gibbl/s for the Industrial Rock Breaker")
                 .getInt(pollutionPerSecondMultiIndustrialRockBreaker);
-        pollutionPerSecondMultiIndustrialChisel = config.get(
+        pollutionPerSecondMultiIndustrialChisel = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiIndustrialChisel",
                         pollutionPerSecondMultiIndustrialChisel,
                         "pollution rate in gibbl/s for the Industrial Chisel")
                 .getInt(pollutionPerSecondMultiIndustrialChisel);
-        pollutionPerSecondMultiTreeFarm = config.get(
+        pollutionPerSecondMultiTreeFarm = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiTreeFarm",
                         pollutionPerSecondMultiTreeFarm,
                         "pollution rate in gibbl/s for the Tree growth simulator")
                 .getInt(pollutionPerSecondMultiTreeFarm);
-        pollutionPerSecondMultiFrothFlotationCell = config.get(
+        pollutionPerSecondMultiFrothFlotationCell = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiFrothFlotationCell",
                         pollutionPerSecondMultiFrothFlotationCell,
                         "pollution rate in gibbl/s for the Flotation cell regulator")
                 .getInt(pollutionPerSecondMultiFrothFlotationCell);
-        pollutionPerSecondMultiAutoCrafter = config.get(
+        pollutionPerSecondMultiAutoCrafter = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiAutoCrafter",
                         pollutionPerSecondMultiAutoCrafter,
                         "pollution rate in gibbl/s for the Large-Scale auto assembler v1.01")
                 .getInt(pollutionPerSecondMultiAutoCrafter);
-        pollutionPerSecondMultiMolecularTransformer = config.get(
+        pollutionPerSecondMultiMolecularTransformer = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiMolecularTransformer",
                         pollutionPerSecondMultiMolecularTransformer,
                         "pollution rate in gibbl/s for the Multiblock Molecular Transformer")
                 .getInt(pollutionPerSecondMultiMolecularTransformer);
-        pollutionPerSecondMultiThermalBoiler = config.get(
+        pollutionPerSecondMultiThermalBoiler = config
+                .get(
                         "pollution",
                         "pollutionPerSecondMultiThermalBoiler",
                         pollutionPerSecondMultiThermalBoiler,
                         "pollution rate in gibbl/s for the Thermal boiler")
                 .getInt(pollutionPerSecondMultiThermalBoiler);
         pollutionPerSecondMultiAlgaePond = config.get(
-                        "pollution",
-                        "pollutionPerSecondMultiAlgaePond",
-                        pollutionPerSecondMultiAlgaePond,
-                        "pollution rate in gibbl/s for the Algae farm")
-                .getInt(pollutionPerSecondMultiAlgaePond);
-        basePollutionPerSecondSemiFluidGenerator = config.get(
+                "pollution",
+                "pollutionPerSecondMultiAlgaePond",
+                pollutionPerSecondMultiAlgaePond,
+                "pollution rate in gibbl/s for the Algae farm").getInt(pollutionPerSecondMultiAlgaePond);
+        basePollutionPerSecondSemiFluidGenerator = config
+                .get(
                         "pollution",
                         "basePollutionPerSecondSemiFluidGenerator",
                         basePollutionPerSecondSemiFluidGenerator,
                         "base pollution rate in gibbl/s for the single block semi fluid generators")
                 .getInt(basePollutionPerSecondSemiFluidGenerator);
         pollutionReleasedByTierSemiFluidGenerator = config.get(
-                        "pollution",
-                        "pollutionReleasedByTierSemiFluidGenerator",
-                        pollutionReleasedByTierSemiFluidGenerator,
-                        "coefficient applied to the base rate of the single block semi fluid generators based on its tier (first is tier 0 aka ULV)")
+                "pollution",
+                "pollutionReleasedByTierSemiFluidGenerator",
+                pollutionReleasedByTierSemiFluidGenerator,
+                "coefficient applied to the base rate of the single block semi fluid generators based on its tier (first is tier 0 aka ULV)")
                 .getDoubleList();
-        basePollutionPerSecondBoiler = config.get(
+        basePollutionPerSecondBoiler = config
+                .get(
                         "pollution",
                         "basePollutionPerSecondBoiler",
                         basePollutionPerSecondBoiler,
                         "base pollution rate in gibbl/s for the single block boilers")
                 .getInt(basePollutionPerSecondBoiler);
         pollutionReleasedByTierBoiler = config.get(
-                        "pollution",
-                        "pollutionReleasedByTierBoiler",
-                        pollutionReleasedByTierBoiler,
-                        "coefficient applied to the base rate of the single block semi fluid generators based on its tier (first is tier 0 aka ULV)")
+                "pollution",
+                "pollutionReleasedByTierBoiler",
+                pollutionReleasedByTierBoiler,
+                "coefficient applied to the base rate of the single block semi fluid generators based on its tier (first is tier 0 aka ULV)")
                 .getDoubleList();
-        baseMinPollutionPerSecondRocketFuelGenerator = config.get(
+        baseMinPollutionPerSecondRocketFuelGenerator = config
+                .get(
                         "pollution",
                         "baseMinPollutionPerSecondRocketFuelGenerator",
                         baseMinPollutionPerSecondRocketFuelGenerator,
                         "minimum base pollution rate in gibbl/s for the single block rocket engines")
                 .getInt(baseMinPollutionPerSecondRocketFuelGenerator);
-        baseMaxPollutionPerSecondRocketFuelGenerator = config.get(
+        baseMaxPollutionPerSecondRocketFuelGenerator = config
+                .get(
                         "pollution",
                         "baseMaxPollutionPerSecondRocketFuelGenerator",
                         baseMaxPollutionPerSecondRocketFuelGenerator,
                         "maximum base pollution rate in gibbl/s for the single block rocket engines")
                 .getInt(baseMaxPollutionPerSecondRocketFuelGenerator);
         pollutionReleasedByTierRocketFuelGenerator = config.get(
-                        "pollution",
-                        "pollutionReleasedByTierRocketFuelGenerator",
-                        pollutionReleasedByTierRocketFuelGenerator,
-                        "coefficient applied to the base rate of the single block rocket engines based on its tier (first is tier 0 aka ULV)")
+                "pollution",
+                "pollutionReleasedByTierRocketFuelGenerator",
+                pollutionReleasedByTierRocketFuelGenerator,
+                "coefficient applied to the base rate of the single block rocket engines based on its tier (first is tier 0 aka ULV)")
                 .getDoubleList();
-        basePollutionPerSecondGeothermalGenerator = config.get(
+        basePollutionPerSecondGeothermalGenerator = config
+                .get(
                         "pollution",
                         "basePollutionPerSecondGeothermalGenerator",
                         basePollutionPerSecondGeothermalGenerator,
                         "base pollution rate in gibbl/s for the geothermal engines")
                 .getInt(basePollutionPerSecondGeothermalGenerator);
         pollutionReleasedByTierGeothermalGenerator = config.get(
-                        "pollution",
-                        "pollutionReleasedByTierGeothermalGenerator",
-                        pollutionReleasedByTierGeothermalGenerator,
-                        "coefficient applied to the base rate of the single block geothermal engines based on its tier (first is tier 0 aka ULV)")
+                "pollution",
+                "pollutionReleasedByTierGeothermalGenerator",
+                pollutionReleasedByTierGeothermalGenerator,
+                "coefficient applied to the base rate of the single block geothermal engines based on its tier (first is tier 0 aka ULV)")
                 .getDoubleList();
 
         // Visual
         enableAnimatedTextures = config.getBoolean(
-                "enableAnimatedTextures", "visual", true, "Enables Animated GT++ Textures, Requires Restart");
+                "enableAnimatedTextures",
+                "visual",
+                true,
+                "Enables Animated GT++ Textures, Requires Restart");
         config.save();
     }
 }

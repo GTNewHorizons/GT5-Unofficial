@@ -6,6 +6,7 @@ import java.security.Permissions;
 import java.security.ProtectionDomain;
 import java.security.cert.Certificate;
 import java.util.HashMap;
+
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 

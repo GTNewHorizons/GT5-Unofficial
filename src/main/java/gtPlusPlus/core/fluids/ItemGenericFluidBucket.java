@@ -1,13 +1,9 @@
 package gtPlusPlus.core.fluids;
 
-import cpw.mods.fml.common.eventhandler.Event;
-import gtPlusPlus.api.objects.GregtechException;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,6 +19,12 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+
+import cpw.mods.fml.common.eventhandler.Event;
+import gtPlusPlus.api.objects.GregtechException;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemGenericFluidBucket extends ItemBucket {
 
@@ -41,12 +43,16 @@ public class ItemGenericFluidBucket extends ItemBucket {
 
         if (FluidFactory.mMetaToBucketMap.containsKey(aID)) {
             try {
-                throw new GregtechException("" + aID + " is already registered! Unable to register fluid: "
-                        + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
+                throw new GregtechException(
+                        "" + aID
+                                + " is already registered! Unable to register fluid: "
+                                + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
             } catch (GregtechException e) {
                 e.printStackTrace();
-                CORE.crash("" + aID + " is already registered! Unable to register fluid: "
-                        + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
+                CORE.crash(
+                        "" + aID
+                                + " is already registered! Unable to register fluid: "
+                                + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
             }
         }
         mInternalFluidCache.put(FluidFactory.mMetaToBlockMap.get(aID));
@@ -56,8 +62,7 @@ public class ItemGenericFluidBucket extends ItemBucket {
     Map<Integer, IIcon> mIconCache = new LinkedHashMap<Integer, IIcon>();
 
     /**
-     * Called whenever this item is equipped and the right mouse button is pressed.
-     * Args: itemStack, world, entityPlayer
+     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
 
@@ -255,8 +260,10 @@ public class ItemGenericFluidBucket extends ItemBucket {
         } else {
             return mBaseBucketTexture;
         }
-        /*IIcon aTemp = mIconCache.get(stack.getItemDamage());
-        return aTemp != null ? aTemp : super.getIcon(stack, renderPass, player, usingItem, useRemaining);*/
+        /*
+         * IIcon aTemp = mIconCache.get(stack.getItemDamage()); return aTemp != null ? aTemp : super.getIcon(stack,
+         * renderPass, player, usingItem, useRemaining);
+         */
     }
 
     @Override

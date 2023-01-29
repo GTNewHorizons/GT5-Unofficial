@@ -1,5 +1,15 @@
 package gtPlusPlus.xmod.gregtech.loaders.misc;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
+import net.minecraft.stats.AchievementList;
+import net.minecraft.stats.StatBase;
+import net.minecraftforge.common.AchievementPage;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GT_Mod;
 import gregtech.api.util.GT_Log;
@@ -9,14 +19,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import java.util.concurrent.ConcurrentHashMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.AchievementList;
-import net.minecraft.stats.StatBase;
-import net.minecraftforge.common.AchievementPage;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
 public class AssLineAchievements {
 
@@ -41,8 +43,8 @@ public class AssLineAchievements {
         if (!ready) {
             active = GT_Mod.gregtechproxy.mAchievements;
             try {
-                recipeTotal =
-                        ((GT_Recipe.GT_Recipe_Map) StaticFields59.mAssLineVisualMapNEI.get(null)).mRecipeList.size();
+                recipeTotal = ((GT_Recipe.GT_Recipe_Map) StaticFields59.mAssLineVisualMapNEI.get(null)).mRecipeList
+                        .size();
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 recipeTotal = 0;
             }
@@ -54,8 +56,10 @@ public class AssLineAchievements {
 
     public static void registerAchievements() {
         if (active && mAchievementMap.size() > 0) {
-            AchievementPage.registerAchievementPage(new AchievementPage("GT Assembly Line", (Achievement[])
-                    mAchievementMap.values().toArray(new Achievement[mAchievementMap.size()])));
+            AchievementPage.registerAchievementPage(
+                    new AchievementPage(
+                            "GT Assembly Line",
+                            (Achievement[]) mAchievementMap.values().toArray(new Achievement[mAchievementMap.size()])));
         } else if (active) {
             Logger.INFO("Unable to register custom achievement page for Assembly Line recipes.");
         }
@@ -104,8 +108,8 @@ public class AssLineAchievements {
         return aYouDidSomethingInGT;
     }
 
-    public static Achievement registerAchievement(
-            String textId, int x, int y, ItemStack icon, Achievement requirement, boolean special) {
+    public static Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement,
+            boolean special) {
         if (!GT_Mod.gregtechproxy.mAchievements) {
             return null;
         }

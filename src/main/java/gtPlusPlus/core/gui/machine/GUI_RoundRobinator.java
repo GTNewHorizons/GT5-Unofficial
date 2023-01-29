@@ -1,5 +1,16 @@
 package gtPlusPlus.core.gui.machine;
 
+import java.lang.reflect.Method;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_RoundRobinator;
@@ -8,27 +19,22 @@ import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.Method;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUI_RoundRobinator extends GuiContainer {
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/RoundRobinator.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/RoundRobinator.png");
     private TileEntityRoundRobinator mTile;
     private Container_RoundRobinator mContainer;
     private static final Method mDrawItemStack;
 
     static {
         mDrawItemStack = ReflectionUtils.getMethod(
-                GuiContainer.class, "drawItemStack", new Class[] {ItemStack.class, int.class, int.class, String.class});
+                GuiContainer.class,
+                "drawItemStack",
+                new Class[] { ItemStack.class, int.class, int.class, String.class });
     }
 
     public GUI_RoundRobinator(final InventoryPlayer player_inventory, final TileEntityRoundRobinator te) {
@@ -56,21 +62,18 @@ public class GUI_RoundRobinator extends GuiContainer {
         fontRendererObj.drawString("Tier: " + tier, 85, 12, Utils.rgbtoHexValue(50, 150, 50));
         fontRendererObj.drawString("Rate: 1 Item/" + aTickRate + "t", 85, 20, Utils.rgbtoHexValue(50, 150, 50));
 
-        boolean[] aStates = new boolean[] {
-            mContainer.mSide_1 == 0 ? false : true,
-            mContainer.mSide_2 == 0 ? false : true,
-            mContainer.mSide_3 == 0 ? false : true,
-            mContainer.mSide_4 == 0 ? false : true
-        };
+        boolean[] aStates = new boolean[] { mContainer.mSide_1 == 0 ? false : true,
+                mContainer.mSide_2 == 0 ? false : true, mContainer.mSide_3 == 0 ? false : true,
+                mContainer.mSide_4 == 0 ? false : true };
 
-        fontRendererObj.drawString(
-                "West: " + (aStates[0] ? "Active" : "Disabled"), 5, 5, Utils.rgbtoHexValue(50, 50, 50));
-        fontRendererObj.drawString(
-                "North: " + (aStates[1] ? "Active" : "Disabled"), 5, 15, Utils.rgbtoHexValue(50, 50, 50));
-        fontRendererObj.drawString(
-                "South: " + (aStates[2] ? "Active" : "Disabled"), 5, 25, Utils.rgbtoHexValue(50, 50, 50));
-        fontRendererObj.drawString(
-                "East: " + (aStates[3] ? "Active" : "Disabled"), 5, 35, Utils.rgbtoHexValue(50, 50, 50));
+        fontRendererObj
+                .drawString("West: " + (aStates[0] ? "Active" : "Disabled"), 5, 5, Utils.rgbtoHexValue(50, 50, 50));
+        fontRendererObj
+                .drawString("North: " + (aStates[1] ? "Active" : "Disabled"), 5, 15, Utils.rgbtoHexValue(50, 50, 50));
+        fontRendererObj
+                .drawString("South: " + (aStates[2] ? "Active" : "Disabled"), 5, 25, Utils.rgbtoHexValue(50, 50, 50));
+        fontRendererObj
+                .drawString("East: " + (aStates[3] ? "Active" : "Disabled"), 5, 35, Utils.rgbtoHexValue(50, 50, 50));
         fontRendererObj.drawString("Toggling South will visually", 5, 65, Utils.rgbtoHexValue(150, 50, 50));
         fontRendererObj.drawString("toggle East, This is a visual bug.", 5, 74, Utils.rgbtoHexValue(150, 50, 50));
         drawStatus(aStates[0], xStart, yStart);
@@ -103,9 +106,9 @@ public class GUI_RoundRobinator extends GuiContainer {
         if (mDrawItemStack != null) {
             try {
                 if (aStateActive) {
-                    mDrawItemStack.invoke(this, new Object[] {aGreenGlass, x, y, ""});
+                    mDrawItemStack.invoke(this, new Object[] { aGreenGlass, x, y, "" });
                 } else {
-                    mDrawItemStack.invoke(this, new Object[] {aRedGlass, x, y, ""});
+                    mDrawItemStack.invoke(this, new Object[] { aRedGlass, x, y, "" });
                 }
             } catch (Throwable t) {
                 t.printStackTrace();

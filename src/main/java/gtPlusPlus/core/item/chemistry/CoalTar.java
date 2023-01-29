@@ -1,5 +1,9 @@
 package gtPlusPlus.core.item.chemistry;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -11,9 +15,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class CoalTar extends ItemPackage {
 
@@ -56,26 +57,24 @@ public class CoalTar extends ItemPackage {
         // C2H6O = C2H4 + H2O
         if (bioEth1 != null) {
             CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedBioCircuit(17), ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1)
-                    },
+                    new ItemStack[] { CI.getNumberedBioCircuit(17),
+                            ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1) },
                     bioEth1,
                     FluidUtils.getWater(1000),
-                    new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)},
-                    new int[] {10000},
+                    new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1) },
+                    new int[] { 10000 },
                     120 * 20,
                     80);
         }
 
         if (bioEth2 != null) {
             CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedBioCircuit(18), ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1)
-                    },
+                    new ItemStack[] { CI.getNumberedBioCircuit(18),
+                            ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1) },
                     bioEth2,
                     FluidUtils.getWater(1000),
-                    new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)},
-                    new int[] {10000},
+                    new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1) },
+                    new int[] { 10000 },
                     120 * 20,
                     80);
         }
@@ -84,18 +83,13 @@ public class CoalTar extends ItemPackage {
     public static void recipeCreateBenzene() {
         // C7H8 + 2H = CH4 + C6H6
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellToluene", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2)
-                },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellToluene", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) },
                 null,
                 null,
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellMethane", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 1),
-                    Materials.Empty.getCells(1)
-                },
-                new int[] {10000, 10000, 10000},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellMethane", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 1), Materials.Empty.getCells(1) },
+                new int[] { 10000, 10000, 10000 },
                 20 * 10,
                 90);
     }
@@ -164,7 +158,7 @@ public class CoalTar extends ItemPackage {
                 600, // aDuration
                 64, // aEUt
                 false // Hidden?
-                );
+        );
         GT_Values.RA.addDistilleryRecipe(
                 CI.getNumberedCircuit(2), // Circuit
                 FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
@@ -172,7 +166,7 @@ public class CoalTar extends ItemPackage {
                 300, // aDuration
                 30, // aEUt
                 false // Hidden?
-                );
+        );
         GT_Values.RA.addDistilleryRecipe(
                 CI.getNumberedCircuit(3), // Circuit
                 FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
@@ -180,7 +174,7 @@ public class CoalTar extends ItemPackage {
                 450, // aDuration
                 86, // aEUt
                 false // Hidden?
-                );
+        );
         GT_Values.RA.addDistilleryRecipe(
                 CI.getNumberedCircuit(4), // Circuit
                 FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
@@ -188,7 +182,7 @@ public class CoalTar extends ItemPackage {
                 900, // aDuration
                 30, // aEUt
                 false // Hidden?
-                );
+        );
         GT_Values.RA.addDistilleryRecipe(
                 CI.getNumberedCircuit(5), // Circuit
                 FluidUtils.getFluidStack("fluid.coaltar", 1500), // aInput
@@ -196,16 +190,15 @@ public class CoalTar extends ItemPackage {
                 300, // aDuration
                 64, // aEUt
                 false // Hidden?
-                );
+        );
 
         GT_Values.RA.addDistillationTowerRecipe(
                 FluidUtils.getFluidStack("fluid.coaltar", 1200),
-                new FluidStack[] {
-                    FluidUtils.getFluidStack("fluid.coaltaroil", 500), // aOutput
-                    FluidUtils.getFluidStack("liquid_naphtha", 100), // aOutput
-                    FluidUtils.getFluidStack("fluid.ethylbenzene", 150), // aOutput
-                    FluidUtils.getFluidStack("fluid.anthracene", 50), // aOutput
-                    FluidUtils.getFluidStack("fluid.kerosene", 400), // aOutput
+                new FluidStack[] { FluidUtils.getFluidStack("fluid.coaltaroil", 500), // aOutput
+                        FluidUtils.getFluidStack("liquid_naphtha", 100), // aOutput
+                        FluidUtils.getFluidStack("fluid.ethylbenzene", 150), // aOutput
+                        FluidUtils.getFluidStack("fluid.anthracene", 50), // aOutput
+                        FluidUtils.getFluidStack("fluid.kerosene", 400), // aOutput
                 },
                 null,
                 900,
@@ -228,7 +221,7 @@ public class CoalTar extends ItemPackage {
                 1200, // aDuration
                 30, // aEUt
                 false // Hidden?
-                );
+        );
     }
 
     private static void recipeNaphthaleneToPhthalicAcid() {
@@ -244,11 +237,11 @@ public class CoalTar extends ItemPackage {
 
     private static void recipePhthalicAcidToPhthalicAnhydride() {
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {CI.getNumberedBioCircuit(15)},
+                new ItemStack[] { CI.getNumberedBioCircuit(15) },
                 FluidUtils.getFluidStack("fluid.phthalicacid", 1000),
                 null,
-                new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15)},
-                new int[] {10000},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15) },
+                new int[] { 10000 },
                 60 * 20,
                 120);
     }
@@ -299,11 +292,17 @@ public class CoalTar extends ItemPackage {
         // v - Dehydrate at 180C+
         // Create Phthalic Anhydride
         ItemUtils.generateSpecialUseDusts(
-                "PhthalicAnhydride", "Phthalic Anhydride", "C6H4(CO)2O", Utils.rgbtoHexValue(175, 175, 175));
+                "PhthalicAnhydride",
+                "Phthalic Anhydride",
+                "C6H4(CO)2O",
+                Utils.rgbtoHexValue(175, 175, 175));
 
         // Lithium Hydroperoxide - LiOH + H2O2 → LiOOH + 2 H2O
         ItemUtils.generateSpecialUseDusts(
-                "LithiumHydroperoxide", "Lithium Hydroperoxide", "HLiO2", Utils.rgbtoHexValue(125, 125, 125));
+                "LithiumHydroperoxide",
+                "Lithium Hydroperoxide",
+                "HLiO2",
+                Utils.rgbtoHexValue(125, 125, 125));
         // v - Dehydrate
         // Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
         // Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new
@@ -317,15 +316,20 @@ public class CoalTar extends ItemPackage {
     public void fluids() {
 
         // Create Coal Gas
-        Coal_Gas = FluidUtils.generateFluidNonMolten(
-                "CoalGas", "Coal Gas", 500, new short[] {48, 48, 48, 100}, null, null);
+        Coal_Gas = FluidUtils
+                .generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[] { 48, 48, 48, 100 }, null, null);
         // Ethanol
         // v - Dehydrate cells to remove water
 
         // Create Ethylene
         if (!FluidUtils.doesFluidExist("ethylene")) {
             Ethylene = FluidUtils.generateFluidNonMolten(
-                    "ethylene", "Ethylene", -103, new short[] {255, 255, 255, 100}, null, null);
+                    "ethylene",
+                    "Ethylene",
+                    -103,
+                    new short[] { 255, 255, 255, 100 },
+                    null,
+                    null);
         } else {
             Ethylene = FluidUtils.getWildcardFluidStack("ethylene", 1).getFluid();
         }
@@ -334,37 +338,72 @@ public class CoalTar extends ItemPackage {
         // acid-catalyzed chemical reaction
         // Use Chemical Reactor
         Ethylbenzene = FluidUtils.generateFluidNonMolten(
-                "Ethylbenzene", "Ethylbenzene", 136, new short[] {255, 255, 255, 100}, null, null);
+                "Ethylbenzene",
+                "Ethylbenzene",
+                136,
+                new short[] { 255, 255, 255, 100 },
+                null,
+                null);
         // Create Anthracene
         Anthracene = FluidUtils.generateFluidNonMolten(
-                "Anthracene", "Anthracene", 340, new short[] {255, 255, 255, 100}, null, null);
+                "Anthracene",
+                "Anthracene",
+                340,
+                new short[] { 255, 255, 255, 100 },
+                null,
+                null);
         // Toluene
         if (!FluidUtils.doesFluidExist("liquid_toluene")) {
             Toluene = FluidUtils.generateFluidNonMolten(
-                    "liquid_toluene", "Toluene", -95, new short[] {140, 70, 20, 100}, null, null);
+                    "liquid_toluene",
+                    "Toluene",
+                    -95,
+                    new short[] { 140, 70, 20, 100 },
+                    null,
+                    null);
         } else {
             Toluene = FluidUtils.getWildcardFluidStack("liquid_toluene", 1).getFluid();
         }
 
         // Create Coal Tar
-        Coal_Tar = FluidUtils.generateFluidNonMolten(
-                "CoalTar", "Coal Tar", 450, new short[] {32, 32, 32, 100}, null, null);
+        Coal_Tar = FluidUtils
+                .generateFluidNonMolten("CoalTar", "Coal Tar", 450, new short[] { 32, 32, 32, 100 }, null, null);
         // v - Distill (60% Tar oil/15% Naphtha/20% Ethylbenzene/5% Anthracene)
         // Create Coal Tar Oil
         Coal_Tar_Oil = FluidUtils.generateFluidNonMolten(
-                "CoalTarOil", "Coal Tar Oil", 240, new short[] {240, 240, 150, 100}, null, null);
+                "CoalTarOil",
+                "Coal Tar Oil",
+                240,
+                new short[] { 240, 240, 150, 100 },
+                null,
+                null);
         // v - Wash With Sulfuric Acid
         // Create Sulfuric Coal Tar Oil
         Sulfuric_Coal_Tar_Oil = FluidUtils.generateFluidNonMolten(
-                "SulfuricCoalTarOil", "Sulfuric Coal Tar Oil", 240, new short[] {250, 170, 12, 100}, null, null);
+                "SulfuricCoalTarOil",
+                "Sulfuric Coal Tar Oil",
+                240,
+                new short[] { 250, 170, 12, 100 },
+                null,
+                null);
         // v - Distill (No loss, just time consuming)
         // Create Naphthalene
         Naphthalene = FluidUtils.generateFluidNonMolten(
-                "Naphthalene", "Naphthalene", 115, new short[] {210, 185, 135, 100}, null, null);
+                "Naphthalene",
+                "Naphthalene",
+                115,
+                new short[] { 210, 185, 135, 100 },
+                null,
+                null);
         // v - Oxidize with mercury and nitric acid
         // Create Phthalic Acid
         Phthalic_Acid = FluidUtils.generateFluidNonMolten(
-                "PhthalicAcid", "Phthalic Acid", 207, new short[] {210, 220, 210, 100}, null, null);
+                "PhthalicAcid",
+                "Phthalic Acid",
+                207,
+                new short[] { 210, 220, 210, 100 },
+                null,
+                null);
         // v - Dehydrate at 180C+
         // Create Phthalic Anhydride
         // ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", "C6H4(CO)2O",

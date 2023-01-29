@@ -1,14 +1,17 @@
 package gtPlusPlus.api.objects.minecraft;
 
+import java.util.HashMap;
+
+import net.minecraft.util.IIcon;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gtPlusPlus.core.util.Utils;
-import java.util.HashMap;
-import net.minecraft.util.IIcon;
 
 /**
  * A Server Side safe object that can hold {@link IIcon}s.
+ * 
  * @author Alkalus
  *
  */

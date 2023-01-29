@@ -1,19 +1,21 @@
 package gtPlusPlus.core.item.chemistry;
 
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.item.base.misc.BaseItemParticle;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Particle;
-import gtPlusPlus.core.material.Particle.ElementaryGroup;
-import gtPlusPlus.core.util.Utils;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.item.base.misc.BaseItemParticle;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Particle;
+import gtPlusPlus.core.material.Particle.ElementaryGroup;
+import gtPlusPlus.core.util.Utils;
 
 public class StandardBaseParticles extends BaseItemParticle {
 
@@ -24,33 +26,10 @@ public class StandardBaseParticles extends BaseItemParticle {
         super("Base", aTypes.length, EnumRarity.rare);
     }
 
-    private static final String[] aTypes = new String[] {
-        "Graviton",
-        "Up",
-        "Down",
-        "Charm",
-        "Strange",
-        "Top",
-        "Bottom",
-        "Electron",
-        "Electron Neutrino",
-        "Muon",
-        "Muon Neutrino",
-        "Tau",
-        "Tau Neutrino",
-        "Gluon",
-        "Photon",
-        "Z Boson",
-        "W Boson",
-        "Higgs Boson",
-        "Proton",
-        "Neutron",
-        "Lambda",
-        "Omega",
-        "Pion",
-        "ETA Meson",
-        "Unknown"
-    };
+    private static final String[] aTypes = new String[] { "Graviton", "Up", "Down", "Charm", "Strange", "Top", "Bottom",
+            "Electron", "Electron Neutrino", "Muon", "Muon Neutrino", "Tau", "Tau Neutrino", "Gluon", "Photon",
+            "Z Boson", "W Boson", "Higgs Boson", "Proton", "Neutron", "Lambda", "Omega", "Pion", "ETA Meson",
+            "Unknown" };
 
     public IIcon[] icons = new IIcon[aTypes.length];
 
@@ -93,7 +72,7 @@ public class StandardBaseParticles extends BaseItemParticle {
 
     @Override
     public String[] getAffixes() {
-        return new String[] {"", ""};
+        return new String[] { "", "" };
     }
 
     @Override
@@ -124,7 +103,7 @@ public class StandardBaseParticles extends BaseItemParticle {
         return super.getColorFromParentClass(stack, HEX_OxFFFFFF);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         Particle aCharge = getParticle(stack);

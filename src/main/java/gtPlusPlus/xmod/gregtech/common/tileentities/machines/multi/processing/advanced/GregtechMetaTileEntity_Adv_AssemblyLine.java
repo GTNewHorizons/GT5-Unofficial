@@ -1,6 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -19,19 +29,11 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Adv_AssemblyLine
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_AssemblyLine> {
 
-    public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches =
-            new ArrayList<GT_MetaTileEntity_Hatch_DataAccess>();
+    public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<GT_MetaTileEntity_Hatch_DataAccess>();
 
     public static String[] mCasingName = new String[5];
     private final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 13);
@@ -59,26 +61,17 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         return new GregtechMetaTileEntity_Adv_AssemblyLine(this.mName);
     }
 
-    /*	public String[] getTooltip() {
-    	if (mCasingName[0].toLowerCase().contains(".name")) {
-    		mCasingName[0] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 0);
-    	}
-    	if (mCasingName[1].toLowerCase().contains(".name")) {
-    		mCasingName[1] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 1);
-    	}
-    	if (mCasingName[2].toLowerCase().contains(".name")) {
-    		mCasingName[2] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 2);
-    	}
-    	if (mCasingName[3].toLowerCase().contains(".name")) {
-    		mCasingName[3] = LangUtils.getLocalizedNameOfBlock(getCasing(3), 15);
-    	}
-    	if (mCasingName[4].toLowerCase().contains(".name")) {
-    		mCasingName[4] = LangUtils.getLocalizedNameOfBlock(getCasing(1), 13);
-    	}
-    	return new String[]{
-    			"Advanced Integrated Assembly Line"
-    	};
-    }*/
+    /*
+     * public String[] getTooltip() { if (mCasingName[0].toLowerCase().contains(".name")) { mCasingName[0] =
+     * LangUtils.getLocalizedNameOfBlock(getCasing(4), 0); } if (mCasingName[1].toLowerCase().contains(".name")) {
+     * mCasingName[1] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 1); } if
+     * (mCasingName[2].toLowerCase().contains(".name")) { mCasingName[2] =
+     * LangUtils.getLocalizedNameOfBlock(getCasing(4), 2); } if (mCasingName[3].toLowerCase().contains(".name")) {
+     * mCasingName[3] = LangUtils.getLocalizedNameOfBlock(getCasing(3), 15); } if
+     * (mCasingName[4].toLowerCase().contains(".name")) { mCasingName[4] =
+     * LangUtils.getLocalizedNameOfBlock(getCasing(1), 13); } return new String[]{ "Advanced Integrated Assembly Line"
+     * }; }
+     */
 
     @Override
     protected final GT_Multiblock_Tooltip_Builder createTooltip() {
@@ -133,8 +126,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         ItemStack tStack[] = new ItemStack[15];
         FluidStack[] tFluids = new FluidStack[4];
         boolean findRecipe = false;
-        nextDS:
-        for (ItemStack tDataStick : tDataStickList) {
+        nextDS: for (ItemStack tDataStick : tDataStickList) {
             NBTTagCompound tTag = tDataStick.getTagCompound();
             if (tTag == null) continue;
             for (int i = 0; i < 15; i++) {
@@ -144,8 +136,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                     continue nextDS;
                 }
 
-                ItemStack stackInSlot =
-                        mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0);
+                ItemStack stackInSlot = mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0);
                 boolean flag = true;
                 if (count > 0) {
                     for (int j = 0; j < count; j++) {
@@ -185,8 +176,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                     continue nextDS;
                 }
                 FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
-                if (fluidInHatch == null
-                        || !GT_Utility.areFluidsEqual(fluidInHatch, tFluids[i], true)
+                if (fluidInHatch == null || !GT_Utility.areFluidsEqual(fluidInHatch, tFluids[i], true)
                         || fluidInHatch.amount < tFluids[i].amount) {
                     if (GT_Values.D1) System.out.println(i + " not accepted");
                     continue nextDS;
@@ -196,7 +186,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 
             if (GT_Values.D1) System.out.println("Input accepted, check other values");
             if (!tTag.hasKey("output")) continue;
-            mOutputItems = new ItemStack[] {GT_Utility.loadItem(tTag, "output")};
+            mOutputItems = new ItemStack[] { GT_Utility.loadItem(tTag, "output") };
             if (mOutputItems[0] == null || !GT_Utility.isStackValid(mOutputItems[0])) continue;
 
             if (!tTag.hasKey("time")) continue;
@@ -274,10 +264,20 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 
         // Layer 1
         aShieldingCount += checkOuterRing(aBaseMetaTileEntity, getCasing(1), this.META_Shielding, -6, xDir, zDir);
-        aIntegralCasingCount +=
-                checkIntegralRing(aBaseMetaTileEntity, getCasing(0), this.META_IntegralCasing, -6, xDir, zDir);
+        aIntegralCasingCount += checkIntegralRing(
+                aBaseMetaTileEntity,
+                getCasing(0),
+                this.META_IntegralCasing,
+                -6,
+                xDir,
+                zDir);
         aContainmentChamberCount += checkContainmentRing(
-                aBaseMetaTileEntity, getCasing(4), this.META_ContainmentChamberCasing, -6, xDir, zDir);
+                aBaseMetaTileEntity,
+                getCasing(4),
+                this.META_ContainmentChamberCasing,
+                -6,
+                xDir,
+                zDir);
         log("Layer 1 is Valid. Moving to Layer 2.");
 
         // Layer 2
@@ -286,14 +286,24 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         log("Layer 2 is Valid. Moving to Layer 3.");
 
         // Layer 3
-        aContainmentCasingCount +=
-                checkOuterRing(aBaseMetaTileEntity, getCasing(3), this.META_ContainmentCasing, -4, xDir, zDir);
+        aContainmentCasingCount += checkOuterRing(
+                aBaseMetaTileEntity,
+                getCasing(3),
+                this.META_ContainmentCasing,
+                -4,
+                xDir,
+                zDir);
         aPipeCount += checkPipes(aBaseMetaTileEntity, getCasing(4), this.META_PipeCasing, -4, xDir, zDir);
         log("Layer 3 is Valid. Moving to Layer 4.");
 
         // Layer 4
-        aContainmentCasingCount +=
-                checkOuterRing(aBaseMetaTileEntity, getCasing(3), this.META_ContainmentCasing, -3, xDir, zDir);
+        aContainmentCasingCount += checkOuterRing(
+                aBaseMetaTileEntity,
+                getCasing(3),
+                this.META_ContainmentCasing,
+                -3,
+                xDir,
+                zDir);
         aPipeCount += checkPipes(aBaseMetaTileEntity, getCasing(4), this.META_PipeCasing, -3, xDir, zDir);
         log("Layer 4 is Valid. Moving to Layer 5.");
 
@@ -304,10 +314,20 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 
         // Layer 6
         aShieldingCount += checkOuterRing(aBaseMetaTileEntity, getCasing(1), this.META_Shielding, -1, xDir, zDir);
-        aIntegralCasingCount +=
-                checkIntegralRing(aBaseMetaTileEntity, getCasing(0), this.META_IntegralCasing, -1, xDir, zDir);
+        aIntegralCasingCount += checkIntegralRing(
+                aBaseMetaTileEntity,
+                getCasing(0),
+                this.META_IntegralCasing,
+                -1,
+                xDir,
+                zDir);
         aContainmentChamberCount += checkContainmentRing(
-                aBaseMetaTileEntity, getCasing(4), this.META_ContainmentChamberCasing, -1, xDir, zDir);
+                aBaseMetaTileEntity,
+                getCasing(4),
+                this.META_ContainmentChamberCasing,
+                -1,
+                xDir,
+                zDir);
         log("Layer 6 is Valid. Moving to Top Layer.");
 
         // Top Layer
@@ -366,7 +386,8 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
             log("Not enough " + LangUtils.getLocalizedNameOfBlock(getCasing(0), 6) + "s, require 48.");
             if (aOwner != null) {
                 PlayerUtils.messagePlayer(
-                        aOwner, "Not enough " + LangUtils.getLocalizedNameOfBlock(getCasing(0), 6) + "s, require 48.");
+                        aOwner,
+                        "Not enough " + LangUtils.getLocalizedNameOfBlock(getCasing(0), 6) + "s, require 48.");
             }
             return false;
         }
@@ -392,8 +413,8 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         return false;
     }
 
-    public int checkEntireLayer(
-            IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
+    public int checkEntireLayer(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir,
+            int zDir) {
         int aCasingCount = 0;
         for (int x = -4; x < 5; x++) {
             for (int z = -4; z < 5; z++) {
@@ -414,10 +435,16 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                 if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
                     aCasingCount++;
                 }
-                final IGregTechTileEntity tTileEntity =
-                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
+                final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                        .getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
                 if (!isValidBlockForStructure(
-                        tTileEntity, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
+                        tTileEntity,
+                        CASING_TEXTURE_ID,
+                        true,
+                        aCurrentBlock,
+                        aCurrentMeta,
+                        aBlock,
+                        aMeta)) {
                     log("Layer has error. Height: " + aY);
                     // this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
                     return 0;
@@ -427,8 +454,8 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         return aCasingCount;
     }
 
-    public int checkOuterRing(
-            IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
+    public int checkOuterRing(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir,
+            int zDir) {
         int aCasingCount = 0;
         for (int x = -4; x < 5; x++) {
             for (int z = -4; z < 5; z++) {
@@ -455,10 +482,16 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                 if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
                     aCasingCount++;
                 }
-                final IGregTechTileEntity tTileEntity =
-                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
+                final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                        .getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
                 if (!isValidBlockForStructure(
-                        tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
+                        tTileEntity,
+                        CASING_TEXTURE_ID,
+                        false,
+                        aCurrentBlock,
+                        aCurrentMeta,
+                        aBlock,
+                        aMeta)) {
                     log("Layer has error. Height: " + aY);
                     // this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
                     return 0;
@@ -468,8 +501,8 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         return aCasingCount;
     }
 
-    public int checkIntegralRing(
-            IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
+    public int checkIntegralRing(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir,
+            int zDir) {
         int aCasingCount = 0;
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
@@ -496,10 +529,16 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                 if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
                     aCasingCount++;
                 }
-                final IGregTechTileEntity tTileEntity =
-                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
+                final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                        .getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
                 if (!isValidBlockForStructure(
-                        tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
+                        tTileEntity,
+                        CASING_TEXTURE_ID,
+                        false,
+                        aCurrentBlock,
+                        aCurrentMeta,
+                        aBlock,
+                        aMeta)) {
                     log("Layer has error. Height: " + aY);
                     // this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
                     return 0;
@@ -509,8 +548,8 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         return aCasingCount;
     }
 
-    public int checkPipes(
-            IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
+    public int checkPipes(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir,
+            int zDir) {
         int aCasingCount = 0;
         for (int x = -1; x < 2; x++) {
             for (int z = -1; z < 2; z++) {
@@ -518,8 +557,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                 int aOffsetY = this.getBaseMetaTileEntity().getYCoord() + aY;
                 int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;
                 // Skip the corners
-                if ((x == 1 && z == 1)
-                        || (x == -1 && z == -1)
+                if ((x == 1 && z == 1) || (x == -1 && z == -1)
                         || (x == 1 && z == -1)
                         || (x == -1 && z == 1)
                         || (x == 0 && z == 0)) {
@@ -528,24 +566,29 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                     if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
                         aCasingCount++;
                     }
-                    final IGregTechTileEntity tTileEntity =
-                            aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
+                    final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                            .getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
                     if (!isValidBlockForStructure(
-                            tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
+                            tTileEntity,
+                            CASING_TEXTURE_ID,
+                            false,
+                            aCurrentBlock,
+                            aCurrentMeta,
+                            aBlock,
+                            aMeta)) {
                         log("Pipe has error. Height: " + aY);
                         // this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta,
                         // 3);
                         return 0;
-                    }
-                    ;
+                    } ;
                 }
             }
         }
         return aCasingCount;
     }
 
-    public int checkContainmentRing(
-            IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
+    public int checkContainmentRing(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir,
+            int zDir) {
         int aCasingCount = 0;
         for (int x = -2; x < 3; x++) {
             for (int z = -2; z < 3; z++) {
@@ -562,10 +605,16 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
                 if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
                     aCasingCount++;
                 }
-                final IGregTechTileEntity tTileEntity =
-                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
+                final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                        .getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
                 if (!isValidBlockForStructure(
-                        tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
+                        tTileEntity,
+                        CASING_TEXTURE_ID,
+                        false,
+                        aCurrentBlock,
+                        aCurrentMeta,
+                        aBlock,
+                        aMeta)) {
                     log("Layer has error. Height: " + aY);
                     // this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
                     return 0;

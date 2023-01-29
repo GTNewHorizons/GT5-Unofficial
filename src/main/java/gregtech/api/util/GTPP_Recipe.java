@@ -3,9 +3,15 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
+import java.util.*;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.*;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar.Direction;
+
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
@@ -17,28 +23,18 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
-import java.util.*;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.*;
 
 /**
  * Custom GT Recipe Class
+ * 
  * @author Alkalus
  *
  */
 public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
 
-    public GTPP_Recipe(
-            final boolean aOptimize,
-            final ItemStack[] aInputs,
-            final ItemStack[] aOutputs,
-            final Object aSpecialItems,
-            final int[] aChances,
-            final FluidStack[] aFluidInputs,
-            final FluidStack[] aFluidOutputs,
-            final int aDuration,
-            final int aEUt,
-            final int aSpecialValue) {
+    public GTPP_Recipe(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs,
+            final Object aSpecialItems, final int[] aChances, final FluidStack[] aFluidInputs,
+            final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
         super(
                 aOptimize,
                 aInputs,
@@ -59,18 +55,12 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
     }
 
     // aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
-    public GTPP_Recipe(
-            final ItemStack aInput1,
-            final ItemStack aOutput1,
-            final ItemStack aOutput2,
-            final ItemStack aOutput3,
-            final ItemStack aOutput4,
-            final int aSpecialValue,
-            final int aType) {
+    public GTPP_Recipe(final ItemStack aInput1, final ItemStack aOutput1, final ItemStack aOutput2,
+            final ItemStack aOutput3, final ItemStack aOutput4, final int aSpecialValue, final int aType) {
         this(
                 true,
-                new ItemStack[] {aInput1},
-                new ItemStack[] {aOutput1, aOutput2, aOutput3, aOutput4},
+                new ItemStack[] { aInput1 },
+                new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },
                 null,
                 null,
                 null,
@@ -82,28 +72,28 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
         Logger.WARNING("Switch case method for adding fuels");
         if ((this.mInputs.length > 0) && (aSpecialValue > 0)) {
             switch (aType) {
-                    // Diesel Generator
+                // Diesel Generator
                 case 0:
                     Logger.WARNING("Added fuel " + aInput1.getDisplayName() + " is ROCKET FUEL - continuing");
                     GTPP_Recipe_Map.sRocketFuels.addRecipe(this);
                     break;
-                    // Gas Turbine
+                // Gas Turbine
                 case 1:
                     GTPP_Recipe_Map.sGeoThermalFuels.addRecipe(this);
                     break;
-                    // Thermal Generator
+                // Thermal Generator
                 case 2:
                     GTPP_Recipe_Map.sRTGFuels.addRecipe(this);
                     break;
-                    // Plasma Generator
+                // Plasma Generator
                 case 4:
                     // Gregtech_Recipe_Map.sPlasmaFuels.addRecipe(this);
                     break;
-                    // Magic Generator
+                // Magic Generator
                 case 5:
                     // Gregtech_Recipe_Map.sMagicFuels.addRecipe(this);
                     break;
-                    // Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
+                // Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
                 default:
                     // Gregtech_Recipe_Map.sDenseLiquidFuels.addRecipe(this);
                     break;
@@ -112,29 +102,18 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
     }
 
     /**
-     * Even though this is deprecated, it's still used to keep binary compatibility.
-     * (GoodGenerator and GTNHLanthanides reference to `sSimpleWasherRecipes` and `sChemicalDehydratorRecipes`)
+     * Even though this is deprecated, it's still used to keep binary compatibility. (GoodGenerator and GTNHLanthanides
+     * reference to `sSimpleWasherRecipes` and `sChemicalDehydratorRecipes`)
      */
     public static class GTPP_Recipe_Map_Internal extends GT_Recipe_Map {
 
         @Deprecated
         public static final Collection<GTPP_Recipe_Map_Internal> sMappingsEx = new ArrayList<>();
 
-        public GTPP_Recipe_Map_Internal(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+        public GTPP_Recipe_Map_Internal(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -156,196 +135,181 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
     }
 
     public static class GTPP_Recipe_Map {
+
         public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(
-                        new HashSet<>(200),
-                        "gtpp.recipe.cokeoven",
-                        "Coke Oven",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Dehydrator",
-                        2,
-                        9,
-                        1,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
+                new HashSet<>(200),
+                "gtpp.recipe.cokeoven",
+                "Coke Oven",
+                null,
+                RES_PATH_GUI + "basicmachines/Dehydrator",
+                2,
+                9,
+                1,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
         public static final GT_Recipe_Map sMatterFab2Recipes = new GT_Recipe_Map(
-                        new HashSet<>(200),
-                        "gtpp.recipe.matterfab2",
-                        "Matter Fabricator",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Default",
-                        2,
-                        0,
-                        0,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(200),
+                "gtpp.recipe.matterfab2",
+                "Matter Fabricator",
+                null,
+                RES_PATH_GUI + "basicmachines/Default",
+                2,
+                0,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).useModularUI(true);
 
         public static final GT_Recipe_Map sRocketFuels = new GT_Recipe_Map_Fuel(
-                        new HashSet<>(10),
-                        "gtpp.recipe.rocketenginefuel",
-                        "Rocket Engine Fuel",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Default",
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        "Fuel Value: ",
-                        3000,
-                        " EU",
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(10),
+                "gtpp.recipe.rocketenginefuel",
+                "Rocket Engine Fuel",
+                null,
+                RES_PATH_GUI + "basicmachines/Default",
+                0,
+                0,
+                0,
+                0,
+                1,
+                "Fuel Value: ",
+                3000,
+                " EU",
+                true,
+                true).useModularUI(true);
 
         public static final GT_Recipe_Map sQuantumForceTransformerRecipes = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(20),
-                        "gtpp.recipe.quantumforcesmelter",
-                        "Quantum Force Transformer",
-                        null,
-                        RES_PATH_GUI + "basicmachines/LCRNEI",
-                        6,
-                        6,
-                        1,
-                        0,
-                        1,
-                        "Tier: ",
-                        1,
-                        E,
-                        true,
-                        true)
-                .useModularUI(true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, Direction.RIGHT)
-                .setUsualFluidInputCount(6)
-                .setUsualFluidOutputCount(6);
+                new HashSet<>(20),
+                "gtpp.recipe.quantumforcesmelter",
+                "Quantum Force Transformer",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                6,
+                6,
+                1,
+                0,
+                1,
+                "Tier: ",
+                1,
+                E,
+                true,
+                true).useModularUI(true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, Direction.RIGHT)
+                        .setUsualFluidInputCount(6).setUsualFluidOutputCount(6);
 
         public static final GT_Recipe_Map sGeoThermalFuels = new GT_Recipe_Map(
-                        new HashSet<>(10),
-                        "gtpp.recipe.geothermalfuel",
-                        "GeoThermal Fuel",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Default",
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        "Fuel Value: ",
-                        1000,
-                        " EU",
-                        true,
-                        true)
-                .useModularUI(true);
-        public static final GTPP_Recipe_Map_Internal sChemicalDehydratorRecipes =
-                (GTPP_Recipe_Map_Internal) new GTPP_Recipe_Map_Internal(
-                                new HashSet<>(200),
-                                "gtpp.recipe.chemicaldehydrator",
-                                "Dehydrator",
-                                null,
-                                RES_PATH_GUI + "basicmachines/Dehydrator",
-                                2,
-                                9,
-                                0,
-                                0,
-                                1,
-                                E,
-                                1,
-                                E,
-                                true,
-                                true)
-                        .setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
+                new HashSet<>(10),
+                "gtpp.recipe.geothermalfuel",
+                "GeoThermal Fuel",
+                null,
+                RES_PATH_GUI + "basicmachines/Default",
+                1,
+                1,
+                0,
+                0,
+                1,
+                "Fuel Value: ",
+                1000,
+                " EU",
+                true,
+                true).useModularUI(true);
+        public static final GTPP_Recipe_Map_Internal sChemicalDehydratorRecipes = (GTPP_Recipe_Map_Internal) new GTPP_Recipe_Map_Internal(
+                new HashSet<>(200),
+                "gtpp.recipe.chemicaldehydrator",
+                "Dehydrator",
+                null,
+                RES_PATH_GUI + "basicmachines/Dehydrator",
+                2,
+                9,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
         public static final GT_Recipe_Map sVacuumFurnaceRecipes = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(500),
-                        "gtpp.recipe.vacfurnace",
-                        "Vacuum Furnace",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        9,
-                        9,
-                        1,
-                        0,
-                        1,
-                        "Heat Capacity: ",
-                        1,
-                        " K",
-                        false,
-                        true)
-                .setUsualFluidInputCount(3)
-                .setUsualFluidOutputCount(3);
+                new HashSet<>(500),
+                "gtpp.recipe.vacfurnace",
+                "Vacuum Furnace",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                9,
+                9,
+                1,
+                0,
+                1,
+                "Heat Capacity: ",
+                1,
+                " K",
+                false,
+                true).setUsualFluidInputCount(3).setUsualFluidOutputCount(3);
         public static final GT_Recipe_Map sAlloyBlastSmelterRecipes = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(200),
-                        "gtpp.recipe.alloyblastsmelter",
-                        "Alloy Blast Smelter",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        9,
-                        9,
-                        1,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .setUsualFluidInputCount(3)
-                .setUsualFluidOutputCount(3);
+                new HashSet<>(200),
+                "gtpp.recipe.alloyblastsmelter",
+                "Alloy Blast Smelter",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                9,
+                9,
+                1,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setUsualFluidInputCount(3).setUsualFluidOutputCount(3);
         public static final GT_Recipe_Map sSteamTurbineFuels = new GT_Recipe_Map(
-                        new HashSet<>(10),
-                        "gtpp.recipe.steamturbinefuel",
-                        "GeoThermal Fuel",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Default",
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        "Fuel Value: ",
-                        1000,
-                        " EU",
-                        true,
-                        false)
-                .useModularUI(true);
+                new HashSet<>(10),
+                "gtpp.recipe.steamturbinefuel",
+                "GeoThermal Fuel",
+                null,
+                RES_PATH_GUI + "basicmachines/Default",
+                1,
+                1,
+                0,
+                0,
+                1,
+                "Fuel Value: ",
+                1000,
+                " EU",
+                true,
+                false).useModularUI(true);
 
         // LFTR recipes
         public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map_FluidOnly(
-                        new HashSet<>(50),
-                        "gtpp.recipe.lftr",
-                        "Liquid Fluoride Thorium Reactor",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        0,
-                        0,
-                        0,
-                        2,
-                        0,
-                        "Power: ",
-                        1,
-                        " EU/t per Dynamo",
-                        true,
-                        true)
-                .setUsualFluidInputCount(6)
-                .setUsualFluidOutputCount(6)
-                .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
-                    final long tEUt = recipeInfo.recipe.mSpecialValue;
-                    final int tDuration = recipeInfo.recipe.mDuration;
-                    return Arrays.asList(
-                            applyPrefixAndSuffix.apply(recipeInfo.recipe.mSpecialValue),
-                            "Dynamo: " + MathUtils.formatNumbers(tDuration * tEUt) + " EU",
-                            "Total: " + MathUtils.formatNumbers(tDuration * tEUt * 4) + " EU");
-                });
+                new HashSet<>(50),
+                "gtpp.recipe.lftr",
+                "Liquid Fluoride Thorium Reactor",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                0,
+                0,
+                0,
+                2,
+                0,
+                "Power: ",
+                1,
+                " EU/t per Dynamo",
+                true,
+                true).setUsualFluidInputCount(6).setUsualFluidOutputCount(6)
+                        .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                            final long tEUt = recipeInfo.recipe.mSpecialValue;
+                            final int tDuration = recipeInfo.recipe.mDuration;
+                            return Arrays.asList(
+                                    applyPrefixAndSuffix.apply(recipeInfo.recipe.mSpecialValue),
+                                    "Dynamo: " + MathUtils.formatNumbers(tDuration * tEUt) + " EU",
+                                    "Total: " + MathUtils.formatNumbers(tDuration * tEUt * 4) + " EU");
+                        });
 
         // Ore Milling Map
         public static final GT_Recipe_Map sOreMillRecipes = new GT_Recipe_Map(
@@ -364,6 +328,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 E,
                 true,
                 true) {
+
             @Override
             protected List<String> handleNEIItemInputTooltip(List<String> currentTip, FixedPositionedStack pStack) {
                 if (ItemUtils.isMillingBall(pStack.item)) {
@@ -386,101 +351,94 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
 
         // Fission Fuel Plant Recipes
         public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map_FluidOnly(
-                        new HashSet<>(50),
-                        "gtpp.recipe.fissionfuel",
-                        "Nuclear Fuel Processing",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .setUsualFluidInputCount(6)
-                .setUsualFluidOutputCount(6);
+                new HashSet<>(50),
+                "gtpp.recipe.fissionfuel",
+                "Nuclear Fuel Processing",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                0,
+                0,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setUsualFluidInputCount(6).setUsualFluidOutputCount(6);
 
         // Cold Trap
         public static final GT_Recipe_Map sColdTrapRecipes = new GT_Recipe_Map(
-                        new HashSet<>(10000),
-                        "gtpp.recipe.coldtrap",
-                        "Cold Trap",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Dehydrator",
-                        2,
-                        9,
-                        0,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
+                new HashSet<>(10000),
+                "gtpp.recipe.coldtrap",
+                "Cold Trap",
+                null,
+                RES_PATH_GUI + "basicmachines/Dehydrator",
+                2,
+                9,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
 
         // Reactor Processing Unit
         public static final GT_Recipe_Map sReactorProcessingUnitRecipes = new GT_Recipe_Map(
-                        new HashSet<>(10000),
-                        "gtpp.recipe.reactorprocessingunit",
-                        "Reactor Processing Unit",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Dehydrator",
-                        2,
-                        9,
-                        0,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
+                new HashSet<>(10000),
+                "gtpp.recipe.reactorprocessingunit",
+                "Reactor Processing Unit",
+                null,
+                RES_PATH_GUI + "basicmachines/Dehydrator",
+                2,
+                9,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
 
         // Basic Washer Map
-        public static final GTPP_Recipe_Map_Internal sSimpleWasherRecipes =
-                (GTPP_Recipe_Map_Internal) new GTPP_Recipe_Map_Internal(
-                                new HashSet<>(3),
-                                "gtpp.recipe.simplewasher",
-                                "Simple Dust Washer",
-                                null,
-                                RES_PATH_GUI + "basicmachines/PotionBrewer",
-                                1,
-                                1,
-                                0,
-                                0,
-                                1,
-                                E,
-                                1,
-                                E,
-                                true,
-                                true)
-                        .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CAULDRON)
+        public static final GTPP_Recipe_Map_Internal sSimpleWasherRecipes = (GTPP_Recipe_Map_Internal) new GTPP_Recipe_Map_Internal(
+                new HashSet<>(3),
+                "gtpp.recipe.simplewasher",
+                "Simple Dust Washer",
+                null,
+                RES_PATH_GUI + "basicmachines/PotionBrewer",
+                1,
+                1,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CAULDRON)
                         .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
 
         // Molecular Transformer Map
         public static final GT_Recipe_Map sMolecularTransformerRecipes = new GT_Recipe_Map(
-                        new HashSet<>(3),
-                        "gtpp.recipe.moleculartransformer",
-                        "Molecular Transformer",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Scanner",
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_MICROSCOPE);
+                new HashSet<>(3),
+                "gtpp.recipe.moleculartransformer",
+                "Molecular Transformer",
+                null,
+                RES_PATH_GUI + "basicmachines/Scanner",
+                1,
+                1,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_MICROSCOPE);
 
         // Elemental Duplicator Map
         public static final GT_Recipe_Map sElementalDuplicatorRecipes = new GT_Recipe_Map(
@@ -519,142 +477,134 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
 
         // RTG Fuel Map
         public static final GT_Recipe.GT_Recipe_Map_Fuel sRTGFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
-                        new HashSet<>(10),
-                        "gtpp.recipe.RTGgenerators",
-                        "RTG",
-                        null,
-                        "gregtech:textures/gui/basicmachines/Default",
-                        1,
-                        0,
-                        0,
-                        0,
-                        1,
-                        "Fuel Value: ",
-                        365,
-                        " Minecraft Days",
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(10),
+                "gtpp.recipe.RTGgenerators",
+                "RTG",
+                null,
+                "gregtech:textures/gui/basicmachines/Default",
+                1,
+                0,
+                0,
+                0,
+                1,
+                "Fuel Value: ",
+                365,
+                " Minecraft Days",
+                true,
+                true).useModularUI(true);
 
         // Thermal Boiler map
         public static final GT_Recipe_Map sThermalFuels = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(10),
-                        "gtpp.recipe.thermalgeneratorfuel",
-                        "Thermal Generator Fuel",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        9,
-                        9,
-                        0,
-                        0,
-                        1,
-                        null,
-                        1000,
-                        null,
-                        true,
-                        true)
-                .setUsualFluidInputCount(3)
-                .setUsualFluidOutputCount(3);
+                new HashSet<>(10),
+                "gtpp.recipe.thermalgeneratorfuel",
+                "Thermal Generator Fuel",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                9,
+                9,
+                0,
+                0,
+                1,
+                null,
+                1000,
+                null,
+                true,
+                true).setUsualFluidInputCount(3).setUsualFluidOutputCount(3);
 
         // Solar Tower map
         public static final GT_Recipe_Map sSolarTowerRecipes = new GT_Recipe_Map_FluidOnly(
-                        new HashSet<>(10),
-                        "gtpp.recipe.solartower",
-                        "Solar Tower",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        null,
-                        1000,
-                        null,
-                        true,
-                        true)
-                .useModularUI(true)
-                .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> Arrays.asList(
-                        "Solar Heater rings boost tier",
-                        "R1:T1, R2:T2, R3:T4, R4:T8, R5:T16",
-                        "Input Amount = 1000 x T"));
+                new HashSet<>(10),
+                "gtpp.recipe.solartower",
+                "Solar Tower",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                0,
+                0,
+                0,
+                0,
+                1,
+                null,
+                1000,
+                null,
+                true,
+                true).useModularUI(true).setNEISpecialInfoFormatter(
+                        (recipeInfo, applyPrefixAndSuffix) -> Arrays.asList(
+                                "Solar Heater rings boost tier",
+                                "R1:T1, R2:T2, R3:T4, R4:T8, R5:T16",
+                                "Input Amount = 1000 x T"));
 
         // Cyclotron recipe map
         public static final GT_Recipe_Map sCyclotronRecipes = new GT_Recipe_Map(
-                        new HashSet<>(200),
-                        "gtpp.recipe.cyclotron",
-                        "COMET - Compact Cyclotron",
-                        null,
-                        RES_PATH_GUI + "basicmachines/BlastSmelter",
-                        9,
-                        9,
-                        0,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(200),
+                "gtpp.recipe.cyclotron",
+                "COMET - Compact Cyclotron",
+                null,
+                RES_PATH_GUI + "basicmachines/BlastSmelter",
+                9,
+                9,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).useModularUI(true);
 
         // Mini Fusion
         public static final GT_Recipe_Map sSlowFusionRecipes = new GT_Recipe_Map(
-                        new HashSet<>(50),
-                        "gtpp.recipe.slowfusionreactor",
-                        "Mimir - Slow Fusion",
-                        null,
-                        "gregtech:textures/gui/basicmachines/LFTR",
-                        0,
-                        0,
-                        0,
-                        2,
-                        1,
-                        "Start: ",
-                        1,
-                        " EU",
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(50),
+                "gtpp.recipe.slowfusionreactor",
+                "Mimir - Slow Fusion",
+                null,
+                "gregtech:textures/gui/basicmachines/LFTR",
+                0,
+                0,
+                0,
+                2,
+                1,
+                "Start: ",
+                1,
+                " EU",
+                true,
+                true).useModularUI(true);
 
         // Component Assembler
         public static final GT_Recipe_Map sComponentAssemblerRecipes = new GT_Recipe_Map_Assembler(
-                        new HashSet<>(300),
-                        "gtpp.recipe.componentassembler",
-                        "Component Assembler",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Assembler",
-                        6,
-                        1,
-                        1,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(300),
+                "gtpp.recipe.componentassembler",
+                "Component Assembler",
+                null,
+                RES_PATH_GUI + "basicmachines/Assembler",
+                6,
+                1,
+                1,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).useModularUI(true);
 
         // Special Maps for Multis
         public static final GT_Recipe_Map sFishPondRecipes = new GT_Recipe_Map(
-                        new HashSet<>(3),
-                        "gtpp.recipe.fishpond",
-                        "Zhuhai - Fishing Port",
-                        null,
-                        RES_PATH_GUI + "basicmachines/PotionBrewer",
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        true)
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CAULDRON)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
+                new HashSet<>(3),
+                "gtpp.recipe.fishpond",
+                "Zhuhai - Fishing Port",
+                null,
+                RES_PATH_GUI + "basicmachines/PotionBrewer",
+                1,
+                1,
+                0,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CAULDRON)
+                        .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
         public static final GT_Recipe_Map sSpargeTowerRecipes = new GT_Recipe_Map(
                 new HashSet<>(10000),
                 "gtpp.recipe.spargetower",
@@ -673,60 +623,55 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 false);
 
         public static final GT_Recipe_Map sAdvFreezerRecipes_GT = new GT_Recipe_Map(
-                        new HashSet<>(2000),
-                        "gtpp.recipe.cryogenicfreezer",
-                        "Cryogenic Freezer",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        "",
-                        0,
-                        "",
-                        false,
-                        true)
-                .setUsualFluidInputCount(2);
+                new HashSet<>(2000),
+                "gtpp.recipe.cryogenicfreezer",
+                "Cryogenic Freezer",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                1,
+                1,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                false,
+                true).setUsualFluidInputCount(2);
         public static final GT_Recipe_Map sMultiblockCentrifugeRecipes_GT = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(2000),
-                        "gtpp.recipe.multicentrifuge",
-                        "Multiblock Centrifuge",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        6,
-                        6,
-                        0,
-                        0,
-                        1,
-                        "",
-                        0,
-                        "",
-                        false,
-                        true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT)
-                .setUsualFluidInputCount(6)
-                .setUsualFluidOutputCount(6);
+                new HashSet<>(2000),
+                "gtpp.recipe.multicentrifuge",
+                "Multiblock Centrifuge",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                6,
+                6,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                false,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT).setUsualFluidInputCount(6)
+                        .setUsualFluidOutputCount(6);
         public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes_GT = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(2000),
-                        "gtpp.recipe.multielectro",
-                        "Multiblock Electrolyzer",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        6,
-                        6,
-                        0,
-                        0,
-                        1,
-                        "",
-                        0,
-                        "",
-                        false,
-                        true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT)
-                .setUsualFluidInputCount(6)
-                .setUsualFluidOutputCount(6);
+                new HashSet<>(2000),
+                "gtpp.recipe.multielectro",
+                "Multiblock Electrolyzer",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                6,
+                6,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                false,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT).setUsualFluidInputCount(6)
+                        .setUsualFluidOutputCount(6);
 
         // internal copy of sChemicalPlantRecipes
         public static final GT_Recipe_Map sChemicalPlant_GT = new GT_Recipe_Map(
@@ -746,81 +691,75 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 false,
                 false);
         public static final GT_Recipe_Map sMultiblockMixerRecipes_GT = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(2000),
-                        "gtpp.recipe.multimixer",
-                        "Multiblock Mixer",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        9,
-                        9,
-                        0,
-                        0,
-                        1,
-                        "",
-                        0,
-                        "",
-                        false,
-                        true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
-                .setUsualFluidInputCount(6)
-                .setUsualFluidOutputCount(6);
+                new HashSet<>(2000),
+                "gtpp.recipe.multimixer",
+                "Multiblock Mixer",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                9,
+                9,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                false,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
+                        .setUsualFluidInputCount(6).setUsualFluidOutputCount(6);
 
         public static final GT_Recipe_Map sMultiblockChemicalDehydratorRecipes = new GT_Recipe_Map_LargeNEI(
-                        new HashSet<>(2000),
-                        "gtpp.recipe.multidehydrator",
-                        "Multiblock Dehydrator",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        6,
-                        9,
-                        0,
-                        0,
-                        1,
-                        "",
-                        0,
-                        "",
-                        false,
-                        true)
-                .setUsualFluidInputCount(3)
-                .setUsualFluidOutputCount(3);
+                new HashSet<>(2000),
+                "gtpp.recipe.multidehydrator",
+                "Multiblock Dehydrator",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                6,
+                9,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                false,
+                true).setUsualFluidInputCount(3).setUsualFluidOutputCount(3);
 
         // Semi-Fluid Fuel Map
         public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
-                        new HashSet<>(10),
-                        "gtpp.recipe.semifluidgeneratorfuels",
-                        "Semifluid Generator Fuels",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Default",
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        "Fuel Value: ",
-                        1000,
-                        " EU",
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(10),
+                "gtpp.recipe.semifluidgeneratorfuels",
+                "Semifluid Generator Fuels",
+                null,
+                RES_PATH_GUI + "basicmachines/Default",
+                0,
+                0,
+                0,
+                0,
+                1,
+                "Fuel Value: ",
+                1000,
+                " EU",
+                true,
+                true).useModularUI(true);
 
         // Flotation Cell
         public static final GT_Recipe_Map sFlotationCellRecipes = new GT_Recipe_Map(
-                        new HashSet<>(10000),
-                        "gtpp.recipe.flotationcell",
-                        "Flotation Cell",
-                        null,
-                        RES_PATH_GUI + "basicmachines/LFTR",
-                        6,
-                        0,
-                        1,
-                        1,
-                        1,
-                        "",
-                        1,
-                        E,
-                        true,
-                        true)
-                .useModularUI(true);
+                new HashSet<>(10000),
+                "gtpp.recipe.flotationcell",
+                "Flotation Cell",
+                null,
+                RES_PATH_GUI + "basicmachines/LFTR",
+                6,
+                0,
+                1,
+                1,
+                1,
+                "",
+                1,
+                E,
+                true,
+                true).useModularUI(true);
 
         // Tree Growth Simulator
         public static final GT_Recipe_Map sTreeSimFakeRecipes = new GT_Recipe_Map(
@@ -839,6 +778,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 "",
                 false,
                 true) {
+
             @Override
             protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {}
 
@@ -848,8 +788,8 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
             @Override
             protected List<String> handleNEIItemOutputTooltip(List<String> currentTip, FixedPositionedStack pStack) {
                 if (ModItems.fluidFertBasic != null && pStack.isChanceBased()) {
-                    currentTip.add(
-                            GRAY + "Outputted if " + ModItems.fluidFertBasic.getLocalizedName() + " is provided");
+                    currentTip
+                            .add(GRAY + "Outputted if " + ModItems.fluidFertBasic.getLocalizedName() + " is provided");
                 } else {
                     super.handleNEIItemOutputTooltip(currentTip, pStack);
                 }
@@ -881,21 +821,10 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 "Laurenium",
                 "Botmium");
 
-        public GTPP_Recipe_Map_ChemicalPlant(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+        public GTPP_Recipe_Map_ChemicalPlant(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
+                String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,

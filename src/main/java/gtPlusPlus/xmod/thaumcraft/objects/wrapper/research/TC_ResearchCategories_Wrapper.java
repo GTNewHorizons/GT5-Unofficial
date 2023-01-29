@@ -1,17 +1,19 @@
 package gtPlusPlus.xmod.thaumcraft.objects.wrapper.research;
 
-import cpw.mods.fml.common.FMLLog;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.apache.logging.log4j.Level;
+
+import cpw.mods.fml.common.FMLLog;
 
 public class TC_ResearchCategories_Wrapper {
 
-    public static LinkedHashMap<String, TC_ResearchCategoryList_Wrapper> researchCategories =
-            new LinkedHashMap<String, TC_ResearchCategoryList_Wrapper>();
+    public static LinkedHashMap<String, TC_ResearchCategoryList_Wrapper> researchCategories = new LinkedHashMap<String, TC_ResearchCategoryList_Wrapper>();
 
     public static TC_ResearchCategoryList_Wrapper getResearchList(String key) {
         return (TC_ResearchCategoryList_Wrapper) researchCategories.get(key);
@@ -60,7 +62,9 @@ public class TC_ResearchCategories_Wrapper {
                         FMLLog.log(
                                 Level.FATAL,
                                 "[Thaumcraft] Research [" + ri.getName()
-                                        + "] not added as it overlaps with existing research [" + rr.getName() + "]",
+                                        + "] not added as it overlaps with existing research ["
+                                        + rr.getName()
+                                        + "]",
                                 new Object[0]);
                         return;
                     }

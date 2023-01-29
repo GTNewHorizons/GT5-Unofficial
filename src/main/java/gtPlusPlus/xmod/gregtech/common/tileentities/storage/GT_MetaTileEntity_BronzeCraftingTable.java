@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -13,13 +14,13 @@ import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 
 public class GT_MetaTileEntity_BronzeCraftingTable extends GT_MetaTileEntity_AdvancedCraftingTable {
 
-    public GT_MetaTileEntity_BronzeCraftingTable(
-            final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription) {
+    public GT_MetaTileEntity_BronzeCraftingTable(final int aID, final String aName, final String aNameRegional,
+            final int aTier, final String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
-    public GT_MetaTileEntity_BronzeCraftingTable(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_BronzeCraftingTable(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -76,8 +77,7 @@ public class GT_MetaTileEntity_BronzeCraftingTable extends GT_MetaTileEntity_Adv
 
     @Override
     protected SlotWidget createElectricSlot(int index) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, index)
-                .setBackground(getGUITextureSet().getItemSlot());
+        return (SlotWidget) new SlotWidget(inventoryHandler, index).setBackground(getGUITextureSet().getItemSlot());
     }
 
     @Override

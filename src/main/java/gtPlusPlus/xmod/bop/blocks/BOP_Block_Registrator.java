@@ -1,5 +1,11 @@
 package gtPlusPlus.xmod.bop.blocks;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -22,11 +28,6 @@ import gtPlusPlus.xmod.bop.blocks.pine.SaplingPineTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LeavesRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LogRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.SaplingRainforestTree;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class BOP_Block_Registrator {
 
@@ -74,9 +75,10 @@ public class BOP_Block_Registrator {
 
     public static final void addLogRecipes(final ItemStack aStack) {
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {aStack},
+                new ItemStack[] { aStack },
                 ItemUtils.getSimpleStack(
-                        Item.getItemFromBlock(Blocks.planks), GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 4));
+                        Item.getItemFromBlock(Blocks.planks),
+                        GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 4));
         RecipeUtils.recipeBuilder(
                 CI.craftingToolSaw,
                 null,
@@ -97,7 +99,7 @@ public class BOP_Block_Registrator {
         GT_ModHandler.addCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
                 GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] {"sLf", 'L', GT_Utility.copyAmount(1L, aStack)});
+                new Object[] { "sLf", 'L', GT_Utility.copyAmount(1L, aStack) });
         GT_Values.RA.addLatheRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
@@ -137,8 +139,8 @@ public class BOP_Block_Registrator {
                     GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1L, aStack), false, null),
                     new ItemStack(Items.coal, 1, 1))) {
                 addPyrolyeOvenRecipes(aStack);
-                if (GregTech_API.sRecipeFile.get(
-                        ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
+                if (GregTech_API.sRecipeFile
+                        .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
                     GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1L, aStack));
                 }
             }
@@ -147,8 +149,8 @@ public class BOP_Block_Registrator {
                         GT_ModHandler.getSmeltingOutput(new ItemStack(aStack.getItem(), 1, i), false, null),
                         new ItemStack(Items.coal, 1, 1))) {
                     addPyrolyeOvenRecipes(aStack);
-                    if (GregTech_API.sRecipeFile.get(
-                            ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
+                    if (GregTech_API.sRecipeFile
+                            .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
                         GT_ModHandler.removeFurnaceSmelting(new ItemStack(aStack.getItem(), 1, i));
                     }
                 }
@@ -170,8 +172,7 @@ public class BOP_Block_Registrator {
                     GT_Values.RA.addCutterRecipe(
                             new ItemStack(aStack.getItem(), 1, i),
                             GT_Utility.copyAmount(
-                                    GT_Mod.gregtechproxy.mNerfedWoodPlank
-                                            ? ((long) tStack.stackSize)
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? ((long) tStack.stackSize)
                                             : ((long) (tStack.stackSize * 5 / 4)),
                                     tStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
@@ -184,15 +185,15 @@ public class BOP_Block_Registrator {
                     GT_ModHandler.removeRecipe(new ItemStack(aStack.getItem(), 1, i));
                     GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(
-                                    GT_Mod.gregtechproxy.mNerfedWoodPlank
-                                            ? ((long) tStack.stackSize)
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? ((long) tStack.stackSize)
                                             : ((long) (tStack.stackSize * 5 / 4)),
                                     tStack),
-                            new Object[] {"s", "L", 'L', new ItemStack(aStack.getItem(), 1, i)});
+                            new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_Utility.copyAmount(
-                                    tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
-                            new Object[] {new ItemStack(aStack.getItem(), 1, i)});
+                                    tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1),
+                                    tStack),
+                            new Object[] { new ItemStack(aStack.getItem(), 1, i) });
                 }
             }
         } else {
@@ -200,8 +201,8 @@ public class BOP_Block_Registrator {
                     GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1L, aStack), false, null),
                     new ItemStack(Items.coal, 1, 1))) {
                 addPyrolyeOvenRecipes(aStack);
-                if (GregTech_API.sRecipeFile.get(
-                        ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
+                if (GregTech_API.sRecipeFile
+                        .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
                     GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1L, aStack));
                 }
             }
@@ -219,8 +220,7 @@ public class BOP_Block_Registrator {
                 GT_Values.RA.addCutterRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         GT_Utility.copyAmount(
-                                GT_Mod.gregtechproxy.mNerfedWoodPlank
-                                        ? ((long) tStack2.stackSize)
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? ((long) tStack2.stackSize)
                                         : ((long) (tStack2.stackSize * 5 / 4)),
                                 tStack2),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
@@ -233,15 +233,15 @@ public class BOP_Block_Registrator {
                 GT_ModHandler.removeRecipe(GT_Utility.copyAmount(1L, aStack));
                 GT_ModHandler.addCraftingRecipe(
                         GT_Utility.copyAmount(
-                                GT_Mod.gregtechproxy.mNerfedWoodPlank
-                                        ? ((long) tStack2.stackSize)
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? ((long) tStack2.stackSize)
                                         : ((long) (tStack2.stackSize * 5 / 4)),
                                 tStack2),
-                        new Object[] {"s", "L", 'L', GT_Utility.copyAmount(1L, aStack)});
+                        new Object[] { "s", "L", 'L', GT_Utility.copyAmount(1L, aStack) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         GT_Utility.copyAmount(
-                                tStack2.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack2),
-                        new Object[] {GT_Utility.copyAmount(1L, aStack)});
+                                tStack2.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1),
+                                tStack2),
+                        new Object[] { GT_Utility.copyAmount(1L, aStack) });
             }
         }
         if (GT_Utility.areStacksEqual(
@@ -261,8 +261,8 @@ public class BOP_Block_Registrator {
                 null,
                 0,
                 false);
-        GT_ModHandler.addCompressionRecipe(
-                GT_Utility.copyAmount(8L, aStack), ItemList.IC2_Plantball.get(1L, new Object[0]));
+        GT_ModHandler
+                .addCompressionRecipe(GT_Utility.copyAmount(8L, aStack), ItemList.IC2_Plantball.get(1L, new Object[0]));
         GT_Values.RA.addLatheRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),

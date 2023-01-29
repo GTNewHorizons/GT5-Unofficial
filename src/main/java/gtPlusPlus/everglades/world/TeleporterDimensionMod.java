@@ -1,13 +1,15 @@
 package gtPlusPlus.everglades.world;
 
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import java.util.*;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+
+import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 
 public class TeleporterDimensionMod extends Teleporter {
 
@@ -21,8 +23,8 @@ public class TeleporterDimensionMod extends Teleporter {
      */
     private final LongHashMap destinationCoordinateCache = new LongHashMap();
     /**
-     * A list of valid keys for the destinationCoordainteCache. These are
-     * based on the X & Z of the players initial location.
+     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
+     * location.
      */
     @SuppressWarnings("rawtypes")
     private final List destinationCoordinateKeys = new ArrayList();
@@ -57,8 +59,8 @@ public class TeleporterDimensionMod extends Teleporter {
                         int l1 = j + j1;
                         int i2 = k + i1 * b1 - l * b0;
                         boolean flag = j1 < 0;
-                        this.worldServerInstance.setBlock(
-                                k1, l1, i2, flag ? Dimension_Everglades.blockPortalFrame : Blocks.air);
+                        this.worldServerInstance
+                                .setBlock(k1, l1, i2, flag ? Dimension_Everglades.blockPortalFrame : Blocks.air);
                     }
                 }
             }
@@ -86,8 +88,8 @@ public class TeleporterDimensionMod extends Teleporter {
         int l3;
 
         if (this.destinationCoordinateCache.containsItem(j1)) {
-            Teleporter.PortalPosition portalposition =
-                    (Teleporter.PortalPosition) this.destinationCoordinateCache.getValueByKey(j1);
+            Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
+                    .getValueByKey(j1);
             d3 = 0.0D;
             i = portalposition.posX;
             j = portalposition.posY;
@@ -125,8 +127,8 @@ public class TeleporterDimensionMod extends Teleporter {
 
         if (d3 >= 0.0D) {
             if (flag) {
-                this.destinationCoordinateCache.add(
-                        j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
+                this.destinationCoordinateCache
+                        .add(j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
                 this.destinationCoordinateKeys.add(Long.valueOf(j1));
             }
 
@@ -262,8 +264,7 @@ public class TeleporterDimensionMod extends Teleporter {
 
             for (k2 = k - b0; k2 <= k + b0; ++k2) {
                 d2 = k2 + 0.5D - par1Entity.posZ;
-                label274:
-                for (i3 = this.worldServerInstance.getActualHeight() - 1; i3 >= 0; --i3) {
+                label274: for (i3 = this.worldServerInstance.getActualHeight() - 1; i3 >= 0; --i3) {
                     if (this.worldServerInstance.isAirBlock(i2, i3, k2)) {
                         while (i3 > 0 && this.worldServerInstance.isAirBlock(i2, i3 - 1, k2)) {
                             --i3;
@@ -286,10 +287,8 @@ public class TeleporterDimensionMod extends Teleporter {
                                         int j5 = k2 + (j4 - 1) * l3 - i4 * k3;
 
                                         if (k4 < 0
-                                                        && !this.worldServerInstance
-                                                                .getBlock(l4, i5, j5)
-                                                                .getMaterial()
-                                                                .isSolid()
+                                                && !this.worldServerInstance.getBlock(l4, i5, j5).getMaterial()
+                                                        .isSolid()
                                                 || k4 >= 0 && !this.worldServerInstance.isAirBlock(l4, i5, j5)) {
                                             continue label274;
                                         }
@@ -319,8 +318,7 @@ public class TeleporterDimensionMod extends Teleporter {
 
                 for (k2 = k - b0; k2 <= k + b0; ++k2) {
                     d2 = k2 + 0.5D - par1Entity.posZ;
-                    label222:
-                    for (i3 = this.worldServerInstance.getActualHeight() - 1; i3 >= 0; --i3) {
+                    label222: for (i3 = this.worldServerInstance.getActualHeight() - 1; i3 >= 0; --i3) {
                         if (this.worldServerInstance.isAirBlock(i2, i3, k2)) {
                             while (i3 > 0 && this.worldServerInstance.isAirBlock(i2, i3 - 1, k2)) {
                                 --i3;
@@ -337,10 +335,8 @@ public class TeleporterDimensionMod extends Teleporter {
                                         i5 = k2 + (i4 - 1) * l3;
 
                                         if (j4 < 0
-                                                        && !this.worldServerInstance
-                                                                .getBlock(k4, l4, i5)
-                                                                .getMaterial()
-                                                                .isSolid()
+                                                && !this.worldServerInstance.getBlock(k4, l4, i5).getMaterial()
+                                                        .isSolid()
                                                 || j4 >= 0 && !this.worldServerInstance.isAirBlock(k4, l4, i5)) {
                                             continue label222;
                                         }
@@ -395,8 +391,8 @@ public class TeleporterDimensionMod extends Teleporter {
                         i4 = j2 + k3;
                         j4 = k2 + (j3 - 1) * l2 - i3 * l5;
                         flag = k3 < 0;
-                        this.worldServerInstance.setBlock(
-                                l3, i4, j4, flag ? Dimension_Everglades.blockPortalFrame : Blocks.air);
+                        this.worldServerInstance
+                                .setBlock(l3, i4, j4, flag ? Dimension_Everglades.blockPortalFrame : Blocks.air);
                     }
                 }
             }
@@ -424,8 +420,8 @@ public class TeleporterDimensionMod extends Teleporter {
                     l3 = k5 + (j3 - 1) * l5;
                     i4 = j2 + k3;
                     j4 = k2 + (j3 - 1) * l2;
-                    this.worldServerInstance.notifyBlocksOfNeighborChange(
-                            l3, i4, j4, this.worldServerInstance.getBlock(l3, i4, j4));
+                    this.worldServerInstance
+                            .notifyBlocksOfNeighborChange(l3, i4, j4, this.worldServerInstance.getBlock(l3, i4, j4));
                 }
             }
         }
@@ -434,8 +430,8 @@ public class TeleporterDimensionMod extends Teleporter {
     }
 
     /**
-     * called periodically to remove out-of-date portal locations from the
-     * cache list. Argument par1 is a WorldServer.getTotalWorldTime() value.
+     * called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
+     * WorldServer.getTotalWorldTime() value.
      */
     @Override
     public void removeStalePortalLocations(long par1) {
@@ -446,8 +442,8 @@ public class TeleporterDimensionMod extends Teleporter {
 
             while (iterator.hasNext()) {
                 Long olong = (Long) iterator.next();
-                Teleporter.PortalPosition portalposition =
-                        (Teleporter.PortalPosition) this.destinationCoordinateCache.getValueByKey(olong.longValue());
+                Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
+                        .getValueByKey(olong.longValue());
 
                 if (portalposition == null || portalposition.lastUpdateTime < j) {
                     iterator.remove();
@@ -458,6 +454,7 @@ public class TeleporterDimensionMod extends Teleporter {
     }
 
     public class PortalPosition extends ChunkCoordinates {
+
         /**
          * The worldtime at which this PortalPosition was last verified
          */

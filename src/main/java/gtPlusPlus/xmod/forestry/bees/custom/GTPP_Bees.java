@@ -1,5 +1,15 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import cpw.mods.fml.common.Loader;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
@@ -14,13 +24,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 public class GTPP_Bees {
 
@@ -45,7 +48,7 @@ public class GTPP_Bees {
     // public static GTPP_Branch_Definition definition;
 
     public GTPP_Bees() {
-        if (Loader.isModLoaded("Forestry") /*&& tryGetBeesBoolean()*/) {
+        if (Loader.isModLoaded("Forestry") /* && tryGetBeesBoolean() */) {
 
             for (IAllele o : AlleleManager.alleleRegistry.getRegisteredAlleles().values()) {
                 // Utils.LOG_DEBUG_BEES(" ==================================================");
@@ -71,17 +74,17 @@ public class GTPP_Bees {
     }
 
     private void setCustomItems() {
-        dropForceGem = new BaseItemMisc("Force", new short[] {250, 250, 20}, 64, MiscTypes.GEM, null);
+        dropForceGem = new BaseItemMisc("Force", new short[] { 250, 250, 20 }, 64, MiscTypes.GEM, null);
         // mGregMatLoader.enableMaterial(Materials.Force);
         // MaterialUtils.tryEnableMaterial(Materials.Force);
         // MaterialUtils.tryEnableMaterialPart(OrePrefixes.dust, Materials.Force);
         // MaterialUtils.tryEnableMaterialPart(OrePrefixes.ingot, Materials.Force);
-        dropBiomassBlob = new BaseItemMisc("Biomass", new short[] {33, 225, 24}, 64, MiscTypes.DROP, null);
-        dropEthanolBlob = new BaseItemMisc("Ethanol", new short[] {255, 128, 0}, 64, MiscTypes.DROP, null);
+        dropBiomassBlob = new BaseItemMisc("Biomass", new short[] { 33, 225, 24 }, 64, MiscTypes.DROP, null);
+        dropEthanolBlob = new BaseItemMisc("Ethanol", new short[] { 255, 128, 0 }, 64, MiscTypes.DROP, null);
 
         // Nikolite may not exist, so lets make it.
-        dropNikoliteDust =
-                ItemUtils.generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
+        dropNikoliteDust = ItemUtils
+                .generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
         // mGregMatLoader.enableMaterial(Materials.BlueAlloy);
         // mGregMatLoader.enableMaterial(Materials.Nikolite);
         // MaterialUtils.tryEnableMaterial(Materials.Nikolite);
@@ -93,7 +96,7 @@ public class GTPP_Bees {
             new BaseItemIngot_OLD("itemIngotNikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200), 0);
         }
 
-        dropFluorineBlob = new BaseItemMisc("Fluorine", new short[] {30, 230, 230}, 64, MiscTypes.DROP, null);
+        dropFluorineBlob = new BaseItemMisc("Fluorine", new short[] { 30, 230, 230 }, 64, MiscTypes.DROP, null);
         addRecipes();
     }
 
@@ -160,18 +163,12 @@ public class GTPP_Bees {
             if (Comb_Stone == null) {
                 Comb_Stone = (ItemStack) getStackForType.invoke(gtBees, gtCombTypeStone);
             }
-            /*}
-            else {
-            	Utils.LOG_BEES("oCombObject was not an instance of gregtech.common.items.ItemComb");
-            }*/
+            /*
+             * } else { Utils.LOG_BEES("oCombObject was not an instance of gregtech.common.items.ItemComb"); }
+             */
 
-        } catch (NullPointerException
-                | ClassNotFoundException
-                | IllegalArgumentException
-                | IllegalAccessException
-                | NoSuchMethodException
-                | SecurityException
-                | InvocationTargetException e) {
+        } catch (NullPointerException | ClassNotFoundException | IllegalArgumentException | IllegalAccessException
+                | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             Logger.BEES("Bad Reflection. setMaterials()");
         }
 

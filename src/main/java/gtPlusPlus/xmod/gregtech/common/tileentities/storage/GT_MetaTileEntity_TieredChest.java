@@ -1,10 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -16,11 +21,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachineBlock implements IAddUIWidgets {
+
     public int mItemCount = 0;
     public ItemStack mItemStack = null;
     private static final double mStorageFactor = (270000.0D / 16);
@@ -40,13 +43,14 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    /*public GT_MetaTileEntity_TieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-    	super(aName, aTier, 3, aDescription, aTextures);
-    }*/
+    /*
+     * public GT_MetaTileEntity_TieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+     * super(aName, aTier, 3, aDescription, aTextures); }
+     */
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, CORE.GT_Tooltip};
+        return new String[] { this.mDescription, CORE.GT_Tooltip };
     }
 
     public boolean isSimpleMachine() {
@@ -75,8 +79,7 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
     }
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (this.getBaseMetaTileEntity().isServerSide()
-                && this.getBaseMetaTileEntity().isAllowedToWork()) {
+        if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
             if (this.getItemCount() <= 0) {
                 this.mItemStack = null;
                 this.mItemCount = 0;
@@ -86,8 +89,7 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
                 this.mItemStack = this.mInventory[0].copy();
             }
 
-            if (this.mInventory[0] != null
-                    && this.mItemCount < this.getMaxItemCount()
+            if (this.mInventory[0] != null && this.mItemCount < this.getMaxItemCount()
                     && GT_Utility.areStacksEqual(this.mInventory[0], this.mItemStack)) {
                 this.mItemCount += this.mInventory[0].stackSize;
                 if (this.mItemCount > this.getMaxItemCount()) {
@@ -102,14 +104,14 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
                 this.mInventory[1] = this.mItemStack.copy();
                 this.mInventory[1].stackSize = Math.min(this.mItemStack.getMaxStackSize(), this.mItemCount);
                 this.mItemCount -= this.mInventory[1].stackSize;
-            } else if (this.mItemCount > 0
-                    && GT_Utility.areStacksEqual(this.mInventory[1], this.mItemStack)
+            } else if (this.mItemCount > 0 && GT_Utility.areStacksEqual(this.mInventory[1], this.mItemStack)
                     && this.mInventory[1].getMaxStackSize() > this.mInventory[1].stackSize) {
-                int tmp =
-                        Math.min(this.mItemCount, this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
-                this.mInventory[1].stackSize += tmp;
-                this.mItemCount -= tmp;
-            }
+                        int tmp = Math.min(
+                                this.mItemCount,
+                                this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
+                        this.mInventory[1].stackSize += tmp;
+                        this.mItemCount -= tmp;
+                    }
 
             if (this.mItemStack != null) {
                 this.mInventory[2] = this.mItemStack.copy();
@@ -129,8 +131,7 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
     }
 
     public int getProgresstime() {
-        return this.mItemCount
-                + (this.mInventory[0] == null ? 0 : this.mInventory[0].stackSize)
+        return this.mItemCount + (this.mInventory[0] == null ? 0 : this.mInventory[0].stackSize)
                 + (this.mInventory[1] == null ? 0 : this.mInventory[1].stackSize);
     }
 
@@ -152,20 +153,10 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
 
     public String[] getInfoData() {
         return this.mItemStack == null
-                ? new String[] {
-                    "Super Storage Chest",
-                    "Stored Items:",
-                    "No Items",
-                    Integer.toString(0),
-                    Integer.toString(this.getMaxItemCount())
-                }
-                : new String[] {
-                    "Super Storage Chest",
-                    "Stored Items:",
-                    this.mItemStack.getDisplayName(),
-                    Integer.toString(this.mItemCount),
-                    Integer.toString(this.getMaxItemCount())
-                };
+                ? new String[] { "Super Storage Chest", "Stored Items:", "No Items", Integer.toString(0),
+                        Integer.toString(this.getMaxItemCount()) }
+                : new String[] { "Super Storage Chest", "Stored Items:", this.mItemStack.getDisplayName(),
+                        Integer.toString(this.mItemCount), Integer.toString(this.getMaxItemCount()) };
     }
 
     public boolean isGivingInformation() {
@@ -189,24 +180,15 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         }
     }
 
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         return aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4
-                ? new ITexture[] {
-                    BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
-                }
+                ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+                        new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
                 : (aSide == aBaseMetaTileEntity.getFrontFacing()
-                        ? new ITexture[] {
-                            BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                            new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
-                        }
-                        : new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1]});
+                        ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+                                new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
+                        : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] });
     }
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
@@ -220,26 +202,21 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(7, 16)
-                        .setSize(71, 45))
-                .widget(new SlotWidget(inventoryHandler, 0)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                        .setPos(79, 16))
-                .widget(new SlotWidget(inventoryHandler, 1)
-                        .setAccess(true, false)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                        .setPos(79, 52))
-                .widget(SlotWidget.phantom(inventoryHandler, 2)
-                        .disableInteraction()
-                        .setBackground(GT_UITextures.TRANSPARENT)
-                        .setPos(59, 42))
-                .widget(new TextWidget("Item Amount")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 20))
-                .widget(TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 30));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
+                .widget(
+                        new SlotWidget(inventoryHandler, 0)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                                .setPos(79, 16))
+                .widget(
+                        new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                                .setPos(79, 52))
+                .widget(
+                        SlotWidget.phantom(inventoryHandler, 2).disableInteraction()
+                                .setBackground(GT_UITextures.TRANSPARENT).setPos(59, 42))
+                .widget(new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20)).widget(
+                        TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
     }
 }

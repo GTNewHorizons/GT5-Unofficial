@@ -1,16 +1,19 @@
 package gtPlusPlus.xmod.witchery;
 
-import com.mojang.authlib.GameProfile;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.mojang.authlib.GameProfile;
+
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class WitchUtils {
 
@@ -26,8 +29,7 @@ public class WitchUtils {
                 a2 = getField("com.emoniph.witchery.entity.ai.EntityAIDigBlocks", "KOBOLDITE_MINER_PROFILE");
                 b1 = (GameProfile) a1.get(null);
                 b2 = (GameProfile) a2.get(null);
-            } catch (Throwable t) {
-            }
+            } catch (Throwable t) {}
         }
         NORMAL_MINER_PROFILE = b1;
         KOBOLDITE_MINER_PROFILE = b2;
@@ -38,8 +40,7 @@ public class WitchUtils {
 
         if (LoadedMods.Witchery) {
 
-            if (harvester != null
-                    && !harvester.worldObj.isRemote
+            if (harvester != null && !harvester.worldObj.isRemote
                     && !event.isCanceled()
                     && (isEqual(harvester.getGameProfile(), KOBOLDITE_MINER_PROFILE)
                             || isEqual(harvester.getGameProfile(), NORMAL_MINER_PROFILE))) {
@@ -52,8 +53,7 @@ public class WitchUtils {
                     if (oreIDs.length > 0) {
                         final String oreName = OreDictionary.getOreName(oreIDs[0]);
                         if (oreName != null && oreName.startsWith("ore")) {
-                            final ItemStack smeltedDrop =
-                                    FurnaceRecipes.smelting().getSmeltingResult(drop);
+                            final ItemStack smeltedDrop = FurnaceRecipes.smelting().getSmeltingResult(drop);
                             if (smeltedDrop != null && hasKobolditePick && harvester.worldObj.rand.nextDouble() < 0.5) {
                                 addOriginal = false;
                                 newDrops.add(smeltedDrop.copy());
@@ -93,10 +93,6 @@ public class WitchUtils {
     }
 
     public static boolean isEqual(final GameProfile a, final GameProfile b) {
-        return a != null
-                && b != null
-                && a.getId() != null
-                && b.getId() != null
-                && a.getId().equals(b.getId());
+        return a != null && b != null && a.getId() != null && b.getId() != null && a.getId().equals(b.getId());
     }
 }

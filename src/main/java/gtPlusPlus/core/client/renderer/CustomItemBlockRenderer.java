@@ -7,11 +7,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 /**
- * Easy way of rendering an item which should look like a block.
- * Borrowed.
+ * Easy way of rendering an item which should look like a block. Borrowed.
  *
  * @author King Lemming
  *
@@ -42,14 +42,14 @@ public class CustomItemBlockRenderer implements IItemRenderer {
         renderItemAsBlock((RenderBlocks) data[0], item, offset, offset, offset);
     }
 
-    public static void renderItemAsBlock(
-            RenderBlocks renderer, ItemStack item, double translateX, double translateY, double translateZ) {
+    public static void renderItemAsBlock(RenderBlocks renderer, ItemStack item, double translateX, double translateY,
+            double translateZ) {
 
         renderTextureAsBlock(renderer, item.getIconIndex(), translateX, translateY, translateZ);
     }
 
-    public static void renderTextureAsBlock(
-            RenderBlocks renderer, IIcon texture, double translateX, double translateY, double translateZ) {
+    public static void renderTextureAsBlock(RenderBlocks renderer, IIcon texture, double translateX, double translateY,
+            double translateZ) {
 
         Tessellator tessellator = Tessellator.instance;
         Block block = Blocks.stone;

@@ -2,6 +2,12 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machine
 
 import static gregtech.api.enums.GT_Values.V;
 
+import java.util.UUID;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -12,68 +18,75 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.player.PlayerCache;
-import java.util.UUID;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_TieredMachineBlock {
+
     public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bUnbreakable = false;
     public int mSuccess = 0, mTargetStackSize = 0;
     public UUID ownerUUID;
     // UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
     private boolean value_last = false, value_current = false;
 
-    public GregtechMetaSafeBlockBase(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription) {
+    public GregtechMetaSafeBlockBase(final int aID, final String aName, final String aNameRegional, final int aTier,
+            final int aInvSlotCount, final String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GregtechMetaSafeBlockBase(
-            final String aName,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription,
-            final ITexture[][][] aTextures) {
+    public GregtechMetaSafeBlockBase(final String aName, final int aTier, final int aInvSlotCount,
+            final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         final ITexture[][][] rTextures = new ITexture[6][17][];
-        final ITexture tIcon = this.getOverlayIcon(),
-                tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST),
+        final ITexture tIcon = this.getOverlayIcon(), tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST),
                 tUp = new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT);
         for (byte i = -1; i < 16; i++) {
-            rTextures[0][i + 1] =
-                    new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tUp, tIcon}; // Back
-            rTextures[1][i + 1] = new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon
-            }; // Right, Strangely The top side as well when facing East?
-            rTextures[2][i + 1] = new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon
-            }; // Top  And Bottom, When Facing South (What the hell?)
-            rTextures[3][i + 1] = new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon
-            }; // Left, Top if facing West and Bottom if facing east?
-            rTextures[4][i + 1] = new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon
-            }; // Top and Bottom when Facing North..
-            rTextures[5][i + 1] =
-                    new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tOut}; // Front
+            rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tUp, tIcon }; // Back
+            rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon }; // Right,
+                                                                                                                    // Strangely
+                                                                                                                    // The
+                                                                                                                    // top
+                                                                                                                    // side
+                                                                                                                    // as
+                                                                                                                    // well
+                                                                                                                    // when
+                                                                                                                    // facing
+                                                                                                                    // East?
+            rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon }; // Top
+                                                                                                                    // And
+                                                                                                                    // Bottom,
+                                                                                                                    // When
+                                                                                                                    // Facing
+                                                                                                                    // South
+                                                                                                                    // (What
+                                                                                                                    // the
+                                                                                                                    // hell?)
+            rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon }; // Left,
+                                                                                                                    // Top
+                                                                                                                    // if
+                                                                                                                    // facing
+                                                                                                                    // West
+                                                                                                                    // and
+                                                                                                                    // Bottom
+                                                                                                                    // if
+                                                                                                                    // facing
+                                                                                                                    // east?
+            rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon }; // Top
+                                                                                                                    // and
+                                                                                                                    // Bottom
+                                                                                                                    // when
+                                                                                                                    // Facing
+                                                                                                                    // North..
+            rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tOut }; // Front
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == aFacing) {
             return this.mTextures[5][aColorIndex + 1];
         }
@@ -219,16 +232,19 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
         }
         if (aPlayer != null) {
             final UUID tempUUID = aPlayer.getUniqueID();
-            /*if (!aPlayer.worldObj.isRemote){
-            //PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
-            }*/
+            /*
+             * if (!aPlayer.worldObj.isRemote){ //PlayerCache.appendParamChanges(aPlayer.getDisplayName(),
+             * aPlayer.getUniqueID().toString()); }
+             */
             // Utils.LOG_INFO("test");
             if (this.ownerUUID == null) {
                 Logger.INFO("No owner yet for this block.");
             } else {
                 // Utils.LOG_INFO("test");
-                Logger.INFO("Current Owner: " + PlayerCache.lookupPlayerByUUID(this.ownerUUID) + " - UUID: "
-                        + this.ownerUUID);
+                Logger.INFO(
+                        "Current Owner: " + PlayerCache.lookupPlayerByUUID(this.ownerUUID)
+                                + " - UUID: "
+                                + this.ownerUUID);
             }
             Logger.WARNING("Is ownerUUID Null");
             if (this.ownerUUID == null) {
@@ -250,19 +266,21 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
                 } else {
                     PlayerUtils.messagePlayer(aPlayer, "Access Denied, This does not belong to you.");
                     PlayerUtils.messagePlayer(
-                            aPlayer, "it is owned by: " + PlayerCache.lookupPlayerByUUID(this.ownerUUID));
+                            aPlayer,
+                            "it is owned by: " + PlayerCache.lookupPlayerByUUID(this.ownerUUID));
                     Logger.WARNING("Expecting Player : " + PlayerCache.lookupPlayerByUUID(this.ownerUUID));
                     Logger.ERROR("Access Denied.");
                     return true;
                 }
             }
 
-            /*else {
-            	Utils.LOG_ERROR("This is NOT good. Tell Draknyte1 your safe broke.");
-            }*/
-            /*Utils.LOG_WARNING("Clicky Clicky.");
-            Utils.messagePlayer(aPlayer, "Owner of this safe, now set.");
-            aBaseMetaTileEntity.openGUI(aPlayer);	*/
+            /*
+             * else { Utils.LOG_ERROR("This is NOT good. Tell Draknyte1 your safe broke."); }
+             */
+            /*
+             * Utils.LOG_WARNING("Clicky Clicky."); Utils.messagePlayer(aPlayer, "Owner of this safe, now set.");
+             * aBaseMetaTileEntity.openGUI(aPlayer);
+             */
 
         }
         return true;
@@ -299,14 +317,14 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return aSide != aBaseMetaTileEntity.getBackFacing();
     }
 }

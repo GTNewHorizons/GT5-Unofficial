@@ -1,5 +1,15 @@
 package gtPlusPlus.core.handler;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
+import net.minecraft.stats.StatBase;
+import net.minecraftforge.common.AchievementPage;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
@@ -17,14 +27,6 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import java.util.concurrent.ConcurrentHashMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.StatBase;
-import net.minecraftforge.common.AchievementPage;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
 public class AchievementHandler {
 
@@ -47,7 +49,11 @@ public class AchievementHandler {
                 0,
                 0,
                 MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                        MetaGeneratedGregtechTools.ANGLE_GRINDER, 1, Materials.Osmium, Materials.Osmium, null),
+                        MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                        1,
+                        Materials.Osmium,
+                        Materials.Osmium,
+                        null),
                 "",
                 true);
 
@@ -55,7 +61,12 @@ public class AchievementHandler {
         boolean cores = CORE.ConfigSwitches.requireControlCores;
         if (cores || GregtechMeta_MultiBlockBase.DEBUG_DISABLE_CORES_TEMPORARILY) {
             this.registerAchievement(
-                    "hatch.control", -2, -2, GregtechItemList.Hatch_Control_Core.get(1), aBaseAchievementName, false);
+                    "hatch.control",
+                    -2,
+                    -2,
+                    GregtechItemList.Hatch_Control_Core.get(1),
+                    aBaseAchievementName,
+                    false);
         }
         this.registerAchievement(
                 "hatch.dynamo.buffered",
@@ -82,20 +93,50 @@ public class AchievementHandler {
 
         // Blocks
         this.registerAchievement(
-                "block.fishtrap", -2, 2, ItemUtils.getSimpleStack(ModBlocks.blockFishTrap), "dust.potin", false);
+                "block.fishtrap",
+                -2,
+                2,
+                ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
+                "dust.potin",
+                false);
         this.registerAchievement(
-                "block.withercage", -2, 4, ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard), "dust.eglin", false);
+                "block.withercage",
+                -2,
+                4,
+                ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard),
+                "dust.eglin",
+                false);
 
         // Machines (-10/-8/-6)
         this.registerAchievement("rtg", -16, -10, GregtechItemList.RTG.get(1), aBaseAchievementName, false);
         this.registerAchievement(
-                "dehydrate", -15, -10, GregtechItemList.GT_Dehydrator_HV.get(1), aBaseAchievementName, false);
+                "dehydrate",
+                -15,
+                -10,
+                GregtechItemList.GT_Dehydrator_HV.get(1),
+                aBaseAchievementName,
+                false);
         this.registerAchievement(
-                "semifluid", -14, -10, GregtechItemList.Generator_SemiFluid_HV.get(1), aBaseAchievementName, false);
+                "semifluid",
+                -14,
+                -10,
+                GregtechItemList.Generator_SemiFluid_HV.get(1),
+                aBaseAchievementName,
+                false);
         this.registerAchievement(
-                "earlywasher", -13, -10, GregtechItemList.SimpleDustWasher_ULV.get(1), aBaseAchievementName, false);
+                "earlywasher",
+                -13,
+                -10,
+                GregtechItemList.SimpleDustWasher_ULV.get(1),
+                aBaseAchievementName,
+                false);
         this.registerAchievement(
-                "advancedsteam", -12, -10, GregtechItemList.Boiler_Advanced_MV.get(1), aBaseAchievementName, false);
+                "advancedsteam",
+                -12,
+                -10,
+                GregtechItemList.Boiler_Advanced_MV.get(1),
+                aBaseAchievementName,
+                false);
         if (PollutionUtils.isPollutionEnabled()) {
             this.registerAchievement(
                     "pollutionremoval",
@@ -106,24 +147,54 @@ public class AchievementHandler {
                     false);
         }
         this.registerAchievement(
-                "hiampxform", -10, -10, GregtechItemList.Transformer_HA_HV_MV.get(1), aBaseAchievementName, false);
+                "hiampxform",
+                -10,
+                -10,
+                GregtechItemList.Transformer_HA_HV_MV.get(1),
+                aBaseAchievementName,
+                false);
 
         // Multis (-4/-2/0)
         this.registerAchievement("multi.pss", -16, -7, GregtechItemList.PowerSubStation.get(1), "multi.abs", false);
         this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
         this.registerAchievement(
-                "multi.sifter", -14, -7, GregtechItemList.Industrial_Sifter.get(1), "dust.eglin", false);
+                "multi.sifter",
+                -14,
+                -7,
+                GregtechItemList.Industrial_Sifter.get(1),
+                "dust.eglin",
+                false);
         this.registerAchievement(
-                "multi.cokeoven", -13, -7, GregtechItemList.Industrial_CokeOven.get(1), "multi.abs", false);
+                "multi.cokeoven",
+                -13,
+                -7,
+                GregtechItemList.Industrial_CokeOven.get(1),
+                "multi.abs",
+                false);
         this.registerAchievement(
-                "multi.boiler.thermal", -12, -7, GregtechItemList.GT4_Thermal_Boiler.get(1), "multi.abs", false);
+                "multi.boiler.thermal",
+                -12,
+                -7,
+                GregtechItemList.GT4_Thermal_Boiler.get(1),
+                "multi.abs",
+                false);
         this.registerAchievement(
-                "multi.zhuhai", -11, -7, GregtechItemList.Industrial_FishingPond.get(1), aBaseAchievementName, false);
+                "multi.zhuhai",
+                -11,
+                -7,
+                GregtechItemList.Industrial_FishingPond.get(1),
+                aBaseAchievementName,
+                false);
         // this.registerAchievement("rtg", -4, -4, GregtechItemList.RTG.get(1), aBaseAchievementName, false);
 
         // Casings
         this.registerAchievement(
-                "casing.abs", 2, -10, GregtechItemList.Casing_Coil_BlastSmelter.get(1), aBaseAchievementName, false);
+                "casing.abs",
+                2,
+                -10,
+                GregtechItemList.Casing_Coil_BlastSmelter.get(1),
+                aBaseAchievementName,
+                false);
         this.registerAchievement(
                 "casing.cyclotron.coil",
                 3,
@@ -132,17 +203,42 @@ public class AchievementHandler {
                 aBaseAchievementName,
                 false);
         this.registerAchievement(
-                "casing.multiuse", 4, -10, GregtechItemList.Casing_Multi_Use.get(1), aBaseAchievementName, false);
+                "casing.multiuse",
+                4,
+                -10,
+                GregtechItemList.Casing_Multi_Use.get(1),
+                aBaseAchievementName,
+                false);
         this.registerAchievement(
-                "casing.containment", 5, -10, GregtechItemList.Casing_Containment.get(1), aBaseAchievementName, false);
+                "casing.containment",
+                5,
+                -10,
+                GregtechItemList.Casing_Containment.get(1),
+                aBaseAchievementName,
+                false);
 
         // Radioactive
         this.registerAchievement(
-                "decay.neptunium238", 11, 8, ItemUtils.getSimpleStack(ModItems.dustNeptunium238), "multi.cyclo", false);
+                "decay.neptunium238",
+                11,
+                8,
+                ItemUtils.getSimpleStack(ModItems.dustNeptunium238),
+                "multi.cyclo",
+                false);
         this.registerAchievement(
-                "decay.radium226", 12, 8, ItemUtils.getSimpleStack(ModItems.dustRadium226), "multi.cyclo", false);
+                "decay.radium226",
+                12,
+                8,
+                ItemUtils.getSimpleStack(ModItems.dustRadium226),
+                "multi.cyclo",
+                false);
         this.registerAchievement(
-                "decay.molybdenum99", 13, 8, ItemUtils.getSimpleStack(ModItems.dustMolybdenum99), "multi.cyclo", false);
+                "decay.molybdenum99",
+                13,
+                8,
+                ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
+                "multi.cyclo",
+                false);
         this.registerAchievement(
                 "decay.technetium99m",
                 14,
@@ -151,16 +247,24 @@ public class AchievementHandler {
                 "multi.cyclo",
                 false);
         this.registerAchievement(
-                "decay.technetium99", 15, 8, ItemUtils.getSimpleStack(ModItems.dustTechnetium99), "multi.cyclo", false);
+                "decay.technetium99",
+                15,
+                8,
+                ItemUtils.getSimpleStack(ModItems.dustTechnetium99),
+                "multi.cyclo",
+                false);
 
-        AchievementPage.registerAchievementPage(new AchievementPage("GT++", (Achievement[])
-                ((Achievement[]) this.achievementList.values().toArray(new Achievement[this.achievementList.size()]))));
+        AchievementPage.registerAchievementPage(
+                new AchievementPage(
+                        "GT++",
+                        (Achievement[]) ((Achievement[]) this.achievementList.values()
+                                .toArray(new Achievement[this.achievementList.size()]))));
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance().bus().register(this);
     }
 
-    public Achievement registerAchievement(
-            String textId, int x, int y, ItemStack icon, Achievement requirement, boolean special) {
+    public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement,
+            boolean special) {
         Achievement achievement = new Achievement(textId, textId, this.adjX + x, this.adjY + y, icon, requirement);
         if (special) {
             achievement.setSpecial();
@@ -176,10 +280,15 @@ public class AchievementHandler {
         return achievement;
     }
 
-    public Achievement registerAchievement(
-            String textId, int x, int y, ItemStack icon, String requirement, boolean special) {
-        Achievement achievement =
-                new Achievement(textId, textId, this.adjX + x, this.adjY + y, icon, this.getAchievement(requirement));
+    public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, String requirement,
+            boolean special) {
+        Achievement achievement = new Achievement(
+                textId,
+                textId,
+                this.adjX + x,
+                this.adjY + y,
+                icon,
+                this.getAchievement(requirement));
         if (special) {
             achievement.setSpecial();
         }
@@ -205,9 +314,10 @@ public class AchievementHandler {
     }
 
     /**
-     * A generic handler that will give an achievement for an item.
-     * Useful to only write this once, then call it from all handlers.
-     * @param aStack - The Itemstack to check for achievements.
+     * A generic handler that will give an achievement for an item. Useful to only write this once, then call it from
+     * all handlers.
+     * 
+     * @param aStack  - The Itemstack to check for achievements.
      * @param aPlayer - The player to unlock for.
      */
     private void handleAchivement(ItemStack aStack, EntityPlayer aPlayer) {
@@ -228,9 +338,8 @@ public class AchievementHandler {
                 return;
             }
 
-            if (aModID != null
-                    && (ItemUtils.getModId(aStack).equals(CORE.MODID)
-                            || ItemUtils.getModId(aStack).equalsIgnoreCase("gregtech"))) {
+            if (aModID != null && (ItemUtils.getModId(aStack).equals(CORE.MODID)
+                    || ItemUtils.getModId(aStack).equalsIgnoreCase("gregtech"))) {
                 isValid = true;
             }
             if (!isValid) {

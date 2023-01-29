@@ -1,5 +1,17 @@
 package gtPlusPlus.core.item.general;
 
+import java.lang.ref.WeakReference;
+import java.util.*;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBeacon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -11,16 +23,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
-import java.lang.ref.WeakReference;
-import java.util.*;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBeacon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 public class ItemMagicFeather extends CoreItem {
 
@@ -34,7 +36,7 @@ public class ItemMagicFeather extends CoreItem {
                 AddToCreativeTab.tabMisc,
                 1,
                 100,
-                new String[] {"Lets you fly around Beacons"},
+                new String[] { "Lets you fly around Beacons" },
                 EnumRarity.uncommon,
                 null,
                 false,
@@ -69,26 +71,22 @@ public class ItemMagicFeather extends CoreItem {
             return false;
         }
         HashSet<TileEntityBeacon> aBeaconData = sBeaconData.computeIfAbsent(player, k -> new HashSet<>());
-        int chunkXlo = (int) (player.posX - 50) >> 4,
-                chunkXhi = (int) (player.posX + 50) >> 4,
-                chunkZlo = (int) (player.posZ - 50) >> 4,
-                chunkZhi = (int) (player.posZ + 50) >> 4;
+        int chunkXlo = (int) (player.posX - 50) >> 4, chunkXhi = (int) (player.posX + 50) >> 4,
+                chunkZlo = (int) (player.posZ - 50) >> 4, chunkZhi = (int) (player.posZ + 50) >> 4;
         for (int chunkX = chunkXlo; chunkX < chunkXhi; chunkX++) {
             for (int chunkZ = chunkZlo; chunkZ < chunkZhi; chunkZ++) {
                 if (!world.getChunkProvider().chunkExists(chunkX, chunkZ)) continue;
                 findSuitableBeacon(
                         player,
-                        world.getChunkFromChunkCoords(chunkX, chunkZ)
-                                .chunkTileEntityMap
-                                .values(),
+                        world.getChunkFromChunkCoords(chunkX, chunkZ).chunkTileEntityMap.values(),
                         aBeaconData);
             }
         }
         return aBeaconData.size() > 0;
     }
 
-    private static void findSuitableBeacon(
-            EntityPlayer player, Collection<TileEntity> tileEntities, HashSet<TileEntityBeacon> aBeaconData) {
+    private static void findSuitableBeacon(EntityPlayer player, Collection<TileEntity> tileEntities,
+            HashSet<TileEntityBeacon> aBeaconData) {
         for (TileEntity t : tileEntities) {
             if (!(t instanceof TileEntityBeacon)) {
                 continue;
@@ -137,7 +135,7 @@ public class ItemMagicFeather extends CoreItem {
         EntityPlayer player = event.player;
         HashSet<TileEntityBeacon> aBeaconData = sBeaconData.get(player);
         if (aBeaconData != null && !aBeaconData.isEmpty()) {
-            for (Iterator<TileEntityBeacon> iterator = aBeaconData.iterator(); iterator.hasNext(); ) {
+            for (Iterator<TileEntityBeacon> iterator = aBeaconData.iterator(); iterator.hasNext();) {
                 TileEntityBeacon aBeacon = iterator.next();
                 int level = aBeacon.getLevels();
                 if (level == 0) {
@@ -147,8 +145,7 @@ public class ItemMagicFeather extends CoreItem {
                 int radius = (level * 10 + 10);
                 int x = aBeacon.xCoord;
                 int z = aBeacon.zCoord;
-                if (player.posX < (x - radius)
-                        || player.posX > (x + radius)
+                if (player.posX < (x - radius) || player.posX > (x + radius)
                         || player.posZ < (z - radius)
                         || player.posZ > (z + radius)) {
                     iterator.remove();

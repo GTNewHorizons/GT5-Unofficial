@@ -4,9 +4,11 @@ import java.math.BigInteger;
 
 /**
  * Pulls values out of codes from Talonius's old reactor planner.
+ * 
  * @author Brian McCloud
  */
 public class TaloniusDecoder {
+
     private BigInteger dataStack = null;
 
     public TaloniusDecoder(final String dataCode) {

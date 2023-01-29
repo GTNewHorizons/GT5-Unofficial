@@ -1,7 +1,13 @@
 package gtPlusPlus.preloader.asm;
 
+import java.io.File;
+import java.util.Arrays;
+
+import net.minecraftforge.common.config.Configuration;
+
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
@@ -11,9 +17,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.Preloader_Logger;
-import java.io.File;
-import java.util.Arrays;
-import net.minecraftforge.common.config.Configuration;
 
 public class Preloader_DummyContainer extends DummyModContainer {
 
@@ -64,8 +67,8 @@ public class Preloader_DummyContainer extends DummyModContainer {
     }
 
     public static void handleConfigFile(final FMLPreInitializationEvent event) {
-        final Configuration config =
-                new Configuration(new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
+        final Configuration config = new Configuration(
+                new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
         config.load();
 
         // BGM Watchdog

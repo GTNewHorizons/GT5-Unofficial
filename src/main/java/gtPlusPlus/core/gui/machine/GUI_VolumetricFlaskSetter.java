@@ -1,5 +1,12 @@
 package gtPlusPlus.core.gui.machine;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
@@ -9,17 +16,13 @@ import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.network.packet.Packet_VolumetricFlaskGui;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUI_VolumetricFlaskSetter extends GuiContainer {
 
-    private static final ResourceLocation mGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/VolumetricFlaskSetter.png");
+    private static final ResourceLocation mGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/VolumetricFlaskSetter.png");
     private Container_VolumetricFlaskSetter mContainer;
     private boolean mIsOpen = false;
     private GuiValueField mText;
@@ -70,7 +73,14 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
         // Keyboard.enableRepeatEvents(true);
         mIsOpen = true;
         this.mText = new GuiValueField(
-                this.fontRendererObj, 26, 31, this.width / 2 - 62, this.height / 2 - 52, 106, 14, this);
+                this.fontRendererObj,
+                26,
+                31,
+                this.width / 2 - 62,
+                this.height / 2 - 52,
+                106,
+                14,
+                this);
         mText.setMaxStringLength(5);
         mText.setEnableBackgroundDrawing(true);
         mText.setText("0");

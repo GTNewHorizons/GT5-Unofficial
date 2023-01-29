@@ -1,26 +1,27 @@
 /*******************************************************************************
- * Copyright (c) 2011-2014 SirSengir.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Lesser Public License v3
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/lgpl-3.0.txt
+ * Copyright (c) 2011-2014 SirSengir. All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the GNU Lesser Public License v3 which accompanies this distribution, and is available
+ * at http://www.gnu.org/licenses/lgpl-3.0.txt
  *
- * Various Contributors including, but not limited to:
- * SirSengir (original work), CovertJaguar, Player, Binnie, MysteriousAges
+ * Various Contributors including, but not limited to: SirSengir (original work), CovertJaguar, Player, Binnie,
+ * MysteriousAges
  ******************************************************************************/
 package gtPlusPlus.xmod.forestry.bees.inventory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import forestry.api.apiculture.*;
 import forestry.apiculture.InventoryBeeHousing;
 import forestry.apiculture.inventory.IApiaryInventory;
 import forestry.core.access.IAccessHandler;
 import forestry.core.utils.SlotUtil;
-import java.util.ArrayList;
-import java.util.Collection;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class InventoryDenseBeeHouse extends InventoryBeeHousing implements IApiaryInventory {
+
     public static final int SLOT_FRAMES_1 = 9;
     public static final int SLOT_FRAMES_COUNT = 3;
 

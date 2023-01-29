@@ -3,9 +3,8 @@ package gtPlusPlus.everglades.biome;
 import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.*;
 import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.*;
 
-import gtPlusPlus.everglades.gen.WorldGenDeadLilly;
-import gtPlusPlus.everglades.gen.WorldGenMinable_Custom;
 import java.util.Random;
+
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -17,6 +16,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+
+import gtPlusPlus.everglades.gen.WorldGenDeadLilly;
+import gtPlusPlus.everglades.gen.WorldGenMinable_Custom;
 
 public class BiomeGenerator_Custom extends BiomeDecorator {
 
@@ -57,8 +59,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
     }
 
     @Override
-    public void decorateChunk(
-            World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_, int p_150512_5_) {
+    public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_,
+            int p_150512_5_) {
         if (this.currentWorld != null) {
             throw new RuntimeException("Already decorating!!");
         } else {
@@ -85,7 +87,11 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
             j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
             k = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
             this.sandGen.generate(
-                    this.currentWorld, this.randomGenerator, j, this.currentWorld.getTopSolidOrLiquidBlock(j, k), k);
+                    this.currentWorld,
+                    this.randomGenerator,
+                    j,
+                    this.currentWorld.getTopSolidOrLiquidBlock(j, k),
+                    k);
         }
 
         doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, CLAY);
@@ -93,7 +99,11 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
             j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
             k = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
             this.clayGen.generate(
-                    this.currentWorld, this.randomGenerator, j, this.currentWorld.getTopSolidOrLiquidBlock(j, k), k);
+                    this.currentWorld,
+                    this.randomGenerator,
+                    j,
+                    this.currentWorld.getTopSolidOrLiquidBlock(j, k),
+                    k);
         }
 
         doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, SAND_PASS2);
@@ -101,7 +111,11 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
             j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
             k = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
             this.gravelAsSandGen.generate(
-                    this.currentWorld, this.randomGenerator, j, this.currentWorld.getTopSolidOrLiquidBlock(j, k), k);
+                    this.currentWorld,
+                    this.randomGenerator,
+                    j,
+                    this.currentWorld.getTopSolidOrLiquidBlock(j, k),
+                    k);
         }
 
         i = this.treesPerChunk;
@@ -130,8 +144,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
         for (j = 0; doGen && j < this.bigMushroomsPerChunk; ++j) {
             k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
             l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-            this.bigMushroomGen.generate(
-                    this.currentWorld, this.randomGenerator, k, this.currentWorld.getHeightValue(k, l), l);
+            this.bigMushroomGen
+                    .generate(this.currentWorld, this.randomGenerator, k, this.currentWorld.getHeightValue(k, l), l);
         }
 
         doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, FLOWERS);
@@ -170,9 +184,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
             k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
             l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
 
-            for (i1 = nextInt(this.currentWorld.getHeightValue(k, l) * 2);
-                    i1 > 0 && this.currentWorld.isAirBlock(k, i1 - 1, l);
-                    --i1) {
+            for (i1 = nextInt(this.currentWorld.getHeightValue(k, l) * 2); i1 > 0
+                    && this.currentWorld.isAirBlock(k, i1 - 1, l); --i1) {
                 ;
             }
 
@@ -252,8 +265,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
 
             for (j = 0; j < 20; ++j) {
                 k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-                l = this.randomGenerator.nextInt(
-                        this.randomGenerator.nextInt(this.randomGenerator.nextInt(240) + 8) + 8);
+                l = this.randomGenerator
+                        .nextInt(this.randomGenerator.nextInt(this.randomGenerator.nextInt(240) + 8) + 8);
                 i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
                 (new WorldGenLiquids(Blocks.flowing_lava)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
             }
@@ -282,8 +295,7 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
     protected void genStandardOre2(int p_76793_1_, WorldGenerator p_76793_2_, int p_76793_3_, int p_76793_4_) {
         for (int l = 0; l < p_76793_1_; ++l) {
             int i1 = this.chunk_X + this.randomGenerator.nextInt(16);
-            int j1 = this.randomGenerator.nextInt(p_76793_4_)
-                    + this.randomGenerator.nextInt(p_76793_4_)
+            int j1 = this.randomGenerator.nextInt(p_76793_4_) + this.randomGenerator.nextInt(p_76793_4_)
                     + (p_76793_3_ - p_76793_4_);
             int k1 = this.chunk_Z + this.randomGenerator.nextInt(16);
             p_76793_2_.generate(this.currentWorld, this.randomGenerator, i1, j1, k1);

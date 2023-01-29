@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.bedrock;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
@@ -23,10 +28,6 @@ import gtPlusPlus.core.util.minecraft.MiningUtils;
 import gtPlusPlus.core.util.minecraft.OreDictUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends GregtechMeta_MultiBlockBase {
 
@@ -49,8 +50,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
     private int[] xCenter = new int[5];
     private int[] zCenter = new int[5];
 
-    public GregtechMetaTileEntity_BedrockMiningPlatformBase(
-            final int aID, final String aName, final String aNameRegional) {
+    public GregtechMetaTileEntity_BedrockMiningPlatformBase(final int aID, final String aName,
+            final String aNameRegional) {
         super(aID, aName, aNameRegional);
         this.initFields();
     }
@@ -203,7 +204,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
             }
             if (pipes == null) {
                 this.setInventorySlotContents(
-                        1, GT_Utility.copy(new Object[] {GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe}));
+                        1,
+                        GT_Utility.copy(new Object[] { GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe }));
                 pipes = this.getStackInSlot(1);
             }
             if (pipes.stackSize == maxPipes) {
@@ -221,8 +223,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
     private boolean isHasMiningPipes(final int minCount) {
         final ItemStack pipe = this.getStackInSlot(1);
-        return pipe != null
-                && pipe.stackSize > minCount - 1
+        return pipe != null && pipe.stackSize > minCount - 1
                 && pipe.isItemEqual(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe);
     }
 
@@ -241,8 +242,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
                 for (int j = -1; j < 2; ++j) {
                     for (int h = -1; h < 2; ++h) {
                         if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
-                            IGregTechTileEntity tTileEntity =
-                                    aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+                            IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                                    .getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
                             Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                             int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
@@ -258,10 +259,10 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
                             }
                             ++tAmount;
 
-                            /*if (!isValidBlockForStructure(tTileEntity, 48, true, aBlock, aMeta,	sBlockCasings4, 0)) {
-                            	Logger.INFO("Bad centrifuge casing");
-                            	return false;
-                            }*/
+                            /*
+                             * if (!isValidBlockForStructure(tTileEntity, 48, true, aBlock, aMeta, sBlockCasings4, 0)) {
+                             * Logger.INFO("Bad centrifuge casing"); return false; }
+                             */
 
                         }
                     }
@@ -275,8 +276,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         this.xDrill = this.getBaseMetaTileEntity().getXCoord();
         this.yDrill = this.getBaseMetaTileEntity().getYCoord() - 1;
         this.zDrill = this.getBaseMetaTileEntity().getZCoord();
-        this.back =
-                ForgeDirection.getOrientation((int) this.getBaseMetaTileEntity().getBackFacing());
+        this.back = ForgeDirection.getOrientation((int) this.getBaseMetaTileEntity().getBackFacing());
 
         // Middle
         this.xCenter[0] = this.xDrill + this.back.offsetX;
@@ -332,22 +332,19 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
     protected String[] getDescriptionInternal(final String tierSuffix) {
         final String casings = this.getCasingBlockItem().get(0L, new Object[0]).getDisplayName();
         return new String[] {
-            "Controller Block for the Experimental Deep Earth Drilling Platform - MK "
-                    + ((tierSuffix != null) ? tierSuffix : ""),
-            "Size(WxHxD): 3x7x3, Controller (Front middle bottom)",
-            "3x1x3 Base of " + casings,
-            "1x3x1 " + casings + " pillar (Center of base)",
-            "1x3x1 " + this.getFrameMaterial().getLocalizedName() + " Frame Boxes (Each pillar side and on top)",
-            "2x Input Hatch (Any bottom layer casing)",
-            "1x Input Bus for mining pipes (Any bottom layer casing; not necessary)",
-            "1x Output Bus (Any bottom layer casing)",
-            "1x Maintenance Hatch (Any bottom layer casing)",
-            "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
-            "Radius is " + (this.getRadiusInChunks() << 4) + " blocks",
-            "Every tick, this machine altenates betweem consumption of Pyrotheum & Cryotheum",
-            "Pyrotheum is used to bore through the Mantle of the world",
-            "Cryotheum is used to keep the internal components cool",
-        };
+                "Controller Block for the Experimental Deep Earth Drilling Platform - MK "
+                        + ((tierSuffix != null) ? tierSuffix : ""),
+                "Size(WxHxD): 3x7x3, Controller (Front middle bottom)", "3x1x3 Base of " + casings,
+                "1x3x1 " + casings + " pillar (Center of base)",
+                "1x3x1 " + this.getFrameMaterial().getLocalizedName() + " Frame Boxes (Each pillar side and on top)",
+                "2x Input Hatch (Any bottom layer casing)",
+                "1x Input Bus for mining pipes (Any bottom layer casing; not necessary)",
+                "1x Output Bus (Any bottom layer casing)", "1x Maintenance Hatch (Any bottom layer casing)",
+                "1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
+                "Radius is " + (this.getRadiusInChunks() << 4) + " blocks",
+                "Every tick, this machine altenates betweem consumption of Pyrotheum & Cryotheum",
+                "Pyrotheum is used to bore through the Mantle of the world",
+                "Cryotheum is used to keep the internal components cool", };
     }
 
     static {
@@ -469,9 +466,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         mMixedOreData.put(new Pair<String, Integer>("oreLapis", 40));
         mMixedOreData.put(new Pair<String, Integer>("oreRedstone", 40));
 
-        if (LoadedMods.Thaumcraft
-                || (OreDictUtils.containsValidEntries("oreAmber")
-                        && OreDictUtils.containsValidEntries("oreCinnabar"))) {
+        if (LoadedMods.Thaumcraft || (OreDictUtils.containsValidEntries("oreAmber")
+                && OreDictUtils.containsValidEntries("oreCinnabar"))) {
             mMixedOreData.put(new Pair<String, Integer>("oreAmber", 20));
             mMixedOreData.put(new Pair<String, Integer>("oreCinnabar", 20));
         }

@@ -4,20 +4,21 @@ import java.math.BigInteger;
 import java.util.Base64;
 
 /**
- * Stores numbers of varying size inside a BigInteger, expecting each to have
- * a defined limit (which need not be an exact power of 2).  Numbers are to be
- * extracted in reverse order they were stored, and special values can be used
- * to make certain values optional for inclusion (the calling class is
- * responsible for handling this logic, though).
+ * Stores numbers of varying size inside a BigInteger, expecting each to have a defined limit (which need not be an
+ * exact power of 2). Numbers are to be extracted in reverse order they were stored, and special values can be used to
+ * make certain values optional for inclusion (the calling class is responsible for handling this logic, though).
+ * 
  * @author Brian McCloud
  */
 public class BigintStorage {
+
     private BigInteger storedValue = BigInteger.ZERO;
 
     /**
-     * Stores the specified value.  Requires that 0 &lt;= value &lt;= max.
+     * Stores the specified value. Requires that 0 &lt;= value &lt;= max.
+     * 
      * @param value the value to store.
-     * @param max the expected maximum for the value.
+     * @param max   the expected maximum for the value.
      */
     public void store(int value, int max) {
         if (value < 0 || value > max) {
@@ -28,6 +29,7 @@ public class BigintStorage {
 
     /**
      * Extracts a value based on the specified maximum.
+     * 
      * @param max the expected maximum for the value.
      * @return the extracted value.
      */
@@ -39,6 +41,7 @@ public class BigintStorage {
 
     /**
      * Takes input of a Base64 string, and converts it to a BigintStorage.
+     * 
      * @param code the Base64-encoded string (presumed to be from @outputBase64)
      * @return the converted storage object.
      */
@@ -51,6 +54,7 @@ public class BigintStorage {
 
     /**
      * Outputs the current value of this BigintStorage as a Base64-encoded string.
+     * 
      * @return the Base64-encoded string.
      */
     public String outputBase64() {

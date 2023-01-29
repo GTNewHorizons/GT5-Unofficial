@@ -1,5 +1,19 @@
 package gtPlusPlus.xmod.ic2.block.RTGGenerator;
 
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+import org.apache.commons.lang3.mutable.MutableObject;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,19 +27,9 @@ import ic2.core.block.BlockMultiID;
 import ic2.core.block.TileEntityBlock;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 import ic2.core.init.InternalName;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import org.apache.commons.lang3.mutable.MutableObject;
 
 public class BlockRTG extends BlockMultiID {
+
     public BlockRTG(final InternalName internalName1) {
         super(internalName1, Material.iron, ItemGenerators.class);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
@@ -39,7 +43,7 @@ public class BlockRTG extends BlockMultiID {
         GameRegistry.registerTileEntity(TileEntityKineticWindGenerator.class, "Wind Ripper Mach II");
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void getSubBlocks(final Item j, final CreativeTabs tabs, final List itemList) {
         final Item item = Item.getItemFromBlock(this);
@@ -71,8 +75,8 @@ public class BlockRTG extends BlockMultiID {
     }
 
     @Override
-    public Class<? extends TileEntity> getTeClass(
-            final int meta, final MutableObject<Class<?>[]> ctorArgTypes, final MutableObject<Object[]> ctorArgs) {
+    public Class<? extends TileEntity> getTeClass(final int meta, final MutableObject<Class<?>[]> ctorArgTypes,
+            final MutableObject<Object[]> ctorArgs) {
         try {
             switch (meta) {
                 case 0:
@@ -87,33 +91,13 @@ public class BlockRTG extends BlockMultiID {
     }
 
     /*
-    *
-    *  {
-        case 0:
-          return TileEntityGenerator.class;
-        case 1:
-          return TileEntityGeoGenerator.class;
-        case 2:
-          return TileEntityWaterGenerator.class;
-        case 3:
-          return TileEntitySolarGenerator.class;
-        case 4:
-          return TileEntityWindGenerator.class;
-        case 5:
-          return TileEntityNuclearReactorElectric.class;
-        case 6:
-          return TileEntityRTGenerator.class;
-        case 7:
-          return TileEntitySemifluidGenerator.class;
-        case 8:
-          return TileEntityStirlingGenerator.class;
-        case 9:
-          return TileEntityKineticGenerator.class;
-        }
-    *
-    * (non-Javadoc)
-    * @see net.minecraft.block.Block#randomDisplayTick(net.minecraft.world.World, int, int, int, java.util.Random)
-    */
+     * { case 0: return TileEntityGenerator.class; case 1: return TileEntityGeoGenerator.class; case 2: return
+     * TileEntityWaterGenerator.class; case 3: return TileEntitySolarGenerator.class; case 4: return
+     * TileEntityWindGenerator.class; case 5: return TileEntityNuclearReactorElectric.class; case 6: return
+     * TileEntityRTGenerator.class; case 7: return TileEntitySemifluidGenerator.class; case 8: return
+     * TileEntityStirlingGenerator.class; case 9: return TileEntityKineticGenerator.class; } (non-Javadoc)
+     * @see net.minecraft.block.Block#randomDisplayTick(net.minecraft.world.World, int, int, int, java.util.Random)
+     */
 
     @Override
     public void randomDisplayTick(final World world, final int x, final int y, final int z, final Random random) {
@@ -150,8 +134,8 @@ public class BlockRTG extends BlockMultiID {
                     world.spawnParticle("flame", f + f4, f1, f2 + f3, 0.0D, 0.0D, 0.0D);
             }
         } else if (meta == 5) {
-            final TileEntityNuclearReactorElectric te =
-                    (TileEntityNuclearReactorElectric) this.getOwnTe(world, x, y, z);
+            final TileEntityNuclearReactorElectric te = (TileEntityNuclearReactorElectric) this
+                    .getOwnTe(world, x, y, z);
             if (te == null) {
                 return;
             }
@@ -162,27 +146,31 @@ public class BlockRTG extends BlockMultiID {
             puffs = world.rand.nextInt(puffs);
             for (int n = 0; n < puffs; n++) {
                 world.spawnParticle(
-                        "smoke", x + random.nextFloat(), y + 0.95F, z + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+                        "smoke",
+                        x + random.nextFloat(),
+                        y + 0.95F,
+                        z + random.nextFloat(),
+                        0.0D,
+                        0.0D,
+                        0.0D);
             }
             puffs -= world.rand.nextInt(4) + 3;
             for (int n = 0; n < puffs; n++) {
                 world.spawnParticle(
-                        "flame", x + random.nextFloat(), y + 1.0F, z + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+                        "flame",
+                        x + random.nextFloat(),
+                        y + 1.0F,
+                        z + random.nextFloat(),
+                        0.0D,
+                        0.0D,
+                        0.0D);
             }
         }
     }
 
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int i,
-            final int j,
-            final int k,
-            final EntityPlayer entityplayer,
-            final int side,
-            final float a,
-            final float b,
-            final float c) {
+    public boolean onBlockActivated(final World world, final int i, final int j, final int k,
+            final EntityPlayer entityplayer, final int side, final float a, final float b, final float c) {
         if ((entityplayer.getCurrentEquippedItem() != null)
                 && (entityplayer.getCurrentEquippedItem().isItemEqual(Ic2Items.reactorChamber))) {
             return false;

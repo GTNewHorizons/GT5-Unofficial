@@ -2,8 +2,9 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraftforge.fluids.FluidStack;
+
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class GasSpargingRecipeMap extends AutoMap<GasSpargingRecipe> {
 
@@ -13,14 +14,9 @@ public class GasSpargingRecipeMap extends AutoMap<GasSpargingRecipe> {
     public static final String mNEIDisplayName = "LFTR Gas Sparging";
     public static final String mNEIGUIPath = RES_PATH_GUI + "basicmachines/FissionFuel.png";
 
-    public static boolean addRecipe(
-            FluidStack aSpargeGas,
-            FluidStack aSpentFuel,
-            FluidStack aSpargedFuel,
-            FluidStack[] aOutputs,
-            int[] aMaxOutputs) {
-        if (aSpargeGas == null
-                || aSpargeGas.amount <= 0
+    public static boolean addRecipe(FluidStack aSpargeGas, FluidStack aSpentFuel, FluidStack aSpargedFuel,
+            FluidStack[] aOutputs, int[] aMaxOutputs) {
+        if (aSpargeGas == null || aSpargeGas.amount <= 0
                 || aSpentFuel == null
                 || aSpentFuel.amount <= 0
                 || aSpargedFuel == null

@@ -23,21 +23,27 @@ public class GregtechFactoryGradeReplacementMultis {
         GregtechItemList.Machine_Adv_ImplosionCompressor.set(
                 new GregtechMetaTileEntity_Adv_Implosion(964, "multimachine.adv.implosioncompressor", "Density^2")
                         .getStackForm(1L));
-        GregtechItemList.Industrial_Cryogenic_Freezer.set(new GregtechMetaTileEntity_IndustrialVacuumFreezer(
-                        910, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
-                .getStackForm(1L));
+        GregtechItemList.Industrial_Cryogenic_Freezer.set(
+                new GregtechMetaTileEntity_IndustrialVacuumFreezer(
+                        910,
+                        "multimachine.adv.industrialfreezer",
+                        "Cryogenic Freezer").getStackForm(1L));
         GregtechItemList.FusionComputer_UV2.set(
                 new GregtechMetaTileEntity_Adv_Fusion_MK4(965, "fusioncomputer.tier.09", "FusionTech MK IV")
                         .getStackForm(1L));
 
         // 31021
-        GregtechItemList.Machine_Adv_DistillationTower.set(new GregtechMetaTileEntity_Adv_DistillationTower(
-                        31021, "multimachine.adv.distillationtower", "Dangote Distillus")
-                .getStackForm(1L));
+        GregtechItemList.Machine_Adv_DistillationTower.set(
+                new GregtechMetaTileEntity_Adv_DistillationTower(
+                        31021,
+                        "multimachine.adv.distillationtower",
+                        "Dangote Distillus").getStackForm(1L));
         if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            GregtechItemList.Machine_Adv_AssemblyLine.set(new GregtechMetaTileEntity_Adv_AssemblyLine(
-                            31024, "multimachine.adv.assemblyline", "Compound Fabricator")
-                    .getStackForm(1L));
+            GregtechItemList.Machine_Adv_AssemblyLine.set(
+                    new GregtechMetaTileEntity_Adv_AssemblyLine(
+                            31024,
+                            "multimachine.adv.assemblyline",
+                            "Compound Fabricator").getStackForm(1L));
         }
     }
 }

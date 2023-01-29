@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -8,8 +11,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_RedstoneStrengthDisplay extends GT_MetaTileEntity_RedstoneBase {
 
@@ -26,8 +27,8 @@ public class GT_MetaTileEntity_RedstoneStrengthDisplay extends GT_MetaTileEntity
         super(aID, aUnlocal, aLocal, 5, 0, aDescription);
     }
 
-    public GT_MetaTileEntity_RedstoneStrengthDisplay(
-            final String aName, String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_RedstoneStrengthDisplay(final String aName, String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, 5, 0, aDescription, aTextures);
     }
 
@@ -67,24 +68,20 @@ public class GT_MetaTileEntity_RedstoneStrengthDisplay extends GT_MetaTileEntity
         }
     }
 
-    /*@Override
-    public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) {
-    	if (aSide == 0)
-    		return aRedstone ? 60 : 59;
-    	if (aSide == 1)
-    		return aRedstone ? 58 : 57;
-    	return aRedstone ? 62 : 61;
-    }*/
+    /*
+     * @Override public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) { if (aSide ==
+     * 0) return aRedstone ? 60 : 59; if (aSide == 1) return aRedstone ? 58 : 57; return aRedstone ? 62 : 61; }
+     */
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) mType = (byte) ((mType + 1) % 6);
     }
 
-    /*@Override
-    public IIcon getTextureIcon(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) {
-    	return aSide == aFacing ? sIconList[mType * 16 + mRedstoneStrength] : null;
-    }*/
+    /*
+     * @Override public IIcon getTextureIcon(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) { return
+     * aSide == aFacing ? sIconList[mType * 16 + mRedstoneStrength] : null; }
+     */
 
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
@@ -105,72 +102,48 @@ public class GT_MetaTileEntity_RedstoneStrengthDisplay extends GT_MetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[] {
-                Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                new GT_RenderedTexture(sIconList[mType * 16 + mRedstoneStrength])
-            };
+            return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+                    new GT_RenderedTexture(sIconList[mType * 16 + mRedstoneStrength]) };
         }
-        return this.mTextures[
-                (aActive || hasRedstoneSignal() ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Off)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Off) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_On)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_On) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Off)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Off) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_On)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_On) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On) };
     }
 }

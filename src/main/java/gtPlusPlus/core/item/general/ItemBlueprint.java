@@ -1,14 +1,7 @@
 package gtPlusPlus.core.item.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.interfaces.IItemBlueprint;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -18,6 +11,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.interfaces.IItemBlueprint;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ItemBlueprint extends Item implements IItemBlueprint {
 
@@ -30,10 +32,10 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
         GameRegistry.registerItem(this, unlocalizedName);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(
-            final ItemStack itemStack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack itemStack, final EntityPlayer aPlayer, final List list,
+            final boolean bool) {
         // Create some NBT if it's not there, otherwise this does nothing.
         if (!itemStack.hasTagCompound()) {
             this.createNBT(itemStack);
@@ -76,11 +78,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack itemStack,
-            final World par2World,
-            final Entity par3Entity,
-            final int par4,
+    public void onUpdate(final ItemStack itemStack, final World par2World, final Entity par3Entity, final int par4,
             final boolean par5) {}
 
     @Override
@@ -89,8 +87,13 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
         if (itemStack.hasTagCompound()) {
             PlayerUtils.messagePlayer(
                     par3Entity,
-                    "This Blueprint holds NBT data. " + "|" + this.getNBT(itemStack, "mID") + "|"
-                            + this.getNBT(itemStack, "mBlueprint") + "|" + this.getNBT(itemStack, "mName") + "|"
+                    "This Blueprint holds NBT data. " + "|"
+                            + this.getNBT(itemStack, "mID")
+                            + "|"
+                            + this.getNBT(itemStack, "mBlueprint")
+                            + "|"
+                            + this.getNBT(itemStack, "mName")
+                            + "|"
                             + ItemUtils.getArrayStackNames(this.readItemsFromNBT(itemStack)));
         } else {
             this.createNBT(itemStack);
@@ -227,19 +230,20 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                 return false;
             } else if (itemStack.stackTagCompound.getBoolean("mBlueprint")
                     && !itemStack.stackTagCompound.getString("mName").equals("")) {
-                // Has Blueprint but invalid name set
-                Logger.WARNING("Has Blueprint but invalid name set");
-                // itemStack.stackTagCompound = null;
-                // createNBT(itemStack);
-                return false;
-            } else if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
-                    && itemStack.stackTagCompound.getString("mName").equals("")) {
-                // Has no Blueprint, but strangely has a name
-                Logger.WARNING("Has no Blueprint, but strangely has a name");
-                // itemStack.stackTagCompound = null;
-                // createNBT(itemStack);
-                return false;
-            }
+                        // Has Blueprint but invalid name set
+                        Logger.WARNING("Has Blueprint but invalid name set");
+                        // itemStack.stackTagCompound = null;
+                        // createNBT(itemStack);
+                        return false;
+                    } else
+                if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
+                        && itemStack.stackTagCompound.getString("mName").equals("")) {
+                            // Has no Blueprint, but strangely has a name
+                            Logger.WARNING("Has no Blueprint, but strangely has a name");
+                            // itemStack.stackTagCompound = null;
+                            // createNBT(itemStack);
+                            return false;
+                        }
             return false;
         } else if (!itemStack.hasTagCompound()) {
             final int bpID = MathUtils.randInt(0, 1000);

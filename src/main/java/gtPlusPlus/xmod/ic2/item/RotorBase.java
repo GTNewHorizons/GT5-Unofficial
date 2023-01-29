@@ -1,16 +1,18 @@
 package gtPlusPlus.xmod.ic2.item;
 
-import ic2.api.item.IKineticRotor;
-import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
-import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
-import ic2.core.init.InternalName;
-import ic2.core.item.resources.ItemWindRotor;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
+import ic2.api.item.IKineticRotor;
+import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
+import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
+import ic2.core.init.InternalName;
+import ic2.core.item.resources.ItemWindRotor;
 
 public class RotorBase extends ItemWindRotor {
 
@@ -21,14 +23,8 @@ public class RotorBase extends ItemWindRotor {
     private final ResourceLocation renderTexture;
     private final boolean water;
 
-    public RotorBase(
-            final InternalName internalName,
-            final int Radius,
-            final int durability,
-            final float efficiency,
-            final int minWindStrength,
-            final int maxWindStrength,
-            final ResourceLocation RenderTexture) {
+    public RotorBase(final InternalName internalName, final int Radius, final int durability, final float efficiency,
+            final int minWindStrength, final int maxWindStrength, final ResourceLocation RenderTexture) {
         super(internalName, Radius, durability, efficiency, minWindStrength, maxWindStrength, RenderTexture);
 
         this.setMaxStackSize(1);
@@ -44,17 +40,18 @@ public class RotorBase extends ItemWindRotor {
 
     @Override
     public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List info, final boolean b) {
-        info.add(StatCollector.translateToLocalFormatted(
-                "ic2.itemrotor.wind.info",
-                new Object[] {Integer.valueOf(this.minWindStrength), Integer.valueOf(this.maxWindStrength)}));
+        info.add(
+                StatCollector.translateToLocalFormatted(
+                        "ic2.itemrotor.wind.info",
+                        new Object[] { Integer.valueOf(this.minWindStrength), Integer.valueOf(this.maxWindStrength) }));
         IKineticRotor.GearboxType type = null;
         if ((Minecraft.getMinecraft().currentScreen != null)
                 && ((Minecraft.getMinecraft().currentScreen instanceof GuiWaterKineticGenerator))) {
             type = IKineticRotor.GearboxType.WATER;
         } else if ((Minecraft.getMinecraft().currentScreen != null)
                 && ((Minecraft.getMinecraft().currentScreen instanceof GuiWindKineticGenerator))) {
-            type = IKineticRotor.GearboxType.WIND;
-        }
+                    type = IKineticRotor.GearboxType.WIND;
+                }
         if (type != null) {
             // info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + isAcceptedType(itemStack, type)));
         }

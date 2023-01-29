@@ -1,14 +1,16 @@
 package gtPlusPlus.core.util.minecraft.network;
 
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import io.netty.buffer.Unpooled;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
 import mods.railcraft.common.util.misc.Game;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import io.netty.buffer.Unpooled;
 
 public abstract class CustomPacket {
+
     public static final String CHANNEL_NAME = "GTPP";
 
     public enum PacketType {
@@ -22,7 +24,7 @@ public abstract class CustomPacket {
             data.writeByte(this.getID());
             this.writeData(data);
         } catch (IOException var4) {
-            Game.logThrowable("Error constructing packet: {0}", var4, new Object[] {this.getClass()});
+            Game.logThrowable("Error constructing packet: {0}", var4, new Object[] { this.getClass() });
         }
         return new FMLProxyPacket(Unpooled.wrappedBuffer(bytes.toByteArray()), "GTPP");
     }

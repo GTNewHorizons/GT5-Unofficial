@@ -1,13 +1,15 @@
 package gtPlusPlus.core.entity;
 
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.world.explosions.ExplosionHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.world.explosions.ExplosionHandler;
+
 public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
+
     /** How long the fuse is */
     private EntityLivingBase tntPlacedBy;
 
@@ -19,8 +21,8 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
         this.yOffset = this.height / 2.0F;
     }
 
-    public EntityPrimedMiningExplosive(
-            final World world, final double x, final double y, final double z, final EntityLivingBase placingEntity) {
+    public EntityPrimedMiningExplosive(final World world, final double x, final double y, final double z,
+            final EntityLivingBase placingEntity) {
         this(world);
         this.setPosition(x, y, z);
         final float f = (float) (Math.random() * Math.PI * 2.0D);
@@ -364,11 +366,17 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
         ExplosionHandler explode = new ExplosionHandler();
         explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, false, true);
 
-        /*this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
-        this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
-        this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
-        this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
-        this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);*/
+        /*
+         * this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
+         * this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY,
+         * this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+         * this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY,
+         * this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+         * this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY,
+         * this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+         * this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY,
+         * this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+         */
     }
 
     /**

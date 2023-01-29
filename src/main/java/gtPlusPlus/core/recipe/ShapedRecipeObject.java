@@ -1,8 +1,9 @@
 package gtPlusPlus.core.recipe;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import net.minecraft.item.ItemStack;
 
 public class ShapedRecipeObject {
 
@@ -17,17 +18,9 @@ public class ShapedRecipeObject {
     public Object object_I;
     public ItemStack object_OUTPUT;
 
-    public ShapedRecipeObject(
-            final Object input_A,
-            final Object input_B,
-            final Object input_C,
-            final Object input_D,
-            final Object input_E,
-            final Object input_F,
-            final Object input_G,
-            final Object input_H,
-            final Object input_I,
-            final ItemStack input_Output) {
+    public ShapedRecipeObject(final Object input_A, final Object input_B, final Object input_C, final Object input_D,
+            final Object input_E, final Object input_F, final Object input_G, final Object input_H,
+            final Object input_I, final ItemStack input_Output) {
         this.object_A = input_A;
         this.object_B = input_B;
         this.object_C = input_C;

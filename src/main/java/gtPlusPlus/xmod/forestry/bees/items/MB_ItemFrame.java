@@ -1,12 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.*;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -14,7 +9,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import forestry.api.apiculture.*;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+
 public class MB_ItemFrame extends Item implements IHiveFrame {
+
     private final MB_FrameType type;
     private EnumRarity rarity_value = EnumRarity.uncommon;
     private final String toolTip;

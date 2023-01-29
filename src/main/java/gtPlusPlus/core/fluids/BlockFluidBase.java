@@ -1,9 +1,5 @@
 package gtPlusPlus.core.fluids;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -14,6 +10,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 
 public class BlockFluidBase extends BlockFluidClassic {
 
@@ -42,9 +43,10 @@ public class BlockFluidBase extends BlockFluidClassic {
         if (!(ent instanceof EntityLivingBase)) {
             return;
         }
-        /*EntityLivingBase player = (EntityLivingBase) ent;
-        int pot = world.rand.nextInt(Potion.potionTypes.length);
-        Potion.potionTypes[pot].performEffect(player, 40);*/
+        /*
+         * EntityLivingBase player = (EntityLivingBase) ent; int pot = world.rand.nextInt(Potion.potionTypes.length);
+         * Potion.potionTypes[pot].performEffect(player, 40);
+         */
     }
 
     @Override

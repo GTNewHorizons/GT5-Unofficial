@@ -2,14 +2,15 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.preloader.DevHelper;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.preloader.DevHelper;
 
 public class ClassTransformer_GC_FuelLoader {
 
@@ -61,12 +62,11 @@ public class ClassTransformer_GC_FuelLoader {
     }
 
     public void injectMethod() {
-        String aWorld =
-                isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/World") : "net/minecraft/world/World";
-        String aItemStack =
-                isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack") : "net/minecraft/item/ItemStack";
-        String aTileEntity = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/tileentity/TileEntity")
+        String aWorld = isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/World")
+                : "net/minecraft/world/World";
+        String aItemStack = isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack")
+                : "net/minecraft/item/ItemStack";
+        String aTileEntity = isObfuscated ? DevHelper.getObfuscated("net/minecraft/tileentity/TileEntity")
                 : "net/minecraft/tileentity/TileEntity";
 
         if (isValidTransformer()) {
@@ -104,7 +104,10 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitInsn(ICONST_0);
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader", "loadedFuelLastTick", "Z");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                    "loadedFuelLastTick",
+                    "Z");
             Label l4 = new Label();
             mv.visitLabel(l4);
             mv.visitLineNumber(63, l4);
@@ -214,13 +217,8 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     5,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        TOP,
-                        INTEGER
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, TOP, INTEGER },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 0);
@@ -268,17 +266,9 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     9,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        TOP,
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER,
-                        TOP,
-                        "java/util/Iterator"
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, TOP, INTEGER,
+                            "net/minecraftforge/fluids/FluidStack", INTEGER, TOP, "java/util/Iterator" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 8);
@@ -333,39 +323,24 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     9,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        TOP,
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER,
-                        "net/minecraftforge/fluids/Fluid",
-                        "java/util/Iterator"
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, TOP, INTEGER,
+                            "net/minecraftforge/fluids/FluidStack", INTEGER, "net/minecraftforge/fluids/Fluid",
+                            "java/util/Iterator" },
                     0,
                     new Object[] {});
             mv.visitInsn(ICONST_0);
             mv.visitLabel(l23);
-            mv.visitFrame(F_SAME1, 0, null, 1, new Object[] {INTEGER});
+            mv.visitFrame(F_SAME1, 0, null, 1, new Object[] { INTEGER });
             mv.visitVarInsn(ISTORE, 6);
             mv.visitLabel(l18);
             mv.visitLineNumber(76, l18);
             mv.visitFrame(
                     F_FULL,
                     9,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        TOP,
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER,
-                        TOP,
-                        "java/util/Iterator"
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, TOP, INTEGER,
+                            "net/minecraftforge/fluids/FluidStack", INTEGER, TOP, "java/util/Iterator" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 8);
@@ -381,15 +356,9 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     7,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        TOP,
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, TOP, INTEGER,
+                            "net/minecraftforge/fluids/FluidStack", INTEGER },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 5);
@@ -447,7 +416,7 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(F_SAME, 0, null, 0, null);
             mv.visitInsn(ICONST_0);
             mv.visitLabel(l28);
-            mv.visitFrame(F_SAME1, 0, null, 1, new Object[] {INTEGER});
+            mv.visitFrame(F_SAME1, 0, null, 1, new Object[] { INTEGER });
             mv.visitVarInsn(ISTORE, 6);
             mv.visitLabel(l25);
             mv.visitLineNumber(88, l25);
@@ -500,10 +469,8 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     2,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack"
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 0);
@@ -552,7 +519,7 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_APPEND,
                     3,
-                    new Object[] {INTEGER, INTEGER, "[Lnet/minecraftforge/common/util/ForgeDirection;"},
+                    new Object[] { INTEGER, INTEGER, "[Lnet/minecraftforge/common/util/ForgeDirection;" },
                     0,
                     null);
             mv.visitVarInsn(ALOAD, 4);
@@ -631,7 +598,7 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_APPEND,
                     2,
-                    new Object[] {"net/minecraftforge/common/util/ForgeDirection", "" + aTileEntity + ""},
+                    new Object[] { "net/minecraftforge/common/util/ForgeDirection", "" + aTileEntity + "" },
                     0,
                     null);
             mv.visitVarInsn(ALOAD, 6);
@@ -738,15 +705,9 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     7,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        TOP,
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        "java/util/Iterator"
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, TOP, "net/minecraftforge/fluids/FluidStack",
+                            TOP, "java/util/Iterator" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 6);
@@ -801,13 +762,8 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     5,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        TOP,
-                        "net/minecraftforge/fluids/FluidStack"
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, TOP, "net/minecraftforge/fluids/FluidStack" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 4);
@@ -925,33 +881,26 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     6,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, INTEGER,
+                            "net/minecraftforge/fluids/FluidStack", INTEGER },
                     1,
-                    new Object[] {"micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader"});
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader" });
             mv.visitInsn(ICONST_0);
             mv.visitLabel(l67);
             mv.visitFrame(
                     F_FULL,
                     6,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                            "net/minecraftforge/fluids/FluidStack", TOP, INTEGER,
+                            "net/minecraftforge/fluids/FluidStack", INTEGER },
                     2,
-                    new Object[] {"micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader", INTEGER});
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader", INTEGER });
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader", "loadedFuelLastTick", "Z");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader",
+                    "loadedFuelLastTick",
+                    "Z");
             Label l68 = new Label();
             mv.visitLabel(l68);
             mv.visitLineNumber(137, l68);
@@ -975,14 +924,19 @@ public class ClassTransformer_GC_FuelLoader {
             mv.visitFrame(
                     F_FULL,
                     1,
-                    new Object[] {"micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader"},
+                    new Object[] { "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader" },
                     0,
                     new Object[] {});
             mv.visitInsn(RETURN);
             Label l69 = new Label();
             mv.visitLabel(l69);
             mv.visitLocalVariable(
-                    "this", "Lmicdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader;", null, l0, l69, 0);
+                    "this",
+                    "Lmicdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader;",
+                    null,
+                    l0,
+                    l69,
+                    0);
             mv.visitLocalVariable("liquid", "Lnet/minecraftforge/fluids/FluidStack;", null, l5, l2, 1);
             mv.visitLocalVariable("amount", "I", null, l37, l32, 2);
             mv.visitLocalVariable("filled", "I", null, l36, l32, 3);
@@ -1007,8 +961,8 @@ public class ClassTransformer_GC_FuelLoader {
 
         public localClassVisitor(ClassVisitor cv) {
             super(ASM5, cv);
-            FMLRelaunchLog.log(
-                    "[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Inspecting Class " + className);
+            FMLRelaunchLog
+                    .log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Inspecting Class " + className);
         }
 
         @Override

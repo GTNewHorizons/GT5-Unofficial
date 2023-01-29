@@ -1,5 +1,10 @@
 package gtPlusPlus.core.item.base.ingots;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -9,10 +14,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class BaseItemIngot_OLD extends Item {
 
@@ -20,8 +21,8 @@ public class BaseItemIngot_OLD extends Item {
     protected String materialName;
     protected String unlocalName;
 
-    public BaseItemIngot_OLD(
-            final String unlocalizedName, final String materialName, final int colour, final int sRadioactivity) {
+    public BaseItemIngot_OLD(final String unlocalizedName, final String materialName, final int colour,
+            final int sRadioactivity) {
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.unlocalName = unlocalizedName;
@@ -87,11 +88,7 @@ public class BaseItemIngot_OLD extends Item {
     protected final int sRadiation;
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.sRadiation, world, entityHolding);
     }

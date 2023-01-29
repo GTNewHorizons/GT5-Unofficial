@@ -1,17 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.IProjectileItem;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import java.util.List;
+
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.dispenser.*;
@@ -25,10 +15,23 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SubTag;
+import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+
 /**
  * Extended by most Items, also used as a fallback Item, to prevent the accidental deletion when Errors occur.
  */
 public class Gregtech_Generic_Item extends Item implements IProjectileItem {
+
     private final String mName, mTooltip;
     protected IIcon mIcon;
 
@@ -36,17 +39,16 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
         this(aUnlocalized, aEnglish, aEnglishTooltip, true);
     }
 
-    public Gregtech_Generic_Item(
-            final String aUnlocalized,
-            final String aEnglish,
-            final String aEnglishTooltip,
+    public Gregtech_Generic_Item(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip,
             final boolean aWriteToolTipIntoLangFile) {
         super();
         this.mName = aUnlocalized;
         GT_LanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
         if (GT_Utility.isStringValid(aEnglishTooltip)) {
             GT_LanguageManager.addStringLocalization(
-                    this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip, aWriteToolTipIntoLangFile);
+                    this.mTooltip = this.mName + ".tooltip_main",
+                    aEnglishTooltip,
+                    aWriteToolTipIntoLangFile);
         } else {
             this.mTooltip = null;
         }
@@ -77,8 +79,8 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
     }
 
     @Override
-    public boolean doesSneakBypassUse(
-            final World aWorld, final int aX, final int aY, final int aZ, final EntityPlayer aPlayer) {
+    public boolean doesSneakBypassUse(final World aWorld, final int aX, final int aY, final int aZ,
+            final EntityPlayer aPlayer) {
         return true;
     }
 
@@ -92,8 +94,8 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
     }
 
     @Override
-    public void addInformation(
-            final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
+    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList,
+            final boolean aF3_H) {
         if ((this.getMaxDamage() > 0) && !this.getHasSubtypes()) {
             aList.add((aStack.getMaxDamage() - this.getDamage(aStack)) + " / " + aStack.getMaxDamage());
         }
@@ -128,23 +130,14 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
     }
 
     @Override
-    public EntityArrow getProjectile(
-            final SubTag aProjectileType,
-            final ItemStack aStack,
-            final World aWorld,
-            final double aX,
-            final double aY,
-            final double aZ) {
+    public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
+            final double aX, final double aY, final double aZ) {
         return null;
     }
 
     @Override
-    public EntityArrow getProjectile(
-            final SubTag aProjectileType,
-            final ItemStack aStack,
-            final World aWorld,
-            final EntityLivingBase aEntity,
-            final float aSpeed) {
+    public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
+            final EntityLivingBase aEntity, final float aSpeed) {
         return null;
     }
 
@@ -164,6 +157,7 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
     }
 
     public static class GT_Item_Dispense extends BehaviorProjectileDispense {
+
         @Override
         public ItemStack dispenseStack(final IBlockSource aSource, final ItemStack aStack) {
             return ((Gregtech_Generic_Item) aStack.getItem()).onDispense(aSource, aStack);

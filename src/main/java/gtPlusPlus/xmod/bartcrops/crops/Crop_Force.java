@@ -1,11 +1,12 @@
 package gtPlusPlus.xmod.bartcrops.crops;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.material.ELEMENT.STANDALONE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.bartcrops.abstracts.BaseAestheticCrop;
 import ic2.api.crops.ICropTile;
-import net.minecraft.item.ItemStack;
 
 public class Crop_Force extends BaseAestheticCrop {
 
@@ -24,9 +25,9 @@ public class Crop_Force extends BaseAestheticCrop {
     public int growthDuration(ICropTile crop) {
         int ret = 800;
 
-        /*if (crop.isBlockBelow(Blocks.dirt) || crop.isBlockBelow(Blocks.flowing_water)) {
-        	ret = 225;
-        }*/
+        /*
+         * if (crop.isBlockBelow(Blocks.dirt) || crop.isBlockBelow(Blocks.flowing_water)) { ret = 225; }
+         */
 
         if (CORE_Preloader.DEBUG_MODE) {
             ret = 1;
@@ -36,7 +37,7 @@ public class Crop_Force extends BaseAestheticCrop {
     }
 
     public String[] attributes() {
-        return new String[] {"Power", "Soil", "Yellow", "Gold"};
+        return new String[] { "Power", "Soil", "Yellow", "Gold" };
     }
 
     public ItemStack getGain(ICropTile crop) {

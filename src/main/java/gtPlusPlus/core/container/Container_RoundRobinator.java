@@ -1,13 +1,7 @@
 package gtPlusPlus.core.container;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.Inventory_RoundRobinator;
-import gtPlusPlus.core.slots.SlotNoInput;
-import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 import java.util.Iterator;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -15,6 +9,14 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.Inventory_RoundRobinator;
+import gtPlusPlus.core.slots.SlotNoInput;
+import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 
 public class Container_RoundRobinator extends Container {
 
@@ -26,7 +28,7 @@ public class Container_RoundRobinator extends Container {
     private final int posY;
     private final int posZ;
 
-    private final boolean[] mActiveData = new boolean[] {false, false, false, false};
+    private final boolean[] mActiveData = new boolean[] { false, false, false, false };
 
     public static int mStorageSlotNumber = 4; // Number of slots in storage area
     public static int mInventorySlotNumber = 36; // Inventory Slots (Inventory
@@ -80,8 +82,8 @@ public class Container_RoundRobinator extends Container {
     }
 
     @Override
-    public ItemStack slotClick(
-            final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
+    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
+            final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if (aSlotIndex < 4) {

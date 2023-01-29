@@ -2,6 +2,18 @@ package gtPlusPlus.core.item.general;
 
 import static gtPlusPlus.core.lib.CORE.RANDOM;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.entity.item.ItemEntityGiantEgg;
@@ -13,16 +25,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
 public class ItemGiantEgg extends BaseItemTickable {
 
@@ -39,9 +41,10 @@ public class ItemGiantEgg extends BaseItemTickable {
     }
 
     public ItemGiantEgg() {
-        this(Utils.rgbtoHexValue(255, 255, 255), Short.MAX_VALUE * Byte.MAX_VALUE, new String[] {
-            "I had best try disassemble this.. for science!"
-        });
+        this(
+                Utils.rgbtoHexValue(255, 255, 255),
+                Short.MAX_VALUE * Byte.MAX_VALUE,
+                new String[] { "I had best try disassemble this.. for science!" });
     }
 
     private ItemGiantEgg(int colour, int maxTicks, String[] desc1) {
@@ -61,20 +64,13 @@ public class ItemGiantEgg extends BaseItemTickable {
     private static ItemStack getSpawnEggStack() {
         // Set the correct egg for future hatches
         if (mCorrectEgg == null) {
-            /*for (int g=0;g<Byte.MAX_VALUE;g++) {
-            	ItemStack mSpawn = ItemUtils.simpleMetaStack(Items.spawn_egg, g, 1);
-            	if (mSpawn != null) {
-            		//String s = ("" + StatCollector.translateToLocal(mSpawn.getUnlocalizedName() + ".name")).trim();
-            		String s1 = EntityList.getStringFromID(mSpawn.getItemDamage());
-            		if (s1 != null){
-            			//s = s + " " + StatCollector.translateToLocal("entity." + s1 + ".name");
-            			if (s1.equalsIgnoreCase("bigChickenFriendly")) {
-            				mCorrectEgg = mSpawn;
-            				return mCorrectEgg;
-            			}
-            		}
-            	}
-            }*/
+            /*
+             * for (int g=0;g<Byte.MAX_VALUE;g++) { ItemStack mSpawn = ItemUtils.simpleMetaStack(Items.spawn_egg, g, 1);
+             * if (mSpawn != null) { //String s = ("" + StatCollector.translateToLocal(mSpawn.getUnlocalizedName() +
+             * ".name")).trim(); String s1 = EntityList.getStringFromID(mSpawn.getItemDamage()); if (s1 != null){ //s =
+             * s + " " + StatCollector.translateToLocal("entity." + s1 + ".name"); if
+             * (s1.equalsIgnoreCase("bigChickenFriendly")) { mCorrectEgg = mSpawn; return mCorrectEgg; } } } }
+             */
             ItemStack aTempEgg = ItemCustomSpawnEgg.getSpawnEggForEntityname("bigChickenFriendly", 1);
             if (aTempEgg != null) {
                 mCorrectEgg = aTempEgg;
@@ -86,8 +82,8 @@ public class ItemGiantEgg extends BaseItemTickable {
     private static ItemStack getStemCellStack() {
         if (mCorrectStemCells == null) {
             if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 28) {
-                ItemStack xl = ItemUtils.getValueOfItemList(
-                        "Circuit_Chip_Stemcell", 1, ItemUtils.getSimpleStack(Items.egg, 2));
+                ItemStack xl = ItemUtils
+                        .getValueOfItemList("Circuit_Chip_Stemcell", 1, ItemUtils.getSimpleStack(Items.egg, 2));
                 if (xl != null) {
                     mCorrectStemCells = xl.copy();
                 }
@@ -146,18 +142,16 @@ public class ItemGiantEgg extends BaseItemTickable {
             if (mexpected > 0) {
                 NBTUtils.setInteger(aStack, "mExpected", mexpected);
                 NBTUtils.writeItemsToGtCraftingComponents(
-                        aStack, new ItemStack[] {ItemUtils.getSimpleStack(aStemCells, mexpected)}, true);
+                        aStack,
+                        new ItemStack[] { ItemUtils.getSimpleStack(aStemCells, mexpected) },
+                        true);
             }
         }
         return aSuper;
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         if (world == null || iStack == null) {
             return;
@@ -212,10 +206,10 @@ public class ItemGiantEgg extends BaseItemTickable {
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         String localName = super.getItemStackDisplayName(aStack);
-        /*if (aStack.getTagCompound() == null){
-        	createNBT(null, aStack);
-        	Logger.INFO("Egg has no NBT, creating (getDisplayName)");
-        }*/
+        /*
+         * if (aStack.getTagCompound() == null){ createNBT(null, aStack);
+         * Logger.INFO("Egg has no NBT, creating (getDisplayName)"); }
+         */
         int size = 1;
         if (NBTUtils.hasKey(aStack, "size")) {
             size = NBTUtils.getInteger(aStack, "size");
@@ -255,8 +249,8 @@ public class ItemGiantEgg extends BaseItemTickable {
                 entityitem.motionZ = (double) (MathHelper.cos(player.rotationYaw / 180.0F * (float) Math.PI)
                         * MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI)
                         * f);
-                entityitem.motionY =
-                        (double) (-MathHelper.sin(player.rotationPitch / 180.0F * (float) Math.PI) * f + 0.1F);
+                entityitem.motionY = (double) (-MathHelper.sin(player.rotationPitch / 180.0F * (float) Math.PI) * f
+                        + 0.1F);
                 f = 0.02F;
                 f1 = RANDOM.nextFloat() * (float) Math.PI * 2.0F;
                 f *= RANDOM.nextFloat();

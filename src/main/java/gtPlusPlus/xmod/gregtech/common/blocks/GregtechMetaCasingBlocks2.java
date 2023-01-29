@@ -1,5 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -8,11 +15,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract {
 
@@ -47,13 +49,13 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Thermal Processing Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Wash Plant Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (EV)");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (EV)");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
@@ -61,8 +63,9 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Bulk Production Frame");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing"); // Tree Farmer Textures
+        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing"); // Tree
+                                                                                                                 // Farmer
+                                                                                                                 // Textures
         GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));

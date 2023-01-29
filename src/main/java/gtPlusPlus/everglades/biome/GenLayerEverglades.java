@@ -22,7 +22,7 @@ public class GenLayerEverglades extends GenLayer {
         GenLayer genlayervoronoizoom = new GenLayerVoronoiZoom(10L, biomes);
         biomes.initWorldGenSeed(seed);
         genlayervoronoizoom.initWorldGenSeed(seed);
-        return new GenLayer[] {biomes, genlayervoronoizoom};
+        return new GenLayer[] { biomes, genlayervoronoizoom };
     }
 
     @Override

@@ -1,5 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -10,21 +18,16 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import java.util.Collection;
-import java.util.Iterator;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank {
-    public GTPP_MTE_BasicLosslessGenerator(
-            int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
+
+    public GTPP_MTE_BasicLosslessGenerator(int aID, String aName, String aNameRegional, int aTier, String aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
-    public GTPP_MTE_BasicLosslessGenerator(
-            int aID, String aName, String aNameRegional, int aTier, String[] aDescription, ITexture... aTextures) {
+    public GTPP_MTE_BasicLosslessGenerator(int aID, String aName, String aNameRegional, int aTier,
+            String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
@@ -55,21 +58,11 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
         return rTextures;
     }
 
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : (aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : (aSide == 0 ? 2 : (aSide == 1 ? 3 : 4))))][
-                aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : (aSide == GT_Utility.getOppositeSide(aFacing) ? 1
+                        : (aSide == 0 ? 2 : (aSide == 1 ? 3 : 4))))][aColorIndex + 1];
     }
 
     public String[] getDescription() {
@@ -86,23 +79,23 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
     }
 
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getBack(byte aColor) {
-        return new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getBottom(byte aColor) {
-        return new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getTop(byte aColor) {
-        return new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getSides(byte aColor) {
-        return new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1]};
+        return new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1] };
     }
 
     public ITexture[] getFrontActive(byte aColor) {
@@ -198,8 +191,10 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
                         this.mInventory[this.getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
                     }
 
-                    this.mInventory[this.getStackDisplaySlot()].setStackDisplayName("Generating: "
-                            + (aBaseMetaTileEntity.getUniversalEnergyStored() - this.getMinimumStoredEU()) + " EU");
+                    this.mInventory[this.getStackDisplaySlot()].setStackDisplayName(
+                            "Generating: "
+                                    + (aBaseMetaTileEntity.getUniversalEnergyStored() - this.getMinimumStoredEU())
+                                    + " EU");
                 }
             } else {
                 tFuelValue = this.getFuelValue(this.mFluid);
@@ -208,9 +203,8 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
                     long tFluidAmountToUse = Math.min(
                             (long) (this.mFluid.amount / tConsumed),
                             (this.maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / (long) tFuelValue);
-                    if (tFluidAmountToUse > 0L
-                            && aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                    tFluidAmountToUse * (long) tFuelValue, true)) {
+                    if (tFluidAmountToUse > 0L && aBaseMetaTileEntity
+                            .increaseStoredEnergyUnits(tFluidAmountToUse * (long) tFuelValue, true)) {
                         PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollution());
                         this.mFluid.amount = (int) ((long) this.mFluid.amount - tFluidAmountToUse * (long) tConsumed);
                     }
@@ -235,8 +229,8 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 
         if (aBaseMetaTileEntity.isServerSide()) {
             Logger.WARNING("Ticking Servside");
-            aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork()
-                    && aBaseMetaTileEntity.getUniversalEnergyStored()
+            aBaseMetaTileEntity.setActive(
+                    aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.getUniversalEnergyStored()
                             >= this.maxEUOutput() + this.getMinimumStoredEU());
         }
     }
@@ -264,15 +258,13 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null
                             && aLiquid.isFluidEqual(tLiquid)) {
                         Logger.WARNING("Fuel Ok");
-                        return (int) ((long) tFuel.mSpecialValue
-                                * (long) this.getEfficiency()
+                        return (int) ((long) tFuel.mSpecialValue * (long) this.getEfficiency()
                                 * (long) this.consumedFluidPerOperation(tLiquid)
                                 / 100L);
                     }
                     if ((tLiquid = tFuel.getRepresentativeFluidInput(0)) != null && aLiquid.isFluidEqual(tLiquid)) {
                         Logger.WARNING("Fuel Ok");
-                        return (int) ((long) tFuel.mSpecialValue
-                                * (long) this.getEfficiency()
+                        return (int) ((long) tFuel.mSpecialValue * (long) this.getEfficiency()
                                 * (long) this.consumedFluidPerOperation(tLiquid)
                                 / 100L);
                     }
@@ -288,11 +280,12 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
     public int getFuelValue(ItemStack aStack) {
         if (!GT_Utility.isStackInvalid(aStack) && this.getRecipes() != null) {
             Logger.WARNING("Fuel Item OK");
-            GT_Recipe tFuel = this.getRecipes()
-                    .findRecipe(
-                            this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, (FluidStack[]) null, new ItemStack[] {
-                                aStack
-                            });
+            GT_Recipe tFuel = this.getRecipes().findRecipe(
+                    this.getBaseMetaTileEntity(),
+                    false,
+                    Long.MAX_VALUE,
+                    (FluidStack[]) null,
+                    new ItemStack[] { aStack });
             return tFuel != null ? (int) ((long) tFuel.mSpecialValue * 1000L * (long) this.getEfficiency() / 100L) : 0;
         } else {
             return 0;
@@ -301,13 +294,13 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 
     public ItemStack getEmptyContainer(ItemStack aStack) {
         if (!GT_Utility.isStackInvalid(aStack) && this.getRecipes() != null) {
-            GT_Recipe tFuel = this.getRecipes()
-                    .findRecipe(
-                            this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, (FluidStack[]) null, new ItemStack[] {
-                                aStack
-                            });
-            return tFuel != null
-                    ? GT_Utility.copy(new Object[] {tFuel.getOutput(0)})
+            GT_Recipe tFuel = this.getRecipes().findRecipe(
+                    this.getBaseMetaTileEntity(),
+                    false,
+                    Long.MAX_VALUE,
+                    (FluidStack[]) null,
+                    new ItemStack[] { aStack });
+            return tFuel != null ? GT_Utility.copy(new Object[] { tFuel.getOutput(0) })
                     : GT_Utility.getContainerItem(aStack, true);
         } else {
             return null;
@@ -315,9 +308,8 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)
-                && (this.getFuelValue(aStack) > 0
-                        || this.getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0);
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (this.getFuelValue(aStack) > 0
+                || this.getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0);
     }
 
     public int getCapacity() {

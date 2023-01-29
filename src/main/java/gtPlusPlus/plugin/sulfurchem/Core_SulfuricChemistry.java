@@ -1,5 +1,8 @@
 package gtPlusPlus.plugin.sulfurchem;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.interfaces.IPlugin;
@@ -12,8 +15,6 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class Core_SulfuricChemistry implements IPlugin {
 
@@ -32,8 +33,8 @@ public class Core_SulfuricChemistry implements IPlugin {
     @Override
     public boolean preInit() {
         if (
-        /*CORE.ConfigSwitches.enableSulfuricAcidFix || */
-        /*CORE.DEVENV*/ false) {
+        /* CORE.ConfigSwitches.enableSulfuricAcidFix || */
+        /* CORE.DEVENV */ false) {
             shouldLoad = true;
         }
         if (shouldLoad) return true;
@@ -186,12 +187,11 @@ public class Core_SulfuricChemistry implements IPlugin {
         int mDisabled = 0;
         FluidStack mStack = FluidUtils.getFluidStack("sulfurtrioxide", 1);
         // Single Block Recipes
-        recipe:
-        for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList) {
+        recipe: for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList) {
             for (ItemStack i : r.mOutputs) {
                 i.stackSize = 1;
-                if (ItemStack.areItemStacksEqual(
-                        i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
+                if (ItemStack
+                        .areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
                     mRemovedRecipes1.put(r);
                     r.mEnabled = false;
                     r.mHidden = true;
@@ -215,12 +215,12 @@ public class Core_SulfuricChemistry implements IPlugin {
 
         // Multi Block Recipes
         if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            recipe:
-            for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+            recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
                 for (ItemStack i : r.mOutputs) {
                     i.stackSize = 1;
                     if (ItemStack.areItemStacksEqual(
-                            i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
+                            i,
+                            ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
                         mRemovedRecipes1.put(r);
                         r.mEnabled = false;
                         r.mHidden = true;
@@ -251,8 +251,7 @@ public class Core_SulfuricChemistry implements IPlugin {
         FluidStack mStack = FluidUtils.getFluidStack("sulfuricacid", 1);
         // Single Block Recipes
 
-        recipe:
-        for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList) {
+        recipe: for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList) {
             for (ItemStack i : r.mOutputs) {
                 i.stackSize = 1;
                 if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
@@ -279,12 +278,11 @@ public class Core_SulfuricChemistry implements IPlugin {
 
         // Multi Block Recipes
         if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            recipe:
-            for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+            recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
                 for (ItemStack i : r.mOutputs) {
                     i.stackSize = 1;
-                    if (ItemStack.areItemStacksEqual(
-                            i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
+                    if (ItemStack
+                            .areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
                         mRemovedRecipes2.put(r);
                         r.mEnabled = false;
                         r.mHidden = true;

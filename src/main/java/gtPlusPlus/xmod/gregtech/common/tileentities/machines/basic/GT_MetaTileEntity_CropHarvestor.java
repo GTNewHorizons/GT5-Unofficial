@@ -1,5 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -7,6 +15,7 @@ import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+
 import gregtech.api.enums.*;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -24,12 +33,6 @@ import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.crops.*;
 import ic2.core.item.DamageHandler;
-import java.util.*;
-import java.util.Map.Entry;
-import net.minecraft.entity.player.*;
-import net.minecraft.item.*;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank {
 
@@ -51,8 +54,8 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 aDescription);
     }
 
-    public GT_MetaTileEntity_CropHarvestor(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_CropHarvestor(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
     }
 
@@ -185,9 +188,9 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (!getBaseMetaTileEntity().isServerSide()
-                || !getBaseMetaTileEntity().isAllowedToWork()
-                || (!getBaseMetaTileEntity().hasWorkJustBeenEnabled() && aTick % 100 != 0)) return;
+        if (!getBaseMetaTileEntity().isServerSide() || !getBaseMetaTileEntity().isAllowedToWork()
+                || (!getBaseMetaTileEntity().hasWorkJustBeenEnabled() && aTick % 100 != 0))
+            return;
 
         if (this.getBaseMetaTileEntity().getUniversalEnergyStored() < getMinimumStoredEU()) return;
 
@@ -328,8 +331,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
         if (!this.mModeAlternative) {
             return;
         }
-        if (hasFertilizer()
-                && consumeFertilizer(true)
+        if (hasFertilizer() && consumeFertilizer(true)
                 && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU()
                 && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
                 && applyFertilizer(aCrop)) {
@@ -337,14 +339,12 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 // Logger.INFO("Consumed Fert.");
             }
         }
-        if (this.getFluidAmount() > 0
-                && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU()
+        if (this.getFluidAmount() > 0 && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU()
                 && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
                 && applyHydration(aCrop)) {
             // Logger.INFO("Consumed Water.");
         }
-        if (hasWeedEX()
-                && consumeWeedEX(true)
+        if (hasWeedEX() && consumeWeedEX(true)
                 && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU()
                 && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
                 && applyWeedEx(aCrop)) {
@@ -359,8 +359,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
             aCrop.setWeedExStorage(aCrop.getWeedExStorage() + 50);
             boolean triggerDecline;
             triggerDecline = aCrop.getWorld().rand.nextInt(3) == 0;
-            if (aCrop.getCrop() != null
-                    && aCrop.getCrop().isWeed(aCrop)
+            if (aCrop.getCrop() != null && aCrop.getCrop().isWeed(aCrop)
                     && aCrop.getWeedExStorage() >= 75
                     && triggerDecline) {
                 switch (aCrop.getWorld().rand.nextInt(5)) {
@@ -445,8 +444,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
         int damageApplied = 0;
         ItemStack stack = this.mInventory[aSlot];
         Item item = stack.getItem();
-        if (stack != null
-                && item.isDamageable()
+        if (stack != null && item.isDamageable()
                 && (ret == null || stack.getItem() == ret.getItem() && ItemStack.areItemStackTagsEqual(stack, ret))) {
             if (simulate) {
                 stack = stack.copy();
@@ -500,17 +498,13 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     public String[] getDescription() {
         int aRadius = 10 + getRange(this.mTier);
         int aSide = (aRadius - 1) / 2;
-        return new String[] {
-            this.mDescription,
-            "Secondary mode can Hydrate/Fertilize/Weed-EX",
-            "Consumes " + powerUsage() + "eu per harvest",
-            "Consumes " + powerUsageSecondary() + "eu per secondary operation",
-            "Can harvest 2 blocks above and below",
-            "Radius: " + aSide + " each side (" + aRadius + "x3x" + aRadius + ")",
-            "Has " + (this.mTier * 5) + "% chance for extra drops",
-            "Holds " + this.getCapacity() + "L of Water",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Secondary mode can Hydrate/Fertilize/Weed-EX",
+                "Consumes " + powerUsage() + "eu per harvest",
+                "Consumes " + powerUsageSecondary() + "eu per secondary operation",
+                "Can harvest 2 blocks above and below",
+                "Radius: " + aSide + " each side (" + aRadius + "x3x" + aRadius + ")",
+                "Has " + (this.mTier * 5) + "% chance for extra drops", "Holds " + this.getCapacity() + "L of Water",
+                CORE.GT_Tooltip };
     }
 
     @Override
@@ -518,47 +512,17 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
         return true;
     }
 
-    /*@Override
-    public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) {
-    	if (aSide == aFacing)
-    		return 118+(aRedstone?8:0);
-    	if (GT_Utility.getOppositeSide(aSide) == aFacing)
-    		return 113+(aRedstone?8:0);
-
-    	int tIndex = 128+(aRedstone?8:0);
-
-    	switch (aFacing) {
-    	case 0:
-    		return tIndex+64;
-    	case 1:
-    		return tIndex+32;
-    	case 2: switch (aSide) {
-    		case 0: return tIndex+32;
-    		case 1: return tIndex+32;
-    		case 4: return tIndex+16;
-    		case 5: return tIndex+48;
-    		}
-    	case 3: switch (aSide) {
-    		case 0: return tIndex+64;
-    		case 1: return tIndex+64;
-    		case 4: return tIndex+48;
-    		case 5: return tIndex+16;
-    		}
-    	case 4: switch (aSide) {
-    		case 0: return tIndex+16;
-    		case 1: return tIndex+16;
-    		case 2: return tIndex+48;
-    		case 3: return tIndex+16;
-    		}
-    	case 5: switch (aSide) {
-    		case 0: return tIndex+48;
-    		case 1: return tIndex+48;
-    		case 2: return tIndex+16;
-    		case 3: return tIndex+48;
-    		}
-    	}
-    	return tIndex;
-    }	*/
+    /*
+     * @Override public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) { if (aSide ==
+     * aFacing) return 118+(aRedstone?8:0); if (GT_Utility.getOppositeSide(aSide) == aFacing) return
+     * 113+(aRedstone?8:0); int tIndex = 128+(aRedstone?8:0); switch (aFacing) { case 0: return tIndex+64; case 1:
+     * return tIndex+32; case 2: switch (aSide) { case 0: return tIndex+32; case 1: return tIndex+32; case 4: return
+     * tIndex+16; case 5: return tIndex+48; } case 3: switch (aSide) { case 0: return tIndex+64; case 1: return
+     * tIndex+64; case 4: return tIndex+48; case 5: return tIndex+16; } case 4: switch (aSide) { case 0: return
+     * tIndex+16; case 1: return tIndex+16; case 2: return tIndex+48; case 3: return tIndex+16; } case 5: switch (aSide)
+     * { case 0: return tIndex+48; case 1: return tIndex+48; case 2: return tIndex+16; case 3: return tIndex+48; } }
+     * return tIndex; }
+     */
 
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
@@ -579,56 +543,42 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == 0 || aSide == 1) {
             return this.mTextures[3][aColorIndex + 1];
         } else {
             return this.mTextures[4][aColorIndex + 1];
         }
-        /*return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
-        : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-                                                                                                   + 1];*/
+        /*
+         * return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide ==
+         * GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
+         */
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     @Override
@@ -680,47 +630,52 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new CycleButtonWidget()
-                .setToggle(() -> mModeAlternative, val -> mModeAlternative = val)
-                .setTexture(GTPP_UITextures.OVERLAY_BUTTON_HARVESTER_MODE)
-                .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
-                .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
-                .setPos(47, 63)
-                .setSize(18, 18));
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(SLOT_WEEDEX_1)
+        builder.widget(
+                new CycleButtonWidget().setToggle(() -> mModeAlternative, val -> mModeAlternative = val)
+                        .setTexture(GTPP_UITextures.OVERLAY_BUTTON_HARVESTER_MODE)
+                        .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
+                        .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
+                        .setBackground(GT_UITextures.BUTTON_STANDARD).setPos(47, 63).setSize(18, 18));
+        builder.widget(
+                SlotGroup
+                        .ofItemHandler(inventoryHandler, 2).startFromSlot(
+                                SLOT_WEEDEX_1)
                         .endAtSlot(SLOT_WEEDEX_2)
-                        .applyForWidget(widget -> widget.setFilter(stack -> stack != null
-                                        && stack.getItem().getUnlocalizedName().equals("ic2.itemWeedEx"))
-                                .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_WEED_EX))
-                        .build()
-                        .setPos(7, 13))
-                .widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(SLOT_FERT_1)
-                        .endAtSlot(SLOT_FERT_4)
-                        .applyForWidget(widget -> widget.setFilter(stack -> stack != null
-                                        && stack.getItem().getUnlocalizedName().equals("ic2.itemFertilizer"))
-                                .setBackground(
-                                        getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_FERTILIZER))
-                        .build()
-                        .setPos(7, 31))
-                .widget(SlotGroup.ofItemHandler(inventoryHandler, 6)
-                        .startFromSlot(SLOT_OUTPUT_START)
-                        .endAtSlot(SLOT_OUTPUT_START + 6 * 3)
-                        .canInsert(false)
-                        .build()
-                        .setPos(61, 7));
-        builder.widget(new ProgressBar()
+                        .applyForWidget(
+                                widget -> widget.setFilter(
+                                        stack -> stack != null
+                                                && stack.getItem().getUnlocalizedName().equals("ic2.itemWeedEx"))
+                                        .setBackground(
+                                                getGUITextureSet().getItemSlot(),
+                                                GTPP_UITextures.OVERLAY_SLOT_WEED_EX))
+                        .build().setPos(7, 13))
+                .widget(
+                        SlotGroup
+                                .ofItemHandler(inventoryHandler, 2).startFromSlot(SLOT_FERT_1).endAtSlot(
+                                        SLOT_FERT_4)
+                                .applyForWidget(
+                                        widget -> widget.setFilter(
+                                                stack -> stack != null && stack.getItem().getUnlocalizedName()
+                                                        .equals("ic2.itemFertilizer"))
+                                                .setBackground(
+                                                        getGUITextureSet().getItemSlot(),
+                                                        GTPP_UITextures.OVERLAY_SLOT_FERTILIZER))
+                                .build().setPos(7, 31))
+                .widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 6).startFromSlot(SLOT_OUTPUT_START)
+                                .endAtSlot(SLOT_OUTPUT_START + 6 * 3).canInsert(false).build().setPos(61, 7));
+        builder.widget(
+                new ProgressBar()
                         .setTexture(
-                                GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_WATER, 54)
+                                GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY,
+                                GT_UITextures.PROGRESSBAR_BOILER_WATER,
+                                54)
                         .setDirection(ProgressBar.Direction.UP)
-                        .setProgress(() -> (float) getFluidAmount() / getCapacity())
-                        .setSynced(false, false)
-                        .dynamicTooltip(() ->
-                                Collections.singletonList("Water: " + getFluidAmount() + "L / " + getCapacity() + "L"))
-                        .setPos(47, 7)
-                        .setSize(10, 54))
+                        .setProgress(() -> (float) getFluidAmount() / getCapacity()).setSynced(false, false)
+                        .dynamicTooltip(
+                                () -> Collections
+                                        .singletonList("Water: " + getFluidAmount() + "L / " + getCapacity() + "L"))
+                        .setPos(47, 7).setSize(10, 54))
                 .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));
     }
 }

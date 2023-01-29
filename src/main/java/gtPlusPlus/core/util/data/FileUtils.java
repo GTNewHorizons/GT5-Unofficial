@@ -1,7 +1,5 @@
 package gtPlusPlus.core.util.data;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -12,6 +10,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.Utils;
 
 public class FileUtils {
 
@@ -90,16 +91,15 @@ public class FileUtils {
                     return newSize > oldSize;
                 }
             }
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {}
         return false;
     }
 
     /**
-     * Reads the contents of a file line by line to a List of Strings using the default encoding for the VM.
-     * The file is always closed.
+     * Reads the contents of a file line by line to a List of Strings using the default encoding for the VM. The file is
+     * always closed.
      *
-     * @param file  the file to read, must not be {@code null}
+     * @param file the file to read, must not be {@code null}
      * @return the list of Strings representing each line in the file, never {@code null}
      * @throws IOException in case of an I/O error
      * @since 1.3

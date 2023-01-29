@@ -1,5 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
@@ -7,11 +14,6 @@ import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksAbstract {
 
@@ -38,13 +40,13 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
             // Don't register these Textures, They already exist within vanilla GT. (May not exist in 5.08)
         }
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Strong Bronze Machine Casing");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".2.name", "Vigorous Laurenium Machine Casing");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Vigorous Laurenium Machine Casing");
         TAE.registerTexture(84, new GTPP_CopiedBlockTexture(this, 6, 2));
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "");

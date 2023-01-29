@@ -1,14 +1,9 @@
 package gtPlusPlus.core.item.tool.misc;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -16,6 +11,13 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
 
 public class ConnectedBlockFinder extends BaseItemWithDamageValue {
 
@@ -28,7 +30,7 @@ public class ConnectedBlockFinder extends BaseItemWithDamageValue {
         GameRegistry.registerItem(this, getUnlocalizedName());
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(EnumChatFormatting.GRAY + "Finds connected blocks, turns them to Glass once found.");
@@ -67,17 +69,8 @@ public class ConnectedBlockFinder extends BaseItemWithDamageValue {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
 
         BlockPos mStartPoint = new BlockPos(x, y, z, world);
         Block mBlockType = world.getBlock(x, y, z);

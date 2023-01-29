@@ -34,10 +34,12 @@ public class GregtechLargeTurbinesAndHeatExchanger {
                     new GT_MTE_LargeTurbine_SCSteam(31076, "multimachine.largerscturbine", "XL Turbo SC Steam Turbine")
                             .getStackForm(1L));
         }
-        GregtechItemList.Hatch_Turbine_Rotor.set(
-                new GT_MetaTileEntity_Hatch_Turbine(30010, "hatch.turbine", "Rotor Assembly", 8).getStackForm(1L));
-        GregtechItemList.XL_HeatExchanger.set(new GregtechMetaTileEntity_Adv_HeatExchanger(
-                        31079, "multimachine.reallybigheatexchanger", "Whakawhiti Wera XL")
-                .getStackForm(1L));
+        GregtechItemList.Hatch_Turbine_Rotor
+                .set(new GT_MetaTileEntity_Hatch_Turbine(30010, "hatch.turbine", "Rotor Assembly", 8).getStackForm(1L));
+        GregtechItemList.XL_HeatExchanger.set(
+                new GregtechMetaTileEntity_Adv_HeatExchanger(
+                        31079,
+                        "multimachine.reallybigheatexchanger",
+                        "Whakawhiti Wera XL").getStackForm(1L));
     }
 }

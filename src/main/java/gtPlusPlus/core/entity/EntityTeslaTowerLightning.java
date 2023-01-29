@@ -1,12 +1,9 @@
 package gtPlusPlus.core.entity;
 
-import gtPlusPlus.api.damage.DamageTeslaTower;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityWeatherEffect;
@@ -17,12 +14,20 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
+import gtPlusPlus.api.damage.DamageTeslaTower;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.random.XSTR;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+
 public class EntityTeslaTowerLightning extends EntityWeatherEffect {
+
     /** Declares which state the lightning bolt is in. Whether it's in the air, hit the ground, etc. */
     private int lightningState;
     /** A random long that is used to change the vertex of the lightning rendered in RenderLightningBolt */
     public long boltVertex;
-    /** Determines the time before the EntityLightningBolt is destroyed. It is a random integer decremented over time. */
+    /**
+     * Determines the time before the EntityLightningBolt is destroyed. It is a random integer decremented over time.
+     */
     private int boltLivingTime;
 
     private final UUID boltID;
@@ -30,8 +35,8 @@ public class EntityTeslaTowerLightning extends EntityWeatherEffect {
 
     private final Entity boltValidDamageTarget;
 
-    public EntityTeslaTowerLightning(
-            World p_i1703_1_, double p_i1703_2_, double p_i1703_4_, double p_i1703_6_, Entity valid, UUID owner) {
+    public EntityTeslaTowerLightning(World p_i1703_1_, double p_i1703_2_, double p_i1703_4_, double p_i1703_6_,
+            Entity valid, UUID owner) {
         super(p_i1703_1_);
         Logger.INFO("Plasma Bolt - Created.");
         Random rand = new XSTR(p_i1703_1_.getSeed());
@@ -44,8 +49,7 @@ public class EntityTeslaTowerLightning extends EntityWeatherEffect {
         this.boltOwnerID = owner;
 
         // Puts fires out
-        if (!p_i1703_1_.isRemote
-                && p_i1703_1_.getGameRules().getGameRuleBooleanValue("doFireTick")
+        if (!p_i1703_1_.isRemote && p_i1703_1_.getGameRules().getGameRuleBooleanValue("doFireTick")
                 && (p_i1703_1_.difficultySetting == EnumDifficulty.NORMAL
                         || p_i1703_1_.difficultySetting == EnumDifficulty.HARD)
                 && p_i1703_1_.doChunksNearChunkExist(
@@ -139,8 +143,7 @@ public class EntityTeslaTowerLightning extends EntityWeatherEffect {
                 this.lightningState = 1;
                 this.boltVertex = rand.nextLong();
                 // Puts fires out.
-                if (!this.worldObj.isRemote
-                        && this.worldObj.getGameRules().getGameRuleBooleanValue("doFireTick")
+                if (!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("doFireTick")
                         && this.worldObj.doChunksNearChunkExist(
                                 MathHelper.floor_double(this.posX),
                                 MathHelper.floor_double(this.posY),

@@ -1,5 +1,16 @@
 package gtPlusPlus.core.block.machine;
 
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -16,19 +27,10 @@ import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.item.tool.ItemToolWrench;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
 public class Machine_ProjectTable extends BlockContainer implements ITileTooltip {
+
     @SideOnly(Side.CLIENT)
     private IIcon textureTop;
 
@@ -63,10 +65,8 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 1
-                ? this.textureTop
-                : (p_149691_1_ == 0
-                        ? this.textureBottom
+        return p_149691_1_ == 1 ? this.textureTop
+                : (p_149691_1_ == 0 ? this.textureBottom
                         : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
     }
 
@@ -83,16 +83,8 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float lx,
-            final float ly,
-            final float lz) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float lx, final float ly, final float lz) {
 
         ItemStack heldItem = null;
         if (world.isRemote) {
@@ -163,8 +155,8 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 }

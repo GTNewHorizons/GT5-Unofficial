@@ -1,12 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -16,18 +9,26 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.objects.GT_RenderedTexture;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+
 public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_FluidGenerator {
 
     private static Block sBlock_EIO;
     private static Block sBlock_RIO;
 
-    public GT_MetaTileEntity_Hatch_Reservoir(
-            final int aID, final String aName, final String aNameRegional, final int aTier) {
+    public GT_MetaTileEntity_Hatch_Reservoir(final int aID, final String aName, final String aNameRegional,
+            final int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_Reservoir(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Reservoir(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -85,8 +86,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public boolean doesHatchMeetConditionsToGenerate() {
-        Block aWater = this.getBaseMetaTileEntity()
-                .getBlockAtSide(this.getBaseMetaTileEntity().getFrontFacing());
+        Block aWater = this.getBaseMetaTileEntity().getBlockAtSide(this.getBaseMetaTileEntity().getFrontFacing());
         if (aWater != null && aWater != Blocks.air) {
             if (!this.canTankBeFilled()) {
                 return false;
@@ -94,18 +94,18 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
             setCrossModData();
             if (LoadedMods.EnderIO) {
                 if (aWater == sBlock_EIO) {
-                    return isTileValid(this.getBaseMetaTileEntity()
-                            .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
+                    return isTileValid(
+                            this.getBaseMetaTileEntity()
+                                    .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
                 }
             }
             if (LoadedMods.RemoteIO) {
                 if (aWater == sBlock_RIO
-                        && this.getBaseMetaTileEntity()
-                                        .getMetaIDAtSide(
-                                                this.getBaseMetaTileEntity().getFrontFacing())
+                        && this.getBaseMetaTileEntity().getMetaIDAtSide(this.getBaseMetaTileEntity().getFrontFacing())
                                 == 0) {
-                    return isTileValid(this.getBaseMetaTileEntity()
-                            .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
+                    return isTileValid(
+                            this.getBaseMetaTileEntity()
+                                    .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
                 }
             }
             return aWater == Blocks.water || aWater == Blocks.flowing_water;
@@ -117,10 +117,10 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
     public void generateParticles(World aWorld, String name) {}
 
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water) };
     }
 
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water) };
     }
 }

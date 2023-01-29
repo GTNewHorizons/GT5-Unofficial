@@ -1,8 +1,7 @@
 package gtPlusPlus.core.players;
 
-import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.FMLCommonHandler;
 import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -15,7 +14,11 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.common.FMLCommonHandler;
+
 public class FakeFarmer extends EntityPlayerMP {
+
     private static final UUID uuid = UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d");
 
     private static GameProfile FAKE_PROFILE = new GameProfile(uuid, "[GT_Farm_Manager]");
@@ -48,8 +51,8 @@ public class FakeFarmer extends EntityPlayerMP {
     public void addStat(final StatBase par1StatBase, final int par2) {}
 
     @Override
-    public void openGui(
-            final Object mod, final int modGuiId, final World world, final int x, final int y, final int z) {}
+    public void openGui(final Object mod, final int modGuiId, final World world, final int x, final int y,
+            final int z) {}
 
     @Override
     public boolean isEntityInvulnerable() {
@@ -74,8 +77,8 @@ public class FakeFarmer extends EntityPlayerMP {
     public void func_147100_a(final C15PacketClientSettings pkt) {}
 
     @Override
-    public boolean canPlayerEdit(
-            final int par1, final int par2, final int par3, final int par4, final ItemStack par5ItemStack) {
+    public boolean canPlayerEdit(final int par1, final int par2, final int par3, final int par4,
+            final ItemStack par5ItemStack) {
         return true;
     }
 }

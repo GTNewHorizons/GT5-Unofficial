@@ -1,33 +1,27 @@
 package gtPlusPlus.core.client.renderer.particle;
 
-import cofh.lib.util.helpers.MathHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.world.World;
+
+import cofh.lib.util.helpers.MathHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EntityDropParticleFX extends EntityFX {
 
     private int bobTimer;
 
-    public EntityDropParticleFX(
-            World world, double x, double y, double z, float particleRed, float particleGreen, float particleBlue) {
+    public EntityDropParticleFX(World world, double x, double y, double z, float particleRed, float particleGreen,
+            float particleBlue) {
 
         this(world, x, y, z, particleRed, particleGreen, particleBlue, -1);
     }
 
-    public EntityDropParticleFX(
-            World world,
-            double x,
-            double y,
-            double z,
-            float particleRed,
-            float particleGreen,
-            float particleBlue,
-            int gravityMod) {
+    public EntityDropParticleFX(World world, double x, double y, double z, float particleRed, float particleGreen,
+            float particleBlue, int gravityMod) {
 
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
         this.motionX = this.motionY = this.motionZ = 0.0D;
@@ -80,10 +74,12 @@ public class EntityDropParticleFX extends EntityFX {
                     .getMaterial();
 
             if (material.isLiquid() || material.isSolid()) {
-                double d0 = MathHelper.floor(this.posY)
-                        + 1
-                        - BlockLiquid.getLiquidHeightPercent(this.worldObj.getBlockMetadata(
-                                MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ)));
+                double d0 = MathHelper.floor(this.posY) + 1
+                        - BlockLiquid.getLiquidHeightPercent(
+                                this.worldObj.getBlockMetadata(
+                                        MathHelper.floor(this.posX),
+                                        MathHelper.floor(this.posY),
+                                        MathHelper.floor(this.posZ)));
                 if (this.posY < d0) {
                     this.setDead();
                 }
@@ -94,10 +90,12 @@ public class EntityDropParticleFX extends EntityFX {
                     .getMaterial();
 
             if (material.isLiquid() || material.isSolid()) {
-                double d0 = MathHelper.ceil(this.posY)
-                        + 1
-                        - BlockLiquid.getLiquidHeightPercent(this.worldObj.getBlockMetadata(
-                                MathHelper.ceil(this.posX), MathHelper.ceil(this.posY), MathHelper.ceil(this.posZ)));
+                double d0 = MathHelper.ceil(this.posY) + 1
+                        - BlockLiquid.getLiquidHeightPercent(
+                                this.worldObj.getBlockMetadata(
+                                        MathHelper.ceil(this.posX),
+                                        MathHelper.ceil(this.posY),
+                                        MathHelper.ceil(this.posZ)));
                 if (this.posY > d0) {
                     this.setDead();
                 }

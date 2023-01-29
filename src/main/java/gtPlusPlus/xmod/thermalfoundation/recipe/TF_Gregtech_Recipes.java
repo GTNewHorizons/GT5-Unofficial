@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.thermalfoundation.recipe;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import cofh.lib.util.helpers.ItemHelper;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -8,9 +12,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class TF_Gregtech_Recipes {
 
@@ -41,11 +42,20 @@ public class TF_Gregtech_Recipes {
 
         // Blizz Powder
         GT_Values.RA.addChemicalBathRecipe(
-                new ItemStack(Items.snowball, 4), moltenBlaze, dust_Blizz, GT_Values.NI, GT_Values.NI, null, 400, 240);
+                new ItemStack(Items.snowball, 4),
+                moltenBlaze,
+                dust_Blizz,
+                GT_Values.NI,
+                GT_Values.NI,
+                null,
+                400,
+                240);
 
         // Blizz Rod
         GT_Values.RA.addVacuumFreezerRecipe(
-                new ItemStack(Items.blaze_rod), rod_Blizz, (int) Math.max((Materials.Blaze.getMass() * 4) * 3L, 1L));
+                new ItemStack(Items.blaze_rod),
+                rod_Blizz,
+                (int) Math.max((Materials.Blaze.getMass() * 4) * 3L, 1L));
         GT_ModHandler.addPulverisationRecipe(rod_Blizz, dust_Blizz3, new ItemStack(Items.snowball, 1), 50, false);
 
         ItemStack dustCoal = ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 1);
@@ -57,7 +67,7 @@ public class TF_Gregtech_Recipes {
         ItemStack dustBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1);
         ItemStack dustNiter = ItemUtils.getItemStackOfAmountFromOreDict("dustNiter", 1);
 
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] {dustCoal, dustSulfur, dustRedstone, dustBlaze})) {
+        if (ItemUtils.checkForInvalidItems(new ItemStack[] { dustCoal, dustSulfur, dustRedstone, dustBlaze })) {
             GT_Values.RA.addMixerRecipe(
                     dustCoal,
                     dustSulfur,
@@ -70,7 +80,7 @@ public class TF_Gregtech_Recipes {
                     120);
         }
 
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] {dustSaltpeter, dustSnow, dustRedstone, dustBlizz})) {
+        if (ItemUtils.checkForInvalidItems(new ItemStack[] { dustSaltpeter, dustSnow, dustRedstone, dustBlizz })) {
             GT_Values.RA.addMixerRecipe(
                     dustSaltpeter,
                     dustSnow,
@@ -83,7 +93,7 @@ public class TF_Gregtech_Recipes {
                     120);
         }
 
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] {dustNiter, dustSnow, dustRedstone, dustBlizz})) {
+        if (ItemUtils.checkForInvalidItems(new ItemStack[] { dustNiter, dustSnow, dustRedstone, dustBlizz })) {
             GT_Values.RA.addMixerRecipe(
                     dustNiter,
                     dustSnow,

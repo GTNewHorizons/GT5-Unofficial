@@ -1,12 +1,15 @@
 package gtPlusPlus.core.item.base;
 
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import gtPlusPlus.core.lib.CORE;
+
 public class BaseItemWithDamageValue extends Item {
+
     public BaseItemWithDamageValue(final String unlocalizedName) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(CORE.MODID + ":" + unlocalizedName);
@@ -19,7 +22,7 @@ public class BaseItemWithDamageValue extends Item {
         super.setDamage(stack, damage);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         super.addInformation(stack, aPlayer, list, bool);

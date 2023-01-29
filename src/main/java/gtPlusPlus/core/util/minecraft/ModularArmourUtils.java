@@ -1,11 +1,12 @@
 package gtPlusPlus.core.util.minecraft;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import baubles.api.BaubleType;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ModularArmourUtils {
 
@@ -18,12 +19,14 @@ public class ModularArmourUtils {
     }
 
     public static enum Modifiers {
+
         BOOST_HP("skill.hpboost"),
         BOOST_DEF("skill.defenceboost"),
         BOOST_SPEED("skill.speedboost"),
         BOOST_MINING("skill.miningboost"),
         BOOST_DAMAGE("skill.damageboost"),
         BOOST_HOLY("skill.holyboost");
+
         private String MODIFIER_NAME;
 
         private Modifiers(final String mModifier) {
@@ -43,9 +46,11 @@ public class ModularArmourUtils {
     }
 
     public static enum BT {
+
         TYPE_AMULET(BaubleType.AMULET, 0),
         TYPE_RING(BaubleType.RING, 1),
         TYPE_BELT(BaubleType.BELT, 2);
+
         private final BaubleType mType;
         private final int mID;
         private final String mBaubleType;

@@ -2,6 +2,10 @@ package gtPlusPlus.xmod.railcraft;
 
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -15,9 +19,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class HANDLER_Railcraft {
 
@@ -26,38 +27,57 @@ public class HANDLER_Railcraft {
 
         // Register Custom Coal Coke
         ModItems.itemCoalCoke = new BaseItemBurnable(
-                        "itemCoalCoke", "Coking Coal", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0)
-                .setTextureName(CORE.MODID + ":burnables/itemCoalCoke");
+                "itemCoalCoke",
+                "Coking Coal",
+                tabMisc,
+                64,
+                0,
+                "Used for metallurgy.",
+                "fuelCoke",
+                3200,
+                0).setTextureName(CORE.MODID + ":burnables/itemCoalCoke");
 
         // Add in things that once existed in 1.5.2
         ModItems.itemCactusCharcoal = new BaseItemBurnable(
-                        "itemCactusCharcoal",
-                        "Cactus Charcoal",
-                        tabMisc,
-                        64,
-                        0,
-                        "Used for smelting.",
-                        "fuelCactusCharcoal",
-                        400,
-                        0)
-                .setTextureName(CORE.MODID + ":burnables/itemCactusCharcoal");
+                "itemCactusCharcoal",
+                "Cactus Charcoal",
+                tabMisc,
+                64,
+                0,
+                "Used for smelting.",
+                "fuelCactusCharcoal",
+                400,
+                0).setTextureName(CORE.MODID + ":burnables/itemCactusCharcoal");
         ModItems.itemSugarCharcoal = new BaseItemBurnable(
-                        "itemSugarCharcoal",
-                        "Sugar Charcoal",
-                        tabMisc,
-                        64,
-                        0,
-                        "Used for smelting.",
-                        "fuelSugarCharcoal",
-                        400,
-                        0)
-                .setTextureName(CORE.MODID + ":burnables/itemSugarCharcoal");
+                "itemSugarCharcoal",
+                "Sugar Charcoal",
+                tabMisc,
+                64,
+                0,
+                "Used for smelting.",
+                "fuelSugarCharcoal",
+                400,
+                0).setTextureName(CORE.MODID + ":burnables/itemSugarCharcoal");
         ModItems.itemCactusCoke = new BaseItemBurnable(
-                        "itemCactusCoke", "Cactus Coke", tabMisc, 64, 0, "Used for smelting.", "fuelCactusCoke", 800, 0)
-                .setTextureName(CORE.MODID + ":burnables/itemCactusCoke");
+                "itemCactusCoke",
+                "Cactus Coke",
+                tabMisc,
+                64,
+                0,
+                "Used for smelting.",
+                "fuelCactusCoke",
+                800,
+                0).setTextureName(CORE.MODID + ":burnables/itemCactusCoke");
         ModItems.itemSugarCoke = new BaseItemBurnable(
-                        "itemSugarCoke", "Sugar Coke", tabMisc, 64, 0, "Used for smelting.", "fuelSugarCoke", 800, 0)
-                .setTextureName(CORE.MODID + ":burnables/itemSugarCoke");
+                "itemSugarCoke",
+                "Sugar Coke",
+                tabMisc,
+                64,
+                0,
+                "Used for smelting.",
+                "fuelSugarCoke",
+                800,
+                0).setTextureName(CORE.MODID + ":burnables/itemSugarCoke");
 
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal), "itemCharcoalCactus");
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(ModItems.itemCactusCoke), "itemCokeCactus");
@@ -76,14 +96,12 @@ public class HANDLER_Railcraft {
     }
 
     private static void generateCokeOvenRecipes() {
-        ItemStack[] aInputs1 =
-                new ItemStack[] {ItemUtils.getSimpleStack(Blocks.cactus), ItemUtils.getSimpleStack(Items.reeds)};
-        ItemStack[] aInputs2 = new ItemStack[] {
-            ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal), ItemUtils.getSimpleStack(ModItems.itemSugarCharcoal)
-        };
-        ItemStack[] aOutputs = new ItemStack[] {
-            ItemUtils.getSimpleStack(ModItems.itemCactusCoke), ItemUtils.getSimpleStack(ModItems.itemSugarCoke)
-        };
+        ItemStack[] aInputs1 = new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cactus),
+                ItemUtils.getSimpleStack(Items.reeds) };
+        ItemStack[] aInputs2 = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal),
+                ItemUtils.getSimpleStack(ModItems.itemSugarCharcoal) };
+        ItemStack[] aOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCoke),
+                ItemUtils.getSimpleStack(ModItems.itemSugarCoke) };
         for (int i = 0; i < aOutputs.length; i++) {
             // Recipes for the Charcoals and Cokes, outputting either Creosote or Charcoal Byproducts depending on the
             // fluid input
@@ -170,11 +188,21 @@ public class HANDLER_Railcraft {
         if (LoadedMods.Railcraft) {
             for (int i = 0; i < aOutputs.length; i++) {
                 RailcraftUtils.addCokeOvenRecipe(
-                        aInputs1[i], true, true, aInputs2[i], FluidUtils.getFluidStack("creosote", 30), 500);
+                        aInputs1[i],
+                        true,
+                        true,
+                        aInputs2[i],
+                        FluidUtils.getFluidStack("creosote", 30),
+                        500);
             }
             for (int i = 0; i < aOutputs.length; i++) {
                 RailcraftUtils.addCokeOvenRecipe(
-                        aInputs2[i], true, true, aOutputs[i], FluidUtils.getFluidStack("creosote", 30), 500);
+                        aInputs2[i],
+                        true,
+                        true,
+                        aOutputs[i],
+                        FluidUtils.getFluidStack("creosote", 30),
+                        500);
             }
 
             if (LoadedMods.DreamCraft) {

@@ -1,10 +1,11 @@
 package gtPlusPlus.core.item.base.ore;
 
+import net.minecraft.item.Item;
+
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import net.minecraft.item.Item;
 
 public class BaseItemMilledOre extends BaseOreComponent {
 

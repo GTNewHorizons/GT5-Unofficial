@@ -3,6 +3,7 @@ package gtPlusPlus.core.gui.beta;
 import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
 
 public class MU_GuiId {
+
     private final int id;
     private final Gui_Types MU_GuiType;
     private final Class<? extends IGuiManagerMiscUtils> guiHandlerClass;

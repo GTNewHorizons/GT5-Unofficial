@@ -1,7 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -15,10 +21,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.GTPP_MTE_TieredMachineBlock;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 
 public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock implements IAddUIWidgets {
 
@@ -30,18 +32,18 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
     private long mStored = 0L;
     private long mMax = 0L;
 
-    public GT_MetaTileEntity_BasicBreaker(
-            int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
+    public GT_MetaTileEntity_BasicBreaker(int aID, String aName, String aNameRegional, int aTier, String aDescription,
+            int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription, new ITexture[0]);
     }
 
-    public GT_MetaTileEntity_BasicBreaker(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
+    public GT_MetaTileEntity_BasicBreaker(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_BasicBreaker(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
+    public GT_MetaTileEntity_BasicBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+            int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
@@ -49,13 +51,21 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
         final String[] desc = new String[6];
         int tTier = this.mTier;
         desc[0] = "" + EnumChatFormatting.BOLD + "16 Fuse Slots";
-        desc[1] = "Per each fuse, you may insert " + EnumChatFormatting.YELLOW + (GT_Values.V[tTier])
-                + EnumChatFormatting.GRAY + " EU/t";
-        desc[2] = "However this " + EnumChatFormatting.ITALIC + EnumChatFormatting.RED + "MUST"
-                + EnumChatFormatting.GRAY + " be in a single Amp";
+        desc[1] = "Per each fuse, you may insert " + EnumChatFormatting.YELLOW
+                + (GT_Values.V[tTier])
+                + EnumChatFormatting.GRAY
+                + " EU/t";
+        desc[2] = "However this " + EnumChatFormatting.ITALIC
+                + EnumChatFormatting.RED
+                + "MUST"
+                + EnumChatFormatting.GRAY
+                + " be in a single Amp";
         desc[3] = "This machine can accept upto a single amp of " + GT_Values.VN[Math.min(tTier + 2, 15)]
                 + " as a result";
-        desc[4] = "Breaker Loss: " + EnumChatFormatting.RED + "" + (GT_Values.V[tTier] / 16) + EnumChatFormatting.GRAY
+        desc[4] = "Breaker Loss: " + EnumChatFormatting.RED
+                + ""
+                + (GT_Values.V[tTier] / 16)
+                + EnumChatFormatting.GRAY
                 + " EU/t";
         desc[5] = CORE.GT_Tooltip;
         return desc;
@@ -65,37 +75,30 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
         ITexture[][][] rTextures = new ITexture[2][17][];
 
         for (byte i = -1; i < 16; ++i) {
-            rTextures[0][i + 1] = new ITexture[] {
-                BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                this.mInventory.length > 4
-                        ? BlockIcons.OVERLAYS_ENERGY_IN_MULTI[Math.min(12, mTier)]
-                        : BlockIcons.OVERLAYS_ENERGY_IN[Math.min(12, mTier)]
-            };
+            rTextures[0][i + 1] = new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
+                    this.mInventory.length > 4 ? BlockIcons.OVERLAYS_ENERGY_IN_MULTI[Math.min(12, mTier)]
+                            : BlockIcons.OVERLAYS_ENERGY_IN[Math.min(12, mTier)] };
 
-            rTextures[1][i + 1] = new ITexture[] {
-                BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                this.mInventory.length > 4
-                        ? BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
-                        : BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]
-            };
+            rTextures[1][i + 1] = new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
+                    this.mInventory.length > 4 ? BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
+                            : BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
         }
 
         return rTextures;
     }
 
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         return this.mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_BasicBreaker(
-                this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mInventory.length);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures,
+                this.mInventory.length);
     }
 
     public boolean isSimpleMachine() {
@@ -198,23 +201,14 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            /*this.mCharge = aBaseMetaTileEntity.getStoredEU() / 2L > aBaseMetaTileEntity.getEUCapacity() / 3L;
-            this.mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3L;
-            this.mBatteryCount = 0;
-            this.mChargeableCount = 0;
-            ItemStack[] arg3 = this.mInventory;
-            int arg4 = arg3.length;
-
-            for (int arg5 = 0; arg5 < arg4; ++arg5) {
-            	ItemStack tStack = arg3[arg5];
-            	if (GT_ModHandler.isElectricItem(tStack, this.mTier)) {
-            		if (GT_ModHandler.isChargerItem(tStack)) {
-            			++this.mBatteryCount;
-            		}
-
-            		++this.mChargeableCount;
-            	}
-            }*/
+            /*
+             * this.mCharge = aBaseMetaTileEntity.getStoredEU() / 2L > aBaseMetaTileEntity.getEUCapacity() / 3L;
+             * this.mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3L;
+             * this.mBatteryCount = 0; this.mChargeableCount = 0; ItemStack[] arg3 = this.mInventory; int arg4 =
+             * arg3.length; for (int arg5 = 0; arg5 < arg4; ++arg5) { ItemStack tStack = arg3[arg5]; if
+             * (GT_ModHandler.isElectricItem(tStack, this.mTier)) { if (GT_ModHandler.isChargerItem(tStack)) {
+             * ++this.mBatteryCount; } ++this.mChargeableCount; } }
+             */
         }
     }
 
@@ -274,11 +268,11 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
             tStored = Long.MAX_VALUE;
         }
 
-        return new long[] {tStored, tScale};
+        return new long[] { tStored, tScale };
     }
 
     public String[] getInfoData() {
-        return new String[] {"Tile Type: " + this.getTileEntityBaseType()};
+        return new String[] { "Tile Type: " + this.getTileEntityBaseType() };
     }
 
     public boolean isGivingInformation() {

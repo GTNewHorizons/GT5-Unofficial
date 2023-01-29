@@ -1,17 +1,20 @@
 package gtPlusPlus.core.util.minecraft.network;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.preloader.DevHelper;
 import java.lang.reflect.Method;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.server.management.PlayerManager;
 import net.minecraft.world.WorldServer;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.preloader.DevHelper;
+
 @SuppressWarnings("unchecked")
 public class PacketDispatcher {
+
     private static final Class playerInstanceClass;
     private static final Method getOrCreateChunkWatcher;
     private static final Method sendToAllPlayersWatchingChunk;
@@ -38,15 +41,18 @@ public class PacketDispatcher {
 
     public static void sendToWatchers(CustomPacket packet, WorldServer world, int worldX, int worldZ) {
         try {
-            Object playerInstance =
-                    getOrCreateChunkWatcher.invoke(world.getPlayerManager(), worldX >> 4, worldZ >> 4, false);
+            Object playerInstance = getOrCreateChunkWatcher
+                    .invoke(world.getPlayerManager(), worldX >> 4, worldZ >> 4, false);
             if (playerInstance != null) {
                 sendToAllPlayersWatchingChunk.invoke(playerInstance, packet.getPacket());
             }
 
         } catch (Exception var5) {
-            Logger.ERROR("Reflection Failure in PacketDispatcher.sendToWatchers() {0} {1}" + 20 + var5
-                    + new Object[] {getOrCreateChunkWatcher.getName() + sendToAllPlayersWatchingChunk.getName()});
+            Logger.ERROR(
+                    "Reflection Failure in PacketDispatcher.sendToWatchers() {0} {1}" + 20
+                            + var5
+                            + new Object[] {
+                                    getOrCreateChunkWatcher.getName() + sendToAllPlayersWatchingChunk.getName() });
             throw new RuntimeException(var5);
         }
     }
@@ -59,13 +65,17 @@ public class PacketDispatcher {
 
             try {
                 a = DevHelper.getForgeMethod(
-                        PlayerManager.class, "getOrCreateChunkWatcher", int.class, int.class, boolean.class);
+                        PlayerManager.class,
+                        "getOrCreateChunkWatcher",
+                        int.class,
+                        int.class,
+                        boolean.class);
             } catch (Throwable t) {
                 a = ReflectionHelper.findMethod(
                         playerInstanceClass,
                         (Object) null,
-                        new String[] {"func_72690_a", "getOrCreateChunkWatcher"},
-                        new Class[] {Integer.TYPE, Integer.TYPE, Boolean.TYPE});
+                        new String[] { "func_72690_a", "getOrCreateChunkWatcher" },
+                        new Class[] { Integer.TYPE, Integer.TYPE, Boolean.TYPE });
             }
             try {
                 b = DevHelper.getForgeMethod(PlayerManager.class, "sendToAllPlayersWatchingChunk", Packet.class);
@@ -73,8 +83,8 @@ public class PacketDispatcher {
                 b = ReflectionHelper.findMethod(
                         playerInstanceClass,
                         (Object) null,
-                        new String[] {"func_151251_a", "sendToAllPlayersWatchingChunk"},
-                        new Class[] {Packet.class});
+                        new String[] { "func_151251_a", "sendToAllPlayersWatchingChunk" },
+                        new Class[] { Packet.class });
             }
 
             getOrCreateChunkWatcher = a;

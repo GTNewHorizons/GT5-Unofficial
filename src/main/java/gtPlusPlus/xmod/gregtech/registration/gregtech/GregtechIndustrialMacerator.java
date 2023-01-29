@@ -18,8 +18,10 @@ public class GregtechIndustrialMacerator {
 
     private static void run1() {
         // Industrial Maceration Stack Multiblock
-        GregtechItemList.Industrial_MacerationStack.set(new GregtechMetaTileEntity_IndustrialMacerator(
-                        797, "industrialmacerator.controller.tier.single", "Maceration Stack Controller")
-                .getStackForm(1L));
+        GregtechItemList.Industrial_MacerationStack.set(
+                new GregtechMetaTileEntity_IndustrialMacerator(
+                        797,
+                        "industrialmacerator.controller.tier.single",
+                        "Maceration Stack Controller").getStackForm(1L));
     }
 }

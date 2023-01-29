@@ -1,18 +1,21 @@
 package gtPlusPlus.core.item.tool.misc;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
+import gtPlusPlus.core.lib.CORE;
+
 public class SandstoneHammer extends BaseItemWithDamageValue {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see net.minecraft.item.Item#getColorFromItemStack(net.minecraft.item.ItemStack, int)
      */
     @Override
@@ -29,7 +32,7 @@ public class SandstoneHammer extends BaseItemWithDamageValue {
         this.setMaxDamage(2500);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(EnumChatFormatting.GRAY + "Allows you to craft sand from cobble, or sandstone from sand.");

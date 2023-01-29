@@ -6,10 +6,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -24,14 +30,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
-public class GregtechMetaTileEntity_IndustrialCentrifuge
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCentrifuge>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialCentrifuge extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCentrifuge> implements ISurvivalConstructable {
 
     private boolean mIsAnimated;
     private static final CustomIcon frontFaceActive = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
@@ -63,24 +64,15 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Centrifuge")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Centrifuge")
                 .addInfo("125% faster than using single block machines of the same voltage")
-                .addInfo("Disable animations with a screwdriver")
-                .addInfo("Only uses 90% of the EU/t normally required")
-                .addInfo("Processes six items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center")
-                .addCasingInfo("Centrifuge Casings", 10)
-                .addInputBus("Any Casing except front", 1)
-                .addOutputBus("Any Casing except front", 1)
-                .addInputHatch("Any Casing except front", 1)
-                .addOutputHatch("Any Casing except front", 1)
-                .addEnergyHatch("Any Casing except front", 1)
-                .addMaintenanceHatch("Any Casing except front", 1)
-                .addMufflerHatch("Any Casing except front", 1)
+                .addInfo("Disable animations with a screwdriver").addInfo("Only uses 90% of the EU/t normally required")
+                .addInfo("Processes six items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
+                .addCasingInfo("Centrifuge Casings", 10).addInputBus("Any Casing except front", 1)
+                .addOutputBus("Any Casing except front", 1).addInputHatch("Any Casing except front", 1)
+                .addOutputHatch("Any Casing except front", 1).addEnergyHatch("Any Casing except front", 1)
+                .addMaintenanceHatch("Any Casing except front", 1).addMufflerHatch("Any Casing except front", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -89,18 +81,16 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialCentrifuge> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCentrifuge>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialCentrifuge.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 0))))
                     .build();
         }

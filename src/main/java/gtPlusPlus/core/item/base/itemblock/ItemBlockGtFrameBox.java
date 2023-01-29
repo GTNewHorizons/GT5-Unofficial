@@ -1,12 +1,7 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import gtPlusPlus.core.block.base.BlockBaseModular;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +9,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.block.base.BlockBaseModular;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class ItemBlockGtFrameBox extends ItemBlock {
 
@@ -79,11 +81,7 @@ public class ItemBlockGtFrameBox extends ItemBlock {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
 
         if (this.sRadiation > 0) {

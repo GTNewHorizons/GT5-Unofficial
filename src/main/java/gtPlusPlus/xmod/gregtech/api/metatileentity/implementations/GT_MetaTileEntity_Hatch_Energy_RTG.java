@@ -2,8 +2,16 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import java.util.HashMap;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,23 +22,22 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.HashMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_Energy {
 
-    public GT_MetaTileEntity_Hatch_Energy_RTG(
-            int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, new String[] {
-            "Energy Injector for Multiblocks", "Accepts up to 2 Amps"
-        });
+    public GT_MetaTileEntity_Hatch_Energy_RTG(int aID, String aName, String aNameRegional, int aTier,
+            int aInvSlotCount) {
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                aInvSlotCount,
+                new String[] { "Energy Injector for Multiblocks", "Accepts up to 2 Amps" });
     }
 
-    public GT_MetaTileEntity_Hatch_Energy_RTG(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Energy_RTG(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -45,18 +52,14 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {
-            aBaseTexture,
-            TexturesGtBlock.getTextureFromIcon(TexturesGtBlock.Overlay_Hatch_RTG_On, new short[] {220, 220, 220, 0})
-        };
+        return new ITexture[] { aBaseTexture, TexturesGtBlock
+                .getTextureFromIcon(TexturesGtBlock.Overlay_Hatch_RTG_On, new short[] { 220, 220, 220, 0 }) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {
-            aBaseTexture,
-            TexturesGtBlock.getTextureFromIcon(TexturesGtBlock.Overlay_Hatch_RTG_Off, new short[] {220, 220, 220, 0})
-        };
+        return new ITexture[] { aBaseTexture, TexturesGtBlock
+                .getTextureFromIcon(TexturesGtBlock.Overlay_Hatch_RTG_Off, new short[] { 220, 220, 220, 0 }) };
     }
 
     @Override
@@ -139,8 +142,8 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
         public Dat(ItemStack aStack) {
             mStack = aStack;
             mNBT = (aStack.getTagCompound() != null ? aStack.getTagCompound() : new NBTTagCompound());
-            mUniqueDataTag = "" + Item.getIdFromItem(aStack.getItem()) + "" + aStack.getItemDamage() + "" + 1 + ""
-                    + mNBT.getId();
+            mUniqueDataTag = "" + Item
+                    .getIdFromItem(aStack.getItem()) + "" + aStack.getItemDamage() + "" + 1 + "" + mNBT.getId();
         }
 
         public int getKey() {
@@ -165,8 +168,9 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
         mFuelValueMap.put(aKey, aFuelValue);
         mFuelTypeMap.put(aKey, aDat.getKey());
         mFuelTypeMapReverse.put(aDat.getKey(), aKey);
-        Logger.INFO("RTG Hatch: Registered Fuel Pellet: " + ItemUtils.getItemName(aTemp) + ", Fuel Value: " + aFuelValue
-                + ", Key: " + aKey + ", Key2: " + aDat.getKey());
+        Logger.INFO(
+                "RTG Hatch: Registered Fuel Pellet: " + ItemUtils.getItemName(
+                        aTemp) + ", Fuel Value: " + aFuelValue + ", Key: " + aKey + ", Key2: " + aDat.getKey());
         return true;
     }
 

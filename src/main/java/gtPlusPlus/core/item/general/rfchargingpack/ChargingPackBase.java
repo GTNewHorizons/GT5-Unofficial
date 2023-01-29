@@ -1,13 +1,15 @@
 package gtPlusPlus.core.item.general.rfchargingpack;
 
-import cofh.api.energy.ItemEnergyContainer;
-import gtPlusPlus.core.util.math.MathUtils;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import cofh.api.energy.ItemEnergyContainer;
+import gtPlusPlus.core.util.math.MathUtils;
 
 public class ChargingPackBase extends ItemEnergyContainer {
 
@@ -60,7 +62,9 @@ public class ChargingPackBase extends ItemEnergyContainer {
                                         mCurrent = current.getEnergyStored(invStack);
                                         if (mCurrent + mTransLimit <= mMaxStorage) {
                                             current.extractEnergy(
-                                                    aStack, current.receiveEnergy(invStack, mTransLimit, false), false);
+                                                    aStack,
+                                                    current.receiveEnergy(invStack, mTransLimit, false),
+                                                    false);
                                         }
                                     }
                                 }
@@ -75,13 +79,29 @@ public class ChargingPackBase extends ItemEnergyContainer {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
         list.add(EnumChatFormatting.RED + "RF Information");
-        list.add(EnumChatFormatting.GRAY + "Extraction Rate: [" + EnumChatFormatting.RED + this.maxExtract
-                + EnumChatFormatting.GRAY + "Rf/t]" + " Insert Rate: [" + EnumChatFormatting.RED + this.maxReceive
-                + EnumChatFormatting.GRAY + "Rf/t]");
-        list.add(EnumChatFormatting.GRAY + "Current Charge: [" + EnumChatFormatting.RED + this.getEnergyStored(stack)
-                + EnumChatFormatting.GRAY + "Rf / " + this.getMaxEnergyStored(stack) + "Rf] " + EnumChatFormatting.RED
-                + MathUtils.findPercentage(this.getEnergyStored(stack), this.getMaxEnergyStored(stack))
-                + EnumChatFormatting.GRAY + "%");
+        list.add(
+                EnumChatFormatting.GRAY + "Extraction Rate: ["
+                        + EnumChatFormatting.RED
+                        + this.maxExtract
+                        + EnumChatFormatting.GRAY
+                        + "Rf/t]"
+                        + " Insert Rate: ["
+                        + EnumChatFormatting.RED
+                        + this.maxReceive
+                        + EnumChatFormatting.GRAY
+                        + "Rf/t]");
+        list.add(
+                EnumChatFormatting.GRAY + "Current Charge: ["
+                        + EnumChatFormatting.RED
+                        + this.getEnergyStored(stack)
+                        + EnumChatFormatting.GRAY
+                        + "Rf / "
+                        + this.getMaxEnergyStored(stack)
+                        + "Rf] "
+                        + EnumChatFormatting.RED
+                        + MathUtils.findPercentage(this.getEnergyStored(stack), this.getMaxEnergyStored(stack))
+                        + EnumChatFormatting.GRAY
+                        + "%");
         super.addInformation(stack, p_77624_2_, list, p_77624_4_);
     }
 }

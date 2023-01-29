@@ -1,10 +1,7 @@
 package gtPlusPlus.core.handler.render;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
 import java.util.Collection;
+
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -13,14 +10,19 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
+
 public class CapeHandler extends RenderPlayer {
-    private final ResourceLocation[] mCapes = {
-        new ResourceLocation(CORE.MODID + ":textures/TesterCape.png"),
-        new ResourceLocation(CORE.MODID + ":textures/Draknyte1.png"),
-        new ResourceLocation("gregtech:textures/GregoriusCape.png")
-    };
+
+    private final ResourceLocation[] mCapes = { new ResourceLocation(CORE.MODID + ":textures/TesterCape.png"),
+            new ResourceLocation(CORE.MODID + ":textures/Draknyte1.png"),
+            new ResourceLocation("gregtech:textures/GregoriusCape.png") };
     private final Collection<String> mCapeList;
 
     public CapeHandler(final Collection<String> aCapeList) {
@@ -38,8 +40,7 @@ public class CapeHandler extends RenderPlayer {
         if (aPlayer.isInvisible()) {
             return;
         }
-        if (GT_Utility.getPotion(
-                aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
+        if (GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
             return;
         }
         try {
@@ -60,15 +61,15 @@ public class CapeHandler extends RenderPlayer {
                 this.bindTexture(tResource);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-                final double d0 =
-                        (aPlayer.field_71091_bM + ((aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks))
-                                - (aPlayer.prevPosX + ((aPlayer.posX - aPlayer.prevPosX) * aPartialTicks));
-                final double d1 =
-                        (aPlayer.field_71096_bN + ((aPlayer.field_71095_bQ - aPlayer.field_71096_bN) * aPartialTicks))
-                                - (aPlayer.prevPosY + ((aPlayer.posY - aPlayer.prevPosY) * aPartialTicks));
-                final double d2 =
-                        (aPlayer.field_71097_bO + ((aPlayer.field_71085_bR - aPlayer.field_71097_bO) * aPartialTicks))
-                                - (aPlayer.prevPosZ + ((aPlayer.posZ - aPlayer.prevPosZ) * aPartialTicks));
+                final double d0 = (aPlayer.field_71091_bM
+                        + ((aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks))
+                        - (aPlayer.prevPosX + ((aPlayer.posX - aPlayer.prevPosX) * aPartialTicks));
+                final double d1 = (aPlayer.field_71096_bN
+                        + ((aPlayer.field_71095_bQ - aPlayer.field_71096_bN) * aPartialTicks))
+                        - (aPlayer.prevPosY + ((aPlayer.posY - aPlayer.prevPosY) * aPartialTicks));
+                final double d2 = (aPlayer.field_71097_bO
+                        + ((aPlayer.field_71085_bR - aPlayer.field_71097_bO) * aPartialTicks))
+                        - (aPlayer.prevPosZ + ((aPlayer.posZ - aPlayer.prevPosZ) * aPartialTicks));
                 final float f6 = aPlayer.prevRenderYawOffset
                         + ((aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks);
                 final double d3 = MathHelper.sin((f6 * CORE.PI) / 180.0F);
@@ -86,9 +87,10 @@ public class CapeHandler extends RenderPlayer {
                     f8 = 0.0F;
                 }
                 final float f10 = aPlayer.prevCameraYaw + ((aPlayer.cameraYaw - aPlayer.prevCameraYaw) * aPartialTicks);
-                f7 += MathHelper.sin((aPlayer.prevDistanceWalkedModified
-                                        + ((aPlayer.distanceWalkedModified - aPlayer.prevDistanceWalkedModified)
-                                                * aPartialTicks))
+                f7 += MathHelper.sin(
+                        (aPlayer.prevDistanceWalkedModified
+                                + ((aPlayer.distanceWalkedModified - aPlayer.prevDistanceWalkedModified)
+                                        * aPartialTicks))
                                 * 6.0F)
                         * 32.0F
                         * f10;

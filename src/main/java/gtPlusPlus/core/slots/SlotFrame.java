@@ -1,9 +1,10 @@
 package gtPlusPlus.core.slots;
 
-import forestry.api.apiculture.IHiveFrame;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import forestry.api.apiculture.IHiveFrame;
 
 public class SlotFrame extends Slot {
 

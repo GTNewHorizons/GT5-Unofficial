@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.growthcraft.fishtrap;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
@@ -8,13 +13,10 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.item.ItemStack;
 
 public class FishTrapHandler {
 
-    private static final String[] fishTypes = {"fish", "junk", "treasure"};
+    private static final String[] fishTypes = { "fish", "junk", "treasure" };
     private static Object mFishingRegistry;
     private static Growthcraft_Old mHandler;
 
@@ -35,12 +37,8 @@ public class FishTrapHandler {
             if (mFishingRegistry != null) {
                 return mFishingRegistry;
             }
-        } catch (NoSuchMethodException
-                | SecurityException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException e) {
-        }
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {}
         return null;
     }
 
@@ -70,38 +68,29 @@ public class FishTrapHandler {
                 return;
             }
         } /*
-          else if (LoadedMods.getModVersion("Growthcraft").contains("2.7.2")){
-          	if (lootType.equals(fishTypes[0])){
-          		Growthcraft_New.addTrapFish(lootStack, lootChance);
-          		Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps.");
-          	}
-          	else if (lootType.equals(fishTypes[1])){
-          		Growthcraft_New.addTrapJunk(lootStack, lootChance);
-          		Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Junk for Growthcraft Fishtraps.");
-          	}
-          	else if (lootType.equals(fishTypes[2])){
-          		Growthcraft_New.addTrapTreasure(lootStack, lootChance);
-          		Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps.");
-          	}
-          	else {
-          		return;
-          	}
-          }*/ else {
-            Logger.INFO("Extra Fish loot for Growthcraft Fishtraps disabled. Found V."
-                    + LoadedMods.getModVersion("Growthcraft"));
+           * else if (LoadedMods.getModVersion("Growthcraft").contains("2.7.2")){ if (lootType.equals(fishTypes[0])){
+           * Growthcraft_New.addTrapFish(lootStack, lootChance);
+           * Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps."); } else
+           * if (lootType.equals(fishTypes[1])){ Growthcraft_New.addTrapJunk(lootStack, lootChance);
+           * Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Junk for Growthcraft Fishtraps."); } else if
+           * (lootType.equals(fishTypes[2])){ Growthcraft_New.addTrapTreasure(lootStack, lootChance);
+           * Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps."); } else
+           * { return; } }
+           */ else {
+            Logger.INFO(
+                    "Extra Fish loot for Growthcraft Fishtraps disabled. Found V."
+                            + LoadedMods.getModVersion("Growthcraft"));
         }
     }
+
     // FishTrapHandler.pamsHarvestCraftCompat();
     static final String prefix = "food";
     static final String suffix = "raw";
     static final String seaweed = "cropSeaweed";
     static final String greenheartFish = "foodGreenheartfish";
-    private static final String[] harvestcraftFish = {
-        "Anchovy", "Bass", "Calamari", "Carp", "Catfish", "Charr", "Clam", "Crab", "Crayfish", "Eel", "Frog", "Grouper",
-                "Herring",
-        "Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna",
-                "Turtle", "Walley"
-    };
+    private static final String[] harvestcraftFish = { "Anchovy", "Bass", "Calamari", "Carp", "Catfish", "Charr",
+            "Clam", "Crab", "Crayfish", "Eel", "Frog", "Grouper", "Herring", "Jellyfish", "Mudfish", "Octopus", "Perch",
+            "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walley" };
 
     public static void pamsHarvestCraftCompat() {
         for (int i = 0; i < harvestcraftFish.length; i++) {
@@ -217,11 +206,10 @@ public class FishTrapHandler {
             if (CORE.GTNH) {
                 CORE.RA.addFluidExtractionRecipe(input, FluidUtils.getFluidStack("fishoil", 50), 16, 4);
             } else {
-                CORE.RA.addFluidExtractionRecipe(
-                        input,
-                        FluidUtils.getFluidStack("fishoil", 4),
-                        16,
-                        4); // 4eu/t  total eu used = 64 so time = 64/4
+                CORE.RA.addFluidExtractionRecipe(input, FluidUtils.getFluidStack("fishoil", 4), 16, 4); // 4eu/t total
+                                                                                                        // eu used = 64
+                                                                                                        // so time =
+                                                                                                        // 64/4
             }
         }
     }

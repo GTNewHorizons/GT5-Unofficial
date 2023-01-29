@@ -1,16 +1,8 @@
 package gtPlusPlus.xmod.bop.blocks.base;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -26,7 +18,18 @@ import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 public class SaplingBase extends BlockSapling {
+
     protected String[] saplingTypes = new String[] {};
     protected IIcon[] saplingTextures = new IIcon[] {};
 
@@ -56,8 +59,9 @@ public class SaplingBase extends BlockSapling {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int someInt, int meta) {
-        /* p_149691_2_ &= 7;
-        return saplingTextures[MathHelper.clamp_int(p_149691_2_, 0, 5)];*/
+        /*
+         * p_149691_2_ &= 7; return saplingTextures[MathHelper.clamp_int(p_149691_2_, 0, 5)];
+         */
         // return this.saplingTextures[meta % this.saplingTextures.length];
         try {
             return this.saplingTextures[meta];
@@ -177,8 +181,8 @@ public class SaplingBase extends BlockSapling {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iIcon) {
         for (int i = 0; i < saplingTextures.length; ++i) {
-            saplingTextures[i] =
-                    iIcon.registerIcon(CORE.MODID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
+            saplingTextures[i] = iIcon
+                    .registerIcon(CORE.MODID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
         }
     }
 }

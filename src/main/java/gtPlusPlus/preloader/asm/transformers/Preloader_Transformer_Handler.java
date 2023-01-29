@@ -2,6 +2,15 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static gtPlusPlus.preloader.asm.ClassesToTransform.*;
 
+import java.io.File;
+import java.io.IOException;
+
+import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.launchwrapper.Launch;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -10,12 +19,6 @@ import gtPlusPlus.preloader.DevHelper;
 import gtPlusPlus.preloader.Preloader_Logger;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
-import java.io.File;
-import java.io.IOException;
-import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.Launch;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
@@ -24,8 +27,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
     static {
         mConfig = new AsmConfig(new File("config/GTplusplus/asm.cfg"));
-        Preloader_Logger.INFO(
-                "Config Location: " + AsmConfig.config.getConfigFile().getAbsolutePath());
+        Preloader_Logger.INFO("Config Location: " + AsmConfig.config.getConfigFile().getAbsolutePath());
         Preloader_Logger.INFO("Is DevHelper Valid? " + DevHelper.mIsValidHelper);
         IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_BASE_TILE_ENTITY);
         IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_MACHINE1);
@@ -79,28 +81,22 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         final boolean obfuscated = checkObfuscated();
 
         // Fix LWJGL index array out of bounds on keybinding IDs
-        if ((transformedName.equals(LWJGL_KEYBOARD)
-                        || transformedName.equals(MINECRAFT_GAMESETTINGS_OBF)
-                        || transformedName.equals(MINECRAFT_GAMESETTINGS))
-                && AsmConfig.enabledLwjglKeybindingFix
-                // Do not transform if using lwjgl3
+        if ((transformedName.equals(LWJGL_KEYBOARD) || transformedName.equals(MINECRAFT_GAMESETTINGS_OBF)
+                || transformedName.equals(MINECRAFT_GAMESETTINGS)) && AsmConfig.enabledLwjglKeybindingFix
+        // Do not transform if using lwjgl3
                 && !ReflectionUtils.doesClassExist("org.lwjgl.system.Platform")) {
             boolean isClientSettingsClass = false;
             if (!transformedName.equals("org.lwjgl.input.Keyboard")) {
                 isClientSettingsClass = true;
             }
             Preloader_Logger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
-            return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass)
-                    .getWriter()
-                    .toByteArray();
+            return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter().toByteArray();
         }
 
         // Enable mapping of Tickets and loaded chunks. - Forge
         if (transformedName.equals(FORGE_CHUNK_MANAGER) && AsmConfig.enableChunkDebugging) {
             Preloader_Logger.INFO("Chunkloading Patch", "Transforming " + transformedName);
-            return new ClassTransformer_Forge_ChunkLoading(basicClass, false)
-                    .getWriter()
-                    .toByteArray();
+            return new ClassTransformer_Forge_ChunkLoading(basicClass, false).getWriter().toByteArray();
         }
 
         // Fix the OreDictionary - Forge
@@ -114,38 +110,28 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         // Fix the OreDictionary COFH
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
             Preloader_Logger.INFO("COFH", "Transforming " + transformedName);
-            return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass)
-                    .getWriter()
-                    .toByteArray();
+            return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter().toByteArray();
         }
 
         // Fix Tinkers Fluids
         if (transformedName.equals(TINKERS_FLUID_BLOCK) && AsmConfig.enableTiConFluidLighting) {
             Preloader_Logger.INFO("Bright Fluids", "Transforming " + transformedName);
-            return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass)
-                    .getWriter()
-                    .toByteArray();
+            return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
         }
 
         // Fix GC stuff
         if (AsmConfig.enableGcFuelChanges) {
             if (transformedName.equals(GALACTICRAFT_FLUID_UTILS)) {
                 Preloader_Logger.INFO("Galacticraft FluidUtils Patch", "Transforming " + transformedName);
-                return new ClassTransformer_GC_FluidUtil(basicClass, false)
-                        .getWriter()
-                        .toByteArray();
+                return new ClassTransformer_GC_FluidUtil(basicClass, false).getWriter().toByteArray();
             }
             if (transformedName.equals(GALACTICRAFT_TILE_ENTITY_FUEL_LOADER)) {
                 Preloader_Logger.INFO("Galacticraft Fuel_Loader Patch", "Transforming " + transformedName);
-                return new ClassTransformer_GC_FuelLoader(basicClass, false)
-                        .getWriter()
-                        .toByteArray();
+                return new ClassTransformer_GC_FuelLoader(basicClass, false).getWriter().toByteArray();
             }
             if (transformedName.equals(GALACTICRAFT_ENTITY_AUTO_ROCKET)) {
                 Preloader_Logger.INFO("Galacticraft EntityAutoRocket Patch", "Transforming " + transformedName);
-                return new ClassTransformer_GC_EntityAutoRocket(basicClass, false)
-                        .getWriter()
-                        .toByteArray();
+                return new ClassTransformer_GC_EntityAutoRocket(basicClass, false).getWriter().toByteArray();
             }
         }
 
@@ -153,8 +139,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         for (String y : IC2_WRENCH_PATCH_CLASS_NAMES) {
             if (transformedName.equals(y)) {
                 Preloader_Logger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
-                return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName)
-                        .getWriter()
+                return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName).getWriter()
                         .toByteArray();
             }
         }
@@ -163,9 +148,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         // Patching ItemWispEssence to allow invalid item handling
         if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {
             Preloader_Logger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
-            return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated)
-                    .getWriter()
-                    .toByteArray();
+            return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
         }
 
         return basicClass;

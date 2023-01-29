@@ -1,19 +1,22 @@
 package gtPlusPlus.core.client.renderer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderTNTPrimed;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 
 @SideOnly(Side.CLIENT)
 public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
+
     private final RenderBlocks blockRenderer = new RenderBlocks();
 
     public RenderMiningExplosivesPrimed() {
@@ -27,13 +30,8 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(
-            final EntityPrimedMiningExplosive entity,
-            final double p_76986_2_,
-            final double p_76986_4_,
-            final double p_76986_6_,
-            final float p_76986_8_,
-            final float p_76986_9_) {
+    public void doRender(final EntityPrimedMiningExplosive entity, final double p_76986_2_, final double p_76986_4_,
+            final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
         Logger.WARNING("Rendering Mining Explosion. 2");
         GL11.glPushMatrix();
         GL11.glTranslatef((float) p_76986_2_, (float) p_76986_4_, (float) p_76986_6_);
@@ -99,15 +97,15 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-    public void doRender(
-            final Entity p_76986_1_,
-            final double p_76986_2_,
-            final double p_76986_4_,
-            final double p_76986_6_,
-            final float p_76986_8_,
-            final float p_76986_9_) {
+    public void doRender(final Entity p_76986_1_, final double p_76986_2_, final double p_76986_4_,
+            final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
         Logger.WARNING("Rendering Mining Explosion. 3");
         this.doRender(
-                (EntityPrimedMiningExplosive) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+                (EntityPrimedMiningExplosive) p_76986_1_,
+                p_76986_2_,
+                p_76986_4_,
+                p_76986_6_,
+                p_76986_8_,
+                p_76986_9_);
     }
 }

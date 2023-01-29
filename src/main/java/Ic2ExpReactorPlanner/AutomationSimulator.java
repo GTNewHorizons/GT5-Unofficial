@@ -1,12 +1,13 @@
 package Ic2ExpReactorPlanner;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import Ic2ExpReactorPlanner.components.ReactorItem;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.GT_TileEntity_ComputerCube;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -85,8 +86,8 @@ public class AutomationSimulator {
         return null;
     }
 
-    public AutomationSimulator(
-            final Reactor reactor, final ArrayList<String> output2, final GT_TileEntity_ComputerCube aTile) {
+    public AutomationSimulator(final Reactor reactor, final ArrayList<String> output2,
+            final GT_TileEntity_ComputerCube aTile) {
         this.reactor = reactor;
         this.output = output2;
         this.mReactor = aTile;
@@ -208,9 +209,8 @@ public class AutomationSimulator {
                     if (active) {
                         activeTime++;
                         currentActiveTime++;
-                        if (reactor.isPulsed()
-                                && (reactor.getCurrentHeat() >= suspendTemp
-                                        || (reactorTicks % clockPeriod) >= onPulseDuration)) {
+                        if (reactor.isPulsed() && (reactor.getCurrentHeat() >= suspendTemp
+                                || (reactorTicks % clockPeriod) >= onPulseDuration)) {
                             active = false;
                             minActiveTime = Math.min(currentActiveTime, minActiveTime);
                             maxActiveTime = Math.max(currentActiveTime, maxActiveTime);
@@ -221,14 +221,13 @@ public class AutomationSimulator {
                         currentInactiveTime++;
                         if (reactor.isAutomated() && pauseTimer > 0) {
                             pauseTimer--;
-                        } else if ((reactor.isPulsed()
-                                && reactor.getCurrentHeat() <= resumeTemp
+                        } else if ((reactor.isPulsed() && reactor.getCurrentHeat() <= resumeTemp
                                 && (reactorTicks % clockPeriod) < onPulseDuration)) {
-                            active = true;
-                            minInactiveTime = Math.min(currentInactiveTime, minInactiveTime);
-                            maxInactiveTime = Math.max(currentInactiveTime, maxInactiveTime);
-                            currentInactiveTime = 0;
-                        }
+                                    active = true;
+                                    minInactiveTime = Math.min(currentInactiveTime, minInactiveTime);
+                                    maxInactiveTime = Math.max(currentInactiveTime, maxInactiveTime);
+                                    currentInactiveTime = 0;
+                                }
                     }
                 }
                 minEUoutput = Math.min(lastEUoutput, minEUoutput);
@@ -405,8 +404,10 @@ public class AutomationSimulator {
                 ReactorItem component = reactor.getComponentAt(row, col);
                 if (component != null) {
                     if (component.getVentCoolingCapacity() > 0) {
-                        component.info.append("ComponentInfo.UsedCooling " + component.getBestVentCooling() + " | "
-                                + component.getVentCoolingCapacity());
+                        component.info.append(
+                                "ComponentInfo.UsedCooling " + component.getBestVentCooling()
+                                        + " | "
+                                        + component.getVentCoolingCapacity());
                         totalEffectiveVentCooling += component.getBestVentCooling();
                         totalVentCoolingCapacity += component.getVentCoolingCapacity();
                     } else if (component.getBestCellCooling() > 0) {
@@ -417,15 +418,21 @@ public class AutomationSimulator {
                         totalCondensatorCooling += component.getBestCondensatorCooling();
                     } else if (component.getMaxHeatGenerated() > 0) {
                         if (!reactor.isFluid() && component.getMaxEUGenerated() > 0) {
-                            component.info.append("ComponentInfo.GeneratedEU " + component.getMinEUGenerated() + " | "
-                                    + component.getMaxEUGenerated());
+                            component.info.append(
+                                    "ComponentInfo.GeneratedEU " + component.getMinEUGenerated()
+                                            + " | "
+                                            + component.getMaxEUGenerated());
                         }
-                        component.info.append("ComponentInfo.GeneratedHeat " + component.getMinHeatGenerated() + " | "
-                                + component.getMaxHeatGenerated());
+                        component.info.append(
+                                "ComponentInfo.GeneratedHeat " + component.getMinHeatGenerated()
+                                        + " | "
+                                        + component.getMaxHeatGenerated());
                     }
                     if (component.getMaxReachedHeat() > 0) {
-                        component.info.append("ComponentInfo.ReachedHeat " + component.getMaxReachedHeat() + " | "
-                                + component.getMaxHeat());
+                        component.info.append(
+                                "ComponentInfo.ReachedHeat " + component.getMaxReachedHeat()
+                                        + " | "
+                                        + component.getMaxHeat());
                     }
                 }
             }
@@ -464,15 +471,11 @@ public class AutomationSimulator {
         // }
         // return null;
 
-        /* catch (Throwable e) {
-        if (cooldownTicks == 0) {
-        	publish("Simulation.ErrorReactor", reactorTicks);
-        } else {
-        	publish("Simulation.ErrorCooldown", cooldownTicks);
-        }
-        publish(e.toString(), " ", Arrays.toString(e.getStackTrace()); // NO18N
-
-        }*/
+        /*
+         * catch (Throwable e) { if (cooldownTicks == 0) { publish("Simulation.ErrorReactor", reactorTicks); } else {
+         * publish("Simulation.ErrorCooldown", cooldownTicks); } publish(e.toString(), " ",
+         * Arrays.toString(e.getStackTrace()); // NO18N }
+         */
         data.explosionPower = (int) explosionPower;
         data.totalReactorTicks = reactorTicks;
         long endTime = System.nanoTime();
@@ -508,29 +511,28 @@ public class AutomationSimulator {
                             }
                         } else if (component.getAutomationThreshold() < component.getInitialHeat()
                                 && component.getCurrentHeat() <= component.getAutomationThreshold()) {
-                            component.clearCurrentHeat();
-                            component.info.append("ComponentInfo.ReplacedTime | " + reactorTicks);
-                            if (component.getReactorPause() > 0) {
-                                active = false;
-                                pauseTimer = Math.max(pauseTimer, component.getReactorPause());
-                                minActiveTime = Math.min(currentActiveTime, minActiveTime);
-                                maxActiveTime = Math.max(currentActiveTime, maxActiveTime);
-                                currentActiveTime = 0;
+                                    component.clearCurrentHeat();
+                                    component.info.append("ComponentInfo.ReplacedTime | " + reactorTicks);
+                                    if (component.getReactorPause() > 0) {
+                                        active = false;
+                                        pauseTimer = Math.max(pauseTimer, component.getReactorPause());
+                                        minActiveTime = Math.min(currentActiveTime, minActiveTime);
+                                        maxActiveTime = Math.max(currentActiveTime, maxActiveTime);
+                                        currentActiveTime = 0;
+                                    }
+                                }
+                    } else if (component.isBroken() || (component.getMaxDamage() > 1
+                            && component.getCurrentDamage() >= component.getAutomationThreshold())) {
+                                component.clearDamage();
+                                component.info.append("ComponentInfo.ReplacedTime | " + reactorTicks);
+                                if (component.getReactorPause() > 0) {
+                                    active = false;
+                                    pauseTimer = Math.max(pauseTimer, component.getReactorPause());
+                                    minActiveTime = Math.min(currentActiveTime, minActiveTime);
+                                    maxActiveTime = Math.max(currentActiveTime, maxActiveTime);
+                                    currentActiveTime = 0;
+                                }
                             }
-                        }
-                    } else if (component.isBroken()
-                            || (component.getMaxDamage() > 1
-                                    && component.getCurrentDamage() >= component.getAutomationThreshold())) {
-                        component.clearDamage();
-                        component.info.append("ComponentInfo.ReplacedTime | " + reactorTicks);
-                        if (component.getReactorPause() > 0) {
-                            active = false;
-                            pauseTimer = Math.max(pauseTimer, component.getReactorPause());
-                            minActiveTime = Math.min(currentActiveTime, minActiveTime);
-                            maxActiveTime = Math.max(currentActiveTime, maxActiveTime);
-                            currentActiveTime = 0;
-                        }
-                    }
                 }
                 if (reactor.isUsingReactorCoolantInjectors() && component != null && component.needsCoolantInjected()) {
                     component.injectCoolant();
@@ -668,34 +670,16 @@ public class AutomationSimulator {
 
     protected void process(List<String> chunks) {
         /*
-        for (String chunk : chunks) {
-        if (chunk.isEmpty()) {
-        output.add(""); // NO18N
-        }
-        else {
-        if (chunk.matches("R\\dC\\d:.*")) { // NO18N
-        String temp = chunk.substring(5);
-        int row = chunk.charAt(1) - '0';
-        int col = chunk.charAt(3) - '0';
-        if (temp.startsWith("0x")) { // NO18N
-        mReactorComponents[row][col].setBackground(Color.decode(temp));
-        if ("0xC0C0C0".equals(temp)) {
-        mReactorComponents[row][col].setToolTipText(null);
-        }
-        else if ("0xFF0000".equals(temp)) {
-        mReactorComponents[row][col].setToolTipText(getI18n("ComponentTooltip.Broken"));
-        }
-        else if ("0xFFA500".equals(temp)) {
-        mReactorComponents[row][col].setToolTipText(getI18n("ComponentTooltip.ResidualHeat"));
-        }
-        }
-        }
-        else {
-        output.add(chunk);
-        }
-        }
-        }
-        */
+         * for (String chunk : chunks) { if (chunk.isEmpty()) { output.add(""); // NO18N } else { if
+         * (chunk.matches("R\\dC\\d:.*")) { // NO18N String temp = chunk.substring(5); int row = chunk.charAt(1) - '0';
+         * int col = chunk.charAt(3) - '0'; if (temp.startsWith("0x")) { // NO18N
+         * mReactorComponents[row][col].setBackground(Color.decode(temp)); if ("0xC0C0C0".equals(temp)) {
+         * mReactorComponents[row][col].setToolTipText(null); } else if ("0xFF0000".equals(temp)) {
+         * mReactorComponents[row][col].setToolTipText(getI18n("ComponentTooltip.Broken")); } else if
+         * ("0xFFA500".equals(temp)) {
+         * mReactorComponents[row][col].setToolTipText(getI18n("ComponentTooltip.ResidualHeat")); } } } else {
+         * output.add(chunk); } } }
+         */
     }
 
     public void cancel() {

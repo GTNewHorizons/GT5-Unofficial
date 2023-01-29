@@ -3,6 +3,14 @@ package gtPlusPlus.xmod.gregtech;
 import static gtPlusPlus.core.recipe.common.CI.bits;
 import static gtPlusPlus.core.util.minecraft.MaterialUtils.getMaterialName;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Element;
@@ -65,12 +73,6 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_MolecularTransformer
 import gtPlusPlus.xmod.gregtech.recipes.RecipesToRemove;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class HANDLER_GT {
 
@@ -195,8 +197,7 @@ public class HANDLER_GT {
                     FluidStack aFluid = aRecipe.mFluidInputs[0];
                     if (aFluid != null && aFluid.amount > 0) {
                         ItemStack tDataOrb = GregtechMTE_ElementalDuplicator.getSpecialSlotStack(aRecipe);
-                        Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb))
-                                .mLinkedMaterials
+                        Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials
                                 .get(0);
                         FluidStack aOutputFluid = null;
                         ItemStack aOutputItem = null;
@@ -211,18 +212,20 @@ public class HANDLER_GT {
                             GTPP_Recipe aNewRecipe = new GTPP_Recipe(
                                     false,
                                     new ItemStack[] {},
-                                    new ItemStack[] {!aUsingFluid ? aOutputItem : null},
+                                    new ItemStack[] { !aUsingFluid ? aOutputItem : null },
                                     aRecipe.mSpecialItems,
                                     null,
                                     aRecipe.mFluidInputs,
-                                    new FluidStack[] {aUsingFluid ? aOutputFluid : null},
+                                    new FluidStack[] { aUsingFluid ? aOutputFluid : null },
                                     aRecipe.mDuration,
                                     aRecipe.mEUt,
                                     aRecipe.mFluidInputs[0].amount);
                             GTPP_Recipe_Map.sElementalDuplicatorRecipes.add(aNewRecipe);
 
-                            Logger.INFO("[EM] Generated recipe for " + tMaterial.mLocalizedName + ", Outputs "
-                                    + (aUsingFluid ? "Fluid" : "Dust"));
+                            Logger.INFO(
+                                    "[EM] Generated recipe for " + tMaterial.mLocalizedName
+                                            + ", Outputs "
+                                            + (aUsingFluid ? "Fluid" : "Dust"));
                         }
                     } else {
                         Logger.INFO("[EM] Bad UU Requirement. " + RecipeUtils.getRecipeInfo(aRecipe));
@@ -235,8 +238,11 @@ public class HANDLER_GT {
             }
         }
         int aSize = GTPP_Recipe_Map.sElementalDuplicatorRecipes.mRecipeList.size();
-        Logger.INFO("[EM] Generated " + aSize + "/" + GT_Recipe_Map.sReplicatorFakeRecipes.mRecipeList.size()
-                + " Replicator recipes.");
+        Logger.INFO(
+                "[EM] Generated " + aSize
+                        + "/"
+                        + GT_Recipe_Map.sReplicatorFakeRecipes.mRecipeList.size()
+                        + " Replicator recipes.");
     }
 
     private static void convertPyroToCokeOven() {
@@ -254,8 +260,8 @@ public class HANDLER_GT {
         }
     }
 
-    private static GT_Recipe replaceItemInRecipeWithAnother(
-            GT_Recipe aRecipe, ItemStack aExisting, ItemStack aNewItem) {
+    private static GT_Recipe replaceItemInRecipeWithAnother(GT_Recipe aRecipe, ItemStack aExisting,
+            ItemStack aNewItem) {
         ItemStack[] aInputItemsCopy = aRecipe.mInputs;
         String aOutputName = ItemUtils.getItemName(aRecipe.mOutputs[0]);
         boolean aDidChange = false;
@@ -294,8 +300,9 @@ public class HANDLER_GT {
 
         boolean aHardCasings = aHardCasingsTest != null ? (boolean) aHardCasingsTest : false;
 
-        Logger.INFO("Are Hard casings/hulls enabled within GT? "
-                + (aHardCasingsTest == null ? "Version does not support config option" : aHardCasings));
+        Logger.INFO(
+                "Are Hard casings/hulls enabled within GT? "
+                        + (aHardCasingsTest == null ? "Version does not support config option" : aHardCasings));
 
         // Static objects to save memory
         ItemStack aCasing_LUV = CI.machineCasing_LuV;
@@ -313,8 +320,8 @@ public class HANDLER_GT {
         int aTier_UV = 7;
         // int aTier_MAX = 8;
 
-        ItemStack[] aCasings = new ItemStack[] {aCasing_LUV, aCasing_ZPM, aCasing_UV, aCasing_MAX};
-        ItemStack[] aHulls = new ItemStack[] {aHull_LUV, aHull_ZPM, aHull_UV, aHull_MAX};
+        ItemStack[] aCasings = new ItemStack[] { aCasing_LUV, aCasing_ZPM, aCasing_UV, aCasing_MAX };
+        ItemStack[] aHulls = new ItemStack[] { aHull_LUV, aHull_ZPM, aHull_UV, aHull_MAX };
 
         // Remove Hand Crafting Recipes
 
@@ -339,8 +346,7 @@ public class HANDLER_GT {
 
         AutoMap<Pair<GT_Recipe, GT_Recipe>> aDataToModify = new AutoMap<Pair<GT_Recipe, GT_Recipe>>();
 
-        Outer:
-        for (final GT_Recipe r : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList) {
+        Outer: for (final GT_Recipe r : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList) {
 
             if (r != null && r.mOutputs != null && r.mOutputs.length > 0) {
 
@@ -348,8 +354,7 @@ public class HANDLER_GT {
                 GT_Recipe aNewRecipe = r.copy();
 
                 // Casings
-                Inner:
-                for (ItemStack aCasingObject : aCasings) {
+                Inner: for (ItemStack aCasingObject : aCasings) {
                     if (GT_Utility.areStacksEqual(aOldRecipeCopy.mOutputs[0], aCasingObject)) {
                         String aOutputName = ItemUtils.getItemName(aOldRecipeCopy.mOutputs[0]);
                         Logger.INFO("Attempting to Modify Assembly Recipe for " + aOutputName);
@@ -389,8 +394,7 @@ public class HANDLER_GT {
                 }
 
                 // Hulls
-                Inner:
-                for (ItemStack aHullObject : aHulls) {
+                Inner: for (ItemStack aHullObject : aHulls) {
                     if (GT_Utility.areStacksEqual(aOldRecipeCopy.mOutputs[0], aHullObject)) {
                         String aOutputName = ItemUtils.getItemName(aOldRecipeCopy.mOutputs[0]);
                         Logger.INFO("Attempting to Modify Assembly Recipe for " + aOutputName);
@@ -441,72 +445,60 @@ public class HANDLER_GT {
         }
 
         Logger.INFO("Adding new Shaped recipes for Casings.");
-        GT_ModHandler.addCraftingRecipe(ItemList.Casing_LuV.get(1), bits, new Object[] {
-            "PPP", "PwP", "PPP", 'P', ELEMENT.getInstance().SELENIUM.getPlate(1)
-        });
         GT_ModHandler.addCraftingRecipe(
-                ItemList.Casing_ZPM.get(1), bits, new Object[] {"PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_ZPM, 1)});
+                ItemList.Casing_LuV.get(1),
+                bits,
+                new Object[] { "PPP", "PwP", "PPP", 'P', ELEMENT.getInstance().SELENIUM.getPlate(1) });
         GT_ModHandler.addCraftingRecipe(
-                ItemList.Casing_UV.get(1), bits, new Object[] {"PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_UV, 1)});
+                ItemList.Casing_ZPM.get(1),
+                bits,
+                new Object[] { "PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_ZPM, 1) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Casing_UV.get(1),
+                bits,
+                new Object[] { "PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_UV, 1) });
 
         if (!aHardCasings) {
             Logger.INFO("Adding new easy Shaped recipes for Hulls.");
             GT_ModHandler.addCraftingRecipe(
-                    ItemList.Hull_LuV.get(1), RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED, new Object[] {
-                        "CMC", 'M', ItemList.Casing_LuV, 'C', OrePrefixes.cableGt01.get(Materials.VanadiumGallium)
-                    });
+                    ItemList.Hull_LuV.get(1),
+                    RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
+                    new Object[] { "CMC", 'M', ItemList.Casing_LuV, 'C',
+                            OrePrefixes.cableGt01.get(Materials.VanadiumGallium) });
             GT_ModHandler.addCraftingRecipe(
                     ItemList.Hull_ZPM.get(1),
                     RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
-                    new Object[] {"CMC", 'M', ItemList.Casing_ZPM, 'C', OrePrefixes.cableGt01.get(Materials.Naquadah)});
+                    new Object[] { "CMC", 'M', ItemList.Casing_ZPM, 'C',
+                            OrePrefixes.cableGt01.get(Materials.Naquadah) });
             GT_ModHandler.addCraftingRecipe(
-                    ItemList.Hull_UV.get(1), RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED, new Object[] {
-                        "CMC", 'M', ItemList.Casing_UV, 'C', OrePrefixes.wireGt04.get(Materials.NaquadahAlloy)
-                    });
+                    ItemList.Hull_UV.get(1),
+                    RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
+                    new Object[] { "CMC", 'M', ItemList.Casing_UV, 'C',
+                            OrePrefixes.wireGt04.get(Materials.NaquadahAlloy) });
         } else {
 
             Materials aPolytetrafluoroethylene = MaterialUtils.getMaterial("Polytetrafluoroethylene", "Plastic");
 
             Logger.INFO("Adding new hard Shaped recipes for Hulls.");
             GT_ModHandler.addCraftingRecipe(
-                    ItemList.Hull_LuV.get(1), RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED, new Object[] {
-                        "PHP",
-                        "CMC",
-                        'M',
-                        ItemList.Casing_LuV,
-                        'C',
-                        OrePrefixes.cableGt01.get(Materials.VanadiumGallium),
-                        'H',
-                        ELEMENT.getInstance().SELENIUM.getPlate(1),
-                        'P',
-                        OrePrefixes.plate.get(Materials.Plastic)
-                    });
+                    ItemList.Hull_LuV.get(1),
+                    RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
+                    new Object[] { "PHP", "CMC", 'M', ItemList.Casing_LuV, 'C',
+                            OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
+                            ELEMENT.getInstance().SELENIUM.getPlate(1), 'P',
+                            OrePrefixes.plate.get(Materials.Plastic) });
             GT_ModHandler.addCraftingRecipe(
-                    ItemList.Hull_ZPM.get(1), RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED, new Object[] {
-                        "PHP",
-                        "CMC",
-                        'M',
-                        ItemList.Casing_ZPM,
-                        'C',
-                        OrePrefixes.cableGt01.get(Materials.Naquadah),
-                        'H',
-                        CI.getPlate(aTier_ZPM, 1),
-                        'P',
-                        OrePrefixes.plate.get(aPolytetrafluoroethylene)
-                    });
+                    ItemList.Hull_ZPM.get(1),
+                    RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
+                    new Object[] { "PHP", "CMC", 'M', ItemList.Casing_ZPM, 'C',
+                            OrePrefixes.cableGt01.get(Materials.Naquadah), 'H', CI.getPlate(aTier_ZPM, 1), 'P',
+                            OrePrefixes.plate.get(aPolytetrafluoroethylene) });
             GT_ModHandler.addCraftingRecipe(
-                    ItemList.Hull_UV.get(1), RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED, new Object[] {
-                        "PHP",
-                        "CMC",
-                        'M',
-                        ItemList.Casing_UV,
-                        'C',
-                        OrePrefixes.wireGt04.get(Materials.NaquadahAlloy),
-                        'H',
-                        CI.getPlate(aTier_UV, 1),
-                        'P',
-                        OrePrefixes.plate.get(aPolytetrafluoroethylene)
-                    });
+                    ItemList.Hull_UV.get(1),
+                    RecipeBits.NOT_REMOVABLE | RecipeBits.BUFFERED,
+                    new Object[] { "PHP", "CMC", 'M', ItemList.Casing_UV, 'C',
+                            OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'H', CI.getPlate(aTier_UV, 1), 'P',
+                            OrePrefixes.plate.get(aPolytetrafluoroethylene) });
         }
     }
 
@@ -517,11 +509,9 @@ public class HANDLER_GT {
         Collection<GT_Recipe> aAssRecipes = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList;
         // 170, 172, 174, 176
         if (aAssRecipes.size() > 0 && (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH)) {
-            recipe:
-            for (GT_Recipe aG : aAssRecipes) {
+            recipe: for (GT_Recipe aG : aAssRecipes) {
                 if (aG.mOutputs != null && aG.mOutputs.length > 0) {
-                    outputs:
-                    for (ItemStack aI : aG.mOutputs) {
+                    outputs: for (ItemStack aI : aG.mOutputs) {
                         if (aI == null) {
                             continue;
                         }
@@ -533,19 +523,23 @@ public class HANDLER_GT {
                             int aMeta = aI.getItemDamage();
                             if (aMeta >= 170 && aMeta <= 176) {
                                 // Found a Turbine
-                                int aCutoff = aMeta == 170
-                                        ? CUT
+                                int aCutoff = aMeta == 170 ? CUT
                                         : (aMeta == 172 ? CUT * 2 : (aMeta == 174 ? CUT * 3 : CUT * 4));
-                                String aType = aMeta == 170
-                                        ? "Small "
+                                String aType = aMeta == 170 ? "Small "
                                         : (aMeta == 172 ? "" : (aMeta == 174 ? "Large " : "Huge "));
                                 Materials aMainMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(aI);
                                 Materials aSecondaryMaterial = GT_MetaGenerated_Tool.getSecondaryMaterial(aI);
                                 long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(aI);
                                 if (rotorDurabilityMax < aCutoff) {
-                                    Logger.WARNING("[Turbine Cleanup] " + getMaterialName(aMainMaterial) + " " + aType
-                                            + "Turbines have " + rotorDurabilityMax
-                                            + ", which is below the cutoff durability of " + aCutoff + ", disabling.");
+                                    Logger.WARNING(
+                                            "[Turbine Cleanup] " + getMaterialName(aMainMaterial)
+                                                    + " "
+                                                    + aType
+                                                    + "Turbines have "
+                                                    + rotorDurabilityMax
+                                                    + ", which is below the cutoff durability of "
+                                                    + aCutoff
+                                                    + ", disabling.");
                                     aG.mEnabled = false;
                                     aG.mHidden = true;
                                     aG.mCanBeBuffered = false;

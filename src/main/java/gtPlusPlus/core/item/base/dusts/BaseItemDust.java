@@ -29,18 +29,13 @@ public class BaseItemDust extends BaseItemComponent {
         }
     }
 
-    private BaseItemDust(
-            String unlocalizedName,
-            String materialName,
-            Material matInfo,
-            int colour,
-            String pileSize,
-            int tier,
-            boolean addRecipes) {
+    private BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize,
+            int tier, boolean addRecipes) {
         super(matInfo, ComponentTypes.DUST);
     }
 
     public static class DustState {
+
         static final int NORMAL = (1);
         static final int SMALL = (10);
         static final int TINY = (100);

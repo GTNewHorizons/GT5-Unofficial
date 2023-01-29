@@ -1,14 +1,9 @@
 package gtPlusPlus.plugin.agrichem.item.algae;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.OreDictUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,37 +17,24 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.OreDictUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+
 public class ItemAgrichemBase extends Item {
 
     protected final IIcon base[];
 
     /*
-     * 0 - Algae Biomass
-     * 1 - Green Algae Biomass
-     * 2 - Brown Algae Biomass
-     * 3 - Golden-Brown Algae Biomass
-     * 4 - Red Algae Biomass
-     * 5 - Cellulose Fiber
-     * 6 - Golden-Brown Cellulose Fiber
-     * 7 - Red Cellulose Fiber
-     * 8 - Compost
-     * 9 - Wood Pellet
-     * 10 - Wood Brick
-     * 11 - Cellulose Pulp
-     * 12 - Raw Bio Resin
-     * 13 - Catalyst Carrier
-     * 14 - Green Metal Catalyst
-     * 15 - Alginic Acid
-     * 16 - Alumina
-     * 17 - Aluminium Pellet
-     * 18 - Sodium Aluminate
-     * 19 - Sodium Hydroxide // Exists in Newer GT
-     * 20 - Sodium Carbonate
-     * 21 - Lithium Chloride
-     * 22 - Pellet Mold
-     * 23 - Clean Aluminium Mix
-     * 24 - Pinecone
-     * 25 - Crushed Pine
+     * 0 - Algae Biomass 1 - Green Algae Biomass 2 - Brown Algae Biomass 3 - Golden-Brown Algae Biomass 4 - Red Algae
+     * Biomass 5 - Cellulose Fiber 6 - Golden-Brown Cellulose Fiber 7 - Red Cellulose Fiber 8 - Compost 9 - Wood Pellet
+     * 10 - Wood Brick 11 - Cellulose Pulp 12 - Raw Bio Resin 13 - Catalyst Carrier 14 - Green Metal Catalyst 15 -
+     * Alginic Acid 16 - Alumina 17 - Aluminium Pellet 18 - Sodium Aluminate 19 - Sodium Hydroxide // Exists in Newer GT
+     * 20 - Sodium Carbonate 21 - Lithium Chloride 22 - Pellet Mold 23 - Clean Aluminium Mix 24 - Pinecone 25 - Crushed
+     * Pine
      */
 
     public ItemAgrichemBase() {
@@ -76,8 +58,8 @@ public class ItemAgrichemBase extends Item {
     }
 
     @Override
-    public void onUpdate(
-            ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
+    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
+            boolean p_77663_5_) {
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 
@@ -183,11 +165,8 @@ public class ItemAgrichemBase extends Item {
                     if (aTestAtlas != null) {
                         return true;
                     }
-                } catch (InstantiationException
-                        | IllegalAccessException
-                        | IllegalArgumentException
-                        | InvocationTargetException e) {
-                }
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {}
             }
         }
         return false;

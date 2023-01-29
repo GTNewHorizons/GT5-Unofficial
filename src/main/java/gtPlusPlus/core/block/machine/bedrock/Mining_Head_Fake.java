@@ -1,15 +1,7 @@
 package gtPlusPlus.core.block.machine.bedrock;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,6 +12,16 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class Mining_Head_Fake extends Block {
 
@@ -63,12 +65,8 @@ public class Mining_Head_Fake extends Block {
     }
 
     @Override
-    public void onBlockDestroyedByExplosion(
-            final World p_149723_1_,
-            final int p_149723_2_,
-            final int p_149723_3_,
-            final int p_149723_4_,
-            final Explosion p_149723_5_) {}
+    public void onBlockDestroyedByExplosion(final World p_149723_1_, final int p_149723_2_, final int p_149723_3_,
+            final int p_149723_4_, final Explosion p_149723_5_) {}
 
     @Override
     public boolean canDropFromExplosion(final Explosion p_149659_1_) {
@@ -76,8 +74,8 @@ public class Mining_Head_Fake extends Block {
     }
 
     @Override
-    public boolean canEntityDestroy(
-            final IBlockAccess world, final int x, final int y, final int z, final Entity entity) {
+    public boolean canEntityDestroy(final IBlockAccess world, final int x, final int y, final int z,
+            final Entity entity) {
         return false;
     }
 
@@ -95,8 +93,8 @@ public class Mining_Head_Fake extends Block {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 
@@ -112,8 +110,8 @@ public class Mining_Head_Fake extends Block {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(
-            World p_149670_1_, int p_149670_2_, int p_149670_3_, int p_149670_4_, Entity ent) {
+    public void onEntityCollidedWithBlock(World p_149670_1_, int p_149670_2_, int p_149670_3_, int p_149670_4_,
+            Entity ent) {
         EntityUtils.doDamage(ent, DamageSource.outOfWorld, 20);
         EntityUtils.setEntityOnFire(ent, 100);
         super.onEntityCollidedWithBlock(p_149670_1_, p_149670_2_, p_149670_3_, p_149670_4_, ent);

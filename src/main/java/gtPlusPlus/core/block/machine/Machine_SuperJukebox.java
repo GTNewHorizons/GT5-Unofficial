@@ -1,16 +1,5 @@
 package gtPlusPlus.core.block.machine;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.inventories.Inventory_SuperJukebox;
-import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -26,7 +15,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.inventories.Inventory_SuperJukebox;
+import gtPlusPlus.core.util.math.MathUtils;
+
 public class Machine_SuperJukebox extends BlockJukebox {
+
     @SideOnly(Side.CLIENT)
     private IIcon mIcon;
 
@@ -53,16 +55,8 @@ public class Machine_SuperJukebox extends BlockJukebox {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float lx,
-            final float ly,
-            final float lz) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         }
@@ -74,15 +68,10 @@ public class Machine_SuperJukebox extends BlockJukebox {
         }
         return false;
 
-        /* if (aWorld.getBlockMetadata(aX, aY, aZ) == 0)
-        {
-            return false;
-        }
-        else
-        {
-            this.func_149925_e(aWorld, aX, aY, aZ);
-            return true;
-        }*/
+        /*
+         * if (aWorld.getBlockMetadata(aX, aY, aZ) == 0) { return false; } else { this.func_149925_e(aWorld, aX, aY,
+         * aZ); return true; }
+         */
     }
 
     /**
@@ -124,23 +113,22 @@ public class Machine_SuperJukebox extends BlockJukebox {
                     // aWorld.playRecord((String) null, aX, aY, aZ);
                     // tileentityjukebox.func_145857_a((ItemStack) null);
                     // aWorld.setBlockMetadataWithNotify(aX, aY, aZ, 0, 2);
-                    /*float f = 0.7F;
-                    double d0 = (double) (aWorld.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                    double d1 = (double) (aWorld.rand.nextFloat() * f) + (double) (1.0F - f) * 0.2D + 0.6D;
-                    double d2 = (double) (aWorld.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                    ItemStack itemstack1 = itemstack.copy();
-                    EntityItem entityitem = new EntityItem(aWorld, (double) aX + d0,
-                    		(double) aY + d1, (double) aZ + d2, itemstack1);
-                    entityitem.delayBeforeCanPickup = 10;
-                    aWorld.spawnEntityInWorld(entityitem);*/
+                    /*
+                     * float f = 0.7F; double d0 = (double) (aWorld.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+                     * double d1 = (double) (aWorld.rand.nextFloat() * f) + (double) (1.0F - f) * 0.2D + 0.6D; double d2
+                     * = (double) (aWorld.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D; ItemStack itemstack1 =
+                     * itemstack.copy(); EntityItem entityitem = new EntityItem(aWorld, (double) aX + d0, (double) aY +
+                     * d1, (double) aZ + d2, itemstack1); entityitem.delayBeforeCanPickup = 10;
+                     * aWorld.spawnEntityInWorld(entityitem);
+                     */
                 }
             }
         }
     }
 
     @Override
-    public void breakBlock(
-            World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
+    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_,
+            int p_149749_6_) {
         this.func_149925_e(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_);
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
     }
@@ -149,17 +137,17 @@ public class Machine_SuperJukebox extends BlockJukebox {
      * Drops the block items with a specified chance of dropping the specified items
      */
     @Override
-    public void dropBlockAsItemWithChance(
-            World p_149690_1_,
-            int p_149690_2_,
-            int p_149690_3_,
-            int p_149690_4_,
-            int p_149690_5_,
-            float p_149690_6_,
-            int p_149690_7_) {
+    public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_,
+            int p_149690_5_, float p_149690_6_, int p_149690_7_) {
         if (!p_149690_1_.isRemote) {
             super.dropBlockAsItemWithChance(
-                    p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, p_149690_5_, p_149690_6_, 0);
+                    p_149690_1_,
+                    p_149690_2_,
+                    p_149690_3_,
+                    p_149690_4_,
+                    p_149690_5_,
+                    p_149690_6_,
+                    0);
         }
     }
 
@@ -230,8 +218,7 @@ public class Machine_SuperJukebox extends BlockJukebox {
 
             if (this.getCurrentRecord() != null) {
                 aNBT.setTag("RecordItem", this.func_145856_a().writeToNBT(new NBTTagCompound()));
-                aNBT.setInteger(
-                        "Record", Item.getIdFromItem(this.func_145856_a().getItem()));
+                aNBT.setInteger("Record", Item.getIdFromItem(this.func_145856_a().getItem()));
             }
 
             final NBTTagCompound chestData = new NBTTagCompound();
@@ -254,8 +241,7 @@ public class Machine_SuperJukebox extends BlockJukebox {
         }
 
         /**
-         * Called to get the internal stack, wraps vanilla function
-         * {@link func_145856_a}.
+         * Called to get the internal stack, wraps vanilla function {@link func_145856_a}.
          */
         public ItemStack getCurrentRecord() {
             return func_145856_a();
@@ -271,8 +257,7 @@ public class Machine_SuperJukebox extends BlockJukebox {
         }
 
         /**
-         * Called to set the internal stack, wraps vanilla function
-         * {@link func_145857_a}.
+         * Called to set the internal stack, wraps vanilla function {@link func_145857_a}.
          */
         public void setCurrentRecord(ItemStack aStack) {
             func_145857_a(aStack);
@@ -342,7 +327,14 @@ public class Machine_SuperJukebox extends BlockJukebox {
                         }
 
                         GT_Utility.moveStackFromSlotAToSlotB(
-                                aThisInv, aThisInv, aSlotCounter, 20, (byte) 1, (byte) 1, (byte) 1, (byte) 1);
+                                aThisInv,
+                                aThisInv,
+                                aSlotCounter,
+                                20,
+                                (byte) 1,
+                                (byte) 1,
+                                (byte) 1,
+                                (byte) 1);
                         setCurrentRecord(aThisInv.getStackInSlot(20));
 
                         World aWorld = this.worldObj;
@@ -404,7 +396,14 @@ public class Machine_SuperJukebox extends BlockJukebox {
                 if (g == null && aSlotCounter >= 0) {
                     IInventory aThisInv = this.getInventory();
                     GT_Utility.moveStackFromSlotAToSlotB(
-                            aThisInv, aThisInv, 20, i, (byte) 1, (byte) 1, (byte) 1, (byte) 1);
+                            aThisInv,
+                            aThisInv,
+                            20,
+                            i,
+                            (byte) 1,
+                            (byte) 1,
+                            (byte) 1,
+                            (byte) 1);
                     vanillaStopJukebox();
                     Logger.INFO("b++");
                     this.markDirty();
@@ -412,17 +411,12 @@ public class Machine_SuperJukebox extends BlockJukebox {
                 }
             }
 
-            /*for (ItemStack g : this.getInventory().getInventory()) {
-            	if (g == null && aSlotCounter >= 0) {
-            			IInventory aThisInv = this.getInventory();
-            			GT_Utility.moveStackFromSlotAToSlotB(aThisInv, aThisInv, 20, aSlotCounter, (byte) 1, (byte) 1, (byte) 1, (byte) 1);
-            			vanillaStopJukebox();
-            			Logger.INFO("b++");
-            			return true;
-
-            	}
-            	aSlotCounter--;
-            }	*/
+            /*
+             * for (ItemStack g : this.getInventory().getInventory()) { if (g == null && aSlotCounter >= 0) { IInventory
+             * aThisInv = this.getInventory(); GT_Utility.moveStackFromSlotAToSlotB(aThisInv, aThisInv, 20,
+             * aSlotCounter, (byte) 1, (byte) 1, (byte) 1, (byte) 1); vanillaStopJukebox(); Logger.INFO("b++"); return
+             * true; } aSlotCounter--; }
+             */
             this.markDirty();
             return false;
         }
@@ -482,8 +476,8 @@ public class Machine_SuperJukebox extends BlockJukebox {
             if (!this.worldObj.isRemote) {
                 this.numPlayersUsing++;
             }
-            this.worldObj.addBlockEvent(
-                    this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+            this.worldObj
+                    .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
             this.getInventory().openInventory();
@@ -494,8 +488,8 @@ public class Machine_SuperJukebox extends BlockJukebox {
             if (!this.worldObj.isRemote) {
                 this.numPlayersUsing--;
             }
-            this.worldObj.addBlockEvent(
-                    this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+            this.worldObj
+                    .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
             this.getInventory().closeInventory();
@@ -509,8 +503,8 @@ public class Machine_SuperJukebox extends BlockJukebox {
             return this.getInventory().isItemValidForSlot(slot, itemstack);
         }
 
-        private static final int[] SIDED_SLOTS =
-                new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
+        private static final int[] SIDED_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                17 };
 
         @Override
         public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {

@@ -1,10 +1,12 @@
 package gtPlusPlus.plugin.villagers.trade;
 
-import gtPlusPlus.core.recipe.common.CI;
 import java.util.Random;
+
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+
+import gtPlusPlus.core.recipe.common.CI;
 
 public class TradeHandlerBanker extends TradeHandlerBase {
 

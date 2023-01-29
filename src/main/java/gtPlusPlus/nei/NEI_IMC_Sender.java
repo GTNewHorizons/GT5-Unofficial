@@ -1,10 +1,12 @@
 package gtPlusPlus.nei;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
-import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraft.nbt.NBTTagCompound;
 
+import cpw.mods.fml.common.event.FMLInterModComms;
+import gtPlusPlus.core.lib.LoadedMods;
+
 public class NEI_IMC_Sender {
+
     public static void IMCSender() {
         // NEI jar is using some outdated handler names
         sendHandler("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:810", 1);
@@ -80,10 +82,10 @@ public class NEI_IMC_Sender {
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31097", -10);
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31098", -10);
 
-        //        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-        //            // Compound Fabricator
-        //            sendCatalyst("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:31024");
-        //        }
+        // if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+        // // Compound Fabricator
+        // sendCatalyst("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:31024");
+        // }
 
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:965", -1);
 

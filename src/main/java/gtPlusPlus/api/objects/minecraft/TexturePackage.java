@@ -1,9 +1,11 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
+
 import net.minecraft.util.IIcon;
+
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class TexturePackage {
 

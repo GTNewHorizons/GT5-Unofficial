@@ -32,8 +32,6 @@ import static org.objectweb.asm.Opcodes.LDIV;
 import static org.objectweb.asm.Opcodes.LREM;
 import static org.objectweb.asm.Opcodes.NEW;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.preloader.DevHelper;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
@@ -41,6 +39,9 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.preloader.DevHelper;
 
 public class ClassTransformer_TC_ItemWispEssence {
 
@@ -59,7 +60,7 @@ public class ClassTransformer_TC_ItemWispEssence {
         String aGetColour = obfuscated ? DevHelper.getSRG("getColorFromItemStack") : "getColorFromItemStack";
         aTempReader = new ClassReader(basicClass);
         aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-        aTempReader.accept(new AddAdapter(aTempWriter, new String[] {"getAspects", aGetColour}), 0);
+        aTempReader.accept(new AddAdapter(aTempWriter, new String[] { "getAspects", aGetColour }), 0);
         injectMethod("getAspects", aTempWriter, obfuscated);
         injectMethod(aGetColour, aTempWriter, obfuscated);
         if (aTempReader != null && aTempWriter != null) {
@@ -154,10 +155,10 @@ public class ClassTransformer_TC_ItemWispEssence {
             Label l8 = new Label();
             mv.visitJumpInsn(GOTO, l8);
             mv.visitLabel(l7);
-            mv.visitFrame(F_APPEND, 1, new Object[] {"thaumcraft/api/aspects/AspectList"}, 0, null);
+            mv.visitFrame(F_APPEND, 1, new Object[] { "thaumcraft/api/aspects/AspectList" }, 0, null);
             mv.visitInsn(ACONST_NULL);
             mv.visitLabel(l8);
-            mv.visitFrame(F_SAME1, 0, null, 1, new Object[] {"thaumcraft/api/aspects/AspectList"});
+            mv.visitFrame(F_SAME1, 0, null, 1, new Object[] { "thaumcraft/api/aspects/AspectList" });
             mv.visitInsn(ARETURN);
             mv.visitLabel(l3);
             mv.visitLineNumber(149, l3);
@@ -310,7 +311,9 @@ public class ClassTransformer_TC_ItemWispEssence {
 
             if (found) {
                 FMLRelaunchLog.log(
-                        "[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Found method " + name + ", removing.");
+                        "[GT++ ASM] Thaumcraft WispEssence_Patch",
+                        Level.INFO,
+                        "Found method " + name + ", removing.");
             }
             return methodVisitor;
         }

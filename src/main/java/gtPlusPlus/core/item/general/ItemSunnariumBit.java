@@ -1,10 +1,11 @@
 package gtPlusPlus.core.item.general;
 
+import net.minecraft.item.EnumRarity;
+import net.minecraft.util.EnumChatFormatting;
+
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.util.EnumChatFormatting;
 
 public class ItemSunnariumBit extends CoreItem {
 

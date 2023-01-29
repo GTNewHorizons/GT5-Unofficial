@@ -1,11 +1,14 @@
 package gtPlusPlus.xmod.reliquary.util;
 
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
 import net.minecraft.item.ItemStack;
 
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+
 public class AlkahestRecipeWrapper {
+
     public ItemStack item = null;
     public int yield = 0;
     public int cost = 0;
@@ -39,12 +42,8 @@ public class AlkahestRecipeWrapper {
                 return r;
             }
 
-        } catch (NoSuchMethodException
-                | SecurityException
-                | InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException e) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
             // oops
         }
         return null;

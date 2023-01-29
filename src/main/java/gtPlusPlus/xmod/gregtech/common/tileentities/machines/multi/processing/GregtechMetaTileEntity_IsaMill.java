@@ -7,10 +7,25 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -32,18 +47,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.GT_MetaTileEntity_Hatch_MillingBalls;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IsaMill>
         implements ISurvivalConstructable {
@@ -55,8 +58,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     private static final IIconContainer frontFaceActive = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5");
     private static final IIconContainer frontFace = new CustomIcon("iconsets/Grinder/GRINDER5");
 
-    private final ArrayList<GT_MetaTileEntity_Hatch_MillingBalls> mMillingBallBuses =
-            new ArrayList<GT_MetaTileEntity_Hatch_MillingBalls>();
+    private final ArrayList<GT_MetaTileEntity_Hatch_MillingBalls> mMillingBallBuses = new ArrayList<GT_MetaTileEntity_Hatch_MillingBalls>();
     private static final DamageSource mIsaMillDamageSource = new DamageSource("gtpp.grinder").setDamageBypassesArmor();
 
     public GregtechMetaTileEntity_IsaMill(int aID, String aName, String aNameRegional) {
@@ -70,36 +72,28 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Large Grinding Machine")
-                .addInfo("Grind ores.")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 7, false)
-                .addController("Front Center")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Large Grinding Machine")
+                .addInfo("Grind ores.").addPollutionAmount(getPollutionPerSecond(null)).addSeparator()
+                .beginStructureBlock(3, 3, 7, false).addController("Front Center")
                 .addCasingInfo("IsaMill Exterior Casing", 40)
                 .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
                 .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
                 .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
-                .addOtherStructurePart("Milling Ball Hatch", "Any Casing")
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addOtherStructurePart("Milling Ball Hatch", "Any Casing").addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IsaMill> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IsaMill>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC"},
-                        {"D~D", "CGC", "CGC", "CGC", "CGC", "CGC", "CCC"},
-                        {"DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC"},
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IsaMill>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" },
+                                    { "D~D", "CGC", "CGC", "CGC", "CGC", "CGC", "CCC" },
+                                    { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             ofChain(
@@ -107,25 +101,18 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                                             .adder(GregtechMetaTileEntity_IsaMill::addMillingBallsHatch)
                                             .hatchClass(GT_MetaTileEntity_Hatch_MillingBalls.class)
                                             .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
-                                            .casingIndex(getCasingTextureIndex())
-                                            .dot(1)
-                                            .build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_IsaMill.class)
-                                            .atLeast(
-                                                    InputBus,
-                                                    OutputBus,
-                                                    InputHatch,
-                                                    OutputHatch,
-                                                    Maintenance,
-                                                    Energy,
-                                                    Muffler)
-                                            .casingIndex(getCasingTextureIndex())
-                                            .dot(1)
-                                            .build(),
+                                            .casingIndex(getCasingTextureIndex()).dot(1).build(),
+                                    buildHatchAdder(GregtechMetaTileEntity_IsaMill.class).atLeast(
+                                            InputBus,
+                                            OutputBus,
+                                            InputHatch,
+                                            OutputHatch,
+                                            Maintenance,
+                                            Energy,
+                                            Muffler).casingIndex(getCasingTextureIndex()).dot(1).build(),
                                     onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                     .addElement('D', ofBlock(getIntakeBlock(), getIntakeMeta()))
-                    .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
-                    .build();
+                    .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta())).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -261,7 +248,9 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                     }
                 } else if (aFoundEntity.getHealth() > 0) {
                     EntityUtils.doDamage(
-                            aFoundEntity, mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+                            aFoundEntity,
+                            mIsaMillDamageSource,
+                            Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
                     if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                         generateParticles(aFoundEntity);
                     }
@@ -269,6 +258,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
             }
         }
     }
+
     // 20 armor points add 80% damage reduction, more points add more damage reduction
     private int getPlayerDamageValue(EntityPlayer player, int damage) {
         int armorValue = player.getTotalArmorValue();
@@ -406,11 +396,8 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 
     @Override
     public String[] getExtraInfoData() {
-        return new String[] {
-            "IsaMill Grinding Machine",
-            "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance"
-        };
+        return new String[] { "IsaMill Grinding Machine", "Current Efficiency: " + (mEfficiency / 100) + "%",
+                getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override
@@ -434,7 +421,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     }
 
     /*
-     *  Milling Ball Handling
+     * Milling Ball Handling
      */
 
     @Override
@@ -501,14 +488,8 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean checkRecipeGeneric(
-            ItemStack[] aItemInputs,
-            FluidStack[] aFluidInputs,
-            int aMaxParallelRecipes,
-            long aEUPercent,
-            int aSpeedBonusPercent,
-            int aOutputChanceRoll,
-            GT_Recipe aRecipe) {
+    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
+            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
         // Based on the Processing Array. A bit overkill, but very flexible.
 

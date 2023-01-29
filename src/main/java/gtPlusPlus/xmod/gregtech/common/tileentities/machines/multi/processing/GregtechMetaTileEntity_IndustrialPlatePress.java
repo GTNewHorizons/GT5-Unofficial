@@ -6,10 +6,18 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -24,15 +32,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialPlatePress
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialPlatePress extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress> implements ISurvivalConstructable {
 
     private boolean mFormingMode = false;
     private int mCasing;
@@ -59,22 +61,14 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for Advanced Bending & Forming")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for Advanced Bending & Forming")
                 .addInfo("500% faster than using single block machines of the same voltage")
-                .addInfo("Processes four items per voltage tier")
-                .addInfo("Circuit for recipe goes in the Input Bus")
+                .addInfo("Processes four items per voltage tier").addInfo("Circuit for recipe goes in the Input Bus")
                 .addInfo("Each Input Bus can have a different Circuit/Shape!")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center")
-                .addCasingInfo("Material Press Machine Casings", 10)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
+                .addController("Front Center").addCasingInfo("Material Press Machine Casings", 10)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -83,17 +77,15 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialPlatePress>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialPlatePress.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(50)
-                                    .dot(1)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler).casingIndex(50).dot(1)
                                     .buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 4))))
                     .build();
@@ -161,7 +153,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
                     (4 * GT_Utility.getTier(this.getMaxInputVoltage())),
                     100,
                     500,
-                    10000)) return true;
+                    10000))
+                return true;
         }
         return false;
     }

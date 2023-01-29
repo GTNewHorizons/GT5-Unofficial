@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -8,8 +11,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_RedstoneBase {
 
@@ -33,8 +34,8 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
                 "Right-click with Screwdriver to change Button Design");
     }
 
-    public GT_MetaTileEntity_RedstoneButtonPanel(
-            final String aName, String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_RedstoneButtonPanel(final String aName, String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, 5, 0, aDescription, aTextures);
     }
 
@@ -67,8 +68,8 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
     }
 
     @Override
-    public boolean onRightclick(
-            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+            float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             if (getBaseMetaTileEntity().isServerSide()) {
                 mUpdate = 2;
@@ -98,24 +99,24 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
                         switch (aSide) {
                             case 0:
                             case 1:
-                                mRedstoneStrength =
-                                        (byte) (mRedstoneStrength ^ (1 << (((byte) (aX * 2) + 2 * (byte) (aZ * 2)))));
+                                mRedstoneStrength = (byte) (mRedstoneStrength
+                                        ^ (1 << (((byte) (aX * 2) + 2 * (byte) (aZ * 2)))));
                                 break;
                             case 2:
-                                mRedstoneStrength = (byte)
-                                        (mRedstoneStrength ^ (1 << (((byte) (2 - aX * 2) + 2 * (byte) (2 - aY * 2)))));
+                                mRedstoneStrength = (byte) (mRedstoneStrength
+                                        ^ (1 << (((byte) (2 - aX * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
                             case 3:
-                                mRedstoneStrength = (byte)
-                                        (mRedstoneStrength ^ (1 << (((byte) (aX * 2) + 2 * (byte) (2 - aY * 2)))));
+                                mRedstoneStrength = (byte) (mRedstoneStrength
+                                        ^ (1 << (((byte) (aX * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
                             case 4:
-                                mRedstoneStrength = (byte)
-                                        (mRedstoneStrength ^ (1 << (((byte) (aZ * 2) + 2 * (byte) (2 - aY * 2)))));
+                                mRedstoneStrength = (byte) (mRedstoneStrength
+                                        ^ (1 << (((byte) (aZ * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
                             case 5:
-                                mRedstoneStrength = (byte)
-                                        (mRedstoneStrength ^ (1 << (((byte) (2 - aZ * 2) + 2 * (byte) (2 - aY * 2)))));
+                                mRedstoneStrength = (byte) (mRedstoneStrength
+                                        ^ (1 << (((byte) (2 - aZ * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
                         }
                         break;
@@ -156,12 +157,12 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
                 mRedstoneStrength = 0;
             }
             for (byte i = 0; i < 6; i++) {
-                getBaseMetaTileEntity()
-                        .setStrongOutputRedstoneSignal(
-                                i, i == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
-                getBaseMetaTileEntity()
-                        .setInternalOutputRedstoneSignal(
-                                i, i == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
+                getBaseMetaTileEntity().setStrongOutputRedstoneSignal(
+                        i,
+                        i == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
+                getBaseMetaTileEntity().setInternalOutputRedstoneSignal(
+                        i,
+                        i == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
             }
         }
     }
@@ -190,72 +191,48 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[] {
-                Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                new GT_RenderedTexture(sIconList[mType * 16 + mRedstoneStrength])
-            };
+            return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+                    new GT_RenderedTexture(sIconList[mType * 16 + mRedstoneStrength]) };
         }
-        return this.mTextures[
-                (aActive || hasRedstoneSignal() ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Main_Off)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Main_Off) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Main_On)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Main_On) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Main_Off)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Main_Off) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Main_On)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Main_On) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Main_Off)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Main_Off) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Main_On)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Main_On) };
     }
 }

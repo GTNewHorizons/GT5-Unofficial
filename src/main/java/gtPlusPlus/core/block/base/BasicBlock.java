@@ -1,14 +1,15 @@
 package gtPlusPlus.core.block.base;
 
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 
 public class BasicBlock extends BlockContainer {
 
@@ -37,6 +38,7 @@ public class BasicBlock extends BlockContainer {
     }
 
     public static enum BlockTypes {
+
         STANDARD("blockBlock", "pickaxe", soundTypeMetal),
         FRAME("blockFrameGt", "wrench", soundTypeMetal),
         ORE("blockStone", "pickaxe", soundTypeStone);
@@ -70,8 +72,8 @@ public class BasicBlock extends BlockContainer {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 }

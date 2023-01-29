@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -14,12 +11,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.world.BlockEvent;
 
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
+
 /**
  * The Stats for GT Tools. Not including any Material Modifiers.
  * <p/>
  * And this is supposed to not have any ItemStack Parameters as these are generic Stats.
  */
 public interface Interface_ToolStats extends IToolStats {
+
     /**
      * Called when aPlayer crafts this Tool
      */
@@ -44,7 +47,8 @@ public interface Interface_ToolStats extends IToolStats {
     public int getToolDamagePerDropConversion();
 
     /**
-     * @return Damage the Tool receives when being used as Container Item. 100 is one use, however it is usually 8 times more than normal.
+     * @return Damage the Tool receives when being used as Container Item. 100 is one use, however it is usually 8 times
+     *         more than normal.
      */
     @Override
     public int getToolDamagePerContainerCraft();
@@ -56,7 +60,8 @@ public interface Interface_ToolStats extends IToolStats {
     public int getToolDamagePerEntityAttack();
 
     /**
-     * @return Basic Quality of the Tool, 0 is normal. If increased, it will increase the general quality of all Tools of this Type. Decreasing is also possible.
+     * @return Basic Quality of the Tool, 0 is normal. If increased, it will increase the general quality of all Tools
+     *         of this Type. Decreasing is also possible.
      */
     @Override
     public int getBaseQuality();
@@ -130,7 +135,8 @@ public interface Interface_ToolStats extends IToolStats {
     public boolean isWeapon();
 
     /**
-     * @return If this Tool is a Ranged Weapon. Return false at isWeapon unless you have a Blade attached to your Bow/Gun or something
+     * @return If this Tool is a Ranged Weapon. Return false at isWeapon unless you have a Blade attached to your
+     *         Bow/Gun or something
      */
     @Override
     public boolean isRangedWeapon();
@@ -142,10 +148,12 @@ public interface Interface_ToolStats extends IToolStats {
     public boolean isMiningTool();
 
     /**
-     * aBlock.getHarvestTool(aMetaData) can return the following Values for example.
-     * "axe", "pickaxe", "sword", "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop", "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
+     * aBlock.getHarvestTool(aMetaData) can return the following Values for example. "axe", "pickaxe", "sword",
+     * "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop",
+     * "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
      *
-     * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
+     * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this
+     *         check.
      */
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData);
@@ -156,18 +164,8 @@ public interface Interface_ToolStats extends IToolStats {
      * @return the Amount of modified Items.
      */
     @Override
-    public int convertBlockDrops(
-            List<ItemStack> aDrops,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            byte aMetaData,
-            int aFortune,
-            boolean aSilkTouch,
-            BlockEvent.HarvestDropsEvent aEvent);
+    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
+            int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.
@@ -179,15 +177,15 @@ public interface Interface_ToolStats extends IToolStats {
      * @return the Damage actually done to the Mob.
      */
     @Override
-    public float getNormalDamageAgainstEntity(
-            float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
+    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
+            EntityPlayer aPlayer);
 
     /**
      * @return the Damage actually done to the Mob.
      */
     @Override
-    public float getMagicDamageAgainstEntity(
-            float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
+    public float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
+            EntityPlayer aPlayer);
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack);

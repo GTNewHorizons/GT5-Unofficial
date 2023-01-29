@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.bop.blocks.pine;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
-import gtPlusPlus.xmod.bop.world.features.trees.WorldGenPineTree;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -12,10 +9,15 @@ import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
+import gtPlusPlus.xmod.bop.world.features.trees.WorldGenPineTree;
+
 public class SaplingPineTree extends SaplingBase {
 
     public SaplingPineTree() {
-        super("Pine Sapling", "pine", new String[] {"pine"});
+        super("Pine Sapling", "pine", new String[] { "pine" });
     }
 
     @Override

@@ -1,13 +1,16 @@
 package gtPlusPlus.xmod.ic2.block.kieticgenerator;
 
-import ic2.core.block.TileEntityBlock;
 import java.io.DataInput;
 import java.io.IOException;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
+import ic2.core.block.TileEntityBlock;
+
 public abstract class IC2_TEComponent {
+
     protected final TileEntityBlock parent;
 
     public IC2_TEComponent(final TileEntityBlock parent) {

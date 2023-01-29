@@ -1,5 +1,9 @@
 package gtPlusPlus.core.block;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraftforge.fluids.Fluid;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockCompressedObsidian;
 import gtPlusPlus.core.block.general.BlockNet;
@@ -30,9 +34,6 @@ import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.fluids.Fluid;
 
 public final class ModBlocks {
 
@@ -149,8 +150,13 @@ public final class ModBlocks {
         blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);
         blockPlayerDoorCustom_Glass = new PlayerDoors(Material.glass, "door_glass", false);
         blockPlayerDoorCustom_Ice = new PlayerDoors(Material.ice, "door_ice", false);
-        blockPlayerDoorCustom_Cactus =
-                new PlayerDoors(Material.cactus, "door_cactus", false, 0.6f, Block.soundTypeGrass, "Cactus");
+        blockPlayerDoorCustom_Cactus = new PlayerDoors(
+                Material.cactus,
+                "door_cactus",
+                false,
+                0.6f,
+                Block.soundTypeGrass,
+                "Cactus");
 
         // blockCustomSuperLight = new BlockSuperLight();
         blockCustomJukebox = new Machine_SuperJukebox();

@@ -6,6 +6,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 
 /**
  * Made this to get rid of deprecation warnings <i>everywhere</i>.
+ * 
  * @author Alkalus
  *
  */

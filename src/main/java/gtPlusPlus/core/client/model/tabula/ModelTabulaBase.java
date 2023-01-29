@@ -1,13 +1,13 @@
 package gtPlusPlus.core.client.model.tabula;
 
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Pair;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Pair;
+
 /**
- * ModelEggBox - Alkalus
- * Created using Tabula 4.1.1
+ * ModelEggBox - Alkalus Created using Tabula 4.1.1
  */
 public abstract class ModelTabulaBase extends ModelBase {
 

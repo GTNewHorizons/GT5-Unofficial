@@ -1,9 +1,5 @@
 package gtPlusPlus.core.util.reflect;
 
-import com.google.common.reflect.ClassPath;
-import com.gtnewhorizon.gtnhlib.reflect.Fields;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.data.StringUtils;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -19,9 +15,16 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.ArrayUtils;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
+import com.google.common.reflect.ClassPath;
+import com.gtnewhorizon.gtnhlib.reflect.Fields;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.data.StringUtils;
+
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ReflectionUtils {
 
     public static Map<String, Class<?>> mCachedClasses = new LinkedHashMap<>();
@@ -82,8 +85,10 @@ public class ReflectionUtils {
     }
 
     private static Fields.ClassFields.Field cacheAccessor(Field f) {
-        return mCachedFieldAccessors.computeIfAbsent(f, (field) -> Fields.ofClass(field.getDeclaringClass())
-                .getUntypedField(Fields.LookupType.DECLARED_IN_HIERARCHY, field.getName()));
+        return mCachedFieldAccessors.computeIfAbsent(
+                f,
+                (field) -> Fields.ofClass(field.getDeclaringClass())
+                        .getUntypedField(Fields.LookupType.DECLARED_IN_HIERARCHY, field.getName()));
     }
 
     private static boolean cacheClass(Class<?> aClass) {
@@ -131,8 +136,8 @@ public class ReflectionUtils {
         if (aConstructor == null) {
             return false;
         }
-        CachedConstructor y =
-                mCachedConstructors.get(aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()));
+        CachedConstructor y = mCachedConstructors
+                .get(aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()));
         if (y == null) {
             mCachedConstructors.put(
                     aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()),
@@ -144,6 +149,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Constructor} object.
+     * 
      * @param aClass - Class containing the Constructor.
      * @param aTypes - Varags Class Types for objects constructor.
      * @return - Valid, non-final, {@link Method} object, or {@link null}.
@@ -172,6 +178,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Class} object.
+     * 
      * @param aClassCanonicalName - The canonical name of the underlying class.
      * @return - Valid, {@link Class} object, or {@link null}.
      */
@@ -192,9 +199,10 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Method} object. Wraps {@link #getMethod(Class, String, Class...)}.
-     * @param aObject - Object containing the Method.
+     * 
+     * @param aObject     - Object containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
-     * @param aTypes - Class Array of Types for {@link Method}'s constructor.
+     * @param aTypes      - Class Array of Types for {@link Method}'s constructor.
      * @return - Valid, non-final, {@link Method} object, or {@link null}.
      */
     public static Method getMethod(Object aObject, String aMethodName, Class[] aTypes) {
@@ -203,9 +211,10 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Method} object.
-     * @param aClass - Class containing the Method.
+     * 
+     * @param aClass      - Class containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
-     * @param aTypes - Varags Class Types for {@link Method}'s constructor.
+     * @param aTypes      - Varags Class Types for {@link Method}'s constructor.
      * @return - Valid, non-final, {@link Method} object, or {@link null}.
      */
     public static Method getMethod(Class<?> aClass, String aMethodName, Class<?>... aTypes) {
@@ -242,7 +251,8 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * @param aClass - Class containing the Method.
+     * 
+     * @param aClass     - Class containing the Method.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
      */
@@ -260,8 +270,7 @@ public class ReflectionUtils {
                     cacheField(aClass, u);
                     return u;
                 }
-            } catch (NoSuchFieldException e) {
-            }
+            } catch (NoSuchFieldException e) {}
             return null;
 
         } else {
@@ -286,7 +295,8 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * @param aInstance - {@link Object} to get the field instance from.
+     * 
+     * @param aInstance  - {@link Object} to get the field instance from.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
      */
@@ -308,6 +318,7 @@ public class ReflectionUtils {
 
     /**
      * Returns the class of the objects type parameter
+     * 
      * @param o - Object to examine paramters on
      * @return - a Class<?> or null
      */
@@ -320,15 +331,13 @@ public class ReflectionUtils {
     }
 
     public static void makeFieldAccessible(final Field field) {
-        if (!Modifier.isPublic(field.getModifiers())
-                || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
+        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
             field.setAccessible(true);
         }
     }
 
     public static void makeMethodAccessible(final Method field) {
-        if (!Modifier.isPublic(field.getModifiers())
-                || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
+        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
             field.setAccessible(true);
         }
     }
@@ -336,6 +345,7 @@ public class ReflectionUtils {
     /**
      * Get the method name for a depth in call stack. <br />
      * Utility function
+     * 
      * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
      * @return Method name
      */
@@ -468,8 +478,8 @@ public class ReflectionUtils {
         if (objectInstance == null || methodName == null || parameters == null || values == null) {
             return false;
         }
-        Class<?> mLocalClass =
-                (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
+        Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance
+                : objectInstance.getClass());
         Logger.REFLECTION(
                 "Trying to invoke " + methodName + " on an instance of " + mLocalClass.getCanonicalName() + ".");
         try {
@@ -493,8 +503,7 @@ public class ReflectionUtils {
             return false;
         }
         String methodName = method.getName();
-        String classname = objectInstance != null
-                ? objectInstance.getClass().getCanonicalName()
+        String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName()
                 : method.getDeclaringClass().getCanonicalName();
         Logger.REFLECTION("Trying to invoke " + methodName + " on an instance of " + classname + ".");
         try {
@@ -522,8 +531,7 @@ public class ReflectionUtils {
             return false;
         }
         String methodName = method.getName();
-        String classname = objectInstance != null
-                ? objectInstance.getClass().getCanonicalName()
+        String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName()
                 : method.getDeclaringClass().getCanonicalName();
         Logger.REFLECTION("Trying to invoke " + methodName + " on an instance of " + classname + ".");
         try {
@@ -545,8 +553,8 @@ public class ReflectionUtils {
         if (objectInstance == null || methodName == null || parameters == null || values == null) {
             return false;
         }
-        Class<?> mLocalClass =
-                (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
+        Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance
+                : objectInstance.getClass());
         Logger.REFLECTION(
                 "Trying to invoke " + methodName + " on an instance of " + mLocalClass.getCanonicalName() + ".");
         try {
@@ -559,10 +567,7 @@ public class ReflectionUtils {
             } else {
                 Logger.REFLECTION(methodName + " is null.");
             }
-        } catch (NoSuchMethodException
-                | SecurityException
-                | IllegalAccessException
-                | IllegalArgumentException
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
             Logger.REFLECTION(
                     "Failed to Dynamically invoke " + methodName + " on an object of type: " + mLocalClass.getName());
@@ -577,8 +582,7 @@ public class ReflectionUtils {
             return false;
         }
         String methodName = method.getName();
-        String classname = objectInstance != null
-                ? objectInstance.getClass().getCanonicalName()
+        String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName()
                 : method.getDeclaringClass().getCanonicalName();
         Logger.REFLECTION("Trying to invoke " + methodName + " on an instance of " + classname + ".");
         try {
@@ -595,8 +599,8 @@ public class ReflectionUtils {
         if (objectInstance == null || methodName == null || parameters == null || values == null) {
             return false;
         }
-        Class<?> mLocalClass =
-                (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
+        Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance
+                : objectInstance.getClass());
         Logger.REFLECTION(
                 "Trying to invoke " + methodName + " on an instance of " + mLocalClass.getCanonicalName() + ".");
         try {
@@ -607,10 +611,7 @@ public class ReflectionUtils {
             } else {
                 Logger.REFLECTION(methodName + " is null.");
             }
-        } catch (NoSuchMethodException
-                | SecurityException
-                | IllegalAccessException
-                | IllegalArgumentException
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
             Logger.REFLECTION(
                     "Failed to Dynamically invoke " + methodName + " on an object of type: " + mLocalClass.getName());
@@ -625,9 +626,7 @@ public class ReflectionUtils {
      */
 
     /*
-     *
      * Below Code block is used for determining generic types associated with type<E>
-     *
      */
 
     // https://xebia.com/blog/acessing-generic-types-at-runtime-in-java/
@@ -692,9 +691,8 @@ public class ReflectionUtils {
     private static Class<?> browseNestedTypes(Object instance, TypeVariable<?> actualType) {
         Class<?> instanceClass = instance.getClass();
         List<Class<?>> nestedOuterTypes = new LinkedList<Class<?>>();
-        for (Class<?> enclosingClass = instanceClass.getEnclosingClass();
-                enclosingClass != null;
-                enclosingClass = enclosingClass.getEnclosingClass()) {
+        for (Class<?> enclosingClass = instanceClass.getEnclosingClass(); enclosingClass
+                != null; enclosingClass = enclosingClass.getEnclosingClass()) {
             try {
                 Field this$0 = instanceClass.getDeclaredField("this$0");
                 Object outerInstance = this$0.get(instance);
@@ -737,9 +735,7 @@ public class ReflectionUtils {
     }
 
     /*
-     *
      * End of Generics Block
-     *
      */
 
     private static Field getField_Internal(final Class<?> clazz, final String fieldName) throws NoSuchFieldException {
@@ -766,9 +762,8 @@ public class ReflectionUtils {
     }
 
     /**
-     * if (isPresent("com.optionaldependency.DependencyClass")) ||
-     * This block will never execute when the dependency is not present. There is
-     * therefore no more risk of code throwing NoClassDefFoundException.
+     * if (isPresent("com.optionaldependency.DependencyClass")) || This block will never execute when the dependency is
+     * not present. There is therefore no more risk of code throwing NoClassDefFoundException.
      */
     private static boolean isClassPresent(final String className) {
         try {
@@ -781,8 +776,8 @@ public class ReflectionUtils {
     }
 
     @Deprecated
-    public static Method getMethodViaReflection(
-            final Class<?> lookupClass, final String methodName, final boolean invoke) throws Exception {
+    public static Method getMethodViaReflection(final Class<?> lookupClass, final String methodName,
+            final boolean invoke) throws Exception {
         final Class<? extends Class> lookup = lookupClass.getClass();
         final Method m = lookup.getDeclaredMethod(methodName);
         m.setAccessible(true); // Abracadabra
@@ -868,8 +863,9 @@ public class ReflectionUtils {
     }
 
     private static void dumpClassInfo(Class<?> aClass) {
-        Logger.INFO("We ran into an error processing reflection in " + aClass.getName()
-                + ", dumping all data for debugging.");
+        Logger.INFO(
+                "We ran into an error processing reflection in " + aClass.getName()
+                        + ", dumping all data for debugging.");
         // Get the methods
         Method[] methods = aClass.getDeclaredMethods();
         Field[] fields = aClass.getDeclaredFields();
@@ -877,8 +873,8 @@ public class ReflectionUtils {
 
         Logger.INFO("Dumping all Methods.");
         for (Method method : methods) {
-            System.out.println(
-                    method.getName() + " | " + StringUtils.getDataStringFromArray(method.getParameterTypes()));
+            System.out
+                    .println(method.getName() + " | " + StringUtils.getDataStringFromArray(method.getParameterTypes()));
         }
         Logger.INFO("Dumping all Fields.");
         for (Field f : fields) {
@@ -886,8 +882,11 @@ public class ReflectionUtils {
         }
         Logger.INFO("Dumping all Constructors.");
         for (Constructor<?> c : consts) {
-            System.out.println(c.getName() + " | " + c.getParameterCount() + " | "
-                    + StringUtils.getDataStringFromArray(c.getParameterTypes()));
+            System.out.println(
+                    c.getName() + " | "
+                            + c.getParameterCount()
+                            + " | "
+                            + StringUtils.getDataStringFromArray(c.getParameterTypes()));
         }
     }
 
@@ -922,9 +921,7 @@ public class ReflectionUtils {
                 try {
                     final Object o = constructor.newInstance();
                     return (Class<?>) o;
-                } catch (InstantiationException
-                        | IllegalAccessException
-                        | IllegalArgumentException
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -966,8 +963,10 @@ public class ReflectionUtils {
                         for (Class<?> h : y) {
                             Logger.REFLECTION("Found hidden inner class: " + h.getCanonicalName());
                             if (h.getSimpleName().toLowerCase().equals(aData[aData.length - 1].toLowerCase())) {
-                                Logger.REFLECTION("Found correct class. [" + aData[aData.length - 1]
-                                        + "] Caching at correct location: " + string);
+                                Logger.REFLECTION(
+                                        "Found correct class. [" + aData[aData.length - 1]
+                                                + "] Caching at correct location: "
+                                                + string);
                                 Logger.REFLECTION("Found at location: " + h.getCanonicalName());
                                 ReflectionUtils.mCachedClasses.put(string, h);
                                 aClass = h;
@@ -1017,8 +1016,7 @@ public class ReflectionUtils {
     public static <T> T getFieldValue(Field field, Object instance) {
         try {
             return (T) field.get(instance);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-        }
+        } catch (IllegalArgumentException | IllegalAccessException e) {}
         return null;
     }
 
@@ -1029,9 +1027,7 @@ public class ReflectionUtils {
             if (aInstance != null) {
                 return aInstance;
             }
-        } catch (InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
             e.printStackTrace();
         }

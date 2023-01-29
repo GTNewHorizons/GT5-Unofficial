@@ -2,13 +2,14 @@ package gtPlusPlus.everglades.block;
 
 import static gtPlusPlus.everglades.dimension.Dimension_Everglades.*;
 
+import net.minecraft.init.Blocks;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.base.BlockBaseFluid;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.everglades.item.ItemBlockToxicEverglades;
 import gtPlusPlus.everglades.item.ItemEvergladesPortalTrigger;
-import net.minecraft.init.Blocks;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class DarkWorldContentLoader {
 
@@ -25,19 +26,15 @@ public class DarkWorldContentLoader {
 
         // Fluids
         SLUDGE = (BlockDarkWorldSludgeFluid) new BlockDarkWorldSludgeFluid("sludge", Utils.rgbtoHexValue(30, 130, 30))
-                .setDensity(1800)
-                .setGaseous(false)
-                .setLuminosity(2)
-                .setViscosity(25000)
-                .setTemperature(300);
+                .setDensity(1800).setGaseous(false).setLuminosity(2).setViscosity(25000).setTemperature(300);
         FluidRegistry.registerFluid(SLUDGE);
 
         return true;
     }
 
     public static synchronized boolean initItems() {
-        portalItem = (ItemEvergladesPortalTrigger)
-                (new ItemEvergladesPortalTrigger().setUnlocalizedName("everglades.trigger"));
+        portalItem = (ItemEvergladesPortalTrigger) (new ItemEvergladesPortalTrigger()
+                .setUnlocalizedName("everglades.trigger"));
         GameRegistry.registerItem(portalItem, "everglades.trigger");
         return true;
     }
@@ -45,10 +42,8 @@ public class DarkWorldContentLoader {
     public static synchronized boolean initBlocks() {
 
         // Create Block Instances
-        blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, BlockDarkWorldSludgeFluid.SLUDGE)
-                .setLightLevel(2f)
-                .setLightOpacity(1)
-                .setBlockName("fluidSludge");
+        blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, BlockDarkWorldSludgeFluid.SLUDGE).setLightLevel(2f)
+                .setLightOpacity(1).setBlockName("fluidSludge");
         portalBlock = new BlockEvergladesPortal();
         blockTopLayer = new BlockDarkWorldGround();
         blockSecondLayer = new BlockDarkWorldPollutedDirt();

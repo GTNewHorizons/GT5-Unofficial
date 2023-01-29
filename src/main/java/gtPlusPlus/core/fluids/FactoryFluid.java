@@ -1,10 +1,11 @@
 package gtPlusPlus.core.fluids;
 
-import gregtech.api.GregTech_API;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.Fluid;
+
+import gregtech.api.GregTech_API;
+import gtPlusPlus.core.lib.CORE;
 
 public class FactoryFluid extends Fluid implements Runnable {
 
@@ -37,16 +38,8 @@ public class FactoryFluid extends Fluid implements Runnable {
                 aRGBa);
     }
 
-    public FactoryFluid(
-            String fluidName,
-            Block aBlock,
-            int luminosity,
-            int density,
-            int temp,
-            int viscosity,
-            boolean gas,
-            EnumRarity aRarity,
-            final short[] aRGBa) {
+    public FactoryFluid(String fluidName, Block aBlock, int luminosity, int density, int temp, int viscosity,
+            boolean gas, EnumRarity aRarity, final short[] aRGBa) {
         super(fluidName);
         this.mRGBa = aRGBa;
         this.setBlock(aBlock);
@@ -62,8 +55,7 @@ public class FactoryFluid extends Fluid implements Runnable {
 
     @Override
     public int getColor() {
-        return (Math.max(0, Math.min(255, this.mRGBa[0])) << 16)
-                | (Math.max(0, Math.min(255, this.mRGBa[1])) << 8)
+        return (Math.max(0, Math.min(255, this.mRGBa[0])) << 16) | (Math.max(0, Math.min(255, this.mRGBa[1])) << 8)
                 | Math.max(0, Math.min(255, this.mRGBa[2]));
     }
 

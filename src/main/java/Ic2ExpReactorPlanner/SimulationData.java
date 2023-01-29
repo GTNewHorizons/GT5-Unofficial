@@ -1,12 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package Ic2ExpReactorPlanner;
 
 /**
  * Simple container for data from a simulation of an IC2 nuclear reactor, to allow comparison wtih another simulation.
+ * 
  * @author Brian McCloud
  */
 public class SimulationData {

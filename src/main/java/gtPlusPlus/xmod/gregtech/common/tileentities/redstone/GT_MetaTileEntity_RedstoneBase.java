@@ -1,47 +1,36 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_ItemStack;
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_TieredMachineBlock {
 
     protected int mOpenerCount;
 
-    public GT_MetaTileEntity_RedstoneBase(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aInvSlotCount,
-            String aDescription,
-            ITexture... aTextures) {
+    public GT_MetaTileEntity_RedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_RedstoneBase(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aInvSlotCount,
-            String[] aDescription,
-            ITexture... aTextures) {
+    public GT_MetaTileEntity_RedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_RedstoneBase(
-            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_RedstoneBase(String aName, int aTier, int aInvSlotCount, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_RedstoneBase(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_RedstoneBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -117,6 +106,6 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, CORE.GT_Tooltip};
+        return new String[] { this.mDescription, CORE.GT_Tooltip };
     }
 }

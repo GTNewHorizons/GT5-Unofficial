@@ -1,21 +1,24 @@
 package gtPlusPlus.core.gui.machine;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_EggBox;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityEggBox;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUI_EggBox extends GuiContainer {
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/FishTrap.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/FishTrap.png");
 
     public GUI_EggBox(final InventoryPlayer player_inventory, final TileEntityEggBox te) {
         super(new Container_EggBox(player_inventory, te));
@@ -24,8 +27,8 @@ public class GUI_EggBox extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(final int i, final int j) {
         // this.fontRendererObj.drawString(I18n.format("Workbench", new Object[0]), 28, 6, 4210752);
-        this.fontRendererObj.drawString(
-                I18n.format("container.EggBox", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj
+                .drawString(I18n.format("container.EggBox", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override

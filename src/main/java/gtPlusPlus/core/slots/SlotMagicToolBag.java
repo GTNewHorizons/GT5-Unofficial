@@ -1,10 +1,11 @@
 package gtPlusPlus.core.slots;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.FoodUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.minecraft.FoodUtils;
 
 public class SlotMagicToolBag extends SlotGtTool {
 

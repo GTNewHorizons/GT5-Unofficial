@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -8,8 +11,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.HashSet;
-import java.util.Set;
 
 public class RecipeGen_MetalRecipe extends RecipeGen_Base {
 
@@ -47,10 +48,10 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                     material.getSmallDust(2),
                     (int) Math.max(material.getMass() / 8L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1)))
             if (GT_Values.RA.addCutterRecipe(
@@ -59,10 +60,10 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                     null,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
                 && ItemUtils.checkForInvalidItems(material.getHotIngot(1)))
@@ -71,30 +72,41 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                     material.getIngot(1),
                     (int) Math.max(material.getMass() * 3L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1))
                 && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
             if (GT_Values.RA.addForgeHammerRecipe(
-                    material.getRod(2), material.getLongRod(1), (int) Math.max(material.getMass(), 1L), 16)) {
+                    material.getRod(2),
+                    material.getLongRod(1),
+                    (int) Math.max(material.getMass(), 1L),
+                    16)) {
                 Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
             GT_Values.RA.addCutterRecipe(
-                    material.getLongRod(1), material.getRod(2), null, (int) Math.max(material.getMass(), 1L), 4);
+                    material.getLongRod(1),
+                    material.getRod(2),
+                    null,
+                    (int) Math.max(material.getMass(), 1L),
+                    4);
         }
 
         if (ItemUtils.checkForInvalidItems(material.getBolt(1)) && ItemUtils.checkForInvalidItems(material.getScrew(1)))
             if (GT_Values.RA.addLatheRecipe(
-                    material.getBolt(1), material.getScrew(1), null, (int) Math.max(material.getMass() / 8L, 1L), 4)) {
-                Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                    material.getBolt(1),
+                    material.getScrew(1),
+                    null,
+                    (int) Math.max(material.getMass() / 8L, 1L),
+                    4)) {
+                        Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
     }
 }

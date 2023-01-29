@@ -1,5 +1,14 @@
 package gtPlusPlus.xmod.forestry.bees.items.output;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,13 +18,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_DropType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GTPP_Drop extends Item {
 
@@ -88,8 +90,8 @@ public class GTPP_Drop extends Item {
         return GTPP_DropType.get(stack.getItemDamage()).getName();
     }
 
-    private static final int[] sFluidOutputs =
-            new int[] {144, 136, 128, 120, 112, 104, 96, 88, 80, 72, 64, 48, 32, 16, 8, 4};
+    private static final int[] sFluidOutputs = new int[] { 144, 136, 128, 120, 112, 104, 96, 88, 80, 72, 64, 48, 32, 16,
+            8, 4 };
 
     public static void initDropsRecipes() {
         ItemStack tDrop;

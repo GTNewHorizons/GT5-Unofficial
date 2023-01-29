@@ -1,5 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -17,16 +29,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class StaticFields59 {
 
@@ -88,14 +90,19 @@ public class StaticFields59 {
             mPyrolyseRecipes = null;
         }
 
-        mCalculatePollutionReduction =
-                getMethod(GT_MetaTileEntity_Hatch_Muffler.class, "calculatePollutionReduction", int.class);
+        mCalculatePollutionReduction = getMethod(
+                GT_MetaTileEntity_Hatch_Muffler.class,
+                "calculatePollutionReduction",
+                int.class);
         Logger.INFO("[SH] Got Method: calculatePollutionReduction");
 
         // Yep...
         if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
             mAddFurnaceRecipe = getMethod(
-                    GT_ModHandler.class, "addSmeltingAndAlloySmeltingRecipe", ItemStack.class, ItemStack.class);
+                    GT_ModHandler.class,
+                    "addSmeltingAndAlloySmeltingRecipe",
+                    ItemStack.class,
+                    ItemStack.class);
             Logger.INFO("[SH] Got Method: addSmeltingAndAlloySmeltingRecipe");
         } else {
             mAddFurnaceRecipe = getMethod(
@@ -182,7 +189,7 @@ public class StaticFields59 {
         try {
             return (String[]) mDescriptionArray.get(aTile);
         } catch (IllegalArgumentException | IllegalAccessException e) {
-            return new String[] {aTile.mDescription};
+            return new String[] { aTile.mDescription };
         }
     }
 
@@ -211,8 +218,7 @@ public class StaticFields59 {
             proxyGT = Meta_GT_Proxy.mProxies[1];
         } else {
             try {
-                proxyGT = (client
-                        ? ProxyFinder.getClientProxy(GT_Mod.instance)
+                proxyGT = (client ? ProxyFinder.getClientProxy(GT_Mod.instance)
                         : ProxyFinder.getServerProxy(GT_Mod.instance));
             } catch (final ReflectiveOperationException e1) {
                 proxyGT = null;
@@ -228,8 +234,7 @@ public class StaticFields59 {
         if (proxyGT != null && proxyGT instanceof GT_Proxy) {
             try {
                 return ReflectionUtils.getField(proxyGT.getClass(), fieldName).get(proxyGT);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-            }
+            } catch (IllegalArgumentException | IllegalAccessException e) {}
         }
         return null;
     }

@@ -1,17 +1,19 @@
 package gtPlusPlus.api.objects.minecraft;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
 import gtPlusPlus.core.util.Utils;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 public class ThreadPooCollector extends Thread {
 
@@ -22,8 +24,7 @@ public class ThreadPooCollector extends Thread {
     private static long internalTickCounter = 0;
 
     private static final ThreadPooCollector mThread;
-    private static final HashMap<String, Pair<BlockPos, TileEntityPooCollector>> mPooCollectors =
-            new LinkedHashMap<String, Pair<BlockPos, TileEntityPooCollector>>();
+    private static final HashMap<String, Pair<BlockPos, TileEntityPooCollector>> mPooCollectors = new LinkedHashMap<String, Pair<BlockPos, TileEntityPooCollector>>();
 
     static {
         mThread = new ThreadPooCollector();
@@ -82,12 +83,12 @@ public class ThreadPooCollector extends Thread {
                                             int endX = p.xPos + 3;
                                             int endY = p.yPos + 5;
                                             int endZ = p.zPos + 3;
-                                            AxisAlignedBB box = AxisAlignedBB.getBoundingBox(
-                                                    startX, startY, startZ, endX, endY, endZ);
+                                            AxisAlignedBB box = AxisAlignedBB
+                                                    .getBoundingBox(startX, startY, startZ, endX, endY, endZ);
                                             if (box != null) {
                                                 @SuppressWarnings("unchecked")
-                                                List<EntityAnimal> animals =
-                                                        w.getEntitiesWithinAABB(EntityAnimal.class, box);
+                                                List<EntityAnimal> animals = w
+                                                        .getEntitiesWithinAABB(EntityAnimal.class, box);
                                                 if (animals != null && !animals.isEmpty()) {
                                                     pair.getValue().onPostTick(animals);
                                                 }

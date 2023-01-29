@@ -1,5 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+
+import team.chisel.carving.Carving;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -7,6 +13,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -18,9 +25,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import team.chisel.carving.Carving;
 
 public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMachine {
 
@@ -39,37 +43,37 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
                 1,
                 "Compressor.png",
                 "",
-                new ITexture[] {
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB)
-                });
+                new ITexture[] { new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                        new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
+                        new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
+                        new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
+                        new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                        new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
     }
 
-    public GregtechMetaTileEntity_AutoChisel(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GregtechMetaTileEntity_AutoChisel(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_AutoChisel(
-                this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
     @Override
     public String[] getDescription() {
-        String[] A = new String[] {
-            this.mDescription,
-            "What you want to chisel goes in slot 1",
-            "What you want to get goes in the special slot (bottom right)",
-            "If special slot is empty, first chisel result is used"
-        };
+        String[] A = new String[] { this.mDescription, "What you want to chisel goes in slot 1",
+                "What you want to get goes in the special slot (bottom right)",
+                "If special slot is empty, first chisel result is used" };
         return A;
     }
 
@@ -99,10 +103,9 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
-    protected boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return hasValidCache(aStack, this.getSpecialSlot(), false)
-                ? true
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
+        return hasValidCache(aStack, this.getSpecialSlot(), false) ? true
                 : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && hasChiselResults(aStack);
     }
 
@@ -180,12 +183,13 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        builder.widget(createProgressBar(
-                GT_UITextures.PROGRESSBAR_COMPRESS,
-                20,
-                ProgressBar.Direction.RIGHT,
-                new Pos2d(78, 24),
-                new Size(20, 18)));
+        builder.widget(
+                createProgressBar(
+                        GT_UITextures.PROGRESSBAR_COMPRESS,
+                        20,
+                        ProgressBar.Direction.RIGHT,
+                        new Pos2d(78, 24),
+                        new Size(20, 18)));
     }
 
     @Override

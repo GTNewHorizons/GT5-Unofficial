@@ -2,14 +2,15 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.preloader.DevHelper;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.preloader.DevHelper;
 
 public class ClassTransformer_Forge_ChunkLoading {
 
@@ -47,12 +48,11 @@ public class ClassTransformer_Forge_ChunkLoading {
 
         if (reader != null && writer != null && !doesMethodAlreadyExist) {
 
-            aChunkCoordIntPair = obfuscated
-                    ? DevHelper.getObfuscated("net/minecraft/world/ChunkCoordIntPair")
+            aChunkCoordIntPair = obfuscated ? DevHelper.getObfuscated("net/minecraft/world/ChunkCoordIntPair")
                     : "net/minecraft/world/ChunkCoordIntPair";
             aWorld = obfuscated ? DevHelper.getObfuscated("net/minecraft/world/World") : "net/minecraft/world/World";
-            aEntity =
-                    obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/Entity") : "net/minecraft/entity/Entity";
+            aEntity = obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/Entity")
+                    : "net/minecraft/entity/Entity";
 
             injectMethod("forceChunk");
             injectMethod("unforceChunk");
@@ -76,16 +76,17 @@ public class ClassTransformer_Forge_ChunkLoading {
     public void injectMethod(String aMethodName) {
         MethodVisitor mv;
         FMLRelaunchLog.log(
-                "[GT++ ASM] Chunkloading Patch", Level.INFO, "Injecting " + aMethodName + " into " + className + ".");
+                "[GT++ ASM] Chunkloading Patch",
+                Level.INFO,
+                "Injecting " + aMethodName + " into " + className + ".");
         if (aMethodName.equals("forceChunk")) {
 
-            mv = getWriter()
-                    .visitMethod(
-                            ACC_PUBLIC + ACC_STATIC,
-                            "forceChunk",
-                            "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L" + aChunkCoordIntPair + ";)V",
-                            null,
-                            null);
+            mv = getWriter().visitMethod(
+                    ACC_PUBLIC + ACC_STATIC,
+                    "forceChunk",
+                    "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L" + aChunkCoordIntPair + ";)V",
+                    null,
+                    null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -166,7 +167,10 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitFieldInsn(GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "tickets", "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true);
             mv.visitTypeInsn(CHECKCAST, "com/google/common/collect/Multimap");
             mv.visitVarInsn(ALOAD, 0);
@@ -270,10 +274,16 @@ public class ClassTransformer_Forge_ChunkLoading {
                     "()Lcom/google/common/collect/ImmutableSetMultimap$Builder;",
                     false);
             mv.visitFieldInsn(
-                    GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "forcedChunks", "Ljava/util/Map;");
+                    GETSTATIC,
+                    "net/minecraftforge/common/ForgeChunkManager",
+                    "forcedChunks",
+                    "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true);
             mv.visitTypeInsn(CHECKCAST, "com/google/common/collect/Multimap");
             mv.visitMethodInsn(
@@ -301,10 +311,16 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitLabel(l12);
             mv.visitLineNumber(748, l12);
             mv.visitFieldInsn(
-                    GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "forcedChunks", "Ljava/util/Map;");
+                    GETSTATIC,
+                    "net/minecraftforge/common/ForgeChunkManager",
+                    "forcedChunks",
+                    "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitVarInsn(ALOAD, 2);
             mv.visitMethodInsn(
                     INVOKEINTERFACE,
@@ -368,7 +384,7 @@ public class ClassTransformer_Forge_ChunkLoading {
                     false);
             mv.visitLabel(l14);
             mv.visitLineNumber(754, l14);
-            mv.visitFrame(F_APPEND, 1, new Object[] {"com/google/common/collect/ImmutableSetMultimap"}, 0, null);
+            mv.visitFrame(F_APPEND, 1, new Object[] { "com/google/common/collect/ImmutableSetMultimap" }, 0, null);
             mv.visitInsn(RETURN);
             Label l17 = new Label();
             mv.visitLabel(l17);
@@ -388,13 +404,12 @@ public class ClassTransformer_Forge_ChunkLoading {
 
         } else if (aMethodName.equals("unforceChunk")) {
 
-            mv = getWriter()
-                    .visitMethod(
-                            ACC_PUBLIC + ACC_STATIC,
-                            "unforceChunk",
-                            "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L" + aChunkCoordIntPair + ";)V",
-                            null,
-                            null);
+            mv = getWriter().visitMethod(
+                    ACC_PUBLIC + ACC_STATIC,
+                    "unforceChunk",
+                    "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L" + aChunkCoordIntPair + ";)V",
+                    null,
+                    null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -461,10 +476,16 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitLabel(l5);
             mv.visitLineNumber(788, l5);
             mv.visitFieldInsn(
-                    GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "forcedChunks", "Ljava/util/Map;");
+                    GETSTATIC,
+                    "net/minecraftforge/common/ForgeChunkManager",
+                    "forcedChunks",
+                    "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true);
             mv.visitTypeInsn(CHECKCAST, "com/google/common/collect/Multimap");
             mv.visitMethodInsn(
@@ -502,10 +523,16 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitLabel(l8);
             mv.visitLineNumber(791, l8);
             mv.visitFieldInsn(
-                    GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "forcedChunks", "Ljava/util/Map;");
+                    GETSTATIC,
+                    "net/minecraftforge/common/ForgeChunkManager",
+                    "forcedChunks",
+                    "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitVarInsn(ALOAD, 3);
             mv.visitMethodInsn(
                     INVOKEINTERFACE,
@@ -543,14 +570,13 @@ public class ClassTransformer_Forge_ChunkLoading {
 
         } else if (aMethodName.equals("requestTicket")) {
 
-            mv = getWriter()
-                    .visitMethod(
-                            ACC_PUBLIC + ACC_STATIC,
-                            "requestTicket",
-                            "(Ljava/lang/Object;L" + aWorld
-                                    + ";Lnet/minecraftforge/common/ForgeChunkManager$Type;)Lnet/minecraftforge/common/ForgeChunkManager$Ticket;",
-                            null,
-                            null);
+            mv = getWriter().visitMethod(
+                    ACC_PUBLIC + ACC_STATIC,
+                    "requestTicket",
+                    "(Ljava/lang/Object;L" + aWorld
+                            + ";Lnet/minecraftforge/common/ForgeChunkManager$Type;)Lnet/minecraftforge/common/ForgeChunkManager$Ticket;",
+                    null,
+                    null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -605,10 +631,14 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
             mv.visitLineNumber(662, l2);
-            mv.visitFrame(F_APPEND, 1, new Object[] {"cpw/mods/fml/common/ModContainer"}, 0, null);
+            mv.visitFrame(F_APPEND, 1, new Object[] { "cpw/mods/fml/common/ModContainer" }, 0, null);
             mv.visitVarInsn(ALOAD, 3);
             mv.visitMethodInsn(
-                    INVOKEINTERFACE, "cpw/mods/fml/common/ModContainer", "getModId", "()Ljava/lang/String;", true);
+                    INVOKEINTERFACE,
+                    "cpw/mods/fml/common/ModContainer",
+                    "getModId",
+                    "()Ljava/lang/String;",
+                    true);
             mv.visitVarInsn(ASTORE, 4);
             Label l5 = new Label();
             mv.visitLabel(l5);
@@ -644,7 +674,7 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitInsn(ATHROW);
             mv.visitLabel(l6);
             mv.visitLineNumber(669, l6);
-            mv.visitFrame(F_APPEND, 1, new Object[] {"java/lang/String"}, 0, null);
+            mv.visitFrame(F_APPEND, 1, new Object[] { "java/lang/String" }, 0, null);
             mv.visitVarInsn(ALOAD, 4);
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -675,7 +705,10 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitLabel(l11);
             mv.visitLineNumber(673, l11);
             mv.visitFieldInsn(
-                    GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "warnedMods", "Ljava/util/Set;");
+                    GETSTATIC,
+                    "net/minecraftforge/common/ForgeChunkManager",
+                    "warnedMods",
+                    "Ljava/util/Set;");
             mv.visitVarInsn(ALOAD, 4);
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Set", "contains", "(Ljava/lang/Object;)Z", true);
             Label l12 = new Label();
@@ -706,13 +739,16 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitLabel(l14);
             mv.visitLineNumber(676, l14);
             mv.visitFieldInsn(
-                    GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "warnedMods", "Ljava/util/Set;");
+                    GETSTATIC,
+                    "net/minecraftforge/common/ForgeChunkManager",
+                    "warnedMods",
+                    "Ljava/util/Set;");
             mv.visitVarInsn(ALOAD, 4);
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Set", "add", "(Ljava/lang/Object;)Z", true);
             mv.visitInsn(POP);
             mv.visitLabel(l12);
             mv.visitLineNumber(678, l12);
-            mv.visitFrame(F_APPEND, 1, new Object[] {INTEGER}, 0, null);
+            mv.visitFrame(F_APPEND, 1, new Object[] { INTEGER }, 0, null);
             mv.visitInsn(ACONST_NULL);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l10);
@@ -776,13 +812,12 @@ public class ClassTransformer_Forge_ChunkLoading {
 
         } else if (aMethodName.equals("releaseTicket")) {
 
-            mv = getWriter()
-                    .visitMethod(
-                            ACC_PUBLIC + ACC_STATIC,
-                            "releaseTicket",
-                            "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;)V",
-                            null,
-                            null);
+            mv = getWriter().visitMethod(
+                    ACC_PUBLIC + ACC_STATIC,
+                    "releaseTicket",
+                    "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;)V",
+                    null,
+                    null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -827,7 +862,10 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitFieldInsn(GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "tickets", "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true);
             mv.visitTypeInsn(CHECKCAST, "com/google/common/collect/Multimap");
             mv.visitVarInsn(ALOAD, 0);
@@ -891,7 +929,7 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitFrame(
                     F_FULL,
                     3,
-                    new Object[] {"net/minecraftforge/common/ForgeChunkManager$Ticket", TOP, "java/util/Iterator"},
+                    new Object[] { "net/minecraftforge/common/ForgeChunkManager$Ticket", TOP, "java/util/Iterator" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 2);
@@ -918,7 +956,11 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitLabel(l6);
             mv.visitLineNumber(708, l6);
             mv.visitFrame(
-                    F_FULL, 1, new Object[] {"net/minecraftforge/common/ForgeChunkManager$Ticket"}, 0, new Object[] {});
+                    F_FULL,
+                    1,
+                    new Object[] { "net/minecraftforge/common/ForgeChunkManager$Ticket" },
+                    0,
+                    new Object[] {});
             mv.visitVarInsn(ALOAD, 0);
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -967,7 +1009,10 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitFieldInsn(GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "tickets", "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true);
             mv.visitTypeInsn(CHECKCAST, "com/google/common/collect/Multimap");
             mv.visitLdcInsn("Forge");
@@ -990,7 +1035,10 @@ public class ClassTransformer_Forge_ChunkLoading {
             mv.visitFieldInsn(GETSTATIC, "net/minecraftforge/common/ForgeChunkManager", "tickets", "Ljava/util/Map;");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "net/minecraftforge/common/ForgeChunkManager$Ticket", "world", "L" + aWorld + ";");
+                    GETFIELD,
+                    "net/minecraftforge/common/ForgeChunkManager$Ticket",
+                    "world",
+                    "L" + aWorld + ";");
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true);
             mv.visitTypeInsn(CHECKCAST, "com/google/common/collect/Multimap");
             mv.visitVarInsn(ALOAD, 0);
@@ -1031,8 +1079,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-            if (name.equals("forceChunk")
-                    || name.equals("unforceChunk")
+            if (name.equals("forceChunk") || name.equals("unforceChunk")
                     || name.equals("requestTicket")
                     || name.equals("releaseTicket")) {
                 FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Found method " + name + ", Patching.");

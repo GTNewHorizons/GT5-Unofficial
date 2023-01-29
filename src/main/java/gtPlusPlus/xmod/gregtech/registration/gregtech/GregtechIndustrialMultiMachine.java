@@ -17,8 +17,10 @@ public class GregtechIndustrialMultiMachine {
     }
 
     private static void run1() {
-        GregtechItemList.Industrial_MultiMachine.set(new GregtechMetaTileEntity_IndustrialMultiMachine(
-                        860, "industrialmultimachine.controller.tier.single", "Large Processing Factory")
-                .getStackForm(1L));
+        GregtechItemList.Industrial_MultiMachine.set(
+                new GregtechMetaTileEntity_IndustrialMultiMachine(
+                        860,
+                        "industrialmultimachine.controller.tier.single",
+                        "Large Processing Factory").getStackForm(1L));
     }
 }

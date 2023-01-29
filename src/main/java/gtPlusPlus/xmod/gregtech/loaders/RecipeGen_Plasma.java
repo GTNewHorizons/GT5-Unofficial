@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -7,9 +12,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.HashSet;
-import java.util.Set;
-import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Plasma extends RecipeGen_Base {
 
@@ -37,14 +39,14 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
             ItemStack aContainerItem = GT_Utility.getFluidForFilledItem(aPlasmaCell, true) == null
                     ? GT_Utility.getContainerItem(aPlasmaCell, true)
                     : CI.emptyCells(1);
-            if (ItemUtils.checkForInvalidItems(new ItemStack[] {aPlasmaCell, aContainerItem})) {
+            if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
                 GT_Values.RA.addFuel(
                         GT_Utility.copyAmount(1L, aPlasmaCell),
                         aContainerItem,
                         (int) Math.max(1024L, 1024L * material.getMass()),
                         4);
             }
-            if (ItemUtils.checkForInvalidItems(new ItemStack[] {aCell, aPlasmaCell})) {
+            if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCell, aPlasmaCell })) {
                 GT_Values.RA.addVacuumFreezerRecipe(aPlasmaCell, aCell, (int) Math.max(material.getMass() * 2L, 1L));
             }
         }

@@ -3,18 +3,10 @@ package gtPlusPlus.core.item.general.books;
 import static gtPlusPlus.core.handler.BookHandler.mBookMap;
 import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.BookHandler;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,6 +16,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemWritableBook;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.handler.BookHandler;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ItemBaseBook extends ItemWritableBook {
 
@@ -40,13 +42,10 @@ public class ItemBaseBook extends ItemWritableBook {
         for (int i = 0; i < BookHandler.mBookMap.size(); i++) {
             ItemStack bookstack = new ItemStack(item, 1, i);
 
-            /*bookstack = Utils.getWrittenBook(
-            bookstack,
-            i,
-            mBookMap.get(i).mMapping,
-            mBookMap.get(i).mTitle,
-            mBookMap.get(i).mAuthor,
-            mBookMap.get(i).mPages);*/
+            /*
+             * bookstack = Utils.getWrittenBook( bookstack, i, mBookMap.get(i).mMapping, mBookMap.get(i).mTitle,
+             * mBookMap.get(i).mAuthor, mBookMap.get(i).mPages);
+             */
 
             NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
             list.add(bookstack);
@@ -108,14 +107,10 @@ public class ItemBaseBook extends ItemWritableBook {
             try {
                 Class<?> clazz = ReflectionUtils.getClass("net.minecraft.client.gui.GuiScreenBook");
                 Constructor<?> ctor = clazz.getConstructor(EntityPlayer.class, ItemStack.class, boolean.class);
-                Object object = ctor.newInstance(new Object[] {player, bookstack, false});
+                Object object = ctor.newInstance(new Object[] { player, bookstack, false });
                 Minecraft.getMinecraft().displayGuiScreen((GuiScreen) object);
-            } catch (InstantiationException
-                    | IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException
-                    | NoSuchMethodException
-                    | SecurityException e) {
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

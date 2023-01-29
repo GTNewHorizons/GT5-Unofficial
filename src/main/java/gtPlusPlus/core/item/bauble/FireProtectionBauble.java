@@ -1,16 +1,11 @@
 package gtPlusPlus.core.item.bauble;
 
-import baubles.api.BaubleType;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.DevHelper;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +15,13 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import baubles.api.BaubleType;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.DevHelper;
+
 public class FireProtectionBauble extends BaseBauble {
 
     public static HashMap<UUID, Boolean> mDataMap = new HashMap<UUID, Boolean>();
@@ -28,8 +30,8 @@ public class FireProtectionBauble extends BaseBauble {
     private static Field isImmuneToFire;
 
     static {
-        isImmuneToFire = ReflectionUtils.getField(
-                Entity.class, DevHelper.isObfuscatedEnvironment() ? "func_70045_F" : "isImmuneToFire");
+        isImmuneToFire = ReflectionUtils
+                .getField(Entity.class, DevHelper.isObfuscatedEnvironment() ? "func_70045_F" : "isImmuneToFire");
     }
 
     public static boolean fireImmune(Entity aEntity) {
@@ -39,8 +41,7 @@ public class FireProtectionBauble extends BaseBauble {
     public static boolean setEntityImmuneToFire(Entity aEntity, boolean aImmune) {
         try {
             return ReflectionUtils.setField(aEntity, isImmuneToFire, aImmune);
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return false;
     }
 
@@ -59,11 +60,7 @@ public class FireProtectionBauble extends BaseBauble {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack itemStack,
-            final World worldObj,
-            final Entity player,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
             final boolean p_77663_5_) {
         super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }

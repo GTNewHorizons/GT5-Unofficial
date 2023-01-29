@@ -6,6 +6,10 @@ import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -25,9 +29,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class RECIPES_General {
 
@@ -155,13 +156,17 @@ public class RECIPES_General {
                     ItemUtils.getSimpleStack(ModItems.shardAqua));
 
             GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardAer), ItemUtils.getSimpleStack(ModItems.dustAer, 2));
+                    ItemUtils.getSimpleStack(ModItems.shardAer),
+                    ItemUtils.getSimpleStack(ModItems.dustAer, 2));
             GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardIgnis), ItemUtils.getSimpleStack(ModItems.dustIgnis, 2));
+                    ItemUtils.getSimpleStack(ModItems.shardIgnis),
+                    ItemUtils.getSimpleStack(ModItems.dustIgnis, 2));
             GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardTerra), ItemUtils.getSimpleStack(ModItems.dustTerra, 2));
+                    ItemUtils.getSimpleStack(ModItems.shardTerra),
+                    ItemUtils.getSimpleStack(ModItems.dustTerra, 2));
             GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardAqua), ItemUtils.getSimpleStack(ModItems.dustAqua, 2));
+                    ItemUtils.getSimpleStack(ModItems.shardAqua),
+                    ItemUtils.getSimpleStack(ModItems.dustAqua, 2));
         }
 
         // Rainforest oak Sapling
@@ -206,22 +211,13 @@ public class RECIPES_General {
         if (!CORE.GTNH) {
             GT_ModHandler.addCraftingRecipe(
                     GregtechItemList.Shape_Extruder_SmallGear.get(1L),
-                    GT_ModHandler.RecipeBits.BUFFERED
-                            | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                    GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                             | GT_ModHandler.RecipeBits.REVERSIBLE,
-                    new Object[] {
-                        "hXS",
-                        "XPX",
-                        "fXd",
-                        Character.valueOf('P'),
-                        ItemList.Shape_Extruder_Gear,
-                        Character.valueOf('X'),
-                        OrePrefixes.plate.get(Materials.Steel),
-                        Character.valueOf('S'),
-                        OrePrefixes.screw.get(Materials.Steel)
-                    });
+                    new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Gear,
+                            Character.valueOf('X'), OrePrefixes.plate.get(Materials.Steel), Character.valueOf('S'),
+                            OrePrefixes.screw.get(Materials.Steel) });
 
-            String[] ironTypes = {"", "Wrought", "Pig", "Any"};
+            String[] ironTypes = { "", "Wrought", "Pig", "Any" };
             for (int y = 0; y < ironTypes.length; y++) {
                 // Iron bars
                 String ironRecipe = "stick" + ironTypes[y] + "Iron";
@@ -245,23 +241,21 @@ public class RECIPES_General {
 
         // Potin
         if (RecipeUtils.addShapelessGregtechRecipe(
-                new Object[] {"dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze"}, ALLOY.POTIN.getDust(5))) {
+                new Object[] { "dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze" },
+                ALLOY.POTIN.getDust(5))) {
             Logger.INFO("Added shapeless recipe for Potin Dust.");
         }
 
         // Tumbaga
         if (RecipeUtils.addShapelessGregtechRecipe(
-                new Object[] {"dustGold", "dustGold", "dustCopper"},
+                new Object[] { "dustGold", "dustGold", "dustCopper" },
                 ItemUtils.getSimpleStack(ModItems.dustTumbagaMix))) {
             Logger.INFO("Added shapeless recipe for Tumbaga Mix.");
         }
         if (RecipeUtils.addShapelessGregtechRecipe(
-                new Object[] {
-                    ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
-                    ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
-                    ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
-                    "dustGold"
-                },
+                new Object[] { ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
+                        ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
+                        ItemUtils.getSimpleStack(ModItems.dustTumbagaMix), "dustGold" },
                 ALLOY.TUMBAGA.getDust(10))) {
             Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
         }
@@ -304,24 +298,17 @@ public class RECIPES_General {
 
         if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
             CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedAdvancedCircuit(4),
-                        ItemUtils.getSimpleStack(Blocks.glass, 16),
-                        ItemUtils.getSimpleStack(Blocks.glowstone, 16),
-                        ItemList.Large_Fluid_Cell_Steel.get(1)
-                    },
+                    new ItemStack[] { CI.getNumberedAdvancedCircuit(4), ItemUtils.getSimpleStack(Blocks.glass, 16),
+                            ItemUtils.getSimpleStack(Blocks.glowstone, 16), ItemList.Large_Fluid_Cell_Steel.get(1) },
                     FluidUtils.getFluidStack("molten.borosilicateglass", 2000),
                     VolumetricFlaskHelper.getLargeVolumetricFlask(2),
                     20 * 15,
                     MaterialUtils.getVoltageForTier(3));
 
             CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedAdvancedCircuit(5),
-                        ItemUtils.getSimpleStack(Blocks.glass, 64),
-                        ItemUtils.getSimpleStack(Blocks.glowstone, 64),
-                        ItemList.Large_Fluid_Cell_TungstenSteel.get(1)
-                    },
+                    new ItemStack[] { CI.getNumberedAdvancedCircuit(5), ItemUtils.getSimpleStack(Blocks.glass, 64),
+                            ItemUtils.getSimpleStack(Blocks.glowstone, 64),
+                            ItemList.Large_Fluid_Cell_TungstenSteel.get(1) },
                     FluidUtils.getFluidStack("molten.borosilicateglass", 8000),
                     VolumetricFlaskHelper.getGiganticVolumetricFlask(2),
                     20 * 15,
@@ -359,20 +346,15 @@ public class RECIPES_General {
             Logger.INFO("Added a recipe for The Alkalus Disk.");
         }
 
-        /*final String fancyGems[] = new String[]{"gemExquisiteDiamond", "gemExquisiteEmerald", "gemExquisiteRuby", "gemExquisiteSapphire"};
-        final ItemStack gemShards[] = new ItemStack[]{ItemUtils.simpleMetaStack(ModItems.itemGemShards, 0, 1),
-        		ItemUtils.simpleMetaStack(ModItems.itemGemShards, 1, 1),
-        		ItemUtils.simpleMetaStack(ModItems.itemGemShards, 2, 1),
-        		ItemUtils.simpleMetaStack(ModItems.itemGemShards, 3, 1)};
-
-        int l=0;
-        for (final String gem : fancyGems){
-        	GameRegistry.addShapelessRecipe(
-        			gemShards[l],
-        			ItemUtils.getItemStackOfAmountFromOreDict(gem, 1),
-        			new ItemStack(ModItems.itemAlkalusDisk, 1, OreDictionary.WILDCARD_VALUE));
-        	l++;
-        }*/
+        /*
+         * final String fancyGems[] = new String[]{"gemExquisiteDiamond", "gemExquisiteEmerald", "gemExquisiteRuby",
+         * "gemExquisiteSapphire"}; final ItemStack gemShards[] = new
+         * ItemStack[]{ItemUtils.simpleMetaStack(ModItems.itemGemShards, 0, 1),
+         * ItemUtils.simpleMetaStack(ModItems.itemGemShards, 1, 1), ItemUtils.simpleMetaStack(ModItems.itemGemShards, 2,
+         * 1), ItemUtils.simpleMetaStack(ModItems.itemGemShards, 3, 1)}; int l=0; for (final String gem : fancyGems){
+         * GameRegistry.addShapelessRecipe( gemShards[l], ItemUtils.getItemStackOfAmountFromOreDict(gem, 1), new
+         * ItemStack(ModItems.itemAlkalusDisk, 1, OreDictionary.WILDCARD_VALUE)); l++; }
+         */
 
         Logger.RECIPE("[Inspection] Wither Cage");
         if (RecipeUtils.addShapedRecipe(
@@ -389,30 +371,27 @@ public class RECIPES_General {
             Logger.INFO("Added a recipe for Wither Cages.");
         }
 
-        /*Logger.RECIPE("[Inspection] Xp Converter");
-        if (RecipeUtils.addShapedRecipe(
-        		getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
-        		ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1), getSimpleStack(Items.nether_star), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1),
-        		getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
-        		ItemUtils.getSimpleStack(ModBlocks.blockXpConverter, 1))){
-        	Logger.INFO("Added a recipe for XP Converter.");
-        }*/
+        /*
+         * Logger.RECIPE("[Inspection] Xp Converter"); if (RecipeUtils.addShapedRecipe(
+         * getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1),
+         * getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1),
+         * getSimpleStack(Items.nether_star), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1),
+         * getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1),
+         * getSimpleStack(Items.experience_bottle), ItemUtils.getSimpleStack(ModBlocks.blockXpConverter, 1))){
+         * Logger.INFO("Added a recipe for XP Converter."); }
+         */
 
         // Rope/Fiber/Net
         if (RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1),
-                    ItemUtils.getSimpleStack(Items.reeds)
-                },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1),
+                        ItemUtils.getSimpleStack(Items.reeds) },
                 ItemUtils.getSimpleStack(ModItems.itemFiber, 16))) {
             Logger.INFO("Added a recipe for Fiber.");
         }
 
         if (RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1),
-                    ItemUtils.getSimpleStack(Blocks.sapling)
-                },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1),
+                        ItemUtils.getSimpleStack(Blocks.sapling) },
                 ItemUtils.getSimpleStack(ModItems.itemFiber, 32))) {
             Logger.INFO("Added a recipe for Fiber.");
         }
@@ -448,12 +427,9 @@ public class RECIPES_General {
 
         // Slow Builders Ring
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    ItemUtils.getSimpleStack(Blocks.ice, 8),
-                    ItemUtils.getSimpleStack(ModBlocks.blockNet, 8),
-                    ItemUtils.getSimpleStack(Blocks.vine, 8),
-                    ALLOY.TUMBAGA.getRing(1),
-                },
+                new ItemStack[] { ItemUtils.getSimpleStack(Blocks.ice, 8),
+                        ItemUtils.getSimpleStack(ModBlocks.blockNet, 8), ItemUtils.getSimpleStack(Blocks.vine, 8),
+                        ALLOY.TUMBAGA.getRing(1), },
                 FluidUtils.getWater(1000), // Fluid
                 ItemUtils.getItemStackFromFQRN("miscutils:SlowBuildingRing", 1), // Output
                 20 * 30, // Dur
@@ -461,14 +437,10 @@ public class RECIPES_General {
 
         // Magic Feather
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    ItemUtils.getSimpleStack(Items.feather, 64),
-                    ItemUtils.getSimpleStack(Blocks.emerald_block, 32),
-                    ItemUtils.getSimpleStack(Blocks.diamond_block, 32),
-                    Materials.Ruby.getBlocks(32),
-                    Materials.Sapphire.getBlocks(32),
-                    ItemUtils.getSimpleStack(Blocks.gold_block, 32),
-                },
+                new ItemStack[] { ItemUtils.getSimpleStack(Items.feather, 64),
+                        ItemUtils.getSimpleStack(Blocks.emerald_block, 32),
+                        ItemUtils.getSimpleStack(Blocks.diamond_block, 32), Materials.Ruby.getBlocks(32),
+                        Materials.Sapphire.getBlocks(32), ItemUtils.getSimpleStack(Blocks.gold_block, 32), },
                 Materials.Silver.getMolten(32 * 144), // Fluid
                 ItemUtils.getSimpleStack(ModItems.itemMagicFeather, 1), // Output
                 20 * 120, // Dur
@@ -476,13 +448,9 @@ public class RECIPES_General {
 
         // Pest Killer
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(16),
-                    CI.getTieredMachineCasing(1),
-                    CI.getElectricPump(2, 1),
-                    CI.getPlate(2, GTNH ? 4 : 2),
-                    ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), GTNH ? 2 : 1),
-                },
+                new ItemStack[] { CI.getNumberedCircuit(16), CI.getTieredMachineCasing(1), CI.getElectricPump(2, 1),
+                        CI.getPlate(2, GTNH ? 4 : 2),
+                        ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), GTNH ? 2 : 1), },
                 FluidUtils.getHotWater(500), // Fluid
                 ItemUtils.getSimpleStack(ModBlocks.blockPestKiller), // Output
                 20 * 60, // Dur
@@ -528,7 +496,8 @@ public class RECIPES_General {
                 Logger.INFO("Added a recipe for Compressed Obsidian [" + r + "]");
             }
 
-            if (RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {output}, ItemUtils.getSimpleStack(input, 9))) {
+            if (RecipeUtils
+                    .addShapelessGregtechRecipe(new ItemStack[] { output }, ItemUtils.getSimpleStack(input, 9))) {
                 Logger.INFO("Added a shapeless recipe for Compressed Obsidian [" + r + "]");
             }
         }
@@ -553,7 +522,8 @@ public class RECIPES_General {
                 Logger.INFO("Added a recipe for Compressed Glowstone [" + r + "]");
             }
 
-            if (RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {output}, ItemUtils.getSimpleStack(input, 9))) {
+            if (RecipeUtils
+                    .addShapelessGregtechRecipe(new ItemStack[] { output }, ItemUtils.getSimpleStack(input, 9))) {
                 Logger.INFO("Added a shapeless recipe for Compressed Glowstone [" + r + "]");
             }
         }
@@ -572,19 +542,10 @@ public class RECIPES_General {
         generateWireRecipes(ALLOY.TRINIUM_TITANIUM);
         generateWireRecipes(ELEMENT.STANDALONE.HYPOGEN);
 
-        GT_Materials[] g = new GT_Materials[] {
-            GT_Materials.Staballoy,
-            GT_Materials.Tantalloy60,
-            GT_Materials.Tantalloy61,
-            GT_Materials.Void,
-            GT_Materials.Potin,
-            GT_Materials.MaragingSteel300,
-            GT_Materials.MaragingSteel350,
-            GT_Materials.Inconel690,
-            GT_Materials.Inconel792,
-            GT_Materials.HastelloyX,
-            GT_Materials.TriniumNaquadahCarbonite,
-        };
+        GT_Materials[] g = new GT_Materials[] { GT_Materials.Staballoy, GT_Materials.Tantalloy60,
+                GT_Materials.Tantalloy61, GT_Materials.Void, GT_Materials.Potin, GT_Materials.MaragingSteel300,
+                GT_Materials.MaragingSteel350, GT_Materials.Inconel690, GT_Materials.Inconel792,
+                GT_Materials.HastelloyX, GT_Materials.TriniumNaquadahCarbonite, };
         for (GT_Materials e : g) {
             if (e == GT_Materials.Void) {
                 if (!LoadedMods.Thaumcraft) {
@@ -595,9 +556,8 @@ public class RECIPES_General {
             generatePipeRecipes(e.mDefaultLocalName, e.getMass(), tVoltageMultiplier);
         }
 
-        Materials[] h = new Materials[] {
-            Materials.Europium, Materials.Tungsten, Materials.DarkSteel, Materials.Clay, Materials.Lead,
-        };
+        Materials[] h = new Materials[] { Materials.Europium, Materials.Tungsten, Materials.DarkSteel, Materials.Clay,
+                Materials.Lead, };
 
         for (Materials e : h) {
             if (e == Materials.DarkSteel) {
@@ -647,86 +607,50 @@ public class RECIPES_General {
 
         if (PollutionUtils.isPollutionEnabled()) {
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_LV.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_LV.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_LV.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_LV.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_MV.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_MV.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_MV.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_MV.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_MV.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_MV.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_HV.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_HV.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_HV.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_HV.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_HV.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_HV.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_EV.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_EV.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_EV.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_EV.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_EV.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_EV.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_IV.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_IV.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_IV.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_IV.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_IV.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_IV.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_LuV.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_LuV.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_LuV.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_LuV.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_LuV.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_LuV.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_ZPM.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_ZPM.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_ZPM.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_ZPM.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_ZPM.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_ZPM.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_UV.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_UV.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_UV.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_UV.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_UV.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_UV.get(1) });
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Hatch_Muffler_Adv_MAX.get(1L, new Object[0]), bitsd, new Object[] {
-                        "M",
-                        "P",
-                        Character.valueOf('M'),
-                        ItemList.Hatch_Muffler_MAX.get(1),
-                        Character.valueOf('P'),
-                        GregtechItemList.Pollution_Cleaner_MAX.get(1)
-                    });
+                    GregtechItemList.Hatch_Muffler_Adv_MAX.get(1L, new Object[0]),
+                    bitsd,
+                    new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_MAX.get(1),
+                            Character.valueOf('P'), GregtechItemList.Pollution_Cleaner_MAX.get(1) });
         }
     }
 }

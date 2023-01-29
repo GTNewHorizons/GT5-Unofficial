@@ -1,21 +1,12 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.Optional;
-import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
 import mods.railcraft.api.core.items.IToolCrowbar;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -34,21 +25,33 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
+import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.Optional;
+import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
- * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth, null);
+ * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth,
+ * null);
  */
-@Optional.InterfaceList({
-    @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = "Forestry"),
-    @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = "Railcraft"),
-    @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
-    @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
-})
+@Optional.InterfaceList({ @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = "Forestry"),
+        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = "Railcraft"),
+        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
+        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO") })
 public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
         implements IDamagableItem, IToolCrowbar, IToolWrench {
+
     /**
-     * All instances of this Item Class are listed here.
-     * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
+     * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
+     * Type, if useStandardMetaItemRenderer() returns true.
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
@@ -75,35 +78,26 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
      * Called by the Block Harvesting Event within the GT_Proxy
      */
     @Override
-    public void onHarvestBlockEvent(
-            final ArrayList<ItemStack> aDrops,
-            final ItemStack aStack,
-            final EntityPlayer aPlayer,
-            final Block aBlock,
-            final int aX,
-            final int aY,
-            final int aZ,
-            final byte aMetaData,
-            final int aFortune,
-            final boolean aSilkTouch,
+    public void onHarvestBlockEvent(final ArrayList<ItemStack> aDrops, final ItemStack aStack,
+            final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ,
+            final byte aMetaData, final int aFortune, final boolean aSilkTouch,
             final BlockEvent.HarvestDropsEvent aEvent) {
         final IToolStats tStats = this.getToolStats(aStack);
         if (this.isItemStackUsable(aStack) && (this.getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)) {
             this.doDamage(
                     aStack,
                     tStats.convertBlockDrops(
-                                    aDrops,
-                                    aStack,
-                                    aPlayer,
-                                    aBlock,
-                                    aX,
-                                    aY,
-                                    aZ,
-                                    aMetaData,
-                                    aFortune,
-                                    aSilkTouch,
-                                    aEvent)
-                            * tStats.getToolDamagePerDropConversion());
+                            aDrops,
+                            aStack,
+                            aPlayer,
+                            aBlock,
+                            aX,
+                            aY,
+                            aZ,
+                            aMetaData,
+                            aFortune,
+                            aSilkTouch,
+                            aEvent) * tStats.getToolDamagePerDropConversion());
         }
     }
 
@@ -118,23 +112,23 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
             return true;
         }
         if (aEntity.canAttackWithItem() && !aEntity.hitByEntity(aPlayer)) {
-            final float tMagicDamage = tStats.getMagicDamageAgainstEntity(
-                    aEntity instanceof EntityLivingBase
-                            ? EnchantmentHelper.getEnchantmentModifierLiving(aPlayer, (EntityLivingBase) aEntity)
-                            : 0.0F,
-                    aEntity,
-                    aStack,
-                    aPlayer);
+            final float tMagicDamage = tStats
+                    .getMagicDamageAgainstEntity(
+                            aEntity instanceof EntityLivingBase
+                                    ? EnchantmentHelper
+                                            .getEnchantmentModifierLiving(aPlayer, (EntityLivingBase) aEntity)
+                                    : 0.0F,
+                            aEntity,
+                            aStack,
+                            aPlayer);
             float tDamage = tStats.getNormalDamageAgainstEntity(
-                    (float) aPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                                    .getAttributeValue()
+                    (float) aPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue()
                             + this.getToolCombatDamage(aStack),
                     aEntity,
                     aStack,
                     aPlayer);
             if ((tDamage + tMagicDamage) > 0.0F) {
-                final boolean tCriticalHit = (aPlayer.fallDistance > 0.0F)
-                        && !aPlayer.onGround
+                final boolean tCriticalHit = (aPlayer.fallDistance > 0.0F) && !aPlayer.onGround
                         && !aPlayer.isOnLadder()
                         && !aPlayer.isInWater()
                         && !aPlayer.isPotionActive(Potion.blindness)
@@ -148,10 +142,9 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
                     if (aEntity instanceof EntityLivingBase) {
                         aEntity.setFire(EnchantmentHelper.getFireAspectModifier(aPlayer) * 4);
                     }
-                    final int tKnockcack = (aPlayer.isSprinting() ? 1 : 0)
-                            + (aEntity instanceof EntityLivingBase
-                                    ? EnchantmentHelper.getKnockbackModifier(aPlayer, (EntityLivingBase) aEntity)
-                                    : 0);
+                    final int tKnockcack = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase
+                            ? EnchantmentHelper.getKnockbackModifier(aPlayer, (EntityLivingBase) aEntity)
+                            : 0);
                     if (tKnockcack > 0) {
                         aEntity.addVelocity(
                                 -MathHelper.sin((aPlayer.rotationYaw * (float) Math.PI) / 180.0F) * tKnockcack * 0.5F,
@@ -178,8 +171,8 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
                     if (aEntity instanceof EntityLivingBase) {
                         aPlayer.addStat(StatList.damageDealtStat, Math.round(tDamage * 10.0F));
                     }
-                    aEntity.hurtResistantTime =
-                            Math.max(1, tStats.getHurtResistanceTime(aEntity.hurtResistantTime, aEntity));
+                    aEntity.hurtResistantTime = Math
+                            .max(1, tStats.getHurtResistanceTime(aEntity.hurtResistantTime, aEntity));
                     aPlayer.addExhaustion(0.3F);
                     this.doDamage(aStack, tStats.getToolDamagePerEntityAttack());
                 }
@@ -208,29 +201,39 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
         final int tOffset = this.getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
             final String name = aStack.getUnlocalizedName();
-            if (name.equals("gt.metatool.01.170")
-                    || name.equals("gt.metatool.01.172")
+            if (name.equals("gt.metatool.01.170") || name.equals("gt.metatool.01.172")
                     || name.equals("gt.metatool.01.174")
                     || name.equals("gt.metatool.01.176")) {
                 aList.add(
                         tOffset + 0,
-                        EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN
-                                + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Durability: "
+                                + EnumChatFormatting.GREEN
+                                + (tMaxDamage - getToolDamage(aStack))
+                                + " / "
+                                + tMaxDamage
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,
-                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl "
-                                + this.getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName
+                                + EnumChatFormatting.YELLOW
+                                + " lvl "
+                                + this.getHarvestLevel(aStack, "")
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 2,
-                        EnumChatFormatting.WHITE + "Turbine Efficency: " + EnumChatFormatting.BLUE
-                                + (50.0F + (10.0F * this.getToolCombatDamage(aStack))) + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Turbine Efficency: "
+                                + EnumChatFormatting.BLUE
+                                + (50.0F + (10.0F * this.getToolCombatDamage(aStack)))
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 3,
-                        EnumChatFormatting.WHITE + "Optimal Steam flow: " + EnumChatFormatting.LIGHT_PURPLE
+                        EnumChatFormatting.WHITE + "Optimal Steam flow: "
+                                + EnumChatFormatting.LIGHT_PURPLE
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)
-                                + EnumChatFormatting.GRAY + "L/sec");
+                                + EnumChatFormatting.GRAY
+                                + "L/sec");
                 aList.add(
                         tOffset + 3,
                         EnumChatFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): "
@@ -238,7 +241,8 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 25)
-                                + EnumChatFormatting.GRAY + "EU/t");
+                                + EnumChatFormatting.GRAY
+                                + "EU/t");
                 aList.add(
                         tOffset + 3,
                         EnumChatFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): "
@@ -246,24 +250,35 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)
-                                + EnumChatFormatting.GRAY + "EU/t");
+                                + EnumChatFormatting.GRAY
+                                + "EU/t");
 
             } else {
                 aList.add(
                         tOffset + 0,
-                        EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN
-                                + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Durability: "
+                                + EnumChatFormatting.GREEN
+                                + (tMaxDamage - getToolDamage(aStack))
+                                + " / "
+                                + tMaxDamage
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,
-                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl "
-                                + this.getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName
+                                + EnumChatFormatting.YELLOW
+                                + " lvl "
+                                + this.getHarvestLevel(aStack, "")
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 2,
-                        EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE
-                                + this.getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Attack Damage: "
+                                + EnumChatFormatting.BLUE
+                                + this.getToolCombatDamage(aStack)
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 3,
-                        EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE
+                        EnumChatFormatting.WHITE + "Mining Speed: "
+                                + EnumChatFormatting.LIGHT_PURPLE
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
@@ -280,29 +295,39 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
         final int tOffset = this.getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
             final String name = aStack.getUnlocalizedName();
-            if (name.equals("gt.metatool.01.170")
-                    || name.equals("gt.metatool.01.172")
+            if (name.equals("gt.metatool.01.170") || name.equals("gt.metatool.01.172")
                     || name.equals("gt.metatool.01.174")
                     || name.equals("gt.metatool.01.176")) {
                 aList.add(
                         tOffset + 0,
-                        EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN
-                                + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Durability: "
+                                + EnumChatFormatting.GREEN
+                                + (tMaxDamage - getToolDamage(aStack))
+                                + " / "
+                                + tMaxDamage
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,
-                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl "
-                                + this.getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName
+                                + EnumChatFormatting.YELLOW
+                                + " lvl "
+                                + this.getHarvestLevel(aStack, "")
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 2,
-                        EnumChatFormatting.WHITE + "Turbine Efficency: " + EnumChatFormatting.BLUE
-                                + (50.0F + (10.0F * this.getToolCombatDamage(aStack))) + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Turbine Efficency: "
+                                + EnumChatFormatting.BLUE
+                                + (50.0F + (10.0F * this.getToolCombatDamage(aStack)))
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 3,
-                        EnumChatFormatting.WHITE + "Optimal Steam flow: " + EnumChatFormatting.LIGHT_PURPLE
+                        EnumChatFormatting.WHITE + "Optimal Steam flow: "
+                                + EnumChatFormatting.LIGHT_PURPLE
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)
-                                + EnumChatFormatting.GRAY + "L/sec");
+                                + EnumChatFormatting.GRAY
+                                + "L/sec");
                 aList.add(
                         tOffset + 3,
                         EnumChatFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): "
@@ -310,7 +335,8 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 50)
-                                + EnumChatFormatting.GRAY + "EU/t");
+                                + EnumChatFormatting.GRAY
+                                + "EU/t");
                 aList.add(
                         tOffset + 3,
                         EnumChatFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): "
@@ -318,24 +344,35 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)
-                                + EnumChatFormatting.GRAY + "EU/t");
+                                + EnumChatFormatting.GRAY
+                                + "EU/t");
 
             } else {
                 aList.add(
                         tOffset + 0,
-                        EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN
-                                + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Durability: "
+                                + EnumChatFormatting.GREEN
+                                + (tMaxDamage - getToolDamage(aStack))
+                                + " / "
+                                + tMaxDamage
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,
-                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl "
-                                + this.getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName
+                                + EnumChatFormatting.YELLOW
+                                + " lvl "
+                                + this.getHarvestLevel(aStack, "")
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 2,
-                        EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE
-                                + this.getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE + "Attack Damage: "
+                                + EnumChatFormatting.BLUE
+                                + this.getToolCombatDamage(aStack)
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 3,
-                        EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE
+                        EnumChatFormatting.WHITE + "Mining Speed: "
+                                + EnumChatFormatting.LIGHT_PURPLE
                                 + Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
@@ -362,7 +399,9 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
 
                         aList.add(
                                 tOffset + 3,
-                                EnumChatFormatting.RED + "Heat: " + aNBT.getInteger("Heat") + " K"
+                                EnumChatFormatting.RED + "Heat: "
+                                        + aNBT.getInteger("Heat")
+                                        + " K"
                                         + EnumChatFormatting.GRAY);
                     }
                 }
@@ -381,12 +420,8 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if ((aNBT != null) && aNBT.getBoolean("Electric")) {
-                return new Long[] {
-                    aNBT.getLong("MaxCharge"),
-                    aNBT.getLong("Voltage"),
-                    aNBT.getLong("Tier"),
-                    aNBT.getLong("SpecialData")
-                };
+                return new Long[] { aNBT.getLong("MaxCharge"), aNBT.getLong("Voltage"), aNBT.getLong("Tier"),
+                        aNBT.getLong("SpecialData") };
             }
         }
         return new Long[] {};
@@ -416,14 +451,8 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
     }
 
     @Override
-    public boolean onBlockDestroyed(
-            final ItemStack aStack,
-            final World aWorld,
-            final Block aBlock,
-            final int aX,
-            final int aY,
-            final int aZ,
-            final EntityLivingBase aPlayer) {
+    public boolean onBlockDestroyed(final ItemStack aStack, final World aWorld, final Block aBlock, final int aX,
+            final int aY, final int aZ, final EntityLivingBase aPlayer) {
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
@@ -432,8 +461,9 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
             return false;
         }
         GT_Utility.doSoundAtClient(tStats.getMiningSound(), 1, 1.0F);
-        this.doDamage(aStack, (int)
-                Math.max(1, aBlock.getBlockHardness(aWorld, aX, aY, aZ) * tStats.getToolDamagePerBlockBreak()));
+        this.doDamage(
+                aStack,
+                (int) Math.max(1, aBlock.getBlockHardness(aWorld, aX, aY, aZ) * tStats.getToolDamagePerBlockBreak()));
         return this.getDigSpeed(aStack, aBlock, aWorld.getBlockMetadata(aX, aY, aZ)) > 0.0F;
     }
 
@@ -466,8 +496,8 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
     }
 
     @Override
-    public boolean canWhack(
-            final EntityPlayer aPlayer, final ItemStack aStack, final int aX, final int aY, final int aZ) {
+    public boolean canWhack(final EntityPlayer aPlayer, final ItemStack aStack, final int aX, final int aY,
+            final int aZ) {
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
@@ -596,8 +626,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
             }
         }
         for (final Entry<Integer, Integer> tEntry : tMap.entrySet()) {
-            if ((tEntry.getKey() == 33)
-                    || ((tEntry.getKey() == 20) && (tEntry.getValue() > 2))
+            if ((tEntry.getKey() == 33) || ((tEntry.getKey() == 20) && (tEntry.getValue() > 2))
                     || (tEntry.getKey() == Enchantment_Radioactivity.INSTANCE.effectId)) {
                 tResult.put(tEntry.getKey(), tEntry.getValue());
             } else {

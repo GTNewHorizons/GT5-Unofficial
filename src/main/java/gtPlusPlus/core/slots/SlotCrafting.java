@@ -1,6 +1,5 @@
 package gtPlusPlus.core.slots;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,34 +10,28 @@ import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 public class SlotCrafting extends Slot {
+
     /** The craft matrix inventory linked to this result slot. */
     private final IInventory craftMatrix;
     /** The player that is using the GUI where this slot resides. */
     private final EntityPlayer thePlayer;
     /**
-     * The number of items that have been crafted so far. Gets passed to
-     * ItemStack.onCrafting before being reset.
+     * The number of items that have been crafted so far. Gets passed to ItemStack.onCrafting before being reset.
      */
     private int amountCrafted;
 
-    private static final String __OBFID = "CL_00001761";
-
-    public SlotCrafting(
-            final EntityPlayer p_i1823_1_,
-            final IInventory p_i1823_2_,
-            final IInventory p_i1823_3_,
-            final int p_i1823_4_,
-            final int p_i1823_5_,
-            final int p_i1823_6_) {
+    public SlotCrafting(final EntityPlayer p_i1823_1_, final IInventory p_i1823_2_, final IInventory p_i1823_3_,
+            final int p_i1823_4_, final int p_i1823_5_, final int p_i1823_6_) {
         super(p_i1823_3_, p_i1823_4_, p_i1823_5_, p_i1823_6_);
         this.thePlayer = p_i1823_1_;
         this.craftMatrix = p_i1823_2_;
     }
 
     /**
-     * Check if the stack is a valid item for this slot. Always true beside for
-     * the armor slots.
+     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
      */
     @Override
     public boolean isItemValid(final ItemStack p_75214_1_) {
@@ -46,8 +39,8 @@ public class SlotCrafting extends Slot {
     }
 
     /**
-     * Decrease the size of the stack in slot (first int arg) by the amount of
-     * the second int arg. Returns the new stack.
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
      */
     @Override
     public ItemStack decrStackSize(final int p_75209_1_) {
@@ -59,9 +52,8 @@ public class SlotCrafting extends Slot {
     }
 
     /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes,
-     * not ore and wood. Typically increases an internal count then calls
-     * onCrafting(item).
+     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an
+     * internal count then calls onCrafting(item).
      */
     @Override
     protected void onCrafting(final ItemStack p_75210_1_, final int p_75210_2_) {
@@ -70,8 +62,7 @@ public class SlotCrafting extends Slot {
     }
 
     /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes,
-     * not ore and wood.
+     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
      */
     @Override
     protected void onCrafting(final ItemStack p_75208_1_) {
@@ -134,8 +125,7 @@ public class SlotCrafting extends Slot {
                 if (itemstack1.getItem().hasContainerItem(itemstack1)) {
                     final ItemStack itemstack2 = itemstack1.getItem().getContainerItem(itemstack1);
 
-                    if ((itemstack2 != null)
-                            && itemstack2.isItemStackDamageable()
+                    if ((itemstack2 != null) && itemstack2.isItemStackDamageable()
                             && (itemstack2.getItemDamage() > itemstack2.getMaxDamage())) {
                         MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(this.thePlayer, itemstack2));
                         continue;

@@ -7,10 +7,16 @@ import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
 
+import java.util.*;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,9 +29,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.*;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntityGeneratorArray
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityGeneratorArray> implements ISurvivalConstructable {
@@ -54,20 +57,13 @@ public class GregtechMetaTileEntityGeneratorArray
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Generator Array")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Generator Array")
                 .addInfo("Runs supplied generators as if placed in the world")
-                .addInfo("Place up to 16 Single Block GT Generators into the Controller")
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Robust Tungstensteel Machine Casings", 10)
-                .addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addDynamoHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1)
+                .addInfo("Place up to 16 Single Block GT Generators into the Controller").addSeparator()
+                .beginStructureBlock(3, 3, 3, true).addController("Front center")
+                .addCasingInfo("Robust Tungstensteel Machine Casings", 10).addInputBus("Any casing", 1)
+                .addOutputBus("Any casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addDynamoHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -141,16 +137,16 @@ public class GregtechMetaTileEntityGeneratorArray
     private static final int MODE_NAQUADAH = 9;
     private static final int MODE_NONE = 100;
 
-    private static final int[] ID_STEAM = new int[] {962, 1120, 1121, 1122};
-    private static final int[] ID_GAS = new int[] {961, 1115, 1116, 1117};
-    private static final int[] ID_DIESEL = new int[] {960, 1110, 1111, 1112};
-    private static final int[] ID_SEMIFLUID = new int[] {837, 838, 839};
-    private static final int[] ID_GEOTHERMAL = new int[] {830, 831, 832};
-    private static final int[] ID_ROCKETFUEL = new int[] {793, 794, 795};
-    private static final int[] ID_MAGIC_A = new int[] {1123, 1124, 1125};
-    private static final int[] ID_MAGIC_B_DISABLED = new int[] {1127, 1128, 1129, 1130};
-    private static final int[] ID_PLASMA = new int[] {1196, 1197, 1198};
-    private static final int[] ID_NAQUADAH = new int[] {1190, 1191, 1192};
+    private static final int[] ID_STEAM = new int[] { 962, 1120, 1121, 1122 };
+    private static final int[] ID_GAS = new int[] { 961, 1115, 1116, 1117 };
+    private static final int[] ID_DIESEL = new int[] { 960, 1110, 1111, 1112 };
+    private static final int[] ID_SEMIFLUID = new int[] { 837, 838, 839 };
+    private static final int[] ID_GEOTHERMAL = new int[] { 830, 831, 832 };
+    private static final int[] ID_ROCKETFUEL = new int[] { 793, 794, 795 };
+    private static final int[] ID_MAGIC_A = new int[] { 1123, 1124, 1125 };
+    private static final int[] ID_MAGIC_B_DISABLED = new int[] { 1127, 1128, 1129, 1130 };
+    private static final int[] ID_PLASMA = new int[] { 1196, 1197, 1198 };
+    private static final int[] ID_NAQUADAH = new int[] { 1190, 1191, 1192 };
 
     private static final int getModeFromInventorySlot(ItemStack aStack) {
 
@@ -214,82 +210,40 @@ public class GregtechMetaTileEntityGeneratorArray
     public boolean checkRecipe(ItemStack aStack) {
         return false;
 
-        /**		this.resetRecipeMapForAllInputHatches();
-         * this.mMode = getModeFromInventorySlot(aStack);
-         * if (mMode == MODE_NONE) {
-         * Logger.INFO("Did not find valid generator.");
-         * return false;
-         * }
-         * else {
-         * Logger.INFO("Changed Mode to "+mMode);
-         * }
-         * int aMulti = this.getGUIItemStack() != null ? this.getGUIItemStack().stackSize : 0;
-         * if (aMulti > 16 || aMulti == 0) {
-         * return false;
-         * }
+        /**
+         * this.resetRecipeMapForAllInputHatches(); this.mMode = getModeFromInventorySlot(aStack); if (mMode ==
+         * MODE_NONE) { Logger.INFO("Did not find valid generator."); return false; } else { Logger.INFO("Changed Mode
+         * to "+mMode); } int aMulti = this.getGUIItemStack() != null ? this.getGUIItemStack().stackSize : 0; if (aMulti
+         * > 16 || aMulti == 0) { return false; }
          *
          *
          *
          * ArrayList<FluidStack> tFluids = this.getStoredFluids();
          *
-         * Collection<GT_Recipe> tRecipeList = this.getRecipeMap().mRecipeList;
-         * Logger.INFO("Got Recipe Map");
-         * if (tFluids.size() > 0 && tRecipeList != null) {
-         * Logger.INFO("Found Fuels for Map.");
-         * Iterator<FluidStack> arg3 = tFluids.iterator();
-         * int aCount = 0;
-         * while (arg3.hasNext()) {
-         * FluidStack hatchFluid1 = (FluidStack) arg3.next();
-         * Logger.INFO("Iterating Fluid Found "+(aCount++)+" | "+hatchFluid1.getLocalizedName());
+         * Collection<GT_Recipe> tRecipeList = this.getRecipeMap().mRecipeList; Logger.INFO("Got Recipe Map"); if
+         * (tFluids.size() > 0 && tRecipeList != null) { Logger.INFO("Found Fuels for Map."); Iterator<FluidStack> arg3
+         * = tFluids.iterator(); int aCount = 0; while (arg3.hasNext()) { FluidStack hatchFluid1 = (FluidStack)
+         * arg3.next(); Logger.INFO("Iterating Fluid Found "+(aCount++)+" | "+hatchFluid1.getLocalizedName());
          * Iterator<GT_Recipe> arg5 = tRecipeList.iterator();
          *
-         * int Hatch = 0;
-         * int totalFuelValue = 0;
-         * while (arg5.hasNext()) {
-         * Logger.INFO("Iterating Recipe "+(Hatch++));
-         * GT_Recipe aFuel = (GT_Recipe) arg5.next();
-         * FluidStack tLiquid;
-         * boolean addedFuelOnce = false;
-         * for (int a = 0; a < aMulti; a++) {
-         * if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
-         * && hatchFluid1.isFluidEqual(tLiquid)) {
-         * this.fuelConsumption = tLiquid.amount = this.boostEu
-         * ? 4096 / aFuel.mSpecialValue
-         * : 2048 / aFuel.mSpecialValue;
-         * if (this.depleteInput(tLiquid)) {
-         * Logger.INFO("Depleted Fuel");
-         * this.boostEu = this.depleteInput(Materials.Oxygen.getGas(2L));
+         * int Hatch = 0; int totalFuelValue = 0; while (arg5.hasNext()) { Logger.INFO("Iterating Recipe "+(Hatch++));
+         * GT_Recipe aFuel = (GT_Recipe) arg5.next(); FluidStack tLiquid; boolean addedFuelOnce = false; for (int a = 0;
+         * a < aMulti; a++) { if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) !=
+         * null && hatchFluid1.isFluidEqual(tLiquid)) { this.fuelConsumption = tLiquid.amount = this.boostEu ? 4096 /
+         * aFuel.mSpecialValue : 2048 / aFuel.mSpecialValue; if (this.depleteInput(tLiquid)) { Logger.INFO("Depleted
+         * Fuel"); this.boostEu = this.depleteInput(Materials.Oxygen.getGas(2L));
          *
-         * /*if (!tFluids.contains(Materials.Lubricant.getFluid(1L))) {
-         * Logger.INFO("No Lube.");
-         * return false;
-         * }*/
+         * /*if (!tFluids.contains(Materials.Lubricant.getFluid(1L))) { Logger.INFO("No Lube."); return false; }
+         */
         /**
          * if (this.mRuntime % 72 == 0 || this.mRuntime == 0) {
-         * this.depleteInput(Materials.Lubricant.getFluid(this.boostEu ? 2L : 1L));
-         * }
-         * Logger.INFO("ADDING POWER");
-         * this.fuelRemaining = hatchFluid1.amount;
-         * totalFuelValue++;
-         * }
-         * }
-         * }
-         * //Do things after consuming Fuel
-         * if (totalFuelValue == aMulti) {
-         * this.fuelValue = aFuel.mSpecialValue*aMulti;
-         * this.mEUt = this.mEfficiency < 2000 ? 0 : aFuel.mSpecialValue*aMulti;
-         * this.mProgresstime = aMulti;
-         * this.mMaxProgresstime = aMulti;
-         * this.mEfficiencyIncrease = 15*aMulti;
-         * return true;
-         * }
-         * }
-         * }
-         * }
+         * this.depleteInput(Materials.Lubricant.getFluid(this.boostEu ? 2L : 1L)); } Logger.INFO("ADDING POWER");
+         * this.fuelRemaining = hatchFluid1.amount; totalFuelValue++; } } } //Do things after consuming Fuel if
+         * (totalFuelValue == aMulti) { this.fuelValue = aFuel.mSpecialValue*aMulti; this.mEUt = this.mEfficiency < 2000
+         * ? 0 : aFuel.mSpecialValue*aMulti; this.mProgresstime = aMulti; this.mMaxProgresstime = aMulti;
+         * this.mEfficiencyIncrease = 15*aMulti; return true; } } } }
          *
-         * this.mEUt = 0;
-         * this.mEfficiency = 0;
-         * return false;
+         * this.mEUt = 0; this.mEfficiency = 0; return false;
          **/
     }
 
@@ -303,25 +257,21 @@ public class GregtechMetaTileEntityGeneratorArray
     public IStructureDefinition<GregtechMetaTileEntityGeneratorArray> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityGeneratorArray>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
-                            buildHatchAdder(GregtechMetaTileEntityGeneratorArray.class)
-                                    .atLeast(
-                                            InputHatch,
-                                            OutputHatch,
-                                            InputBus,
-                                            OutputBus,
-                                            Maintenance,
-                                            Dynamo.or(TTDynamo),
-                                            Muffler)
-                                    .casingIndex(48)
-                                    .dot(1)
-                                    .buildAndChain(
+                            buildHatchAdder(GregtechMetaTileEntityGeneratorArray.class).atLeast(
+                                    InputHatch,
+                                    OutputHatch,
+                                    InputBus,
+                                    OutputBus,
+                                    Maintenance,
+                                    Dynamo.or(TTDynamo),
+                                    Muffler).casingIndex(48).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings4, 0))))
                     .build();
         }
@@ -381,7 +331,7 @@ public class GregtechMetaTileEntityGeneratorArray
     }
 
     /**
-     *  Code from single blocks
+     * Code from single blocks
      */
     public void tryProcessFuelItems(IGregTechTileEntity aBaseMetaTileEntity, ItemStack a) {
         if (a != null
@@ -410,9 +360,8 @@ public class GregtechMetaTileEntityGeneratorArray
                     long tFluidAmountToUse = Math.min(
                             (long) (mFluid.amount / tEmptyContainer),
                             (this.maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / (long) tFuelValue);
-                    if (tFluidAmountToUse > 0L
-                            && aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                    tFluidAmountToUse * (long) tFuelValue, true)) {
+                    if (tFluidAmountToUse > 0L && aBaseMetaTileEntity
+                            .increaseStoredEnergyUnits(tFluidAmountToUse * (long) tFuelValue, true)) {
                         PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollutionPerTick(null));
                         mFluid.amount = (int) ((long) mFluid.amount - tFluidAmountToUse * (long) tEmptyContainer);
                     }
@@ -423,8 +372,8 @@ public class GregtechMetaTileEntityGeneratorArray
         }
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork()
-                    && aBaseMetaTileEntity.getUniversalEnergyStored()
+            aBaseMetaTileEntity.setActive(
+                    aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.getUniversalEnergyStored()
                             >= this.maxEUOutput() + this.getMinimumStoredEU());
         }
     }
@@ -448,8 +397,7 @@ public class GregtechMetaTileEntityGeneratorArray
                     FluidStack tLiquid;
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null
                             && aLiquid.isFluidEqual(tLiquid)) {
-                        return (int) ((long) tFuel.mSpecialValue
-                                * (long) this.mEfficiency
+                        return (int) ((long) tFuel.mSpecialValue * (long) this.mEfficiency
                                 * (long) this.consumedFluidPerOperation(tLiquid)
                                 / 100L);
                     }
@@ -464,11 +412,12 @@ public class GregtechMetaTileEntityGeneratorArray
 
     public int getFuelValue(ItemStack aStack) {
         if (!GT_Utility.isStackInvalid(aStack) && this.getRecipeMap() != null) {
-            GT_Recipe tFuel = this.getRecipeMap()
-                    .findRecipe(
-                            this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, (FluidStack[]) null, new ItemStack[] {
-                                aStack
-                            });
+            GT_Recipe tFuel = this.getRecipeMap().findRecipe(
+                    this.getBaseMetaTileEntity(),
+                    false,
+                    Long.MAX_VALUE,
+                    (FluidStack[]) null,
+                    new ItemStack[] { aStack });
             return tFuel != null ? (int) ((long) tFuel.mSpecialValue * 1000L * (long) this.mEfficiency / 100L) : 0;
         } else {
             return 0;
@@ -477,13 +426,13 @@ public class GregtechMetaTileEntityGeneratorArray
 
     public ItemStack getEmptyContainer(ItemStack aStack) {
         if (!GT_Utility.isStackInvalid(aStack) && this.getRecipeMap() != null) {
-            GT_Recipe tFuel = this.getRecipeMap()
-                    .findRecipe(
-                            this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, (FluidStack[]) null, new ItemStack[] {
-                                aStack
-                            });
-            return tFuel != null
-                    ? GT_Utility.copy(new Object[] {tFuel.getOutput(0)})
+            GT_Recipe tFuel = this.getRecipeMap().findRecipe(
+                    this.getBaseMetaTileEntity(),
+                    false,
+                    Long.MAX_VALUE,
+                    (FluidStack[]) null,
+                    new ItemStack[] { aStack });
+            return tFuel != null ? GT_Utility.copy(new Object[] { tFuel.getOutput(0) })
                     : GT_Utility.getContainerItem(aStack, true);
         } else {
             return null;

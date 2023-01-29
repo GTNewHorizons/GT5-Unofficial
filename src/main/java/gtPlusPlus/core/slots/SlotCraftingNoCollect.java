@@ -1,6 +1,5 @@
 package gtPlusPlus.core.slots;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -8,27 +7,28 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.*;
 import net.minecraft.stats.AchievementList;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 public class SlotCraftingNoCollect extends SlotCrafting {
+
     /** The craft matrix inventory linked to this result slot. */
     private final IInventory craftMatrix;
     /** The player that is using the GUI where this slot resides. */
     private EntityPlayer thePlayer;
     /**
-     * The number of items that have been crafted so far. Gets passed to
-     * ItemStack.onCrafting before being reset.
+     * The number of items that have been crafted so far. Gets passed to ItemStack.onCrafting before being reset.
      */
     private int amountCrafted;
 
-    public SlotCraftingNoCollect(
-            EntityPlayer player, IInventory inventory, IInventory inventory2, int x, int y, int z) {
+    public SlotCraftingNoCollect(EntityPlayer player, IInventory inventory, IInventory inventory2, int x, int y,
+            int z) {
         super(player, inventory, inventory2, x, y, z);
         this.thePlayer = player;
         this.craftMatrix = inventory;
     }
 
     /**
-     * Check if the stack is a valid item for this slot. Always true beside for
-     * the armor slots.
+     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
      */
     @Override
     public boolean isItemValid(ItemStack p_75214_1_) {
@@ -36,8 +36,8 @@ public class SlotCraftingNoCollect extends SlotCrafting {
     }
 
     /**
-     * Decrease the size of the stack in slot (first int arg) by the amount of
-     * the second int arg. Returns the new stack.
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
      */
     @Override
     public ItemStack decrStackSize(int amount) {
@@ -49,9 +49,8 @@ public class SlotCraftingNoCollect extends SlotCrafting {
     }
 
     /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes,
-     * not ore and wood. Typically increases an internal count then calls
-     * onCrafting(item).
+     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an
+     * internal count then calls onCrafting(item).
      */
     @Override
     protected void onCrafting(ItemStack output, int amount) {
@@ -60,8 +59,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
     }
 
     /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes,
-     * not ore and wood.
+     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
      */
     @Override
     protected void onCrafting(ItemStack output) {
@@ -116,26 +114,16 @@ public class SlotCraftingNoCollect extends SlotCrafting {
         this.onCrafting(output);
 
         /*
-         * for (int i = 0; i < this.craftMatrix.getSizeInventory(); ++i) {
-         * ItemStack itemstack1 = this.craftMatrix.getStackInSlot(i);
-         *
-         * if (itemstack1 != null) { this.craftMatrix.decrStackSize(i, 1);
-         *
-         * if (itemstack1.getItem().hasContainerItem(itemstack1)) { ItemStack
-         * itemstack2 = itemstack1.getItem().getContainerItem(itemstack1);
-         *
-         * if (itemstack2 != null && itemstack2.isItemStackDamageable() &&
-         * itemstack2.getItemDamage() > itemstack2.getMaxDamage()) {
-         * MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thePlayer,
-         * itemstack2)); continue; }
-         *
-         * if
-         * (!itemstack1.getItem().doesContainerItemLeaveCraftingGrid(itemstack1)
-         * || !this.thePlayer.inventory.addItemStackToInventory(itemstack2)) {
-         * if (this.craftMatrix.getStackInSlot(i) == null) {
-         * this.craftMatrix.setInventorySlotContents(i, itemstack2); } else {
-         * this.thePlayer.dropPlayerItemWithRandomChoice(itemstack2, false); } }
-         * } } }
+         * for (int i = 0; i < this.craftMatrix.getSizeInventory(); ++i) { ItemStack itemstack1 =
+         * this.craftMatrix.getStackInSlot(i); if (itemstack1 != null) { this.craftMatrix.decrStackSize(i, 1); if
+         * (itemstack1.getItem().hasContainerItem(itemstack1)) { ItemStack itemstack2 =
+         * itemstack1.getItem().getContainerItem(itemstack1); if (itemstack2 != null &&
+         * itemstack2.isItemStackDamageable() && itemstack2.getItemDamage() > itemstack2.getMaxDamage()) {
+         * MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thePlayer, itemstack2)); continue; } if
+         * (!itemstack1.getItem().doesContainerItemLeaveCraftingGrid(itemstack1) ||
+         * !this.thePlayer.inventory.addItemStackToInventory(itemstack2)) { if (this.craftMatrix.getStackInSlot(i) ==
+         * null) { this.craftMatrix.setInventorySlotContents(i, itemstack2); } else {
+         * this.thePlayer.dropPlayerItemWithRandomChoice(itemstack2, false); } } } } }
          */
     }
 

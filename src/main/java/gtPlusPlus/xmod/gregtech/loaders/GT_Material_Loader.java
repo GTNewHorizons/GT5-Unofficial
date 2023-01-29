@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.lang.reflect.*;
+import java.util.HashMap;
+import java.util.Map;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.api.objects.Logger;
@@ -8,9 +12,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GT_Material_Loader {
 
@@ -43,14 +44,16 @@ public class GT_Material_Loader {
                 // Make this class Dynamically implement IMaterialHandler
                 if (mProxyObject == null) {
                     mProxyObject = Proxy.newProxyInstance(
-                            mInterface.getClassLoader(), new Class[] {mInterface}, new MaterialHandler(getInstance()));
+                            mInterface.getClassLoader(),
+                            new Class[] { mInterface },
+                            new MaterialHandler(getInstance()));
                 }
 
                 if (ReflectionUtils.invoke(
                         Materials.class,
                         "add",
-                        new Class[] {ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler")},
-                        new Object[] {mProxyObject})) {
+                        new Class[] { ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler") },
+                        new Object[] { mProxyObject })) {
                     Logger.REFLECTION("Successfully invoked add, on the proxied object implementing IMaterialHandler.");
 
                     Logger.REFLECTION("Examining Proxy to ensure it implements the correct Interface.");
@@ -134,17 +137,22 @@ public class GT_Material_Loader {
             enableComponent.invoke(prefix, mMaterial);
             Logger.DEBUG_MATERIALS("Enabled " + prefix.name() + " for " + mMaterial.mDefaultLocalName + ".");
             return true;
-        } catch (IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException
-                | NoSuchMethodException
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException error) {
-            Logger.DEBUG_MATERIALS("Failed to enabled " + prefix.name() + " for " + mMaterial.mDefaultLocalName
-                    + ". Caught " + error.getCause().toString() + ".");
+            Logger.DEBUG_MATERIALS(
+                    "Failed to enabled " + prefix.name()
+                            + " for "
+                            + mMaterial.mDefaultLocalName
+                            + ". Caught "
+                            + error.getCause().toString()
+                            + ".");
             error.printStackTrace();
         }
-        Logger.DEBUG_MATERIALS("Did not enable " + prefix.name() + " for " + mMaterial.mDefaultLocalName
-                + ". Report this error to Alkalus on Github.");
+        Logger.DEBUG_MATERIALS(
+                "Did not enable " + prefix.name()
+                        + " for "
+                        + mMaterial.mDefaultLocalName
+                        + ". Report this error to Alkalus on Github.");
         return false;
     }
 
@@ -169,8 +177,9 @@ public class GT_Material_Loader {
             }
             return mValid > 0;
         } catch (SecurityException | IllegalArgumentException e) {
-            Logger.DEBUG_MATERIALS("Total Failure - Unable to re-enable " + MaterialUtils.getMaterialName(material)
-                    + ". Most likely an IllegalArgumentException, but small chance it's a SecurityException.");
+            Logger.DEBUG_MATERIALS(
+                    "Total Failure - Unable to re-enable " + MaterialUtils.getMaterialName(material)
+                            + ". Most likely an IllegalArgumentException, but small chance it's a SecurityException.");
             return false;
         }
     }
@@ -203,77 +212,29 @@ public class GT_Material_Loader {
     }
 
     /*
-    public static class ProxyListener implements java.lang.reflect.InvocationHandler {
-
-    	public static Object IMaterialHandlerProxy;
-
-    	ProxyListener(){
-
-    		Logger.REFLECTION("Failed setting IMaterialHandler Proxy instance.");
-    	}
-
-    	//Loading the class at runtime
-    	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-    	    Class<?> someInterface = ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler");
-    	    Object instance = Proxy.newProxyInstance(someInterface.getClassLoader(), new Class<?>[]{someInterface}, new InvocationHandler() {
-
-    	        @Override
-    	        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    	            //Handle the invocations
-    	            if(method.getName().equals("onMaterialsInit")){
-    	            	Logger.REFLECTION("Invoked onMaterialsInit() via IMaterialHandler proxy");
-    	                return 1;
-    	            }
-    	            else if(method.getName().equals("onComponentInit")){
-    	            	Logger.REFLECTION("Invoked onComponentInit() via IMaterialHandler proxy");
-    	                return 2;
-    	            }
-    	            else if(method.getName().equals("onComponentIteration")){
-    	            	Logger.REFLECTION("Invoked onComponentIteration() via IMaterialHandler proxy");
-    	                return 3;
-    	            }
-    	            else {
-    	            	return -1;
-    	            }
-    	        }
-    	    });
-    	    System.out.println(instance.getClass().getDeclaredMethod("someMethod", (Class<?>[])null).invoke(instance, new Object[]{}));
-    	}
-
-    	private static class MaterialHandler implements InvocationHandler {
-            private final Object original;
-
-            public MaterialHandler(Object original) {
-                this.original = original;
-            }
-
-            @Override
-    		public Object invoke(Object proxy, Method method, Object[] args)
-                    throws IllegalAccessException, IllegalArgumentException,
-                    InvocationTargetException {
-                System.out.println("BEFORE");
-                method.invoke(original, args);
-                System.out.println("AFTER");
-                return null;
-            }
-        }
-
-        public static void init(){
-
-        	Class<?> someInterface = ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler");
-            GT_Material_Loader original = GT_Material_Loader.instance;
-            MaterialHandler handler = new MaterialHandler(original);
-
-            Object f = Proxy.newProxyInstance(someInterface.getClassLoader(),
-                    new Class[] { someInterface },
-                    handler);
-
-            f.originalMethod("Hallo");
-        }
-
-
-
-    }
-
+     * public static class ProxyListener implements java.lang.reflect.InvocationHandler { public static Object
+     * IMaterialHandlerProxy; ProxyListener(){ Logger.REFLECTION("Failed setting IMaterialHandler Proxy instance."); }
+     * //Loading the class at runtime public static void main(String[] args) throws IllegalAccessException,
+     * IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException,
+     * ClassNotFoundException { Class<?> someInterface =
+     * ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler"); Object instance =
+     * Proxy.newProxyInstance(someInterface.getClassLoader(), new Class<?>[]{someInterface}, new InvocationHandler() {
+     * @Override public Object invoke(Object proxy, Method method, Object[] args) throws Throwable { //Handle the
+     * invocations if(method.getName().equals("onMaterialsInit")){
+     * Logger.REFLECTION("Invoked onMaterialsInit() via IMaterialHandler proxy"); return 1; } else
+     * if(method.getName().equals("onComponentInit")){
+     * Logger.REFLECTION("Invoked onComponentInit() via IMaterialHandler proxy"); return 2; } else
+     * if(method.getName().equals("onComponentIteration")){
+     * Logger.REFLECTION("Invoked onComponentIteration() via IMaterialHandler proxy"); return 3; } else { return -1; } }
+     * }); System.out.println(instance.getClass().getDeclaredMethod("someMethod", (Class<?>[])null).invoke(instance, new
+     * Object[]{})); } private static class MaterialHandler implements InvocationHandler { private final Object
+     * original; public MaterialHandler(Object original) { this.original = original; }
+     * @Override public Object invoke(Object proxy, Method method, Object[] args) throws IllegalAccessException,
+     * IllegalArgumentException, InvocationTargetException { System.out.println("BEFORE"); method.invoke(original,
+     * args); System.out.println("AFTER"); return null; } } public static void init(){ Class<?> someInterface =
+     * ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler"); GT_Material_Loader original =
+     * GT_Material_Loader.instance; MaterialHandler handler = new MaterialHandler(original); Object f =
+     * Proxy.newProxyInstance(someInterface.getClassLoader(), new Class[] { someInterface }, handler);
+     * f.originalMethod("Hallo"); } }
      */
 }

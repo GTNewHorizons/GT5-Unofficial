@@ -1,7 +1,5 @@
 package gtPlusPlus.core.entity.projectile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.potion.Potion;
@@ -11,6 +9,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class EntityLightningAttack extends EntityWitherSkull {
 
     public EntityLightningAttack(World p_i1793_1_) {
@@ -18,21 +19,15 @@ public class EntityLightningAttack extends EntityWitherSkull {
         this.setSize(0.3125F, 0.3125F);
     }
 
-    public EntityLightningAttack(
-            World p_i1794_1_, EntityLivingBase p_i1794_2_, double p_i1794_3_, double p_i1794_5_, double p_i1794_7_) {
+    public EntityLightningAttack(World p_i1794_1_, EntityLivingBase p_i1794_2_, double p_i1794_3_, double p_i1794_5_,
+            double p_i1794_7_) {
         super(p_i1794_1_, p_i1794_2_, p_i1794_3_, p_i1794_5_, p_i1794_7_);
         this.setSize(0.3125F, 0.3125F);
     }
 
     @SideOnly(Side.CLIENT)
-    public EntityLightningAttack(
-            World p_i1795_1_,
-            double p_i1795_2_,
-            double p_i1795_4_,
-            double p_i1795_6_,
-            double p_i1795_8_,
-            double p_i1795_10_,
-            double p_i1795_12_) {
+    public EntityLightningAttack(World p_i1795_1_, double p_i1795_2_, double p_i1795_4_, double p_i1795_6_,
+            double p_i1795_8_, double p_i1795_10_, double p_i1795_12_) {
         super(p_i1795_1_, p_i1795_2_, p_i1795_4_, p_i1795_6_, p_i1795_8_, p_i1795_10_, p_i1795_12_);
         this.setSize(0.3125F, 0.3125F);
     }

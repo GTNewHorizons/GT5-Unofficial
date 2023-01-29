@@ -1,12 +1,7 @@
 package gtPlusPlus.core.entity.monster;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.core.world.explosions.ExplosionHandler;
 import java.lang.reflect.Field;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
@@ -20,6 +15,13 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.core.world.explosions.ExplosionHandler;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
 
@@ -49,7 +51,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(
-                2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
+                2,
+                new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
     }
 
     /**
@@ -121,9 +124,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     }
 
     /**
-     * Called frequently so the entity can update its state every tick as
-     * required. For example, zombies and skeletons use this to react to
-     * sunlight and start to burn.
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
      */
     @Override
     public void onLivingUpdate() {
@@ -219,9 +221,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     }
 
     /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity
-     * has recently been hit by a player. @param par2 - Level of Looting used to
-     * kill this mob.
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     @Override
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
@@ -402,8 +403,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
             if (mFirstUpdateField != null && mReflectFirstUpdate == true) {
                 try {
                     this.mReflectFirstUpdate = (boolean) mFirstUpdateField.get(this);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                }
+                } catch (IllegalArgumentException | IllegalAccessException e) {}
             }
         }
         super.onEntityUpdate();
@@ -471,8 +471,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
                 fluid,
                 this)) {
             if (!this.inFluid && !this.mReflectFirstUpdate) {
-                float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D
-                                + this.motionY * this.motionY
+                float f = MathHelper.sqrt_double(
+                        this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY
                                 + this.motionZ * this.motionZ * 0.20000000298023224D)
                         * 0.2F;
 
@@ -533,8 +533,9 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     }
 
     private void explode() {
-        /* float f = 12.0F;
-        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);*/
+        /*
+         * float f = 12.0F; this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
+         */
 
         if (!this.worldObj.isRemote) {
             final float f = 6.5F;

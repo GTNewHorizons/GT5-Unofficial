@@ -2,6 +2,18 @@ package gtPlusPlus.xmod.thaumcraft.util;
 
 import static gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft.sItemsToGetAspects;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.TC_Aspects;
@@ -23,16 +35,6 @@ import gtPlusPlus.xmod.thaumcraft.objects.wrapper.research.TC_ResearchCategoryLi
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.research.TC_ResearchItem_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.research.TC_ResearchNoteData_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.research.TC_ResearchPage_Wrapper;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 
 public class ThaumcraftUtils {
 
@@ -50,7 +52,7 @@ public class ThaumcraftUtils {
     }
 
     public static boolean addAspectToItem(ItemStack item, TC_Aspect_Wrapper aspect, int amount) {
-        return addAspectToItem(item, new TC_Aspect_Wrapper[] {aspect}, new Integer[] {amount});
+        return addAspectToItem(item, new TC_Aspect_Wrapper[] { aspect }, new Integer[] { amount });
     }
 
     public static boolean addAspectToItem(ItemStack item, TC_Aspect_Wrapper[] aspect, Integer[] amounts) {
@@ -81,20 +83,9 @@ public class ThaumcraftUtils {
         return r.mGtEnumField;
     }
 
-    public static Object addResearch(
-            String aResearch,
-            String aName,
-            String aText,
-            String[] aParentResearches,
-            String aCategory,
-            ItemStack aIcon,
-            int aComplexity,
-            int aType,
-            int aX,
-            int aY,
-            List<GTPP_AspectStack> aAspects,
-            ItemStack[] aResearchTriggers,
-            Object[] aPages) {
+    public static Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches,
+            String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY,
+            List<GTPP_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.researches, aResearch, true)) {
             return null;
         }
@@ -102,7 +93,7 @@ public class ThaumcraftUtils {
         if (tCategory == null) {
             return null;
         }
-        for (Iterator<TC_ResearchItem_Wrapper> i$ = tCategory.research.values().iterator(); i$.hasNext(); ) {
+        for (Iterator<TC_ResearchItem_Wrapper> i$ = tCategory.research.values().iterator(); i$.hasNext();) {
             TC_ResearchItem_Wrapper tResearch = (TC_ResearchItem_Wrapper) i$.next();
             if ((tResearch.displayColumn == aX) && (tResearch.displayRow == aY)) {
                 aX += (aX > 0 ? 5 : -5);
@@ -110,7 +101,13 @@ public class ThaumcraftUtils {
             }
         }
         TC_ResearchItem_Wrapper rResearch = new TC_ResearchItem_Wrapper(
-                aResearch, aCategory, getAspectList_Ex(aAspects), aX, aY, aComplexity, aIcon);
+                aResearch,
+                aCategory,
+                getAspectList_Ex(aAspects),
+                aX,
+                aY,
+                aComplexity,
+                aIcon);
         ArrayList<Object> tPages = new ArrayList<Object>(aPages.length);
         GT_LanguageManager.addStringLocalization("tc.research_name." + aResearch, aName);
         GT_LanguageManager.addStringLocalization("tc.research_text." + aResearch, "[GT++] " + aText);
@@ -172,13 +169,9 @@ public class ThaumcraftUtils {
         return rResearch.registerResearchItem();
     }
 
-    public static Object addCrucibleRecipe(
-            final String aResearch,
-            final Object aInput,
-            final ItemStack aOutput,
+    public static Object addCrucibleRecipe(final String aResearch, final Object aInput, final ItemStack aOutput,
             final List<GTPP_AspectStack> aAspects) {
-        if (GT_Utility.isStringInvalid((Object) aResearch)
-                || aInput == null
+        if (GT_Utility.isStringInvalid((Object) aResearch) || aInput == null
                 || aOutput == null
                 || aAspects == null
                 || aAspects.isEmpty()) {
@@ -186,20 +179,15 @@ public class ThaumcraftUtils {
         }
         return addCrucibleRecipe(
                 aResearch,
-                GT_Utility.copy(new Object[] {aOutput}),
+                GT_Utility.copy(new Object[] { aOutput }),
                 (aInput instanceof ItemStack || aInput instanceof ArrayList) ? aInput : aInput.toString(),
                 getAspectList_Ex(aAspects));
     }
 
-    public static Object addInfusionRecipe(
-            final String aResearch,
-            final ItemStack aMainInput,
-            final ItemStack[] aSideInputs,
-            final ItemStack aOutput,
-            final int aInstability,
+    public static Object addInfusionRecipe(final String aResearch, final ItemStack aMainInput,
+            final ItemStack[] aSideInputs, final ItemStack aOutput, final int aInstability,
             final List<GTPP_AspectStack> aAspects) {
-        if (GT_Utility.isStringInvalid((Object) aResearch)
-                || aMainInput == null
+        if (GT_Utility.isStringInvalid((Object) aResearch) || aMainInput == null
                 || aSideInputs == null
                 || aOutput == null
                 || aAspects == null
@@ -208,15 +196,15 @@ public class ThaumcraftUtils {
         }
         return addInfusionCraftingRecipe(
                 aResearch,
-                (Object) GT_Utility.copy(new Object[] {aOutput}),
+                (Object) GT_Utility.copy(new Object[] { aOutput }),
                 aInstability,
                 getAspectList_Ex(aAspects),
                 aMainInput,
                 aSideInputs);
     }
 
-    public static boolean registerThaumcraftAspectsToItem(
-            final ItemStack aExampleStack, final List<GTPP_AspectStack> aAspects, final String aOreDict) {
+    public static boolean registerThaumcraftAspectsToItem(final ItemStack aExampleStack,
+            final List<GTPP_AspectStack> aAspects, final String aOreDict) {
         if (aAspects.isEmpty()) {
             return false;
         }
@@ -224,8 +212,8 @@ public class ThaumcraftUtils {
         return true;
     }
 
-    public static boolean registerThaumcraftAspectsToItem(
-            final ItemStack aStack, final List<GTPP_AspectStack> aAspects, final boolean aAdditive) {
+    public static boolean registerThaumcraftAspectsToItem(final ItemStack aStack, final List<GTPP_AspectStack> aAspects,
+            final boolean aAdditive) {
         try {
             if (aAspects.isEmpty()) {
                 return false;
@@ -276,14 +264,14 @@ public class ThaumcraftUtils {
         /*
          * Methods
          */
-        mMethod_registerObjectTag1 = ReflectionUtils.getMethod(
-                mClass_ThaumcraftApi, "registerObjectTag", ItemStack.class, mClass_AspectList);
+        mMethod_registerObjectTag1 = ReflectionUtils
+                .getMethod(mClass_ThaumcraftApi, "registerObjectTag", ItemStack.class, mClass_AspectList);
 
-        mMethod_registerObjectTag2 =
-                ReflectionUtils.getMethod(mClass_ThaumcraftApi, "registerObjectTag", String.class, mClass_AspectList);
+        mMethod_registerObjectTag2 = ReflectionUtils
+                .getMethod(mClass_ThaumcraftApi, "registerObjectTag", String.class, mClass_AspectList);
 
-        mMethod_registerComplexObjectTag = ReflectionUtils.getMethod(
-                mClass_ThaumcraftApi, "registerComplexObjectTag", ItemStack.class, mClass_AspectList);
+        mMethod_registerComplexObjectTag = ReflectionUtils
+                .getMethod(mClass_ThaumcraftApi, "registerComplexObjectTag", ItemStack.class, mClass_AspectList);
 
         mMethod_addInfusionCraftingRecipe = ReflectionUtils.getMethod(
                 mClass_ThaumcraftApi,
@@ -303,8 +291,8 @@ public class ThaumcraftUtils {
                 Object.class,
                 mClass_AspectList);
 
-        mMethod_getObjectAspects =
-                ReflectionUtils.getMethod(mClass_ThaumcraftApiHelper, "getObjectAspects", ItemStack.class);
+        mMethod_getObjectAspects = ReflectionUtils
+                .getMethod(mClass_ThaumcraftApiHelper, "getObjectAspects", ItemStack.class);
 
         mMethod_updateData = ReflectionUtils.getMethod(
                 mClass_ResearchManager,
@@ -352,8 +340,8 @@ public class ThaumcraftUtils {
         return null;
     }
 
-    public static Object addCrucibleRecipe(
-            String aResearch, ItemStack copy, Object aOutput, TC_AspectList_Wrapper aAspectList) {
+    public static Object addCrucibleRecipe(String aResearch, ItemStack copy, Object aOutput,
+            TC_AspectList_Wrapper aAspectList) {
         try {
             return mMethod_addCrucibleRecipe.invoke(null, aResearch, copy, aOutput, aAspectList);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -362,16 +350,11 @@ public class ThaumcraftUtils {
         return null;
     }
 
-    public static Object addInfusionCraftingRecipe(
-            String aResearch,
-            Object copy,
-            int aInstability,
-            TC_AspectList_Wrapper aAspectList,
-            ItemStack aMainInput,
-            ItemStack[] aSideInputs) {
+    public static Object addInfusionCraftingRecipe(String aResearch, Object copy, int aInstability,
+            TC_AspectList_Wrapper aAspectList, ItemStack aMainInput, ItemStack[] aSideInputs) {
         try {
-            return mMethod_addInfusionCraftingRecipe.invoke(
-                    null, aResearch, copy, aInstability, aAspectList, aMainInput, aSideInputs);
+            return mMethod_addInfusionCraftingRecipe
+                    .invoke(null, aResearch, copy, aInstability, aAspectList, aMainInput, aSideInputs);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -426,8 +409,7 @@ public class ThaumcraftUtils {
     }
 
     public static boolean isItemResearchNotes(ItemStack aStack) {
-        if (aStack != null
-                && aStack.getItem() == HANDLER_Thaumcraft.mResearchNotes
+        if (aStack != null && aStack.getItem() == HANDLER_Thaumcraft.mResearchNotes
                 && HANDLER_Thaumcraft.mResearchNotes.getClass().isInstance(aStack.getItem())) {
             return true;
         }
@@ -449,39 +431,24 @@ public class ThaumcraftUtils {
         return research;
     }
 
-    public static void placeAspectIntoResearchNote(
-            ItemStack note, World aWorld, final int q, final int r, final TC_Aspect_Wrapper aspect) {
-        /*TC_ResearchNoteData_Wrapper data = gatherResults(note);
-        String mGTPP = CORE.gameProfile.getName();
-        EntityPlayer player = CORE.getFakePlayer(aWorld);
-
-        if (isItemResearchNotes(note) && data != null && note.getItemDamage() < 64) {
-        	final boolean r2 = ResearchManager.isResearchComplete(mGTPP, "RESEARCHER1");
-        	final boolean r3 = ResearchManager.isResearchComplete(mGTPP, "RESEARCHER2");
-        	final HexUtils.Hex hex = new HexUtils.Hex(q, r);
-        	ResearchManager.HexEntry he = null;
-        	if (aspect != null) {
-        		he = new ResearchManager.HexEntry(aspect, 2);
-        		if (r3 && aWorld.rand.nextFloat() < 0.1f) {
-        			aWorld.playSoundAtEntity((Entity) player, "random.orb", 0.2f, 0.9f + player.worldObj.rand.nextFloat() * 0.2f);
-        		}
-        	} else {
-        		final float f = aWorld.rand.nextFloat();
-        		if (data.hexEntries.get(hex.toString()).aspect != null
-        				&& ((r2 && f < 0.25f) || (r3 && f < 0.5f))) {
-        			aWorld.playSoundAtEntity((Entity) player, "random.orb", 0.2f,
-        					0.9f + player.worldObj.rand.nextFloat() * 0.2f);
-        			ResearchManager.scheduleSave(player);
-        		}
-        		he = new ResearchManager.HexEntry((Aspect) null, 0);
-        	}
-        	data.hexEntries.put(hex.toString(), he);
-        	data.hexes.put(hex.toString(), hex);
-        	updateResearchNote(note, data);
-        	if (!aWorld.isRemote && ResearchManager.checkResearchCompletion(note, data,	player.getCommandSenderName())) {
-        		note.setItemDamage(64);
-        	}
-        }*/
+    public static void placeAspectIntoResearchNote(ItemStack note, World aWorld, final int q, final int r,
+            final TC_Aspect_Wrapper aspect) {
+        /*
+         * TC_ResearchNoteData_Wrapper data = gatherResults(note); String mGTPP = CORE.gameProfile.getName();
+         * EntityPlayer player = CORE.getFakePlayer(aWorld); if (isItemResearchNotes(note) && data != null &&
+         * note.getItemDamage() < 64) { final boolean r2 = ResearchManager.isResearchComplete(mGTPP, "RESEARCHER1");
+         * final boolean r3 = ResearchManager.isResearchComplete(mGTPP, "RESEARCHER2"); final HexUtils.Hex hex = new
+         * HexUtils.Hex(q, r); ResearchManager.HexEntry he = null; if (aspect != null) { he = new
+         * ResearchManager.HexEntry(aspect, 2); if (r3 && aWorld.rand.nextFloat() < 0.1f) {
+         * aWorld.playSoundAtEntity((Entity) player, "random.orb", 0.2f, 0.9f + player.worldObj.rand.nextFloat() *
+         * 0.2f); } } else { final float f = aWorld.rand.nextFloat(); if (data.hexEntries.get(hex.toString()).aspect !=
+         * null && ((r2 && f < 0.25f) || (r3 && f < 0.5f))) { aWorld.playSoundAtEntity((Entity) player, "random.orb",
+         * 0.2f, 0.9f + player.worldObj.rand.nextFloat() * 0.2f); ResearchManager.scheduleSave(player); } he = new
+         * ResearchManager.HexEntry((Aspect) null, 0); } data.hexEntries.put(hex.toString(), he);
+         * data.hexes.put(hex.toString(), hex); updateResearchNote(note, data); if (!aWorld.isRemote &&
+         * ResearchManager.checkResearchCompletion(note, data, player.getCommandSenderName())) { note.setItemDamage(64);
+         * } }
+         */
     }
 
     public static void completeResearchNote(World aWorld, ItemStack aStack) {

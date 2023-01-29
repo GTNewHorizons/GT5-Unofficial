@@ -1,8 +1,5 @@
 package gtPlusPlus.core.entity.monster;
 
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.general.ItemGemShards;
-import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -17,6 +14,10 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.general.ItemGemShards;
+import gtPlusPlus.core.util.math.MathUtils;
 
 public class EntityGiantChickenBase extends EntityChicken {
 
@@ -120,14 +121,13 @@ public class EntityGiantChickenBase extends EntityChicken {
         for (int k = 0; k < j * 2; ++k) {
             this.dropItem(
                     ModItems.itemBigEgg,
-                    MathUtils.getRandomFromArray(new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2}));
+                    MathUtils.getRandomFromArray(new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 }));
         }
 
         // Chicken Corpses Dropped
-        int mBodies = MathUtils.getRandomFromArray(new int[] {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5,
-            6
-        });
+        int mBodies = MathUtils.getRandomFromArray(
+                new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4,
+                        4, 4, 4, 5, 5, 6 });
         if (this.isBurning()) {
             this.dropItem(Items.cooked_chicken, mBodies);
         } else {
@@ -254,8 +254,7 @@ public class EntityGiantChickenBase extends EntityChicken {
         this.motionY = 0.68999998688697815D;
         this.motionY += 0.068999998688697815D;
         if (this.isPotionActive(Potion.jump)) {
-            this.motionY +=
-                    (double) ((float) (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.5F);
+            this.motionY += (double) ((float) (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.5F);
         }
 
         if (this.isSprinting()) {

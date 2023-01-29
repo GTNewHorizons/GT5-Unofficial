@@ -1,13 +1,15 @@
 package gtPlusPlus.preloader;
 
-import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.api.objects.data.weakref.WeakAutoMap;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.launchwrapper.Launch;
+
+import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.data.weakref.WeakAutoMap;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class DevHelper {
 
@@ -36,8 +38,7 @@ public class DevHelper {
             } else {
                 deobfuscatedEnvironment = false;
             }
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {}
         return !deobfuscatedEnvironment;
     }
 
@@ -57,8 +58,7 @@ public class DevHelper {
                     return b;
                 }
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         return null;
     }
 
@@ -102,6 +102,7 @@ public class DevHelper {
     }
 
     public static class DevHelperInternals {
+
         public static final Map<String, String> srgToForge = new HashMap<String, String>();
         public static final Map<String, String> forgeToSrg = new HashMap<String, String>();
         private static WeakAutoMap<Pair<String, String>> mInitMap = new WeakAutoMap<Pair<String, String>>();
@@ -3560,8 +3561,10 @@ public class DevHelper {
             mInitMap.put(new Pair<String, String>("func_75543_d", "dropOldestVillagerPosition"));
             mInitMap.put(new Pair<String, String>("func_75544_a", "tick"));
             mInitMap.put(new Pair<String, String>("func_75545_e", "addmInitMap.put(newDoorsToVillageOrCreateVillage"));
-            mInitMap.put(new Pair<String, String>(
-                    "func_75546_a", "addUnassignedWoodenDoorsAroundTomInitMap.put(newDoorsList"));
+            mInitMap.put(
+                    new Pair<String, String>(
+                            "func_75546_a",
+                            "addUnassignedWoodenDoorsAroundTomInitMap.put(newDoorsList"));
             mInitMap.put(new Pair<String, String>("func_75547_b", "getVillageDoorAt"));
             mInitMap.put(new Pair<String, String>("func_75548_d", "isVillagerPositionPresent"));
             mInitMap.put(new Pair<String, String>("func_75549_c", "removeAnnihilatedVillages"));
@@ -5056,16 +5059,18 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("amd", "net/minecraft/block/BlockMycelium"));
             mObInitMap.put(new Pair<String, String>("aag", "net/minecraft/inventory/ContainerEnchantment"));
             mObInitMap.put(new Pair<String, String>("aie", "net/minecraft/world/biome/WorldChunkManagerHell"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aub", "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$DesertPyramid"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aub",
+                            "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$DesertPyramid"));
             mObInitMap.put(new Pair<String, String>("bue", "net/minecraft/client/stream/ChatController"));
             mObInitMap.put(new Pair<String, String>("bqf", "net/minecraft/client/renderer/texture/TextureManager"));
             mObInitMap.put(new Pair<String, String>("bei", "net/minecraft/client/gui/achievement/GuiAchievements"));
             mObInitMap.put(new Pair<String, String>("bih", "net/minecraft/client/model/ModelSquid"));
             mObInitMap.put(new Pair<String, String>("bmg", "net/minecraft/client/shader/Framebuffer"));
             mObInitMap.put(new Pair<String, String>("na", "net/minecraft/client/network/NetHandlerHandshakeMemory"));
-            mObInitMap.put(
-                    new Pair<String, String>("jb", "net/minecraft/network/play/client/C02PacketUseEntity$Action"));
+            mObInitMap
+                    .put(new Pair<String, String>("jb", "net/minecraft/network/play/client/C02PacketUseEntity$Action"));
             mObInitMap.put(new Pair<String, String>("fc", "net/minecraft/util/MessageDeserializer2"));
             mObInitMap.put(new Pair<String, String>("bd", "net/minecraft/command/server/CommandPardonIp"));
             mObInitMap.put(new Pair<String, String>("amw", "net/minecraft/block/BlockPumpkin"));
@@ -5081,8 +5086,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("afm", "net/minecraft/enchantment/EnchantmentArrowDamage"));
             mObInitMap.put(new Pair<String, String>("brm", "net/minecraft/client/resources/SkinManager$3"));
             mObInitMap.put(new Pair<String, String>("aqu", "net/minecraft/world/gen/ChunkProviderFlat"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aut", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Prison"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aut",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Prison"));
             mObInitMap.put(new Pair<String, String>("ays", "net/minecraft/world/storage/WorldInfo"));
             mObInitMap.put(new Pair<String, String>("bbq", "net/minecraft/util/MinecraftError"));
             mObInitMap.put(new Pair<String, String>("bfp", "net/minecraft/util/EnchantmentNameParts"));
@@ -5139,25 +5146,29 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("xk", "net/minecraft/entity/item/EntityItem"));
             mObInitMap.put(new Pair<String, String>("tl", "net/minecraft/entity/ai/attributes/BaseAttributeMap"));
             mObInitMap.put(new Pair<String, String>("pm", "net/minecraft/stats/IStatType"));
-            mObInitMap.put(
-                    new Pair<String, String>("atc", "net/minecraft/world/gen/structure/StructureMineshaftStart"));
+            mObInitMap
+                    .put(new Pair<String, String>("atc", "net/minecraft/world/gen/structure/StructureMineshaftStart"));
             mObInitMap.put(new Pair<String, String>("apd", "net/minecraft/tileentity/TileEntityEnchantmentTable"));
             mObInitMap.put(new Pair<String, String>("ale", "net/minecraft/block/BlockFurnace"));
             mObInitMap.put(new Pair<String, String>("adg", "net/minecraft/item/ItemLeaves"));
             mObInitMap.put(new Pair<String, String>("ahf", "net/minecraft/world/World$4"));
             mObInitMap.put(new Pair<String, String>("axb", "net/minecraft/world/gen/layer/GenLayerAddIsland"));
             mObInitMap.put(new Pair<String, String>("bpg", "net/minecraft/client/util/JsonBlendingMode"));
-            mObInitMap.put(
-                    new Pair<String, String>("net/minecraft/realms/RealmsMth", "net/minecraft/realms/RealmsMth"));
+            mObInitMap
+                    .put(new Pair<String, String>("net/minecraft/realms/RealmsMth", "net/minecraft/realms/RealmsMth"));
             mObInitMap.put(new Pair<String, String>("qa", "net/minecraft/util/IntHashMap$Entry"));
             mObInitMap.put(new Pair<String, String>("mb", "net/minecraft/server/gui/MinecraftServerGui$3"));
             mObInitMap.put(
                     new Pair<String, String>("ic", "net/minecraft/network/play/server/S3BPacketScoreboardObjective"));
             mObInitMap.put(new Pair<String, String>("ed", "net/minecraft/nbt/JsonToNBT$Compound"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RendererUtility", "net/minecraft/realms/RendererUtility"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atv", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Stairs"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RendererUtility",
+                            "net/minecraft/realms/RendererUtility"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atv",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Stairs"));
             mObInitMap.put(new Pair<String, String>("apw", "net/minecraft/world/chunk/EmptyChunk"));
             mObInitMap.put(new Pair<String, String>("alx", "net/minecraft/block/BlockLog"));
             mObInitMap.put(new Pair<String, String>("adz", "net/minecraft/item/ItemSign"));
@@ -5184,8 +5195,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bar", "net/minecraft/client/Minecraft$11"));
             mObInitMap.put(new Pair<String, String>("beq", "net/minecraft/client/gui/achievement/GuiStats$Stats"));
             mObInitMap.put(new Pair<String, String>("bip", "net/minecraft/client/model/ModelZombie"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bmo", "net/minecraft/client/renderer/tileentity/TileEntityEnderChestRenderer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bmo",
+                            "net/minecraft/client/renderer/tileentity/TileEntityEnderChestRenderer"));
             mObInitMap.put(new Pair<String, String>("ni", "net/minecraft/network/NetHandlerPlayServer$1"));
             mObInitMap.put(new Pair<String, String>("jj", "net/minecraft/network/play/client/C0BPacketEntityAction"));
             mObInitMap.put(new Pair<String, String>("fk", "net/minecraft/util/IChatComponent$Serializer"));
@@ -5193,8 +5206,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("yq", "net/minecraft/entity/monster/EntityZombie"));
             mObInitMap.put(new Pair<String, String>("abc", "net/minecraft/item/ItemArmor$1"));
             mObInitMap.put(new Pair<String, String>("afb", "net/minecraft/item/crafting/RecipesMapCloning"));
-            mObInitMap.put(new Pair<String, String>(
-                    "brb", "net/minecraft/client/resources/ResourcePackFileNotFoundException"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "brb",
+                            "net/minecraft/client/resources/ResourcePackFileNotFoundException"));
             mObInitMap.put(new Pair<String, String>("aqj", "net/minecraft/world/chunk/storage/RegionFileCache"));
             mObInitMap.put(
                     new Pair<String, String>("aui", "net/minecraft/world/gen/structure/StructureStrongholdPieces"));
@@ -5218,8 +5233,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ajs", "net/minecraft/block/BlockButton"));
             mObInitMap.put(new Pair<String, String>("avp", "net/minecraft/world/gen/structure/StructureVillagePieces"));
             mObInitMap.put(new Pair<String, String>("azo", "net/minecraft/world/storage/SaveHandlerMP"));
-            mObInitMap.put(new Pair<String, String>(
-                    "brt", "net/minecraft/client/resources/data/BaseMetadataSectionSerializer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "brt",
+                            "net/minecraft/client/resources/data/BaseMetadataSectionSerializer"));
             mObInitMap.put(new Pair<String, String>("bfw", "net/minecraft/client/gui/GuiMerchant$MerchantButton"));
             mObInitMap.put(new Pair<String, String>("bjv", "net/minecraft/client/particle/EntityBubbleFX"));
             mObInitMap.put(new Pair<String, String>("bnu", "net/minecraft/client/renderer/entity/RenderGiantZombie"));
@@ -5232,8 +5249,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("akg", "net/minecraft/block/BlockDaylightDetector"));
             mObInitMap.put(new Pair<String, String>("aci", "net/minecraft/item/ItemDoublePlant"));
             mObInitMap.put(new Pair<String, String>("agh", "net/minecraft/enchantment/EnchantmentOxygen"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bsh", "net/minecraft/client/resources/data/PackMetadataSectionSerializer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bsh",
+                            "net/minecraft/client/resources/data/PackMetadataSectionSerializer"));
             mObInitMap.put(new Pair<String, String>("bcl", "net/minecraft/client/gui/GuiOptionsRowList$Row"));
             mObInitMap.put(new Pair<String, String>("bgk", "net/minecraft/client/gui/GuiResourcePackList"));
             mObInitMap.put(new Pair<String, String>("bkj", "net/minecraft/client/particle/EntityHugeExplodeFX"));
@@ -5262,15 +5281,19 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("lv", "net/minecraft/server/dedicated/DedicatedServer$2"));
             mObInitMap.put(new Pair<String, String>("hw", "net/minecraft/network/play/server/S1CPacketEntityMetadata"));
             mObInitMap.put(new Pair<String, String>("dx", "net/minecraft/nbt/NBTTagString"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atk", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor4"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atk",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor4"));
             mObInitMap.put(new Pair<String, String>("apl", "net/minecraft/tileentity/TileEntityNote"));
             mObInitMap.put(new Pair<String, String>("alm", "net/minecraft/block/BlockHay"));
             mObInitMap.put(new Pair<String, String>("ado", "net/minecraft/item/ItemPiston"));
             mObInitMap.put(new Pair<String, String>("ahn", "net/minecraft/world/EnumSkyBlock"));
             mObInitMap.put(new Pair<String, String>("axj", "net/minecraft/world/gen/layer/GenLayerFuzzyZoom"));
-            mObInitMap.put(new Pair<String, String>(
-                    "btn", "net/minecraft/client/audio/SoundManager$SoundSystemStarterThread"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "btn",
+                            "net/minecraft/client/audio/SoundManager$SoundSystemStarterThread"));
             mObInitMap.put(new Pair<String, String>("bpo", "net/minecraft/client/shader/ShaderUniform"));
             mObInitMap.put(new Pair<String, String>("bhq", "net/minecraft/client/model/ModelMinecart"));
             mObInitMap.put(new Pair<String, String>("blp", "net/minecraft/client/renderer/RenderSorter"));
@@ -5286,8 +5309,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aad", "net/minecraft/inventory/ContainerChest"));
             mObInitMap.put(new Pair<String, String>("aib", "net/minecraft/world/biome/WorldChunkManager"));
             mObInitMap.put(new Pair<String, String>("d", "net/minecraft/crash/CrashReport$2"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bub", "net/minecraft/client/stream/BroadcastController$SwitchBroadcastState"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bub",
+                            "net/minecraft/client/stream/BroadcastController$SwitchBroadcastState"));
             mObInitMap.put(new Pair<String, String>("bqc", "net/minecraft/client/renderer/texture/TextureMap$3"));
             mObInitMap.put(new Pair<String, String>("bag", "net/minecraft/scoreboard/ScoreHealthCriteria"));
             mObInitMap.put(new Pair<String, String>("bef", "net/minecraft/client/gui/GuiVideoSettings"));
@@ -5297,14 +5322,14 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aev", "net/minecraft/item/crafting/RecipesArmor"));
             mObInitMap.put(new Pair<String, String>("aaw", "net/minecraft/inventory/InventoryCraftResult"));
             mObInitMap.put(new Pair<String, String>("w", "net/minecraft/client/audio/SoundCategory"));
-            mObInitMap.put(
-                    new Pair<String, String>("bqv", "net/minecraft/client/resources/IReloadableResourceManager"));
+            mObInitMap
+                    .put(new Pair<String, String>("bqv", "net/minecraft/client/resources/IReloadableResourceManager"));
             mObInitMap.put(new Pair<String, String>("baz", "net/minecraft/client/Minecraft$3"));
             mObInitMap.put(new Pair<String, String>("bey", "net/minecraft/client/gui/GuiRepair"));
             mObInitMap.put(new Pair<String, String>("bix", "net/minecraft/client/model/ModelRenderer"));
             mObInitMap.put(new Pair<String, String>("bmw", "net/minecraft/client/renderer/culling/ClippingHelperImpl"));
-            mObInitMap.put(
-                    new Pair<String, String>("fs", "net/minecraft/util/ChatComponentTranslationFormatException"));
+            mObInitMap
+                    .put(new Pair<String, String>("fs", "net/minecraft/util/ChatComponentTranslationFormatException"));
             mObInitMap.put(new Pair<String, String>("bt", "net/minecraft/command/server/CommandStop"));
             mObInitMap.put(new Pair<String, String>("yy", "net/minecraft/entity/player/InventoryPlayer$1"));
             mObInitMap.put(new Pair<String, String>("uz", "net/minecraft/entity/ai/EntityAIPanic"));
@@ -5312,12 +5337,16 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ams", "net/minecraft/block/BlockCompressedPowered"));
             mObInitMap.put(new Pair<String, String>("aeu", "net/minecraft/item/crafting/RecipesArmorDyes"));
             mObInitMap.put(new Pair<String, String>("ait", "net/minecraft/world/biome/BiomeGenSavanna$Mutated"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auq", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Library"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auq",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Library"));
             mObInitMap.put(new Pair<String, String>("ayp", "net/minecraft/world/storage/DerivedWorldInfo"));
             mObInitMap.put(new Pair<String, String>("bbn", "net/minecraft/client/settings/GameSettings$Options$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bfm", "net/minecraft/client/gui/inventory/GuiContainerCreative$ContainerCreative"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bfm",
+                            "net/minecraft/client/gui/inventory/GuiContainerCreative$ContainerCreative"));
             mObInitMap.put(new Pair<String, String>("but", "net/minecraft/realms/RealmsServerStatusPinger$1"));
             mObInitMap.put(new Pair<String, String>("bqu", "net/minecraft/client/resources/GrassColorReloadListener"));
             mObInitMap.put(new Pair<String, String>("zm", "net/minecraft/entity/item/EntityEnderPearl"));
@@ -5325,8 +5354,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ro", "net/minecraft/util/DamageSource"));
             mObInitMap.put(
                     new Pair<String, String>("np", "net/minecraft/server/network/NetHandlerLoginServer$LoginState"));
-            mObInitMap.put(
-                    new Pair<String, String>("jq", "net/minecraft/network/handshake/INetHandlerHandshakeServer"));
+            mObInitMap
+                    .put(new Pair<String, String>("jq", "net/minecraft/network/handshake/INetHandlerHandshakeServer"));
             mObInitMap.put(new Pair<String, String>("fr", "net/minecraft/util/ChatComponentTranslation"));
             mObInitMap.put(new Pair<String, String>("arf", "net/minecraft/world/gen/feature/WorldGenBlockBlob"));
             mObInitMap.put(new Pair<String, String>("ang", "net/minecraft/block/BlockRotatedPillar"));
@@ -5335,8 +5364,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ajh", "net/minecraft/block/BlockBed"));
             mObInitMap.put(new Pair<String, String>("ave", "net/minecraft/world/gen/structure/MapGenStructure"));
             mObInitMap.put(new Pair<String, String>("azd", "net/minecraft/client/AnvilConverterException"));
-            mObInitMap.put(
-                    new Pair<String, String>("net/minecraft/client/main/Main", "net/minecraft/client/main/Main"));
+            mObInitMap
+                    .put(new Pair<String, String>("net/minecraft/client/main/Main", "net/minecraft/client/main/Main"));
             mObInitMap.put(new Pair<String, String>("bri", "net/minecraft/client/resources/SimpleResource"));
             mObInitMap.put(new Pair<String, String>("bfl", "net/minecraft/client/gui/inventory/GuiContainerCreative"));
             mObInitMap.put(new Pair<String, String>("bjk", "net/minecraft/client/entity/EntityClientPlayerMP"));
@@ -5345,8 +5374,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("sc", "net/minecraft/entity/Entity$2"));
             mObInitMap.put(new Pair<String, String>("od", "net/minecraft/server/management/PreYggdrasilConverter$4"));
             mObInitMap.put(new Pair<String, String>("ke", "net/minecraft/network/ServerStatusResponse$Serializer"));
-            mObInitMap.put(
-                    new Pair<String, String>("gf", "net/minecraft/network/play/server/S35PacketUpdateTileEntity"));
+            mObInitMap
+                    .put(new Pair<String, String>("gf", "net/minecraft/network/play/server/S35PacketUpdateTileEntity"));
             mObInitMap.put(new Pair<String, String>("cg", "net/minecraft/command/PlayerNotFoundException"));
             mObInitMap.put(new Pair<String, String>("ary", "net/minecraft/world/gen/feature/WorldGenGlowStone1"));
             mObInitMap.put(new Pair<String, String>("anz", "net/minecraft/block/BlockTallGrass"));
@@ -5361,8 +5390,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bsp", "net/minecraft/client/audio/SoundList"));
             mObInitMap.put(new Pair<String, String>("boq", "net/minecraft/client/renderer/entity/RenderSheep"));
             mObInitMap.put(new Pair<String, String>("arx", "net/minecraft/world/gen/feature/WorldGenLakes"));
-            mObInitMap.put(new Pair<String, String>(
-                    "avw", "net/minecraft/world/gen/structure/StructureVillagePieces$House4Garden"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "avw",
+                            "net/minecraft/world/gen/structure/StructureVillagePieces$House4Garden"));
             mObInitMap.put(new Pair<String, String>("azv", "net/minecraft/util/MovingObjectPosition$MovingObjectType"));
             mObInitMap.put(new Pair<String, String>("bct", "net/minecraft/client/gui/GuiChat"));
             mObInitMap.put(new Pair<String, String>("bgs", "net/minecraft/client/gui/stream/GuiTwitchUserMode"));
@@ -5386,10 +5417,12 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("alb", "net/minecraft/block/BlockFire"));
             mObInitMap.put(new Pair<String, String>("add", "net/minecraft/item/ItemStack"));
             mObInitMap.put(new Pair<String, String>("ahc", "net/minecraft/world/World$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "btc", "net/minecraft/client/network/LanServerDetector$ThreadLanServerFind"));
             mObInitMap.put(
-                    new Pair<String, String>("bpd", "net/minecraft/client/renderer/tileentity/RenderWitherSkull"));
+                    new Pair<String, String>(
+                            "btc",
+                            "net/minecraft/client/network/LanServerDetector$ThreadLanServerFind"));
+            mObInitMap
+                    .put(new Pair<String, String>("bpd", "net/minecraft/client/renderer/tileentity/RenderWitherSkull"));
             mObInitMap.put(new Pair<String, String>("bhf", "net/minecraft/client/model/ModelBook"));
             mObInitMap.put(new Pair<String, String>("ble", "net/minecraft/client/particle/EntityFishWakeFX"));
             mObInitMap.put(new Pair<String, String>("ea", "net/minecraft/nbt/NBTException"));
@@ -5411,45 +5444,59 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("l", "net/minecraft/crash/CrashReportCategory$1"));
             mObInitMap.put(
                     new Pair<String, String>("bqk", "net/minecraft/client/renderer/texture/ITickableTextureObject"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atr", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Throne"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atr",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Throne"));
             mObInitMap.put(new Pair<String, String>("aps", "net/minecraft/tileentity/TileEntityPiston"));
             mObInitMap.put(new Pair<String, String>("axq", "net/minecraft/world/gen/layer/GenLayerRareBiome"));
             mObInitMap.put(new Pair<String, String>("bao", "net/minecraft/client/Minecraft"));
             mObInitMap.put(new Pair<String, String>("ben", "net/minecraft/client/gui/achievement/GuiStats$StatsItem"));
             mObInitMap.put(new Pair<String, String>("bim", "net/minecraft/client/model/ModelWitch"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bml", "net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bml",
+                            "net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer"));
             mObInitMap.put(new Pair<String, String>("fh", "net/minecraft/event/ClickEvent"));
             mObInitMap.put(new Pair<String, String>("bi", "net/minecraft/command/server/CommandSaveOff"));
             mObInitMap.put(new Pair<String, String>("yn", "net/minecraft/entity/monster/EntitySpider"));
             mObInitMap.put(new Pair<String, String>("uo", "net/minecraft/entity/ai/EntityAILookAtTradePlayer"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aqg", "net/minecraft/world/chunk/storage/ChunkLoader$AnvilConverterData"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aqg",
+                            "net/minecraft/world/chunk/storage/ChunkLoader$AnvilConverterData"));
             mObInitMap.put(new Pair<String, String>("amh", "net/minecraft/block/BlockNewLeaf"));
             mObInitMap.put(new Pair<String, String>("aii", "net/minecraft/world/biome/BiomeGenHell"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auf", "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$SwampHut"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auf",
+                            "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$SwampHut"));
             mObInitMap.put(new Pair<String, String>("aye", "net/minecraft/pathfinding/PathPoint"));
             mObInitMap.put(new Pair<String, String>("bbc", "net/minecraft/client/Minecraft$6"));
-            mObInitMap.put(
-                    new Pair<String, String>("bfb", "net/minecraft/client/gui/inventory/GuiBeacon$ConfirmButton"));
+            mObInitMap
+                    .put(new Pair<String, String>("bfb", "net/minecraft/client/gui/inventory/GuiBeacon$ConfirmButton"));
             mObInitMap.put(new Pair<String, String>("bui", "net/minecraft/client/stream/IngestServerTester"));
             mObInitMap.put(new Pair<String, String>("bqj", "net/minecraft/client/renderer/texture/ITickable"));
-            mObInitMap.put(
-                    new Pair<String, String>("zb", "net/minecraft/entity/player/EntityPlayer$EnumChatVisibility"));
+            mObInitMap
+                    .put(new Pair<String, String>("zb", "net/minecraft/entity/player/EntityPlayer$EnumChatVisibility"));
             mObInitMap.put(new Pair<String, String>("vc", "net/minecraft/entity/ai/EntityAIWander"));
             mObInitMap.put(new Pair<String, String>("rd", "net/minecraft/world/EnumDifficulty"));
             mObInitMap.put(new Pair<String, String>("ne", "net/minecraft/network/NetworkSystem$2"));
-            mObInitMap.put(new Pair<String, String>(
-                    "jf", "net/minecraft/network/play/client/C03PacketPlayer$C06PacketPlayerPosLook"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "jf",
+                            "net/minecraft/network/play/client/C03PacketPlayer$C06PacketPlayerPosLook"));
             mObInitMap.put(new Pair<String, String>("fg", "net/minecraft/util/ChatComponentStyle$2"));
             mObInitMap.put(new Pair<String, String>("aqz", "net/minecraft/world/gen/ChunkProviderGenerate"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auy", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stairs"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auy",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stairs"));
             mObInitMap.put(new Pair<String, String>("ayx", "net/minecraft/world/storage/WorldInfo$5"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsSliderButton", "net/minecraft/realms/RealmsSliderButton"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsSliderButton",
+                            "net/minecraft/realms/RealmsSliderButton"));
             mObInitMap.put(new Pair<String, String>("zu", "net/minecraft/inventory/ContainerRepair"));
             mObInitMap.put(new Pair<String, String>("vv", "net/minecraft/pathfinding/PathNavigate"));
             mObInitMap.put(new Pair<String, String>("rw", "net/minecraft/potion/PotionEffect"));
@@ -5463,8 +5510,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ajp", "net/minecraft/block/BlockBookshelf"));
             mObInitMap.put(new Pair<String, String>("brq", "net/minecraft/client/resources/Language"));
             mObInitMap.put(new Pair<String, String>("bbu", "net/minecraft/client/gui/FontRenderer"));
-            mObInitMap.put(
-                    new Pair<String, String>("bft", "net/minecraft/client/gui/inventory/GuiScreenHorseInventory"));
+            mObInitMap
+                    .put(new Pair<String, String>("bft", "net/minecraft/client/gui/inventory/GuiScreenHorseInventory"));
             mObInitMap.put(new Pair<String, String>("bjs", "net/minecraft/client/network/OldServerPinger$2"));
             mObInitMap.put(new Pair<String, String>("bnr", "net/minecraft/client/renderer/entity/RenderFireball"));
             mObInitMap.put(new Pair<String, String>("sk", "net/minecraft/command/IEntitySelector$1"));
@@ -5477,15 +5524,19 @@ public class DevHelper {
             mObInitMap.put(
                     new Pair<String, String>("bse", "net/minecraft/client/resources/data/LanguageMetadataSection"));
             mObInitMap.put(new Pair<String, String>("arm", "net/minecraft/world/gen/feature/WorldGenDoublePlant"));
-            mObInitMap.put(new Pair<String, String>(
-                    "avl", "net/minecraft/world/gen/structure/StructureComponent$BlockSelector"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "avl",
+                            "net/minecraft/world/gen/structure/StructureComponent$BlockSelector"));
             mObInitMap.put(new Pair<String, String>("bci", "net/minecraft/client/gui/GuiListExtended$IGuiListEntry"));
             mObInitMap.put(
                     new Pair<String, String>("bgh", "net/minecraft/client/resources/ResourcePackListEntryDefault"));
             mObInitMap.put(new Pair<String, String>("bkg", "net/minecraft/client/particle/EntityFootStepFX"));
             mObInitMap.put(new Pair<String, String>("bof", "net/minecraft/client/renderer/entity/RenderLeashKnot"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/server/MinecraftServer", "net/minecraft/server/MinecraftServer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/server/MinecraftServer",
+                            "net/minecraft/server/MinecraftServer"));
             mObInitMap.put(new Pair<String, String>("hb", "net/minecraft/network/play/server/S2APacketParticles"));
             mObInitMap.put(new Pair<String, String>("wi", "net/minecraft/entity/passive/EntityHorse"));
             mObInitMap.put(new Pair<String, String>("sj", "net/minecraft/command/IEntitySelector"));
@@ -5493,8 +5544,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aob", "net/minecraft/block/BlockTNT"));
             mObInitMap.put(new Pair<String, String>("akc", "net/minecraft/block/BlockRedstoneComparator"));
             mObInitMap.put(new Pair<String, String>("agd", "net/minecraft/enchantment/EnchantmentFireAspect"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bsd", "net/minecraft/client/resources/data/FontMetadataSectionSerializer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bsd",
+                            "net/minecraft/client/resources/data/FontMetadataSectionSerializer"));
             mObInitMap.put(new Pair<String, String>("ha", "net/minecraft/network/play/server/S28PacketEffect"));
             mObInitMap.put(new Pair<String, String>("ast", "net/minecraft/world/gen/FlatLayerInfo"));
             mObInitMap.put(new Pair<String, String>("aou", "net/minecraft/tileentity/TileEntity$3"));
@@ -5527,8 +5580,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aj", "net/minecraft/command/server/CommandDeOp"));
             mObInitMap.put(new Pair<String, String>("aaa", "net/minecraft/inventory/ContainerBrewingStand$Ingredient"));
             mObInitMap.put(new Pair<String, String>("a", "net/minecraft/util/EnumChatFormatting"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atg", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing3"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atg",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing3"));
             mObInitMap.put(new Pair<String, String>("axf", "net/minecraft/world/gen/layer/GenLayerBiome"));
             mObInitMap.put(new Pair<String, String>("bad", "net/minecraft/scoreboard/ScoreboardSaveData"));
             mObInitMap.put(new Pair<String, String>("bec", "net/minecraft/client/gui/GuiScreenOptionsSounds"));
@@ -5538,8 +5593,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ud", "net/minecraft/entity/ai/EntityAIEatGrass"));
             mObInitMap.put(new Pair<String, String>("qe", "net/minecraft/util/LongHashMap$Entry"));
             mObInitMap.put(new Pair<String, String>("t", "net/minecraft/util/ChatAllowedCharacters"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atz", "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atz",
+                            "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces"));
             mObInitMap.put(new Pair<String, String>("baw", "net/minecraft/client/Minecraft$16"));
             mObInitMap.put(new Pair<String, String>("bev", "net/minecraft/client/gui/GuiKeyBindingList$KeyEntry"));
             mObInitMap.put(new Pair<String, String>("yv", "net/minecraft/entity/passive/EntityVillager"));
@@ -5550,23 +5607,31 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aqo", "net/minecraft/world/WorldProvider"));
             mObInitMap.put(new Pair<String, String>("amp", "net/minecraft/block/BlockPortal"));
             mObInitMap.put(new Pair<String, String>("aas", "net/minecraft/inventory/InventoryMerchant"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aun", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Corridor"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aun",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Corridor"));
             mObInitMap.put(new Pair<String, String>("aym", "net/minecraft/world/chunk/storage/AnvilSaveHandler"));
             mObInitMap.put(new Pair<String, String>("buq", "net/minecraft/client/stream/TwitchStream$1$1"));
             mObInitMap.put(new Pair<String, String>("bqr", "net/minecraft/client/resources/FileResourcePack"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bms", "net/minecraft/client/renderer/tileentity/TileEntitySkullRenderer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bms",
+                            "net/minecraft/client/renderer/tileentity/TileEntitySkullRenderer"));
             mObInitMap.put(new Pair<String, String>("zj", "net/minecraft/entity/projectile/EntitySnowball"));
             mObInitMap.put(new Pair<String, String>("vk", "net/minecraft/entity/ai/EntityAITempt"));
             mObInitMap.put(new Pair<String, String>("rl", "net/minecraft/inventory/ISidedInventory"));
-            mObInitMap.put(new Pair<String, String>(
-                    "nm", "net/minecraft/server/network/NetHandlerHandshakeTCP$SwitchEnumConnectionState"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "nm",
+                            "net/minecraft/server/network/NetHandlerHandshakeTCP$SwitchEnumConnectionState"));
             mObInitMap.put(new Pair<String, String>("jn", "net/minecraft/network/play/client/C12PacketUpdateSign"));
             mObInitMap.put(new Pair<String, String>("fo", "net/minecraft/util/ChatStyle$1"));
             mObInitMap.put(new Pair<String, String>("bp", "net/minecraft/command/CommandSetSpawnpoint"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsServerAddress", "net/minecraft/realms/RealmsServerAddress"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsServerAddress",
+                            "net/minecraft/realms/RealmsServerAddress"));
             mObInitMap.put(new Pair<String, String>("arc", "net/minecraft/world/gen/feature/WorldGenAbstractTree"));
             mObInitMap.put(new Pair<String, String>("and", "net/minecraft/block/BlockRedstoneTorch$Toggle"));
             mObInitMap.put(new Pair<String, String>("abg", "net/minecraft/item/ItemBed"));
@@ -5584,29 +5649,34 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("cd", "net/minecraft/command/CommandException"));
             mObInitMap.put(new Pair<String, String>("abz", "net/minecraft/creativetab/CreativeTabs$3"));
             mObInitMap.put(new Pair<String, String>("afy", "net/minecraft/enchantment/EnchantmentHelper$HurtIterator"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bry", "net/minecraft/client/resources/data/IMetadataSerializer$Registration"));
-            mObInitMap.put(new Pair<String, String>(
-                    "ava", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Straight"));
-            mObInitMap.put(new Pair<String, String>("bnz", "net/minecraft/client/renderer/entity/RenderItem$1"));
             mObInitMap.put(
-                    new Pair<String, String>("gv", "net/minecraft/network/play/server/S2BPacketChangeGameState"));
+                    new Pair<String, String>(
+                            "bry",
+                            "net/minecraft/client/resources/data/IMetadataSerializer$Registration"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "ava",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Straight"));
+            mObInitMap.put(new Pair<String, String>("bnz", "net/minecraft/client/renderer/entity/RenderItem$1"));
+            mObInitMap
+                    .put(new Pair<String, String>("gv", "net/minecraft/network/play/server/S2BPacketChangeGameState"));
             mObInitMap.put(new Pair<String, String>("cw", "net/minecraft/util/RegistryNamespaced"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsScrolledSelectionList",
-                    "net/minecraft/realms/RealmsScrolledSelectionList"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsScrolledSelectionList",
+                            "net/minecraft/realms/RealmsScrolledSelectionList"));
             mObInitMap.put(new Pair<String, String>("aru", "net/minecraft/world/gen/feature/WorldGenBigMushroom"));
             mObInitMap.put(new Pair<String, String>("anv", "net/minecraft/block/BlockStone"));
-            mObInitMap.put(
-                    new Pair<String, String>("afx", "net/minecraft/enchantment/EnchantmentHelper$DamageIterator"));
+            mObInitMap
+                    .put(new Pair<String, String>("afx", "net/minecraft/enchantment/EnchantmentHelper$DamageIterator"));
             mObInitMap.put(new Pair<String, String>("ajw", "net/minecraft/block/BlockCauldron"));
             mObInitMap.put(
                     new Pair<String, String>("avt", "net/minecraft/world/gen/structure/StructureVillagePieces$Torch"));
             mObInitMap.put(new Pair<String, String>("azs", "net/minecraft/world/storage/IThreadedFileIO"));
             mObInitMap.put(new Pair<String, String>("bcq", "net/minecraft/client/gui/GuiScreenRealmsProxy"));
             mObInitMap.put(new Pair<String, String>("bgp", "net/minecraft/client/gui/stream/GuiStreamUnavailable"));
-            mObInitMap.put(
-                    new Pair<String, String>("brx", "net/minecraft/client/resources/data/IMetadataSerializer$1"));
+            mObInitMap
+                    .put(new Pair<String, String>("brx", "net/minecraft/client/resources/data/IMetadataSerializer$1"));
             mObInitMap.put(new Pair<String, String>("wq", "net/minecraft/entity/passive/EntitySheep$1"));
             mObInitMap.put(new Pair<String, String>("sr", "net/minecraft/entity/EntityFlying"));
             mObInitMap.put(new Pair<String, String>("os", "net/minecraft/server/management/UserListWhitelistEntry"));
@@ -5627,8 +5697,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("tf", "net/minecraft/entity/DataWatcher$WatchableObject"));
             mObInitMap.put(new Pair<String, String>("pg", "net/minecraft/stats/StatisticsFile"));
             mObInitMap.put(new Pair<String, String>("lh", "net/minecraft/server/MinecraftServer$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "hi", "net/minecraft/network/play/server/S14PacketEntity$S16PacketEntityLook"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "hi",
+                            "net/minecraft/network/play/server/S14PacketEntity$S16PacketEntityLook"));
             mObInitMap.put(new Pair<String, String>("dj", "net/minecraft/nbt/NBTTagCompound$2"));
             mObInitMap.put(new Pair<String, String>("ada", "net/minecraft/item/ItemHoe"));
             mObInitMap.put(new Pair<String, String>("bpa", "net/minecraft/client/renderer/entity/RenderVillager"));
@@ -5650,8 +5722,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("xw", "net/minecraft/entity/item/EntityTNTPrimed"));
             mObInitMap.put(new Pair<String, String>("tx", "net/minecraft/entity/ai/EntityAIAvoidEntity$1"));
             mObInitMap.put(new Pair<String, String>("i", "net/minecraft/crash/CrashReport$7"));
-            mObInitMap.put(new Pair<String, String>(
-                    "ato", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor5"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "ato",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor5"));
             mObInitMap.put(new Pair<String, String>("app", "net/minecraft/block/BlockPistonBase"));
             mObInitMap.put(new Pair<String, String>("alq", "net/minecraft/block/BlockJukebox"));
             mObInitMap.put(new Pair<String, String>("ahr", "net/minecraft/world/ChunkCache"));
@@ -5668,17 +5742,21 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aeg", "net/minecraft/item/ItemSlab"));
             mObInitMap.put(new Pair<String, String>("aah", "net/minecraft/inventory/ContainerEnchantment$1"));
             mObInitMap.put(new Pair<String, String>("aif", "net/minecraft/world/biome/BiomeGenForest"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auc", "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$JunglePyramid"));
-            mObInitMap.put(new Pair<String, String>("ayb", "net/minecraft/world/gen/layer/GenLayerVoronoiZoom"));
             mObInitMap.put(
-                    new Pair<String, String>("buf", "net/minecraft/client/stream/ChatController$SwitchChatState"));
+                    new Pair<String, String>(
+                            "auc",
+                            "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$JunglePyramid"));
+            mObInitMap.put(new Pair<String, String>("ayb", "net/minecraft/world/gen/layer/GenLayerVoronoiZoom"));
+            mObInitMap
+                    .put(new Pair<String, String>("buf", "net/minecraft/client/stream/ChatController$SwitchChatState"));
             mObInitMap.put(new Pair<String, String>("bqg", "net/minecraft/client/renderer/texture/TextureManager$1"));
             mObInitMap.put(new Pair<String, String>("bii", "net/minecraft/client/model/PositionTextureVertex"));
             mObInitMap.put(new Pair<String, String>("bmh", "net/minecraft/client/renderer/Tessellator"));
             mObInitMap.put(new Pair<String, String>("ra", "net/minecraft/inventory/InventoryLargeChest"));
-            mObInitMap.put(new Pair<String, String>(
-                    "nb", "net/minecraft/client/network/NetHandlerHandshakeMemory$SwitchEnumConnectionState"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "nb",
+                            "net/minecraft/client/network/NetHandlerHandshakeMemory$SwitchEnumConnectionState"));
             mObInitMap.put(new Pair<String, String>("jc", "net/minecraft/network/play/client/C00PacketKeepAlive"));
             mObInitMap.put(new Pair<String, String>("fd", "net/minecraft/util/MessageSerializer2"));
             mObInitMap.put(new Pair<String, String>("be", "net/minecraft/command/server/CommandPardonPlayer"));
@@ -5697,17 +5775,21 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("afn", "net/minecraft/enchantment/EnchantmentArrowFire"));
             mObInitMap.put(new Pair<String, String>("brn", "net/minecraft/client/resources/SkinManager$3$1"));
             mObInitMap.put(new Pair<String, String>("aqv", "net/minecraft/world/gen/ChunkProviderHell"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auu", "net/minecraft/world/gen/structure/StructureStrongholdPieces$RightTurn"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auu",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$RightTurn"));
             mObInitMap.put(new Pair<String, String>("ayt", "net/minecraft/world/storage/WorldInfo$1"));
             mObInitMap.put(new Pair<String, String>("bbr", "net/minecraft/util/Timer"));
             mObInitMap.put(new Pair<String, String>("bfq", "net/minecraft/client/gui/GuiEnchantment"));
             mObInitMap.put(new Pair<String, String>("bjp", "net/minecraft/client/multiplayer/ServerList"));
             mObInitMap.put(new Pair<String, String>("bno", "net/minecraft/client/renderer/entity/Render"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsLevelSummary", "net/minecraft/realms/RealmsLevelSummary"));
             mObInitMap.put(
-                    new Pair<String, String>("gk", "net/minecraft/network/play/server/S22PacketMultiBlockChange"));
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsLevelSummary",
+                            "net/minecraft/realms/RealmsLevelSummary"));
+            mObInitMap
+                    .put(new Pair<String, String>("gk", "net/minecraft/network/play/server/S22PacketMultiBlockChange"));
             mObInitMap.put(new Pair<String, String>("cl", "net/minecraft/block/BlockSourceImpl"));
             mObInitMap.put(new Pair<String, String>("vr", "net/minecraft/entity/ai/EntityAITargetNonTamed"));
             mObInitMap.put(new Pair<String, String>("rs", "net/minecraft/potion/PotionAttackDamage"));
@@ -5719,13 +5801,15 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bge", "net/minecraft/client/gui/ServerSelectionList"));
             mObInitMap.put(new Pair<String, String>("wf", "net/minecraft/entity/passive/EntityAnimal"));
             mObInitMap.put(new Pair<String, String>("sg", "net/minecraft/entity/EntityList"));
-            mObInitMap.put(new Pair<String, String>(
-                    "oh", "net/minecraft/server/management/PreYggdrasilConverter$ConversionError"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "oh",
+                            "net/minecraft/server/management/PreYggdrasilConverter$ConversionError"));
             mObInitMap.put(new Pair<String, String>("ki", "net/minecraft/network/status/client/C01PacketPing"));
             mObInitMap.put(new Pair<String, String>("gj", "net/minecraft/network/play/server/S02PacketChat"));
             mObInitMap.put(new Pair<String, String>("acb", "net/minecraft/creativetab/CreativeTabs$5"));
-            mObInitMap.put(
-                    new Pair<String, String>("aga", "net/minecraft/enchantment/EnchantmentHelper$ModifierLiving"));
+            mObInitMap
+                    .put(new Pair<String, String>("aga", "net/minecraft/enchantment/EnchantmentHelper$ModifierLiving"));
             mObInitMap.put(
                     new Pair<String, String>("bsa", "net/minecraft/client/resources/data/AnimationMetadataSection"));
             mObInitMap.put(new Pair<String, String>("bkc", "net/minecraft/client/particle/EntityFireworkOverlayFX"));
@@ -5746,8 +5830,8 @@ public class DevHelper {
                     new Pair<String, String>("tn", "net/minecraft/entity/ai/attributes/ModifiableAttributeInstance"));
             mObInitMap.put(new Pair<String, String>("po", "net/minecraft/util/IJsonSerializable"));
             mObInitMap.put(new Pair<String, String>("lp", "net/minecraft/scoreboard/ServerScoreboard"));
-            mObInitMap.put(
-                    new Pair<String, String>("hq", "net/minecraft/network/play/server/S13PacketDestroyEntities"));
+            mObInitMap
+                    .put(new Pair<String, String>("hq", "net/minecraft/network/play/server/S13PacketDestroyEntities"));
             mObInitMap.put(new Pair<String, String>("dr", "net/minecraft/nbt/NBTTagLong"));
             mObInitMap.put(new Pair<String, String>("adi", "net/minecraft/item/ItemBucketMilk"));
             mObInitMap.put(new Pair<String, String>("ahh", "net/minecraft/world/IWorldAccess"));
@@ -5767,15 +5851,19 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ahg", "net/minecraft/world/MinecraftException"));
             mObInitMap.put(new Pair<String, String>("axc", "net/minecraft/world/gen/layer/GenLayerAddMushroomIsland"));
             mObInitMap.put(new Pair<String, String>("baa", "net/minecraft/scoreboard/Score$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/DisconnectedOnlineScreen", "net/minecraft/realms/DisconnectedOnlineScreen"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/DisconnectedOnlineScreen",
+                            "net/minecraft/realms/DisconnectedOnlineScreen"));
             mObInitMap.put(new Pair<String, String>("btg", "net/minecraft/client/audio/MusicTicker"));
             mObInitMap.put(new Pair<String, String>("ua", "net/minecraft/entity/ai/EntityAIMate"));
             mObInitMap.put(new Pair<String, String>("mc", "net/minecraft/server/gui/MinecraftServerGui$4"));
             mObInitMap.put(new Pair<String, String>("id", "net/minecraft/network/play/server/S3EPacketTeams"));
             mObInitMap.put(new Pair<String, String>("q", "net/minecraft/util/Facing"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atw", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Start"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atw",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Start"));
             mObInitMap.put(new Pair<String, String>("apx", "net/minecraft/world/chunk/Chunk"));
             mObInitMap.put(new Pair<String, String>("aly", "net/minecraft/block/BlockMelon"));
             mObInitMap.put(new Pair<String, String>("ahz", "net/minecraft/world/biome/BiomeCache$Block"));
@@ -5799,8 +5887,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bas", "net/minecraft/client/Minecraft$12"));
             mObInitMap.put(new Pair<String, String>("ber", "net/minecraft/client/gui/IProgressMeter"));
             mObInitMap.put(new Pair<String, String>("biq", "net/minecraft/client/model/ModelDragon"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bmp", "net/minecraft/client/renderer/tileentity/TileEntityMobSpawnerRenderer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bmp",
+                            "net/minecraft/client/renderer/tileentity/TileEntityMobSpawnerRenderer"));
             mObInitMap.put(new Pair<String, String>("ri", "net/minecraft/profiler/PlayerUsageSnooper"));
             mObInitMap.put(new Pair<String, String>("nj", "net/minecraft/network/NetHandlerPlayServer$2"));
             mObInitMap.put(new Pair<String, String>("jk", "net/minecraft/network/play/client/C0CPacketInput"));
@@ -5848,8 +5938,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("akh", "net/minecraft/block/BlockDeadBush"));
             mObInitMap.put(new Pair<String, String>("acj", "net/minecraft/item/ItemDye"));
             mObInitMap.put(new Pair<String, String>("agi", "net/minecraft/enchantment/EnchantmentProtection"));
-            mObInitMap.put(
-                    new Pair<String, String>("bsi", "net/minecraft/client/resources/data/TextureMetadataSection"));
+            mObInitMap
+                    .put(new Pair<String, String>("bsi", "net/minecraft/client/resources/data/TextureMetadataSection"));
             mObInitMap.put(new Pair<String, String>("bcm", "net/minecraft/client/gui/GuiSlot"));
             mObInitMap.put(new Pair<String, String>("bgl", "net/minecraft/client/gui/GuiResourcePackSelected"));
             mObInitMap.put(new Pair<String, String>("bkk", "net/minecraft/client/particle/EntityLavaFX"));
@@ -5861,15 +5951,17 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("hf", "net/minecraft/network/play/server/S14PacketEntity"));
             mObInitMap.put(new Pair<String, String>("dg", "net/minecraft/nbt/NBTTagByte"));
             mObInitMap.put(new Pair<String, String>("ase", "net/minecraft/world/gen/feature/WorldGenMinable"));
-            mObInitMap.put(new Pair<String, String>(
-                    "awd", "net/minecraft/world/gen/structure/StructureVillagePieces$Village"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "awd",
+                            "net/minecraft/world/gen/structure/StructureVillagePieces$Village"));
             mObInitMap.put(new Pair<String, String>("bda", "net/minecraft/client/gui/GuiCreateFlatWorld$Details"));
             mObInitMap.put(new Pair<String, String>("hy", "net/minecraft/network/play/server/S12PacketEntityVelocity"));
             mObInitMap.put(new Pair<String, String>("dz", "net/minecraft/nbt/NBTBase$NBTPrimitive"));
             mObInitMap.put(new Pair<String, String>("xa", "net/minecraft/entity/boss/EntityDragon"));
             mObInitMap.put(new Pair<String, String>("tb", "net/minecraft/entity/item/EntityPainting"));
-            mObInitMap.put(
-                    new Pair<String, String>("asx", "net/minecraft/world/gen/structure/StructureMineshaftPieces"));
+            mObInitMap
+                    .put(new Pair<String, String>("asx", "net/minecraft/world/gen/structure/StructureMineshaftPieces"));
             mObInitMap.put(new Pair<String, String>("aoy", "net/minecraft/tileentity/TileEntityCommandBlock$1"));
             mObInitMap.put(new Pair<String, String>("akz", "net/minecraft/block/BlockFence"));
             mObInitMap.put(new Pair<String, String>("aww", "net/minecraft/block/material/MaterialPortal"));
@@ -5881,8 +5973,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("lw", "net/minecraft/server/dedicated/DedicatedServer$3"));
             mObInitMap.put(new Pair<String, String>("hx", "net/minecraft/network/play/server/S1BPacketEntityAttach"));
             mObInitMap.put(new Pair<String, String>("f", "net/minecraft/crash/CrashReport$4"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atl", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Entrance"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atl",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Entrance"));
             mObInitMap.put(new Pair<String, String>("apm", "net/minecraft/tileentity/TileEntitySign"));
             mObInitMap.put(new Pair<String, String>("aln", "net/minecraft/block/BlockHopper"));
             mObInitMap.put(new Pair<String, String>("adp", "net/minecraft/item/ItemPotion"));
@@ -5894,11 +5988,13 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("yh", "net/minecraft/entity/monster/EntityPigZombie"));
             mObInitMap.put(new Pair<String, String>("ui", "net/minecraft/entity/ai/EntityAIBase"));
             mObInitMap.put(new Pair<String, String>("qj", "net/minecraft/profiler/Profiler$Result"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsServerStatusPinger", "net/minecraft/realms/RealmsServerStatusPinger"));
-            mObInitMap.put(new Pair<String, String>("mk", "net/minecraft/world/demo/DemoWorldServer"));
             mObInitMap.put(
-                    new Pair<String, String>("il", "net/minecraft/network/play/server/S20PacketEntityProperties"));
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsServerStatusPinger",
+                            "net/minecraft/realms/RealmsServerStatusPinger"));
+            mObInitMap.put(new Pair<String, String>("mk", "net/minecraft/world/demo/DemoWorldServer"));
+            mObInitMap
+                    .put(new Pair<String, String>("il", "net/minecraft/network/play/server/S20PacketEntityProperties"));
             mObInitMap.put(new Pair<String, String>("em", "net/minecraft/network/NetworkManager$3"));
             mObInitMap.put(new Pair<String, String>("an", "net/minecraft/command/server/CommandEmote"));
             mObInitMap.put(new Pair<String, String>("aqa", "net/minecraft/world/chunk/storage/NibbleArrayReader"));
@@ -5931,12 +6027,16 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aqs", "net/minecraft/world/gen/MapGenRavine"));
             mObInitMap.put(new Pair<String, String>("amt", "net/minecraft/block/BlockRailPowered"));
             mObInitMap.put(new Pair<String, String>("aiu", "net/minecraft/world/biome/BiomeGenStoneBeach"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aur", "net/minecraft/world/gen/structure/StructureStrongholdPieces$PieceWeight"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aur",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$PieceWeight"));
             mObInitMap.put(new Pair<String, String>("ayq", "net/minecraft/world/storage/SaveHandler"));
             mObInitMap.put(new Pair<String, String>("bbo", "net/minecraft/client/LoadingScreenRenderer"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bfn", "net/minecraft/client/gui/inventory/GuiContainerCreative$CreativeSlot"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bfn",
+                            "net/minecraft/client/gui/inventory/GuiContainerCreative$CreativeSlot"));
             mObInitMap.put(new Pair<String, String>("bjm", "net/minecraft/client/multiplayer/ServerAddress"));
             mObInitMap.put(new Pair<String, String>("buu", "net/minecraft/client/renderer/OpenGlHelper"));
             mObInitMap.put(new Pair<String, String>("zn", "net/minecraft/entity/item/EntityExpBottle"));
@@ -5958,8 +6058,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("wc", "net/minecraft/village/VillageCollection"));
             mObInitMap.put(new Pair<String, String>("sd", "net/minecraft/entity/Entity$SwitchEnumEntitySize"));
             mObInitMap.put(new Pair<String, String>("oe", "net/minecraft/server/management/PreYggdrasilConverter$5"));
-            mObInitMap.put(new Pair<String, String>(
-                    "kf", "net/minecraft/network/ServerStatusResponse$MinecraftProtocolVersionIdentifier"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "kf",
+                            "net/minecraft/network/ServerStatusResponse$MinecraftProtocolVersionIdentifier"));
             mObInitMap.put(new Pair<String, String>("gg", "net/minecraft/network/play/server/S24PacketBlockAction"));
             mObInitMap.put(new Pair<String, String>("ch", "net/minecraft/command/CommandNotFoundException"));
             mObInitMap.put(new Pair<String, String>("arz", "net/minecraft/world/gen/feature/WorldGenMegaJungle"));
@@ -5974,8 +6076,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("agq", "net/minecraft/tileentity/MobSpawnerBaseLogic"));
             mObInitMap.put(new Pair<String, String>("bsq", "net/minecraft/client/audio/SoundList$SoundEntry"));
             mObInitMap.put(new Pair<String, String>("bor", "net/minecraft/client/renderer/entity/RenderSilverfish"));
-            mObInitMap.put(new Pair<String, String>(
-                    "avx", "net/minecraft/world/gen/structure/StructureVillagePieces$WoodHut"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "avx",
+                            "net/minecraft/world/gen/structure/StructureVillagePieces$WoodHut"));
             mObInitMap.put(new Pair<String, String>("azw", "net/minecraft/util/Vec3"));
             mObInitMap.put(new Pair<String, String>("bcu", "net/minecraft/client/gui/GuiConfirmOpenLink"));
             mObInitMap.put(new Pair<String, String>("bgt", "net/minecraft/client/main/Main$1"));
@@ -6006,8 +6110,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ia", "net/minecraft/network/play/server/S1FPacketSetExperience"));
             mObInitMap.put(new Pair<String, String>("eb", "net/minecraft/nbt/JsonToNBT"));
             mObInitMap.put(new Pair<String, String>("ac", "net/minecraft/command/ICommandSender"));
-            mObInitMap.put(new Pair<String, String>(
-                    "att", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$PieceWeight"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "att",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$PieceWeight"));
             mObInitMap.put(new Pair<String, String>("apu", "net/minecraft/world/chunk/IChunkProvider"));
             mObInitMap.put(new Pair<String, String>("alv", "net/minecraft/block/BlockLever"));
             mObInitMap.put(new Pair<String, String>("adx", "net/minecraft/item/ItemShears"));
@@ -6018,28 +6124,36 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bly", "net/minecraft/client/renderer/ItemRenderer"));
             mObInitMap.put(new Pair<String, String>("uq", "net/minecraft/entity/ai/EntityAIAttackOnCollide"));
             mObInitMap.put(new Pair<String, String>("ms", "net/minecraft/world/gen/ChunkProviderServer"));
-            mObInitMap.put(new Pair<String, String>(
-                    "it", "net/minecraft/network/play/client/C16PacketClientStatus$EnumState"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "it",
+                            "net/minecraft/network/play/client/C16PacketClientStatus$EnumState"));
             mObInitMap.put(new Pair<String, String>("eu", "net/minecraft/network/NetworkStatistics"));
             mObInitMap.put(new Pair<String, String>("av", "net/minecraft/command/CommandServerKick"));
             mObInitMap.put(new Pair<String, String>("ael", "net/minecraft/item/ItemWritableBook"));
             mObInitMap.put(new Pair<String, String>("aam", "net/minecraft/inventory/ContainerHorseInventory"));
             mObInitMap.put(new Pair<String, String>("aik", "net/minecraft/world/biome/BiomeGenJungle"));
             mObInitMap.put(new Pair<String, String>("m", "net/minecraft/crash/CrashReportCategory$2"));
-            mObInitMap.put(new Pair<String, String>(
-                    "buk", "net/minecraft/client/stream/IngestServerTester$IngestTestListener"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "buk",
+                            "net/minecraft/client/stream/IngestServerTester$IngestTestListener"));
             mObInitMap.put(new Pair<String, String>("bql", "net/minecraft/client/renderer/texture/TextureClock"));
-            mObInitMap.put(new Pair<String, String>(
-                    "ats", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Piece"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "ats",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Piece"));
             mObInitMap.put(new Pair<String, String>("axr", "net/minecraft/world/gen/layer/GenLayerHills"));
             mObInitMap.put(new Pair<String, String>("bap", "net/minecraft/client/Minecraft$1"));
-            mObInitMap.put(
-                    new Pair<String, String>("beo", "net/minecraft/client/gui/achievement/GuiStats$StatsItem$1"));
+            mObInitMap
+                    .put(new Pair<String, String>("beo", "net/minecraft/client/gui/achievement/GuiStats$StatsItem$1"));
             mObInitMap.put(new Pair<String, String>("bin", "net/minecraft/client/model/ModelWither"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bmm", "net/minecraft/client/renderer/tileentity/TileEntityChestRenderer"));
             mObInitMap.put(
-                    new Pair<String, String>("jh", "net/minecraft/network/play/client/C13PacketPlayerAbilities"));
+                    new Pair<String, String>(
+                            "bmm",
+                            "net/minecraft/client/renderer/tileentity/TileEntityChestRenderer"));
+            mObInitMap
+                    .put(new Pair<String, String>("jh", "net/minecraft/network/play/client/C13PacketPlayerAbilities"));
             mObInitMap.put(new Pair<String, String>("fi", "net/minecraft/event/ClickEvent$Action"));
             mObInitMap.put(new Pair<String, String>("bj", "net/minecraft/command/server/CommandSaveOn"));
             mObInitMap.put(new Pair<String, String>("yo", "net/minecraft/entity/monster/EntitySpider$GroupData"));
@@ -6058,14 +6172,20 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("vd", "net/minecraft/entity/ai/EntityAIArrowAttack"));
             mObInitMap.put(new Pair<String, String>("re", "net/minecraft/client/renderer/IconFlipped"));
             mObInitMap.put(new Pair<String, String>("nf", "net/minecraft/network/NetworkSystem$3"));
-            mObInitMap.put(new Pair<String, String>(
-                    "jg", "net/minecraft/network/play/client/C03PacketPlayer$C05PacketPlayerLook"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auz", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stairs2"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "jg",
+                            "net/minecraft/network/play/client/C03PacketPlayer$C05PacketPlayerLook"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auz",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stairs2"));
             mObInitMap.put(new Pair<String, String>("ayy", "net/minecraft/world/storage/WorldInfo$6"));
             mObInitMap.put(new Pair<String, String>("bja", "net/minecraft/client/network/NetHandlerLoginClient$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsSharedConstants", "net/minecraft/realms/RealmsSharedConstants"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsSharedConstants",
+                            "net/minecraft/realms/RealmsSharedConstants"));
             mObInitMap.put(new Pair<String, String>("zv", "net/minecraft/inventory/ContainerRepair$1"));
             mObInitMap.put(new Pair<String, String>("vw", "net/minecraft/entity/ai/EntitySenses"));
             mObInitMap.put(new Pair<String, String>("rx", "net/minecraft/entity/EntityAgeable"));
@@ -6090,12 +6210,14 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ake", "net/minecraft/block/BlockWorkbench"));
             mObInitMap.put(new Pair<String, String>("acg", "net/minecraft/item/ItemTool"));
             mObInitMap.put(new Pair<String, String>("agf", "net/minecraft/enchantment/EnchantmentKnockback"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bsf", "net/minecraft/client/resources/data/LanguageMetadataSectionSerializer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bsf",
+                            "net/minecraft/client/resources/data/LanguageMetadataSectionSerializer"));
             mObInitMap.put(new Pair<String, String>("avm", "net/minecraft/world/gen/structure/StructureStart"));
             mObInitMap.put(new Pair<String, String>("bcj", "net/minecraft/client/gui/GuiOptionButton"));
-            mObInitMap.put(
-                    new Pair<String, String>("bgi", "net/minecraft/client/resources/ResourcePackListEntryFound"));
+            mObInitMap
+                    .put(new Pair<String, String>("bgi", "net/minecraft/client/resources/ResourcePackListEntryFound"));
             mObInitMap.put(new Pair<String, String>("bkh", "net/minecraft/client/particle/EntityHeartFX"));
             mObInitMap.put(new Pair<String, String>("bog", "net/minecraft/client/renderer/entity/RenderLightningBolt"));
             mObInitMap.put(new Pair<String, String>("lb", "net/minecraft/client/util/JsonException"));
@@ -6120,8 +6242,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("lt", "net/minecraft/server/dedicated/DedicatedServer"));
             mObInitMap.put(new Pair<String, String>("hu", "net/minecraft/network/play/server/S09PacketHeldItemChange"));
             mObInitMap.put(new Pair<String, String>("dv", "net/minecraft/nbt/NBTUtil"));
-            mObInitMap.put(new Pair<String, String>(
-                    "ati", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Straight"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "ati",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Straight"));
             mObInitMap.put(new Pair<String, String>("apj", "net/minecraft/tileentity/TileEntityMobSpawner"));
             mObInitMap.put(new Pair<String, String>("alk", "net/minecraft/block/BlockBreakable"));
             mObInitMap.put(new Pair<String, String>("adm", "net/minecraft/item/ItemNameTag"));
@@ -6140,8 +6264,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aab", "net/minecraft/inventory/ContainerBrewingStand$Potion"));
             mObInitMap.put(new Pair<String, String>("b", "net/minecraft/crash/CrashReport"));
             mObInitMap.put(new Pair<String, String>("bqa", "net/minecraft/client/renderer/texture/TextureMap$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "ath", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$End"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "ath",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$End"));
             mObInitMap.put(new Pair<String, String>("bae", "net/minecraft/scoreboard/Team"));
             mObInitMap.put(new Pair<String, String>("bed", "net/minecraft/client/gui/GuiScreenOptionsSounds$Button"));
             mObInitMap.put(new Pair<String, String>("bic", "net/minecraft/client/model/ModelSkeleton"));
@@ -6159,8 +6285,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("amq", "net/minecraft/block/BlockPortal$Size"));
             mObInitMap.put(new Pair<String, String>("aat", "net/minecraft/inventory/ContainerMerchant"));
             mObInitMap.put(new Pair<String, String>("air", "net/minecraft/world/biome/BiomeGenRiver"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auo", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Crossing"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auo",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Crossing"));
             mObInitMap.put(new Pair<String, String>("ayn", "net/minecraft/world/chunk/storage/AnvilSaveConverter"));
             mObInitMap.put(new Pair<String, String>("bbl", "net/minecraft/client/settings/GameSettings$SwitchOptions"));
             mObInitMap.put(new Pair<String, String>("bur", "net/minecraft/client/stream/NullStream"));
@@ -6179,8 +6307,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("abh", "net/minecraft/item/ItemBlock"));
             mObInitMap.put(new Pair<String, String>("afg", "net/minecraft/item/crafting/IRecipe"));
             mObInitMap.put(new Pair<String, String>("ajf", "net/minecraft/block/BlockRailBase$Rail"));
-            mObInitMap.put(new Pair<String, String>(
-                    "avc", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stronghold"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "avc",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stronghold"));
             mObInitMap.put(
                     new Pair<String, String>("brg", "net/minecraft/client/resources/SimpleReloadableResourceManager"));
             mObInitMap.put(new Pair<String, String>("bbk", "net/minecraft/client/settings/GameSettings$1"));
@@ -6189,16 +6319,18 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bnh", "net/minecraft/client/renderer/entity/RenderCow"));
             mObInitMap.put(new Pair<String, String>("sa", "net/minecraft/entity/Entity"));
             mObInitMap.put(new Pair<String, String>("ob", "net/minecraft/server/management/PreYggdrasilConverter$2"));
-            mObInitMap.put(
-                    new Pair<String, String>("kc", "net/minecraft/network/ServerStatusResponse$PlayerCountData"));
+            mObInitMap
+                    .put(new Pair<String, String>("kc", "net/minecraft/network/ServerStatusResponse$PlayerCountData"));
             mObInitMap.put(new Pair<String, String>("gd", "net/minecraft/network/play/server/S37PacketStatistics"));
             mObInitMap.put(new Pair<String, String>("ce", "net/minecraft/command/NumberInvalidException"));
             mObInitMap.put(new Pair<String, String>("net/minecraft/realms/Realms", "net/minecraft/realms/Realms"));
             mObInitMap.put(new Pair<String, String>("ajy", "net/minecraft/block/BlockClay"));
             mObInitMap.put(new Pair<String, String>("afz", "net/minecraft/enchantment/EnchantmentHelper$IModifier"));
             mObInitMap.put(new Pair<String, String>("brz", "net/minecraft/client/resources/data/AnimationFrame"));
-            mObInitMap.put(new Pair<String, String>(
-                    "avb", "net/minecraft/world/gen/structure/StructureStrongholdPieces$StairsStraight"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "avb",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$StairsStraight"));
             mObInitMap.put(new Pair<String, String>("aza", "net/minecraft/world/storage/WorldInfo$8"));
             mObInitMap.put(new Pair<String, String>("kv", "net/minecraft/init/Bootstrap$5"));
             mObInitMap.put(new Pair<String, String>("gw", "net/minecraft/network/play/server/S00PacketKeepAlive"));
@@ -6206,12 +6338,16 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("arv", "net/minecraft/world/gen/feature/WorldGenIcePath"));
             mObInitMap.put(new Pair<String, String>("anw", "net/minecraft/block/BlockStoneBrick"));
             mObInitMap.put(new Pair<String, String>("ajx", "net/minecraft/block/BlockChest"));
-            mObInitMap.put(new Pair<String, String>(
-                    "avu", "net/minecraft/world/gen/structure/StructureVillagePieces$PieceWeight"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "avu",
+                            "net/minecraft/world/gen/structure/StructureVillagePieces$PieceWeight"));
             mObInitMap.put(new Pair<String, String>("azt", "net/minecraft/util/AxisAlignedBB"));
             mObInitMap.put(new Pair<String, String>("bcr", "net/minecraft/client/gui/GuiSlotRealmsProxy"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bgq", "net/minecraft/client/gui/stream/GuiStreamUnavailable$SwitchReason"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bgq",
+                            "net/minecraft/client/gui/stream/GuiStreamUnavailable$SwitchReason"));
             mObInitMap.put(new Pair<String, String>("bkp", "net/minecraft/client/particle/EffectRenderer$2"));
             mObInitMap.put(new Pair<String, String>("wr", "net/minecraft/entity/monster/EntitySnowman"));
             mObInitMap.put(new Pair<String, String>("ss", "net/minecraft/entity/EntityHanging"));
@@ -6253,17 +6389,21 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ty", "net/minecraft/entity/ai/EntityAIBeg"));
             mObInitMap.put(new Pair<String, String>("aaj", "net/minecraft/inventory/ContainerFurnace"));
             mObInitMap.put(new Pair<String, String>("j", "net/minecraft/crash/CrashReport$8"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atp", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor2"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atp",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor2"));
             mObInitMap.put(new Pair<String, String>("apq", "net/minecraft/block/BlockPistonExtension"));
             mObInitMap.put(new Pair<String, String>("alr", "net/minecraft/block/BlockJukebox$TileEntityJukebox"));
             mObInitMap.put(new Pair<String, String>("axo", "net/minecraft/world/gen/layer/GenLayer$1"));
             mObInitMap.put(new Pair<String, String>("bam", "net/minecraft/client/renderer/RenderHelper"));
-            mObInitMap.put(
-                    new Pair<String, String>("bel", "net/minecraft/client/gui/achievement/GuiStats$StatsBlock$1"));
+            mObInitMap
+                    .put(new Pair<String, String>("bel", "net/minecraft/client/gui/achievement/GuiStats$StatsBlock$1"));
             mObInitMap.put(new Pair<String, String>("bik", "net/minecraft/client/model/ModelVillager"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bmj", "net/minecraft/client/renderer/tileentity/TileEntityBeaconRenderer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bmj",
+                            "net/minecraft/client/renderer/tileentity/TileEntityBeaconRenderer"));
             mObInitMap.put(new Pair<String, String>("bg", "net/minecraft/command/server/CommandPublishLocalServer"));
             mObInitMap.put(new Pair<String, String>("yl", "net/minecraft/entity/monster/EntitySkeleton"));
             mObInitMap.put(new Pair<String, String>("um", "net/minecraft/entity/ai/EntityAILeapAtTarget"));
@@ -6273,8 +6413,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aeh", "net/minecraft/item/ItemSword"));
             mObInitMap.put(new Pair<String, String>("aai", "net/minecraft/inventory/ContainerEnchantment$2"));
             mObInitMap.put(new Pair<String, String>("aig", "net/minecraft/world/biome/BiomeGenForest$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aud", "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$JunglePyramid$Stones"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aud",
+                            "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$JunglePyramid$Stones"));
             mObInitMap.put(new Pair<String, String>("ayc", "net/minecraft/world/gen/layer/GenLayerZoom"));
             mObInitMap.put(new Pair<String, String>("bba", "net/minecraft/client/Minecraft$4"));
             mObInitMap.put(new Pair<String, String>("bug", "net/minecraft/client/stream/ChatController$ChatState"));
@@ -6289,8 +6431,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aqx", "net/minecraft/world/gen/MapGenBase"));
             mObInitMap.put(new Pair<String, String>("amy", "net/minecraft/block/BlockRail"));
             mObInitMap.put(new Pair<String, String>("aiz", "net/minecraft/world/gen/feature/WorldGenWaterlily"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auw", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stones"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auw",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stones"));
             mObInitMap.put(new Pair<String, String>("vt", "net/minecraft/entity/ai/EntityAIOwnerHurtTarget"));
             mObInitMap.put(new Pair<String, String>("ru", "net/minecraft/potion/PotionHealth"));
             mObInitMap.put(
@@ -6302,10 +6446,14 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("abp", "net/minecraft/item/ItemCarrotOnAStick"));
             mObInitMap.put(new Pair<String, String>("afo", "net/minecraft/enchantment/EnchantmentArrowInfinite"));
             mObInitMap.put(new Pair<String, String>("ajn", "net/minecraft/init/Blocks"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bro", "net/minecraft/client/resources/SkinManager$SkinAvailableCallback"));
-            mObInitMap.put(new Pair<String, String>(
-                    "auv", "net/minecraft/world/gen/structure/StructureStrongholdPieces$RoomCrossing"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bro",
+                            "net/minecraft/client/resources/SkinManager$SkinAvailableCallback"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "auv",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$RoomCrossing"));
             mObInitMap.put(new Pair<String, String>("ayu", "net/minecraft/world/storage/WorldInfo$2"));
             mObInitMap.put(new Pair<String, String>("bbs", "net/minecraft/util/Session"));
             mObInitMap.put(new Pair<String, String>("bfr", "net/minecraft/client/gui/inventory/GuiFurnace"));
@@ -6325,15 +6473,17 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bke", "net/minecraft/client/particle/EntityFireworkStarterFX"));
             mObInitMap.put(new Pair<String, String>("wg", "net/minecraft/entity/passive/EntityChicken"));
             mObInitMap.put(new Pair<String, String>("sh", "net/minecraft/entity/EntityList$EntityEggInfo"));
-            mObInitMap.put(
-                    new Pair<String, String>("oi", "net/minecraft/server/management/ServerConfigurationManager"));
+            mObInitMap
+                    .put(new Pair<String, String>("oi", "net/minecraft/server/management/ServerConfigurationManager"));
             mObInitMap.put(new Pair<String, String>("kj", "net/minecraft/network/status/client/C00PacketServerQuery"));
             mObInitMap.put(new Pair<String, String>("aka", "net/minecraft/block/BlockColored"));
             mObInitMap.put(new Pair<String, String>("acc", "net/minecraft/creativetab/CreativeTabs$6"));
+            mObInitMap
+                    .put(new Pair<String, String>("agb", "net/minecraft/enchantment/EnchantmentHelper$ModifierDamage"));
             mObInitMap.put(
-                    new Pair<String, String>("agb", "net/minecraft/enchantment/EnchantmentHelper$ModifierDamage"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bsb", "net/minecraft/client/resources/data/AnimationMetadataSectionSerializer"));
+                    new Pair<String, String>(
+                            "bsb",
+                            "net/minecraft/client/resources/data/AnimationMetadataSectionSerializer"));
             mObInitMap.put(new Pair<String, String>("bkd", "net/minecraft/client/particle/EntityFireworkSparkFX"));
             mObInitMap.put(new Pair<String, String>("boc", "net/minecraft/client/renderer/entity/RenderItem$4"));
             mObInitMap.put(new Pair<String, String>("wz", "net/minecraft/entity/item/EntityEnderCrystal"));
@@ -6347,9 +6497,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bov", "net/minecraft/client/renderer/entity/RenderSpider"));
             mObInitMap.put(new Pair<String, String>("bcy", "net/minecraft/client/multiplayer/GuiConnecting$1"));
             mObInitMap.put(new Pair<String, String>("bkw", "net/minecraft/client/particle/EntitySnowShovelFX"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsAnvilLevelStorageSource",
-                    "net/minecraft/realms/RealmsAnvilLevelStorageSource"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsAnvilLevelStorageSource",
+                            "net/minecraft/realms/RealmsAnvilLevelStorageSource"));
             mObInitMap.put(new Pair<String, String>("to", "net/minecraft/entity/ai/attributes/RangedAttribute"));
             mObInitMap.put(new Pair<String, String>("pp", "net/minecraft/stats/StatList"));
             mObInitMap.put(new Pair<String, String>("lq", "net/minecraft/server/dedicated/PropertyManager"));
@@ -6370,8 +6521,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("xm", "net/minecraft/entity/item/EntityMinecartChest"));
             mObInitMap.put(
                     new Pair<String, String>("net/minecraft/realms/Tezzelator", "net/minecraft/realms/Tezzelator"));
-            mObInitMap.put(
-                    new Pair<String, String>("ate", "net/minecraft/world/gen/structure/MapGenNetherBridge$Start"));
+            mObInitMap
+                    .put(new Pair<String, String>("ate", "net/minecraft/world/gen/structure/MapGenNetherBridge$Start"));
             mObInitMap.put(new Pair<String, String>("apf", "net/minecraft/tileentity/TileEntityFlowerPot"));
             mObInitMap.put(new Pair<String, String>("alg", "net/minecraft/block/BlockGlowstone"));
             mObInitMap.put(new Pair<String, String>("axd", "net/minecraft/world/gen/layer/GenLayerAddSnow"));
@@ -6396,19 +6547,23 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("amn", "net/minecraft/block/BlockOre"));
             mObInitMap.put(new Pair<String, String>("aaq", "net/minecraft/inventory/ContainerPlayer$1"));
             mObInitMap.put(new Pair<String, String>("aio", "net/minecraft/world/biome/BiomeGenOcean"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aul", "net/minecraft/world/gen/structure/StructureStrongholdPieces$SwitchDoor"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aul",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$SwitchDoor"));
             mObInitMap.put(new Pair<String, String>("buo", "net/minecraft/client/stream/TwitchStream"));
             mObInitMap.put(new Pair<String, String>("bqp", "net/minecraft/client/resources/DefaultResourcePack"));
             mObInitMap.put(new Pair<String, String>("bat", "net/minecraft/client/Minecraft$13"));
             mObInitMap.put(new Pair<String, String>("bes", "net/minecraft/client/gui/GuiKeyBindingList"));
             mObInitMap.put(new Pair<String, String>("bir", "net/minecraft/client/model/ModelEnderCrystal"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bmq", "net/minecraft/client/renderer/tileentity/TileEntityRendererPiston"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bmq",
+                            "net/minecraft/client/renderer/tileentity/TileEntityRendererPiston"));
             mObInitMap.put(new Pair<String, String>("vi", "net/minecraft/entity/ai/EntityAICreeperSwell"));
             mObInitMap.put(new Pair<String, String>("rj", "net/minecraft/profiler/PlayerUsageSnooper$1"));
-            mObInitMap.put(
-                    new Pair<String, String>("nk", "net/minecraft/network/NetHandlerPlayServer$SwitchEnumState"));
+            mObInitMap
+                    .put(new Pair<String, String>("nk", "net/minecraft/network/NetHandlerPlayServer$SwitchEnumState"));
             mObInitMap.put(new Pair<String, String>("jl", "net/minecraft/network/play/client/C09PacketHeldItemChange"));
             mObInitMap.put(new Pair<String, String>("fm", "net/minecraft/event/HoverEvent$Action"));
             mObInitMap.put(new Pair<String, String>("bn", "net/minecraft/command/server/CommandSetDefaultSpawnpoint"));
@@ -6450,8 +6605,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("kr", "net/minecraft/init/Bootstrap$14"));
             mObInitMap.put(new Pair<String, String>("gs", "net/minecraft/network/play/server/S40PacketDisconnect"));
             mObInitMap.put(new Pair<String, String>("ct", "net/minecraft/util/ObjectIntIdentityMap"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsEditBox", "net/minecraft/realms/RealmsEditBox"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsEditBox",
+                            "net/minecraft/realms/RealmsEditBox"));
             mObInitMap.put(new Pair<String, String>("asg", "net/minecraft/world/gen/feature/WorldGenPumpkin"));
             mObInitMap.put(new Pair<String, String>("aoh", "net/minecraft/block/BlockVine"));
             mObInitMap.put(new Pair<String, String>("aki", "net/minecraft/block/BlockRailDetector"));
@@ -6459,8 +6616,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("agj", "net/minecraft/enchantment/EnchantmentThorns"));
             mObInitMap.put(
                     new Pair<String, String>("awf", "net/minecraft/world/gen/structure/StructureVillagePieces$Well"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bsj", "net/minecraft/client/resources/data/TextureMetadataSectionSerializer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bsj",
+                            "net/minecraft/client/resources/data/TextureMetadataSectionSerializer"));
             mObInitMap.put(new Pair<String, String>("bok", "net/minecraft/client/renderer/entity/RenderLiving"));
             mObInitMap.put(new Pair<String, String>("bcn", "net/minecraft/client/gui/GuiOptionSlider"));
             mObInitMap.put(new Pair<String, String>("bgm", "net/minecraft/client/gui/stream/GuiIngestServers"));
@@ -6468,31 +6627,39 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("xc", "net/minecraft/entity/boss/EntityWither"));
             mObInitMap.put(new Pair<String, String>("td", "net/minecraft/entity/EntityCreature"));
             mObInitMap.put(new Pair<String, String>("pe", "net/minecraft/stats/StatBasic"));
-            mObInitMap.put(new Pair<String, String>(
-                    "hg", "net/minecraft/network/play/server/S14PacketEntity$S15PacketEntityRelMove"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "hg",
+                            "net/minecraft/network/play/server/S14PacketEntity$S15PacketEntityRelMove"));
             mObInitMap.put(new Pair<String, String>("dh", "net/minecraft/nbt/NBTTagCompound"));
             mObInitMap.put(
                     new Pair<String, String>("awe", "net/minecraft/world/gen/structure/StructureVillagePieces$Road"));
             mObInitMap.put(new Pair<String, String>("bdb", "net/minecraft/client/gui/GuiCreateWorld"));
             mObInitMap.put(new Pair<String, String>("ly", "net/minecraft/server/gui/MinecraftServerGui"));
+            mObInitMap
+                    .put(new Pair<String, String>("hz", "net/minecraft/network/play/server/S04PacketEntityEquipment"));
             mObInitMap.put(
-                    new Pair<String, String>("hz", "net/minecraft/network/play/server/S04PacketEntityEquipment"));
-            mObInitMap.put(new Pair<String, String>(
-                    "asy", "net/minecraft/world/gen/structure/StructureMineshaftPieces$Corridor"));
+                    new Pair<String, String>(
+                            "asy",
+                            "net/minecraft/world/gen/structure/StructureMineshaftPieces$Corridor"));
             mObInitMap.put(new Pair<String, String>("aoz", "net/minecraft/tileentity/TileEntityComparator"));
             mObInitMap.put(new Pair<String, String>("awx", "net/minecraft/world/gen/layer/GenLayerDeepOcean"));
             mObInitMap.put(new Pair<String, String>("bdu", "net/minecraft/client/gui/GuiDownloadTerrain"));
             mObInitMap.put(new Pair<String, String>("bht", "net/minecraft/client/model/ModelOcelot"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bls", "net/minecraft/client/renderer/tileentity/TileEntityRendererChestHelper"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bls",
+                            "net/minecraft/client/renderer/tileentity/TileEntityRendererChestHelper"));
             mObInitMap.put(new Pair<String, String>("ap", "net/minecraft/command/CommandXP"));
             mObInitMap.put(new Pair<String, String>("xu", "net/minecraft/entity/ai/EntityMinecartMobSpawner$1"));
             mObInitMap.put(new Pair<String, String>("tv", "net/minecraft/entity/ai/EntityMoveHelper"));
             mObInitMap.put(new Pair<String, String>("pw", "net/minecraft/util/HttpUtil$1"));
             mObInitMap.put(new Pair<String, String>("lx", "net/minecraft/server/dedicated/DedicatedServer$4"));
             mObInitMap.put(new Pair<String, String>("g", "net/minecraft/crash/CrashReport$5"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atm", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing2"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atm",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing2"));
             mObInitMap.put(new Pair<String, String>("apn", "net/minecraft/tileentity/TileEntitySkull"));
             mObInitMap.put(new Pair<String, String>("alo", "net/minecraft/block/BlockHugeMushroom"));
             mObInitMap.put(new Pair<String, String>("adq", "net/minecraft/item/EnumRarity"));
@@ -6506,21 +6673,29 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("uj", "net/minecraft/entity/ai/EntityAITasks"));
             mObInitMap.put(new Pair<String, String>("qk", "net/minecraft/util/IProgressUpdate"));
             mObInitMap.put(new Pair<String, String>("ml", "net/minecraft/world/demo/DemoWorldManager"));
-            mObInitMap.put(new Pair<String, String>(
-                    "im", "net/minecraft/network/play/server/S20PacketEntityProperties$Snapshot"));
-            mObInitMap.put(new Pair<String, String>(
-                    "en", "net/minecraft/network/NetworkManager$InboundHandlerTuplePacketListener"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "im",
+                            "net/minecraft/network/play/server/S20PacketEntityProperties$Snapshot"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "en",
+                            "net/minecraft/network/NetworkManager$InboundHandlerTuplePacketListener"));
             mObInitMap.put(new Pair<String, String>("ao", "net/minecraft/command/CommandEnchant"));
             mObInitMap.put(new Pair<String, String>("amc", "net/minecraft/block/BlockMushroom"));
             mObInitMap.put(new Pair<String, String>("aee", "net/minecraft/item/ItemMonsterPlacer"));
             mObInitMap.put(new Pair<String, String>("aaf", "net/minecraft/inventory/ContainerWorkbench"));
             mObInitMap.put(new Pair<String, String>("aid", "net/minecraft/world/biome/BiomeGenHills"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aua", "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bud", "net/minecraft/client/stream/BroadcastController$BroadcastListener"));
             mObInitMap.put(
-                    new Pair<String, String>("bqe", "net/minecraft/client/renderer/texture/TextureAtlasSprite$1"));
+                    new Pair<String, String>(
+                            "aua",
+                            "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$1"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bud",
+                            "net/minecraft/client/stream/BroadcastController$BroadcastListener"));
+            mObInitMap
+                    .put(new Pair<String, String>("bqe", "net/minecraft/client/renderer/texture/TextureAtlasSprite$1"));
             mObInitMap.put(new Pair<String, String>("beh", "net/minecraft/client/gui/achievement/GuiAchievement"));
             mObInitMap.put(new Pair<String, String>("big", "net/minecraft/client/model/ModelSpider"));
             mObInitMap.put(new Pair<String, String>("ja", "net/minecraft/network/play/client/C02PacketUseEntity"));
@@ -6538,12 +6713,16 @@ public class DevHelper {
                     new Pair<String, String>("jt", "net/minecraft/network/login/server/S01PacketEncryptionRequest"));
             mObInitMap.put(new Pair<String, String>("fu", "net/minecraft/network/play/server/S08PacketPlayerPosLook"));
             mObInitMap.put(new Pair<String, String>("bv", "net/minecraft/command/server/CommandTeleport"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/realms/RealmsConnect", "net/minecraft/realms/RealmsConnect"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/realms/RealmsConnect",
+                            "net/minecraft/realms/RealmsConnect"));
             mObInitMap.put(new Pair<String, String>("abm", "net/minecraft/item/ItemBow"));
             mObInitMap.put(new Pair<String, String>("amu", "net/minecraft/block/BlockPressurePlate"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aus", "net/minecraft/world/gen/structure/StructureStrongholdPieces$PortalRoom"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aus",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$PortalRoom"));
             mObInitMap.put(new Pair<String, String>("ayr", "net/minecraft/world/storage/SaveFormatOld"));
             mObInitMap.put(new Pair<String, String>("bbp", "net/minecraft/util/ScreenShotHelper"));
             mObInitMap.put(new Pair<String, String>("bfo", "net/minecraft/client/renderer/InventoryEffectRenderer"));
@@ -6566,8 +6745,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("wd", "net/minecraft/entity/passive/EntityAmbientCreature"));
             mObInitMap.put(new Pair<String, String>("se", "net/minecraft/entity/Entity$EnumEntitySize"));
             mObInitMap.put(new Pair<String, String>("of", "net/minecraft/server/management/PreYggdrasilConverter$6"));
-            mObInitMap.put(new Pair<String, String>(
-                    "kg", "net/minecraft/network/ServerStatusResponse$MinecraftProtocolVersionIdentifier$Serializer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "kg",
+                            "net/minecraft/network/ServerStatusResponse$MinecraftProtocolVersionIdentifier$Serializer"));
             mObInitMap.put(new Pair<String, String>("gh", "net/minecraft/network/play/server/S23PacketBlockChange"));
             mObInitMap.put(new Pair<String, String>("ci", "net/minecraft/command/WrongUsageException"));
             mObInitMap.put(
@@ -6583,8 +6764,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("kz", "net/minecraft/init/Bootstrap$8"));
             mObInitMap.put(new Pair<String, String>("akq", "net/minecraft/block/BlockDropper"));
             mObInitMap.put(new Pair<String, String>("acs", "net/minecraft/item/ItemFirework"));
-            mObInitMap.put(new Pair<String, String>(
-                    "agr", "net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "agr",
+                            "net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart"));
             mObInitMap.put(new Pair<String, String>("bsr", "net/minecraft/client/audio/SoundList$SoundEntry$Type"));
             mObInitMap.put(new Pair<String, String>("bos", "net/minecraft/client/renderer/entity/RenderSkeleton"));
             mObInitMap.put(
@@ -6608,8 +6791,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("tk", "net/minecraft/entity/ai/attributes/BaseAttribute"));
             mObInitMap.put(new Pair<String, String>("pl", "net/minecraft/stats/StatBase$4"));
             mObInitMap.put(new Pair<String, String>("lm", "net/minecraft/server/MinecraftServer$6"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atb", "net/minecraft/world/gen/structure/StructureMineshaftPieces$Stairs"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atb",
+                            "net/minecraft/world/gen/structure/StructureMineshaftPieces$Stairs"));
             mObInitMap.put(new Pair<String, String>("apc", "net/minecraft/tileentity/TileEntityDropper"));
             mObInitMap.put(new Pair<String, String>("ald", "net/minecraft/block/BlockFlowerPot"));
             mObInitMap.put(new Pair<String, String>("adf", "net/minecraft/item/ItemLead"));
@@ -6621,8 +6806,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ib", "net/minecraft/network/play/server/S06PacketUpdateHealth"));
             mObInitMap.put(new Pair<String, String>("ec", "net/minecraft/nbt/JsonToNBT$Any"));
             mObInitMap.put(new Pair<String, String>("ad", "net/minecraft/command/PlayerSelector"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atu", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atu",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing"));
             mObInitMap.put(new Pair<String, String>("apv", "net/minecraft/world/chunk/NibbleArray"));
             mObInitMap.put(new Pair<String, String>("alw", "net/minecraft/block/BlockLiquid"));
             mObInitMap.put(new Pair<String, String>("ady", "net/minecraft/item/ItemSpade"));
@@ -6699,8 +6886,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("bck", "net/minecraft/client/gui/GuiOptionsRowList"));
             mObInitMap.put(new Pair<String, String>("bgj", "net/minecraft/client/gui/GuiResourcePackAvailable"));
             mObInitMap.put(new Pair<String, String>("bki", "net/minecraft/client/particle/EntityLargeExplodeFX"));
-            mObInitMap.put(
-                    new Pair<String, String>("boh", "net/minecraft/client/renderer/entity/RendererLivingEntity"));
+            mObInitMap
+                    .put(new Pair<String, String>("boh", "net/minecraft/client/renderer/entity/RendererLivingEntity"));
             mObInitMap.put(new Pair<String, String>("lc", "net/minecraft/client/util/JsonException$1"));
             mObInitMap.put(new Pair<String, String>("hd", "net/minecraft/network/play/server/S01PacketJoinGame"));
             mObInitMap.put(new Pair<String, String>("de", "net/minecraft/util/StringTranslate"));
@@ -6725,8 +6912,10 @@ public class DevHelper {
             mObInitMap.put(
                     new Pair<String, String>("hv", "net/minecraft/network/play/server/S3DPacketDisplayScoreboard"));
             mObInitMap.put(new Pair<String, String>("dw", "net/minecraft/nbt/NBTTagShort"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atj", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor3"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atj",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor3"));
             mObInitMap.put(new Pair<String, String>("apk", "net/minecraft/tileentity/TileEntityMobSpawner$1"));
             mObInitMap.put(new Pair<String, String>("all", "net/minecraft/block/BlockHardenedClay"));
             mObInitMap.put(new Pair<String, String>("adn", "net/minecraft/item/ItemPickaxe"));
@@ -6763,13 +6952,15 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aqq", "net/minecraft/world/WorldProviderSurface"));
             mObInitMap.put(new Pair<String, String>("amr", "net/minecraft/block/BlockPotato"));
             mObInitMap.put(new Pair<String, String>("ais", "net/minecraft/world/biome/BiomeGenSavanna"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aup", "net/minecraft/world/gen/structure/StructureStrongholdPieces$LeftTurn"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aup",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$LeftTurn"));
             mObInitMap.put(new Pair<String, String>("ayo", "net/minecraft/world/chunk/storage/AnvilSaveConverter$1"));
             mObInitMap.put(new Pair<String, String>("bbm", "net/minecraft/client/settings/GameSettings$Options"));
             mObInitMap.put(new Pair<String, String>("bus", "net/minecraft/realms/RealmsConnect$1"));
-            mObInitMap.put(
-                    new Pair<String, String>("bqt", "net/minecraft/client/resources/FoliageColorReloadListener"));
+            mObInitMap
+                    .put(new Pair<String, String>("bqt", "net/minecraft/client/resources/FoliageColorReloadListener"));
             mObInitMap.put(new Pair<String, String>("zl", "net/minecraft/entity/projectile/EntityEgg"));
             mObInitMap.put(new Pair<String, String>("vm", "net/minecraft/entity/ai/EntityAIDefendVillage"));
             mObInitMap.put(new Pair<String, String>("rn", "net/minecraft/util/CombatTracker"));
@@ -6782,19 +6973,25 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("abi", "net/minecraft/item/ItemReed"));
             mObInitMap.put(new Pair<String, String>("afh", "net/minecraft/item/crafting/ShapedRecipes"));
             mObInitMap.put(new Pair<String, String>("ajg", "net/minecraft/block/BlockBeacon"));
-            mObInitMap.put(new Pair<String, String>(
-                    "avd", "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stronghold$Door"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "avd",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$Stronghold$Door"));
             mObInitMap.put(new Pair<String, String>("azc", "net/minecraft/world/storage/ISaveHandler"));
-            mObInitMap.put(new Pair<String, String>(
-                    "brh", "net/minecraft/client/resources/SimpleReloadableResourceManager$1"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "brh",
+                            "net/minecraft/client/resources/SimpleReloadableResourceManager$1"));
             mObInitMap.put(new Pair<String, String>("bfk", "net/minecraft/client/gui/inventory/CreativeCrafting"));
             mObInitMap.put(new Pair<String, String>("bjj", "net/minecraft/client/multiplayer/WorldClient$4"));
             mObInitMap.put(new Pair<String, String>("bni", "net/minecraft/client/renderer/entity/RenderCreeper"));
             mObInitMap.put(new Pair<String, String>("wa", "net/minecraft/village/Village$VillageAgressor"));
             mObInitMap.put(new Pair<String, String>("sb", "net/minecraft/entity/Entity$1"));
             mObInitMap.put(new Pair<String, String>("oc", "net/minecraft/server/management/PreYggdrasilConverter$3"));
-            mObInitMap.put(new Pair<String, String>(
-                    "kd", "net/minecraft/network/ServerStatusResponse$PlayerCountData$Serializer"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "kd",
+                            "net/minecraft/network/ServerStatusResponse$PlayerCountData$Serializer"));
             mObInitMap.put(new Pair<String, String>("ge", "net/minecraft/network/play/server/S25PacketBlockBreakAnim"));
             mObInitMap.put(new Pair<String, String>("cf", "net/minecraft/command/SyntaxErrorException"));
             mObInitMap.put(new Pair<String, String>("any", "net/minecraft/block/BlockStoneSlab"));
@@ -6832,8 +7029,8 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("th", "net/minecraft/entity/ai/attributes/IAttribute"));
             mObInitMap.put(new Pair<String, String>("pi", "net/minecraft/stats/StatBase$1"));
             mObInitMap.put(new Pair<String, String>("lj", "net/minecraft/server/MinecraftServer$3"));
-            mObInitMap.put(
-                    new Pair<String, String>("hk", "net/minecraft/network/play/server/S39PacketPlayerAbilities"));
+            mObInitMap
+                    .put(new Pair<String, String>("hk", "net/minecraft/network/play/server/S39PacketPlayerAbilities"));
             mObInitMap.put(new Pair<String, String>("dl", "net/minecraft/nbt/NBTTagEnd"));
             mObInitMap.put(new Pair<String, String>("ala", "net/minecraft/block/BlockFenceGate"));
             mObInitMap.put(new Pair<String, String>("adc", "net/minecraft/item/Item$ToolMaterial"));
@@ -6861,16 +7058,20 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("aej", "net/minecraft/item/ItemLilyPad"));
             mObInitMap.put(new Pair<String, String>("aak", "net/minecraft/inventory/SlotFurnace"));
             mObInitMap.put(new Pair<String, String>("k", "net/minecraft/crash/CrashReportCategory"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atq", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$NetherStalkRoom"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atq",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$NetherStalkRoom"));
             mObInitMap.put(new Pair<String, String>("apr", "net/minecraft/block/BlockPistonMoving"));
             mObInitMap.put(new Pair<String, String>("axp", "net/minecraft/world/gen/layer/GenLayer$2"));
             mObInitMap.put(new Pair<String, String>("ban", "net/minecraft/client/renderer/GLAllocation"));
-            mObInitMap.put(
-                    new Pair<String, String>("bem", "net/minecraft/client/gui/achievement/GuiStats$StatsGeneral"));
+            mObInitMap
+                    .put(new Pair<String, String>("bem", "net/minecraft/client/gui/achievement/GuiStats$StatsGeneral"));
             mObInitMap.put(new Pair<String, String>("bil", "net/minecraft/client/model/ModelZombieVillager"));
-            mObInitMap.put(new Pair<String, String>(
-                    "bmk", "net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "bmk",
+                            "net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher"));
             mObInitMap.put(new Pair<String, String>("bh", "net/minecraft/command/server/CommandSaveAll"));
             mObInitMap.put(new Pair<String, String>("ym", "net/minecraft/entity/monster/EntitySlime"));
             mObInitMap.put(new Pair<String, String>("un", "net/minecraft/entity/ai/EntityAIWatchClosest"));
@@ -6879,20 +7080,24 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("amg", "net/minecraft/block/BlockNetherrack"));
             mObInitMap.put(new Pair<String, String>("aei", "net/minecraft/item/EnumAction"));
             mObInitMap.put(new Pair<String, String>("aih", "net/minecraft/world/biome/BiomeGenForest$2"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aue", "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$Feature"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aue",
+                            "net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$Feature"));
             mObInitMap.put(new Pair<String, String>("ayd", "net/minecraft/pathfinding/Path"));
             mObInitMap.put(new Pair<String, String>("bbb", "net/minecraft/client/Minecraft$5"));
-            mObInitMap.put(
-                    new Pair<String, String>("bfa", "net/minecraft/client/gui/inventory/GuiBeacon$CancelButton"));
+            mObInitMap
+                    .put(new Pair<String, String>("bfa", "net/minecraft/client/gui/inventory/GuiBeacon$CancelButton"));
             mObInitMap.put(new Pair<String, String>("buh", "net/minecraft/client/stream/ChatController$ChatListener"));
             mObInitMap.put(new Pair<String, String>("bqi", "net/minecraft/client/renderer/texture/TextureUtil"));
             mObInitMap.put(new Pair<String, String>("za", "net/minecraft/entity/player/EntityPlayer$EnumStatus"));
             mObInitMap.put(new Pair<String, String>("vb", "net/minecraft/entity/ai/EntityAILookIdle"));
             mObInitMap.put(new Pair<String, String>("rc", "net/minecraft/inventory/IInvBasic"));
             mObInitMap.put(new Pair<String, String>("nd", "net/minecraft/network/NetworkSystem$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "je", "net/minecraft/network/play/client/C03PacketPlayer$C04PacketPlayerPosition"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "je",
+                            "net/minecraft/network/play/client/C03PacketPlayer$C04PacketPlayerPosition"));
             mObInitMap.put(new Pair<String, String>("ff", "net/minecraft/util/ChatComponentStyle$1"));
             mObInitMap.put(new Pair<String, String>("aqy", "net/minecraft/world/gen/MapGenCavesHell"));
             mObInitMap.put(new Pair<String, String>("amz", "net/minecraft/block/BlockRedstoneOre"));
@@ -6980,8 +7185,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("uc", "net/minecraft/entity/ai/EntityAIDoorInteract"));
             mObInitMap.put(new Pair<String, String>("qd", "net/minecraft/util/LongHashMap"));
             mObInitMap.put(new Pair<String, String>("s", "net/minecraft/util/ReportedException"));
-            mObInitMap.put(new Pair<String, String>(
-                    "net/minecraft/client/ClientBrandRetriever", "net/minecraft/client/ClientBrandRetriever"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "net/minecraft/client/ClientBrandRetriever",
+                            "net/minecraft/client/ClientBrandRetriever"));
             mObInitMap.put(new Pair<String, String>("apz", "net/minecraft/world/chunk/storage/ExtendedBlockStorage"));
             mObInitMap.put(
                     new Pair<String, String>("aty", "net/minecraft/world/gen/structure/MapGenScatteredFeature$Start"));
@@ -6996,8 +7203,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("ez", "net/minecraft/util/MessageDeserializer"));
             mObInitMap.put(new Pair<String, String>("amo", "net/minecraft/block/BlockPackedIce"));
             mObInitMap.put(new Pair<String, String>("aip", "net/minecraft/world/biome/BiomeGenPlains"));
-            mObInitMap.put(new Pair<String, String>(
-                    "aum", "net/minecraft/world/gen/structure/StructureStrongholdPieces$ChestCorridor"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "aum",
+                            "net/minecraft/world/gen/structure/StructureStrongholdPieces$ChestCorridor"));
             mObInitMap.put(new Pair<String, String>("ayl", "net/minecraft/world/WorldSavedData"));
             mObInitMap.put(new Pair<String, String>("bup", "net/minecraft/client/stream/TwitchStream$1"));
             mObInitMap.put(new Pair<String, String>("bqq", "net/minecraft/client/resources/FallbackResourceManager"));
@@ -7009,8 +7218,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("vj", "net/minecraft/entity/ai/EntityAIFollowGolem"));
             mObInitMap.put(new Pair<String, String>("rk", "net/minecraft/profiler/IPlayerUsage"));
             mObInitMap.put(new Pair<String, String>("nl", "net/minecraft/server/network/NetHandlerHandshakeTCP"));
-            mObInitMap.put(new Pair<String, String>(
-                    "jm", "net/minecraft/network/play/client/C10PacketCreativeInventoryAction"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "jm",
+                            "net/minecraft/network/play/client/C10PacketCreativeInventoryAction"));
             mObInitMap.put(new Pair<String, String>("fn", "net/minecraft/util/ChatStyle"));
             mObInitMap.put(new Pair<String, String>("bo", "net/minecraft/command/CommandSetPlayerTimeout"));
             mObInitMap.put(new Pair<String, String>("anc", "net/minecraft/block/BlockRedstoneTorch"));
@@ -7062,8 +7273,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("te", "net/minecraft/entity/DataWatcher"));
             mObInitMap.put(new Pair<String, String>("pf", "net/minecraft/stats/StatCrafting"));
             mObInitMap.put(new Pair<String, String>("lg", "net/minecraft/server/ServerEula"));
-            mObInitMap.put(new Pair<String, String>(
-                    "hh", "net/minecraft/network/play/server/S14PacketEntity$S17PacketEntityLookMove"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "hh",
+                            "net/minecraft/network/play/server/S14PacketEntity$S17PacketEntityLookMove"));
             mObInitMap.put(new Pair<String, String>("di", "net/minecraft/nbt/NBTTagCompound$1"));
             mObInitMap.put(new Pair<String, String>("bdc", "net/minecraft/client/gui/GuiGameOver"));
             mObInitMap.put(new Pair<String, String>("bla", "net/minecraft/client/particle/EntityAuraFX"));
@@ -7071,8 +7284,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("lz", "net/minecraft/server/gui/MinecraftServerGui$1"));
             mObInitMap.put(new Pair<String, String>("ads", "net/minecraft/item/ItemRedstone"));
             mObInitMap.put(new Pair<String, String>("bps", "net/minecraft/client/renderer/ThreadDownloadImageData$1"));
-            mObInitMap.put(new Pair<String, String>(
-                    "asz", "net/minecraft/world/gen/structure/StructureMineshaftPieces$Cross"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "asz",
+                            "net/minecraft/world/gen/structure/StructureMineshaftPieces$Cross"));
             mObInitMap.put(new Pair<String, String>("awy", "net/minecraft/world/gen/layer/GenLayerEdge"));
             mObInitMap.put(new Pair<String, String>("bdv", "net/minecraft/client/gui/GuiRenameWorld"));
             mObInitMap.put(new Pair<String, String>("bhu", "net/minecraft/client/model/ModelPig"));
@@ -7083,8 +7298,10 @@ public class DevHelper {
             mObInitMap.put(new Pair<String, String>("tw", "net/minecraft/entity/ai/EntityAIAvoidEntity"));
             mObInitMap.put(new Pair<String, String>("px", "net/minecraft/util/HttpUtil$DownloadListener"));
             mObInitMap.put(new Pair<String, String>("h", "net/minecraft/crash/CrashReport$6"));
-            mObInitMap.put(new Pair<String, String>(
-                    "atn", "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor"));
+            mObInitMap.put(
+                    new Pair<String, String>(
+                            "atn",
+                            "net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor"));
             mObInitMap.put(new Pair<String, String>("apo", "net/minecraft/tileentity/TileEntityEndPortal"));
             mObInitMap.put(new Pair<String, String>("alp", "net/minecraft/block/BlockIce"));
             mObInitMap.put(new Pair<String, String>("adr", "net/minecraft/item/ItemRecord"));

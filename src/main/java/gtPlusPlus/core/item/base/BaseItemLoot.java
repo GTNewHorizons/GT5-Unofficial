@@ -1,16 +1,18 @@
 package gtPlusPlus.core.item.base;
 
-import gregtech.api.enums.Materials;
-import gtPlusPlus.api.enums.Quality;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gregtech.api.enums.Materials;
+import gtPlusPlus.api.enums.Quality;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemLoot extends Item {
 
@@ -44,14 +46,14 @@ public class BaseItemLoot extends Item {
         return this.materialName;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(this.lootQuality.getQuality());
 
-        /*if (componentMaterial.isRadioactive){
-        	list.add(CORE.GT_Tooltip_Radioactive);
-        }*/
+        /*
+         * if (componentMaterial.isRadioactive){ list.add(CORE.GT_Tooltip_Radioactive); }
+         */
 
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -63,22 +65,20 @@ public class BaseItemLoot extends Item {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         // EntityUtils.applyRadiationDamageToEntity(lootQuality.vRadioationLevel, world, entityHolding);
     }
 
     public static enum LootTypes {
+
         Sword("Sword", " Longsword", "sword"),
         Shortsword("Sword", " Short Blade", "blade"),
         Helmet("Helmet", " Medium Helm", "helmet"),
         Chestplate("Platebody", " Chestplate", "platebody"),
         Leggings("Platelegs", " Platelegs", "platelegs"),
         Boots("Boots", " Boots", "boots");
+
         private String LOOT_TYPE;
         private String DISPLAY_SUFFIX;
         private String OREDICT_NAME;

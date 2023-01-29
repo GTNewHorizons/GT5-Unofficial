@@ -1,14 +1,16 @@
 package gtPlusPlus.core.util.data;
 
+import java.io.*;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameData;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.io.*;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class LocaleUtils {
 
@@ -41,8 +43,7 @@ public class LocaleUtils {
                     }
                 }
 
-            } catch (Throwable T) {
-            }
+            } catch (Throwable T) {}
         }
         writeToFile("Dumping Blocks from " + mod.getModId() + ".");
         for (Object B : GameData.getBlockRegistry()) {
@@ -61,8 +62,7 @@ public class LocaleUtils {
                     }
                 }
 
-            } catch (Throwable T) {
-            }
+            } catch (Throwable T) {}
         }
 
         return true;
@@ -76,7 +76,6 @@ public class LocaleUtils {
             writer.write(S);
             writer.newLine();
             writer.close();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {}
     }
 }

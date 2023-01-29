@@ -1,10 +1,7 @@
 package gtPlusPlus.core.item.base;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.creative.AddToCreativeTab;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,7 +14,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+
 public class BasicSpawnEgg extends ItemMonsterPlacer {
+
     @SideOnly(Side.CLIENT)
     private IIcon theIcon;
 
@@ -32,10 +35,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
         super();
     }
 
-    public BasicSpawnEgg(
-            final String MODID,
-            final String parEntityToSpawnName,
-            final int parPrimaryColor,
+    public BasicSpawnEgg(final String MODID, final String parEntityToSpawnName, final int parPrimaryColor,
             final int parSecondaryColor) {
         this.setHasSubtypes(false);
         this.maxStackSize = 64;
@@ -52,21 +52,11 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
     /**
      * Callback for item usage. If the item does something special on right clicking,
      *
-     * he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+     * he will have one of those. Return True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
-    public boolean onItemUse(
-            final ItemStack par1ItemStack,
-            final EntityPlayer par2EntityPlayer,
-            final World par3World,
-            int par4,
-            int par5,
-            int par6,
-            final int par7,
-            final float par8,
-            final float par9,
-            final float par10) {
+    public boolean onItemUse(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final World par3World,
+            int par4, int par5, int par6, final int par7, final float par8, final float par9, final float par10) {
         if (par3World.isRemote) {
             return true;
         }
@@ -98,16 +88,16 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
     /**
      * Called whenever this item is equipped and the right mouse button is pressed.
      *
-     *Args: itemStack, world, entityPlayer
+     * Args: itemStack, world, entityPlayer
      */
     @Override
-    public ItemStack onItemRightClick(
-            final ItemStack par1ItemStack, final World par2World, final EntityPlayer par3EntityPlayer) {
+    public ItemStack onItemRightClick(final ItemStack par1ItemStack, final World par2World,
+            final EntityPlayer par3EntityPlayer) {
         if (par2World.isRemote) {
             return par1ItemStack;
         }
-        final MovingObjectPosition movingobjectposition =
-                this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+        final MovingObjectPosition movingobjectposition = this
+                .getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 
         if (movingobjectposition == null) {
             return par1ItemStack;
@@ -147,8 +137,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
     /**
      * Spawns the creature specified by the egg's type in the location specified by
      *
-     * the last three parameters.
-     * Parameters: world, entityID, x, y, z.
+     * the last three parameters. Parameters: world, entityID, x, y, z.
      */
     public Entity spawnEntity(final World parWorld, final double parX, final double parY, final double parZ) {
 
@@ -159,7 +148,11 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
                 this.entityToSpawn = (EntityLiving) EntityList.createEntityByName(this.entityToSpawnNameFull, parWorld);
 
                 this.entityToSpawn.setLocationAndAngles(
-                        parX, parY, parZ, MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F), 0.0F);
+                        parX,
+                        parY,
+                        parZ,
+                        MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
+                        0.0F);
 
                 parWorld.spawnEntityInWorld(this.entityToSpawn);
                 this.entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
@@ -176,7 +169,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item parItem, final CreativeTabs parTab, final List parList) {

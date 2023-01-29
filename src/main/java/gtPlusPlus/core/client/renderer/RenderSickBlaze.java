@@ -1,20 +1,22 @@
 package gtPlusPlus.core.client.renderer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.client.model.ModelSickBlaze;
-import gtPlusPlus.core.entity.monster.EntitySickBlaze;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.client.model.ModelSickBlaze;
+import gtPlusPlus.core.entity.monster.EntitySickBlaze;
+import gtPlusPlus.core.lib.CORE;
+
 @SideOnly(Side.CLIENT)
 public class RenderSickBlaze extends RenderLiving {
-    private static final ResourceLocation blazeTextures =
-            new ResourceLocation(CORE.MODID + ":" + "textures/entity/sickBlaze.png");
+
+    private static final ResourceLocation blazeTextures = new ResourceLocation(
+            CORE.MODID + ":" + "textures/entity/sickBlaze.png");
     private int field_77068_a;
 
     public RenderSickBlaze() {
@@ -28,13 +30,8 @@ public class RenderSickBlaze extends RenderLiving {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(
-            EntitySickBlaze p_76986_1_,
-            double p_76986_2_,
-            double p_76986_4_,
-            double p_76986_6_,
-            float p_76986_8_,
-            float p_76986_9_) {
+    public void doRender(EntitySickBlaze p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_,
+            float p_76986_8_, float p_76986_9_) {
         int i = ((ModelSickBlaze) this.mainModel).func_78104_a();
 
         if (i != this.field_77068_a) {
@@ -59,13 +56,8 @@ public class RenderSickBlaze extends RenderLiving {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-    public void doRender(
-            EntityLiving p_76986_1_,
-            double p_76986_2_,
-            double p_76986_4_,
-            double p_76986_6_,
-            float p_76986_8_,
-            float p_76986_9_) {
+    public void doRender(EntityLiving p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_,
+            float p_76986_8_, float p_76986_9_) {
         this.doRender((EntitySickBlaze) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 
@@ -76,13 +68,8 @@ public class RenderSickBlaze extends RenderLiving {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-    public void doRender(
-            EntityLivingBase p_76986_1_,
-            double p_76986_2_,
-            double p_76986_4_,
-            double p_76986_6_,
-            float p_76986_8_,
-            float p_76986_9_) {
+    public void doRender(EntityLivingBase p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_,
+            float p_76986_8_, float p_76986_9_) {
         this.doRender((EntitySickBlaze) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 
@@ -101,12 +88,7 @@ public class RenderSickBlaze extends RenderLiving {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-    public void doRender(
-            Entity p_76986_1_,
-            double p_76986_2_,
-            double p_76986_4_,
-            double p_76986_6_,
-            float p_76986_8_,
+    public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
             float p_76986_9_) {
         this.doRender((EntitySickBlaze) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }

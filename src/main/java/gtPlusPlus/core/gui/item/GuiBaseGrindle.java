@@ -1,5 +1,22 @@
 package gtPlusPlus.core.gui.item;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreenBook;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Utility;
@@ -12,20 +29,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreenBook;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 public class GuiBaseGrindle extends GuiContainer {
 
@@ -37,8 +40,9 @@ public class GuiBaseGrindle extends GuiContainer {
     private String[][] mPageDataArray;
     private short mCurrentPage = 0;
 
-    private static final ResourceLocation iconLocation =
-            new ResourceLocation(CORE.MODID, "textures/gui/itemGrindle.png");
+    private static final ResourceLocation iconLocation = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/itemGrindle.png");
 
     /** The inventory to render on screen */
     private final BaseInventoryGrindle inventory;
@@ -58,8 +62,7 @@ public class GuiBaseGrindle extends GuiContainer {
     }
 
     /**
-     * Draw the foreground layer for the GuiContainer (everything in front of the
-     * items)
+     * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     @Override
     protected void drawGuiContainerForegroundLayer(final int par1, final int par2) {
@@ -83,8 +86,8 @@ public class GuiBaseGrindle extends GuiContainer {
                     // Debug NBT Information
                     // NBTUtils.tryIterateNBTData(aStack);
 
-                    this.fontRendererObj.drawString(
-                            I18n.format(aDataCurrent.mTitle), 10, 8, Utils.rgbtoHexValue(125, 255, 125));
+                    this.fontRendererObj
+                            .drawString(I18n.format(aDataCurrent.mTitle), 10, 8, Utils.rgbtoHexValue(125, 255, 125));
 
                     int tTier = aDataCurrent.mExtraInformation;
                     if (tTier >= 0) {
@@ -118,8 +121,8 @@ public class GuiBaseGrindle extends GuiContainer {
                         int posOuter = 0;
                         int posInner = 0;
 
-                        mPageDataArray = new String
-                                [MathUtils.roundToClosestInt(Math.ceil(aDataCurrent.mListData.size() / 9.00))][9];
+                        mPageDataArray = new String[MathUtils
+                                .roundToClosestInt(Math.ceil(aDataCurrent.mListData.size() / 9.00))][9];
                         for (String e : aDataCurrent.mListData) {
                             if (e != null) {
                                 mPageDataArray[posInner][posOuter] = e;
@@ -189,12 +192,11 @@ public class GuiBaseGrindle extends GuiContainer {
                                 35,
                                 Utils.rgbtoHexValue(125, 125, 255));
                         int aLastYUsed = 41;
-                        /*for (int i=0;i<aDataCurrent.mListData.size();i++) {
-                        	if ((aLastYUsed + 9) <= (68 + 56)) {
-                        		this.fontRendererObj.drawString(I18n.format(aDataCurrent.mListData.get(i), new Object[0]), 10, aLastYUsed, Utils.rgbtoHexValue(125, 255, 125));
-                        		aLastYUsed = aLastYUsed + 9;
-                        	}
-                        }	*/
+                        /*
+                         * for (int i=0;i<aDataCurrent.mListData.size();i++) { if ((aLastYUsed + 9) <= (68 + 56)) {
+                         * this.fontRendererObj.drawString(I18n.format(aDataCurrent.mListData.get(i), new Object[0]),
+                         * 10, aLastYUsed, Utils.rgbtoHexValue(125, 255, 125)); aLastYUsed = aLastYUsed + 9; } }
+                         */
                     }
                 } else {
                     this.fontRendererObj.drawStringWithShadow(
@@ -210,13 +212,16 @@ public class GuiBaseGrindle extends GuiContainer {
                         10,
                         8,
                         Utils.rgbtoHexValue(255, 125, 125));
-                this.mPageDataArray = new String[][] {{}};
+                this.mPageDataArray = new String[][] { {} };
                 this.mCurrentPage = 0;
             }
 
             // Inventory Label
             this.fontRendererObj.drawStringWithShadow(
-                    I18n.format("container.inventory", new Object[0]), 8, 131, Utils.rgbtoHexValue(255, 255, 255));
+                    I18n.format("container.inventory", new Object[0]),
+                    8,
+                    131,
+                    Utils.rgbtoHexValue(255, 255, 255));
 
         } catch (Throwable t) {
             Logger.INFO("GUI CRASH - " + t);
@@ -310,37 +315,23 @@ public class GuiBaseGrindle extends GuiContainer {
         super.handleMouseInput();
         int i = Mouse.getEventDWheel();
         /*
-         * if (i != 0) {
-         *
-         *
-         * this.currentScroll = (float) ((double) this.currentScroll - (double) i /
-         * (double) j);
-         *
-         * if (this.currentScroll < 0.0F) { this.currentScroll = 0.0F; }
-         *
-         * if (this.currentScroll > 1.0F) { this.currentScroll = 1.0F; }
-         *
-         * this.scrollTo(this.currentScroll); }
+         * if (i != 0) { this.currentScroll = (float) ((double) this.currentScroll - (double) i / (double) j); if
+         * (this.currentScroll < 0.0F) { this.currentScroll = 0.0F; } if (this.currentScroll > 1.0F) {
+         * this.currentScroll = 1.0F; } this.scrollTo(this.currentScroll); }
          */
     }
 
     /**
-     * Called when the mouse is moved or a mouse button is released. Signature:
-     * (mouseX, mouseY, which) which==-1 is mouseMove, which==0 or which==1 is
-     * mouseUp
+     * Called when the mouse is moved or a mouse button is released. Signature: (mouseX, mouseY, which) which==-1 is
+     * mouseMove, which==0 or which==1 is mouseUp
      */
     @Override
     protected void mouseMovedOrUp(int p_146286_1_, int p_146286_2_, int p_146286_3_) {
         /*
-         * if (p_146286_3_ == 0) { int l = p_146286_1_ - this.guiLeft; int i1 =
-         * p_146286_2_ - this.guiTop; CreativeTabs[] acreativetabs =
-         * CreativeTabs.creativeTabArray; int j1 = acreativetabs.length;
-         *
-         * for (int k1 = 0; k1 < j1; ++k1) { CreativeTabs creativetabs =
-         * acreativetabs[k1];
-         *
-         * if (creativetabs != null && this.func_147049_a(creativetabs, l, i1)) {
-         * this.setCurrentCreativeTab(creativetabs); return; } } }
+         * if (p_146286_3_ == 0) { int l = p_146286_1_ - this.guiLeft; int i1 = p_146286_2_ - this.guiTop;
+         * CreativeTabs[] acreativetabs = CreativeTabs.creativeTabArray; int j1 = acreativetabs.length; for (int k1 = 0;
+         * k1 < j1; ++k1) { CreativeTabs creativetabs = acreativetabs[k1]; if (creativetabs != null &&
+         * this.func_147049_a(creativetabs, l, i1)) { this.setCurrentCreativeTab(creativetabs); return; } } }
          */
 
         super.mouseMovedOrUp(p_146286_1_, p_146286_2_, p_146286_3_);
@@ -365,8 +356,7 @@ public class GuiBaseGrindle extends GuiContainer {
         static {
             ResourceLocation r;
             try {
-                r = (ResourceLocation) ReflectionUtils.getField(GuiScreenBook.class, "bookGuiTextures")
-                        .get(null);
+                r = (ResourceLocation) ReflectionUtils.getField(GuiScreenBook.class, "bookGuiTextures").get(null);
 
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 r = new ResourceLocation("textures/gui/book.png");
@@ -390,8 +380,7 @@ public class GuiBaseGrindle extends GuiContainer {
          */
         public void drawButton(Minecraft aGame, int aX, int aY) {
             if (this.visible) {
-                boolean flag = aX >= this.xPosition
-                        && aY >= this.yPosition
+                boolean flag = aX >= this.xPosition && aY >= this.yPosition
                         && aX < this.xPosition + this.width
                         && aY < this.yPosition + this.height;
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -415,8 +404,10 @@ public class GuiBaseGrindle extends GuiContainer {
     public static class GrindleData {
 
         public static enum GrindleMode {
+
             PROSPECTING(0),
             ELEMENT(1);
+
             private final int aModeID;
 
             private GrindleMode(final int aMode) {
@@ -465,8 +456,7 @@ public class GuiBaseGrindle extends GuiContainer {
                     tNBT = new NBTTagCompound();
                 }
 
-                mTitle = tNBT.hasKey("title")
-                        ? tNBT.getString("title")
+                mTitle = tNBT.hasKey("title") ? tNBT.getString("title")
                         : (aType == 0 ? "Empty Data Stick" : (aType == 1 ? "Empty Data Orb" : "Unknown Item"));
                 if (mTitle.toLowerCase().contains("raw prospection data")) {
                     isProspecting = true;

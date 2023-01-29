@@ -1,16 +1,7 @@
 package gtPlusPlus.core.item.bauble;
 
-import baubles.api.BaubleType;
-import com.google.common.collect.Multimap;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +13,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+
 import org.lwjgl.input.Keyboard;
+
+import baubles.api.BaubleType;
+
+import com.google.common.collect.Multimap;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ModularBauble extends BaseBauble {
 
@@ -130,97 +135,179 @@ public class ModularBauble extends BaseBauble {
         if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HOLY)) > 0) {}
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         // Bauble Type
         if (ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET) {
-            list.add(EnumChatFormatting.GRAY + "Current Form: " + EnumChatFormatting.RED + "Amulet"
-                    + EnumChatFormatting.GRAY + ".");
+            list.add(
+                    EnumChatFormatting.GRAY + "Current Form: "
+                            + EnumChatFormatting.RED
+                            + "Amulet"
+                            + EnumChatFormatting.GRAY
+                            + ".");
             list.add(EnumChatFormatting.GRAY + "You can change this into a Ring or a Belt.");
         } else if (ModularArmourUtils.getBaubleType(stack) == BaubleType.RING) {
-            list.add(EnumChatFormatting.GRAY + "Current Form: " + EnumChatFormatting.RED + "Ring"
-                    + EnumChatFormatting.GRAY + ".");
+            list.add(
+                    EnumChatFormatting.GRAY + "Current Form: "
+                            + EnumChatFormatting.RED
+                            + "Ring"
+                            + EnumChatFormatting.GRAY
+                            + ".");
             list.add(EnumChatFormatting.GRAY + "You can change this into an Amulet or a Belt.");
         } else if (ModularArmourUtils.getBaubleType(stack) == BaubleType.BELT) {
-            list.add(EnumChatFormatting.GRAY + "Current Form: " + EnumChatFormatting.RED + "Belt"
-                    + EnumChatFormatting.GRAY + ".");
+            list.add(
+                    EnumChatFormatting.GRAY + "Current Form: "
+                            + EnumChatFormatting.RED
+                            + "Belt"
+                            + EnumChatFormatting.GRAY
+                            + ".");
             list.add(EnumChatFormatting.GRAY + "You can change this into a Ring or an Amulet.");
         }
 
         // Get Stats
         int mStatlevel = 0;
         if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DAMAGE)) > 0) {
-            list.add(EnumChatFormatting.GRAY + "Damage Boost: " + EnumChatFormatting.DARK_RED + mStatlevel
-                    + EnumChatFormatting.GRAY + "/100.");
+            list.add(
+                    EnumChatFormatting.GRAY + "Damage Boost: "
+                            + EnumChatFormatting.DARK_RED
+                            + mStatlevel
+                            + EnumChatFormatting.GRAY
+                            + "/100.");
         }
         if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0) {
-            list.add(EnumChatFormatting.GRAY + "Health Boost: " + EnumChatFormatting.RED + mStatlevel
-                    + EnumChatFormatting.GRAY + "/100. Bonus " + (mStatlevel / 5) + " hearts.");
+            list.add(
+                    EnumChatFormatting.GRAY + "Health Boost: "
+                            + EnumChatFormatting.RED
+                            + mStatlevel
+                            + EnumChatFormatting.GRAY
+                            + "/100. Bonus "
+                            + (mStatlevel / 5)
+                            + " hearts.");
         }
         if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_SPEED)) > 0) {
-            list.add(EnumChatFormatting.GRAY + "Speed Boost: " + EnumChatFormatting.WHITE + mStatlevel
-                    + EnumChatFormatting.GRAY + "/100.");
+            list.add(
+                    EnumChatFormatting.GRAY + "Speed Boost: "
+                            + EnumChatFormatting.WHITE
+                            + mStatlevel
+                            + EnumChatFormatting.GRAY
+                            + "/100.");
         }
         if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_MINING)) > 0) {
-            list.add(EnumChatFormatting.GRAY + "Mining Boost: " + EnumChatFormatting.DARK_GRAY + mStatlevel
-                    + EnumChatFormatting.GRAY + "/100.");
+            list.add(
+                    EnumChatFormatting.GRAY + "Mining Boost: "
+                            + EnumChatFormatting.DARK_GRAY
+                            + mStatlevel
+                            + EnumChatFormatting.GRAY
+                            + "/100.");
         }
         if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HOLY)) > 0) {
-            list.add(EnumChatFormatting.GRAY + "Holy Boost: " + EnumChatFormatting.GOLD + mStatlevel
-                    + EnumChatFormatting.GRAY + "/100.");
+            list.add(
+                    EnumChatFormatting.GRAY + "Holy Boost: "
+                            + EnumChatFormatting.GOLD
+                            + mStatlevel
+                            + EnumChatFormatting.GRAY
+                            + "/100.");
         }
 
         // Defence Boost
         if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DEF)) > 0) {
-            list.add(EnumChatFormatting.GRAY + "Defence Boost: " + EnumChatFormatting.BLUE + mStatlevel
-                    + EnumChatFormatting.GRAY + "/100.");
+            list.add(
+                    EnumChatFormatting.GRAY + "Defence Boost: "
+                            + EnumChatFormatting.BLUE
+                            + mStatlevel
+                            + EnumChatFormatting.GRAY
+                            + "/100.");
 
             if ((Keyboard.isKeyDown(42)) || (Keyboard.isKeyDown(54))) {
 
                 if (mStatlevel >= 1) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Cactus"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Cactus"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 10) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Falling Blocks"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Falling Blocks"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 20) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Wall Suffocation"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Wall Suffocation"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 35) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Drowning"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Drowning"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 50) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Starvation"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Starvation"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 60) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Falling"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Falling"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 75) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Lava"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Lava"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 80) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Magic"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Magic"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 95) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Wither"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Wither"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 100) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Fire"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Fire"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
                 if (mStatlevel >= 100) {
-                    list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Void"
-                            + EnumChatFormatting.GRAY + ".");
+                    list.add(
+                            EnumChatFormatting.GRAY + "Protected From: "
+                                    + EnumChatFormatting.BLUE
+                                    + "Void"
+                                    + EnumChatFormatting.GRAY
+                                    + ".");
                 }
 
             } else {
@@ -230,8 +317,12 @@ public class ModularBauble extends BaseBauble {
 
         if (NBTUtils.getBotanicaSoulboundOwner(stack) != null) {
             if (!NBTUtils.getBotanicaSoulboundOwner(stack).equals("")) {
-                list.add(EnumChatFormatting.GRAY + "Owner: " + EnumChatFormatting.GREEN
-                        + NBTUtils.getBotanicaSoulboundOwner(stack) + EnumChatFormatting.GRAY + ".");
+                list.add(
+                        EnumChatFormatting.GRAY + "Owner: "
+                                + EnumChatFormatting.GREEN
+                                + NBTUtils.getBotanicaSoulboundOwner(stack)
+                                + EnumChatFormatting.GRAY
+                                + ".");
             }
         }
         super.addInformation(stack, player, list, bool);
@@ -299,8 +390,7 @@ public class ModularBauble extends BaseBauble {
         }
 
         String mOwner;
-        if (NBTUtils.getBotanicaSoulboundOwner(arg0) == null
-                || NBTUtils.getBotanicaSoulboundOwner(arg0).equals("")) {
+        if (NBTUtils.getBotanicaSoulboundOwner(arg0) == null || NBTUtils.getBotanicaSoulboundOwner(arg0).equals("")) {
             return true;
         } else if ((mOwner = NBTUtils.getBotanicaSoulboundOwner(arg0)) != null) {
             String mPlayerName = arg1.getCommandSenderName();
@@ -330,28 +420,14 @@ public class ModularBauble extends BaseBauble {
         super.onEquipped(stack, entity);
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-    	if (usingItem == null) {
-    		return mfallback;
-    	}
-    	try {
-    		if (stack.getItemDamage() == 0) {
-    			return mfallback = mTextureAmulet;
-    		}
-    		else if (stack.getItemDamage() == 1) {
-    			return mfallback = mTextureRing;
-    		}
-    		else if (stack.getItemDamage() == 2) {
-    			return mfallback = mTextureBelt;
-    		} else {
-    			return mfallback = mTextureRing;
-    		}
-    	} catch (Throwable t) {
-    		return mfallback = mTextureRing;
-    	}
-    }*/
+    /*
+     * @Override
+     * @SideOnly(Side.CLIENT) public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack
+     * usingItem, int useRemaining) { if (usingItem == null) { return mfallback; } try { if (stack.getItemDamage() == 0)
+     * { return mfallback = mTextureAmulet; } else if (stack.getItemDamage() == 1) { return mfallback = mTextureRing; }
+     * else if (stack.getItemDamage() == 2) { return mfallback = mTextureBelt; } else { return mfallback = mTextureRing;
+     * } } catch (Throwable t) { return mfallback = mTextureRing; } }
+     */
 
     @Override
     @SideOnly(Side.CLIENT)

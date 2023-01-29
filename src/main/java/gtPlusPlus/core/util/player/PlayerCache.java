@@ -1,11 +1,13 @@
 package gtPlusPlus.core.util.player;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import java.io.*;
 import java.util.*;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 
 public class PlayerCache {
 
@@ -45,21 +47,12 @@ public class PlayerCache {
         final HashMap<String, UUID> playerInfo = new HashMap<>();
         playerInfo.put(playerName, UUID.fromString(playerUUIDasString));
 
-        /*try {
-        	Utils.LOG_INFO("Attempting to load "+cache.getName());
-        	properties.load(new FileInputStream(cache));
-        	if (properties == null || properties.equals(null)){
-        		Utils.LOG_INFO("Please wait.");
-        	}
-        	else {
-        		Utils.LOG_INFO("Loaded PlayerCache.dat");
-        		properties.setProperty(playerName+"_", playerUUIDasString);
-        		FileOutputStream fr=new FileOutputStream(cache);
-        		properties.store(fr, "Player Cache.");
-        		fr.close();
-        	}
-
-        } */
+        /*
+         * try { Utils.LOG_INFO("Attempting to load "+cache.getName()); properties.load(new FileInputStream(cache)); if
+         * (properties == null || properties.equals(null)){ Utils.LOG_INFO("Please wait."); } else {
+         * Utils.LOG_INFO("Loaded PlayerCache.dat"); properties.setProperty(playerName+"_", playerUUIDasString);
+         * FileOutputStream fr=new FileOutputStream(cache); properties.store(fr, "Player Cache."); fr.close(); } }
+         */
 
         try {
             final FileOutputStream fos = new FileOutputStream("PlayerCache.dat");
@@ -75,22 +68,21 @@ public class PlayerCache {
     }
 
     /**
-     * Reads a "properties" file, and returns it as a Map
-     * (a collection of key/value pairs).
+     * Reads a "properties" file, and returns it as a Map (a collection of key/value pairs).
      *
-     * Credit due to Alvin Alexander - http://alvinalexander.com/java/java-properties-file-map-example?nocache=1#comment-8215
-     * Changed slightly as the filename and delimiter are constant in my case.
+     * Credit due to Alvin Alexander -
+     * http://alvinalexander.com/java/java-properties-file-map-example?nocache=1#comment-8215 Changed slightly as the
+     * filename and delimiter are constant in my case.
      *
      * @param filename  The properties filename to read.
-     * @param delimiter The string (or character) that separates the key
-     *                  from the value in the properties file.
+     * @param delimiter The string (or character) that separates the key from the value in the properties file.
      * @return The Map that contains the key/value pairs.
      * @throws Exception
      */
     @Deprecated
     public static Map<String, String> readPropertiesFileAsMapOld() throws Exception {
         final String delimiter = "=";
-        @SuppressWarnings({"rawtypes", "unchecked"})
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         final Map<String, String> map = new HashMap<>();
         final BufferedReader reader = new BufferedReader(new FileReader(cache));
         String line;

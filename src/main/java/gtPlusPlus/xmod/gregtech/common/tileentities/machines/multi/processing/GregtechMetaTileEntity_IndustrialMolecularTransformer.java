@@ -5,11 +5,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -21,9 +26,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialMolecularTransformer
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMolecularTransformer>
@@ -32,8 +34,8 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
     private static final int CASING_TEXTURE_ID = 48;
     private int mCasing = 0;
 
-    public GregtechMetaTileEntity_IndustrialMolecularTransformer(
-            final int aID, final String aName, final String aNameRegional) {
+    public GregtechMetaTileEntity_IndustrialMolecularTransformer(final int aID, final String aName,
+            final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -54,61 +56,51 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
 
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Changes the structure of items to produce new ones")
-                .addInfo("Maximum 1x of each bus/hatch.")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(7, 7, 7, false)
-                .addController("Top Center")
-                .addCasingInfo("Robust Tungstensteel Machine Casing", 40)
-                .addCasingInfo("Tungstensteel Coils", 16)
-                .addCasingInfo("Molecular Containment Casing", 52)
-                .addCasingInfo("High Voltage Current Capacitor", 32)
-                .addCasingInfo("Particle Containment Casing", 4)
-                .addCasingInfo("Resonance Chamber I", 5)
-                .addCasingInfo("Modulator I", 4)
-                .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
+        tt.addMachineType(getMachineType()).addInfo("Changes the structure of items to produce new ones")
+                .addInfo("Maximum 1x of each bus/hatch.").addPollutionAmount(getPollutionPerSecond(null)).addSeparator()
+                .beginStructureBlock(7, 7, 7, false).addController("Top Center")
+                .addCasingInfo("Robust Tungstensteel Machine Casing", 40).addCasingInfo("Tungstensteel Coils", 16)
+                .addCasingInfo("Molecular Containment Casing", 52).addCasingInfo("High Voltage Current Capacitor", 32)
+                .addCasingInfo("Particle Containment Casing", 4).addCasingInfo("Resonance Chamber I", 5)
+                .addCasingInfo("Modulator I", 4).addInputBus("Any Robust Tungstensteel Machine Casing", 1)
                 .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
                 .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
                 .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> STRUCTURE_DEFINITION =
-            null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMolecularTransformer>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, (new String[][] {
-                        {"       ", "       ", "  xxx  ", "  x~x  ", "  xxx  ", "       ", "       "},
-                        {"       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       "},
-                        {"       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       "},
-                        {"       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       "},
-                        {"   t   ", " ttxtt ", " tyyyt ", "txyzyxt", " tyyyt ", " ttxtt ", "   t   "},
-                        {"   c   ", " ccecc ", " cxfxc ", "cefefec", " cxfxc ", " ccecc ", "   c   "},
-                        {"   h   ", " hhhhh ", " hhhhh ", "hhhhhhh", " hhhhh ", " hhhhh ", "   h   "},
-                    }))
+                    .addShape(
+                            STRUCTURE_PIECE_MAIN,
+                            (new String[][] {
+                                    { "       ", "       ", "  xxx  ", "  x~x  ", "  xxx  ", "       ", "       " },
+                                    { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                                    { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                                    { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                                    { "   t   ", " ttxtt ", " tyyyt ", "txyzyxt", " tyyyt ", " ttxtt ", "   t   " },
+                                    { "   c   ", " ccecc ", " cxfxc ", "cefefec", " cxfxc ", " ccecc ", "   c   " },
+                                    { "   h   ", " hhhhh ", " hhhhh ", "hhhhhhh", " hhhhh ", " hhhhh ", "   h   " }, }))
                     .addElement('x', ofBlock(getCasingBlock(), getCasingMeta()))
                     .addElement('y', ofBlock(getCasingBlock(), getCasingMeta2()))
                     .addElement('z', ofBlock(getCasingBlock(), getCasingMeta3()))
-                    .addElement('e', ofBlock(getCasingBlock2(), 0))
-                    .addElement('f', ofBlock(getCasingBlock2(), 4))
+                    .addElement('e', ofBlock(getCasingBlock2(), 0)).addElement('f', ofBlock(getCasingBlock2(), 4))
                     .addElement('c', ofBlock(getCoilBlock(), 3))
                     .addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
                     .addElement(
                             'h',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialMolecularTransformer.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
                     .build();
         }
         return STRUCTURE_DEFINITION;

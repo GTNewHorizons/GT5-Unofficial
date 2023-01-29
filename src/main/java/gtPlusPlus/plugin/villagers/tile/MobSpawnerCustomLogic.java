@@ -1,11 +1,12 @@
 package gtPlusPlus.plugin.villagers.tile;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
-import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
+import gtPlusPlus.core.block.ModBlocks;
 
 public class MobSpawnerCustomLogic extends MobSpawnerBaseLogic {
 
@@ -27,10 +28,8 @@ public class MobSpawnerCustomLogic extends MobSpawnerBaseLogic {
 
     @Override
     public void func_98267_a(int eventID) {
-        if (mTile != null)
-            mTile.getWorldObj()
-                    .addBlockEvent(
-                            mTile.xCoord, mTile.yCoord, mTile.zCoord, ModBlocks.blockCustomMobSpawner, eventID, 0);
+        if (mTile != null) mTile.getWorldObj()
+                .addBlockEvent(mTile.xCoord, mTile.yCoord, mTile.zCoord, ModBlocks.blockCustomMobSpawner, eventID, 0);
     }
 
     @Override

@@ -1,13 +1,7 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.InventoryFishTrap;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -17,6 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.FishingHooks;
+
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.InventoryFishTrap;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
@@ -54,10 +56,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         final Block[] surroundingBlocks = new Block[6];
         if (this.hasWorldObj()) {
             if (!this.getWorldObj().isRemote) {
-                surroundingBlocks[0] =
-                        this.worldObj.getBlock(this.locationX, this.locationY + 1, this.locationZ); // Above
-                surroundingBlocks[1] =
-                        this.worldObj.getBlock(this.locationX, this.locationY - 1, this.locationZ); // Below
+                surroundingBlocks[0] = this.worldObj.getBlock(this.locationX, this.locationY + 1, this.locationZ); // Above
+                surroundingBlocks[1] = this.worldObj.getBlock(this.locationX, this.locationY - 1, this.locationZ); // Below
                 surroundingBlocks[2] = this.worldObj.getBlock(this.locationX + 1, this.locationY, this.locationZ);
                 surroundingBlocks[3] = this.worldObj.getBlock(this.locationX - 1, this.locationY, this.locationZ);
                 surroundingBlocks[4] = this.worldObj.getBlock(this.locationX, this.locationY, this.locationZ + 1);
@@ -65,8 +65,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
                 int waterCount = 0;
                 int trapCount = 0;
                 for (final Block checkBlock : surroundingBlocks) {
-                    if ((checkBlock == Blocks.water)
-                            || (checkBlock == Blocks.flowing_water)
+                    if ((checkBlock == Blocks.water) || (checkBlock == Blocks.flowing_water)
                             || checkBlock.getUnlocalizedName().toLowerCase().contains("water")
                             || (checkBlock == ModBlocks.blockFishTrap)) {
                         if (checkBlock != ModBlocks.blockFishTrap) {
@@ -80,14 +79,24 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
                 if ((waterCount >= 2) && (trapCount <= 4)) {
                     int aCheck = trapCount + waterCount;
                     this.waterSides = MathUtils.balance(aCheck, 0, 6);
-                    Logger.MACHINE_INFO("Valid Trap. " + waterCount + " | " + (this.tickCount / 20) + "/"
-                            + (this.baseTickRate / 20));
+                    Logger.MACHINE_INFO(
+                            "Valid Trap. " + waterCount
+                                    + " | "
+                                    + (this.tickCount / 20)
+                                    + "/"
+                                    + (this.baseTickRate / 20));
                     return true;
                 } else if ((waterCount >= 2) && (trapCount > 4)) {
                     Logger.MACHINE_INFO("Too many fish traps surrounding this one.");
                     Logger.MACHINE_INFO(
-                            "Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY + "] z["
-                                    + this.locationZ + "] (Ticking for loot every " + this.baseTickRate + " ticks)");
+                            "Not adding Loot to the fishtrap at x[" + this.locationX
+                                    + "] y["
+                                    + this.locationY
+                                    + "] z["
+                                    + this.locationZ
+                                    + "] (Ticking for loot every "
+                                    + this.baseTickRate
+                                    + " ticks)");
                 }
             }
         }
@@ -130,8 +139,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
                     }
                     checkingSlot++;
                 }
-            } catch (final NullPointerException n) {
-            }
+            } catch (final NullPointerException n) {}
         }
         this.markDirty();
         return false;
@@ -205,9 +213,15 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
                 if (this.tickCount >= this.baseTickRate) {
                     if (this.isInWater) {
                         // Add loot
-                        Logger.MACHINE_INFO("Adding Loot to the fishtrap at x[" + this.locationX + "] y["
-                                + this.locationY + "] z[" + this.locationZ + "] (Ticking for loot every "
-                                + this.baseTickRate + " ticks)");
+                        Logger.MACHINE_INFO(
+                                "Adding Loot to the fishtrap at x[" + this.locationX
+                                        + "] y["
+                                        + this.locationY
+                                        + "] z["
+                                        + this.locationZ
+                                        + "] (Ticking for loot every "
+                                        + this.baseTickRate
+                                        + " ticks)");
 
                         int aExtraLootChance = MathUtils.randInt(1, 1000);
                         if (aExtraLootChance >= 999) {
@@ -230,8 +244,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
                     this.tickCount = 0;
                 }
             }
-        } catch (final Throwable t) {
-        }
+        } catch (final Throwable t) {}
     }
 
     public void calculateTickrate() {
@@ -292,33 +305,9 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
     static final String suffix = "raw";
     static final String seaweed = "cropSeaweed";
     static final String greenheartFish = "Greenheartfish";
-    private static final String[] harvestcraftFish = {
-        "Anchovy",
-        "Bass",
-        "Carp",
-        "Catfish",
-        "Charr",
-        "Clam",
-        "Crab",
-        "Crayfish",
-        "Eel",
-        "Frog",
-        "Grouper",
-        "Herring",
-        "Jellyfish",
-        "Mudfish",
-        "Octopus",
-        "Perch",
-        "Scallop",
-        "Shrimp",
-        "Snail",
-        "Snapper",
-        "Tilapia",
-        "Trout",
-        "Tuna",
-        "Turtle",
-        "Walleye"
-    };
+    private static final String[] harvestcraftFish = { "Anchovy", "Bass", "Carp", "Catfish", "Charr", "Clam", "Crab",
+            "Crayfish", "Eel", "Frog", "Grouper", "Herring", "Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop",
+            "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye" };
 
     public static void pamsHarvestCraftCompat() {
         for (int i = 0; i < harvestcraftFish.length; i++) {}

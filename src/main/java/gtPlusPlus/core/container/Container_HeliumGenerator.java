@@ -1,17 +1,18 @@
 package gtPlusPlus.core.container;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
-import gtPlusPlus.core.slots.SlotFuelRod;
-import gtPlusPlus.core.slots.SlotNoInput;
-import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
+import gtPlusPlus.core.slots.SlotFuelRod;
+import gtPlusPlus.core.slots.SlotNoInput;
+import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 
 public class Container_HeliumGenerator extends Container {
 
@@ -84,8 +85,8 @@ public class Container_HeliumGenerator extends Container {
     }
 
     @Override
-    public ItemStack slotClick(
-            final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
+    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
+            final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
@@ -118,33 +119,14 @@ public class Container_HeliumGenerator extends Container {
             final ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
-            /*if (par2 == 0)
-            {
-            	if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, true))
-            	{
-            		return null;
-            	}
-
-            	var4.onSlotChange(var5, var3);
-            }
-            else if (par2 >= InOutputSlotNumber && par2 < InventoryOutSlotNumber)
-            {
-            	if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false))
-            	{
-            		return null;
-            	}
-            }
-            else if (par2 >= InventoryOutSlotNumber && par2 < FullSlotNumber)
-            {
-            	if (!this.mergeItemStack(var5, InOutputSlotNumber, InventoryOutSlotNumber, false))
-            	{
-            		return null;
-            	}
-            }
-            else if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, false))
-            {
-            	return null;
-            }*/
+            /*
+             * if (par2 == 0) { if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, true)) { return null;
+             * } var4.onSlotChange(var5, var3); } else if (par2 >= InOutputSlotNumber && par2 < InventoryOutSlotNumber)
+             * { if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false)) { return null; } } else
+             * if (par2 >= InventoryOutSlotNumber && par2 < FullSlotNumber) { if (!this.mergeItemStack(var5,
+             * InOutputSlotNumber, InventoryOutSlotNumber, false)) { return null; } } else if
+             * (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, false)) { return null; }
+             */
 
             if (var5.stackSize == 0) {
                 var4.putStack((ItemStack) null);

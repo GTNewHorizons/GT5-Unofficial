@@ -1,13 +1,15 @@
 package gtPlusPlus.xmod.bartworks;
 
-import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
+
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.OrePrefixes;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class BW_Utils {
 
@@ -21,16 +23,16 @@ public class BW_Utils {
 
     static {
         sName = ReflectionUtils.getMethod(Enum.class, "name");
-        sClassBW_NonMeta_MaterialItems =
-                ReflectionUtils.getClass("com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems");
+        sClassBW_NonMeta_MaterialItems = ReflectionUtils
+                .getClass("com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems");
         sGet = ReflectionUtils.getMethod(sClassBW_NonMeta_MaterialItems, "get", long.class, Object[].class);
         Werkstoff = ReflectionUtils.getClass("com.github.bartimaeusnek.bartworks.system.material.Werkstoff");
-        WerkstoffLoader =
-                ReflectionUtils.getClass("com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader");
+        WerkstoffLoader = ReflectionUtils
+                .getClass("com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader");
         Field fieldWerkstoffHashMap = ReflectionUtils.getField(Werkstoff, "werkstoffHashMap");
         werkstoffHashMap = ReflectionUtils.getFieldValue(fieldWerkstoffHashMap);
-        getCorrespondingItemStackUnsafe = ReflectionUtils.getMethod(
-                WerkstoffLoader, "getCorrespondingItemStackUnsafe", OrePrefixes.class, Werkstoff, int.class);
+        getCorrespondingItemStackUnsafe = ReflectionUtils
+                .getMethod(WerkstoffLoader, "getCorrespondingItemStackUnsafe", OrePrefixes.class, Werkstoff, int.class);
     }
 
     public enum NonMeta_MaterialItem {
@@ -49,9 +51,8 @@ public class BW_Utils {
             for (Object obj : sClassBW_NonMeta_MaterialItems.getEnumConstants()) {
                 try {
                     if (aItem.name().equals(ReflectionUtils.invokeNonBool(obj, sName, new Object[] {}))) {
-                        return ((ItemStack) ReflectionUtils.invokeNonBool(
-                                        obj, sGet, new Object[] {aAmount, new Object[] {}}))
-                                .copy();
+                        return ((ItemStack) ReflectionUtils
+                                .invokeNonBool(obj, sGet, new Object[] { aAmount, new Object[] {} })).copy();
                     }
                 } catch (Throwable t) {
                     t.printStackTrace();
@@ -76,7 +77,9 @@ public class BW_Utils {
                 Object werkstoff = werkstoffHashMap.get(werkstoffID);
                 if (werkstoff != null) {
                     return (ItemStack) ReflectionUtils.invokeNonBool(
-                            null, getCorrespondingItemStackUnsafe, new Object[] {orePrefixes, werkstoff, amount});
+                            null,
+                            getCorrespondingItemStackUnsafe,
+                            new Object[] { orePrefixes, werkstoff, amount });
                 }
             }
         }

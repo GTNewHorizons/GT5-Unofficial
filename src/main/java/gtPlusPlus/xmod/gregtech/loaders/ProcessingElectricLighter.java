@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -16,36 +18,27 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingElectricLighter implements Interface_OreRecipeRegistrator, Runnable {
+
     public ProcessingElectricLighter() {
         GregtechOrePrefixes.toolElectricLighter.add(this);
     }
 
     @Override
-    public void registerOre(
-            final GregtechOrePrefixes aPrefix,
-            final Materials aMaterial,
-            final String aOreDictName,
-            final String aModName,
-            final ItemStack aStack) {
+    public void registerOre(final GregtechOrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
+            final String aModName, final ItemStack aStack) {
         if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
             if (aMaterial != Materials.Rubber) {
-                if ((!aMaterial.contains(SubTag.WOOD))
-                        && (!aMaterial.contains(SubTag.BOUNCY))
+                if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
                         && (!aMaterial.contains(SubTag.NO_SMASHING))) {}
             }
         }
     }
 
     @Override
-    public void registerOre(
-            final GregtechOrePrefixes aPrefix,
-            final GT_Materials aMaterial,
-            final String aOreDictName,
-            final String aModName,
-            final ItemStack aStack) {
+    public void registerOre(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial, final String aOreDictName,
+            final String aModName, final ItemStack aStack) {
         // TODO Auto-generated method stub
 
     }
@@ -58,12 +51,10 @@ public class ProcessingElectricLighter implements Interface_OreRecipeRegistrator
         Materials aMaterial = null;
         for (int r = 0; r < size; r++) {
             aMaterial = i[r];
-            if ((aMaterial != Materials.Stone)
-                    && (aMaterial != Materials.Flint)
+            if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)
                     && (aMaterial != Materials.Rubber)
                     && (aMaterial != Materials._NULL)) {
-                if ((!aMaterial.contains(SubTag.WOOD))
-                        && (!aMaterial.contains(SubTag.BOUNCY))
+                if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
                         && (!aMaterial.contains(SubTag.NO_SMASHING))
                         && (!aMaterial.contains(SubTag.TRANSPARENT))
                         && (!aMaterial.contains(SubTag.FLAMMABLE))
@@ -82,8 +73,10 @@ public class ProcessingElectricLighter implements Interface_OreRecipeRegistrator
                     } else {
                         Logger.MATERIALS(
                                 "Unable to generate Electric Lighter from " + MaterialUtils.getMaterialName(aMaterial)
-                                        + ", Plate or Long Rod may be invalid. Invalid | Plate? " + (plate == null)
-                                        + " | Rod? " + " |");
+                                        + ", Plate or Long Rod may be invalid. Invalid | Plate? "
+                                        + (plate == null)
+                                        + " | Rod? "
+                                        + " |");
                     }
                     // GT_ModHandler.addCraftingRecipe(,
                     // GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
@@ -113,17 +106,21 @@ public class ProcessingElectricLighter implements Interface_OreRecipeRegistrator
     public boolean addRecipe(Materials aMaterial, long aBatteryStorage, int aVoltageTier, ItemStack aBattery) {
 
         ItemStack aOutputStack = MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                MetaGeneratedGregtechTools.ELECTRIC_LIGHTER, 1, aMaterial, Materials.Titanium, new long[] {
-                    aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L
-                });
+                MetaGeneratedGregtechTools.ELECTRIC_LIGHTER,
+                1,
+                aMaterial,
+                Materials.Titanium,
+                new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
 
-        ItemStack aInputCutter = GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.SOLDERING_IRON_LV, 1, aMaterial, aMaterial, null);
+        ItemStack aInputCutter = GT_MetaGenerated_Tool_01.INSTANCE
+                .getToolWithStats(GT_MetaGenerated_Tool_01.SOLDERING_IRON_LV, 1, aMaterial, aMaterial, null);
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {
-            Logger.MATERIALS("Unable to generate Electric Lighter from " + MaterialUtils.getMaterialName(aMaterial)
-                    + ", Durability: " + aDura);
+            Logger.MATERIALS(
+                    "Unable to generate Electric Lighter from " + MaterialUtils.getMaterialName(aMaterial)
+                            + ", Durability: "
+                            + aDura);
             return false;
         }
 

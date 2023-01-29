@@ -1,12 +1,8 @@
 package gtPlusPlus.core.item.chemistry;
 
-import gregtech.api.enums.Materials;
-import gtPlusPlus.core.item.base.misc.BaseItemParticle;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.util.Utils;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -14,6 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+
+import gregtech.api.enums.Materials;
+import gtPlusPlus.core.item.base.misc.BaseItemParticle;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.util.Utils;
 
 public class IonParticles extends BaseItemParticle {
 
@@ -47,7 +49,7 @@ public class IonParticles extends BaseItemParticle {
 
     @Override
     public String[] getAffixes() {
-        return new String[] {"", ""};
+        return new String[] { "", "" };
     }
 
     @Override
@@ -109,8 +111,12 @@ public class IonParticles extends BaseItemParticle {
         String aState = EnumChatFormatting.YELLOW + "Unknown" + EnumChatFormatting.GRAY;
         // State not set
         if (aCharge == 0) {
-            list.add(EnumChatFormatting.GRAY + "A " + MetaToNameMap.get(stack.getItemDamage()) + " Ion with an "
-                    + aState + " charge state");
+            list.add(
+                    EnumChatFormatting.GRAY + "A "
+                            + MetaToNameMap.get(stack.getItemDamage())
+                            + " Ion with an "
+                            + aState
+                            + " charge state");
         } else {
             if (aCharge > 0) {
                 aState = EnumChatFormatting.GREEN + "Positive" + EnumChatFormatting.GRAY;
@@ -118,8 +124,14 @@ public class IonParticles extends BaseItemParticle {
                 aState = EnumChatFormatting.RED + "Negative" + EnumChatFormatting.GRAY;
             }
 
-            list.add(EnumChatFormatting.GRAY + "A " + MetaToNameMap.get(stack.getItemDamage()) + " Ion with a " + aState
-                    + " charge state of " + aCharge + "");
+            list.add(
+                    EnumChatFormatting.GRAY + "A "
+                            + MetaToNameMap.get(stack.getItemDamage())
+                            + " Ion with a "
+                            + aState
+                            + " charge state of "
+                            + aCharge
+                            + "");
         }
         super.addInformation(stack, player, list, bool);
     }

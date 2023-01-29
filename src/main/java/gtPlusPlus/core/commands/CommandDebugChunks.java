@@ -1,21 +1,24 @@
 package gtPlusPlus.core.commands;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.preloader.ChunkDebugger;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.preloader.ChunkDebugger;
+import gtPlusPlus.preloader.asm.AsmConfig;
+
 public class CommandDebugChunks implements ICommand {
+
     private final List<String> aliases;
 
     protected String fullEntityName;

@@ -2,14 +2,9 @@ package gtPlusPlus.core.block.general.antigrief;
 
 import static gtPlusPlus.core.block.ModBlocks.blockGriefSaver;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityReverter;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -25,7 +20,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.general.TileEntityReverter;
+
 public class TowerDevice extends Block {
+
     private static IIcon TEX_ANTIBUILDER;
     public static final int META_ANTIBUILDER = 9;
     private boolean bUnbreakable;
@@ -67,30 +70,15 @@ public class TowerDevice extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(
-            final World par1World,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer par5EntityPlayer,
-            final int par6,
-            final float par7,
-            final float par8,
-            final float par9) {
+    public boolean onBlockActivated(final World par1World, final int x, final int y, final int z,
+            final EntityPlayer par5EntityPlayer, final int par6, final float par7, final float par8, final float par9) {
         final int meta = par1World.getBlockMetadata(x, y, z);
         return false;
     }
 
     @Override
-    public float getExplosionResistance(
-            final Entity par1Entity,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final double explosionX,
-            final double explosionY,
-            final double explosionZ) {
+    public float getExplosionResistance(final Entity par1Entity, final World world, final int x, final int y,
+            final int z, final double explosionX, final double explosionY, final double explosionZ) {
         final int meta = world.getBlockMetadata(x, y, z);
         return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
     }
@@ -124,8 +112,8 @@ public class TowerDevice extends Block {
         }
     }
 
-    private static void changeToBlockMeta(
-            final World par1World, final int x, final int y, final int z, final int meta) {
+    private static void changeToBlockMeta(final World par1World, final int x, final int y, final int z,
+            final int meta) {
         final Block thereBlockID = par1World.getBlock(x, y, z);
         if ((thereBlockID == blockGriefSaver)) {
             par1World.setBlock(x, y, z, thereBlockID, meta, 3);
@@ -141,8 +129,8 @@ public class TowerDevice extends Block {
     }
 
     @Override
-    public void onNeighborBlockChange(
-            final World par1World, final int x, final int y, final int z, final Block myBlockID) {
+    public void onNeighborBlockChange(final World par1World, final int x, final int y, final int z,
+            final Block myBlockID) {
         final int meta = par1World.getBlockMetadata(x, y, z);
         if (!par1World.isRemote) {}
     }
@@ -174,8 +162,8 @@ public class TowerDevice extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(
-            final World par1World, final int x, final int y, final int z, final Random par5Random) {
+    public void randomDisplayTick(final World par1World, final int x, final int y, final int z,
+            final Random par5Random) {
         final int meta = par1World.getBlockMetadata(x, y, z);
         if ((meta == 3) || (meta == 1) || (meta == 9)) {
             for (int i = 0; i < 1; i++) {
@@ -219,8 +207,8 @@ public class TowerDevice extends Block {
         final int thereMeta = world.getBlockMetadata(x, y, z);
     }
 
-    public static void changeToActiveVanishBlock(
-            final World par1World, final int x, final int y, final int z, final int meta) {
+    public static void changeToActiveVanishBlock(final World par1World, final int x, final int y, final int z,
+            final int meta) {
         changeToBlockMeta(par1World, x, y, z, meta);
         par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.3F, 0.6F);
 

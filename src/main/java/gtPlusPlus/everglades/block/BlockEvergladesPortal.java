@@ -1,15 +1,7 @@
 package gtPlusPlus.everglades.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
-import gtPlusPlus.everglades.world.TeleporterDimensionMod;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -24,7 +16,18 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.everglades.world.TeleporterDimensionMod;
+
 public class BlockEvergladesPortal extends BlockBreakable implements ITileTooltip {
+
     IIcon gor = null, dol = null, st1 = null, st2 = null, st3 = null, st4 = null;
 
     public BlockEvergladesPortal() {
@@ -82,8 +85,8 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Returns a bounding box from the pool of bounding boxes (this means
-     * this box can change after the pool has been cleared to be reused)
+     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
+     * cleared to be reused)
      */
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
@@ -91,8 +94,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Updates the blocks bounds based on its current state. Args: world, x,
-     * y, z
+     * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
@@ -111,10 +113,8 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Is this block (a) opaque and (B) a full 1m cube? This determines
-     * whether or not to render the shared face of two adjacent blocks and
-     * also whether the player can attach torches, redstone wire, etc to
-     * this block.
+     * Is this block (a) opaque and (B) a full 1m cube? This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
     @Override
     public boolean isOpaqueCube() {
@@ -122,8 +122,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return
-     * False (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     @Override
     public boolean renderAsNormalBlock() {
@@ -131,8 +130,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Checks to see if this location is valid to create a portal and will
-     * return True if it does. Args: world, x, y, z
+     * Checks to see if this location is valid to create a portal and will return True if it does. Args: world, x, y, z
      */
     public boolean tryToCreatePortal(World par1World, int par2, int par3, int par4) {
         byte b0 = 0;
@@ -165,8 +163,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
                             }
                         }
                         /*
-                         * else if (j1 != 0 && j1 !=
-                         * Main.TutorialFire.blockID) { return false; }
+                         * else if (j1 != 0 && j1 != Main.TutorialFire.blockID) { return false; }
                          */
                     }
                 }
@@ -181,9 +178,8 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Lets the block know when one of its neighbor changes. Doesn't know
-     * which neighbor changed (coordinates passed are their own) Args: x, y,
-     * z, neighbor blockID
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor blockID
      */
     public void onNeighborBlockChange(BlockPos pos) {
         int x = pos.xPos, y = pos.yPos, z = pos.zPos;
@@ -226,7 +222,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
                     par1World.setBlockToAir(x, y, z);
                 } else {
                     if ((par1World.getBlock(x + b0, y, z + b1) != Dimension_Everglades.blockPortalFrame
-                                    || par1World.getBlock(x - b0, y, z - b1) != this)
+                            || par1World.getBlock(x - b0, y, z - b1) != this)
                             && (par1World.getBlock(x - b0, y, z - b1) != Dimension_Everglades.blockPortalFrame
                                     || par1World.getBlock(x + b0, y, z + b1) != this)) {
                         par1World.setBlockToAir(x, y, z);
@@ -244,11 +240,11 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         super.onNeighborBlockChange(world, x, y, z, block);
     }
 
-    /*@Override
-    public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
-    	onNeighborBlockChange(new BlockPos(x, y, z, world.));
-    	super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
-    }*/
+    /*
+     * @Override public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
+     * { onNeighborBlockChange(new BlockPos(x, y, z, world.)); super.onNeighborChange(world, x, y, z, tileX, tileY,
+     * tileZ); }
+     */
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -270,8 +266,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
                     && par1IBlockAccess.getBlock(par2, par3, par4 + 2) != this;
             boolean flag4 = flag || flag1;
             boolean flag5 = flag2 || flag3;
-            return flag4 && par5 == 4
-                    ? true
+            return flag4 && par5 == 4 ? true
                     : (flag4 && par5 == 5 ? true : (flag5 && par5 == 2 ? true : flag5 && par5 == 3));
         }
     }
@@ -285,36 +280,28 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Triggered whenever an entity collides with this block (enters into
-     * the block). Args: world, x, y, z, entity
+     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
      */
     @Override
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
-        if ((par5Entity.ridingEntity == null)
-                && (par5Entity.riddenByEntity == null)
+        if ((par5Entity.ridingEntity == null) && (par5Entity.riddenByEntity == null)
                 && ((par5Entity instanceof EntityPlayerMP))) {
             EntityPlayerMP thePlayer = (EntityPlayerMP) par5Entity;
             if (thePlayer.timeUntilPortal > 0) {
                 thePlayer.timeUntilPortal = 100;
             } else if (thePlayer.dimension != Dimension_Everglades.DIMID) {
                 thePlayer.timeUntilPortal = 100;
-                thePlayer
-                        .mcServer
-                        .getConfigurationManager()
-                        .transferPlayerToDimension(
-                                thePlayer,
-                                Dimension_Everglades.DIMID,
-                                new TeleporterDimensionMod(
-                                        thePlayer.mcServer.worldServerForDimension(Dimension_Everglades.DIMID)));
+                thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(
+                        thePlayer,
+                        Dimension_Everglades.DIMID,
+                        new TeleporterDimensionMod(
+                                thePlayer.mcServer.worldServerForDimension(Dimension_Everglades.DIMID)));
             } else {
                 thePlayer.timeUntilPortal = 100;
-                thePlayer
-                        .mcServer
-                        .getConfigurationManager()
-                        .transferPlayerToDimension(
-                                thePlayer,
-                                0,
-                                new TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(0)));
+                thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(
+                        thePlayer,
+                        0,
+                        new TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(0)));
             }
         }
     }

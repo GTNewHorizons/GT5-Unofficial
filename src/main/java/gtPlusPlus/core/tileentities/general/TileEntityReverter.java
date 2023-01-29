@@ -1,12 +1,15 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gtPlusPlus.core.block.ModBlocks;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 
+import gtPlusPlus.core.block.ModBlocks;
+
 public class TileEntityReverter extends TileEntity {
+
     private static final int REVERT_CHANCE = 10;
     public int radius = 16;
     public int diameter = (8 * this.radius) + 4;
@@ -162,13 +165,8 @@ public class TileEntityReverter extends TileEntity {
         this.drawParticleLine(sx, sy, sz, dx, dy, dz);
     }
 
-    protected void drawParticleLine(
-            final double srcX,
-            final double srcY,
-            final double srcZ,
-            final double destX,
-            final double destY,
-            final double destZ) {
+    protected void drawParticleLine(final double srcX, final double srcY, final double srcZ, final double destX,
+            final double destY, final double destZ) {
         final int particles = 16;
         for (int i = 0; i < particles; i++) {
             final double trailFactor = i / (particles - 1.0D);
@@ -187,8 +185,8 @@ public class TileEntityReverter extends TileEntity {
             for (int y = -this.radius; y <= this.radius; y++) {
                 for (int z = -this.radius; z <= this.radius; z++) {
                     final Block blockID = this.worldObj.getBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z);
-                    final byte meta =
-                            (byte) this.worldObj.getBlockMetadata(this.xCoord + x, this.yCoord + y, this.zCoord + z);
+                    final byte meta = (byte) this.worldObj
+                            .getBlockMetadata(this.xCoord + x, this.yCoord + y, this.zCoord + z);
                     if (this.blockData[index] != blockID) {
                         if (this.revertBlock(
                                 this.xCoord + x,
@@ -211,20 +209,13 @@ public class TileEntityReverter extends TileEntity {
         return reverted;
     }
 
-    private boolean revertBlock(
-            final int x,
-            final int y,
-            final int z,
-            final Block thereBlockID,
-            final byte thereMeta,
-            final Block replaceBlockID,
-            byte replaceMeta) {
-        /*if ((thereBlockID == Blocks.air) && (!replaceBlockID.getMaterial().blocksMovement()))
-        {
-        	System.out.println("Not replacing block " + replaceBlockID + " because it doesn't block movement");
-
-        	return false;
-        }*/
+    private boolean revertBlock(final int x, final int y, final int z, final Block thereBlockID, final byte thereMeta,
+            final Block replaceBlockID, byte replaceMeta) {
+        /*
+         * if ((thereBlockID == Blocks.air) && (!replaceBlockID.getMaterial().blocksMovement())) {
+         * System.out.println("Not replacing block " + replaceBlockID + " because it doesn't block movement"); return
+         * false; }
+         */
         if (this.isUnrevertable(thereBlockID, thereMeta, replaceBlockID, replaceMeta)) {
             return false;
         }
@@ -244,26 +235,25 @@ public class TileEntityReverter extends TileEntity {
         return true;
     }
 
-    private boolean isUnrevertable(
-            final Block thereBlockID, final byte thereMeta, final Block replaceBlockID, final byte replaceMeta) {
+    private boolean isUnrevertable(final Block thereBlockID, final byte thereMeta, final Block replaceBlockID,
+            final byte replaceMeta) {
         if ((thereBlockID == ModBlocks.blockGriefSaver) || (replaceBlockID == ModBlocks.blockGriefSaver)) {
             return true;
         }
-        /*if (((thereBlockID == towerTranslucent) && (thereMeta != 4)) || ((replaceBlockID == towerTranslucent) && (replaceMeta != 4))) {
-        	return true;
-        }*/
+        /*
+         * if (((thereBlockID == towerTranslucent) && (thereMeta != 4)) || ((replaceBlockID == towerTranslucent) &&
+         * (replaceMeta != 4))) { return true; }
+         */
         if ((thereBlockID == Blocks.redstone_lamp) && (replaceBlockID == Blocks.lit_redstone_lamp)) {
             return true;
         }
         if ((thereBlockID == Blocks.lit_redstone_lamp) && (replaceBlockID == Blocks.redstone_lamp)) {
             return true;
         }
-        /*if ((thereBlockID == Blocks.water) || (replaceBlockID == Blocks.flowing_water)) {
-        	return true;
-        }
-        if ((thereBlockID == Blocks.flowing_water) || (replaceBlockID == Blocks.water)) {
-        	return true;
-        }*/
+        /*
+         * if ((thereBlockID == Blocks.water) || (replaceBlockID == Blocks.flowing_water)) { return true; } if
+         * ((thereBlockID == Blocks.flowing_water) || (replaceBlockID == Blocks.water)) { return true; }
+         */
         if (replaceBlockID == Blocks.tnt) {
             return true;
         }
@@ -291,8 +281,8 @@ public class TileEntityReverter extends TileEntity {
     }
 
     public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer(
-                        this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, this.requiredPlayerRange)
+        return this.worldObj
+                .getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, this.requiredPlayerRange)
                 != null;
     }
 }

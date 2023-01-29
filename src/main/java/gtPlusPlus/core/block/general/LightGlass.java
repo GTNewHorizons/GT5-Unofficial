@@ -1,19 +1,22 @@
 package gtPlusPlus.core.block.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-/*public class LightGlass extends BlockBreakable
-{*/
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+
+/*
+ * public class LightGlass extends BlockBreakable {
+ */
 public class LightGlass extends BlockAir {
 
     private int state = 0;
@@ -35,9 +38,8 @@ public class LightGlass extends BlockAir {
         GameRegistry.registerBlock(this, "blockMFEffect");
 
         /*
-        this.setLightOpacity(0);
-        this.setTickRandomly(true);
-        this.setResistance(1);*/
+         * this.setLightOpacity(0); this.setTickRandomly(true); this.setResistance(1);
+         */
     }
 
     /**
@@ -127,8 +129,8 @@ public class LightGlass extends BlockAir {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(
-            final World world, final int posX, final int posY, final int posZ, final Random random) {
+    public void randomDisplayTick(final World world, final int posX, final int posY, final int posZ,
+            final Random random) {
         // Utils.spawnFX(world, posX, posY, posZ, "smoke", "cloud");
 
     }

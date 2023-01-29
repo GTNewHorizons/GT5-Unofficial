@@ -1,22 +1,25 @@
 package gtPlusPlus.core.gui.machine;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.container.Container_ModularityTable;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.container.Container_ModularityTable;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 
 @SideOnly(Side.CLIENT)
 public class GUI_ModularityTable extends GuiContainer {
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/ModularityTable.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/ModularityTable.png");
     private Container_ModularityTable mThisContainer;
     private TileEntityModularityTable mThisTile;
     private int mRecipeTime = -1;
@@ -40,11 +43,11 @@ public class GUI_ModularityTable extends GuiContainer {
         if (mRecipeTime > -1) {
             this.fontRendererObj.drawString(I18n.format("Time", new Object[0]), 84, 42, 4210752);
             this.fontRendererObj.drawString(I18n.format("Remaining", new Object[0]), 84, 50, 4210752);
-            this.fontRendererObj.drawString(
-                    I18n.format("" + this.mRecipeTime + " Ticks", new Object[0]), 84, 58, 4210752);
+            this.fontRendererObj
+                    .drawString(I18n.format("" + this.mRecipeTime + " Ticks", new Object[0]), 84, 58, 4210752);
         }
-        this.fontRendererObj.drawString(
-                I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj
+                .drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override

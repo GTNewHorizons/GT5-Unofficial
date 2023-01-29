@@ -1,24 +1,21 @@
 package gtPlusPlus.core.slots;
 
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gtPlusPlus.api.objects.Logger;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 
 public class SlotGtToolElectric extends SlotGtTool {
+
     public int tier;
     private ItemStack content;
 
-    public SlotGtToolElectric(
-            final IInventory base,
-            final int x,
-            final int y,
-            final int z,
-            final int tier,
+    public SlotGtToolElectric(final IInventory base, final int x, final int y, final int z, final int tier,
             final boolean allowRedstoneDust) {
         super(base, x, y, z);
         this.tier = tier;

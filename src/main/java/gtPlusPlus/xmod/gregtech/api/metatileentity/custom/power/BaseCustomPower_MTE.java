@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import ic2.api.Direction;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BaseCustomPower_MTE extends BaseCustomTileEntity {
 
@@ -21,8 +22,7 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
         if (mMetaTileEntity == null) {
             Logger.INFO("Bad Tile");
         }
-        if (this.canAccessData()
-                && this.mMetaTileEntity.isElectric()
+        if (this.canAccessData() && this.mMetaTileEntity.isElectric()
                 && this.inputEnergyFrom(aSide)
                 && aAmperage > 0L
                 && aVoltage > 0L
@@ -37,8 +37,9 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
             Logger.INFO("aAmperage: " + aAmperage);
             Logger.INFO("aVoltage: " + aVoltage);
             Logger.INFO("this.getStoredEU() < this.getEUCapacity(): " + (this.getStoredEU() < this.getEUCapacity()));
-            Logger.INFO("this.mMetaTileEntity.maxAmperesIn() >= this.mAcceptedAmperes: "
-                    + (this.mMetaTileEntity.maxAmperesIn() >= this.getInputAmperage()));
+            Logger.INFO(
+                    "this.mMetaTileEntity.maxAmperesIn() >= this.mAcceptedAmperes: "
+                            + (this.mMetaTileEntity.maxAmperesIn() >= this.getInputAmperage()));
             Logger.INFO("this.mMetaTileEntity.maxAmperesIn(): " + (this.mMetaTileEntity.maxAmperesIn()));
             Logger.INFO("this.mAcceptedAmperes: " + (this.getInputAmperage()));
             return 0L;
@@ -47,13 +48,12 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
 
     public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
         Logger.INFO("Draining Energy Units 4");
-        if (this.canAccessData()
-                && this.mMetaTileEntity.isElectric()
+        if (this.canAccessData() && this.mMetaTileEntity.isElectric()
                 && this.outputsEnergyTo(aSide)
                 && this.getStoredEU() - aVoltage * aAmperage >= this.mMetaTileEntity.getMinimumStoredEU()) {
             if (this.decreaseStoredEU(aVoltage * aAmperage, false)) {
-                this.mAverageEUOutput[this.mAverageEUOutputIndex] =
-                        (int) ((long) this.mAverageEUOutput[this.mAverageEUOutputIndex] + aVoltage * aAmperage);
+                this.mAverageEUOutput[this.mAverageEUOutputIndex] = (int) ((long) this.mAverageEUOutput[this.mAverageEUOutputIndex]
+                        + aVoltage * aAmperage);
                 return true;
             } else {
                 return false;

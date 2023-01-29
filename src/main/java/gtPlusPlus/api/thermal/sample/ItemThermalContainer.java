@@ -1,11 +1,13 @@
 package gtPlusPlus.api.thermal.sample;
 
-import gtPlusPlus.api.thermal.energy.IThermalContainerItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import gtPlusPlus.api.thermal.energy.IThermalContainerItem;
+
 public class ItemThermalContainer extends Item implements IThermalContainerItem {
+
     protected int capacity;
     protected int maxReceive;
     protected int maxExtract;

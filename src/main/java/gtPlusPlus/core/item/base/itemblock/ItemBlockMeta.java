@@ -1,19 +1,22 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.data.AutoMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.data.AutoMap;
+
 public class ItemBlockMeta extends ItemBlockWithMetadata {
+
     private final Block mBlock;
     private HashMap<Integer, AutoMap<String>> aTooltips = new LinkedHashMap<Integer, AutoMap<String>>();
 
@@ -28,7 +31,7 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         Block aThis = Block.getBlockFromItem(stack.getItem());

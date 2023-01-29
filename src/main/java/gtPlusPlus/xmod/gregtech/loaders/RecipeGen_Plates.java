@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -11,9 +16,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.HashSet;
-import java.util.Set;
-import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Plates extends RecipeGen_Base {
 
@@ -58,10 +60,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_SingleTwo,
                     (int) Math.max(material.getMass(), 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
         // Bender
         if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(plate_Single))
             if (addBenderRecipe(
@@ -69,10 +71,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_Single,
                     (int) Math.max(material.getMass() * 1L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
         if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(foil_SingleFour))
             if (addBenderRecipe(
                     ingotStackOne,
@@ -80,10 +82,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     foil_SingleFour,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
         // Alloy Smelter
         if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single))
             if (GT_Values.RA.addAlloySmelterRecipe(
@@ -92,10 +94,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_Single,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
         // Cutting Machine
         if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single))
             if (GT_Values.RA.addCutterRecipe(
@@ -104,10 +106,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_SingleNine,
                     (int) Math.max(material.getMass() * 10L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         // Making Double Plates
         if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Double))
@@ -116,10 +118,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_Double,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         if (ItemUtils.checkForInvalidItems(plate_SingleTwo) && ItemUtils.checkForInvalidItems(plate_Double))
             if (addBenderRecipe(
@@ -127,10 +129,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_Double,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         // Bender
         if (ItemUtils.checkForInvalidItems(material.getPlate(1)) && ItemUtils.checkForInvalidItems(material.getFoil(1)))
@@ -139,14 +141,17 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     material.getFoil(4),
                     (int) Math.max(material.getMass(), 1L),
                     material.vVoltageMultiplier)) {
-                GregTech_API.registerCover(
-                        material.getFoil(1),
-                        new GT_RenderedTexture(material.getTextureSet().mTextures[70], material.getRGBA(), false),
-                        null);
-                Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        GregTech_API.registerCover(
+                                material.getFoil(1),
+                                new GT_RenderedTexture(
+                                        material.getTextureSet().mTextures[70],
+                                        material.getRGBA(),
+                                        false),
+                                null);
+                        Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         // Making Dense Plates
         if (ItemUtils.checkForInvalidItems(ingotStackNine) && ItemUtils.checkForInvalidItems(plate_Dense))
@@ -155,10 +160,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_Dense,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         if (ItemUtils.checkForInvalidItems(plate_SingleNine) && ItemUtils.checkForInvalidItems(plate_Dense))
             if (addBenderRecipe(
@@ -166,28 +171,24 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     plate_Double,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
     }
 
-    public static boolean addBenderRecipe(
-            final ItemStack aInput1, final ItemStack aOutput1, int aDuration, final int aEUt) {
+    public static boolean addBenderRecipe(final ItemStack aInput1, final ItemStack aOutput1, int aDuration,
+            final int aEUt) {
         return GT_Values.RA.addBenderRecipe(aInput1, aOutput1, aDuration, aEUt);
     }
 
-    public static boolean addBenderRecipe(
-            final ItemStack aInput1,
-            final ItemStack aCircuit,
-            final ItemStack aOutput1,
-            int aDuration,
-            final int aEUt) {
+    public static boolean addBenderRecipe(final ItemStack aInput1, final ItemStack aCircuit, final ItemStack aOutput1,
+            int aDuration, final int aEUt) {
         return GT_Values.RA.addBenderRecipe(aInput1, aCircuit, aOutput1, aDuration, aEUt);
     }
 
-    public static boolean addExtruderRecipe(
-            final ItemStack aInput, final ItemStack aShape, final ItemStack aOutput, int aDuration, final int aEUt) {
+    public static boolean addExtruderRecipe(final ItemStack aInput, final ItemStack aShape, final ItemStack aOutput,
+            int aDuration, final int aEUt) {
         if ((aInput == null) || (aShape == null) || (aOutput == null)) {
             return false;
         }
@@ -196,8 +197,8 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         }
         GT_Recipe.GT_Recipe_Map.sExtruderRecipes.addRecipe(
                 true,
-                new ItemStack[] {aInput, aShape},
-                new ItemStack[] {aOutput},
+                new ItemStack[] { aInput, aShape },
+                new ItemStack[] { aOutput },
                 null,
                 null,
                 null,
@@ -207,8 +208,8 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         return true;
     }
 
-    public static boolean addForgeHammerRecipe(
-            final ItemStack aInput1, final ItemStack aOutput1, final int aDuration, final int aEUt) {
+    public static boolean addForgeHammerRecipe(final ItemStack aInput1, final ItemStack aOutput1, final int aDuration,
+            final int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
@@ -216,7 +217,15 @@ public class RecipeGen_Plates extends RecipeGen_Base {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(
-                true, new ItemStack[] {aInput1}, new ItemStack[] {aOutput1}, null, null, null, aDuration, aEUt, 0);
+                true,
+                new ItemStack[] { aInput1 },
+                new ItemStack[] { aOutput1 },
+                null,
+                null,
+                null,
+                aDuration,
+                aEUt,
+                0);
         return true;
     }
 }

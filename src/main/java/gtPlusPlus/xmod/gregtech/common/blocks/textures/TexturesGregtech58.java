@@ -1,42 +1,43 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialCentrifuge;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 public class TexturesGregtech58 {
 
-    private static Textures.BlockIcons.CustomIcon GT8_1_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE1");
+    private static Textures.BlockIcons.CustomIcon GT8_1_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE1");
     private static Textures.BlockIcons.CustomIcon GT8_1 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE1");
-    private static Textures.BlockIcons.CustomIcon GT8_2_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE2");
+    private static Textures.BlockIcons.CustomIcon GT8_2_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE2");
     private static Textures.BlockIcons.CustomIcon GT8_2 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE2");
-    private static Textures.BlockIcons.CustomIcon GT8_3_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE3");
+    private static Textures.BlockIcons.CustomIcon GT8_3_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE3");
     private static Textures.BlockIcons.CustomIcon GT8_3 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE3");
-    private static Textures.BlockIcons.CustomIcon GT8_4_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE4");
+    private static Textures.BlockIcons.CustomIcon GT8_4_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE4");
     private static Textures.BlockIcons.CustomIcon GT8_4 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE4");
-    private static Textures.BlockIcons.CustomIcon GT8_5_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE5");
+    private static Textures.BlockIcons.CustomIcon GT8_5_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE5");
     private static Textures.BlockIcons.CustomIcon GT8_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE5");
-    private static Textures.BlockIcons.CustomIcon GT8_6_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE6");
+    private static Textures.BlockIcons.CustomIcon GT8_6_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE6");
     private static Textures.BlockIcons.CustomIcon GT8_6 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE6");
-    private static Textures.BlockIcons.CustomIcon GT8_7_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE7");
+    private static Textures.BlockIcons.CustomIcon GT8_7_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE7");
     private static Textures.BlockIcons.CustomIcon GT8_7 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE7");
-    private static Textures.BlockIcons.CustomIcon GT8_8_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE8");
+    private static Textures.BlockIcons.CustomIcon GT8_8_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE8");
     private static Textures.BlockIcons.CustomIcon GT8_8 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE8");
-    private static Textures.BlockIcons.CustomIcon GT8_9_Active =
-            new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE9");
+    private static Textures.BlockIcons.CustomIcon GT8_9_Active = new Textures.BlockIcons.CustomIcon(
+            "iconsets/LARGETURBINE_ACTIVE9");
     private static Textures.BlockIcons.CustomIcon GT8_9 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE9");
 
     private static Textures.BlockIcons.CustomIcon frontFace_0 = (GT8_1);
@@ -58,47 +59,20 @@ public class TexturesGregtech58 {
     private static Textures.BlockIcons.CustomIcon frontFace_8 = (GT8_9);
     private static Textures.BlockIcons.CustomIcon frontFaceActive_8 = (GT8_9_Active);
 
-    Textures.BlockIcons.CustomIcon[] TURBINE = new Textures.BlockIcons.CustomIcon[] {
-        frontFace_0,
-        frontFace_1,
-        frontFace_2,
-        frontFace_3,
-        frontFace_4,
-        frontFace_5,
-        frontFace_6,
-        frontFace_7,
-        frontFace_8
-    };
+    Textures.BlockIcons.CustomIcon[] TURBINE = new Textures.BlockIcons.CustomIcon[] { frontFace_0, frontFace_1,
+            frontFace_2, frontFace_3, frontFace_4, frontFace_5, frontFace_6, frontFace_7, frontFace_8 };
 
-    Textures.BlockIcons.CustomIcon[] TURBINE_ACTIVE = new Textures.BlockIcons.CustomIcon[] {
-        frontFaceActive_0,
-        frontFaceActive_1,
-        frontFaceActive_2,
-        frontFaceActive_3,
-        frontFaceActive_4,
-        frontFaceActive_5,
-        frontFaceActive_6,
-        frontFaceActive_7,
-        frontFaceActive_8
-    };
+    Textures.BlockIcons.CustomIcon[] TURBINE_ACTIVE = new Textures.BlockIcons.CustomIcon[] { frontFaceActive_0,
+            frontFaceActive_1, frontFaceActive_2, frontFaceActive_3, frontFaceActive_4, frontFaceActive_5,
+            frontFaceActive_6, frontFaceActive_7, frontFaceActive_8 };
 
-    public IIcon handleCasingsGT(
-            final IBlockAccess aWorld,
-            final int xCoord,
-            final int yCoord,
-            final int zCoord,
-            final int aSide,
-            final GregtechMetaCasingBlocks thisBlock) {
+    public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
+            final int aSide, final GregtechMetaCasingBlocks thisBlock) {
         return this.handleCasingsGT58(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);
     }
 
-    public IIcon handleCasingsGT58(
-            final IBlockAccess aWorld,
-            final int xCoord,
-            final int yCoord,
-            final int zCoord,
-            final int aSide,
-            final GregtechMetaCasingBlocks thisBlock) {
+    public IIcon handleCasingsGT58(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
+            final int aSide, final GregtechMetaCasingBlocks thisBlock) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         if (((tMeta != 6) && (tMeta != 8) && (tMeta != 0))) {
             return CasingTextureHandler.getIcon(aSide, tMeta);
@@ -275,19 +249,18 @@ public class TexturesGregtech58 {
             return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
         final boolean[] tConnectedSides = {
-            (aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock)
-                    && (aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta),
-            (aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock)
-                    && (aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta),
-            (aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock)
-                    && (aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta),
-            (aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock)
-                    && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta),
-            (aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock)
-                    && (aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta),
-            (aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock)
-                    && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta)
-        };
+                (aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock)
+                        && (aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta),
+                (aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock)
+                        && (aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta),
+                (aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock)
+                        && (aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta),
+                (aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock)
+                        && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta),
+                (aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock)
+                        && (aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta),
+                (aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock)
+                        && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta) };
         switch (aSide) {
             case 0:
                 if (tConnectedSides[0]) {

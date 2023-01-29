@@ -1,11 +1,13 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import gtPlusPlus.api.interfaces.ITileTooltip;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.interfaces.ITileTooltip;
 
 public class ItemBlockBasicTile extends ItemBlock {
 
@@ -16,7 +18,7 @@ public class ItemBlockBasicTile extends ItemBlock {
         this.mID = ((ITileTooltip) block).getTooltipID();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.mID == 0) { // Fish trap

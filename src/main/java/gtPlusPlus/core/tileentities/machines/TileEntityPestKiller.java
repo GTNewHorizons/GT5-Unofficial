@@ -1,18 +1,8 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
-import gtPlusPlus.core.inventories.InventoryPestKiller;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +24,18 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
+
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
+import gtPlusPlus.core.inventories.InventoryPestKiller;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class TileEntityPestKiller extends TileEntity implements ISidedInventory, IFluidHandler {
 
@@ -384,8 +386,15 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
             }
 
             if (this != null) {
-                FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(
-                        fluid, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this.mTank, 0));
+                FluidEvent.fireEvent(
+                        new FluidEvent.FluidDrainingEvent(
+                                fluid,
+                                this.getWorldObj(),
+                                this.xCoord,
+                                this.yCoord,
+                                this.zCoord,
+                                this.mTank,
+                                0));
             }
         }
         updateTileEntity();
@@ -404,7 +413,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public final FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {this.mTank.getInfo()};
+        return new FluidTankInfo[] { this.mTank.getInfo() };
     }
 
     @Override

@@ -1,16 +1,5 @@
 package gtPlusPlus.core.block.machine;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -24,7 +13,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.util.minecraft.InventoryUtils;
+
 public class FishTrap extends BlockContainer implements ITileTooltip {
+
     @SideOnly(Side.CLIENT)
     private IIcon textureTop;
 
@@ -61,10 +63,8 @@ public class FishTrap extends BlockContainer implements ITileTooltip {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 1
-                ? this.textureTop
-                : (p_149691_1_ == 0
-                        ? this.textureBottom
+        return p_149691_1_ == 1 ? this.textureTop
+                : (p_149691_1_ == 0 ? this.textureBottom
                         : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
     }
 
@@ -81,16 +81,8 @@ public class FishTrap extends BlockContainer implements ITileTooltip {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float lx,
-            final float ly,
-            final float lz) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         }
@@ -124,19 +116,14 @@ public class FishTrap extends BlockContainer implements ITileTooltip {
     }
 
     @Override
-    public void breakBlock(
-            final World world, final int x, final int y, final int z, final Block block, final int number) {
+    public void breakBlock(final World world, final int x, final int y, final int z, final Block block,
+            final int number) {
         InventoryUtils.dropInventoryItems(world, x, y, z, block);
         super.breakBlock(world, x, y, z, block, number);
     }
 
     @Override
-    public void onBlockPlacedBy(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityLivingBase entity,
+    public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
             final ItemStack stack) {
         if (stack.hasDisplayName()) {
             ((TileEntityFishTrap) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
@@ -144,24 +131,18 @@ public class FishTrap extends BlockContainer implements ITileTooltip {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 
-    /*@Override
-    public void breakBlock(World world, BlockPos pos, IBlockState blockstate) {
-    	TileEntityFishTrap te = (TileEntityFishTrap) world.getTileEntity(pos);
-        InventoryHelper.dropInventoryItems(world, pos, te);
-        super.breakBlock(world, pos, blockstate);
-    }
-
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        if (stack.hasDisplayName()) {
-            ((TileEntityFishTrap) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
-        }
-    }*/
+    /*
+     * @Override public void breakBlock(World world, BlockPos pos, IBlockState blockstate) { TileEntityFishTrap te =
+     * (TileEntityFishTrap) world.getTileEntity(pos); InventoryHelper.dropInventoryItems(world, pos, te);
+     * super.breakBlock(world, pos, blockstate); }
+     * @Override public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+     * ItemStack stack) { if (stack.hasDisplayName()) { ((TileEntityFishTrap)
+     * worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName()); } }
+     */
 
 }

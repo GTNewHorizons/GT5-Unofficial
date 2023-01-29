@@ -1,10 +1,11 @@
 package gtPlusPlus.core.slots;
 
-import gtPlusPlus.core.recipe.common.CI;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotIntegratedCircuit extends Slot {
 
@@ -48,8 +49,7 @@ public class SlotIntegratedCircuit extends Slot {
         }
         if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
             if (itemstack != null) {
-                if (itemstack.getItem() == mCircuitItem
-                        || itemstack.getItem() == mCircuitItem2
+                if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2
                         || itemstack.getItem() == mCircuitItem3) {
                     if (aLockedCircuitNumber == -1) {
                         isValid = true;
@@ -66,6 +66,7 @@ public class SlotIntegratedCircuit extends Slot {
 
     /**
      * Returns the circuit type. -1 is invalid, 0 is standard, 1 is GT++ bio.
+     * 
      * @param itemstack - the Circuit Stack.
      * @return
      */
@@ -81,8 +82,7 @@ public class SlotIntegratedCircuit extends Slot {
         }
         if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
             if (itemstack != null) {
-                if (itemstack.getItem() == mCircuitItem
-                        || itemstack.getItem() == mCircuitItem2
+                if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2
                         || itemstack.getItem() == mCircuitItem3) {
                     if (itemstack.getItem() == mCircuitItem) {
                         return 0;

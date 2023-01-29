@@ -2,14 +2,15 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.preloader.DevHelper;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.preloader.DevHelper;
 
 public class ClassTransformer_GC_EntityAutoRocket {
 
@@ -44,8 +45,8 @@ public class ClassTransformer_GC_EntityAutoRocket {
         if (reader != null && writer != null) {
             injectMethod();
         } else {
-            FMLRelaunchLog.log(
-                    "[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Failed to Inject new code.");
+            FMLRelaunchLog
+                    .log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Failed to Inject new code.");
         }
     }
 
@@ -63,35 +64,28 @@ public class ClassTransformer_GC_EntityAutoRocket {
 
     public void injectMethod() {
 
-        String aEntityPlayer = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayer")
+        String aEntityPlayer = isObfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayer")
                 : "net/minecraft/entity/player/EntityPlayer";
-        String aEntityPlayerMP = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayerMP")
+        String aEntityPlayerMP = isObfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayerMP")
                 : "net/minecraft/entity/player/EntityPlayerMP";
-        String aWorld =
-                isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/World") : "net/minecraft/world/World";
-        String aItemStack =
-                isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack") : "net/minecraft/item/ItemStack";
-        String aEntity =
-                isObfuscated ? DevHelper.getObfuscated("net/minecraft/entity/Entity") : "net/minecraft/entity/Entity";
-        String aWorldClient = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/client/multiplayer/WorldClient")
+        String aWorld = isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/World")
+                : "net/minecraft/world/World";
+        String aItemStack = isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack")
+                : "net/minecraft/item/ItemStack";
+        String aEntity = isObfuscated ? DevHelper.getObfuscated("net/minecraft/entity/Entity")
+                : "net/minecraft/entity/Entity";
+        String aWorldClient = isObfuscated ? DevHelper.getObfuscated("net/minecraft/client/multiplayer/WorldClient")
                 : "net/minecraft/client/multiplayer/WorldClient";
-        String aDifficultyEnum = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/world/EnumDifficulty")
+        String aDifficultyEnum = isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/EnumDifficulty")
                 : "net/minecraft/world/EnumDifficulty";
-        String aWorldInfo = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/world/storage/WorldInfo")
+        String aWorldInfo = isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/storage/WorldInfo")
                 : "net/minecraft/world/storage/WorldInfo";
         String aItemInWorldManager = isObfuscated
                 ? DevHelper.getObfuscated("net/minecraft/server/management/ItemInWorldManager")
                 : "net/minecraft/server/management/ItemInWorldManager";
-        String aWorldType = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/world/WorldType")
+        String aWorldType = isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/WorldType")
                 : "net/minecraft/world/WorldType";
-        String aGameType = isObfuscated
-                ? DevHelper.getObfuscated("net/minecraft/world/WorldSettings$GameType")
+        String aGameType = isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/WorldSettings$GameType")
                 : "net/minecraft/world/WorldSettings$GameType";
 
         if (isValidTransformer()) {
@@ -99,8 +93,8 @@ public class ClassTransformer_GC_EntityAutoRocket {
                     "[GT++ ASM] Galacticraft EntityAutoRocket Patch",
                     Level.INFO,
                     "Injecting decodePacketdata into " + className + ".");
-            MethodVisitor mv =
-                    getWriter().visitMethod(ACC_PUBLIC, "decodePacketdata", "(Lio/netty/buffer/ByteBuf;)V", null, null);
+            MethodVisitor mv = getWriter()
+                    .visitMethod(ACC_PUBLIC, "decodePacketdata", "(Lio/netty/buffer/ByteBuf;)V", null, null);
 
             mv.visitCode();
             Label l0 = new Label();
@@ -174,12 +168,15 @@ public class ClassTransformer_GC_EntityAutoRocket {
                     false);
             mv.visitLabel(l4);
             mv.visitLineNumber(1038, l4);
-            mv.visitFrame(F_APPEND, 2, new Object[] {"net/minecraftforge/fluids/FluidStack", INTEGER}, 0, null);
+            mv.visitFrame(F_APPEND, 2, new Object[] { "net/minecraftforge/fluids/FluidStack", INTEGER }, 0, null);
             mv.visitVarInsn(ALOAD, 0);
             mv.visitVarInsn(ALOAD, 1);
             mv.visitMethodInsn(INVOKEVIRTUAL, "io/netty/buffer/ByteBuf", "readBoolean", "()Z", false);
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "landing", "Z");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "landing",
+                    "Z");
             Label l8 = new Label();
             mv.visitLabel(l8);
             mv.visitLineNumber(1039, l8);
@@ -211,7 +208,11 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitVarInsn(ALOAD, 1);
             mv.visitMethodInsn(INVOKEVIRTUAL, "io/netty/buffer/ByteBuf", "readInt", "()I", false);
             mv.visitMethodInsn(
-                    INVOKESPECIAL, "micdoodle8/mods/galacticraft/api/vector/BlockVec3", "<init>", "(III)V", false);
+                    INVOKESPECIAL,
+                    "micdoodle8/mods/galacticraft/api/vector/BlockVec3",
+                    "<init>",
+                    "(III)V",
+                    false);
             mv.visitFieldInsn(
                     PUTFIELD,
                     "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
@@ -226,7 +227,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitLdcInsn(new Double("8000.0"));
             mv.visitInsn(DDIV);
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "motionX", "D");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "motionX",
+                    "D");
             Label l12 = new Label();
             mv.visitLabel(l12);
             mv.visitLineNumber(1047, l12);
@@ -236,7 +240,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitLdcInsn(new Double("8000.0"));
             mv.visitInsn(DDIV);
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "motionY", "D");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "motionY",
+                    "D");
             Label l13 = new Label();
             mv.visitLabel(l13);
             mv.visitLineNumber(1048, l13);
@@ -246,7 +253,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitLdcInsn(new Double("8000.0"));
             mv.visitInsn(DDIV);
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "motionZ", "D");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "motionZ",
+                    "D");
             Label l14 = new Label();
             mv.visitLabel(l14);
             mv.visitLineNumber(1049, l14);
@@ -256,7 +266,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitLdcInsn(new Double("8000.0"));
             mv.visitInsn(DDIV);
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "lastMotionY", "D");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "lastMotionY",
+                    "D");
             Label l15 = new Label();
             mv.visitLabel(l15);
             mv.visitLineNumber(1050, l15);
@@ -345,8 +358,11 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitJumpInsn(GOTO, l22);
             mv.visitLabel(l21);
             mv.visitFrame(
-                    F_SAME1, 0, null, 1, new Object[] {"micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket"
-                    });
+                    F_SAME1,
+                    0,
+                    null,
+                    1,
+                    new Object[] { "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket" });
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
                     GETFIELD,
@@ -357,15 +373,11 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitFrame(
                     F_FULL,
                     4,
-                    new Object[] {
-                        "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
-                        "io/netty/buffer/ByteBuf",
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER
-                    },
+                    new Object[] { "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                            "io/netty/buffer/ByteBuf", "net/minecraftforge/fluids/FluidStack", INTEGER },
                     2,
-                    new Object[] {"micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "java/lang/String"
-                    });
+                    new Object[] { "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                            "java/lang/String" });
             mv.visitFieldInsn(
                     PUTFIELD,
                     "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
@@ -400,7 +412,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitVarInsn(ALOAD, 1);
             mv.visitMethodInsn(INVOKEVIRTUAL, "io/netty/buffer/ByteBuf", "readBoolean", "()Z", false);
             mv.visitFieldInsn(
-                    PUTFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "statusValid", "Z");
+                    PUTFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "statusValid",
+                    "Z");
             Label l26 = new Label();
             mv.visitLabel(l26);
             mv.visitLineNumber(1066, l26);
@@ -466,7 +481,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitFieldInsn(GETFIELD, "" + aEntity + "", "dimension", "I");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "dimension", "I");
+                    GETFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "dimension",
+                    "I");
             Label l35 = new Label();
             mv.visitJumpInsn(IF_ICMPEQ, l35);
             Label l36 = new Label();
@@ -480,7 +498,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitLineNumber(1080, l37);
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "dimension", "I");
+                    GETFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "dimension",
+                    "I");
             mv.visitVarInsn(ALOAD, 5);
             mv.visitFieldInsn(GETFIELD, "" + aEntity + "", "worldObj", "L" + aWorld + ";");
             mv.visitFieldInsn(GETFIELD, aWorld, "difficultySetting", "L" + aDifficultyEnum + ";");
@@ -493,9 +514,16 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitVarInsn(ALOAD, 5);
             mv.visitTypeInsn(CHECKCAST, "" + aEntityPlayerMP + "");
             mv.visitFieldInsn(
-                    GETFIELD, "" + aEntityPlayerMP + "", "theItemInWorldManager", "L" + aItemInWorldManager + ";");
+                    GETFIELD,
+                    "" + aEntityPlayerMP + "",
+                    "theItemInWorldManager",
+                    "L" + aItemInWorldManager + ";");
             mv.visitMethodInsn(
-                    INVOKEVIRTUAL, "" + aItemInWorldManager + "", "getGameType", "()L" + aGameType + ";", false);
+                    INVOKEVIRTUAL,
+                    "" + aItemInWorldManager + "",
+                    "getGameType",
+                    "()L" + aGameType + ";",
+                    false);
             mv.visitMethodInsn(INVOKEVIRTUAL, "" + aGameType + "", "getID", "()I", false);
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -516,7 +544,7 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitJumpInsn(GOTO, l27);
             mv.visitLabel(l35);
             mv.visitLineNumber(1085, l35);
-            mv.visitFrame(F_APPEND, 2, new Object[] {INTEGER, "" + aEntity + ""}, 0, null);
+            mv.visitFrame(F_APPEND, 2, new Object[] { INTEGER, "" + aEntity + "" }, 0, null);
             mv.visitVarInsn(ALOAD, 5);
             mv.visitVarInsn(ALOAD, 0);
             mv.visitMethodInsn(INVOKEVIRTUAL, "" + aEntity + "", "mountEntity", "(L" + aEntity + ";)V", false);
@@ -588,7 +616,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitFieldInsn(GETFIELD, "" + aEntity + "", "dimension", "I");
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "dimension", "I");
+                    GETFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "dimension",
+                    "I");
             Label l47 = new Label();
             mv.visitJumpInsn(IF_ICMPEQ, l47);
             Label l48 = new Label();
@@ -602,7 +633,10 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitLineNumber(1104, l49);
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(
-                    GETFIELD, "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket", "dimension", "I");
+                    GETFIELD,
+                    "micdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket",
+                    "dimension",
+                    "I");
             mv.visitVarInsn(ALOAD, 5);
             mv.visitFieldInsn(GETFIELD, "" + aEntity + "", "worldObj", "L" + aWorld + ";");
             mv.visitFieldInsn(GETFIELD, aWorld, "difficultySetting", "L" + aDifficultyEnum + ";");
@@ -615,9 +649,16 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitVarInsn(ALOAD, 5);
             mv.visitTypeInsn(CHECKCAST, "" + aEntityPlayerMP + "");
             mv.visitFieldInsn(
-                    GETFIELD, "" + aEntityPlayerMP + "", "theItemInWorldManager", "L" + aItemInWorldManager + ";");
+                    GETFIELD,
+                    "" + aEntityPlayerMP + "",
+                    "theItemInWorldManager",
+                    "L" + aItemInWorldManager + ";");
             mv.visitMethodInsn(
-                    INVOKEVIRTUAL, "" + aItemInWorldManager + "", "getGameType", "()L" + aGameType + ";", false);
+                    INVOKEVIRTUAL,
+                    "" + aItemInWorldManager + "",
+                    "getGameType",
+                    "()L" + aGameType + ";",
+                    false);
             mv.visitMethodInsn(INVOKEVIRTUAL, "" + aGameType + "", "getID", "()I", false);
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -638,7 +679,7 @@ public class ClassTransformer_GC_EntityAutoRocket {
             mv.visitJumpInsn(GOTO, l27);
             mv.visitLabel(l47);
             mv.visitLineNumber(1109, l47);
-            mv.visitFrame(F_APPEND, 1, new Object[] {"" + aEntity + ""}, 0, null);
+            mv.visitFrame(F_APPEND, 1, new Object[] { "" + aEntity + "" }, 0, null);
             mv.visitVarInsn(ALOAD, 5);
             mv.visitVarInsn(ALOAD, 0);
             mv.visitMethodInsn(INVOKEVIRTUAL, "" + aEntity + "", "mountEntity", "(L" + aEntity + ";)V", false);
@@ -685,7 +726,12 @@ public class ClassTransformer_GC_EntityAutoRocket {
             Label l54 = new Label();
             mv.visitLabel(l54);
             mv.visitLocalVariable(
-                    "this", "Lmicdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket;", null, l0, l54, 0);
+                    "this",
+                    "Lmicdoodle8/mods/galacticraft/api/prefab/entity/EntityAutoRocket;",
+                    null,
+                    l0,
+                    l54,
+                    0);
             mv.visitLocalVariable("buffer", "Lio/netty/buffer/ByteBuf;", null, l0, l54, 1);
             mv.visitLocalVariable("g", "Lnet/minecraftforge/fluids/FluidStack;", null, l2, l54, 2);
             mv.visitLocalVariable("aBufferData", "I", null, l3, l54, 3);
@@ -702,15 +748,15 @@ public class ClassTransformer_GC_EntityAutoRocket {
 
         public localClassVisitor(ClassVisitor cv) {
             super(ASM5, cv);
-            FMLRelaunchLog.log(
-                    "[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Inspecting Class " + className);
+            FMLRelaunchLog
+                    .log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Inspecting Class " + className);
         }
 
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (name.equals("decodePacketdata")) {
-                FMLRelaunchLog.log(
-                        "[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Removing method " + name);
+                FMLRelaunchLog
+                        .log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Removing method " + name);
                 return null;
             }
             MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);

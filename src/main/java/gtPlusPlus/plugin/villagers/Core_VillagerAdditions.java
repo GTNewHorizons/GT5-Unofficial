@@ -2,6 +2,10 @@ package gtPlusPlus.plugin.villagers;
 
 import static gtPlusPlus.plugin.villagers.VillagerUtils.mVillagerMap;
 
+import java.util.HashMap;
+
+import net.minecraft.util.ResourceLocation;
+
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import gtPlusPlus.api.interfaces.IPlugin;
@@ -12,8 +16,6 @@ import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerBanker;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerTechnician;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerTrader;
-import java.util.HashMap;
-import net.minecraft.util.ResourceLocation;
 
 public class Core_VillagerAdditions implements IPlugin {
 
@@ -32,14 +34,19 @@ public class Core_VillagerAdditions implements IPlugin {
     @Override
     public boolean preInit() {
         if (
-        /*CORE.ConfigSwitches.enableSulfuricAcidFix || */ CORE.DEVENV) {
+        /* CORE.ConfigSwitches.enableSulfuricAcidFix || */ CORE.DEVENV) {
             shouldLoad = true;
         }
         if (shouldLoad) {
             // Register Custom Villager Entity
             VillagerUtils.registerNewVillager(0, "Banker", "Banker", "Banker", "banker", new TradeHandlerBanker());
             VillagerUtils.registerNewVillager(
-                    1, "Technician", "Technician", "Technician", "technician", new TradeHandlerTechnician());
+                    1,
+                    "Technician",
+                    "Technician",
+                    "Technician",
+                    "technician",
+                    new TradeHandlerTechnician());
             VillagerUtils.registerNewVillager(2, "Trader", "Trader", "Trader", "trader", new TradeHandlerTrader());
 
             if (mVillagerMap.size() > 0) {

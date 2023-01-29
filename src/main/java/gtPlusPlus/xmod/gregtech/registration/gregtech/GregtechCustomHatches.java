@@ -24,7 +24,8 @@ public class GregtechCustomHatches {
 
     private static void run1() {
 
-        GregtechItemList.Hatch_Input_Cryotheum.set(new GT_MetaTileEntity_Hatch_CustomFluidBase(
+        GregtechItemList.Hatch_Input_Cryotheum.set(
+                new GT_MetaTileEntity_Hatch_CustomFluidBase(
                         FluidUtils.getFluidStack("cryotheum", 1).getFluid(), // Fluid
                         // to
                         // resitrct
@@ -34,10 +35,10 @@ public class GregtechCustomHatches {
                         967, // ID
                         "hatch.cryotheum.input.tier.00", // unlocal name
                         "Cryotheum Cooling Hatch" // Local name
-                        )
-                .getStackForm(1L));
+                ).getStackForm(1L));
 
-        GregtechItemList.Hatch_Input_Pyrotheum.set(new GT_MetaTileEntity_Hatch_CustomFluidBase(
+        GregtechItemList.Hatch_Input_Pyrotheum.set(
+                new GT_MetaTileEntity_Hatch_CustomFluidBase(
                         FluidUtils.getFluidStack("pyrotheum", 1).getFluid(), // Fluid
                         // to
                         // resitrct
@@ -47,22 +48,21 @@ public class GregtechCustomHatches {
                         968, // ID
                         "hatch.pyrotheum.input.tier.00", // unlocal name
                         "Pyrotheum Heating Vent" // Local name
-                        )
-                .getStackForm(1L));
+                ).getStackForm(1L));
 
-        GregtechItemList.Hatch_Input_Naquadah.set(new GT_MetaTileEntity_Hatch_Naquadah(
+        GregtechItemList.Hatch_Input_Naquadah.set(
+                new GT_MetaTileEntity_Hatch_Naquadah(
                         969, // ID
                         "hatch.naquadah.input.tier.00", // unlocal name
                         "Naquadah Reactor Input hatch" // Local name
-                        )
-                .getStackForm(1L));
+                ).getStackForm(1L));
 
-        GregtechItemList.Hatch_Input_TurbineHousing.set(new GT_MetaTileEntity_Hatch_TurbineProvider(
+        GregtechItemList.Hatch_Input_TurbineHousing.set(
+                new GT_MetaTileEntity_Hatch_TurbineProvider(
                         31025, // ID
                         "hatch.turbine.input.tier.00", // unlocal name
                         "Turbine Housing", // Local name
-                        8)
-                .getStackForm(1L));
+                        8).getStackForm(1L));
 
         // Multiblock Control Core Bus
         GregtechItemList.Hatch_Control_Core.set(
@@ -73,9 +73,12 @@ public class GregtechCustomHatches {
         GregtechItemList.Hatch_Air_Intake.set(
                 new GT_MetaTileEntity_Hatch_AirIntake(861, "hatch.air.intake.tier.00", "Air Intake Hatch", 5)
                         .getStackForm(1L));
-        GregtechItemList.Hatch_Air_Intake_Extreme.set(new GT_MetaTileEntity_Hatch_AirIntake_Extreme(
-                        31070, "hatch.air.intake.tier.01", "Extreme Air Intake Hatch", 6)
-                .getStackForm(1L));
+        GregtechItemList.Hatch_Air_Intake_Extreme.set(
+                new GT_MetaTileEntity_Hatch_AirIntake_Extreme(
+                        31070,
+                        "hatch.air.intake.tier.01",
+                        "Extreme Air Intake Hatch",
+                        6).getStackForm(1L));
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
@@ -83,7 +86,8 @@ public class GregtechCustomHatches {
                         .getStackForm(1L));
 
         // Steam Hatch
-        GregtechItemList.Hatch_Input_Steam.set(new GT_MetaTileEntity_Hatch_CustomFluidBase(
+        GregtechItemList.Hatch_Input_Steam.set(
+                new GT_MetaTileEntity_Hatch_CustomFluidBase(
                         FluidUtils.getSteam(1).getFluid(), // Fluid
                         // to
                         // resitrct
@@ -93,38 +97,64 @@ public class GregtechCustomHatches {
                         31040, // ID
                         "hatch.steam.input.tier.00", // unlocal name
                         "Steam Hatch" // Local name
-                        )
-                .getStackForm(1L));
+                ).getStackForm(1L));
     }
 
     private static void run2() {
-        GregtechItemList.Hatch_Muffler_Adv_LV.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30001, "hatch.muffler.adv.tier.01", "Advanced Muffler Hatch (LV)", 1))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_MV.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30002, "hatch.muffler.adv.tier.02", "Advanced Muffler Hatch (MV)", 2))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_HV.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30003, "hatch.muffler.adv.tier.03", "Advanced Muffler Hatch (HV)", 3))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_EV.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30004, "hatch.muffler.adv.tier.04", "Advanced Muffler Hatch (EV)", 4))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_IV.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30005, "hatch.muffler.adv.tier.05", "Advanced Muffler Hatch (IV)", 5))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_LuV.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30006, "hatch.muffler.adv.tier.06", "Advanced Muffler Hatch (LuV)", 6))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_ZPM.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30007, "hatch.muffler.adv.tier.07", "Advanced Muffler Hatch (ZPM)", 7))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_UV.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30008, "hatch.muffler.adv.tier.08", "Advanced Muffler Hatch (UV)", 8))
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Muffler_Adv_MAX.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                        30009, "hatch.muffler.adv.tier.09", "Advanced Muffler Hatch (MAX)", 9))
-                .getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_LV.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30001,
+                        "hatch.muffler.adv.tier.01",
+                        "Advanced Muffler Hatch (LV)",
+                        1)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_MV.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30002,
+                        "hatch.muffler.adv.tier.02",
+                        "Advanced Muffler Hatch (MV)",
+                        2)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_HV.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30003,
+                        "hatch.muffler.adv.tier.03",
+                        "Advanced Muffler Hatch (HV)",
+                        3)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_EV.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30004,
+                        "hatch.muffler.adv.tier.04",
+                        "Advanced Muffler Hatch (EV)",
+                        4)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_IV.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30005,
+                        "hatch.muffler.adv.tier.05",
+                        "Advanced Muffler Hatch (IV)",
+                        5)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_LuV.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30006,
+                        "hatch.muffler.adv.tier.06",
+                        "Advanced Muffler Hatch (LuV)",
+                        6)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_ZPM.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30007,
+                        "hatch.muffler.adv.tier.07",
+                        "Advanced Muffler Hatch (ZPM)",
+                        7)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_UV.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30008,
+                        "hatch.muffler.adv.tier.08",
+                        "Advanced Muffler Hatch (UV)",
+                        8)).getStackForm(1L));
+        GregtechItemList.Hatch_Muffler_Adv_MAX.set(
+                (new GT_MetaTileEntity_Hatch_Muffler_Adv(
+                        30009,
+                        "hatch.muffler.adv.tier.09",
+                        "Advanced Muffler Hatch (MAX)",
+                        9)).getStackForm(1L));
     }
 
     private static void run3() {
@@ -201,25 +231,37 @@ public class GregtechCustomHatches {
                         .getStackForm(1L));
     }
 
-    private static GT_MetaTileEntity_SuperBus_Input makeInputBus(
-            int id, String unlocalizedName, String localizedName, int tier) {
+    private static GT_MetaTileEntity_SuperBus_Input makeInputBus(int id, String unlocalizedName, String localizedName,
+            int tier) {
         return new GT_MetaTileEntity_SuperBus_Input(id, unlocalizedName, localizedName, tier);
     }
 
-    private static GT_MetaTileEntity_SuperBus_Output makeOutputBus(
-            int id, String unlocalizedName, String localizedName, int tier) {
+    private static GT_MetaTileEntity_SuperBus_Output makeOutputBus(int id, String unlocalizedName, String localizedName,
+            int tier) {
         return new GT_MetaTileEntity_SuperBus_Output(id, unlocalizedName, localizedName, tier);
     }
 
     private static void run4() {
         int aID = 31060;
         // 41, "hatch.energy.tier.01", "LV Energy Hatch", 1
-        GT_MetaTileEntity_Hatch_Energy_RTG aHatch1 =
-                new GT_MetaTileEntity_Hatch_Energy_RTG(aID++, "hatch.energy.rtg.tier.01", "RTG Power Unit [LV]", 1, 9);
-        GT_MetaTileEntity_Hatch_Energy_RTG aHatch2 =
-                new GT_MetaTileEntity_Hatch_Energy_RTG(aID++, "hatch.energy.rtg.tier.02", "RTG Power Unit [MV]", 2, 9);
-        GT_MetaTileEntity_Hatch_Energy_RTG aHatch3 =
-                new GT_MetaTileEntity_Hatch_Energy_RTG(aID++, "hatch.energy.rtg.tier.03", "RTG Power Unit [HV]", 3, 9);
+        GT_MetaTileEntity_Hatch_Energy_RTG aHatch1 = new GT_MetaTileEntity_Hatch_Energy_RTG(
+                aID++,
+                "hatch.energy.rtg.tier.01",
+                "RTG Power Unit [LV]",
+                1,
+                9);
+        GT_MetaTileEntity_Hatch_Energy_RTG aHatch2 = new GT_MetaTileEntity_Hatch_Energy_RTG(
+                aID++,
+                "hatch.energy.rtg.tier.02",
+                "RTG Power Unit [MV]",
+                2,
+                9);
+        GT_MetaTileEntity_Hatch_Energy_RTG aHatch3 = new GT_MetaTileEntity_Hatch_Energy_RTG(
+                aID++,
+                "hatch.energy.rtg.tier.03",
+                "RTG Power Unit [HV]",
+                3,
+                9);
 
         GregtechItemList.Hatch_RTG_LV.set(aHatch1.getStackForm(1L));
         GregtechItemList.Hatch_RTG_MV.set(aHatch2.getStackForm(1L));

@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.tool.misc.box;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,12 +13,10 @@ import net.minecraft.item.ItemStack;
 public class ContainerBoxBase extends Container {
 
     /*
-     * Finally, in your Container class, you will need to check if the currently
-     * opened inventory's uniqueID is equal to the itemstack's uniqueID in the
-     * method 'transferStackInSlot' as well as check if the itemstack is the
-     * currently equipped item in the method 'slotClick'. In both cases, you'll need
-     * to prevent the itemstack from being moved or it will cause bad things to
-     * happen.
+     * Finally, in your Container class, you will need to check if the currently opened inventory's uniqueID is equal to
+     * the itemstack's uniqueID in the method 'transferStackInSlot' as well as check if the itemstack is the currently
+     * equipped item in the method 'slotClick'. In both cases, you'll need to prevent the itemstack from being moved or
+     * it will cause bad things to happen.
      */
 
     /**
@@ -25,28 +24,22 @@ public class ContainerBoxBase extends Container {
      */
 
     /*
-     * There's a LOT of code in this one, but read through all of the comments
-     * carefully and it should become clear what everything does. As a bonus, one of
-     * my previous tutorials is included within!
-     * "How to Properly Override Shift-Clicking" is here and better than ever! At
-     * least in my opinion. If you're like me, and you find no end of frustration
-     * trying to figure out which f-ing index you should use for which slots in your
-     * container when overriding transferStackInSlot, or if your following the
-     * original tutorial, then read on.
+     * There's a LOT of code in this one, but read through all of the comments carefully and it should become clear what
+     * everything does. As a bonus, one of my previous tutorials is included within!
+     * "How to Properly Override Shift-Clicking" is here and better than ever! At least in my opinion. If you're like
+     * me, and you find no end of frustration trying to figure out which f-ing index you should use for which slots in
+     * your container when overriding transferStackInSlot, or if your following the original tutorial, then read on.
      */
 
     /**
-     * The Item Inventory for this Container, only needed if you want to reference
-     * isUseableByPlayer
+     * The Item Inventory for this Container, only needed if you want to reference isUseableByPlayer
      */
     private final CustomBoxInventory inventory;
     /**
-     * Using these will make transferStackInSlot easier to understand and implement
-     * INV_START is the index of the first slot in the Player's Inventory, so our
-     * CustomBoxInventory's number of slots (e.g. 5 slots is array indices 0-4, so
-     * start at 5) Notice how we don't have to remember how many slots we made? We
-     * can just use CustomBoxInventory.INV_SIZE and if we ever change it, the
-     * Container updates automatically.
+     * Using these will make transferStackInSlot easier to understand and implement INV_START is the index of the first
+     * slot in the Player's Inventory, so our CustomBoxInventory's number of slots (e.g. 5 slots is array indices 0-4,
+     * so start at 5) Notice how we don't have to remember how many slots we made? We can just use
+     * CustomBoxInventory.INV_SIZE and if we ever change it, the Container updates automatically.
      */
     private final int INV_START, INV_END, HOTBAR_START, HOTBAR_END;
 
@@ -54,29 +47,23 @@ public class ContainerBoxBase extends Container {
     // ARMOR_START = CustomBoxInventory.INV_SIZE, ARMOR_END = ARMOR_START+3,
     // INV_START = ARMOR_END+1, and then carry on like above.
 
-    private Slot generateSlot(
-            final Constructor<?> aClazz, final IInventory base, final int id, final int x, final int y) {
+    private Slot generateSlot(final Constructor<?> aClazz, final IInventory base, final int id, final int x,
+            final int y) {
         Slot aSlot;
         try {
             aSlot = (Slot) aClazz.newInstance(base, id, x, y);
             if (aSlot != null) {
                 return aSlot;
             }
-        } catch (InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public ContainerBoxBase(
-            EntityPlayer par1Player,
-            InventoryPlayer inventoryPlayer,
-            CustomBoxInventory CustomBoxInventory,
-            Class<?> aClazz,
-            int aSlotCount) {
+    public ContainerBoxBase(EntityPlayer par1Player, InventoryPlayer inventoryPlayer,
+            CustomBoxInventory CustomBoxInventory, Class<?> aClazz, int aSlotCount) {
 
         INV_START = aSlotCount;
         INV_END = INV_START + 26;
@@ -101,17 +88,21 @@ public class ContainerBoxBase extends Container {
                 // from being stored within itself, but if you want to allow that and
                 // you followed my advice at the end of the above step, then you
                 // could get away with using the vanilla Slot class
-                this.addSlotToContainer(generateSlot(
-                        constructor, this.getInventoryObject(), i, 80 + (18 * (int) (i / 4)), 8 + (18 * (i % 4))));
+                this.addSlotToContainer(
+                        generateSlot(
+                                constructor,
+                                this.getInventoryObject(),
+                                i,
+                                80 + (18 * (int) (i / 4)),
+                                8 + (18 * (i % 4))));
             }
 
             // If you want, you can add ARMOR SLOTS here as well, but you need to
             // make a public version of SlotArmor. I won't be doing that in this tutorial.
             /*
-             * for (i = 0; i < 4; ++i) { // These are the standard positions for survival
-             * inventory layout this.addSlotToContainer(new SlotArmor(this.player,
-             * inventoryPlayer, inventoryPlayer.getSizeInventory() - 1 - i, 8, 8 + i * 18,
-             * i)); }
+             * for (i = 0; i < 4; ++i) { // These are the standard positions for survival inventory layout
+             * this.addSlotToContainer(new SlotArmor(this.player, inventoryPlayer, inventoryPlayer.getSizeInventory() -
+             * 1 - i, 8, 8 + i * 18, i)); }
              */
 
             // PLAYER INVENTORY - uses default locations for standard inventory texture file
@@ -140,8 +131,7 @@ public class ContainerBoxBase extends Container {
     }
 
     /**
-     * Called when a player shift-clicks on a slot. You must override this or you
-     * will crash when someone does that.
+     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
         ItemStack itemstack = null;
@@ -164,23 +154,17 @@ public class ContainerBoxBase extends Container {
             // slots
             else {
                 /*
-                 * If your inventory only stores certain instances of Items, you can implement
-                 * shift-clicking to your inventory like this:
-                 *
-                 * // Check that the item is the right type if (itemstack1.getItem() instanceof
+                 * If your inventory only stores certain instances of Items, you can implement shift-clicking to your
+                 * inventory like this: // Check that the item is the right type if (itemstack1.getItem() instanceof
                  * ItemCustom) { // Try to merge into your custom inventory slots // We use
-                 * 'CustomBoxInventory.INV_SIZE' instead of INV_START just in case // you also
-                 * add armor or other custom slots if (!this.mergeItemStack(itemstack1, 0,
-                 * CustomBoxInventory.INV_SIZE, false)) { return null; } } // If you added armor
-                 * slots, check them here as well: // Item being shift-clicked is armor - try to
-                 * put in armor slot if (itemstack1.getItem() instanceof ItemArmor) { int type =
-                 * ((ItemArmor) itemstack1.getItem()).armorType; if
-                 * (!this.mergeItemStack(itemstack1, ARMOR_START + type, ARMOR_START + type + 1,
-                 * false)) { return null; } } Otherwise, you have basically 2 choices: 1.
-                 * shift-clicking between player inventory and custom inventory 2.
-                 * shift-clicking between action bar and inventory
-                 *
-                 * Be sure to choose only ONE of the following implementations!!!
+                 * 'CustomBoxInventory.INV_SIZE' instead of INV_START just in case // you also add armor or other custom
+                 * slots if (!this.mergeItemStack(itemstack1, 0, CustomBoxInventory.INV_SIZE, false)) { return null; } }
+                 * // If you added armor slots, check them here as well: // Item being shift-clicked is armor - try to
+                 * put in armor slot if (itemstack1.getItem() instanceof ItemArmor) { int type = ((ItemArmor)
+                 * itemstack1.getItem()).armorType; if (!this.mergeItemStack(itemstack1, ARMOR_START + type, ARMOR_START
+                 * + type + 1, false)) { return null; } } Otherwise, you have basically 2 choices: 1. shift-clicking
+                 * between player inventory and custom inventory 2. shift-clicking between action bar and inventory Be
+                 * sure to choose only ONE of the following implementations!!!
                  */
                 /**
                  * Implementation number 1: Shift-click into your custom inventory
@@ -227,9 +211,8 @@ public class ContainerBoxBase extends Container {
     }
 
     /**
-     * You should override this method to prevent the player from moving the stack
-     * that opened the inventory, otherwise if the player moves it, the inventory
-     * will not be able to save properly
+     * You should override this method to prevent the player from moving the stack that opened the inventory, otherwise
+     * if the player moves it, the inventory will not be able to save properly
      */
     @Override
     public ItemStack slotClick(int slot, int button, int flag, EntityPlayer player) {
@@ -242,14 +225,12 @@ public class ContainerBoxBase extends Container {
     }
 
     /*
-     * Special note: If your custom inventory's stack limit is 1 and you allow
-     * shift-clicking itemstacks into it, you will need to override mergeStackInSlot
-     * to avoid losing all the items but one in a stack when you shift-click.
+     * Special note: If your custom inventory's stack limit is 1 and you allow shift-clicking itemstacks into it, you
+     * will need to override mergeStackInSlot to avoid losing all the items but one in a stack when you shift-click.
      */
     /**
-     * Vanilla mergeItemStack method doesn't correctly handle inventories whose max
-     * stack size is 1 when you shift-click into the inventory. This is a modified
-     * method I wrote to handle such cases. Note you only need it if your slot /
+     * Vanilla mergeItemStack method doesn't correctly handle inventories whose max stack size is 1 when you shift-click
+     * into the inventory. This is a modified method I wrote to handle such cases. Note you only need it if your slot /
      * inventory's max stack size is 1
      */
     @Override
@@ -269,8 +250,7 @@ public class ContainerBoxBase extends Container {
                     continue;
                 }
 
-                if (itemstack1 != null
-                        && itemstack1.getItem() == stack.getItem()
+                if (itemstack1 != null && itemstack1.getItem() == stack.getItem()
                         && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage())
                         && ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
                     int l = itemstack1.stackSize + stack.stackSize;
@@ -312,7 +292,8 @@ public class ContainerBoxBase extends Container {
                         break;
                     } else {
                         putStackInSlot(
-                                k, new ItemStack(stack.getItem(), slot.getSlotStackLimit(), stack.getItemDamage()));
+                                k,
+                                new ItemStack(stack.getItem(), slot.getSlotStackLimit(), stack.getItemDamage()));
                         stack.stackSize -= slot.getSlotStackLimit();
                         getInventoryObject().markDirty();
                         flag1 = true;

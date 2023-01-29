@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.fluid;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -8,8 +11,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class GregtechFluidHandler {
 
@@ -21,20 +22,32 @@ public class GregtechFluidHandler {
 
     private static void start() {
 
-        /*    Meta_GT_Proxy.addFluid("lubricant", "Lubricant", Materials.Lubricant, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("creosote", "Creosote Oil", Materials.Creosote, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Creosote, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("seedoil", "Seed Oil", Materials.SeedOil, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SeedOil, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("fishoil", "Fish Oil", Materials.FishOil, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FishOil, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("oil", "Oil", Materials.Oil, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("fuel", "Diesel", Materials.Fuel, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("for.honey", "Honey", Materials.Honey, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Honey, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("biomass", "Biomass", Materials.Biomass, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("bioethanol", "Bio Ethanol", Materials.Ethanol, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("sulfuricacid", "Sulfuric Acid", Materials.SulfuricAcid, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("milk", "Milk", Materials.Milk, 1, 290, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Milk, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("mcguffium", "Mc Guffium 239", Materials.McGuffium239, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L), ItemUtils.getEmptyCell(), 1000);
-             Meta_GT_Proxy.addFluid("glue", "Glue", Materials.Glue, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L), ItemUtils.getEmptyCell(), 1000);
-        */
+        /*
+         * Meta_GT_Proxy.addFluid("lubricant", "Lubricant", Materials.Lubricant, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("creosote", "Creosote Oil", Materials.Creosote, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Creosote, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("seedoil", "Seed Oil", Materials.SeedOil, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SeedOil, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("fishoil", "Fish Oil", Materials.FishOil, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FishOil, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("oil", "Oil", Materials.Oil, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell,
+         * Materials.Oil, 1L), ItemUtils.getEmptyCell(), 1000); Meta_GT_Proxy.addFluid("fuel", "Diesel", Materials.Fuel,
+         * 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("for.honey", "Honey", Materials.Honey, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Honey, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("biomass", "Biomass", Materials.Biomass, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("bioethanol", "Bio Ethanol", Materials.Ethanol, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("sulfuricacid", "Sulfuric Acid", Materials.SulfuricAcid, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1L), ItemUtils.getEmptyCell(), 1000);
+         * Meta_GT_Proxy.addFluid("milk", "Milk", Materials.Milk, 1, 290, GT_OreDictUnificator.get(OrePrefixes.cell,
+         * Materials.Milk, 1L), ItemUtils.getEmptyCell(), 1000); Meta_GT_Proxy.addFluid("mcguffium", "Mc Guffium 239",
+         * Materials.McGuffium239, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L),
+         * ItemUtils.getEmptyCell(), 1000); Meta_GT_Proxy.addFluid("glue", "Glue", Materials.Glue, 1, 295,
+         * GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L), ItemUtils.getEmptyCell(), 1000);
+         */
 
         if (!LoadedMods.ThermalFoundation) {
 
@@ -90,7 +103,10 @@ public class GregtechFluidHandler {
             generateIC2FluidCell("HydrofluoricAcid");
 
             FluidUtils.generateFluidNoPrefix(
-                    "SulfurDioxide", "High Quality Sulfur Dioxide", 263, GT_Materials.SulfurDioxide.mRGBa);
+                    "SulfurDioxide",
+                    "High Quality Sulfur Dioxide",
+                    263,
+                    GT_Materials.SulfurDioxide.mRGBa);
 
             FluidUtils.addGtFluid(
                     "sulfurousAcid",

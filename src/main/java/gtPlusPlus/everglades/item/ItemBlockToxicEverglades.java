@@ -1,11 +1,13 @@
 package gtPlusPlus.everglades.item;
 
-import gtPlusPlus.api.interfaces.ITileTooltip;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.interfaces.ITileTooltip;
 
 public class ItemBlockToxicEverglades extends ItemBlock {
 

@@ -1,14 +1,7 @@
 package gtPlusPlus.plugin.agrichem.item.algae;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
-import gtPlusPlus.plugin.agrichem.IAlgalItem;
-import gtPlusPlus.plugin.agrichem.logic.AlgaeGeneticData;
-import gtPlusPlus.plugin.agrichem.logic.AlgaeGrowthRequirement;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -20,6 +13,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
+import gtPlusPlus.plugin.agrichem.IAlgalItem;
+import gtPlusPlus.plugin.agrichem.logic.AlgaeGeneticData;
+import gtPlusPlus.plugin.agrichem.logic.AlgaeGrowthRequirement;
 
 public class ItemAlgaeBase extends Item implements IAlgalItem {
 
@@ -46,8 +48,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     }
 
     @Override
-    public void onUpdate(
-            ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
+    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
+            boolean p_77663_5_) {
         if (!p_77663_1_.hasTagCompound() || p_77663_1_.getTagCompound().hasNoTags()) {
             p_77663_1_ = initNBT(p_77663_1_);
         }

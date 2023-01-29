@@ -47,11 +47,11 @@ public abstract class ItemPackage implements RunnableWithInfo<String> {
 
     /**
      * Override this to handle GT Recipe map manipulation after they're Baked.
+     * 
      * @param event - the {@link FMLLoadCompleteEvent}.
      * @return - Did we do anything?
      */
     public boolean onLoadComplete(FMLLoadCompleteEvent event) {
         return false;
-    }
-    ;
+    };
 }

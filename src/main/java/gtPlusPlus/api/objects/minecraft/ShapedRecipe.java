@@ -1,12 +1,13 @@
 package gtPlusPlus.api.objects.minecraft;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ShapedRecipe {
 
@@ -15,19 +16,10 @@ public class ShapedRecipe {
 
     ItemStack[] mBlackList = null;
 
-    public ShapedRecipe(
-            Object aInput1,
-            Object aInput2,
-            Object aInput3,
-            Object aInput4,
-            Object aInput5,
-            Object aInput6,
-            Object aInput7,
-            Object aInput8,
-            Object aInput9,
-            ItemStack aOutput) {
+    public ShapedRecipe(Object aInput1, Object aInput2, Object aInput3, Object aInput4, Object aInput5, Object aInput6,
+            Object aInput7, Object aInput8, Object aInput9, ItemStack aOutput) {
 
-        this(new Object[] {aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9}, aOutput);
+        this(new Object[] { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 }, aOutput);
     }
 
     public ShapedRecipe(Object[] aInputs, ItemStack aOutput) {
@@ -75,8 +67,11 @@ public class ShapedRecipe {
                 Logger.RECIPE("Generating Shaped Crafting Recipe for " + aOutput.getDisplayName());
 
                 if (aInputs.length < 9 || aInputs.length > 9) {
-                    Logger.RECIPE("[Fix] Recipe for " + aOutput.getDisplayName()
-                            + " has incorrect number of inputs. Size: " + aInputs.length + ".");
+                    Logger.RECIPE(
+                            "[Fix] Recipe for " + aOutput.getDisplayName()
+                                    + " has incorrect number of inputs. Size: "
+                                    + aInputs.length
+                                    + ".");
                     // Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(1));
                     // Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(2));
                     // Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(3));
@@ -101,8 +96,12 @@ public class ShapedRecipe {
                             mInfo = ((ItemStack) stack).getDisplayName();
                         }
                         aRecipePairs.put(new Pair<Character, Object>(CHARS.charAt(aCharSlot), stack));
-                        Logger.RECIPE("Storing '" + CHARS.charAt(aCharSlot) + "' with an object of type "
-                                + stack.getClass().getSimpleName() + " and a value of " + mInfo);
+                        Logger.RECIPE(
+                                "Storing '" + CHARS.charAt(aCharSlot)
+                                        + "' with an object of type "
+                                        + stack.getClass().getSimpleName()
+                                        + " and a value of "
+                                        + mInfo);
                         aChar[aMemSlot++] = CHARS.charAt(aCharSlot);
                         aCharSlot++;
                         aLoggingInfo[aInfoSlot++] = mInfo;
@@ -160,23 +159,30 @@ public class ShapedRecipe {
                                 mInfo = ((ItemStack) stack).getDisplayName();
                             }
                             aRecipePairs.put(new Pair<Character, Object>(CHARS.charAt(aCharSlot), stack));
-                            Logger.RECIPE("Registering Pair of '" + CHARS.charAt(aCharSlot) + "' and a "
-                                    + stack.getClass().getSimpleName() + " object. Object has a value of " + mInfo);
+                            Logger.RECIPE(
+                                    "Registering Pair of '" + CHARS.charAt(aCharSlot)
+                                            + "' and a "
+                                            + stack.getClass().getSimpleName()
+                                            + " object. Object has a value of "
+                                            + mInfo);
                             aCharSlot++;
                             counter++;
                         }
                     }
 
-                    Logger.RECIPE("Counter started at " + KEY_COUNTER + ", counter is now at " + counter
-                            + ". Trying to create Varag array with a size of "
-                            + (KEY_COUNTER + (counter - KEY_COUNTER) * 2));
+                    Logger.RECIPE(
+                            "Counter started at " + KEY_COUNTER
+                                    + ", counter is now at "
+                                    + counter
+                                    + ". Trying to create Varag array with a size of "
+                                    + (KEY_COUNTER + (counter - KEY_COUNTER) * 2));
                     // Counter started at 3, counter is now at 4. Trying to create Varag array with a size of 2
 
                     // Register the shaped grid straight to the varags
                     mVarags2 = new Object[(KEY_COUNTER + (counter - KEY_COUNTER) * 2)];
-                    /*mVarags2[0] = aGrid[0];
-                    mVarags2[1] = aGrid[1];
-                    mVarags2[2] = aGrid[2];*/
+                    /*
+                     * mVarags2[0] = aGrid[0]; mVarags2[1] = aGrid[1]; mVarags2[2] = aGrid[2];
+                     */
                     mVarags2[0] = aGrid;
 
                     // Add Each Char, then Item to the varags, sequentially.

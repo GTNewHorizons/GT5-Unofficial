@@ -1,16 +1,16 @@
 package gtPlusPlus.core.client.model;
 
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.client.model.tabula.ModelTabulaBase;
 import gtPlusPlus.core.client.renderer.tabula.RenderTabulaBase;
 import gtPlusPlus.core.tileentities.general.TileEntityEggBox;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 
 /**
- * ModelEggBox - Alkalus
- * Created using Tabula 4.1.1
+ * ModelEggBox - Alkalus Created using Tabula 4.1.1
  */
 public class ModelEggBox extends ModelTabulaBase {
 
@@ -58,7 +58,9 @@ public class ModelEggBox extends ModelTabulaBase {
     public static RenderTabulaBase getRenderer() {
         if (mRendererInstance == null) {
             mRendererInstance = new RenderTabulaBase(
-                    new ModelEggBox(), "textures/blocks/TileEntities/EggBox_full.png", TileEntityEggBox.class);
+                    new ModelEggBox(),
+                    "textures/blocks/TileEntities/EggBox_full.png",
+                    TileEntityEggBox.class);
         }
         return mRendererInstance;
     }

@@ -1,6 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import java.lang.reflect.Field;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.google.common.collect.BiMap;
+
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,12 +20,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import java.lang.reflect.Field;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Output {
 
@@ -30,15 +33,15 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
         initHatch();
     }
 
-    public GT_MetaTileEntity_Hatch_Plasma(
-            final String aName, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Plasma(final String aName, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, 6, aDescription, aTextures);
         mFluidCapacity = 256000;
         initHatch();
     }
 
-    public GT_MetaTileEntity_Hatch_Plasma(
-            final String aName, final String[] aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Plasma(final String aName, final String[] aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, 6, aDescription[0], aTextures);
         mFluidCapacity = 256000;
         initHatch();
@@ -67,11 +70,9 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
                                 }
                             }
                         }
-                    } catch (ClassCastException e) {
-                    }
+                    } catch (ClassCastException e) {}
                 }
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-            }
+            } catch (IllegalArgumentException | IllegalAccessException e) {}
         }
 
         AutoMap<Fluid> mPlasmaCache = new AutoMap<Fluid>();
@@ -94,15 +95,15 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
     }
 
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture};
+        return new ITexture[] { aBaseTexture };
     }
 
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture};
+        return new ITexture[] { aBaseTexture };
     }
 
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         if (aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             for (Fluid f : mFluidsToUse) {
                 if (f != null) {
@@ -148,10 +149,14 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
         String aX = EnumChatFormatting.GRAY + "";
         String a1 = EnumChatFormatting.GOLD + "Refined containment" + aX;
         String a2 = EnumChatFormatting.GOLD + "Capacity: " + EnumChatFormatting.DARK_AQUA + getCapacity() + "L" + aX;
-        String a3 = EnumChatFormatting.GOLD + "Supports " + EnumChatFormatting.DARK_RED + mTotalPlasmaSupported
-                + EnumChatFormatting.GOLD + " types of plasma" + aX;
+        String a3 = EnumChatFormatting.GOLD + "Supports "
+                + EnumChatFormatting.DARK_RED
+                + mTotalPlasmaSupported
+                + EnumChatFormatting.GOLD
+                + " types of plasma"
+                + aX;
 
-        String[] s2 = new String[] {a1, a2, a3, CORE.GT_Tooltip};
+        String[] s2 = new String[] { a1, a2, a3, CORE.GT_Tooltip };
         return s2;
     }
 
@@ -169,13 +174,8 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
     private Field F1, F2;
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         byte a1 = 0, a2 = 0;
         try {
             if (F1 == null) {
@@ -191,30 +191,25 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
             if (F2 != null) {
                 a2 = F2.getByte(this);
             }
-        } catch (IllegalArgumentException | IllegalAccessException n) {
-        }
+        } catch (IllegalArgumentException | IllegalAccessException n) {}
 
         int textureIndex = a1 | a2 << 7;
         byte texturePointer = (byte) (a1 & 127);
 
         if (aSide == 1 || aSide == 0) {
-            ITexture g = textureIndex > 0
-                    ? StaticFields59.getCasingTexturePages(a2, texturePointer)
+            ITexture g = textureIndex > 0 ? StaticFields59.getCasingTexturePages(a2, texturePointer)
                     : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
 
-            return new ITexture[] {g};
+            return new ITexture[] { g };
         }
 
         return aSide != aFacing
-                ? (textureIndex > 0
-                        ? new ITexture[] {StaticFields59.getCasingTexturePages(a2, texturePointer)}
-                        : new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1]})
+                ? (textureIndex > 0 ? new ITexture[] { StaticFields59.getCasingTexturePages(a2, texturePointer) }
+                        : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] })
                 : (textureIndex > 0
-                        ? (aActive
-                                ? this.getTexturesActive(StaticFields59.getCasingTexturePages(a2, texturePointer))
+                        ? (aActive ? this.getTexturesActive(StaticFields59.getCasingTexturePages(a2, texturePointer))
                                 : this.getTexturesInactive(StaticFields59.getCasingTexturePages(a2, texturePointer)))
-                        : (aActive
-                                ? this.getTexturesActive(BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1])
+                        : (aActive ? this.getTexturesActive(BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1])
                                 : this.getTexturesInactive(BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1])));
     }
 }

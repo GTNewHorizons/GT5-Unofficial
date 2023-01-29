@@ -1,9 +1,10 @@
 package gtPlusPlus.core.slots;
 
-import gtPlusPlus.core.item.bauble.ModularBauble;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.item.bauble.ModularBauble;
 
 public class SlotModularBauble extends Slot {
 

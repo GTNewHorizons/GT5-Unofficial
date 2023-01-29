@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -11,10 +16,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
 
@@ -32,14 +33,9 @@ public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Can request the JVM to perform garbage collection",
-            "Configurable to run once every 5 minute interval (5-180)",
-            "This Machine has no recipe",
-            "Admin Tool, Limit one per world if possible",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Can request the JVM to perform garbage collection",
+                "Configurable to run once every 5 minute interval (5-180)", "This Machine has no recipe",
+                "Admin Tool, Limit one per world if possible", CORE.GT_Tooltip };
     }
 
     @Override
@@ -61,91 +57,61 @@ public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3) };
     }
 
     @Override
@@ -291,27 +257,26 @@ public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
         PlayerUtils.messagePlayer(
                 playerIn,
-                "Running every " + mFrequency + " minutes. Owner: "
-                        + this.getBaseMetaTileEntity().getOwnerName());
+                "Running every " + mFrequency + " minutes. Owner: " + this.getBaseMetaTileEntity().getOwnerName());
         long aDiff = mLocalTickVar - this.mLastCleanup;
         PlayerUtils.messagePlayer(playerIn, "Last run: " + Utils.getSecondsFromMillis(aDiff) + " seconds ago.");
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] {this.getLocalName()};
+        return new String[] { this.getLocalName() };
     }
 
     @Override

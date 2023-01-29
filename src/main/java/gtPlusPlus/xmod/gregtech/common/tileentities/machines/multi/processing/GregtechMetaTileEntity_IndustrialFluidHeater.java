@@ -6,10 +6,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -21,12 +25,9 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
-public class GregtechMetaTileEntity_IndustrialFluidHeater
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFluidHeater>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialFluidHeater extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFluidHeater> implements ISurvivalConstructable {
 
     private int mCasing1;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialFluidHeater> STRUCTURE_DEFINITION = null;
@@ -52,25 +53,17 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Fluid Heater")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Fluid Heater")
                 .addInfo("120% faster than using single block machines of the same voltage")
                 .addInfo("Only uses 90% of the EU/t normally required")
-                .addInfo("Processes eight items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(5, 6, 5, true)
-                .addController("Front Center")
+                .addInfo("Processes eight items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().beginStructureBlock(5, 6, 5, true).addController("Front Center")
                 .addCasingInfo("Top/Bottom layer: Multi-use Casings", 34)
                 .addCasingInfo("Middle layers: Thermal Containment Casing", 47)
-                .addInputBus("Bottom Layer (optional)", 1)
-                .addInputHatch("Bottom Layer", 1)
-                .addOutputBus("Top Layer (optional)", 1)
-                .addOutputHatch("Top Layer", 1)
-                .addEnergyHatch("Any Multi-use Casing", 1)
-                .addMaintenanceHatch("Any Multi-use Casing", 1)
-                .addMufflerHatch("Any Multi-use Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addInputBus("Bottom Layer (optional)", 1).addInputHatch("Bottom Layer", 1)
+                .addOutputBus("Top Layer (optional)", 1).addOutputHatch("Top Layer", 1)
+                .addEnergyHatch("Any Multi-use Casing", 1).addMaintenanceHatch("Any Multi-use Casing", 1)
+                .addMufflerHatch("Any Multi-use Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -78,31 +71,32 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialFluidHeater> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialFluidHeater>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {" TTT ", "TTTTT", "TTTTT", "TTTTT", " TTT "},
-                        {" XXX ", "X---X", "X---X", "X---X", " XXX "},
-                        {" XXX ", "X---X", "X---X", "X---X", " XXX "},
-                        {" XXX ", "X---X", "X---X", "X---X", " XXX "},
-                        {" X~X ", "X---X", "X---X", "X---X", " XXX "},
-                        {" BBB ", "BBBBB", "BBBBB", "BBBBB", " BBB "},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { " TTT ", "TTTTT", "TTTTT", "TTTTT", " TTT " },
+                                            { " XXX ", "X---X", "X---X", "X---X", " XXX " },
+                                            { " XXX ", "X---X", "X---X", "X---X", " XXX " },
+                                            { " XXX ", "X---X", "X---X", "X---X", " XXX " },
+                                            { " X~X ", "X---X", "X---X", "X---X", " XXX " },
+                                            { " BBB ", "BBBBB", "BBBBB", "BBBBB", " BBB " }, }))
                     .addElement(
                             'B',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialFluidHeater.class)
                                     .atLeast(InputBus, InputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing1,
+                                                    ofBlock(getCasingBlock2(), getCasingMeta2()))))
                     .addElement('X', ofBlock(getCasingBlock1(), getCasingMeta1()))
                     .addElement(
                             'T',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialFluidHeater.class)
                                     .atLeast(OutputBus, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing1,
+                                                    ofBlock(getCasingBlock2(), getCasingMeta2()))))
                     .build();
         }
         return STRUCTURE_DEFINITION;

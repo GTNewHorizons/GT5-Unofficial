@@ -1,14 +1,8 @@
 package gtPlusPlus.core.block.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockDoor;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityPlayerDoorBase;
-import gtPlusPlus.core.util.Utils;
 import java.util.HashMap;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
@@ -25,6 +19,14 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockDoor;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.general.TileEntityPlayerDoorBase;
+import gtPlusPlus.core.util.Utils;
+
 public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
 
     @SideOnly(Side.CLIENT)
@@ -39,13 +41,8 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
         this(aMaterial, aTextureName, vanillaType, 0f, null, null);
     }
 
-    public PlayerDoors(
-            Material aMaterial,
-            String aTextureName,
-            boolean vanillaType,
-            float aHardness,
-            SoundType aStepSound,
-            String aBlockExtensionName) {
+    public PlayerDoors(Material aMaterial, String aTextureName, boolean vanillaType, float aHardness,
+            SoundType aStepSound, String aBlockExtensionName) {
         super(aMaterial);
         this.disableStats();
         this.isBlockContainer = true;
@@ -154,8 +151,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return False
-     * (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     public boolean renderAsNormalBlock() {
         return false;
@@ -178,8 +174,8 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     }
 
     /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box
-     * can change after the pool has been cleared to be reused)
+     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
+     * cleared to be reused)
      */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         this.setBlockBoundsBasedOnState(aWorld, aX, aY, aZ);
@@ -254,16 +250,8 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            EntityPlayer aPlayer,
-            int p_149727_6_,
-            float p_149727_7_,
-            float p_149727_8_,
-            float p_149727_9_) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int p_149727_6_,
+            float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (this.blockMaterial == Material.iron) {
             return false; // Allow items to interact with the door
         } else {
@@ -305,9 +293,8 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     }
 
     /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which
-     * neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor
-     * Block
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor Block
      */
     public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aNeighbour) {
         int l = aWorld.getBlockMetadata(aX, aY, aZ);
@@ -365,18 +352,17 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     }
 
     /**
-     * Ray traces through the blocks collision from start vector to end vector
-     * returning a ray trace hit. Args: world, x, y, z, startVec, endVec
+     * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
+     * x, y, z, startVec, endVec
      */
-    public MovingObjectPosition collisionRayTrace(
-            World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_, Vec3 p_149731_5_, Vec3 p_149731_6_) {
+    public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_,
+            Vec3 p_149731_5_, Vec3 p_149731_6_) {
         this.setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
         return super.collisionRayTrace(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_, p_149731_5_, p_149731_6_);
     }
 
     /**
-     * Checks to see if its valid to put this block at the specified coordinates.
-     * Args: world, x, y, z
+     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     public boolean canPlaceBlockAt(World aWorld, int aX, int aY, int aZ) {
         boolean aHeight = (aY < aWorld.getHeight() - 1);
@@ -393,8 +379,8 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     }
 
     /**
-     * Returns the mobility information of the block, 0 = free, 1 = can't push but
-     * can move over, 2 = total immobility and stop pistons
+     * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
+     * and stop pistons
      */
     public int getMobilityFlag() {
         return 1;
@@ -435,15 +421,9 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Called when the block is attempted to be harvested
      */
-    public void onBlockHarvested(
-            World p_149681_1_,
-            int p_149681_2_,
-            int p_149681_3_,
-            int p_149681_4_,
-            int p_149681_5_,
+    public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_,
             EntityPlayer p_149681_6_) {
-        if (p_149681_6_.capabilities.isCreativeMode
-                && (p_149681_5_ & 8) != 0
+        if (p_149681_6_.capabilities.isCreativeMode && (p_149681_5_ & 8) != 0
                 && p_149681_1_.getBlock(p_149681_2_, p_149681_3_ - 1, p_149681_4_) == this) {
             p_149681_1_.setBlockToAir(p_149681_2_, p_149681_3_ - 1, p_149681_4_);
         }
@@ -458,15 +438,15 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     }
 
     @Override
-    public void breakBlock(
-            World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
+    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_,
+            int p_149749_6_) {
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
         p_149749_1_.removeTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
     }
 
     @Override
-    public boolean onBlockEventReceived(
-            World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_, int p_149696_5_, int p_149696_6_) {
+    public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_,
+            int p_149696_5_, int p_149696_6_) {
         super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
         TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
         return tileentity != null ? tileentity.receiveClientEvent(p_149696_5_, p_149696_6_) : false;

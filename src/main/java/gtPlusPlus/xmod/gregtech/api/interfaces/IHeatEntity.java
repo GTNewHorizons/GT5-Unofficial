@@ -1,7 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces;
 
-import ic2.api.energy.tile.IHeatSource;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import ic2.api.energy.tile.IHeatSource;
 
 public interface IHeatEntity extends IHeatSource, IHeatSink {
 

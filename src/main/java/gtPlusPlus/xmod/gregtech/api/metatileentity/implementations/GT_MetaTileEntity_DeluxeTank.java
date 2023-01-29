@@ -1,14 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -22,23 +23,13 @@ public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_Bas
     /**
      * @param aInvSlotCount should be 3
      */
-    public GT_MetaTileEntity_DeluxeTank(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription,
-            final ITexture... aTextures) {
+    public GT_MetaTileEntity_DeluxeTank(final int aID, final String aName, final String aNameRegional, final int aTier,
+            final int aInvSlotCount, final String aDescription, final ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_DeluxeTank(
-            final String aName,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription,
-            final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DeluxeTank(final String aName, final int aTier, final int aInvSlotCount,
+            final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -164,35 +155,32 @@ public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_Bas
     @Override
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (this.isFluidChangingAllowed()
-                    && (this.getFillableStack() != null)
+            if (this.isFluidChangingAllowed() && (this.getFillableStack() != null)
                     && (this.getFillableStack().amount <= 0)) {
                 this.setFillableStack(null);
             }
 
-            if (this.displaysItemStack()
-                    && (this.getStackDisplaySlot() >= 0)
+            if (this.displaysItemStack() && (this.getStackDisplaySlot() >= 0)
                     && (this.getStackDisplaySlot() < this.mInventory.length)) {
                 if (this.getDisplayedFluid() == null) {
                     if (ItemList.Display_Fluid.isStackEqual(this.mInventory[this.getStackDisplaySlot()], true, true)) {
                         this.mInventory[this.getStackDisplaySlot()] = null;
                     }
                 } else {
-                    this.mInventory[this.getStackDisplaySlot()] =
-                            GT_Utility.getFluidDisplayStack(this.getDisplayedFluid(), this.displaysStackSize());
+                    this.mInventory[this.getStackDisplaySlot()] = GT_Utility
+                            .getFluidDisplayStack(this.getDisplayedFluid(), this.displaysStackSize());
                 }
             }
 
-            if (this.displaysItemStack()
-                    && (this.getStackDisplaySlot2() >= 0)
+            if (this.displaysItemStack() && (this.getStackDisplaySlot2() >= 0)
                     && (this.getStackDisplaySlot2() < this.mInventory.length)) {
                 if (this.getDrainableStackEx(2) == null) {
                     if (ItemList.Display_Fluid.isStackEqual(this.mInventory[this.getStackDisplaySlot2()], true, true)) {
                         this.mInventory[this.getStackDisplaySlot2()] = null;
                     }
                 } else {
-                    this.mInventory[this.getStackDisplaySlot2()] =
-                            GT_Utility.getFluidDisplayStack(this.getDrainableStackEx(2), this.displaysStackSize());
+                    this.mInventory[this.getStackDisplaySlot2()] = GT_Utility
+                            .getFluidDisplayStack(this.getDrainableStackEx(2), this.displaysStackSize());
                 }
             }
 
@@ -223,39 +211,43 @@ public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_Bas
                                 }
                             }
                         }
-                    } else if (tFluid.isFluidEqual(this.getDrainableStackEx(2))
-                            || (this.getDrainableStackEx(2) == null)) {
-                        if (this.getFillableStackEx(2) == null) {
-                            if (this.isFluidInputAllowed(tFluid) && (tFluid.amount <= this.getCapacity())) {
-                                if (aBaseMetaTileEntity.addStackToSlot(
-                                        this.getOutputSlot(),
-                                        GT_Utility.getContainerItem(this.mInventory[this.getInputSlot()], true),
-                                        1)) {
-                                    this.setFillableStack2(tFluid.copy());
-                                    aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+                    } else
+                        if (tFluid.isFluidEqual(this.getDrainableStackEx(2)) || (this.getDrainableStackEx(2) == null)) {
+                            if (this.getFillableStackEx(2) == null) {
+                                if (this.isFluidInputAllowed(tFluid) && (tFluid.amount <= this.getCapacity())) {
+                                    if (aBaseMetaTileEntity.addStackToSlot(
+                                            this.getOutputSlot(),
+                                            GT_Utility.getContainerItem(this.mInventory[this.getInputSlot()], true),
+                                            1)) {
+                                        this.setFillableStack2(tFluid.copy());
+                                        aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+                                    }
+                                }
+                            } else {
+                                if (tFluid.isFluidEqual(this.getFillableStackEx(2))
+                                        && ((tFluid.amount + this.getFillableStackEx(2).amount)
+                                                <= this.getCapacity())) {
+                                    if (aBaseMetaTileEntity.addStackToSlot(
+                                            this.getOutputSlot(),
+                                            GT_Utility.getContainerItem(this.mInventory[this.getInputSlot()], true),
+                                            1)) {
+                                        this.getFillableStackEx(2).amount += tFluid.amount;
+                                        aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+                                    }
                                 }
                             }
                         } else {
-                            if (tFluid.isFluidEqual(this.getFillableStackEx(2))
-                                    && ((tFluid.amount + this.getFillableStackEx(2).amount) <= this.getCapacity())) {
-                                if (aBaseMetaTileEntity.addStackToSlot(
-                                        this.getOutputSlot(),
-                                        GT_Utility.getContainerItem(this.mInventory[this.getInputSlot()], true),
-                                        1)) {
-                                    this.getFillableStackEx(2).amount += tFluid.amount;
-                                    aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
-                                }
-                            }
+                            Logger.INFO("Something broke when trying to empty cells between two fluid tank areas.");
                         }
-                    } else {
-                        Logger.INFO("Something broke when trying to empty cells between two fluid tank areas.");
-                    }
                 }
             }
 
             if (this.doesFillContainers()) {
                 final ItemStack tOutput = GT_Utility.fillFluidContainer(
-                        this.getDrainableStack(), this.mInventory[this.getInputSlot()], false, true);
+                        this.getDrainableStack(),
+                        this.mInventory[this.getInputSlot()],
+                        false,
+                        true);
                 if ((tOutput != null) && aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), tOutput, 1)) {
                     final FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
                     aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
@@ -282,16 +274,14 @@ public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_Bas
 
     @Override
     public int fill(final FluidStack aFluid, final boolean doFill) {
-        if ((aFluid == null)
-                || (aFluid.getFluid().getID() <= 0)
+        if ((aFluid == null) || (aFluid.getFluid().getID() <= 0)
                 || (aFluid.amount <= 0)
                 || !this.canTankBeFilled()
                 || !this.isFluidInputAllowed(aFluid)) {
             return 0;
         }
 
-        if ((this.getFillableStack() == null)
-                || (this.getFillableStack().getFluid().getID() <= 0)) {
+        if ((this.getFillableStack() == null) || (this.getFillableStack().getFluid().getID() <= 0)) {
             if (aFluid.amount <= this.getCapacity()) {
                 if (doFill) {
                     this.setFillableStack(aFluid.copy());
@@ -358,14 +348,14 @@ public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_Bas
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return aIndex == this.getOutputSlot();
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return aIndex == this.getInputSlot();
     }
 }

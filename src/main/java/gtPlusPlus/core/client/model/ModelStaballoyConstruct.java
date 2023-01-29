@@ -1,12 +1,13 @@
 package gtPlusPlus.core.client.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelIronGolem;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityIronGolem;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelStaballoyConstruct extends ModelIronGolem {
@@ -49,14 +50,8 @@ public class ModelStaballoyConstruct extends ModelIronGolem {
      * Sets the models various rotation angles then renders the model.
      */
     @Override
-    public void render(
-            Entity p_78088_1_,
-            float p_78088_2_,
-            float p_78088_3_,
-            float p_78088_4_,
-            float p_78088_5_,
-            float p_78088_6_,
-            float p_78088_7_) {
+    public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_,
+            float p_78088_6_, float p_78088_7_) {
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, p_78088_1_);
         this.ironGolemHead.render(p_78088_7_);
         this.ironGolemBody.render(p_78088_7_);
@@ -72,14 +67,8 @@ public class ModelStaballoyConstruct extends ModelIronGolem {
      * "far" arms and legs can swing at most.
      */
     @Override
-    public void setRotationAngles(
-            float p_78087_1_,
-            float p_78087_2_,
-            float p_78087_3_,
-            float p_78087_4_,
-            float p_78087_5_,
-            float p_78087_6_,
-            Entity p_78087_7_) {
+    public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_,
+            float p_78087_5_, float p_78087_6_, Entity p_78087_7_) {
         this.ironGolemHead.rotateAngleY = p_78087_4_ / (180F / (float) Math.PI);
         this.ironGolemHead.rotateAngleX = p_78087_5_ / (180F / (float) Math.PI);
         this.ironGolemLeftLeg.rotateAngleX = -1.5F * this.func_78172_a(p_78087_1_, 13.0F) * p_78087_2_;
@@ -107,8 +96,8 @@ public class ModelStaballoyConstruct extends ModelIronGolem {
                 this.ironGolemRightArm.rotateAngleX = -0.8F + 0.025F * this.func_78172_a(j, 70.0F);
                 this.ironGolemLeftArm.rotateAngleX = 0.0F;
             } else {
-                this.ironGolemRightArm.rotateAngleX =
-                        (-0.2F + 1.5F * this.func_78172_a(p_78086_2_, 13.0F)) * p_78086_3_;
+                this.ironGolemRightArm.rotateAngleX = (-0.2F + 1.5F * this.func_78172_a(p_78086_2_, 13.0F))
+                        * p_78086_3_;
                 this.ironGolemLeftArm.rotateAngleX = (-0.2F - 1.5F * this.func_78172_a(p_78086_2_, 13.0F)) * p_78086_3_;
             }
         }

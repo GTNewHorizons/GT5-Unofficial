@@ -1,7 +1,8 @@
 package gtPlusPlus.api.objects.data;
 
-import com.google.common.base.Objects;
 import java.io.Serializable;
+
+import com.google.common.base.Objects;
 
 public class FlexiblePair<K, V> implements Serializable {
 

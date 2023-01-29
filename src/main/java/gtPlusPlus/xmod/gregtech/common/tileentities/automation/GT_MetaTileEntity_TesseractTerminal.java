@@ -1,5 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
+import java.util.UUID;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,18 +24,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
-import java.util.UUID;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_BasicTank {
+
     public int mFrequency = 0;
     public UUID mOwner;
     public boolean mDidWork = false;
@@ -31,13 +34,13 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     private static int TESSERACT_ENERGY_COST = 128;
     private static int TESSERACT_ENERGY_COST_DIMENSIONAL = 512;
 
-    public GT_MetaTileEntity_TesseractTerminal(
-            final int aID, final String aName, final String aNameRegional, final int aTier) {
+    public GT_MetaTileEntity_TesseractTerminal(final int aID, final String aName, final String aNameRegional,
+            final int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, "");
     }
 
-    public GT_MetaTileEntity_TesseractTerminal(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_TesseractTerminal(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
@@ -141,23 +144,15 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public boolean onRightclick(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final EntityPlayer aPlayer,
-            final byte aSide,
-            final float aX,
-            final float aY,
-            final float aZ) {
+    public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer,
+            final byte aSide, final float aX, final float aY, final float aZ) {
 
         if (this.mOwner == null) {
             if (this.getBaseMetaTileEntity().getOwnerName() != null
                     && !this.getBaseMetaTileEntity().getOwnerName().equals("")) {
-                if (this.getBaseMetaTileEntity()
-                        .getOwnerName()
-                        .toLowerCase()
+                if (this.getBaseMetaTileEntity().getOwnerName().toLowerCase()
                         .equals(aPlayer.getDisplayName().toLowerCase())) {
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
-                            this.getBaseMetaTileEntity().getOwnerName());
+                    this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
                 }
             }
         }
@@ -170,33 +165,27 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
                         // Utils.LOG_WARNING("Freq. -1 | " + this.mFrequency);
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-                        } catch (Throwable t) {
-                        }
+                        } catch (Throwable t) {}
                         this.mFrequency -= 1;
                         break;
                     case 1:
                         // Utils.LOG_WARNING("Freq. +1 | " + this.mFrequency);
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-                        } catch (Throwable t) {
-                        }
+                        } catch (Throwable t) {}
                         this.mFrequency += 1;
                     default:
                         // Utils.LOG_WARNING("Did not click the correct place.");
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-                        } catch (Throwable t) {
-                        }
+                        } catch (Throwable t) {}
                         break;
                 }
                 PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
                 if (this.getTesseract(this.mFrequency, false) != null) {
                     PlayerUtils.messagePlayer(
                             aPlayer,
-                            new StringBuilder()
-                                    .append(EnumChatFormatting.GREEN)
-                                    .append(" (Connected)")
-                                    .toString());
+                            new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString());
                 }
             }
         } else if (aPlayer.getUniqueID().compareTo(this.mOwner) != 0) {
@@ -206,8 +195,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public void onScrewdriverRightClick(
-            final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ) {
+    public void onScrewdriverRightClick(final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY,
+            final float aZ) {
         if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
             if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
                 final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
@@ -215,39 +204,32 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
                     case 0:
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-                        } catch (Throwable t) {
-                        }
+                        } catch (Throwable t) {}
                         this.mFrequency -= 64;
                         break;
                     case 1:
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-                        } catch (Throwable t) {
-                        }
+                        } catch (Throwable t) {}
                         this.mFrequency += 64;
                         break;
                     case 2:
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-                        } catch (Throwable t) {
-                        }
+                        } catch (Throwable t) {}
                         this.mFrequency -= 512;
                         break;
                     case 3:
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-                        } catch (Throwable t) {
-                        }
+                        } catch (Throwable t) {}
                         this.mFrequency += 512;
                 }
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
                         "Frequency: " + this.mFrequency
-                                + (this.getTesseract(this.mFrequency, false) == null
-                                        ? ""
-                                        : new StringBuilder()
-                                                .append(EnumChatFormatting.GREEN)
-                                                .append(" (Connected)")
+                                + (this.getTesseract(this.mFrequency, false) == null ? ""
+                                        : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)")
                                                 .toString()));
             }
         } else if (aPlayer.getUniqueID().compareTo(this.mOwner) != 0) {
@@ -260,8 +242,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     public GT_MetaTileEntity_TesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
-        final GT_MetaTileEntity_TesseractGenerator rTesseract =
-                TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency);
+        final GT_MetaTileEntity_TesseractGenerator rTesseract = TesseractHelper
+                .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency);
         if (rTesseract == null) {
             return null;
         }
@@ -270,15 +252,16 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
         }
         if (rTesseract.mFrequency != aFrequency) {
             TesseractHelper.setTerminalOwnershipByPlayer(
-                    PlayerUtils.getPlayerOnServerFromUUID(mOwner), Integer.valueOf(aFrequency), null);
+                    PlayerUtils.getPlayerOnServerFromUUID(mOwner),
+                    Integer.valueOf(aFrequency),
+                    null);
             return null;
         }
         if (!rTesseract.isValidTesseractGenerator(this.getBaseMetaTileEntity().getOwnerName(), aWorkIrrelevant)) {
             return null;
         }
         if ((!sInterDimensionalTesseractAllowed)
-                && (rTesseract.getBaseMetaTileEntity().getWorld()
-                        != this.getBaseMetaTileEntity().getWorld())) {
+                && (rTesseract.getBaseMetaTileEntity().getWorld() != this.getBaseMetaTileEntity().getWorld())) {
             return null;
         }
         return rTesseract;
@@ -287,17 +270,12 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     @Override
     public String[] getInfoData() {
         final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
-        if ((tTileEntity != null)
-                && (this.getBaseMetaTileEntity().isAllowedToWork())
+        if ((tTileEntity != null) && (this.getBaseMetaTileEntity().isAllowedToWork())
                 && (tTileEntity.isSendingInformation())) {
             return tTileEntity.getInfoData();
         }
-        return new String[] {
-            "Tesseract Generator",
-            "Freqency:",
-            "" + this.mFrequency,
-            this.getTesseract(this.mFrequency, false) != null ? "Active" : "Inactive"
-        };
+        return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency,
+                this.getTesseract(this.mFrequency, false) != null ? "Active" : "Inactive" };
     }
 
     @Override
@@ -487,13 +465,11 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.getBaseMetaTileEntity().isServerSide())
-                && (this.getBaseMetaTileEntity().isAllowedToWork())) {
+        if ((this.getBaseMetaTileEntity().isServerSide()) && (this.getBaseMetaTileEntity().isAllowedToWork())) {
             // Set owner
             if (PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName()) != null) {
                 if (this.mOwner == null) {
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
-                            this.getBaseMetaTileEntity().getOwnerName());
+                    this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
                 }
             }
             final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, true);
@@ -513,26 +489,22 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Accesses Tesseract Generators remotely",
-            "Connect with pipes to extract items or fluids",
-            "Outputs from the back face",
-            "Consumes " + TESSERACT_ENERGY_COST + "EU/t for same dimension transfers",
-            "Consumes " + TESSERACT_ENERGY_COST_DIMENSIONAL + "EU/t for cross dimensional transfers",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Accesses Tesseract Generators remotely",
+                "Connect with pipes to extract items or fluids", "Outputs from the back face",
+                "Consumes " + TESSERACT_ENERGY_COST + "EU/t for same dimension transfers",
+                "Consumes " + TESSERACT_ENERGY_COST_DIMENSIONAL + "EU/t for cross dimensional transfers",
+                CORE.GT_Tooltip };
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
@@ -542,22 +514,13 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return aSide == aFacing
-                ? new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency)
-                }
-                : new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                    new GT_RenderedTexture(Textures.BlockIcons.VOID)
-                };
+                ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                        new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+                : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                        new GT_RenderedTexture(Textures.BlockIcons.VOID) };
     }
 
     // To-Do?
@@ -595,8 +558,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (this.getBaseMetaTileEntity().getOwnerName() != null
                 && !this.getBaseMetaTileEntity().getOwnerName().equals("")) {
-            this.mOwner = PlayerUtils.getPlayersUUIDByName(
-                    this.getBaseMetaTileEntity().getOwnerName());
+            this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
         }
         super.onCreated(aStack, aWorld, aPlayer);
     }
@@ -605,8 +567,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     public void onRemoval() {
         try {
             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         super.onRemoval();
     }
 }

@@ -1,21 +1,9 @@
 package gtPlusPlus.core.item.bauble;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,11 +13,25 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+
 @Optional.InterfaceList(
-        value = {
-            @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-            @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")
-        })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
 public class BaseBauble extends Item implements IBauble {
 
     /**

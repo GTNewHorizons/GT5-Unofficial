@@ -1,8 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -16,11 +23,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_Hatch_InputBus {
 
@@ -28,13 +30,13 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_TurbineProvider(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_TurbineProvider(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_TurbineProvider(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_TurbineProvider(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aDescription[0], aTextures);
     }
 
@@ -44,16 +46,11 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "An automation port for Large Turbines",
-            "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
-            "You may adjust this with a screwdriver",
-            "Hold shift to adjust in finer amounts",
-            "Hold control to adjust direction",
-            "Left Click with Screwdriver to reset",
-            "This module assumes the entire turbine is in the same Chunk",
-            CORE.GT_Tooltip
-        };
+        return new String[] { "An automation port for Large Turbines",
+                "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
+                "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
+                "Hold control to adjust direction", "Left Click with Screwdriver to reset",
+                "This module assumes the entire turbine is in the same Chunk", CORE.GT_Tooltip };
     }
 
     private GT_MetaTileEntity_LargeTurbine mParent = null;
@@ -214,9 +211,8 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new SlotWidget(inventoryHandler, 0)
-                .setFilter(GregtechMetaTileEntity_LargerTurbineBase::isValidTurbine)
-                .setAccess(false, true)
-                .setPos(79, 34));
+        builder.widget(
+                new SlotWidget(inventoryHandler, 0).setFilter(GregtechMetaTileEntity_LargerTurbineBase::isValidTurbine)
+                        .setAccess(false, true).setPos(79, 34));
     }
 }

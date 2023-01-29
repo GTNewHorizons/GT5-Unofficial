@@ -1,9 +1,5 @@
 package gtPlusPlus.core.item.tool.misc;
 
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -13,6 +9,11 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+
 public class DebugScanner extends CoreItem {
 
     public DebugScanner() {
@@ -21,9 +22,7 @@ public class DebugScanner extends CoreItem {
                 AddToCreativeTab.tabTools,
                 1,
                 0,
-                new String[] {
-                    "Used to obtain information from GT/GT++ content", "Right Click to use",
-                },
+                new String[] { "Used to obtain information from GT/GT++ content", "Right Click to use", },
                 EnumRarity.epic);
         setTextureName(CORE.MODID + ":itemStickyRubber");
     }
@@ -34,17 +33,8 @@ public class DebugScanner extends CoreItem {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int p_77648_4_,
-            int p_77648_5_,
-            int p_77648_6_,
-            int p_77648_7_,
-            float p_77648_8_,
-            float p_77648_9_,
-            float p_77648_10_) {
+    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int p_77648_4_, int p_77648_5_,
+            int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         // TODO Auto-generated method stub
         return super.onItemUse(
                 aStack,

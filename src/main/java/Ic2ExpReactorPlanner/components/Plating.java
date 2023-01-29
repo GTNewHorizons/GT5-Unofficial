@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package Ic2ExpReactorPlanner.components;
 
@@ -9,23 +8,17 @@ import Ic2ExpReactorPlanner.Reactor;
 import gregtech.api.objects.GT_ItemStack;
 
 /**
- * Represents some form of plating, which changes how much heat the reactor can
- * hold before causing external effects (up to and including explosion), as well
- * as somewhat reducing explosion power.
+ * Represents some form of plating, which changes how much heat the reactor can hold before causing external effects (up
+ * to and including explosion), as well as somewhat reducing explosion power.
+ * 
  * @author Brian McCloud
  */
 public class Plating extends ReactorItem {
 
     private final int heatAdjustment;
 
-    public Plating(
-            final int id,
-            final String baseName,
-            GT_ItemStack aItem,
-            final double maxDamage,
-            final double maxHeat,
-            final String sourceMod,
-            final int heatAdjustment,
+    public Plating(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage,
+            final double maxHeat, final String sourceMod, final int heatAdjustment,
             final double explosionPowerMultiplier) {
         super(id, baseName, aItem, maxDamage, maxHeat, sourceMod);
         this.heatAdjustment = heatAdjustment;

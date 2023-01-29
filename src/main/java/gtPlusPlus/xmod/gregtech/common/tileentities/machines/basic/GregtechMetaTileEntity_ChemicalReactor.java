@@ -1,5 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,15 +22,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotChemicalPlantInput;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_BasicMachine {
 
@@ -41,37 +43,42 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
                 4,
                 "ChemicalReactor.png",
                 "",
-                new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Side_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Side),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Front_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Front),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top)
-                });
+                new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Side_Active),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Side),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Front_Active),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Front),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
+                        new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top) });
     }
 
-    public GregtechMetaTileEntity_ChemicalReactor(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GregtechMetaTileEntity_ChemicalReactor(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures, String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
-    /*public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-    	super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
-    }*/
+    /*
+     * public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][]
+     * aTextures, String aGUIName, String aNEIName) { super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName,
+     * aNEIName); }
+     */
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, "Because why not?", CORE.GT_Tooltip};
+        return new String[] { this.mDescription, "Because why not?", CORE.GT_Tooltip };
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         try {
             GregtechMetaTileEntity_ChemicalReactor y = new GregtechMetaTileEntity_ChemicalReactor(
-                    this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
+                    this.mName,
+                    this.mTier,
+                    this.mDescription,
+                    this.mTextures,
+                    this.mGUIName,
+                    this.mNEIName);
             return y;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -225,12 +232,9 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
                 } else {
                     if (++this.mProgresstime >= this.mMaxProgresstime) {
                         for (i = 0; i < this.mOutputItems.length; ++i) {
-                            for (i = 0;
-                                    i < this.mOutputItems.length
-                                            && !aBaseMetaTileEntity.addStackToSlot(
-                                                    this.getOutputSlot() + (i + i) % this.mOutputItems.length,
-                                                    this.mOutputItems[i]);
-                                    ++i) {
+                            for (i = 0; i < this.mOutputItems.length && !aBaseMetaTileEntity.addStackToSlot(
+                                    this.getOutputSlot() + (i + i) % this.mOutputItems.length,
+                                    this.mOutputItems[i]); ++i) {
                                 ;
                             }
                         }
@@ -266,8 +270,7 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
             }
 
             boolean tRemovedOutputFluid = false;
-            if (this.doesAutoOutputFluids()
-                    && this.getDrainableStack() != null
+            if (this.doesAutoOutputFluids() && this.getDrainableStack() != null
                     && aBaseMetaTileEntity.getFrontFacing() != this.mMainFacing
                     && (tSucceeded || aTick % 20L == 0L)) {
                 IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
@@ -275,7 +278,9 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
                     FluidStack tDrained = this.drain(1000, false);
                     if (tDrained != null) {
                         int tFilledAmount = tTank.fill(
-                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                                tDrained,
+                                false);
                         if (tFilledAmount > 0) {
                             tTank.fill(
                                     ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
@@ -291,19 +296,16 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
             }
 
             int j;
-            if (this.doesAutoOutput()
-                    && !this.isOutputEmpty()
+            if (this.doesAutoOutput() && !this.isOutputEmpty()
                     && aBaseMetaTileEntity.getFrontFacing() != this.mMainFacing
-                    && (tSucceeded
-                            || this.mOutputBlocked % 300 == 1
+                    && (tSucceeded || this.mOutputBlocked % 300 == 1
                             || aBaseMetaTileEntity.hasInventoryBeenModified()
                             || aTick % 600L == 0L)) {
                 TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
                 j = 0;
 
-                for (byte tCosts = 1;
-                        j < this.mOutputItems.length && tCosts > 0 && aBaseMetaTileEntity.isUniversalEnergyStored(128L);
-                        ++j) {
+                for (byte tCosts = 1; j < this.mOutputItems.length && tCosts > 0
+                        && aBaseMetaTileEntity.isUniversalEnergyStored(128L); ++j) {
                     tCosts = GT_Utility.moveOneItemStack(
                             aBaseMetaTileEntity,
                             tTileEntity2,
@@ -330,10 +332,8 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
             }
 
             if (this.allowToCheckRecipe()) {
-                if (this.mMaxProgresstime <= 0
-                        && aBaseMetaTileEntity.isAllowedToWork()
-                        && (tRemovedOutputFluid
-                                || tSucceeded
+                if (this.mMaxProgresstime <= 0 && aBaseMetaTileEntity.isAllowedToWork()
+                        && (tRemovedOutputFluid || tSucceeded
                                 || aBaseMetaTileEntity.hasInventoryBeenModified()
                                 || aTick % 600L == 0L
                                 || aBaseMetaTileEntity.hasWorkJustBeenEnabled())
@@ -352,7 +352,7 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
                         }
 
                         for (i = 0; i < this.mOutputItems.length; ++i) {
-                            this.mOutputItems[i] = GT_Utility.copy(new Object[] {this.mOutputItems[i]});
+                            this.mOutputItems[i] = GT_Utility.copy(new Object[] { this.mOutputItems[i] });
                             if (this.mOutputItems[i] != null && this.mOutputItems[i].stackSize > 64) {
                                 this.mOutputItems[i].stackSize = 64;
                             }
@@ -472,80 +472,20 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
-        /*		if (aBaseMetaTileEntity != null) {
-        	if (!aBaseMetaTileEntity.getWorld().isRemote) {
-        		itemslots : for (int i=3;i<7;i++) {
-        			ItemStack aStack = aBaseMetaTileEntity.getStackInSlot(i);
-        			if (aStack != null) {
-        				if (FluidContainerRegistry.isContainer(aStack)) {
-        					if (this.isItemValidForSlot(i, aStack)) {
-        						// Add Fluid
-        						FluidStack aContainerFluid = FluidContainerRegistry.getFluidForFilledItem(aStack);
-        						if (aContainerFluid != null) {
-        							fluidslots : for (FluidStack u : mInputFluids) {
-        								if (u != null && u.isFluidEqual(aContainerFluid)) {
-        									if (u.amount <= (this.getCapacity() - aContainerFluid.amount)) {
-
-        										// Matching, not full, let's fill, then continue
-        										u.amount += aContainerFluid.amount;
-
-        										// Update stack size
-        										if (aStack.stackSize > 1) {
-        											aStack.stackSize--;
-        										}
-        										else {
-        											aStack = null;
-        										}
-
-        										// Add Output container
-        										// TODO
-
-        										continue itemslots;
-        									}
-        									else {
-        										// Too full
-        										break fluidslots;
-        									}
-        								}
-        								else {
-        									if (u == null ) {
-
-        										// Empty, let's fill, then continue
-        										u = aContainerFluid.copy();
-
-        										// Update stack size
-        										if (aStack.stackSize > 1) {
-        											aStack.stackSize--;
-        										}
-        										else {
-        											aStack = null;
-        										}
-
-        										// Add Output container
-        										// TODO
-
-        										continue itemslots;
-
-        									}
-        									else {
-        										// Not empty, doesn't match, check next slot.
-        										continue fluidslots;
-        									}
-        								}
-        							}
-
-
-
-        						}
-        						// Eat Input
-
-        						// Add Container to Output
-        					}
-        				}
-        			}
-        		}
-        	}
-        }*/
+        /*
+         * if (aBaseMetaTileEntity != null) { if (!aBaseMetaTileEntity.getWorld().isRemote) { itemslots : for (int
+         * i=3;i<7;i++) { ItemStack aStack = aBaseMetaTileEntity.getStackInSlot(i); if (aStack != null) { if
+         * (FluidContainerRegistry.isContainer(aStack)) { if (this.isItemValidForSlot(i, aStack)) { // Add Fluid
+         * FluidStack aContainerFluid = FluidContainerRegistry.getFluidForFilledItem(aStack); if (aContainerFluid !=
+         * null) { fluidslots : for (FluidStack u : mInputFluids) { if (u != null && u.isFluidEqual(aContainerFluid)) {
+         * if (u.amount <= (this.getCapacity() - aContainerFluid.amount)) { // Matching, not full, let's fill, then
+         * continue u.amount += aContainerFluid.amount; // Update stack size if (aStack.stackSize > 1) {
+         * aStack.stackSize--; } else { aStack = null; } // Add Output container // TODO continue itemslots; } else { //
+         * Too full break fluidslots; } } else { if (u == null ) { // Empty, let's fill, then continue u =
+         * aContainerFluid.copy(); // Update stack size if (aStack.stackSize > 1) { aStack.stackSize--; } else { aStack
+         * = null; } // Add Output container // TODO continue itemslots; } else { // Not empty, doesn't match, check
+         * next slot. continue fluidslots; } } } } // Eat Input // Add Container to Output } } } } } }
+         */
 
     }
 

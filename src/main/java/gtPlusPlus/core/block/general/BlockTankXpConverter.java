@@ -1,13 +1,7 @@
 package gtPlusPlus.core.block.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
-import gtPlusPlus.core.lib.CORE;
 import java.util.Random;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,6 +11,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
+import gtPlusPlus.core.lib.CORE;
 
 public class BlockTankXpConverter extends BlockContainer {
 
@@ -48,10 +50,8 @@ public class BlockTankXpConverter extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 1
-                ? this.textureTop
-                : (p_149691_1_ == 0
-                        ? this.textureBottom
+        return p_149691_1_ == 1 ? this.textureTop
+                : (p_149691_1_ == 0 ? this.textureBottom
                         : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
     }
 
@@ -68,72 +68,28 @@ public class BlockTankXpConverter extends BlockContainer {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float lx,
-            final float ly,
-            final float lz) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float lx, final float ly, final float lz) {
 
         return true;
 
         /*
-        if (world.isRemote) {
-        	return true;
-        }
-        else {
-        	boolean mDidScrewDriver = false;
-        	// Check For Screwdriver
-        	try {
-        		final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
-        		final Item mHandItem = mHandStack.getItem();
-        		if (((mHandItem instanceof GT_MetaGenerated_Tool_01)
-        				&& ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
-        			final TileEntityXpConverter tile = (TileEntityXpConverter) world.getTileEntity(x, y, z);
-        			if (tile != null) {
-        				mDidScrewDriver = true;
-        				tile.onScrewdriverRightClick((byte) side, player, x, y, z);
-        			}
-
-        		}
-        	}
-        	catch (final Throwable t) {
-        		mDidScrewDriver = false;
-        	}
-
-        	if (!mDidScrewDriver) {
-
-        		try {
-        			final TileEntityXpConverter tile = (TileEntityXpConverter) world.getTileEntity(x, y, z);
-        			if (tile != null) {
-        				tile.onRightClick((byte) side, player, x, y, z);
-        			}
-        		}
-        		catch (final Throwable t) {
-        		}
-
-        		final TileEntityXpConverter tank = (TileEntityXpConverter) world.getTileEntity(x, y, z);
-        		if (tank != null) {
-        			if (tank.tankEssence.getFluid() != null) {
-        				PlayerUtils.messagePlayer(player, "This tank contains " + tank.tankEssence.getFluidAmount()
-        				+ "L of " + tank.tankEssence.getFluid().getLocalizedName());
-        			}
-        			if (tank.tankLiquidXp.getFluid() != null) {
-        				PlayerUtils.messagePlayer(player, "This tank contains " + tank.tankLiquidXp.getFluidAmount()
-        				+ "L of " + tank.tankLiquidXp.getFluid().getLocalizedName());
-        			}
-        			if ((tank.tankEssence.getFluid() != null) && (tank.tankLiquidXp.getFluid() != null)) {
-        				PlayerUtils.messagePlayer(player, "This is worth "
-        						+ EnchantingUtils.getLevelForLiquid(tank.tankLiquidXp.getFluidAmount()) + " levels.");
-        			}
-        		}
-        	}
-        }
-        return true;
+         * if (world.isRemote) { return true; } else { boolean mDidScrewDriver = false; // Check For Screwdriver try {
+         * final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName()); final
+         * Item mHandItem = mHandStack.getItem(); if (((mHandItem instanceof GT_MetaGenerated_Tool_01) &&
+         * ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) { final
+         * TileEntityXpConverter tile = (TileEntityXpConverter) world.getTileEntity(x, y, z); if (tile != null) {
+         * mDidScrewDriver = true; tile.onScrewdriverRightClick((byte) side, player, x, y, z); } } } catch (final
+         * Throwable t) { mDidScrewDriver = false; } if (!mDidScrewDriver) { try { final TileEntityXpConverter tile =
+         * (TileEntityXpConverter) world.getTileEntity(x, y, z); if (tile != null) { tile.onRightClick((byte) side,
+         * player, x, y, z); } } catch (final Throwable t) { } final TileEntityXpConverter tank =
+         * (TileEntityXpConverter) world.getTileEntity(x, y, z); if (tank != null) { if (tank.tankEssence.getFluid() !=
+         * null) { PlayerUtils.messagePlayer(player, "This tank contains " + tank.tankEssence.getFluidAmount() + "L of "
+         * + tank.tankEssence.getFluid().getLocalizedName()); } if (tank.tankLiquidXp.getFluid() != null) {
+         * PlayerUtils.messagePlayer(player, "This tank contains " + tank.tankLiquidXp.getFluidAmount() + "L of " +
+         * tank.tankLiquidXp.getFluid().getLocalizedName()); } if ((tank.tankEssence.getFluid() != null) &&
+         * (tank.tankLiquidXp.getFluid() != null)) { PlayerUtils.messagePlayer(player, "This is worth " +
+         * EnchantingUtils.getLevelForLiquid(tank.tankLiquidXp.getFluidAmount()) + " levels."); } } } } return true;
          */ }
 
     @Override
@@ -158,8 +114,8 @@ public class BlockTankXpConverter extends BlockContainer {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 
@@ -173,8 +129,8 @@ public class BlockTankXpConverter extends BlockContainer {
     }
 
     @Override
-    public int colorMultiplier(
-            final IBlockAccess p_149720_1_, final int p_149720_2_, final int p_149720_3_, final int p_149720_4_) {
+    public int colorMultiplier(final IBlockAccess p_149720_1_, final int p_149720_2_, final int p_149720_3_,
+            final int p_149720_4_) {
         return super.colorMultiplier(p_149720_1_, p_149720_2_, p_149720_3_, p_149720_4_);
     }
 

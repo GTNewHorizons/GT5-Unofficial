@@ -1,16 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package Ic2ExpReactorPlanner.components;
 
-import gregtech.api.objects.GT_ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.objects.GT_ItemStack;
+
 /**
  * Represents some kind of vent in a reactor.
+ * 
  * @author Brian McCloud
  */
 public class Vent extends ReactorItem {
@@ -19,16 +20,8 @@ public class Vent extends ReactorItem {
     private final int hullDraw;
     private final int sideVent;
 
-    public Vent(
-            final int id,
-            final String baseName,
-            GT_ItemStack aItem,
-            final double maxDamage,
-            final double maxHeat,
-            final String sourceMod,
-            final int selfVent,
-            final int hullDraw,
-            final int sideVent) {
+    public Vent(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage, final double maxHeat,
+            final String sourceMod, final int selfVent, final int hullDraw, final int sideVent) {
         super(id, baseName, aItem, maxDamage, maxHeat, sourceMod);
         this.selfVent = selfVent;
         this.hullDraw = hullDraw;

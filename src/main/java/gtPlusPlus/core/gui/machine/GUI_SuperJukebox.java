@@ -1,22 +1,26 @@
 package gtPlusPlus.core.gui.machine;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.container.Container_SuperJukebox;
 import gtPlusPlus.core.gui.GUI_Base_Tile_Entity;
 import gtPlusPlus.core.lib.CORE;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUI_SuperJukebox extends GUI_Base_Tile_Entity {
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/SuperJukebox.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/SuperJukebox.png");
     private final Container_SuperJukebox mThisContainer;
 
     public GUI_SuperJukebox(final InventoryPlayer player_inventory, final TileEntitySuperJukebox te) {

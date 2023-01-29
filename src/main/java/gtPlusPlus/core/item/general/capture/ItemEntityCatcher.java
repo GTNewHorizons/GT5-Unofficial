@@ -1,5 +1,16 @@
 package gtPlusPlus.core.item.general.capture;
 
+import java.util.List;
+import java.util.UUID;
+
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.interfaces.IEntityCatcher;
 import gtPlusPlus.api.objects.Logger;
@@ -10,15 +21,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.util.List;
-import java.util.UUID;
-import net.minecraft.entity.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 public class ItemEntityCatcher extends Item implements IEntityCatcher {
 
@@ -149,8 +151,8 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
                 NBTUtils.setEntityCustomData(mEntityToSpawn, mEntityData);
             }
 
-            mEntityToSpawn.setLocationAndAngles(
-                    aPos.xPos, aPos.yPos, aPos.zPos, aWorld.rand.nextFloat() * 360.0F, 0.0F);
+            mEntityToSpawn
+                    .setLocationAndAngles(aPos.xPos, aPos.yPos, aPos.zPos, aWorld.rand.nextFloat() * 360.0F, 0.0F);
             if (mEntityToSpawn != null) {
                 mEntityToSpawn.onSpawnWithEgg(null);
                 aWorld.spawnEntityInWorld(mEntityToSpawn);
@@ -191,17 +193,8 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack itemstack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float xOffset,
-            float yOffset,
-            float zOffset) {
+    public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float xOffset, float yOffset, float zOffset) {
         if (Utils.isServer()) {
             Logger.WARNING("Trying to release (1)");
             if (NBTUtils.hasKey(itemstack, "mHasEntity") && NBTUtils.getBoolean(itemstack, "mHasEntity")) {
@@ -210,7 +203,8 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 
                 if (!mDidSpawn) {
                     PlayerUtils.messagePlayer(
-                            player, "You failed to release a " + NBTUtils.getString(itemstack, "mEntityName") + ".");
+                            player,
+                            "You failed to release a " + NBTUtils.getString(itemstack, "mEntityName") + ".");
                 }
 
                 return mDidSpawn;

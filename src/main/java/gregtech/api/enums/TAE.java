@@ -1,5 +1,9 @@
 package gregtech.api.enums;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.HashSet;
+
 import gregtech.api.interfaces.ITexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -8,9 +12,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class TAE {
 
@@ -31,8 +32,8 @@ public class TAE {
 
     /**
      *
-     * @param aPage - The Texture page (0-3)
-     * @param aID - The ID on the specified page (0-15)
+     * @param aPage                   - The Texture page (0-3)
+     * @param aID                     - The ID on the specified page (0-15)
      * @param GTPP_CopiedBlockTexture - The Texture to register
      * @return - Did it register correctly?
      */
@@ -90,8 +91,9 @@ public class TAE {
                         if (h != null) {
                             h[64][secondaryIndex++] = GTPP_CopiedBlockTexture;
                             x.set(null, h);
-                            Logger.INFO("[TAE} Registered Texture with ID " + (secondaryIndex - 1)
-                                    + " in secondary index.");
+                            Logger.INFO(
+                                    "[TAE} Registered Texture with ID " + (secondaryIndex - 1)
+                                            + " in secondary index.");
                             return true;
                         }
                     }

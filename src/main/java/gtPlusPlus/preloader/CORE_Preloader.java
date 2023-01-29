@@ -1,10 +1,11 @@
 package gtPlusPlus.preloader;
 
-import cpw.mods.fml.common.versioning.ArtifactVersion;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import cpw.mods.fml.common.versioning.ArtifactVersion;
 
 public class CORE_Preloader {
 

@@ -3,6 +3,7 @@ package gtPlusPlus.core.handler.workbench;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -28,10 +29,10 @@ public class Workbench_CraftingHandler {
         // just a example recipe so you know how to add them
         this.addRecipe(
                 new ItemStack(Blocks.iron_block),
-                new Object[] {"###", "###", "###", Character.valueOf('#'), Items.iron_ingot});
+                new Object[] { "###", "###", "###", Character.valueOf('#'), Items.iron_ingot });
 
         // another example Recipe, but shapeless
-        this.addShapelessRecipe(new ItemStack(Items.cake), new Object[] {Items.stick});
+        this.addShapelessRecipe(new ItemStack(Items.cake), new Object[] { Items.stick });
     }
 
     void addRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[]) {
@@ -135,21 +136,13 @@ public class Workbench_CraftingHandler {
         }
 
         // TODO - Update from itemIDs
-        /*if (i == 2 && itemstack.itemID == itemstack1.itemID && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && Item.itemsList[itemstack.itemID].isDamageable())
-        {
-        	Item item = Item.itemsList[itemstack.itemID];
-        	int l = item.getMaxDamage() - itemstack.getItemDamageForDisplay();
-        	int i1 = item.getMaxDamage() - itemstack1.getItemDamageForDisplay();
-        	int j1 = l + i1 + (item.getMaxDamage() * 10) / 100;
-        	int k1 = item.getMaxDamage() - j1;
-
-        	if (k1 < 0)
-        	{
-        		k1 = 0;
-        	}
-
-        	return new ItemStack(itemstack.itemID, 1, k1);
-        }*/
+        /*
+         * if (i == 2 && itemstack.itemID == itemstack1.itemID && itemstack.stackSize == 1 && itemstack1.stackSize == 1
+         * && Item.itemsList[itemstack.itemID].isDamageable()) { Item item = Item.itemsList[itemstack.itemID]; int l =
+         * item.getMaxDamage() - itemstack.getItemDamageForDisplay(); int i1 = item.getMaxDamage() -
+         * itemstack1.getItemDamageForDisplay(); int j1 = l + i1 + (item.getMaxDamage() * 10) / 100; int k1 =
+         * item.getMaxDamage() - j1; if (k1 < 0) { k1 = 0; } return new ItemStack(itemstack.itemID, 1, k1); }
+         */
 
         for (int k = 0; k < this.recipes.size(); k++) {
             final IRecipe irecipe = this.recipes.get(k);

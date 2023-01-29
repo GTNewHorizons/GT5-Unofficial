@@ -1,5 +1,13 @@
 package gtPlusPlus.xmod.ic2.block.kieticgenerator;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+import org.apache.commons.lang3.mutable.MutableObject;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import ic2.core.block.BlockMultiID;
@@ -7,14 +15,9 @@ import ic2.core.block.kineticgenerator.tileentity.TileEntityManualKineticGenerat
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
 import ic2.core.init.InternalName;
 import ic2.core.item.block.ItemKineticGenerator;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import org.apache.commons.lang3.mutable.MutableObject;
 
 public class IC2_BlockKineticGenerator extends BlockMultiID {
+
     public IC2_BlockKineticGenerator(final InternalName internalName1) {
         super(internalName1, Material.iron, ItemKineticGenerator.class);
 
@@ -36,8 +39,8 @@ public class IC2_BlockKineticGenerator extends BlockMultiID {
     }
 
     @Override
-    public Class<? extends TileEntity> getTeClass(
-            final int meta, final MutableObject<Class<?>[]> ctorArgTypes, final MutableObject<Object[]> ctorArgs) {
+    public Class<? extends TileEntity> getTeClass(final int meta, final MutableObject<Class<?>[]> ctorArgTypes,
+            final MutableObject<Object[]> ctorArgs) {
         try {
             switch (meta) {
                 case 0:
@@ -50,16 +53,8 @@ public class IC2_BlockKineticGenerator extends BlockMultiID {
     }
 
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer entityPlayer,
-            final int side,
-            final float a,
-            final float b,
-            final float c) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z,
+            final EntityPlayer entityPlayer, final int side, final float a, final float b, final float c) {
         if (entityPlayer.isSneaking()) {
             return false;
         }

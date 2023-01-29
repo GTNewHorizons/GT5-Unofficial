@@ -3,7 +3,20 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.V;
 import static net.minecraftforge.common.ForgeChunkManager.getMaxChunkDepthFor;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+
 import com.google.common.collect.MapMaker;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -16,16 +29,6 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMachine {
 
@@ -44,8 +47,8 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
                 new ITexture[] {});
     }
 
-    public GregtechMetaTileEntityChunkLoader(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GregtechMetaTileEntityChunkLoader(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 4, aDescription, aTextures, 0, 0, aGUIName, aNEIName);
     }
 
@@ -84,12 +87,8 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Loads " + getMaxChunksToLoadForTier(this.mTier) + " chunks when powered",
-            "Consumes 2A",
-            "Behaves Identically to a Railcraft World Anchor",
-            CORE.GT_Tooltip
-        };
+        return new String[] { "Loads " + getMaxChunksToLoadForTier(this.mTier) + " chunks when powered", "Consumes 2A",
+                "Behaves Identically to a Railcraft World Anchor", CORE.GT_Tooltip };
     }
 
     @Override
@@ -111,101 +110,71 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier]) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier]) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier]) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier]) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier]) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1]) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1]) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1]) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1]) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
-            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+                new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1]) };
     }
 
     @Override
@@ -216,18 +185,23 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntityChunkLoader(
-                this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
@@ -266,8 +240,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aBaseMetaTileEntity.getXCoord() != prevX
-                    || aBaseMetaTileEntity.getYCoord() != prevY
+            if (aBaseMetaTileEntity.getXCoord() != prevX || aBaseMetaTileEntity.getYCoord() != prevY
                     || aBaseMetaTileEntity.getZCoord() != prevZ) {
                 releaseTicket();
                 prevX = aBaseMetaTileEntity.getXCoord();
@@ -275,10 +248,8 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
                 prevZ = aBaseMetaTileEntity.getZCoord();
             }
 
-            if (hasActiveTicket()
-                    && (getTicket().world != aBaseMetaTileEntity.getWorld()
-                            || refreshTicket
-                            || !aBaseMetaTileEntity.isAllowedToWork())) {
+            if (hasActiveTicket() && (getTicket().world != aBaseMetaTileEntity.getWorld() || refreshTicket
+                    || !aBaseMetaTileEntity.isAllowedToWork())) {
                 releaseTicket();
             }
 
@@ -409,8 +380,8 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
     }
 
     protected Ticket getTicketFromForge() {
-        return ForgeChunkManager.requestTicket(
-                GTplusplus.instance, getBaseMetaTileEntity().getWorld(), ForgeChunkManager.Type.NORMAL);
+        return ForgeChunkManager
+                .requestTicket(GTplusplus.instance, getBaseMetaTileEntity().getWorld(), ForgeChunkManager.Type.NORMAL);
     }
 
     public boolean hasActiveTicket() {
@@ -434,15 +405,9 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 
     protected void setTicketData(Ticket chunkTicket) {
         if (chunkTicket != null) {
-            chunkTicket
-                    .getModData()
-                    .setInteger("xCoord", getBaseMetaTileEntity().getXCoord());
-            chunkTicket
-                    .getModData()
-                    .setInteger("yCoord", getBaseMetaTileEntity().getYCoord());
-            chunkTicket
-                    .getModData()
-                    .setInteger("zCoord", getBaseMetaTileEntity().getZCoord());
+            chunkTicket.getModData().setInteger("xCoord", getBaseMetaTileEntity().getXCoord());
+            chunkTicket.getModData().setInteger("yCoord", getBaseMetaTileEntity().getYCoord());
+            chunkTicket.getModData().setInteger("zCoord", getBaseMetaTileEntity().getZCoord());
             chunkTicket.setChunkListDepth(getMaxChunksToLoadForTier(mTier));
         }
     }
@@ -453,9 +418,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
             if (ticket != null) {
                 if (ticket.world == getBaseMetaTileEntity().getWorld()) {
                     for (ChunkCoordIntPair chunk : ticket.getChunkList()) {
-                        if (ForgeChunkManager.getPersistentChunksFor(
-                                        getBaseMetaTileEntity().getWorld())
-                                .keys()
+                        if (ForgeChunkManager.getPersistentChunksFor(getBaseMetaTileEntity().getWorld()).keys()
                                 .contains(chunk)) {
                             ForgeChunkManager.unforceChunk(ticket, chunk);
                         }

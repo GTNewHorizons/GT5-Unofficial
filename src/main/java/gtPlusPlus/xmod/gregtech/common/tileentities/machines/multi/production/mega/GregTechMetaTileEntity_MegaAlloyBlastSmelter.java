@@ -6,6 +6,15 @@ import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.*;
 
+import java.util.*;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel;
@@ -13,6 +22,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
@@ -25,13 +35,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GregTechMetaTileEntity_MegaAlloyBlastSmelter>
@@ -44,283 +47,79 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     private int currentParallels;
     private boolean hasNormalCoils;
 
-    private static final IStructureDefinition<GregTechMetaTileEntity_MegaAlloyBlastSmelter> STRUCTURE_DEFINITION =
-            StructureDefinition.<GregTechMetaTileEntity_MegaAlloyBlastSmelter>builder()
-                    .addShape("main", new String[][] {
-                        {
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "   DDDDD   ",
-                            "   CCCCC   ",
-                            "   AEEEA   ",
-                            "   AE~EA   ",
-                            "   AEEEA   ",
-                            "   CCCCC   ",
-                            "   ZZZZZ   "
-                        },
-                        {
-                            "   DDDDD   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   DDDDD   ",
-                            "  D     D  ",
-                            "  C     C  ",
-                            "  A     A  ",
-                            "  A     A  ",
-                            "  A     A  ",
-                            "  C     C  ",
-                            "  ZZZZZZZ  "
-                        },
-                        {
-                            "  DFFFFFD  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  DBBBBBD  ",
-                            " D BBBBB D ",
-                            " C BBBBB C ",
-                            " A BBBBB A ",
-                            " A BBBBB A ",
-                            " A BBBBB A ",
-                            " C BBBBB C ",
-                            " ZZZZZZZZZ "
-                        },
-                        {
-                            " DFFFFFFFD ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " DB     BD ",
-                            "D B     B D",
-                            "C B     B C",
-                            "A B     B A",
-                            "A B     B A",
-                            "A B     B A",
-                            "C B     B C",
-                            "ZZZZZZZZZZZ"
-                        },
-                        {
-                            " DFFFFFFFD ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " DB     BD ",
-                            "D B     B D",
-                            "C B     B C",
-                            "A B     B A",
-                            "A B     B A",
-                            "A B     B A",
-                            "C B     B C",
-                            "ZZZZZZZZZZZ"
-                        },
-                        {
-                            " DFFFFFFFD ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " DB     BD ",
-                            "D B     B D",
-                            "C B     B C",
-                            "A B     B A",
-                            "A B     B A",
-                            "A B     B A",
-                            "C B     B C",
-                            "ZZZZZZZZZZZ"
-                        },
-                        {
-                            " DFFFFFFFD ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " DB     BD ",
-                            "D B     B D",
-                            "C B     B C",
-                            "A B     B A",
-                            "A B     B A",
-                            "A B     B A",
-                            "C B     B C",
-                            "ZZZZZZZZZZZ"
-                        },
-                        {
-                            " DFFFFFFFD ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " AB     BA ",
-                            " DB     BD ",
-                            "D B     B D",
-                            "C B     B C",
-                            "A B     B A",
-                            "A B     B A",
-                            "A B     B A",
-                            "C B     B C",
-                            "ZZZZZZZZZZZ"
-                        },
-                        {
-                            "  DFFFFFD  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  ABBBBBA  ",
-                            "  DBBBBBD  ",
-                            " D BBBBB D ",
-                            " C BBBBB C ",
-                            " A BBBBB A ",
-                            " A BBBBB A ",
-                            " A BBBBB A ",
-                            " C BBBBB C ",
-                            " ZZZZZZZZZ "
-                        },
-                        {
-                            "   DDDDD   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   DDDDD   ",
-                            "  D     D  ",
-                            "  C     C  ",
-                            "  A     A  ",
-                            "  A     A  ",
-                            "  A     A  ",
-                            "  C     C  ",
-                            "  ZZZZZZZ  "
-                        },
-                        {
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "   DDDDD   ",
-                            "   CCCCC   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   AAAAA   ",
-                            "   CCCCC   ",
-                            "   ZZZZZ   "
-                        }
-                    })
-                    .addElement(
-                            'B',
-                            ofChain(
-                                    onElementPass(
-                                            te -> te.hasNormalCoils = false,
-                                            ofCoil(
-                                                    GregTechMetaTileEntity_MegaAlloyBlastSmelter::setCoilLevel,
-                                                    GregTechMetaTileEntity_MegaAlloyBlastSmelter::getCoilLevel)),
-                                    onElementPass(
-                                            te -> te.hasNormalCoils = true, ofBlock(ModBlocks.blockCasingsMisc, 14))))
-                    .addElement(
-                            'Z',
-                            buildHatchAdder(GregTechMetaTileEntity_MegaAlloyBlastSmelter.class)
-                                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
-                                    .casingIndex(TAE.GTPP_INDEX(15))
-                                    .dot(1)
-                                    .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
-                    .addElement(
-                            'E',
-                            buildHatchAdder(GregTechMetaTileEntity_MegaAlloyBlastSmelter.class)
-                                    .atLeast(Maintenance)
-                                    .casingIndex(TAE.GTPP_INDEX(15))
-                                    .dot(2)
-                                    .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
-                    .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
-                    .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
-                    .addElement(
-                            'A',
-                            BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-                    .addElement('F', Muffler.newAny(TAE.GTPP_INDEX(15), 3))
-                    .build();
+    private static final IStructureDefinition<GregTechMetaTileEntity_MegaAlloyBlastSmelter> STRUCTURE_DEFINITION = StructureDefinition
+            .<GregTechMetaTileEntity_MegaAlloyBlastSmelter>builder()
+            .addShape(
+                    "main",
+                    new String[][] {
+                            { "           ", "           ", "           ", "           ", "           ", "           ",
+                                    "           ", "           ", "           ", "           ", "           ",
+                                    "           ", "           ", "   DDDDD   ", "   CCCCC   ", "   AEEEA   ",
+                                    "   AE~EA   ", "   AEEEA   ", "   CCCCC   ", "   ZZZZZ   " },
+                            { "   DDDDD   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ",
+                                    "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ",
+                                    "   AAAAA   ", "   DDDDD   ", "  D     D  ", "  C     C  ", "  A     A  ",
+                                    "  A     A  ", "  A     A  ", "  C     C  ", "  ZZZZZZZ  " },
+                            { "  DFFFFFD  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ",
+                                    "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ",
+                                    "  ABBBBBA  ", "  DBBBBBD  ", " D BBBBB D ", " C BBBBB C ", " A BBBBB A ",
+                                    " A BBBBB A ", " A BBBBB A ", " C BBBBB C ", " ZZZZZZZZZ " },
+                            { " DFFFFFFFD ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " DB     BD ", "D B     B D", "C B     B C", "A B     B A",
+                                    "A B     B A", "A B     B A", "C B     B C", "ZZZZZZZZZZZ" },
+                            { " DFFFFFFFD ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " DB     BD ", "D B     B D", "C B     B C", "A B     B A",
+                                    "A B     B A", "A B     B A", "C B     B C", "ZZZZZZZZZZZ" },
+                            { " DFFFFFFFD ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " DB     BD ", "D B     B D", "C B     B C", "A B     B A",
+                                    "A B     B A", "A B     B A", "C B     B C", "ZZZZZZZZZZZ" },
+                            { " DFFFFFFFD ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " DB     BD ", "D B     B D", "C B     B C", "A B     B A",
+                                    "A B     B A", "A B     B A", "C B     B C", "ZZZZZZZZZZZ" },
+                            { " DFFFFFFFD ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ", " AB     BA ",
+                                    " AB     BA ", " DB     BD ", "D B     B D", "C B     B C", "A B     B A",
+                                    "A B     B A", "A B     B A", "C B     B C", "ZZZZZZZZZZZ" },
+                            { "  DFFFFFD  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ",
+                                    "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ", "  ABBBBBA  ",
+                                    "  ABBBBBA  ", "  DBBBBBD  ", " D BBBBB D ", " C BBBBB C ", " A BBBBB A ",
+                                    " A BBBBB A ", " A BBBBB A ", " C BBBBB C ", " ZZZZZZZZZ " },
+                            { "   DDDDD   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ",
+                                    "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   ",
+                                    "   AAAAA   ", "   DDDDD   ", "  D     D  ", "  C     C  ", "  A     A  ",
+                                    "  A     A  ", "  A     A  ", "  C     C  ", "  ZZZZZZZ  " },
+                            { "           ", "           ", "           ", "           ", "           ", "           ",
+                                    "           ", "           ", "           ", "           ", "           ",
+                                    "           ", "           ", "   DDDDD   ", "   CCCCC   ", "   AAAAA   ",
+                                    "   AAAAA   ", "   AAAAA   ", "   CCCCC   ", "   ZZZZZ   " } })
+            .addElement(
+                    'B',
+                    ofChain(
+                            onElementPass(
+                                    te -> te.hasNormalCoils = false,
+                                    ofCoil(
+                                            GregTechMetaTileEntity_MegaAlloyBlastSmelter::setCoilLevel,
+                                            GregTechMetaTileEntity_MegaAlloyBlastSmelter::getCoilLevel)),
+                            onElementPass(te -> te.hasNormalCoils = true, ofBlock(ModBlocks.blockCasingsMisc, 14))))
+            .addElement(
+                    'Z',
+                    buildHatchAdder(GregTechMetaTileEntity_MegaAlloyBlastSmelter.class)
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
+                            .casingIndex(TAE.GTPP_INDEX(15)).dot(1)
+                            .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
+            .addElement(
+                    'E',
+                    buildHatchAdder(GregTechMetaTileEntity_MegaAlloyBlastSmelter.class).atLeast(Maintenance)
+                            .casingIndex(TAE.GTPP_INDEX(15)).dot(2)
+                            .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
+            .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
+            .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
+            .addElement('A', BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+            .addElement('F', Muffler.newAny(TAE.GTPP_INDEX(15), 3)).build();
 
     public GregTechMetaTileEntity_MegaAlloyBlastSmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -372,18 +171,14 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         currentParallels = RecipeFinderForParallel.handleParallelRecipe(recipe, tFluids, tItems, (int) parallels);
         if (currentParallels <= 0) return false;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                .setRecipeEUt(recipe.mEUt)
-                .setParallel(currentParallels)
-                .setDuration(recipe.mDuration)
-                .setEUt(tTotalEU)
-                .calculate();
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                .setParallel(currentParallels).setDuration(recipe.mDuration).setEUt(tTotalEU).calculate();
 
         lEUt = calculator.getConsumption();
         mMaxProgresstime = calculator.getDuration();
 
-        Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> outputs =
-                RecipeFinderForParallel.getMultiOutput(recipe, currentParallels);
+        Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> outputs = RecipeFinderForParallel
+                .getMultiOutput(recipe, currentParallels);
 
         mMaxProgresstime -= coilLevel.getTier() < 0 ? 0 : mMaxProgresstime * getCoilDiscount(coilLevel);
 
@@ -487,28 +282,40 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fluid Alloy Cooker")
-                .addInfo("Controller block for the Mega Alloy Blast Smelter")
-                .addInfo("Runs the same recipes as the normal ABS, except with up to " + EnumChatFormatting.BOLD
-                        + EnumChatFormatting.UNDERLINE + MAX_PARALLELS + EnumChatFormatting.RESET
-                        + EnumChatFormatting.GRAY + " parallels.")
+        tt.addMachineType("Fluid Alloy Cooker").addInfo("Controller block for the Mega Alloy Blast Smelter")
+                .addInfo(
+                        "Runs the same recipes as the normal ABS, except with up to " + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + MAX_PARALLELS
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY
+                                + " parallels.")
                 .addInfo("Every coil tier above cupronickel grants a speed bonus, based on this function:")
                 .addInfo("Bonus = TIER / 150, rounded to the nearest thousandth.")
-                .addInfo(EnumChatFormatting.ITALIC
-                        + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"
-                        + EnumChatFormatting.RESET + EnumChatFormatting.GRAY)
+                .addInfo(
+                        EnumChatFormatting.ITALIC
+                                + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY)
                 .addInfo("The glass limits the tier of the energy hatch. UEV glass unlocks all tiers.")
                 .addInfo("UV glass required for TecTech laser hatches.")
-                .addInfo(EnumChatFormatting.ITALIC + "\"all it does is make metals hot\"" + EnumChatFormatting.RESET
-                        + EnumChatFormatting.GRAY)
+                .addInfo(
+                        EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY)
                 .beginStructureBlock(11, 20, 11, false)
                 .addStructureInfo("This structure is too complex! See schematic for details.")
                 .addMaintenanceHatch("Around the controller", 2)
                 .addOtherStructurePart(
-                        "Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch", "Bottom Casing", 1)
-                .addMufflerHatch("At least 45", 3)
-                .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310 " + EnumChatFormatting.GRAY + "via "
-                        + EnumChatFormatting.RED + "GT++");
+                        "Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch",
+                        "Bottom Casing",
+                        1)
+                .addMufflerHatch("At least 45", 3).toolTipFinisher(
+                        EnumChatFormatting.AQUA + "MadMan310 "
+                                + EnumChatFormatting.GRAY
+                                + "via "
+                                + EnumChatFormatting.RED
+                                + "GT++");
         return tt;
     }
 
@@ -526,30 +333,47 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
             }
         }
 
-        return new String[] {
-            "------------ Critical Information ------------",
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(mProgresstime) + EnumChatFormatting.RESET + "t / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(mMaxProgresstime) + EnumChatFormatting.RESET + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-lEUt) + EnumChatFormatting.RESET + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(getAverageInputVoltage())
-                    + EnumChatFormatting.RESET + " EU/t(*" + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(getMaxInputAmps())
-                    + EnumChatFormatting.RESET + "A) " + StatCollector.translateToLocal("GT5U.machines.tier")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + GT_Values.VN[GT_Utility.getTier(getAverageInputVoltage())]
-                    + EnumChatFormatting.RESET,
-            "Parallels: " + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET,
-            "Coil Discount: " + EnumChatFormatting.BLUE + discountP + "%" + EnumChatFormatting.RESET,
-            "-----------------------------------------"
-        };
+        return new String[] { "------------ Critical Information ------------",
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(mProgresstime)
+                        + EnumChatFormatting.RESET
+                        + "t / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(mMaxProgresstime)
+                        + EnumChatFormatting.RESET
+                        + "t",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(-lEUt)
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(getAverageInputVoltage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*"
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(getMaxInputAmps())
+                        + EnumChatFormatting.RESET
+                        + "A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Values.VN[GT_Utility.getTier(getAverageInputVoltage())]
+                        + EnumChatFormatting.RESET,
+                "Parallels: " + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET,
+                "Coil Discount: " + EnumChatFormatting.BLUE + discountP + "%" + EnumChatFormatting.RESET,
+                "-----------------------------------------" };
     }
 
     @Override
@@ -558,32 +382,18 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) {
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
-                    TextureFactory.builder()
-                            .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                            .extFacing()
-                            .build()
-                };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
+                        TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
+                                .extFacing().build() };
             }
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
-                TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-                        .extFacing()
-                        .build()
-            };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)), TextureFactory
+                    .builder().addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced).extFacing().build() };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15))};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)) };
     }
 
     @Override
@@ -607,7 +417,8 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         } else {
             separateBusses = !separateBusses;
             GT_Utility.sendChatToPlayer(
-                    aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + separateBusses);
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + separateBusses);
         }
     }
 

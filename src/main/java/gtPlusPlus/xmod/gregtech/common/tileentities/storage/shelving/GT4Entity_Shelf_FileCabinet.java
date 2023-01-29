@@ -1,16 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class GT4Entity_Shelf_FileCabinet extends GT4Entity_Shelf {
 
-    public GT4Entity_Shelf_FileCabinet(
-            final int aID, final String aName, final String aNameRegional, final String aDescription) {
+    public GT4Entity_Shelf_FileCabinet(final int aID, final String aName, final String aNameRegional,
+            final String aDescription) {
         super(aID, aName, aNameRegional, aDescription);
     }
 
@@ -33,22 +34,22 @@ public class GT4Entity_Shelf_FileCabinet extends GT4Entity_Shelf {
 
     @Override
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {TexturesGtBlock.OVERLAYS_CABINET_FRONT[this.mType < 16 ? this.mType : 0]};
+        return new ITexture[] { TexturesGtBlock.OVERLAYS_CABINET_FRONT[this.mType < 16 ? this.mType : 0] };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {texSide};
+        return new ITexture[] { texSide };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {texBottom};
+        return new ITexture[] { texBottom };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {texTop};
+        return new ITexture[] { texTop };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {texSide};
+        return new ITexture[] { texSide };
     }
 }

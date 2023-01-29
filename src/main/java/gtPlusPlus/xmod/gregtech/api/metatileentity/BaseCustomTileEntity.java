@@ -1,5 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Random;
+
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -12,12 +20,6 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.IBaseCustomMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import ic2.api.Direction;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Random;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCustomMetaTileEntity {
 
@@ -76,16 +78,13 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
         }
         if (this.getUniversalEnergyCapacity() > 0L
                 && this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 5L) {
-            this.doExplosion(this.getOutput()
-                    * (long)
-                            (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity()
-                                    ? 4
-                                    : (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 2L
-                                            ? 2
-                                            : 1)));
+            this.doExplosion(
+                    this.getOutput() * (long) (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() ? 4
+                            : (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 2L ? 2 : 1)));
             GT_Mod arg9999 = GT_Mod.instance;
             GT_Mod.achievements.issueAchievement(
-                    this.getWorldObj().getPlayerEntityByName(this.getOwnerName()), "electricproblems");
+                    this.getWorldObj().getPlayerEntityByName(this.getOwnerName()),
+                    "electricproblems");
         }
     }
 
@@ -147,8 +146,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
                     (double) ((float) this.zCoord + tRandom.nextFloat() * 0.8F + 0.1F),
                     new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
             if (tItem.hasTagCompound()) {
-                tItemEntity.getEntityItem().setTagCompound((NBTTagCompound)
-                        tItem.getTagCompound().copy());
+                tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
             }
 
             tItemEntity.motionX = tRandom.nextGaussian() * 0.0500000007450581D;

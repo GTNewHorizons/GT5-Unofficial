@@ -2,7 +2,23 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc;
 
 import static gregtech.api.enums.GT_Values.W;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -21,19 +37,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<GregtechMTE_TeslaTower> {
 
@@ -49,9 +52,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
     protected int mRange;
 
     /**
-     * Machine Mode,
-     * {@value false} Attacks all entities,
-     * {@value true} Only attacks players.
+     * Machine Mode, {@value false} Attacks all entities, {@value true} Only attacks players.
      */
     protected volatile boolean mMode = false;
 
@@ -75,40 +76,28 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
         return "Weaponized Lighting Rod";
     }
 
-    /*@Override
-    public String[] getTooltip() {
-    	String casings = getCasingBlockItem().get(0).getDisplayName();
-    	return new String[]{
-    			"Controller Block for the Tesla Defence Tower Mk3200",
-    			"Enemies within "+this.mRange+"m are blasted with a high energy plasma.",
-    			"This uses 5,000,000EU per blast.",
-    			"Can screwdriver to toggle mode between Players and all Entities.",
-    			"Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)",
-    			"3x1x3 Base of " + casings,
-    			"1x3x1 " + casings + " pillar (Center of base)",
-    			"1x3x1 " + MaterialUtils.getMaterialName(getFrameMaterial()) + " Frame Boxes (Each pillar side and on top)",
-    			"1x Maintenance Hatch (One of base casings)",
-    			"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)"};
-    }*/
+    /*
+     * @Override public String[] getTooltip() { String casings = getCasingBlockItem().get(0).getDisplayName(); return
+     * new String[]{ "Controller Block for the Tesla Defence Tower Mk3200",
+     * "Enemies within "+this.mRange+"m are blasted with a high energy plasma.", "This uses 5,000,000EU per blast.",
+     * "Can screwdriver to toggle mode between Players and all Entities.", "Size(WxHxD): 3x7x3",
+     * "Controller (Front middle at bottom)", "3x1x3 Base of " + casings, "1x3x1 " + casings +
+     * " pillar (Center of base)", "1x3x1 " + MaterialUtils.getMaterialName(getFrameMaterial()) +
+     * " Frame Boxes (Each pillar side and on top)", "1x Maintenance Hatch (One of base casings)", "1x " +
+     * VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)"}; }
+     */
 
     @Override
     protected final GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Tesla Defence Tower Mk3200")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Tesla Defence Tower Mk3200")
                 .addInfo("Enemies within " + this.mRange + "m are blasted with a high energy plasma.")
                 .addInfo("This uses 5,000,000EU per blast.")
-                .addInfo("Can screwdriver to toggle mode between Players and all Entities.")
-                .addSeparator()
-                .beginStructureBlock(1, 7, 1, false)
-                .addController("Top Middle")
-                .addCasingInfo("Casing", 360)
-                .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
-                .addInputBus("Any 4 dot hint (min 1)", 4)
-                .addInputHatch("Any 4 dot hint(min 1)", 4)
-                .addOutputHatch("Any 4 dot hint(min 1)", 4)
-                .addEnergyHatch("Any 4 dot hint(min 1)", 4)
-                .addMaintenanceHatch("Any 4 dot hint(min 1)", 4)
+                .addInfo("Can screwdriver to toggle mode between Players and all Entities.").addSeparator()
+                .beginStructureBlock(1, 7, 1, false).addController("Top Middle").addCasingInfo("Casing", 360)
+                .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1).addInputBus("Any 4 dot hint (min 1)", 4)
+                .addInputHatch("Any 4 dot hint(min 1)", 4).addOutputHatch("Any 4 dot hint(min 1)", 4)
+                .addEnergyHatch("Any 4 dot hint(min 1)", 4).addMaintenanceHatch("Any 4 dot hint(min 1)", 4)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -181,8 +170,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
                 if (xOff == 0 && zOff == 0) continue;
 
                 IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xOff, 0, zOff);
-                if (!checkCasingBlock(xOff, 0, zOff)
-                        && !addMaintenanceToMachineList(tTileEntity, casingTextureIndex)
+                if (!checkCasingBlock(xOff, 0, zOff) && !addMaintenanceToMachineList(tTileEntity, casingTextureIndex)
                         && !addEnergyInputToMachineList(tTileEntity, casingTextureIndex)) {
                     Logger.INFO("bad block");
                     return false;
@@ -226,6 +214,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
         Logger.INFO("Looking For Casing.");
         return checkBlockAndMetaOffset(xOff, yOff, zOff, casingBlock, casingMeta);
     }
+
     // meta of frame is getTileEntityBaseType; frame should be checked using its drops (possible a high weight
     // operation)
     protected boolean checkFrameBlock(int xOff, int yOff, int zOff) {
@@ -238,8 +227,10 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
     }
 
     private boolean checkBlockAndMeta(int x, int y, int z, Block block, int meta) {
-        Logger.INFO("Found: " + getBaseMetaTileEntity().getBlock(x, y, z).getLocalizedName() + " | Meta: "
-                + getBaseMetaTileEntity().getMetaID(x, y, z));
+        Logger.INFO(
+                "Found: " + getBaseMetaTileEntity().getBlock(x, y, z).getLocalizedName()
+                        + " | Meta: "
+                        + getBaseMetaTileEntity().getMetaID(x, y, z));
         Logger.INFO("Expected: " + block.getLocalizedName() + " | Meta: " + meta);
         return (meta == W || getBaseMetaTileEntity().getMetaID(x, y, z) == meta)
                 && getBaseMetaTileEntity().getBlock(x, y, z) == block;
@@ -352,22 +343,17 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
                                                 if (!this.mMode) {
                                                     mInRange.put(
                                                             new Pair<Long, Long>(
-                                                                    ((Entity) r)
-                                                                            .getUniqueID()
-                                                                            .getMostSignificantBits(),
-                                                                    ((Entity) r)
-                                                                            .getUniqueID()
+                                                                    ((Entity) r).getUniqueID().getMostSignificantBits(),
+                                                                    ((Entity) r).getUniqueID()
                                                                             .getLeastSignificantBits()),
                                                             (Entity) r);
                                                 } else {
                                                     if (r instanceof EntityPlayer) {
                                                         mInRange.put(
                                                                 new Pair<Long, Long>(
-                                                                        ((Entity) r)
-                                                                                .getUniqueID()
+                                                                        ((Entity) r).getUniqueID()
                                                                                 .getMostSignificantBits(),
-                                                                        ((Entity) r)
-                                                                                .getUniqueID()
+                                                                        ((Entity) r).getUniqueID()
                                                                                 .getLeastSignificantBits()),
                                                                 (Entity) r);
                                                     }
@@ -415,13 +401,19 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
                                         // if (world.canLightningStrikeAt(j1, l1+1, k1)){
                                         // if (isEnergyEnough() && world.addWeatherEffect(new
                                         // EntityTeslaTowerLightning(world, (double)j1, (double)l1, (double)k1))){
-                                        if (isEnergyEnough()
-                                                && world.addWeatherEffect(new EntityTeslaTowerLightning(
-                                                        world, (double) j1, (double) l1, (double) k1, f, getOwner()))) {
+                                        if (isEnergyEnough() && world.addWeatherEffect(
+                                                new EntityTeslaTowerLightning(
+                                                        world,
+                                                        (double) j1,
+                                                        (double) l1,
+                                                        (double) k1,
+                                                        f,
+                                                        getOwner()))) {
                                             if (f == null || f.isDead || !f.isEntityAlive()) {
-                                                this.mInRange.remove(new Pair<Long, Long>(
-                                                        f.getUniqueID().getMostSignificantBits(),
-                                                        f.getUniqueID().getLeastSignificantBits()));
+                                                this.mInRange.remove(
+                                                        new Pair<Long, Long>(
+                                                                f.getUniqueID().getMostSignificantBits(),
+                                                                f.getUniqueID().getLeastSignificantBits()));
                                             }
                                             this.setEUVar(this.getEUVar() - 5000000);
                                         }

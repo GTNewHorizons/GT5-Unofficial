@@ -2,18 +2,10 @@ package gtPlusPlus.core.block.general;
 
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
-import com.google.common.collect.Maps;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
 import java.util.IdentityHashMap;
 import java.util.Map.Entry;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.material.MapColor;
@@ -26,7 +18,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.Maps;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.random.XSTR;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+
 public class HellFire extends BlockFire {
+
     @Deprecated
     private final int[] field_149849_a = new int[Short.MAX_VALUE];
 
@@ -98,10 +102,8 @@ public class HellFire extends BlockFire {
                 world.setBlockToAir(x, y, z);
             }
 
-            if (!flag
-                    && world.isRaining()
-                    && (world.canLightningStrikeAt(x, y, z)
-                            || world.canLightningStrikeAt(x - 1, y, z)
+            if (!flag && world.isRaining()
+                    && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z)
                             || world.canLightningStrikeAt(x + 1, y, z)
                             || world.canLightningStrikeAt(x, y, z - 1)
                             || world.canLightningStrikeAt(x, y, z + 1))) {
@@ -122,83 +124,74 @@ public class HellFire extends BlockFire {
                     if (!World.doesBlockHaveSolidTopSurface(world, x, y - 1, z) || (blockMeta > 3)) {
                         world.setBlockToAir(x, y, z);
                     }
-                } else if (!flag
-                        && !this.canCatchFire(world, x, y - 1, z, UP)
+                } else if (!flag && !this.canCatchFire(world, x, y - 1, z, UP)
                         && (blockMeta == 15)
                         && (random.nextInt(4) == 0)) {
-                    world.setBlockToAir(x, y, z);
-                } else {
-                    final boolean flag1 = world.isBlockHighHumidity(x, y, z);
-                    byte b0 = 0;
+                            world.setBlockToAir(x, y, z);
+                        } else {
+                            final boolean flag1 = world.isBlockHighHumidity(x, y, z);
+                            byte b0 = 0;
 
-                    if (flag1) {
-                        b0 = -50;
-                    }
+                            if (flag1) {
+                                b0 = -50;
+                            }
 
-                    this.tryCatchFire(world, x + 1, y, z, 300 + b0, random, blockMeta, WEST);
-                    this.tryCatchFire(world, x - 1, y, z, 300 + b0, random, blockMeta, EAST);
-                    this.tryCatchFire(world, x, y - 1, z, 250 + b0, random, blockMeta, UP);
-                    this.tryCatchFire(world, x, y + 1, z, 250 + b0, random, blockMeta, DOWN);
-                    this.tryCatchFire(world, x, y, z - 1, 300 + b0, random, blockMeta, SOUTH);
-                    this.tryCatchFire(world, x, y, z + 1, 300 + b0, random, blockMeta, NORTH);
+                            this.tryCatchFire(world, x + 1, y, z, 300 + b0, random, blockMeta, WEST);
+                            this.tryCatchFire(world, x - 1, y, z, 300 + b0, random, blockMeta, EAST);
+                            this.tryCatchFire(world, x, y - 1, z, 250 + b0, random, blockMeta, UP);
+                            this.tryCatchFire(world, x, y + 1, z, 250 + b0, random, blockMeta, DOWN);
+                            this.tryCatchFire(world, x, y, z - 1, 300 + b0, random, blockMeta, SOUTH);
+                            this.tryCatchFire(world, x, y, z + 1, 300 + b0, random, blockMeta, NORTH);
 
-                    for (int i1 = x - 1; i1 <= (x + 1); ++i1) {
-                        for (int j1 = z - 1; j1 <= (z + 1); ++j1) {
-                            for (int k1 = y - 1; k1 <= (y + 4); ++k1) {
-                                if ((i1 != x) || (k1 != y) || (j1 != z)) {
-                                    int l1 = 100;
+                            for (int i1 = x - 1; i1 <= (x + 1); ++i1) {
+                                for (int j1 = z - 1; j1 <= (z + 1); ++j1) {
+                                    for (int k1 = y - 1; k1 <= (y + 4); ++k1) {
+                                        if ((i1 != x) || (k1 != y) || (j1 != z)) {
+                                            int l1 = 100;
 
-                                    if (k1 > (y + 1)) {
-                                        l1 += (k1 - (y + 1)) * 100;
-                                    }
-
-                                    final int neighbourFireChance =
-                                            this.getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
-
-                                    if (neighbourFireChance > 0) {
-                                        int j2 = (neighbourFireChance
-                                                        + 40
-                                                        + (world.difficultySetting.getDifficultyId() * 14))
-                                                / (blockMeta + 30);
-
-                                        if (flag1) {
-                                            j2 /= 2;
-                                        }
-
-                                        if ((j2 > 0)
-                                                && (random.nextInt(l1) <= j2)
-                                                && (!world.isRaining() || !world.canLightningStrikeAt(i1, k1, j1))
-                                                && !world.canLightningStrikeAt(i1 - 1, k1, z)
-                                                && !world.canLightningStrikeAt(i1 + 1, k1, j1)
-                                                && !world.canLightningStrikeAt(i1, k1, j1 - 1)
-                                                && !world.canLightningStrikeAt(i1, k1, j1 + 1)) {
-                                            int k2 = blockMeta + (random.nextInt(5) / 4);
-
-                                            if (k2 > 15) {
-                                                k2 = 15;
+                                            if (k1 > (y + 1)) {
+                                                l1 += (k1 - (y + 1)) * 100;
                                             }
 
-                                            world.setBlock(i1, k1, j1, this, k2, 3);
+                                            final int neighbourFireChance = this
+                                                    .getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
+
+                                            if (neighbourFireChance > 0) {
+                                                int j2 = (neighbourFireChance + 40
+                                                        + (world.difficultySetting.getDifficultyId() * 14))
+                                                        / (blockMeta + 30);
+
+                                                if (flag1) {
+                                                    j2 /= 2;
+                                                }
+
+                                                if ((j2 > 0) && (random.nextInt(l1) <= j2)
+                                                        && (!world.isRaining()
+                                                                || !world.canLightningStrikeAt(i1, k1, j1))
+                                                        && !world.canLightningStrikeAt(i1 - 1, k1, z)
+                                                        && !world.canLightningStrikeAt(i1 + 1, k1, j1)
+                                                        && !world.canLightningStrikeAt(i1, k1, j1 - 1)
+                                                        && !world.canLightningStrikeAt(i1, k1, j1 + 1)) {
+                                                    int k2 = blockMeta + (random.nextInt(5) / 4);
+
+                                                    if (k2 > 15) {
+                                                        k2 = 15;
+                                                    }
+
+                                                    world.setBlock(i1, k1, j1, this, k2, 3);
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                }
             }
         }
     }
 
-    private void tryCatchFire(
-            final World world,
-            final int p_149841_2_,
-            final int p_149841_3_,
-            final int p_149841_4_,
-            final int p_149841_5_,
-            final Random p_149841_6_,
-            final int p_149841_7_,
-            final ForgeDirection face) {
+    private void tryCatchFire(final World world, final int p_149841_2_, final int p_149841_3_, final int p_149841_4_,
+            final int p_149841_5_, final Random p_149841_6_, final int p_149841_7_, final ForgeDirection face) {
         final int j1 = world.getBlock(p_149841_2_, p_149841_3_, p_149841_4_)
                 .getFlammability(world, p_149841_2_, p_149841_3_, p_149841_4_, face);
 
@@ -228,8 +221,7 @@ public class HellFire extends BlockFire {
      * Returns true if at least one block next to this one can burn.
      */
     private boolean canNeighborBurn(final World world, final int x, final int y, final int z) {
-        return this.canCatchFire(world, x + 1, y, z, WEST)
-                || this.canCatchFire(world, x - 1, y, z, EAST)
+        return this.canCatchFire(world, x + 1, y, z, WEST) || this.canCatchFire(world, x - 1, y, z, EAST)
                 || this.canCatchFire(world, x, y - 1, z, UP)
                 || this.canCatchFire(world, x, y + 1, z, DOWN)
                 || this.canCatchFire(world, x, y, z - 1, SOUTH)
@@ -237,8 +229,7 @@ public class HellFire extends BlockFire {
     }
 
     /**
-     * Gets the highest chance of a neighbor block encouraging this block to
-     * catch fire
+     * Gets the highest chance of a neighbor block encouraging this block to catch fire
      */
     private int getChanceOfNeighborsEncouragingFire(final World world, final int x, final int y, final int z) {
         final byte b0 = 0;
@@ -258,19 +249,17 @@ public class HellFire extends BlockFire {
     }
 
     /**
-     * Checks the specified block coordinate to see if it can catch fire. Args:
-     * blockAccess, x, y, z
+     * Checks the specified block coordinate to see if it can catch fire. Args: blockAccess, x, y, z
      */
     @Override
     @Deprecated
-    public boolean canBlockCatchFire(
-            final IBlockAccess p_149844_1_, final int p_149844_2_, final int p_149844_3_, final int p_149844_4_) {
+    public boolean canBlockCatchFire(final IBlockAccess p_149844_1_, final int p_149844_2_, final int p_149844_3_,
+            final int p_149844_4_) {
         return this.canCatchFire(p_149844_1_, p_149844_2_, p_149844_3_, p_149844_4_, UP);
     }
 
     /**
-     * Checks to see if its valid to put this block at the specified
-     * coordinates. Args: world, x, y, z
+     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     @Override
     public boolean canPlaceBlockAt(final World worldObj, final int x, final int y, final int z) {
@@ -278,13 +267,12 @@ public class HellFire extends BlockFire {
     }
 
     /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which
-     * neighbor changed (coordinates passed are their own) Args: x, y, z,
-     * neighbor Block
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor Block
      */
     @Override
-    public void onNeighborBlockChange(
-            final World worldObj, final int x, final int y, final int z, final Block blockObj) {
+    public void onNeighborBlockChange(final World worldObj, final int x, final int y, final int z,
+            final Block blockObj) {
         if (!World.doesBlockHaveSolidTopSurface(worldObj, x, y - 1, z) && !this.canNeighborBurn(worldObj, x, y, z)) {
             worldObj.setBlockToAir(x, y, z);
         }
@@ -311,21 +299,20 @@ public class HellFire extends BlockFire {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 
     // Burn
     @Override
-    public void onEntityCollidedWithBlock(
-            final World world, final int i, final int j, final int k, final Entity entity) {
+    public void onEntityCollidedWithBlock(final World world, final int i, final int j, final int k,
+            final Entity entity) {
         entity.setFire(10);
     }
 
     /**
-     * A randomly called display update to be able to add particles or other
-     * items for display
+     * A randomly called display update to be able to add particles or other items for display
      */
     @Override
     @SideOnly(Side.CLIENT)
@@ -421,9 +408,8 @@ public class HellFire extends BlockFire {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister IIconRegister) {
         this.IIconArray = new IIcon[] {
-            IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
-            IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_1")
-        };
+                IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
+                IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
     }
 
     @Override
@@ -447,10 +433,10 @@ public class HellFire extends BlockFire {
     }
 
     /*
-     * ================================= Forge Start
-     * ======================================
+     * ================================= Forge Start ======================================
      */
     private static class FireInfo {
+
         private int encouragement = 0;
         private int flammibility = 0;
     }
@@ -473,8 +459,7 @@ public class HellFire extends BlockFire {
             final FireInfo info = this.getInfo(block, true);
             info.encouragement = encouragement;
             info.flammibility = flammibility;
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
     }
 
     private FireInfo getInfo(final Block block, final boolean garentee) {
@@ -521,55 +506,37 @@ public class HellFire extends BlockFire {
     /**
      * Side sensitive version that calls the block function.
      *
-     * @param world
-     *            The current world
-     * @param x
-     *            X Position
-     * @param y
-     *            Y Position
-     * @param z
-     *            Z Position
-     * @param face
-     *            The side the fire is coming from
+     * @param world The current world
+     * @param x     X Position
+     * @param y     Y Position
+     * @param z     Z Position
+     * @param face  The side the fire is coming from
      * @return True if the face can catch fire.
      */
     @Override
-    public boolean canCatchFire(
-            final IBlockAccess world, final int x, final int y, final int z, final ForgeDirection face) {
+    public boolean canCatchFire(final IBlockAccess world, final int x, final int y, final int z,
+            final ForgeDirection face) {
         return world.getBlock(x, y, z).isFlammable(world, x, y, z, face);
     }
 
     /**
      * Side sensitive version that calls the block function.
      *
-     * @param world
-     *            The current world
-     * @param x
-     *            X Position
-     * @param y
-     *            Y Position
-     * @param z
-     *            Z Position
-     * @param oldChance
-     *            The previous maximum chance.
-     * @param face
-     *            The side the fire is coming from
-     * @return The chance of the block catching fire, or oldChance if it is
-     *         higher
+     * @param world     The current world
+     * @param x         X Position
+     * @param y         Y Position
+     * @param z         Z Position
+     * @param oldChance The previous maximum chance.
+     * @param face      The side the fire is coming from
+     * @return The chance of the block catching fire, or oldChance if it is higher
      */
     @Override
-    public int getChanceToEncourageFire(
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final int oldChance,
-            final ForgeDirection face) {
+    public int getChanceToEncourageFire(final IBlockAccess world, final int x, final int y, final int z,
+            final int oldChance, final ForgeDirection face) {
         final int newChance = world.getBlock(x, y, z).getFireSpreadSpeed(world, x, y, z, face);
         return (newChance > oldChance ? newChance : oldChance);
     }
     /*
-     * ================================= Forge Start
-     * ======================================
+     * ================================= Forge Start ======================================
      */
 }

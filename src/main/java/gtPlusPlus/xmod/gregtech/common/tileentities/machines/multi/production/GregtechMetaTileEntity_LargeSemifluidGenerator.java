@@ -10,10 +10,18 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -29,15 +37,9 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_LargeSemifluidGenerator
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeSemifluidGenerator>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeSemifluidGenerator> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_LargeSemifluidGenerator> STRUCTURE_DEFINITION = null;
@@ -58,25 +60,17 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Large Semifluid Generator")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Large Semifluid Generator")
                 .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
                 .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run.")
                 .addInfo("Supply 80L of Oxygen per second to boost output (optional).")
                 .addInfo("Default: Produces 2048EU/t at 100% efficiency")
                 .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 4, false)
-                .addController("Front Center")
-                .addCasingInfo("Stable Titanium Machine Casing", 16)
-                .addCasingInfo("Steel Gear Box Machine Casing", 2)
-                .addCasingInfo("Engine Intake Machine Casing", 8)
-                .addInputHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
-                .addDynamoHatch("Back Center", 2)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, false)
+                .addController("Front Center").addCasingInfo("Stable Titanium Machine Casing", 16)
+                .addCasingInfo("Steel Gear Box Machine Casing", 2).addCasingInfo("Engine Intake Machine Casing", 8)
+                .addInputHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .addDynamoHatch("Back Center", 2).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -166,23 +160,22 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator
     public IStructureDefinition<GregtechMetaTileEntity_LargeSemifluidGenerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_LargeSemifluidGenerator>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"III", "CCC", "CCC", "CCC"},
-                        {"I~I", "CGC", "CGC", "CMC"},
-                        {"III", "CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "III", "CCC", "CCC", "CCC" }, { "I~I", "CGC", "CGC", "CMC" },
+                                            { "III", "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_LargeSemifluidGenerator.class)
-                                    .atLeast(Muffler, InputHatch, Maintenance)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                                    .atLeast(Muffler, InputHatch, Maintenance).casingIndex(getCasingTextureIndex())
+                                    .dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
                     .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
                     .addElement('I', ofBlock(getIntakeBlock(), getIntakeMeta()))
-                    .addElement('M', Dynamo.or(TTDynamo).newAny(getCasingTextureIndex(), 2))
-                    .build();
+                    .addElement('M', Dynamo.or(TTDynamo).newAny(getCasingTextureIndex(), 2)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -297,15 +290,10 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator
 
     @Override
     public String[] getExtraInfoData() {
-        return new String[] {
-            "Large Semifluid Generator",
-            "Current Output: " + lEUt * mEfficiency / 10000 + " EU/t",
-            "Fuel Consumption: " + fuelConsumption + "L/t",
-            "Fuel Value: " + fuelValue + " EU/L",
-            "Fuel Remaining: " + fuelRemaining + " Litres",
-            "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance"
-        };
+        return new String[] { "Large Semifluid Generator", "Current Output: " + lEUt * mEfficiency / 10000 + " EU/t",
+                "Fuel Consumption: " + fuelConsumption + "L/t", "Fuel Value: " + fuelValue + " EU/L",
+                "Fuel Remaining: " + fuelRemaining + " Litres", "Current Efficiency: " + (mEfficiency / 100) + "%",
+                getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override

@@ -8,10 +8,17 @@ import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
+import java.util.Collection;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -32,10 +39,6 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import java.util.Collection;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<GregtechMTE_NuclearReactor>
         implements ISurvivalConstructable {
@@ -71,48 +74,34 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
                 .addInfo("Produces Heat & Energy from Radioactive Beta Decay.")
                 .addInfo("Input Li2BeF4 and a molten salt as fuel, and match the 4 Dynamo Hatches:")
                 .addInfo("LFTR Fuel 1 (4 IV amps), LFTR Fuel 2 (4 LuV amps), LFTR Fuel 3 (4 ZPM amps)")
                 .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
                 .addInfo("Check NEI to see the other outputs - they differ between fuels")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(7, 4, 7, true)
-                .addController("Bottom Center")
-                .addCasingInfo("Hastelloy-N Reactor Casing", 27)
-                .addCasingInfo("Zeron-100 Reactor Shielding", 26)
-                .addInputHatch("Top or bottom layer edges", 1)
-                .addOutputHatch("Top or bottom layer edges", 1)
-                .addDynamoHatch("Top or bottom layer edges", 1)
-                .addMaintenanceHatch("Top or bottom layer edges", 1)
-                .addMufflerHatch("Top 3x3", 2)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(7, 4, 7, true)
+                .addController("Bottom Center").addCasingInfo("Hastelloy-N Reactor Casing", 27)
+                .addCasingInfo("Zeron-100 Reactor Shielding", 26).addInputHatch("Top or bottom layer edges", 1)
+                .addOutputHatch("Top or bottom layer edges", 1).addDynamoHatch("Top or bottom layer edges", 1)
+                .addMaintenanceHatch("Top or bottom layer edges", 1).addMufflerHatch("Top 3x3", 2)
                 .addStructureInfo("All dynamos must be between EV and LuV tier.")
                 .addStructureInfo("All other hatches must be IV+ tier.")
                 .addStructureInfo("3x Output Hatches, 2x Input Hatches, 4x Dynamo Hatches")
-                .addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addStructureInfo("2x Maintenance Hatches, 4x Mufflers").toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
     @Override
     public String[] getExtraInfoData() {
         final String tRunning = (this.mMaxProgresstime > 0 ? "Reactor running" : "Reactor stopped");
-        final String tMaintainance =
-                (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance");
+        final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues"
+                : "Needs Maintainance");
 
-        return new String[] {
-            "Liquid Fluoride Thorium Reactor",
-            tRunning,
-            tMaintainance,
-            "Current Output: " + this.lEUt + " EU/t",
-            "Fuel Remaining: " + this.mFuelRemaining + " Litres",
-            "Current Efficiency: " + (this.mEfficiency / 5) + "%",
-            "Current Efficiency (Raw): " + (this.mEfficiency),
-            "It requires you to have 100% Efficiency."
-        };
+        return new String[] { "Liquid Fluoride Thorium Reactor", tRunning, tMaintainance,
+                "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
+                "Current Efficiency: " + (this.mEfficiency / 5) + "%",
+                "Current Efficiency (Raw): " + (this.mEfficiency), "It requires you to have 100% Efficiency." };
     }
 
     @Override
@@ -121,54 +110,29 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         boolean aWarmedUp = this.mEfficiency == this.getMaxEfficiency(null);
         if (!aBaseMetaTileEntity.isActive() || !aWarmedUp) {
             if (aSide == aFacing) {
-                if (aActive)
-                    return new ITexture[] {
-                        Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
-                        TextureFactory.builder()
-                                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
-                                .extFacing()
-                                .build()
-                    };
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
-                    TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR)
-                            .extFacing()
-                            .build()
-                };
+                if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
+                                .extFacing().build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)), TextureFactory
+                        .builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR).extFacing().build() };
             }
-            return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12))};
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)) };
         } else if (aBaseMetaTileEntity.isActive() && aWarmedUp) {
             if (aSide == aFacing) {
-                if (aActive)
-                    return new ITexture[] {
-                        Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
-                        TextureFactory.builder()
-                                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
-                                .extFacing()
-                                .build()
-                    };
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
-                    TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR)
-                            .extFacing()
-                            .build()
-                };
+                if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
+                                .extFacing().build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)), TextureFactory
+                        .builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR).extFacing().build() };
             }
-            return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13))};
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)) };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12))};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)) };
     }
 
     public final boolean addNuclearReactorEdgeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -181,14 +145,16 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo
                     && (((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier >= 4
                             && ((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier <= 6)) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input
-                    && ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier >= 5) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output
-                    && ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier >= 5) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            }
+                                return addToMachineList(aTileEntity, aBaseCasingIndex);
+                            } else
+                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input
+                        && ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier >= 5) {
+                            return addToMachineList(aTileEntity, aBaseCasingIndex);
+                        } else
+                    if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output
+                            && ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier >= 5) {
+                                return addToMachineList(aTileEntity, aBaseCasingIndex);
+                            }
         }
         return false;
     }
@@ -209,49 +175,37 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     @Override
     public IStructureDefinition<GregtechMTE_NuclearReactor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_NuclearReactor>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCCCCCC", "COOOOOC", "COXXXOC", "COXXXOC", "COXXXOC", "COOOOOC", "CCCCCCC"},
-                        {"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
-                        {"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
-                        {"CCC~CCC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "CCCCCCC"},
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_NuclearReactor>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] {
+                                    { "CCCCCCC", "COOOOOC", "COXXXOC", "COXXXOC", "COXXXOC", "COOOOOC", "CCCCCCC" },
+                                    { "GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG" },
+                                    { "GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG" },
+                                    { "CCC~CCC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "CCCCCCC" }, }))
                     .addElement(
                             'C',
                             ofChain(
-                                    buildHatchAdder(GregtechMTE_NuclearReactor.class)
-                                            .atLeast(Maintenance)
-                                            .casingIndex(TAE.GTPP_INDEX(12))
-                                            .dot(1)
-                                            .build(),
-                                    buildHatchAdder(GregtechMTE_NuclearReactor.class)
-                                            .atLeast(InputHatch, OutputHatch)
+                                    buildHatchAdder(GregtechMTE_NuclearReactor.class).atLeast(Maintenance)
+                                            .casingIndex(TAE.GTPP_INDEX(12)).dot(1).build(),
+                                    buildHatchAdder(GregtechMTE_NuclearReactor.class).atLeast(InputHatch, OutputHatch)
                                             .adder(GregtechMTE_NuclearReactor::addNuclearReactorEdgeList)
                                             .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
-                                            .casingIndex(TAE.GTPP_INDEX(12))
-                                            .dot(1)
-                                            .build(),
-                                    buildHatchAdder(GregtechMTE_NuclearReactor.class)
-                                            .atLeast(Dynamo)
+                                            .casingIndex(TAE.GTPP_INDEX(12)).dot(1).build(),
+                                    buildHatchAdder(GregtechMTE_NuclearReactor.class).atLeast(Dynamo)
                                             .adder(GregtechMTE_NuclearReactor::addNuclearReactorEdgeList)
                                             .hatchItemFilterAnd(t -> filterByMTETier(4, 6))
-                                            .casingIndex(TAE.GTPP_INDEX(12))
-                                            .dot(1)
-                                            .build(),
+                                            .casingIndex(TAE.GTPP_INDEX(12)).dot(1).build(),
                                     onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
                     .addElement(
                             'X',
-                            buildHatchAdder(GregtechMTE_NuclearReactor.class)
-                                    .atLeast(Muffler)
+                            buildHatchAdder(GregtechMTE_NuclearReactor.class).atLeast(Muffler)
                                     .adder(GregtechMTE_NuclearReactor::addNuclearReactorTopList)
                                     .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
-                                    .casingIndex(TAE.GTPP_INDEX(12))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.GTPP_INDEX(12)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
                     .addElement('O', ofBlock(ModBlocks.blockCasingsMisc, 12))
-                    .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 13))
-                    .build();
+                    .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 13)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -271,8 +225,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
-            if (mOutputHatches.size() >= 3
-                    && mInputHatches.size() >= 2
+            if (mOutputHatches.size() >= 3 && mInputHatches.size() >= 2
                     && mDynamoHatches.size() == 4
                     && mMufflerHatches.size() == 4
                     && mMaintenanceHatches.size() == 2) {
@@ -291,21 +244,15 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 
     // Alk's Life Lessons from Greg.
     /*
-    	[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
-    	[23:41:26] <GregoriusTechneticies> thats you issue
-    	[23:44:33] <Alkalus> mmm?
-    	[23:44:49] <Alkalus> Should they be x3?
-    	[23:44:50] <GregoriusTechneticies> you just do a x2, what is for a 5x5 multiblock
-    	[23:45:01] <GregoriusTechneticies> x3 is for a 7x7 one
-    	[23:45:06] <Alkalus> I have no idea what that value does, tbh..
-    	[23:45:15] <GregoriusTechneticies> its the offset
-    	[23:45:23] <Alkalus> Debugging checkMachine has been a pain and I usually trash designs that don't work straight up..
-    	[23:45:28] <GregoriusTechneticies> it determines the horizontal middle of the multiblock
-    	[23:45:47] <GregoriusTechneticies> which is in your case THREE blocks away from the controller
-    	[23:45:51] <Alkalus> Ahh
-    	[23:45:57] <GregoriusTechneticies> and not 2
-    	[23:46:06] <Alkalus> Noted, thanks :D
-    */
+     * [23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3 [23:41:26] <GregoriusTechneticies> thats you
+     * issue [23:44:33] <Alkalus> mmm? [23:44:49] <Alkalus> Should they be x3? [23:44:50] <GregoriusTechneticies> you
+     * just do a x2, what is for a 5x5 multiblock [23:45:01] <GregoriusTechneticies> x3 is for a 7x7 one [23:45:06]
+     * <Alkalus> I have no idea what that value does, tbh.. [23:45:15] <GregoriusTechneticies> its the offset [23:45:23]
+     * <Alkalus> Debugging checkMachine has been a pain and I usually trash designs that don't work straight up..
+     * [23:45:28] <GregoriusTechneticies> it determines the horizontal middle of the multiblock [23:45:47]
+     * <GregoriusTechneticies> which is in your case THREE blocks away from the controller [23:45:51] <Alkalus> Ahh
+     * [23:45:57] <GregoriusTechneticies> and not 2 [23:46:06] <Alkalus> Noted, thanks :D
+     */
 
     @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
@@ -412,8 +359,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         if (tFluids.length > 0 && tRecipeList != null && tRecipeList.size() > 0) { // Does input hatch have a LFTR fuel?
             Logger.WARNING("Found more than one input fluid and a list of valid recipes.");
             // Find a valid recipe
-            GT_Recipe aFuelProcessing =
-                    this.findRecipe(getBaseMetaTileEntity(), mLastRecipe, true, 0, tFluids, new ItemStack[] {});
+            GT_Recipe aFuelProcessing = this
+                    .findRecipe(getBaseMetaTileEntity(), mLastRecipe, true, 0, tFluids, new ItemStack[] {});
             if (aFuelProcessing == null) {
                 Logger.WARNING("Did not find valid recipe for given inputs.");
                 return false;

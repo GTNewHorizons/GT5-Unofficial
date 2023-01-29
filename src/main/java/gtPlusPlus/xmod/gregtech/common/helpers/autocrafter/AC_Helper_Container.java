@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.helpers.autocrafter;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
@@ -8,7 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 
+import gtPlusPlus.api.objects.Logger;
+
 public class AC_Helper_Container extends Container {
+
     /** The crafting matrix inventory (3x3). */
     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
 
@@ -62,7 +64,8 @@ public class AC_Helper_Container extends Container {
     @Override
     public void onCraftMatrixChanged(IInventory p_75130_1_) {
         this.craftResult.setInventorySlotContents(
-                0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
+                0,
+                CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
         Logger.INFO("Crafted " + this.craftResult.getStackInSlot(0));
     }
 

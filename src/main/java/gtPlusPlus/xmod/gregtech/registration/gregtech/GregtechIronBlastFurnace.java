@@ -17,8 +17,10 @@ public class GregtechIronBlastFurnace {
     }
 
     private static void run1() {
-        GregtechItemList.Machine_Iron_BlastFurnace.set(new GregtechMetaTileEntity_IronBlastFurnace(
-                        768, "ironmachine.blastfurnace", "Iron Plated Blast Furnace")
-                .getStackForm(1L));
+        GregtechItemList.Machine_Iron_BlastFurnace.set(
+                new GregtechMetaTileEntity_IronBlastFurnace(
+                        768,
+                        "ironmachine.blastfurnace",
+                        "Iron Plated Blast Furnace").getStackForm(1L));
     }
 }

@@ -1,12 +1,13 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class InventoryWorkbenchHoloSlots implements IInventory {
 
@@ -96,9 +97,9 @@ public class InventoryWorkbenchHoloSlots implements IInventory {
     }
 
     /**
-     * This is the method that will handle saving the inventory contents, as it is called (or should be called!)
-     * anytime the inventory changes. Perfect. Much better than using onUpdate in an Item, as this will also
-     * let you change things in your inventory without ever opening a Gui, if you want.
+     * This is the method that will handle saving the inventory contents, as it is called (or should be called!) anytime
+     * the inventory changes. Perfect. Much better than using onUpdate in an Item, as this will also let you change
+     * things in your inventory without ever opening a Gui, if you want.
      */
     // 1.7.2+ renamed to markDirty
     @Override
@@ -124,9 +125,8 @@ public class InventoryWorkbenchHoloSlots implements IInventory {
     public void closeInventory() {}
 
     /**
-     * This method doesn't seem to do what it claims to do, as
-     * items can still be left-clicked and placed in the inventory
-     * even when this returns false
+     * This method doesn't seem to do what it claims to do, as items can still be left-clicked and placed in the
+     * inventory even when this returns false
      */
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
@@ -140,32 +140,13 @@ public class InventoryWorkbenchHoloSlots implements IInventory {
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
-    /*@Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_)
-    {
-    	ItemStack stack = getStackInSlot(0);
-    	if (this.stackResult[0] != null)
-    	{
-    		ItemStack itemstack = this.stackResult[0];
-    		this.stackResult[0] = null;
-    		return itemstack;
-    	}
-    	if(stack != null)
-    	{
-    		if(stack.stackSize > p_70298_2_)
-    		{
-    			stack = stack.splitStack(p_70298_2_);
-    			// Don't forget this line or your inventory will not be saved!
-    			markDirty();
-    		}
-    		else
-    		{
-    			// this method also calls markDirty, so we don't need to call it again
-    			setInventorySlotContents(p_70298_1_, null);
-    		}
-    	}
-    	return stack;
-    }*/
+    /*
+     * @Override public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) { ItemStack stack = getStackInSlot(0);
+     * if (this.stackResult[0] != null) { ItemStack itemstack = this.stackResult[0]; this.stackResult[0] = null; return
+     * itemstack; } if(stack != null) { if(stack.stackSize > p_70298_2_) { stack = stack.splitStack(p_70298_2_); //
+     * Don't forget this line or your inventory will not be saved! markDirty(); } else { // this method also calls
+     * markDirty, so we don't need to call it again setInventorySlotContents(p_70298_1_, null); } } return stack; }
+     */
     @Override
     public ItemStack decrStackSize(final int p_70298_1_, final int p_70298_2_) {
         if (this.getStackInSlot(0) != null) {
@@ -175,9 +156,7 @@ public class InventoryWorkbenchHoloSlots implements IInventory {
                 this.stackResult[0] = this.getStackInSlot(0);
             } else if (this.stackResult[0] != null) {
                 Logger.INFO("this.stackResult[0] != null");
-                if (this.stackResult[0]
-                        .getDisplayName()
-                        .toLowerCase()
+                if (this.stackResult[0].getDisplayName().toLowerCase()
                         .equals(this.getStackInSlot(0).getDisplayName().toLowerCase())) {
                     Logger.INFO("Items are the same?");
                 } else {
@@ -187,8 +166,9 @@ public class InventoryWorkbenchHoloSlots implements IInventory {
         }
 
         if (this.stackResult[0] != null) {
-            Logger.INFO("this.stackResult[0] != null - Really never should be though. - Returning "
-                    + this.stackResult[0].getDisplayName());
+            Logger.INFO(
+                    "this.stackResult[0] != null - Really never should be though. - Returning "
+                            + this.stackResult[0].getDisplayName());
             final ItemStack itemstack = this.stackResult[0];
             this.stackResult[0] = null;
             return itemstack;
@@ -212,31 +192,15 @@ public class InventoryWorkbenchHoloSlots implements IInventory {
 }
 
 // Default Behaviour
-/*@Override
-public ItemStack decrStackSize(int slot, int amount)
-{
-	if(stack != null)
-	{
-		if(stack.stackSize > amount)
-		{
-			stack = stack.splitStack(amount);
-			// Don't forget this line or your inventory will not be saved!
-			markDirty();
-		}
-		else
-		{
-			// this method also calls markDirty, so we don't need to call it again
-			setInventorySlotContents(slot, null);
-		}
-	}
-	return stack;
-}*/
+/*
+ * @Override public ItemStack decrStackSize(int slot, int amount) { if(stack != null) { if(stack.stackSize > amount) {
+ * stack = stack.splitStack(amount); // Don't forget this line or your inventory will not be saved! markDirty(); } else
+ * { // this method also calls markDirty, so we don't need to call it again setInventorySlotContents(slot, null); } }
+ * return stack; }
+ */
 
 // Default Behaviour
-/*@Override
-public ItemStack getStackInSlotOnClosing(int slot)
-{
-	ItemStack stack = getStackInSlot(slot);
-	setInventorySlotContents(slot, null);
-	return stack;
-}*/
+/*
+ * @Override public ItemStack getStackInSlotOnClosing(int slot) { ItemStack stack = getStackInSlot(slot);
+ * setInventorySlotContents(slot, null); return stack; }
+ */

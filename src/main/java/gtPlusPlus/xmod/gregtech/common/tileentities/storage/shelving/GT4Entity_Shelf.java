@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,22 +20,19 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
+
     public byte mType = 0;
     public String mOldDesc = "";
     public boolean mLocked = false;
     protected byte mIndex = (byte) MathUtils.randInt(1, 3);
-    public static GT_RenderedTexture texBottom =
-            new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_bottom"));
+    public static GT_RenderedTexture texBottom = new GT_RenderedTexture(
+            new CustomIcon("TileEntities/gt4/machine_bottom"));
     public static GT_RenderedTexture texTop = new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_top"));
     public static GT_RenderedTexture texSide = new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_side"));
-    public static GT_RenderedTexture texSideCabinet =
-            new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_side_cabinet"));
+    public static GT_RenderedTexture texSideCabinet = new GT_RenderedTexture(
+            new CustomIcon("TileEntities/gt4/machine_side_cabinet"));
 
     public GT4Entity_Shelf(final int aID, final String aName, final String aNameRegional, final String aDescription) {
         super(aID, aName, aNameRegional, 0, aDescription);
@@ -103,7 +105,9 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
                 if (this.mInventory[0] != null) {
                     PlayerUtils.messagePlayer(
                             aPlayer,
-                            "Contains " + this.mInventory[0].getDisplayName() + " x" + this.mInventory[0].stackSize
+                            "Contains " + this.mInventory[0].getDisplayName()
+                                    + " x"
+                                    + this.mInventory[0].stackSize
                                     + ".");
                 }
                 return false;
@@ -112,7 +116,9 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
                     if (!this.mLocked) {
                         PlayerUtils.messagePlayer(
                                 aPlayer,
-                                "Removed " + this.mInventory[0].getDisplayName() + " x" + this.mInventory[0].stackSize
+                                "Removed " + this.mInventory[0].getDisplayName()
+                                        + " x"
+                                        + this.mInventory[0].stackSize
                                         + ".");
                         aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, this.mInventory[0]);
                         getBaseMetaTileEntity().setInventorySlotContents(0, null);
@@ -120,7 +126,8 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
                         return true;
                     } else {
                         PlayerUtils.messagePlayer(
-                                aPlayer, "This container is locked. It belongs to " + aTile.getOwnerName() + ".");
+                                aPlayer,
+                                "This container is locked. It belongs to " + aTile.getOwnerName() + ".");
                         return false;
                     }
                 }
@@ -147,7 +154,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     @Override
     public void onLeftclick(IGregTechTileEntity aTile, EntityPlayer aPlayer) {
         if ((this.mInventory[0] != null) && (this.mInventory[0].stackSize > 0)) {
-            ItemStack tOutput = GT_Utility.copy(new Object[] {this.mInventory[0]});
+            ItemStack tOutput = GT_Utility.copy(new Object[] { this.mInventory[0] });
             if (!aPlayer.isSneaking()) {
                 tOutput.stackSize = 1;
             }
@@ -206,13 +213,8 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            mOldDesc,
-            "Decorative Item Storage",
-            "Right click to store/remove something",
-            "Ctrl + Rmb to check contents",
-            "Ctrl + Rmb with a screwdriver to lock",
-        };
+        return new String[] { mOldDesc, "Decorative Item Storage", "Right click to store/remove something",
+                "Ctrl + Rmb to check contents", "Ctrl + Rmb with a screwdriver to lock", };
     }
 
     @Override
@@ -240,44 +242,35 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[7][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
-            ITexture[] tmp0 = {this.getBottom((byte) 0)[0]};
+            ITexture[] tmp0 = { this.getBottom((byte) 0)[0] };
             rTextures[0][(i + 1)] = tmp0;
-            ITexture[] tmp1 = {this.getTop((byte) 0)[0]};
+            ITexture[] tmp1 = { this.getTop((byte) 0)[0] };
             rTextures[1][(i + 1)] = tmp1;
-            ITexture[] tmp2 = {this.getSides((byte) 0)[0]};
+            ITexture[] tmp2 = { this.getSides((byte) 0)[0] };
             rTextures[2][(i + 1)] = tmp2;
-            ITexture[] tmp4 = {this.getSides((byte) 0)[0]};
+            ITexture[] tmp4 = { this.getSides((byte) 0)[0] };
             rTextures[3][(i + 1)] = tmp4;
-            ITexture[] tmp5 = {this.getSides((byte) 0)[0], getFront((byte) 0)[0]};
+            ITexture[] tmp5 = { this.getSides((byte) 0)[0], getFront((byte) 0)[0] };
             rTextures[4][(i + 1)] = tmp5;
-            ITexture[] tmp6 = {this.getSides((byte) 0)[0], getFront((byte) 1)[0]};
+            ITexture[] tmp6 = { this.getSides((byte) 0)[0], getFront((byte) 1)[0] };
             rTextures[5][(i + 1)] = tmp6;
-            ITexture[] tmp7 = {this.getSides((byte) 0)[0], getFront((byte) 2)[0]};
+            ITexture[] tmp7 = { this.getSides((byte) 0)[0], getFront((byte) 2)[0] };
             rTextures[6][(i + 1)] = tmp7;
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 
-        ITexture[] tmp = this.mTextures[
-                (aSide >= 2)
-                        ? ((aSide != aFacing)
-                                ? 2
-                                : ((byte) this.mType == 0
-                                        ? 4
-                                        : this.mType == 1 || this.mType == 2 ? 5 : this.mType == 3 ? 6 : 0))
-                        : aSide][
-                aColorIndex + 1];
+        ITexture[] tmp = this.mTextures[(aSide >= 2)
+                ? ((aSide != aFacing) ? 2
+                        : ((byte) this.mType == 0 ? 4
+                                : this.mType == 1 || this.mType == 2 ? 5 : this.mType == 3 ? 6 : 0))
+                : aSide][aColorIndex + 1];
         if (aSide != aFacing && tmp.length == 2) {
-            tmp = new ITexture[] {tmp[0]};
+            tmp = new ITexture[] { tmp[0] };
         }
         return tmp;
     }
@@ -287,31 +280,31 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     private static GT_RenderedTexture x3 = new GT_RenderedTexture(TexturesGtBlock.OVERLAY_WOODEN_SHELF_CANS_FRONT);
 
     public ITexture[] getFrontNormal() {
-        return new ITexture[] {x1};
+        return new ITexture[] { x1 };
     }
 
     public ITexture[] getFrontActive() {
-        return new ITexture[] {x2};
+        return new ITexture[] { x2 };
     }
 
     public ITexture[] getFrontAlternative() {
-        return new ITexture[] {x3};
+        return new ITexture[] { x3 };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -351,8 +344,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (KeyboardUtils.isCtrlKeyDown()) {
-            if (!aPlayer.getDisplayName()
-                    .equalsIgnoreCase(this.getBaseMetaTileEntity().getOwnerName())) {
+            if (!aPlayer.getDisplayName().equalsIgnoreCase(this.getBaseMetaTileEntity().getOwnerName())) {
                 PlayerUtils.messagePlayer(aPlayer, "Container is not yours to lock.");
             } else {
                 this.mLocked = Utils.invertBoolean(this.mLocked);

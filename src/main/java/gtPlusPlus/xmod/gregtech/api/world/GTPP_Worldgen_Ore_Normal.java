@@ -1,27 +1,20 @@
 package gtPlusPlus.xmod.gregtech.api.world;
 
-import gtPlusPlus.core.lib.CORE;
 import java.util.Collection;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import gtPlusPlus.core.lib.CORE;
+
 public class GTPP_Worldgen_Ore_Normal extends GTPP_Worldgen_Ore {
-    public GTPP_Worldgen_Ore_Normal(
-            String aName,
-            boolean aDefault,
-            Block aBlock,
-            int aBlockMeta,
-            int aDimensionType,
-            int aAmount,
-            int aSize,
-            int aProbability,
-            int aMinY,
-            int aMaxY,
-            Collection<String> aBiomeList,
+
+    public GTPP_Worldgen_Ore_Normal(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType,
+            int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList,
             boolean aAllowToGenerateinVoid) {
         super(
                 aName,
@@ -39,21 +32,13 @@ public class GTPP_Worldgen_Ore_Normal extends GTPP_Worldgen_Ore {
     }
 
     @Override
-    public boolean executeWorldgen(
-            World aWorld,
-            Random aRandom,
-            String aBiome,
-            int aDimensionType,
-            int aChunkX,
-            int aChunkZ,
-            IChunkProvider aChunkGenerator,
-            IChunkProvider aChunkProvider) {
+    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
+            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         if (isGenerationAllowed(aWorld, aDimensionType, mDimensionType)
                 && (mBiomeList.isEmpty() || mBiomeList.contains(aBiome))
                 && (mProbability <= 1 || aRandom.nextInt(mProbability) == 0)) {
             for (int i = 0; i < mAmount; i++) {
-                int tX = aChunkX + aRandom.nextInt(16),
-                        tY = mMinY + aRandom.nextInt(mMaxY - mMinY),
+                int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY),
                         tZ = aChunkZ + aRandom.nextInt(16);
                 if (mAllowToGenerateinVoid || aWorld.getBlock(tX, tY, tZ).isAir(aWorld, tX, tY, tZ)) {
                     float math_pi = CORE.PI;
@@ -98,29 +83,26 @@ public class GTPP_Worldgen_Ore_Normal extends GTPP_Worldgen_Ore {
                                         for (int var44 = var34; var44 <= var37; ++var44) {
                                             float var45 = (var44 + 0.5F - var24) / (var28);
                                             Block block = aWorld.getBlock(var38, var41, var44);
-                                            if (var14b + var45 * var45 < 1.0F
-                                                    && ((mAllowToGenerateinVoid
-                                                                    && aWorld.getBlock(var38, var41, var44)
-                                                                            .isAir(aWorld, var38, var41, var44))
-                                                            || (block != null
-                                                                    && (block.isReplaceableOreGen(
-                                                                                    aWorld,
-                                                                                    var38,
-                                                                                    var41,
-                                                                                    var44,
-                                                                                    Blocks.stone)
-                                                                            || block.isReplaceableOreGen(
-                                                                                    aWorld,
-                                                                                    var38,
-                                                                                    var41,
-                                                                                    var44,
-                                                                                    Blocks.end_stone)
-                                                                            || block.isReplaceableOreGen(
-                                                                                    aWorld,
-                                                                                    var38,
-                                                                                    var41,
-                                                                                    var44,
-                                                                                    Blocks.netherrack))))) {
+                                            if (var14b + var45 * var45 < 1.0F && ((mAllowToGenerateinVoid && aWorld
+                                                    .getBlock(var38, var41, var44).isAir(aWorld, var38, var41, var44))
+                                                    || (block != null && (block.isReplaceableOreGen(
+                                                            aWorld,
+                                                            var38,
+                                                            var41,
+                                                            var44,
+                                                            Blocks.stone)
+                                                            || block.isReplaceableOreGen(
+                                                                    aWorld,
+                                                                    var38,
+                                                                    var41,
+                                                                    var44,
+                                                                    Blocks.end_stone)
+                                                            || block.isReplaceableOreGen(
+                                                                    aWorld,
+                                                                    var38,
+                                                                    var41,
+                                                                    var44,
+                                                                    Blocks.netherrack))))) {
                                                 aWorld.setBlock(var38, var41, var44, mBlock, mBlockMeta, 0);
                                             }
                                         }

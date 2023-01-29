@@ -1,9 +1,5 @@
 package gtPlusPlus.core.gui.machine;
 
-import com.google.common.collect.Lists;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -11,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptionButton;
 import net.minecraft.client.gui.GuiResourcePackAvailable;
@@ -22,19 +19,26 @@ import net.minecraft.client.resources.ResourcePackListEntryFound;
 import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.client.resources.ResourcePackRepository.Entry;
 import net.minecraft.util.Util;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.Sys;
 
+import com.google.common.collect.Lists;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+
 @SideOnly(Side.CLIENT)
 public class GUI_ScrollTest extends GuiScreen {
+
     private static final Logger logger = LogManager.getLogger();
     private GuiScreen aThisGUIScreen;
     private List<?> field_146966_g;
     private List<?> field_146969_h;
     private GuiResourcePackAvailable MapOfFreeResourcePacks;
     private GuiResourcePackSelected MapOfActiveResourcePacks;
-    private static final String __OBFID = "CL_00000820";
 
     public GUI_ScrollTest(GuiScreen p_i45050_1_) {
         this.aThisGUIScreen = p_i45050_1_;
@@ -45,8 +49,12 @@ public class GUI_ScrollTest extends GuiScreen {
      */
     @SuppressWarnings("unchecked")
     public void initGui() {
-        this.buttonList.add(new GuiOptionButton(
-                2, this.width / 2 - 154, this.height - 48, I18n.format("resourcePack.openFolder", new Object[0])));
+        this.buttonList.add(
+                new GuiOptionButton(
+                        2,
+                        this.width / 2 - 154,
+                        this.height - 48,
+                        I18n.format("resourcePack.openFolder", new Object[0])));
         this.buttonList.add(
                 new GuiOptionButton(1, this.width / 2 + 4, this.height - 48, I18n.format("gui.done", new Object[0])));
         this.field_146966_g = new ArrayList<Object>();
@@ -104,13 +112,13 @@ public class GUI_ScrollTest extends GuiScreen {
                 if (Util.getOSType() == Util.EnumOS.OSX) {
                     try {
                         logger.info(s);
-                        Runtime.getRuntime().exec(new String[] {"/usr/bin/open", s});
+                        Runtime.getRuntime().exec(new String[] { "/usr/bin/open", s });
                         return;
                     } catch (IOException ioexception1) {
                         logger.error("Couldn\'t open file", ioexception1);
                     }
                 } else if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                    String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[] {s});
+                    String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[] { s });
 
                     try {
                         Runtime.getRuntime().exec(s1);
@@ -126,8 +134,8 @@ public class GUI_ScrollTest extends GuiScreen {
                     Class<?> oclass = ReflectionUtils.getClass("java.awt.Desktop");
                     Object object = ReflectionUtils.getMethod(oclass, "getDesktop", new Class[0])
                             .invoke((Object) null, new Object[0]);
-                    ReflectionUtils.getMethod(oclass, "browse", new Class[] {URI.class})
-                            .invoke(object, new Object[] {file1.toURI()});
+                    ReflectionUtils.getMethod(oclass, "browse", new Class[] { URI.class })
+                            .invoke(object, new Object[] { file1.toURI() });
                 } catch (Throwable throwable) {
                     logger.error("Couldn\'t open link", throwable);
                     flag = true;
@@ -176,7 +184,7 @@ public class GUI_ScrollTest extends GuiScreen {
     }
 
     /**
-     * Called when the mouse is moved or a mouse button is released.  Signature: (mouseX, mouseY, which) which==-1 is
+     * Called when the mouse is moved or a mouse button is released. Signature: (mouseX, mouseY, which) which==-1 is
      * mouseMove, which==0 or which==1 is mouseUp
      */
     protected void mouseMovedOrUp(int p_146286_1_, int p_146286_2_, int p_146286_3_) {
@@ -191,7 +199,11 @@ public class GUI_ScrollTest extends GuiScreen {
         this.MapOfFreeResourcePacks.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
         this.MapOfActiveResourcePacks.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
         this.drawCenteredString(
-                this.fontRendererObj, I18n.format("resourcePack.title", new Object[0]), this.width / 2, 16, 16777215);
+                this.fontRendererObj,
+                I18n.format("resourcePack.title", new Object[0]),
+                this.width / 2,
+                16,
+                16777215);
         this.drawCenteredString(
                 this.fontRendererObj,
                 I18n.format("resourcePack.folderInfo", new Object[0]),

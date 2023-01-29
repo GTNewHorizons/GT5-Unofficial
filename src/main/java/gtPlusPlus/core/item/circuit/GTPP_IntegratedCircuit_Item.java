@@ -1,22 +1,11 @@
 package gtPlusPlus.core.item.circuit;
 
-import com.gtnewhorizons.modularui.api.UIInfos;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.INetworkUpdatableItem;
-import gregtech.api.net.GT_Packet_UpdateItem;
-import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,9 +21,25 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
+
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.gtnewhorizons.modularui.api.UIInfos;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.INetworkUpdatableItem;
+import gregtech.api.net.GT_Packet_UpdateItem;
+import gregtech.api.objects.XSTR;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatableItem {
+
     private final List<ItemStack> ALL_VARIANTS = new ArrayList<>();
 
     private final String iconLocation;
@@ -64,18 +69,14 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         try {
             aList.add("Configuration == " + aStack.getItemDamage());
-            aList.add(GT_LanguageManager.addStringLocalization(
-                    new StringBuilder()
-                            .append(getUnlocalizedName())
-                            .append(".tooltip.0")
-                            .toString(),
-                    "Right click to reconfigure"));
-            aList.add(GT_LanguageManager.addStringLocalization(
-                    new StringBuilder()
-                            .append(getUnlocalizedName())
-                            .append(".tooltip.1")
-                            .toString(),
-                    "Needs a screwdriver or circuit programming tool"));
+            aList.add(
+                    GT_LanguageManager.addStringLocalization(
+                            new StringBuilder().append(getUnlocalizedName()).append(".tooltip.0").toString(),
+                            "Right click to reconfigure"));
+            aList.add(
+                    GT_LanguageManager.addStringLocalization(
+                            new StringBuilder().append(getUnlocalizedName()).append(".tooltip.1").toString(),
+                            "Needs a screwdriver or circuit programming tool"));
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -165,13 +166,15 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
                     count = Integer.parseInt(
                             StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
                 } catch (NumberFormatException e) {
-                    player.addChatComponentMessage(new ChatComponentText(
-                            "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
-                                    + e.getMessage()));
+                    player.addChatComponentMessage(
+                            new ChatComponentText(
+                                    "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
+                                            + e.getMessage()));
                     count = 1;
                 }
-                player.addChatComponentMessage(new ChatComponentTranslation(
-                        "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
+                player.addChatComponentMessage(
+                        new ChatComponentTranslation(
+                                "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return stack;
             }
             configuratorStack = player.inventory.mainInventory[configurator.getKey()];
@@ -181,14 +184,15 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
     }
 
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
-        UIInfos.openClientUI(player, buildContext -> new SelectItemUIFactory(
+        UIInfos.openClientUI(
+                player,
+                buildContext -> new SelectItemUIFactory(
                         StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
                         configurator,
                         GTPP_IntegratedCircuit_Item::onConfigured,
                         ALL_VARIANTS,
                         meta,
-                        true)
-                .createWindow(buildContext));
+                        true).createWindow(buildContext));
     }
 
     private static void onConfigured(ItemStack stack) {
@@ -205,8 +209,8 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
 
             if (!GT_Utility.isStackValid(toolStack)) continue;
 
-            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p :
-                    GregTech_API.sCircuitProgrammerList.entrySet())
+            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTech_API.sCircuitProgrammerList
+                    .entrySet())
                 if (p.getKey().test(toolStack)) return Pair.of(j, p.getValue());
         }
         return null;

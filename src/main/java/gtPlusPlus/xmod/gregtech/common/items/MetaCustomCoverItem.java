@@ -1,5 +1,18 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+
+import org.apache.commons.lang3.StringUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
@@ -13,16 +26,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_ToggleVisual;
-import java.util.List;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import org.apache.commons.lang3.StringUtils;
 
 public class MetaCustomCoverItem extends Item {
 
@@ -32,8 +35,8 @@ public class MetaCustomCoverItem extends Item {
     protected final IIconContainer[] mTextures;
     private final short[][] mRGB;
 
-    public MetaCustomCoverItem(
-            String aModId, int aTextureCount, String aTextureSetName, IIconContainer[] aTextures, short[][] aRGB) {
+    public MetaCustomCoverItem(String aModId, int aTextureCount, String aTextureSetName, IIconContainer[] aTextures,
+            short[][] aRGB) {
         super();
         icons = new IIcon[aTextureCount];
         mModID = aModId;
@@ -48,8 +51,13 @@ public class MetaCustomCoverItem extends Item {
         this.setMaxStackSize(1);
         GameRegistry.registerItem(this, unlocalizedName);
         registerCover();
-        Logger.INFO("[Covers] Generated Custom covers for " + mModID + " using " + aTextureCount + " textures from "
-                + mTextureSetName + ".");
+        Logger.INFO(
+                "[Covers] Generated Custom covers for " + mModID
+                        + " using "
+                        + aTextureCount
+                        + " textures from "
+                        + mTextureSetName
+                        + ".");
     }
 
     public boolean hide() {
@@ -65,17 +73,15 @@ public class MetaCustomCoverItem extends Item {
             }
             GregTech_API.registerCover(
                     thisStack,
-                    new GT_MultiTexture(new ITexture[] {new GT_RenderedTexture(mTextures[i])}),
+                    new GT_MultiTexture(new ITexture[] { new GT_RenderedTexture(mTextures[i]) }),
                     new GTPP_Cover_ToggleVisual());
         }
     }
 
     /*
-     * @Override public void registerIcons(IIconRegister reg) { for (int i = 0; i <
-     * icons.length; i++) { this.icons[i] = mTextures[i].getIcon(); } }
-     *
-     * @Override public IIcon getIconFromDamage(int meta) { return this.icons[meta];
-     * }
+     * @Override public void registerIcons(IIconRegister reg) { for (int i = 0; i < icons.length; i++) { this.icons[i] =
+     * mTextures[i].getIcon(); } }
+     * @Override public IIcon getIconFromDamage(int meta) { return this.icons[meta]; }
      */
 
     @Override
@@ -92,8 +98,7 @@ public class MetaCustomCoverItem extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        return StringUtils.capitalize(mTextureSetName) + " (" + tItem.getItemDamage()
-                + ")"; // super.getItemStackDisplayName(tItem);
+        return StringUtils.capitalize(mTextureSetName) + " (" + tItem.getItemDamage() + ")"; // super.getItemStackDisplayName(tItem);
     }
 
     private static boolean createNBT(ItemStack rStack) {

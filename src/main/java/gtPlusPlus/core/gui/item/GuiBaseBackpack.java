@@ -1,8 +1,5 @@
 package gtPlusPlus.core.gui.item;
 
-import gtPlusPlus.core.container.Container_BackpackBase;
-import gtPlusPlus.core.inventories.BaseInventoryBackpack;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -10,12 +7,20 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import gtPlusPlus.core.container.Container_BackpackBase;
+import gtPlusPlus.core.inventories.BaseInventoryBackpack;
+import gtPlusPlus.core.lib.CORE;
+
 public class GuiBaseBackpack extends GuiContainer {
-    /** x and y size of the inventory window in pixels. Defined as float, passed as int
-     * These are used for drawing the player model. */
+
+    /**
+     * x and y size of the inventory window in pixels. Defined as float, passed as int These are used for drawing the
+     * player model.
+     */
     private float xSize_lo;
 
     private float ySize_lo;
@@ -23,14 +28,15 @@ public class GuiBaseBackpack extends GuiContainer {
     /** The FontRenderer used by GuiScreen */
     protected FontRenderer fontRenderer;
 
-    /** ResourceLocation takes 2 parameters: ModId, path to texture at the location:
-     * "src/minecraft/assets/modid/"
+    /**
+     * ResourceLocation takes 2 parameters: ModId, path to texture at the location: "src/minecraft/assets/modid/"
      *
-     * I have provided a sample texture file that works with this tutorial. Download it
-     * from Forge_Tutorials/textures/gui/
+     * I have provided a sample texture file that works with this tutorial. Download it from
+     * Forge_Tutorials/textures/gui/
      */
-    private static final ResourceLocation iconLocation =
-            new ResourceLocation(CORE.MODID, "textures/gui/itemBackpack.png");
+    private static final ResourceLocation iconLocation = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/itemBackpack.png");
 
     /** The inventory to render on screen */
     private final BaseInventoryBackpack inventory;
@@ -55,8 +61,7 @@ public class GuiBaseBackpack extends GuiContainer {
      */
     @Override
     protected void drawGuiContainerForegroundLayer(final int par1, final int par2) {
-        final String s = this.inventory.hasCustomInventoryName()
-                ? this.inventory.getInventoryName()
+        final String s = this.inventory.hasCustomInventoryName() ? this.inventory.getInventoryName()
                 : this.inventory.getInventoryName();
         // this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 0, 4210752);
         // this.fontRenderer.drawString(I18n.translate("container.inventory"), 26, this.ySize - 96 + 4, 4210752);
@@ -80,12 +85,7 @@ public class GuiBaseBackpack extends GuiContainer {
      * This renders the player model in standard inventory position (in later versions of Minecraft / Forge, you can
      * simply call GuiInventory.drawEntityOnScreen directly instead of copying this code)
      */
-    public static void drawPlayerModel(
-            final int x,
-            final int y,
-            final int scale,
-            final float yaw,
-            final float pitch,
+    public static void drawPlayerModel(final int x, final int y, final int scale, final float yaw, final float pitch,
             final EntityLivingBase entity) {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();

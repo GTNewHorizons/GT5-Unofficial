@@ -1,20 +1,21 @@
 package gtPlusPlus.core.entity.item;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class ItemEntityGiantEgg extends EntityItem {
 
     /**
-     * The maximum age of this Chicken Egg.  The item will try hatch once this is reached.
+     * The maximum age of this Chicken Egg. The item will try hatch once this is reached.
      */
     public int mEggAge = 10000;
 
@@ -98,14 +99,13 @@ public class ItemEntityGiantEgg extends EntityItem {
 
         if (this.age >= 1000) {
             // Cache the value for efficiency
-            if (mEggSize == -1)
-                mEggSize = (this.getEntityItem() != null
-                        ? (this.getEntityItem().hasTagCompound()
-                                ? (this.getEntityItem().getTagCompound().hasKey("size")
-                                        ? this.getEntityItem().getTagCompound().getInteger("size")
-                                        : 1)
-                                : 1)
-                        : 1);
+            if (mEggSize == -1) mEggSize = (this.getEntityItem() != null
+                    ? (this.getEntityItem().hasTagCompound()
+                            ? (this.getEntityItem().getTagCompound().hasKey("size")
+                                    ? this.getEntityItem().getTagCompound().getInteger("size")
+                                    : 1)
+                            : 1)
+                    : 1);
             if (MathUtils.randInt(100 * mEggSize, 1000) >= MathUtils.randInt(950, 1000)) {
                 // Spawn Chicken
                 if (spawnGiantChicken()) {

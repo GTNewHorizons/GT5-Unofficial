@@ -7,10 +7,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.Random;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -23,13 +29,9 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.Random;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntity_IndustrialMacerator
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMacerator>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialMacerator extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMacerator> implements ISurvivalConstructable {
 
     private int mCasing;
     private int mPerLayer;
@@ -56,22 +58,14 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Maceration Stack")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Maceration Stack")
                 .addInfo("60% faster than using single block machines of the same voltage")
-                .addInfo("Processes 8*tier materials at a time")
-                .addInfo("ULV = Tier 0, LV = Tier 1, etc.")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 6, 3, true)
-                .addController("Bottom Center")
-                .addCasingInfo("Maceration Stack Casings", 26)
-                .addInputBus("Bottom Casing", 1)
-                .addEnergyHatch("Bottom Casing", 1)
-                .addMaintenanceHatch("Bottom Casing", 1)
-                .addOutputBus("One per layer except bottom layer", 2)
-                .addMufflerHatch("Any Casing", 2)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addInfo("Processes 8*tier materials at a time").addInfo("ULV = Tier 0, LV = Tier 1, etc.")
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 6, 3, true)
+                .addController("Bottom Center").addCasingInfo("Maceration Stack Casings", 26)
+                .addInputBus("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
+                .addMaintenanceHatch("Bottom Casing", 1).addOutputBus("One per layer except bottom layer", 2)
+                .addMufflerHatch("Any Casing", 2).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -79,41 +73,29 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialMacerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMacerator>builder()
-                    .addShape(mName + "top", transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                    }))
-                    .addShape(mName + "mid", transpose(new String[][] {
-                        {"CCC", "C-C", "CCC"},
-                    }))
-                    .addShape(mName + "bottom", transpose(new String[][] {
-                        {"B~B", "BBB", "BBB"},
-                    }))
+                    .addShape(mName + "top", transpose(new String[][] { { "CCC", "CCC", "CCC" }, }))
+                    .addShape(
+                            mName + "mid",
+                            transpose(new String[][] { { "CCC", "C-C", "CCC" }, }))
+                    .addShape(mName + "bottom", transpose(new String[][] { { "B~B", "BBB", "BBB" }, }))
                     .addElement(
                             'C',
                             ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
-                                            .atLeast(OutputBus)
+                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class).atLeast(OutputBus)
                                             .shouldReject(t -> t.mPerLayer + 1 == t.mOutputBusses.size())
                                             .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                            .casingIndex(TAE.GTPP_INDEX(7))
-                                            .dot(2)
-                                            .build(),
+                                            .casingIndex(TAE.GTPP_INDEX(7)).dot(2).build(),
                                     buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
                                             .atLeast(Energy, Maintenance, Muffler)
                                             .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                            .casingIndex(TAE.GTPP_INDEX(7))
-                                            .dot(2)
-                                            .build(),
+                                            .casingIndex(TAE.GTPP_INDEX(7)).dot(2).build(),
                                     onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 7))))
                     .addElement(
                             'B',
                             ofChain(
                                     buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
-                                            .atLeast(Energy, Maintenance, InputBus)
-                                            .disallowOnly(ForgeDirection.UP)
-                                            .casingIndex(TAE.GTPP_INDEX(7))
-                                            .dot(2)
-                                            .build(),
+                                            .atLeast(Energy, Maintenance, InputBus).disallowOnly(ForgeDirection.UP)
+                                            .casingIndex(TAE.GTPP_INDEX(7)).dot(2).build(),
                                     onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 7))))
                     .build();
         }
@@ -194,22 +176,19 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     @Override
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
-        if ((aBaseMetaTileEntity.isClientSide())
-                && (aBaseMetaTileEntity.isActive())
+        if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
                 && (aBaseMetaTileEntity.getFrontFacing() != 1)
                 && (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0)
                 && (!aBaseMetaTileEntity.getOpacityAtSide((byte) 1))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-            aBaseMetaTileEntity
-                    .getWorld()
-                    .spawnParticle(
-                            "smoke",
-                            (aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
-                            aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F),
-                            (aBaseMetaTileEntity.getZCoord() + 1.2F) - (tRandom.nextFloat() * 1.6F),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+            aBaseMetaTileEntity.getWorld().spawnParticle(
+                    "smoke",
+                    (aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
+                    aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F),
+                    (aBaseMetaTileEntity.getZCoord() + 1.2F) - (tRandom.nextFloat() * 1.6F),
+                    0.0D,
+                    0.0D,
+                    0.0D);
         }
     }
 

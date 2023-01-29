@@ -1,10 +1,7 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -13,6 +10,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class FakeWorld implements IBlockAccess {
 
@@ -48,18 +50,13 @@ public class FakeWorld implements IBlockAccess {
 
     public void init() {
 
-        /*if (mStaticFakeWorldData == null) {
-        	Logger.WARNING("Setting all Blocks in Fake World to Air.");
-        	mStaticFakeWorldData = new HashMap<String, FakeBlockPos>();
-        	for (int y=0;y<=aWorldHeight;y++) {
-        		for (int x=-aDistanceFromOrigin;x<=aDistanceFromOrigin;x++) {
-        			for (int z=-aDistanceFromOrigin;z<=aDistanceFromOrigin;z++) {
-        				FakeBlockPos aTempPos = new FakeBlockPos(x, y, z, Blocks.air, 0);
-        				mStaticFakeWorldData.put(aTempPos.getLocationString(), aTempPos);
-        			}
-        		}
-        	}
-        }*/
+        /*
+         * if (mStaticFakeWorldData == null) { Logger.WARNING("Setting all Blocks in Fake World to Air.");
+         * mStaticFakeWorldData = new HashMap<String, FakeBlockPos>(); for (int y=0;y<=aWorldHeight;y++) { for (int
+         * x=-aDistanceFromOrigin;x<=aDistanceFromOrigin;x++) { for (int
+         * z=-aDistanceFromOrigin;z<=aDistanceFromOrigin;z++) { FakeBlockPos aTempPos = new FakeBlockPos(x, y, z,
+         * Blocks.air, 0); mStaticFakeWorldData.put(aTempPos.getLocationString(), aTempPos); } } } }
+         */
         // if (mStaticFakeWorldData != null) {
         // Logger.WARNING(" Instancing static air world.");
         mFakeWorldData = new HashMap<String, FakeBlockPos>();

@@ -1,6 +1,5 @@
 package gtPlusPlus.core.item.general;
 
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +13,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 
+import cpw.mods.fml.common.eventhandler.Event;
+
 public class NuclearFuelRodBase extends Item {
+
     /** field for checking if the bucket has been filled. */
     private final Block isFull;
 
@@ -28,11 +30,11 @@ public class NuclearFuelRodBase extends Item {
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ItemStack onItemRightClick(
-            final ItemStack p_77659_1_, final World p_77659_2_, final EntityPlayer p_77659_3_) {
+    public ItemStack onItemRightClick(final ItemStack p_77659_1_, final World p_77659_2_,
+            final EntityPlayer p_77659_3_) {
         final boolean flag = this.isFull == Blocks.air;
-        final MovingObjectPosition movingobjectposition =
-                this.getMovingObjectPositionFromPlayer(p_77659_2_, p_77659_3_, flag);
+        final MovingObjectPosition movingobjectposition = this
+                .getMovingObjectPositionFromPlayer(p_77659_2_, p_77659_3_, flag);
 
         if (movingobjectposition == null) {
             return p_77659_1_;
@@ -125,8 +127,8 @@ public class NuclearFuelRodBase extends Item {
         return p_77659_1_;
     }
 
-    private ItemStack func_150910_a(
-            final ItemStack p_150910_1_, final EntityPlayer p_150910_2_, final Item p_150910_3_) {
+    private ItemStack func_150910_a(final ItemStack p_150910_1_, final EntityPlayer p_150910_2_,
+            final Item p_150910_3_) {
         if (p_150910_2_.capabilities.isCreativeMode) {
             return p_150910_1_;
         } else if (--p_150910_1_.stackSize <= 0) {
@@ -143,13 +145,12 @@ public class NuclearFuelRodBase extends Item {
     /**
      * Attempts to place the liquid contained inside the bucket.
      */
-    public boolean tryPlaceContainedLiquid(
-            final World p_77875_1_, final int p_77875_2_, final int p_77875_3_, final int p_77875_4_) {
+    public boolean tryPlaceContainedLiquid(final World p_77875_1_, final int p_77875_2_, final int p_77875_3_,
+            final int p_77875_4_) {
         if (this.isFull == Blocks.air) {
             return false;
         }
-        final Material material =
-                p_77875_1_.getBlock(p_77875_2_, p_77875_3_, p_77875_4_).getMaterial();
+        final Material material = p_77875_1_.getBlock(p_77875_2_, p_77875_3_, p_77875_4_).getMaterial();
         final boolean flag = !material.isSolid();
 
         if (!p_77875_1_.isAirBlock(p_77875_2_, p_77875_3_, p_77875_4_) && !flag) {

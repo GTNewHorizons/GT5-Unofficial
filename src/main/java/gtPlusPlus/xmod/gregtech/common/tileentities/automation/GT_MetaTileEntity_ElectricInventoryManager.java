@@ -1,5 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -9,6 +17,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -25,12 +34,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntity_TieredMachineBlock
         implements IAddGregtechLogo, IAddUIWidgets {
@@ -50,8 +53,8 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
         mLocalName = "Auto Workbench (" + GT_Values.VN[aTier] + ")";
     }
 
-    public GT_MetaTileEntity_ElectricInventoryManager(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_ElectricInventoryManager(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, 16, aDescription, aTextures);
     }
 
@@ -154,7 +157,10 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ElectricInventoryManager(
-                this.mName, this.mTier, this.mDescription, this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures);
     }
 
     @Override
@@ -240,25 +246,19 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (getBaseMetaTileEntity().isAllowedToWork()
-                && getBaseMetaTileEntity().isServerSide()
+        if (getBaseMetaTileEntity().isAllowedToWork() && getBaseMetaTileEntity().isServerSide()
                 && getBaseMetaTileEntity().getUniversalEnergyStored() >= 5000
-                && (getBaseMetaTileEntity().hasWorkJustBeenEnabled()
-                        || getBaseMetaTileEntity().getTimer() % 100 == 0
+                && (getBaseMetaTileEntity().hasWorkJustBeenEnabled() || getBaseMetaTileEntity().getTimer() % 100 == 0
                         || mWorkedLastTick
                         || getBaseMetaTileEntity().hasInventoryBeenModified())) {
             mWorkedLastTick = false;
 
-            IInventory[] tTileEntities = new IInventory[] {
-                getBaseMetaTileEntity().getIInventoryAtSide((byte) 0),
-                getBaseMetaTileEntity().getIInventoryAtSide((byte) 1),
-                getBaseMetaTileEntity().getIInventoryAtSide((byte) 2),
-                getBaseMetaTileEntity().getIInventoryAtSide((byte) 3),
-                getBaseMetaTileEntity().getIInventoryAtSide((byte) 4),
-                getBaseMetaTileEntity().getIInventoryAtSide((byte) 5),
-                null,
-                null
-            };
+            IInventory[] tTileEntities = new IInventory[] { getBaseMetaTileEntity().getIInventoryAtSide((byte) 0),
+                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 1),
+                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 2),
+                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 3),
+                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 4),
+                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 5), null, null };
 
             int tCost = 0;
 
@@ -270,176 +270,152 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
 
                     tStack = mInventory[3 + i * 3 + 0];
                     if (tStack == null) {
-                        if (getSlot1InOut(i))
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            getBaseMetaTileEntity(),
-                                            tTileEntities[getRangeDirection(i)],
-                                            getSlot1Direction(i),
-                                            getSlot1Direction(i),
-                                            null,
-                                            false,
-                                            (byte) 64,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
-                        else
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            tTileEntities[getRangeDirection(i)],
-                                            getBaseMetaTileEntity(),
-                                            getSlot1Direction(i),
-                                            getSlot1Direction(i),
-                                            null,
-                                            false,
-                                            (byte) 64,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
+                        if (getSlot1InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
+                                getBaseMetaTileEntity(),
+                                tTileEntities[getRangeDirection(i)],
+                                getSlot1Direction(i),
+                                getSlot1Direction(i),
+                                null,
+                                false,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                        else tCost += 5 * GT_Utility.moveOneItemStack(
+                                tTileEntities[getRangeDirection(i)],
+                                getBaseMetaTileEntity(),
+                                getSlot1Direction(i),
+                                getSlot1Direction(i),
+                                null,
+                                false,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
                     } else {
                         tList.set(0, tStack);
-                        if (getSlot1InOut(i))
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            getBaseMetaTileEntity(),
-                                            tTileEntities[getRangeDirection(i)],
-                                            getSlot1Direction(i),
-                                            getSlot1Direction(i),
-                                            tList,
-                                            false,
-                                            (byte) tStack.stackSize,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
-                        else
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            tTileEntities[getRangeDirection(i)],
-                                            getBaseMetaTileEntity(),
-                                            getSlot1Direction(i),
-                                            getSlot1Direction(i),
-                                            tList,
-                                            false,
-                                            (byte) tStack.stackSize,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
+                        if (getSlot1InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
+                                getBaseMetaTileEntity(),
+                                tTileEntities[getRangeDirection(i)],
+                                getSlot1Direction(i),
+                                getSlot1Direction(i),
+                                tList,
+                                false,
+                                (byte) tStack.stackSize,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                        else tCost += 5 * GT_Utility.moveOneItemStack(
+                                tTileEntities[getRangeDirection(i)],
+                                getBaseMetaTileEntity(),
+                                getSlot1Direction(i),
+                                getSlot1Direction(i),
+                                tList,
+                                false,
+                                (byte) tStack.stackSize,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
                     }
 
                     tStack = mInventory[3 + i * 3 + 1];
                     if (tStack == null) {
-                        if (getSlot2InOut(i))
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            getBaseMetaTileEntity(),
-                                            tTileEntities[getRangeDirection(i)],
-                                            getSlot2Direction(i),
-                                            getSlot2Direction(i),
-                                            null,
-                                            false,
-                                            (byte) 64,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
-                        else
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            tTileEntities[getRangeDirection(i)],
-                                            getBaseMetaTileEntity(),
-                                            getSlot2Direction(i),
-                                            getSlot2Direction(i),
-                                            null,
-                                            false,
-                                            (byte) 64,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
+                        if (getSlot2InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
+                                getBaseMetaTileEntity(),
+                                tTileEntities[getRangeDirection(i)],
+                                getSlot2Direction(i),
+                                getSlot2Direction(i),
+                                null,
+                                false,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                        else tCost += 5 * GT_Utility.moveOneItemStack(
+                                tTileEntities[getRangeDirection(i)],
+                                getBaseMetaTileEntity(),
+                                getSlot2Direction(i),
+                                getSlot2Direction(i),
+                                null,
+                                false,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
                     } else {
                         tList.set(0, tStack);
-                        if (getSlot2InOut(i))
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            getBaseMetaTileEntity(),
-                                            tTileEntities[getRangeDirection(i)],
-                                            getSlot2Direction(i),
-                                            getSlot2Direction(i),
-                                            tList,
-                                            false,
-                                            (byte) tStack.stackSize,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
-                        else
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            tTileEntities[getRangeDirection(i)],
-                                            getBaseMetaTileEntity(),
-                                            getSlot2Direction(i),
-                                            getSlot2Direction(i),
-                                            tList,
-                                            false,
-                                            (byte) tStack.stackSize,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
+                        if (getSlot2InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
+                                getBaseMetaTileEntity(),
+                                tTileEntities[getRangeDirection(i)],
+                                getSlot2Direction(i),
+                                getSlot2Direction(i),
+                                tList,
+                                false,
+                                (byte) tStack.stackSize,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                        else tCost += 5 * GT_Utility.moveOneItemStack(
+                                tTileEntities[getRangeDirection(i)],
+                                getBaseMetaTileEntity(),
+                                getSlot2Direction(i),
+                                getSlot2Direction(i),
+                                tList,
+                                false,
+                                (byte) tStack.stackSize,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
                     }
 
                     tStack = mInventory[3 + i * 3 + 2];
                     if (tStack == null) {
-                        if (getSlot3InOut(i))
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            getBaseMetaTileEntity(),
-                                            tTileEntities[getRangeDirection(i)],
-                                            getSlot3Direction(i),
-                                            getSlot3Direction(i),
-                                            null,
-                                            false,
-                                            (byte) 64,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
-                        else
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            tTileEntities[getRangeDirection(i)],
-                                            getBaseMetaTileEntity(),
-                                            getSlot3Direction(i),
-                                            getSlot3Direction(i),
-                                            null,
-                                            false,
-                                            (byte) 64,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
+                        if (getSlot3InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
+                                getBaseMetaTileEntity(),
+                                tTileEntities[getRangeDirection(i)],
+                                getSlot3Direction(i),
+                                getSlot3Direction(i),
+                                null,
+                                false,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                        else tCost += 5 * GT_Utility.moveOneItemStack(
+                                tTileEntities[getRangeDirection(i)],
+                                getBaseMetaTileEntity(),
+                                getSlot3Direction(i),
+                                getSlot3Direction(i),
+                                null,
+                                false,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
                     } else {
                         tList.set(0, tStack);
-                        if (getSlot3InOut(i))
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            getBaseMetaTileEntity(),
-                                            tTileEntities[getRangeDirection(i)],
-                                            getSlot3Direction(i),
-                                            getSlot3Direction(i),
-                                            tList,
-                                            false,
-                                            (byte) tStack.stackSize,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
-                        else
-                            tCost += 5
-                                    * GT_Utility.moveOneItemStack(
-                                            tTileEntities[getRangeDirection(i)],
-                                            getBaseMetaTileEntity(),
-                                            getSlot3Direction(i),
-                                            getSlot3Direction(i),
-                                            tList,
-                                            false,
-                                            (byte) tStack.stackSize,
-                                            (byte) 1,
-                                            (byte) 64,
-                                            (byte) 1);
+                        if (getSlot3InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
+                                getBaseMetaTileEntity(),
+                                tTileEntities[getRangeDirection(i)],
+                                getSlot3Direction(i),
+                                getSlot3Direction(i),
+                                tList,
+                                false,
+                                (byte) tStack.stackSize,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                        else tCost += 5 * GT_Utility.moveOneItemStack(
+                                tTileEntities[getRangeDirection(i)],
+                                getBaseMetaTileEntity(),
+                                getSlot3Direction(i),
+                                getSlot3Direction(i),
+                                tList,
+                                false,
+                                (byte) tStack.stackSize,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
                     }
                 }
             }
@@ -453,21 +429,15 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
 
     @Override
     public String[] getDescription() {
-        return new String[] {"It's simpler than you think. I promise.", this.mDescription, CORE.GT_Tooltip};
+        return new String[] { "It's simpler than you think. I promise.", this.mDescription, CORE.GT_Tooltip };
     }
 
-    /*@Override
-    public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) {
-    	switch (aSide) {
-    		case 0: return 113 + (aRedstone?8:0);
-    		case 1: return 112 + (aRedstone?8:0);
-    		case 2: return 116 + (aRedstone?8:0);
-    		case 3: return 213 + (aRedstone?8:0);
-    		case 4: return 212 + (aRedstone?8:0);
-    		case 5: return 117 + (aRedstone?8:0);
-    	}
-    	return 0;
-    }*/
+    /*
+     * @Override public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) { switch
+     * (aSide) { case 0: return 113 + (aRedstone?8:0); case 1: return 112 + (aRedstone?8:0); case 2: return 116 +
+     * (aRedstone?8:0); case 3: return 213 + (aRedstone?8:0); case 4: return 212 + (aRedstone?8:0); case 5: return 117 +
+     * (aRedstone?8:0); } return 0; }
+     */
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
@@ -505,98 +475,69 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return this.mTextures[!aRedstone ? aSide : aSide + 6][aColorIndex < 0 ? 0 : aColorIndex];
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Green)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Green) };
     }
 
     public ITexture[] getNegativeZ(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Blue)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Blue) };
     }
 
     public ITexture[] getPositiveZ(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Cyan)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Cyan) };
     }
 
     public ITexture[] getNegativeX(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Purple)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Purple) };
     }
 
     public ITexture[] getPositiveX(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Yellow)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Yellow) };
     }
 
     public ITexture[] getBottomRedstone(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone) };
     }
 
     public ITexture[] getTopRedstone(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Green_Redstone)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Green_Redstone) };
     }
 
     public ITexture[] getNegativeZRedstone(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Blue_Redstone)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Blue_Redstone) };
     }
 
     public ITexture[] getPositiveZRedstone(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Cyan_Redstone)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Cyan_Redstone) };
     }
 
     public ITexture[] getNegativeXRedstone(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Purple_Redstone)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Purple_Redstone) };
     }
 
     public ITexture[] getPositiveXRedstone(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Yellow_Redstone)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Yellow_Redstone) };
     }
 
     @Override
@@ -606,10 +547,8 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(154, 59));
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(154, 59));
     }
 
     // Internal copy of values stored in this tile. Client will use these to render stuff.
@@ -621,139 +560,116 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         for (int i = 0; i < 3; i++) {
-            builder.widget(new SlotWidget(inventoryHandler, i)
-                    .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_CHEST)
-                    .setPos(154, 4 + i * 18));
+            builder.widget(
+                    new SlotWidget(inventoryHandler, i)
+                            .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_CHEST)
+                            .setPos(154, 4 + i * 18));
         }
 
-        int[] slotXPositions = new int[] {4, 60, 79, 135};
+        int[] slotXPositions = new int[] { 4, 60, 79, 135 };
         for (int i = 0; i < 12; i++) {
+            final int index = i;
+            builder.widget(new SlotWidget(new BaseSlot(inventoryHandler, i + 3, true)) {
+
+                @Override
+                protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                    super.phantomClick(clickData, cursorStack);
+                    if (clickData.mouseButton != 0 && cursorStack != null && getMcSlot().getHasStack()) {
+                        getMcSlot().getStack().setItemDamage(OreDictionary.WILDCARD_VALUE);
+                    }
+                }
+            }.setControlsAmount(true).disableShiftInsert().setBackground(() -> {
+                if (index % 3 == 0) {
+                    return new IDrawable[] { GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]],
+                            GTPP_UITextures.OVERLAY_SLOT_INVENTORY_MANAGER_COLOR[mRangeDirections[index / 3]] };
+                } else if (index % 3 == 1) {
+                    return new IDrawable[] { GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]],
+                            GTPP_UITextures.OVERLAY_SLOT_INVENTORY_MANAGER_ARROW[mRangeDirections[index / 3]] };
+                } else {
+                    return new IDrawable[] { GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]] };
+                }
+            }).setPos(slotXPositions[i / 3], 4 + (i % 3) * 18));
+        }
+        for (int i = 0; i < 4; i++) {
             final int index = i;
             builder.widget(
-                    new SlotWidget(new BaseSlot(inventoryHandler, i + 3, true)) {
-                        @Override
-                        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                            super.phantomClick(clickData, cursorStack);
-                            if (clickData.mouseButton != 0
-                                    && cursorStack != null
-                                    && getMcSlot().getHasStack()) {
-                                getMcSlot().getStack().setItemDamage(OreDictionary.WILDCARD_VALUE);
-                            }
-                        }
-                    }.setControlsAmount(true)
-                            .disableShiftInsert()
-                            .setBackground(() -> {
-                                if (index % 3 == 0) {
-                                    return new IDrawable[] {
-                                        GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]],
-                                        GTPP_UITextures.OVERLAY_SLOT_INVENTORY_MANAGER_COLOR[
-                                                mRangeDirections[index / 3]]
-                                    };
-                                } else if (index % 3 == 1) {
-                                    return new IDrawable[] {
-                                        GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]],
-                                        GTPP_UITextures.OVERLAY_SLOT_INVENTORY_MANAGER_ARROW[
-                                                mRangeDirections[index / 3]]
-                                    };
-                                } else {
-                                    return new IDrawable[] {
-                                        GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]]
-                                    };
-                                }
-                            })
-                            .setPos(slotXPositions[i / 3], 4 + (i % 3) * 18));
-        }
-        for (int i = 0; i < 4; i++) {
-            final int index = i;
-            builder.widget(new ButtonWidget()
-                    .setOnClick((clickData, widget) -> switchRangeEnergy(index))
-                    .setBackground(() -> new IDrawable[] {
-                        mTargetEnergy[index] ? ModularUITextures.ITEM_SLOT : GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY
-                    })
-                    .setPos(slotXPositions[i], 59)
-                    .setSize(18, 18));
+                    new ButtonWidget().setOnClick((clickData, widget) -> switchRangeEnergy(index)).setBackground(
+                            () -> new IDrawable[] {
+                                    mTargetEnergy[index] ? ModularUITextures.ITEM_SLOT : GT_UITextures.BUTTON_STANDARD,
+                                    GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY })
+                            .setPos(slotXPositions[i], 59).setSize(18, 18));
         }
 
-        int[] buttonXPositions = new int[] {23, 41, 98, 116};
+        int[] buttonXPositions = new int[] { 23, 41, 98, 116 };
         for (int i = 0; i < 12; i++) {
             final int index = i;
-            builder.widget(new ButtonWidget()
-                    .setOnClick((clickData, widget) -> {
-                        if (index % 3 == 0) {
-                            if (clickData.mouseButton != 0) {
-                                switchSlot1InOut(index / 3);
-                            } else {
-                                iterateSlot1Direction(index / 3);
-                            }
-                        } else if (index % 3 == 1) {
-                            if (clickData.mouseButton != 0) {
-                                switchSlot2InOut(index / 3);
-                            } else {
-                                iterateSlot2Direction(index / 3);
-                            }
-                        } else {
-                            if (clickData.mouseButton != 0) {
-                                switchSlot3InOut(index / 3);
-                            } else {
-                                iterateSlot3Direction(index / 3);
-                            }
-                        }
-                    })
-                    .setBackground(() -> new IDrawable[] {
-                        GT_UITextures.BUTTON_STANDARD,
-                        GTPP_UITextures.OVERLAY_BUTTON_DIRECTION[mTargetDirections[index]],
-                        mTargetInOut[index]
-                                ? GTPP_UITextures.OVERLAY_BUTTON_TIP_RED
-                                : GTPP_UITextures.OVERLAY_BUTTON_TIP_GREEN
-                    })
-                    .setPos(buttonXPositions[i / 3], 4 + (i % 3) * 18)
-                    .setSize(18, 18));
+            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (index % 3 == 0) {
+                    if (clickData.mouseButton != 0) {
+                        switchSlot1InOut(index / 3);
+                    } else {
+                        iterateSlot1Direction(index / 3);
+                    }
+                } else if (index % 3 == 1) {
+                    if (clickData.mouseButton != 0) {
+                        switchSlot2InOut(index / 3);
+                    } else {
+                        iterateSlot2Direction(index / 3);
+                    }
+                } else {
+                    if (clickData.mouseButton != 0) {
+                        switchSlot3InOut(index / 3);
+                    } else {
+                        iterateSlot3Direction(index / 3);
+                    }
+                }
+            }).setBackground(
+                    () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GTPP_UITextures.OVERLAY_BUTTON_DIRECTION[mTargetDirections[index]],
+                            mTargetInOut[index] ? GTPP_UITextures.OVERLAY_BUTTON_TIP_RED
+                                    : GTPP_UITextures.OVERLAY_BUTTON_TIP_GREEN })
+                    .setPos(buttonXPositions[i / 3], 4 + (i % 3) * 18).setSize(18, 18));
         }
         for (int i = 0; i < 4; i++) {
             final int index = i;
-            builder.widget(new ButtonWidget()
-                    .setOnClick((clickData, widget) -> iterateRangeDirection(index))
-                    .setBackground(() -> new IDrawable[] {
-                        GT_UITextures.BUTTON_STANDARD,
-                        GTPP_UITextures.OVERLAY_BUTTON_DIRECTION_GRAY[mRangeDirections[index]]
-                    })
-                    .setPos(buttonXPositions[i], 59)
-                    .setSize(18, 18));
+            builder.widget(
+                    new ButtonWidget().setOnClick((clickData, widget) -> iterateRangeDirection(index))
+                            .setBackground(
+                                    () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                                            GTPP_UITextures.OVERLAY_BUTTON_DIRECTION_GRAY[mRangeDirections[index]] })
+                            .setPos(buttonXPositions[i], 59).setSize(18, 18));
         }
 
         for (int i = 0; i < mTargetDirections.length; i++) {
             final int index = i;
-            builder.widget(new FakeSyncWidget.ByteSyncer(
-                    () -> {
-                        if (index % 3 == 0) {
-                            return getSlot1Direction(index / 3);
-                        } else if (index % 3 == 1) {
-                            return getSlot2Direction(index / 3);
-                        } else {
-                            return getSlot3Direction(index / 3);
-                        }
-                    },
-                    val -> mTargetDirections[index] = val));
+            builder.widget(new FakeSyncWidget.ByteSyncer(() -> {
+                if (index % 3 == 0) {
+                    return getSlot1Direction(index / 3);
+                } else if (index % 3 == 1) {
+                    return getSlot2Direction(index / 3);
+                } else {
+                    return getSlot3Direction(index / 3);
+                }
+            }, val -> mTargetDirections[index] = val));
         }
         for (int i = 0; i < mRangeDirections.length; i++) {
             final int index = i;
-            builder.widget(new FakeSyncWidget.ByteSyncer(
-                    () -> getRangeDirection(index), val -> mRangeDirections[index] = val));
+            builder.widget(
+                    new FakeSyncWidget.ByteSyncer(
+                            () -> getRangeDirection(index),
+                            val -> mRangeDirections[index] = val));
         }
         for (int i = 0; i < mTargetInOut.length; i++) {
             final int index = i;
-            builder.widget(new FakeSyncWidget.BooleanSyncer(
-                    () -> {
-                        if (index % 3 == 0) {
-                            return getSlot1InOut(index / 3);
-                        } else if (index % 3 == 1) {
-                            return getSlot2InOut(index / 3);
-                        } else {
-                            return getSlot3InOut(index / 3);
-                        }
-                    },
-                    val -> mTargetInOut[index] = val));
+            builder.widget(new FakeSyncWidget.BooleanSyncer(() -> {
+                if (index % 3 == 0) {
+                    return getSlot1InOut(index / 3);
+                } else if (index % 3 == 1) {
+                    return getSlot2InOut(index / 3);
+                } else {
+                    return getSlot3InOut(index / 3);
+                }
+            }, val -> mTargetInOut[index] = val));
         }
         for (int i = 0; i < mTargetEnergy.length; i++) {
             final int index = i;

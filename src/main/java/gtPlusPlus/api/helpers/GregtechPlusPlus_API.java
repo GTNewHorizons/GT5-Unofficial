@@ -1,5 +1,10 @@
 package gtPlusPlus.api.helpers;
 
+import java.util.HashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.WeightedCollection;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
@@ -7,9 +12,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
-import java.util.HashMap;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class GregtechPlusPlus_API {
 
@@ -22,25 +24,25 @@ public class GregtechPlusPlus_API {
 
     public static class Multiblock_API {
 
-        private static final HashMap<String, SpecialMultiBehaviour> mSpecialBehaviourItemMap =
-                new HashMap<String, SpecialMultiBehaviour>();
+        private static final HashMap<String, SpecialMultiBehaviour> mSpecialBehaviourItemMap = new HashMap<String, SpecialMultiBehaviour>();
 
         /**
          * Register a special behaviour for GT++ Multis to listen use.
+         * 
          * @param aBehaviour - An Object which has extended {@link SpecialMultiBehaviour}'s base implementation.
          * @return - Did this behaviour register properly?
          */
         public static boolean registerSpecialMultiBehaviour(SpecialMultiBehaviour aBehaviour) {
-            if (aBehaviour.getTriggerItem() == null
-                    || aBehaviour.getTriggerItemTooltip() == null
+            if (aBehaviour.getTriggerItem() == null || aBehaviour.getTriggerItemTooltip() == null
                     || aBehaviour.getTriggerItemTooltip().length() <= 0) {
-                Logger.INFO("Failed to attach custom multiblock logic to "
-                        + ItemUtils.getItemName(aBehaviour.getTriggerItem()));
+                Logger.INFO(
+                        "Failed to attach custom multiblock logic to "
+                                + ItemUtils.getItemName(aBehaviour.getTriggerItem()));
                 return false;
             }
             mSpecialBehaviourItemMap.put("UniqueKey_" + aBehaviour.hashCode(), aBehaviour);
-            SpecialBehaviourTooltipHandler.addTooltipForItem(
-                    aBehaviour.getTriggerItem(), aBehaviour.getTriggerItemTooltip());
+            SpecialBehaviourTooltipHandler
+                    .addTooltipForItem(aBehaviour.getTriggerItem(), aBehaviour.getTriggerItemTooltip());
             Logger.INFO("Attached custom multiblock logic to " + ItemUtils.getItemName(aBehaviour.getTriggerItem()));
             return true;
         }
@@ -51,7 +53,8 @@ public class GregtechPlusPlus_API {
 
         /**
          * Allows RTG Fuel pellets from other mods to be used in the RTG hatch.
-         * @param aStack - The Pellet Stack, sanitsed after passing through.
+         * 
+         * @param aStack     - The Pellet Stack, sanitsed after passing through.
          * @param aFuelValue - The Fuel Value of the Pellet to be added to the energy storage.
          * @return - Did register?
          */
@@ -71,7 +74,8 @@ public class GregtechPlusPlus_API {
         /**
          *
          * Registers an ore block for a dimension. Uses a default weight of 100.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim         - The Dimension ID
          * @param aOredictName - The OreDict name of the Ore to be mined.
          * @return - If there was a valid Block found in the OreDict for the provided name.
          */
@@ -82,9 +86,10 @@ public class GregtechPlusPlus_API {
         /**
          *
          * Registers an ore block for a dimension. Uses a default weight of 100.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim         - The Dimension ID
          * @param aOredictName - The OreDict name of the Ore to be mined.
-         * @param aWeight - The weight of this ore Block.
+         * @param aWeight      - The weight of this ore Block.
          * @return - If there was a valid Block found in the OreDict for the provided name.
          */
         public static boolean registerOreForVoidMiner(int aDim, String aOredictName, int aWeight) {
@@ -107,7 +112,8 @@ public class GregtechPlusPlus_API {
 
         /**
          * Registers an ore block for a dimension. Uses a default weight of 100.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim      - The Dimension ID
          * @param aOreBlock - The Ore Block to be mined.
          */
         public static void registerOreForVoidMiner(int aDim, Block aOreBlock) {
@@ -116,9 +122,10 @@ public class GregtechPlusPlus_API {
 
         /**
          * Registers an ore block for a dimension.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim      - The Dimension ID
          * @param aOreBlock - The Ore Block to be mined.
-         * @param aWeight - The weight of this ore Block.
+         * @param aWeight   - The weight of this ore Block.
          */
         public static void registerOreForVoidMiner(int aDim, Block aOreBlock, int aWeight) {
             GregtechPlusPlus_API_Internal.writeBlockToDimensionInCache(aDim, 0, aOreBlock, aWeight);
@@ -126,7 +133,8 @@ public class GregtechPlusPlus_API {
 
         /**
          * Registers a surface block for a dimension. Uses a default weight of 100.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim       - The Dimension ID
          * @param aDirtBlock - The Dirt/Grass Block to be mined.
          */
         public static void registerEarthSurfaceForVoidMiner(int aDim, Block aDirtBlock) {
@@ -135,9 +143,10 @@ public class GregtechPlusPlus_API {
 
         /**
          * Registers a surface block for a dimension.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim       - The Dimension ID
          * @param aDirtBlock - The Dirt/Grass Block to be mined.
-         * @param aWeight - The weight of this Dirt/Grass Block.
+         * @param aWeight    - The weight of this Dirt/Grass Block.
          */
         public static void registerEarthSurfaceForVoidMiner(int aDim, Block aDirtBlock, int aWeight) {
             GregtechPlusPlus_API_Internal.writeBlockToDimensionInCache(aDim, 0, aDirtBlock, aWeight);
@@ -145,7 +154,8 @@ public class GregtechPlusPlus_API {
 
         /**
          * Registers a stone block for a dimension. Uses a default weight of 100.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim        - The Dimension ID
          * @param aStoneBlock - The Stone Block to be mined.
          */
         public static void registerEarthStoneForVoidMiner(int aDim, Block aStoneBlock) {
@@ -154,9 +164,10 @@ public class GregtechPlusPlus_API {
 
         /**
          * Registers a stone block for a dimension.
-         * @param aDim - The Dimension ID
+         * 
+         * @param aDim        - The Dimension ID
          * @param aStoneBlock - The Stone Block to be mined.
-         * @param aWeight - The weight of this Stone Block.
+         * @param aWeight     - The weight of this Stone Block.
          */
         public static void registerEarthStoneForVoidMiner(int aDim, Block aStoneBlock, int aWeight) {
             GregtechPlusPlus_API_Internal.writeBlockToDimensionInCache(aDim, 0, aStoneBlock, aWeight);
@@ -190,8 +201,8 @@ public class GregtechPlusPlus_API {
             aMappedBlocks.put(aWeight, aBlock);
         }
 
-        private static WeightedCollection<Block> getBlockMap(
-                int aType, HashMap<String, WeightedCollection<Block>> aDimMap) {
+        private static WeightedCollection<Block> getBlockMap(int aType,
+                HashMap<String, WeightedCollection<Block>> aDimMap) {
             WeightedCollection<Block> aMappedBlocks;
             String aTypeName = ((aType == 0) ? "ore" : (aType == 1) ? "dirt" : (aType == 2) ? "stone" : "error");
             aMappedBlocks = aDimMap.get(aTypeName);

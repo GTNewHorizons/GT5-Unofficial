@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.growthcraft.fishtrap;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import net.minecraft.item.ItemStack;
 
 public class Growthcraft_New {
@@ -18,8 +19,8 @@ public class Growthcraft_New {
 
     void setFishTrapRegistry() {
         try {
-            Class<?> FishTrapRegistryClass =
-                    Class.forName("gtPlusPlus.xmod.growthcraft.fishtrap.FishTrapHandler.mFishingRegistry");
+            Class<?> FishTrapRegistryClass = Class
+                    .forName("gtPlusPlus.xmod.growthcraft.fishtrap.FishTrapHandler.mFishingRegistry");
             Class<?> FishTrapEntry = Class.forName("growthcraft.api.fishtrap.FishTrapEntry");
             if (FishTrapRegistryClass.isInstance(FishTrapHandler.getFishingRegistry())) {
                 addTrapJunk = FishTrapRegistryClass.getDeclaredMethod("addTrapJunk", FishTrapEntry);
@@ -44,14 +45,8 @@ public class Growthcraft_New {
                     return x;
                 }
             }
-        } catch (ClassNotFoundException
-                | NoSuchMethodException
-                | SecurityException
-                | InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException e) {
-        }
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
+                | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
 
         return null;
     }
@@ -61,8 +56,7 @@ public class Growthcraft_New {
             Object I = createFishTrapEntry(o, p);
             m.invoke(FishTrapRegistryO, I);
             return true;
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
         return false;
     }
 

@@ -3,9 +3,14 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -26,9 +31,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 @SuppressWarnings("deprecation")
 public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
@@ -52,25 +54,21 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Right Click with a soldering iron to reset controller link",
-            "Right Click with a wrench to remove turbine",
-            "Right Click with a screwdriver for technical information",
-            "Sneak + Right Click with a wrench to rotate",
-            "Sneak + Right Click with a screwdriver to disable animations",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Right Click with a soldering iron to reset controller link",
+                "Right Click with a wrench to remove turbine",
+                "Right Click with a screwdriver for technical information",
+                "Sneak + Right Click with a wrench to rotate",
+                "Sneak + Right Click with a screwdriver to disable animations", CORE.GT_Tooltip };
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, getFrontFacingTurbineTexture()};
+        return new ITexture[] { aBaseTexture, getFrontFacingTurbineTexture() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, getFrontFacingTurbineTexture()};
+        return new ITexture[] { aBaseTexture, getFrontFacingTurbineTexture() };
     }
 
     public int getEU() {
@@ -159,12 +157,10 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
     public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
         if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
             ItemStack aTurbine = getTurbine();
-            ((GT_MetaGenerated_Tool) aTurbine.getItem())
-                    .doDamage(
-                            aTurbine,
-                            (long) getDamageToComponent(aTurbine)
-                                    * (long) Math.min(
-                                            (float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
+            ((GT_MetaGenerated_Tool) aTurbine.getItem()).doDamage(
+                    aTurbine,
+                    (long) getDamageToComponent(aTurbine) * (long) Math
+                            .min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
         }
     }
 
@@ -223,8 +219,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
             BlockPos p = BlockPos.generateBlockPos(mControllerLocation);
             if (p != null) {
                 // Logger.INFO(p.getLocationString());
-                IGregTechTileEntity tTileEntity =
-                        getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
+                IGregTechTileEntity tTileEntity = getBaseMetaTileEntity()
+                        .getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
                 if (tTileEntity != null
                         && tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntity_LargerTurbineBase) {
                     return (GregtechMetaTileEntity_LargerTurbineBase) tTileEntity.getMetaTileEntity();
@@ -269,8 +265,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
     private ITexture getFrontFacingTurbineTexture() {
         if (!mHasController) {
-            return this.getBaseMetaTileEntity().isActive()
-                    ? new GT_RenderedTexture(LARGETURBINE_ST_ACTIVE5)
+            return this.getBaseMetaTileEntity().isActive() ? new GT_RenderedTexture(LARGETURBINE_ST_ACTIVE5)
                     : new GT_RenderedTexture(LARGETURBINE_ST5);
         } else {
             if (usingAnimations()) {
@@ -319,17 +314,15 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
             if (mHasController) {
                 PlayerUtils.messagePlayer(
                         aPlayer,
-                        "Controller Location: "
-                                + BlockPos.generateBlockPos(mControllerLocation).getLocationString());
+                        "Controller Location: " + BlockPos.generateBlockPos(mControllerLocation).getLocationString());
                 PlayerUtils.messagePlayer(aPlayer, "Controller Active? " + this.isControllerActive());
             }
-            PlayerUtils.messagePlayer(
-                    aPlayer, "Active? " + this.getBaseMetaTileEntity().isActive());
+            PlayerUtils.messagePlayer(aPlayer, "Active? " + this.getBaseMetaTileEntity().isActive());
             PlayerUtils.messagePlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = GT_MetaGenerated_Tool.getPrimaryMaterial(getTurbine());
-                String aSize = GregtechMetaTileEntity_LargerTurbineBase.getTurbineSizeString(
-                        GregtechMetaTileEntity_LargerTurbineBase.getTurbineSize(getTurbine()));
+                String aSize = GregtechMetaTileEntity_LargerTurbineBase
+                        .getTurbineSizeString(GregtechMetaTileEntity_LargerTurbineBase.getTurbineSize(getTurbine()));
                 PlayerUtils.messagePlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
             }
         } else {
@@ -343,8 +336,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onWrenchRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (this.getBaseMetaTileEntity().isServerSide() && !aPlayer.isSneaking()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
@@ -357,8 +350,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onSolderingToolRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (this.getBaseMetaTileEntity().isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
@@ -417,9 +410,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new SlotWidget(inventoryHandler, 0)
-                .setFilter(GregtechMetaTileEntity_LargerTurbineBase::isValidTurbine)
-                .setAccess(false, true)
-                .setPos(79, 34));
+        builder.widget(
+                new SlotWidget(inventoryHandler, 0).setFilter(GregtechMetaTileEntity_LargerTurbineBase::isValidTurbine)
+                        .setAccess(false, true).setPos(79, 34));
     }
 }

@@ -2,6 +2,13 @@ package gtPlusPlus.core.util.debug;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -19,32 +26,14 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
 
     public static boolean disableMaintenance;
-    public boolean mMachine = false,
-            mWrench = false,
-            mScrewdriver = false,
-            mSoftHammer = false,
-            mHardHammer = false,
-            mSolderingTool = false,
-            mCrowbar = false,
-            mRunningOnLoad = false;
-    public int mPollution = 0,
-            mProgresstime = 0,
-            mMaxProgresstime = 0,
-            mEUt = 0,
-            mEfficiencyIncrease = 0,
-            mUpdate = 0,
-            mStartUpCheck = 100,
-            mRuntime = 0,
-            mEfficiency = 0;
+    public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
+            mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
+    public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0, mUpdate = 0,
+            mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
     public ItemStack[] mOutputItems = null;
     public FluidStack[] mOutputFluids = null;
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
@@ -58,14 +47,14 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
 
     public DEBUG_MULTIBLOCK_ShapeSpawner(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
-        DEBUG_MULTIBLOCK_ShapeSpawner.disableMaintenance = GregTech_API.sMachineFile.get(
-                ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
+        DEBUG_MULTIBLOCK_ShapeSpawner.disableMaintenance = GregTech_API.sMachineFile
+                .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
     }
 
     public DEBUG_MULTIBLOCK_ShapeSpawner(final String aName) {
         super(aName, 2);
-        DEBUG_MULTIBLOCK_ShapeSpawner.disableMaintenance = GregTech_API.sMachineFile.get(
-                ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
+        DEBUG_MULTIBLOCK_ShapeSpawner.disableMaintenance = GregTech_API.sMachineFile
+                .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
     }
 
     public static boolean isValidMetaTileEntity(final MetaTileEntity aMetaTileEntity) {
@@ -264,13 +253,10 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
                                             if (tStack != null) {
                                                 try {
                                                     GT_Mod.achievements.issueAchivementHatch(
-                                                            aBaseMetaTileEntity
-                                                                    .getWorld()
-                                                                    .getPlayerEntityByName(
-                                                                            aBaseMetaTileEntity.getOwnerName()),
+                                                            aBaseMetaTileEntity.getWorld().getPlayerEntityByName(
+                                                                    aBaseMetaTileEntity.getOwnerName()),
                                                             tStack);
-                                                } catch (final Exception e) {
-                                                }
+                                                } catch (final Exception e) {}
                                                 this.addOutput(tStack);
                                             }
                                         }
@@ -301,8 +287,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
                                     if ((this.mOutputFluids != null) && (this.mOutputFluids.length > 0)) {
                                         if (this.mOutputFluids.length > 1) {
                                             GT_Mod.achievements.issueAchievement(
-                                                    aBaseMetaTileEntity
-                                                            .getWorld()
+                                                    aBaseMetaTileEntity.getWorld()
                                                             .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
                                                     "oilplant");
                                         }
@@ -310,8 +295,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
                                 }
                             }
                         } else {
-                            if (((aTick % 100) == 0)
-                                    || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                            if (((aTick % 100) == 0) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
                                     || aBaseMetaTileEntity.hasInventoryBeenModified()) {
 
                                 if (aBaseMetaTileEntity.isAllowedToWork()) {
@@ -329,14 +313,14 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
                     this.stopMachine();
                 }
             }
-            aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127)
-                    | (this.mWrench ? 0 : 1)
-                    | (this.mScrewdriver ? 0 : 2)
-                    | (this.mSoftHammer ? 0 : 4)
-                    | (this.mHardHammer ? 0 : 8)
-                    | (this.mSolderingTool ? 0 : 16)
-                    | (this.mCrowbar ? 0 : 32)
-                    | (this.mMachine ? 0 : 64));
+            aBaseMetaTileEntity.setErrorDisplayID(
+                    (aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (this.mWrench ? 0 : 1)
+                            | (this.mScrewdriver ? 0 : 2)
+                            | (this.mSoftHammer ? 0 : 4)
+                            | (this.mHardHammer ? 0 : 8)
+                            | (this.mSolderingTool ? 0 : 16)
+                            | (this.mCrowbar ? 0 : 32)
+                            | (this.mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(this.mMaxProgresstime > 0);
         }
     }
@@ -405,8 +389,8 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
     public abstract int getDamageToComponent(ItemStack aStack);
 
     /**
-     * Gets the Amount of possibly outputted Items for loading the Output Stack Array from NBT.
-     * This should be the largest Amount that can ever happen legitimately.
+     * Gets the Amount of possibly outputted Items for loading the Output Stack Array from NBT. This should be the
+     * largest Amount that can ever happen legitimately.
      */
     public abstract int getAmountOfOutputs();
 
@@ -426,8 +410,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
     }
 
     public int getRepairStatus() {
-        return (this.mWrench ? 1 : 0)
-                + (this.mScrewdriver ? 1 : 0)
+        return (this.mWrench ? 1 : 0) + (this.mScrewdriver ? 1 : 0)
                 + (this.mSoftHammer ? 1 : 0)
                 + (this.mHardHammer ? 1 : 0)
                 + (this.mSolderingTool ? 1 : 0)
@@ -467,8 +450,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
                         break;
                 }
             }
-            if ((this.mInventory[1] != null)
-                    && (this.getBaseMetaTileEntity().getRandomNumber(2) == 0)
+            if ((this.mInventory[1] != null) && (this.getBaseMetaTileEntity().getRandomNumber(2) == 0)
                     && !this.mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
                 if (this.mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
                     final NBTTagCompound tNBT = this.mInventory[1].getTagCompound();
@@ -612,8 +594,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
         }
         final FluidStack tLiquid = aLiquid.copy();
         for (final GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
-            if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid)
-                    ? tHatch.outputsSteam()
+            if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam()
                     : tHatch.outputsLiquids()) {
                 final int tAmount = tHatch.fill(tLiquid, false);
                 if (tAmount >= tLiquid.amount) {
@@ -628,8 +609,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
 
     private void addFluidOutputs(final FluidStack[] mOutputFluids2) {
         for (int i = 0; i < mOutputFluids2.length; i++) {
-            if ((this.mOutputHatches.size() > i)
-                    && (this.mOutputHatches.get(i) != null)
+            if ((this.mOutputHatches.size() > i) && (this.mOutputHatches.get(i) != null)
                     && (mOutputFluids2[i] != null)
                     && isValidMetaTileEntity(this.mOutputHatches.get(i))) {
                 this.mOutputHatches.get(i).fill(mOutputFluids2[i], true);
@@ -662,8 +642,8 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
             return false;
         }
         aStack = GT_Utility.copy(aStack);
-        //		FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
-        //		if (aLiquid == null) {
+        // FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
+        // if (aLiquid == null) {
         for (final GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
             if (isValidMetaTileEntity(tHatch)) {
                 for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
@@ -680,17 +660,17 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
                 }
             }
         }
-        //		}else {
-        //			for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-        //				if (isValidMetaTileEntity(tHatch) &&
+        // }else {
+        // for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
+        // if (isValidMetaTileEntity(tHatch) &&
         // GT_ModHandler.isSteam(aLiquid)?tHatch.outputsSteam():tHatch.outputsLiquids()) {
-        //					int tAmount = tHatch.fill(aLiquid, false);
-        //					if (tAmount >= aLiquid.amount) {
-        //						return tHatch.fill(aLiquid, true) >= aLiquid.amount;
-        //					}
-        //				}
-        //			}
-        //		}
+        // int tAmount = tHatch.fill(aLiquid, false);
+        // if (tAmount >= aLiquid.amount) {
+        // return tHatch.fill(aLiquid, true) >= aLiquid.amount;
+        // }
+        // }
+        // }
+        // }
         return false;
     }
 
@@ -705,8 +685,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
         for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
             tHatch.mRecipeMap = this.getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
-                if (GT_Utility.areStacksEqual(
-                        aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(0))) {
+                if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(0))) {
                     if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
                         tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
                         return true;
@@ -718,8 +697,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
             tHatch.mRecipeMap = this.getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
                 for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (GT_Utility.areStacksEqual(
-                            aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i))) {
+                    if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i))) {
                         if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
                             tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
                             return true;
@@ -937,15 +915,9 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            "Progress:",
-            (this.mProgresstime / 20) + "secs",
-            (this.mMaxProgresstime / 20) + "secs",
-            "Efficiency:",
-            (this.mEfficiency / 100.0F) + "%",
-            "Problems:",
-            "" + (this.getIdealStatus() - this.getRepairStatus())
-        };
+        return new String[] { "Progress:", (this.mProgresstime / 20) + "secs", (this.mMaxProgresstime / 20) + "secs",
+                "Efficiency:", (this.mEfficiency / 100.0F) + "%", "Problems:",
+                "" + (this.getIdealStatus() - this.getRepairStatus()) };
     }
 
     @Override
@@ -954,14 +926,14 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 

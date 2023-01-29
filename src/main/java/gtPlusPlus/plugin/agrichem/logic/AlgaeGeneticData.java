@@ -1,7 +1,8 @@
 package gtPlusPlus.plugin.agrichem.logic;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraft.nbt.NBTTagCompound;
+
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class AlgaeGeneticData {
 
@@ -29,16 +30,8 @@ public class AlgaeGeneticData {
         this(true, true, true, true, (byte) 0, 1f, 1f, (byte) 30, 0, new AutoMap<AlgaeGrowthRequirement>());
     }
 
-    public AlgaeGeneticData(
-            boolean isDominant,
-            boolean requiresLight,
-            boolean isSalt,
-            boolean isFresh,
-            byte aTempTolerance,
-            float aFertility,
-            float aSpeed,
-            byte aLifespan,
-            int aGeneration,
+    public AlgaeGeneticData(boolean isDominant, boolean requiresLight, boolean isSalt, boolean isFresh,
+            byte aTempTolerance, float aFertility, float aSpeed, byte aLifespan, int aGeneration,
             AutoMap<AlgaeGrowthRequirement> aRequirements) {
         mIsDominant = isDominant;
         mRequiresLight = requiresLight;

@@ -1,5 +1,20 @@
 package gtPlusPlus.core.fluids;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,19 +27,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class FluidFactory {
 
@@ -79,9 +81,10 @@ public class FluidFactory {
 
     /**
      * Generates a 'Water' type fluid.
-     * @param aID - The Fluid ID (Must be unique)
+     * 
+     * @param aID          - The Fluid ID (Must be unique)
      * @param aUnlocalName - Unlocalized Fluid Name
-     * @param aRGB - a {@link Short[]} containing the RGB of the FluidPackage.
+     * @param aRGB         - a {@link Short[]} containing the RGB of the FluidPackage.
      * @return - A fully constructed & registered {@linkplain FluidPackage}
      */
     public static FluidPackage generate(int aID, String aUnlocalName, short[] aRGB) {
@@ -89,24 +92,26 @@ public class FluidFactory {
     }
 
     /**
-     * Generate a {@link FluidPackage} from the data provided. This FluidPackage is automatically registered and handled internally.
-     * Pass in {@link Short}.MIN_VALUE for any of the Fluid Fields (Besides ID, Name or RGB) and it will default to water values.
-     * @param aID - The Fluid ID (Must be unique)
+     * Generate a {@link FluidPackage} from the data provided. This FluidPackage is automatically registered and handled
+     * internally. Pass in {@link Short}.MIN_VALUE for any of the Fluid Fields (Besides ID, Name or RGB) and it will
+     * default to water values.
+     * 
+     * @param aID          - The Fluid ID (Must be unique)
      * @param aUnlocalName - Unlocalized Fluid Name
-     * @param luminosity - How bright is the fluid.
-     * @param density - completely arbitrary; negative density indicates that the fluid is
-     * lighter than air. Default value is approximately the real-life density of water in kg/m^3.
-     * @param temp - completely arbitrary; higher temperature indicates that the fluid is
-     * hotter than air. Default value is approximately the real-life room temperature of water in degrees Kelvin
-     * @param viscosity - completely arbitrary; negative values are not
-     * permissible. Default value is approximately the real-life density of water in m/s^2 (x10^-3).     *
-     * Higher viscosity means that a fluid flows more slowly, like molasses.
-     * Lower viscosity means that a fluid flows more quickly, like helium.
-     * @param aRGB - a {@link Short[]} containing the RGB of the FluidPackage.
+     * @param luminosity   - How bright is the fluid.
+     * @param density      - completely arbitrary; negative density indicates that the fluid is lighter than air.
+     *                     Default value is approximately the real-life density of water in kg/m^3.
+     * @param temp         - completely arbitrary; higher temperature indicates that the fluid is hotter than air.
+     *                     Default value is approximately the real-life room temperature of water in degrees Kelvin
+     * @param viscosity    - completely arbitrary; negative values are not permissible. Default value is approximately
+     *                     the real-life density of water in m/s^2 (x10^-3). * Higher viscosity means that a fluid flows
+     *                     more slowly, like molasses. Lower viscosity means that a fluid flows more quickly, like
+     *                     helium.
+     * @param aRGB         - a {@link Short[]} containing the RGB of the FluidPackage.
      * @return - A fully constructed & registered {@linkplain FluidPackage}
      */
-    public static FluidPackage generate(
-            int aID, String aUnlocalName, int luminosity, int density, int temp, int viscosity, short[] aRGB) {
+    public static FluidPackage generate(int aID, String aUnlocalName, int luminosity, int density, int temp,
+            int viscosity, short[] aRGB) {
 
         FluidPackage aFluidToGenerate = null;
 
@@ -145,8 +150,8 @@ public class FluidFactory {
         return aFluidToGenerate;
     }
 
-    private static Fluid fluid(
-            String aUnlocalName, int luminosity, int density, int temp, int viscosity, short[] aRGB) {
+    private static Fluid fluid(String aUnlocalName, int luminosity, int density, int temp, int viscosity,
+            short[] aRGB) {
         return new FactoryFluid(aUnlocalName, luminosity, density, temp, viscosity, aRGB);
     }
 
@@ -163,13 +168,11 @@ public class FluidFactory {
     }
 
     /**
-     * Copyright © SpaceToad, 2011 http://www.mod-buildcraft.com BuildCraft is
-     * distributed under the terms of the Minecraft Mod Public License 1.0, or MMPL.
-     * Please check the contents of the license located in
+     * Copyright © SpaceToad, 2011 http://www.mod-buildcraft.com BuildCraft is distributed under the terms of the
+     * Minecraft Mod Public License 1.0, or MMPL. Please check the contents of the license located in
      * http://www.mod-buildcraft.com/MMPL-1.0.txt
      *
-     * Modified version of the BC BucketHandler, except using ItemStacks > Items
-     * (Why?)
+     * Modified version of the BC BucketHandler, except using ItemStacks > Items (Why?)
      *
      * @author Alkalus
      */

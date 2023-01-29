@@ -1,5 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.items.behaviours;
 
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import codechicken.lib.math.MathHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -15,24 +26,15 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import ic2.api.item.IElectricItemManager;
-import java.util.List;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class Behaviour_Electric_Lighter extends Behaviour_None {
 
-    private final String mTooltip =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
-    private final String mTooltipUses =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+    private final String mTooltip = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
+    private final String mTooltipUses = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
+    private final String mTooltipUnstackable = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
     public Behaviour_Electric_Lighter() {}
 
@@ -59,18 +61,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
         }
     }
 
-    public boolean onItemUse(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -88,7 +80,10 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
                     aWorld.playSoundAtEntity(
-                            aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                            aPlayer,
+                            "random.bow",
+                            0.5F,
+                            0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }
@@ -105,7 +100,13 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
                             GT_Utility.sendSoundToPlayers(
-                                    aWorld, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY, aZ);
+                                    aWorld,
+                                    (String) GregTech_API.sSoundList.get(6),
+                                    1.0F,
+                                    1.0F,
+                                    aX,
+                                    aY,
+                                    aZ);
                             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
                             rOutput = true;
                             // ItemNBT.setLighterFuel(aStack, tFuelAmount);
@@ -119,18 +120,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
         return false;
     }
 
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -148,7 +139,10 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
                     aWorld.playSoundAtEntity(
-                            aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                            aPlayer,
+                            "random.bow",
+                            0.5F,
+                            0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }
@@ -165,7 +159,13 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
                             GT_Utility.sendSoundToPlayers(
-                                    aWorld, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY, aZ);
+                                    aWorld,
+                                    (String) GregTech_API.sSoundList.get(6),
+                                    1.0F,
+                                    1.0F,
+                                    aX,
+                                    aY,
+                                    aZ);
                             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
                             rOutput = true;
                             // ItemNBT.setLighterFuel(aStack, tFuelAmount);

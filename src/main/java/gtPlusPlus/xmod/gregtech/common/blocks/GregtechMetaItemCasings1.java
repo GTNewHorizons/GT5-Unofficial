@@ -1,18 +1,20 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GregtechMetaItemCasings1 extends GregtechMetaItemCasingsAbstract {
+
     public GregtechMetaItemCasings1(final Block par1) {
         super(par1);
     }
 
     @Override
-    public void addInformation(
-            final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
+    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList,
+            final boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         switch (this.getDamage(aStack)) {
             case 0:

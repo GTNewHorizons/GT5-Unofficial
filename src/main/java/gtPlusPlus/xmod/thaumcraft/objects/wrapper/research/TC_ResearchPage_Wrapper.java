@@ -1,18 +1,21 @@
 package gtPlusPlus.xmod.thaumcraft.objects.wrapper.research;
 
-import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_AspectList_Wrapper;
-import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_CrucibleRecipe_Wrapper;
-import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_IArcaneRecipe_Wrapper;
-import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionEnchantmentRecipe_Wrapper;
-import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionRecipe_Wrapper;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_AspectList_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_CrucibleRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_IArcaneRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionEnchantmentRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionRecipe_Wrapper;
+
 public class TC_ResearchPage_Wrapper {
+
     public TC_PageType_Wrapper type;
     public String text;
     public String research;

@@ -1,5 +1,16 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,19 +22,11 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class MultiPickaxeBase extends StaballoyPickaxe {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.ItemStack)
      */
     @Override
@@ -41,12 +44,8 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
     public boolean isValid = true;
     private final Pair<?, ?> enchantment;
 
-    public MultiPickaxeBase(
-            final String unlocalizedName,
-            final ToolMaterial material,
-            final long materialDurability,
-            final int colour,
-            final Object enchant) {
+    public MultiPickaxeBase(final String unlocalizedName, final ToolMaterial material, final long materialDurability,
+            final int colour, final Object enchant) {
         super(Utils.sanitizeString(unlocalizedName), material);
         this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
         // this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
@@ -76,8 +75,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
 
         try {
             this.isValid = this.addRecipe();
-        } catch (final Throwable e) {
-        }
+        } catch (final Throwable e) {}
         if ((colour != 0) && this.isValid && (materialDurability > 10000)) {
             if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null) {
                 GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
@@ -86,13 +84,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
     }
 
     /*
-     *
-     *
-     *
-     *  Methods
-     *
-     *
-     *
+     * Methods
      */
 
     private boolean addRecipe() {
@@ -180,7 +172,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
                 bDurabilityLoss = 100;
                 // Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
 
-                correctTool = this.canPickaxeBlock(removalist, world, new int[] {X, Y, Z});
+                correctTool = this.canPickaxeBlock(removalist, world, new int[] { X, Y, Z });
                 Logger.WARNING("" + correctTool);
 
                 if (!correctTool) {
@@ -195,40 +187,17 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
     }
 
     // Should clear up blocks quicker if I chain it.
-    /*@Override
-    public void removeBlockAndDropAsItem(World world, int X, int Y, int Z, ItemStack heldItem){
-    	localWorld = world;
-    	try {
-    		Block block = world.getBlock(X, Y, Z);
-    		float dur = calculateDurabilityLoss(world, X, Y, Z);
-    		Utils.LOG_WARNING(block.toString());
-    		String removalTool = "";
-    		removalTool = block.getHarvestTool(1);
-
-    		if (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block, world, new int[]{X,Y,Z}, miningLevel)){
-    			if (canPickaxeBlock(block, world, new int[]{X,Y,Z})){
-    				if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
-
-    					if (heldItem.getItemDamage() <= (heldItem.getMaxDamage()-dur)){
-
-    						block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
-    						world.setBlockToAir(X, Y, Z);
-
-    					}
-    					else {
-    						return;
-    					}
-
-    				}
-    			}
-    			else {
-    				Utils.LOG_WARNING("Incorrect Tool for mining this block.");
-    			}
-    		}
-    	} catch (NullPointerException e){
-
-    	}
-    }*/
+    /*
+     * @Override public void removeBlockAndDropAsItem(World world, int X, int Y, int Z, ItemStack heldItem){ localWorld
+     * = world; try { Block block = world.getBlock(X, Y, Z); float dur = calculateDurabilityLoss(world, X, Y, Z);
+     * Utils.LOG_WARNING(block.toString()); String removalTool = ""; removalTool = block.getHarvestTool(1); if
+     * (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block, world, new int[]{X,Y,Z}, miningLevel)){ if
+     * (canPickaxeBlock(block, world, new int[]{X,Y,Z})){ if((block != Blocks.bedrock) && (block.getBlockHardness(world,
+     * X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block !=
+     * Blocks.lava)){ if (heldItem.getItemDamage() <= (heldItem.getMaxDamage()-dur)){ block.dropBlockAsItem(world, X, Y,
+     * Z, world.getBlockMetadata(X, Y, Z), 0); world.setBlockToAir(X, Y, Z); } else { return; } } } else {
+     * Utils.LOG_WARNING("Incorrect Tool for mining this block."); } } } catch (NullPointerException e){ } }
+     */
 
     @Override
     public void damageItem(final ItemStack item, final int damage, final EntityPlayer localPlayer) {

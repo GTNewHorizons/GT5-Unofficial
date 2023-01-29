@@ -36,30 +36,41 @@ public class Gregtech4Content {
 
     private static void computer() {
         Logger.INFO("Gregtech 4 Content | Registering Computer Cube.");
-        GregtechItemList.Gregtech_Computer_Cube_Machine.set(
-                new GT_TileEntity_ComputerCube(31130, "C-O-M-P-U-T-E-R").getStackForm(1L));
+        GregtechItemList.Gregtech_Computer_Cube_Machine
+                .set(new GT_TileEntity_ComputerCube(31130, "C-O-M-P-U-T-E-R").getStackForm(1L));
     }
 
     private static void workbenches() {
         // Gregtech 4 Workbenches
         Logger.INFO("Gregtech 4 Content | Registering Workbenches.");
-        GregtechItemList.GT4_Workbench_Bronze.set(new GT_MetaTileEntity_BronzeCraftingTable(
-                        31081, "workbench.basic", "Bronze Workbench", 0, "Stores 16000L of fluid")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Workbench_Advanced.set(new GT_MetaTileEntity_AdvancedCraftingTable(
-                        31082, "workbench.advanced", "Advanced Workbench", 3, "Stores 64000L of fluid")
-                .getStackForm(1L));
+        GregtechItemList.GT4_Workbench_Bronze.set(
+                new GT_MetaTileEntity_BronzeCraftingTable(
+                        31081,
+                        "workbench.basic",
+                        "Bronze Workbench",
+                        0,
+                        "Stores 16000L of fluid").getStackForm(1L));
+        GregtechItemList.GT4_Workbench_Advanced.set(
+                new GT_MetaTileEntity_AdvancedCraftingTable(
+                        31082,
+                        "workbench.advanced",
+                        "Advanced Workbench",
+                        3,
+                        "Stores 64000L of fluid").getStackForm(1L));
     }
 
     private static void redstone() {
         Logger.INFO("Gregtech 4 Content | Registering Redstone Blocks.");
         GregtechItemList.GT4_Redstone_Lamp.set(new GT_MetaTileEntity_RedstoneLamp(31120).getStackForm(1L));
-        GregtechItemList.GT4_Redstone_Button_Panel.set(
-                new GT_MetaTileEntity_RedstoneButtonPanel(31121).getStackForm(1L));
+        GregtechItemList.GT4_Redstone_Button_Panel
+                .set(new GT_MetaTileEntity_RedstoneButtonPanel(31121).getStackForm(1L));
         GregtechItemList.GT4_Redstone_Scale.set(new GT_MetaTileEntity_RedstoneStrengthScale(31122).getStackForm(1L));
-        GregtechItemList.GT4_Redstone_Display.set(new GT_MetaTileEntity_RedstoneStrengthDisplay(
-                        31123, "redstone.display.strength", "Redstone Display", "Displays Redstone Strength")
-                .getStackForm(1L));
+        GregtechItemList.GT4_Redstone_Display.set(
+                new GT_MetaTileEntity_RedstoneStrengthDisplay(
+                        31123,
+                        "redstone.display.strength",
+                        "Redstone Display",
+                        "Displays Redstone Strength").getStackForm(1L));
         GregtechItemList.GT4_Redstone_Circuit.set(new GT_MetaTileEntity_RedstoneCircuitBlock(31124).getStackForm(1L));
     }
 
@@ -157,15 +168,21 @@ public class Gregtech4Content {
         GregtechItemList.GT4_Shelf_Iron.set(
                 new GT4Entity_Shelf_Iron(871, "gtplusplus.shelf.iron", "Metal Shelf", "A heavy duty shelf")
                         .getStackForm(1L));
-        GregtechItemList.GT4_Shelf_FileCabinet.set(new GT4Entity_Shelf_FileCabinet(
-                        872, "gtplusplus.shelf.filecabinet", "File Cabinet", "Could look nice in your office")
-                .getStackForm(1L));
+        GregtechItemList.GT4_Shelf_FileCabinet.set(
+                new GT4Entity_Shelf_FileCabinet(
+                        872,
+                        "gtplusplus.shelf.filecabinet",
+                        "File Cabinet",
+                        "Could look nice in your office").getStackForm(1L));
         GregtechItemList.GT4_Shelf_Desk.set(
                 new GT4Entity_Shelf_Desk(873, "gtplusplus.shelf.desk", "Metal encased Desk", "A place to study")
                         .getStackForm(1L));
-        GregtechItemList.GT4_Shelf_Compartment.set(new GT4Entity_Shelf_Compartment(
-                        874, "gtplusplus.shelf.compartment", "Compartment", "Stores Books & Things")
-                .getStackForm(1L));
+        GregtechItemList.GT4_Shelf_Compartment.set(
+                new GT4Entity_Shelf_Compartment(
+                        874,
+                        "gtplusplus.shelf.compartment",
+                        "Compartment",
+                        "Stores Books & Things").getStackForm(1L));
 
         // Custom Storage
         GregtechItemList.GT4_Shelf_Large.set(

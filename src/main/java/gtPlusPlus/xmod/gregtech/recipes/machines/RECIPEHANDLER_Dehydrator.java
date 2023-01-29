@@ -1,9 +1,10 @@
 package gtPlusPlus.xmod.gregtech.recipes.machines;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RECIPEHANDLER_Dehydrator {
 
@@ -15,70 +16,90 @@ public class RECIPEHANDLER_Dehydrator {
         Logger.WARNING("My name is Willus and I will be your humble host.");
     }
 
-    public static void debug2(
-            final ItemStack aInput1,
-            final ItemStack aInput2,
-            final FluidStack aFluidInput,
-            final FluidStack aFluidOutput,
-            final ItemStack aOutput,
-            final int aDuration,
-            final int aEUt) {
+    public static void debug2(final ItemStack aInput1, final ItemStack aInput2, final FluidStack aFluidInput,
+            final FluidStack aFluidOutput, final ItemStack aOutput, final int aDuration, final int aEUt) {
         Logger.WARNING("==================================================================================");
         Logger.WARNING("Taking a step forward.");
         Logger.WARNING("aInput1 == null && aFluidInput == null || aOutput == null && aFluidOutput == null");
-        Logger.WARNING("aInput1:" + aInput1.toString() + " aInput2:" + aInput2.toString() + " aFluidInput:"
-                + aFluidInput.toString() + " aFluidOutput:" + aFluidOutput.toString() + " aOutput:" + aOutput.toString()
-                + " aDuration:" + aDuration + " aEU/t:" + aEUt);
+        Logger.WARNING(
+                "aInput1:" + aInput1.toString()
+                        + " aInput2:"
+                        + aInput2.toString()
+                        + " aFluidInput:"
+                        + aFluidInput.toString()
+                        + " aFluidOutput:"
+                        + aFluidOutput.toString()
+                        + " aOutput:"
+                        + aOutput.toString()
+                        + " aDuration:"
+                        + aDuration
+                        + " aEU/t:"
+                        + aEUt);
         Logger.WARNING("Passed.");
     }
 
-    public static void debug3(
-            final ItemStack aInput1,
-            final ItemStack aInput2,
-            final FluidStack aFluidInput,
-            final FluidStack aFluidOutput,
-            final ItemStack aOutput,
-            final int aDuration,
-            final int aEUt) {
+    public static void debug3(final ItemStack aInput1, final ItemStack aInput2, final FluidStack aFluidInput,
+            final FluidStack aFluidOutput, final ItemStack aOutput, final int aDuration, final int aEUt) {
         Logger.WARNING("==================================================================================");
         Logger.WARNING("Taking a step forward.");
         Logger.WARNING(
                 "(aOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(cokeoven, aOutput, aDuration)) <= 0)");
-        Logger.WARNING("aInput1:" + aInput1.toString() + " aInput2:" + aInput2.toString() + " aFluidInput:"
-                + aFluidInput.toString() + " aFluidOutput:" + aFluidOutput.toString() + " aOutput:" + aOutput.toString()
-                + " aDuration:" + aDuration + " aEU/t:" + aEUt);
+        Logger.WARNING(
+                "aInput1:" + aInput1.toString()
+                        + " aInput2:"
+                        + aInput2.toString()
+                        + " aFluidInput:"
+                        + aFluidInput.toString()
+                        + " aFluidOutput:"
+                        + aFluidOutput.toString()
+                        + " aOutput:"
+                        + aOutput.toString()
+                        + " aDuration:"
+                        + aDuration
+                        + " aEU/t:"
+                        + aEUt);
         Logger.WARNING("Passed.");
     }
 
-    public static void debug4(
-            final ItemStack aInput1,
-            final ItemStack aInput2,
-            final FluidStack aFluidInput,
-            final FluidStack aFluidOutput,
-            final ItemStack aOutput,
-            final int aDuration,
-            final int aEUt) {
+    public static void debug4(final ItemStack aInput1, final ItemStack aInput2, final FluidStack aFluidInput,
+            final FluidStack aFluidOutput, final ItemStack aOutput, final int aDuration, final int aEUt) {
         Logger.WARNING("==================================================================================");
         Logger.WARNING("Taking a step forward.");
         Logger.WARNING(
                 "(aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(cokeoven, aFluidOutput.getFluid().getName(), aDuration)) <= 0)");
-        Logger.WARNING("aInput1:" + aInput1.toString() + " aInput2:" + aInput2.toString() + " aFluidInput:"
-                + aFluidInput.toString() + " aFluidOutput:" + aFluidOutput.toString() + " aOutput:" + aOutput.toString()
-                + " aDuration:" + aDuration + " aEU/t:" + aEUt);
+        Logger.WARNING(
+                "aInput1:" + aInput1.toString()
+                        + " aInput2:"
+                        + aInput2.toString()
+                        + " aFluidInput:"
+                        + aFluidInput.toString()
+                        + " aFluidOutput:"
+                        + aFluidOutput.toString()
+                        + " aOutput:"
+                        + aOutput.toString()
+                        + " aDuration:"
+                        + aDuration
+                        + " aEU/t:"
+                        + aEUt);
         Logger.WARNING("Passed.");
-        Logger.WARNING("aInput1:" + aInput1.toString() + " aInput2:" + aInput2.toString() + " aFluidInput:"
-                + aFluidInput.toString() + " aFluidOutput:" + aFluidOutput.toString() + " aOutput:" + aOutput.toString()
-                + " aDuration:" + aDuration + " aEU/t:" + aEUt);
+        Logger.WARNING(
+                "aInput1:" + aInput1.toString()
+                        + " aInput2:"
+                        + aInput2.toString()
+                        + " aFluidInput:"
+                        + aFluidInput.toString()
+                        + " aFluidOutput:"
+                        + aFluidOutput.toString()
+                        + " aOutput:"
+                        + aOutput.toString()
+                        + " aDuration:"
+                        + aDuration
+                        + " aEU/t:"
+                        + aEUt);
     }
 
-    public static void debug5(
-            final ItemStack aInput1,
-            final ItemStack aInput2,
-            final FluidStack aFluidInput,
-            final FluidStack aFluidOutput,
-            final ItemStack[] aOutput,
-            final int aDuration,
-            final int aEUt) {
+    public static void debug5(final ItemStack aInput1, final ItemStack aInput2, final FluidStack aFluidInput,
+            final FluidStack aFluidOutput, final ItemStack[] aOutput, final int aDuration, final int aEUt) {
 
         String inputAname;
         String inputBname;
@@ -109,9 +130,21 @@ public class RECIPEHANDLER_Dehydrator {
             outputFluidName = "null";
         }
 
-        Logger.INFO("Successfully added a Chemical Dehydrator recipe for: " + ItemUtils.getArrayStackNames(aOutput)
-                + " & " + outputFluidName + ", Using " + inputAname + " & " + inputBname + " & liquid " + inputFluidname
-                + ". This takes " + (aDuration / 20) + " seconds for " + aEUt + "eu/t.");
+        Logger.INFO(
+                "Successfully added a Chemical Dehydrator recipe for: " + ItemUtils.getArrayStackNames(aOutput)
+                        + " & "
+                        + outputFluidName
+                        + ", Using "
+                        + inputAname
+                        + " & "
+                        + inputBname
+                        + " & liquid "
+                        + inputFluidname
+                        + ". This takes "
+                        + (aDuration / 20)
+                        + " seconds for "
+                        + aEUt
+                        + "eu/t.");
         Logger.WARNING("==================================================================================");
         Logger.WARNING("==================================================================================");
         Logger.WARNING("==================================================================================");

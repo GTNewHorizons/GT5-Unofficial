@@ -2,8 +2,12 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -17,18 +21,17 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.widget.ElectricSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatch {
+
     public final GT_Recipe_Map mRecipeMap = null;
 
     public GT_MetaTileEntity_Hatch_InputBattery(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Chargeable Item Bus for Multiblocks");
     }
 
-    public GT_MetaTileEntity_Hatch_InputBattery(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_InputBattery(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 4 : 16, aDescription, aTextures);
     }
 
@@ -42,7 +45,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
         } else {
             mSlots = 16;
         }
-        return new String[] {this.mDescription, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip};
+        return new String[] { this.mDescription, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip };
     }
 
     @Override
@@ -77,12 +80,12 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger) };
     }
 
     @Override
@@ -126,9 +129,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
                 MetaTileEntity mMetaTileEntity = (MetaTileEntity) aBaseMetaTileEntity.getMetaTileEntity();
                 if (mMetaTileEntity.rechargerSlotCount() > 0 && aBaseMetaTileEntity.getStoredEU() > 0) {
                     for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
-                                    k = mMetaTileEntity.rechargerSlotCount() + i;
-                            i < k;
-                            i++) {
+                            k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                         if (aBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
                             for (int u = 0; u < 10; u++) {
                                 aBaseMetaTileEntity.decreaseStoredEnergyUnits(
@@ -163,19 +164,18 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
 
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
-            for (int j = i + 1; j < mInventory.length; j++)
-                if (mInventory[j] != null
-                        && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(
-                            getBaseMetaTileEntity(),
-                            getBaseMetaTileEntity(),
-                            j,
-                            i,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1);
-                }
+            for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
+                    && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                        GT_Utility.moveStackFromSlotAToSlotB(
+                                getBaseMetaTileEntity(),
+                                getBaseMetaTileEntity(),
+                                j,
+                                i,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                    }
     }
 
     @Override

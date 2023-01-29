@@ -6,10 +6,20 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -29,13 +39,6 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity_AutoCrafter>
         implements ISurvivalConstructable {
@@ -50,6 +53,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     public CraftingHelper mInventoryCrafter;
 
     public static enum MODE {
+
         CRAFTING("CIRCUIT", "ASSEMBLY"),
         ASSEMBLY("CRAFTING", "DISASSEMBLY"),
         DISASSEMBLY("ASSEMBLY", "CIRCUIT"),
@@ -132,23 +136,14 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Highly Advanced Autocrafter")
+        tt.addMachineType(getMachineType()).addInfo("Highly Advanced Autocrafter")
                 .addInfo("Right Click with a Screwdriver to change mode")
                 .addInfo("200% faster than using single block machines of the same voltage")
-                .addInfo("Processes two items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center")
-                .addCasingInfo("Bulk Production Frame", 10)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addInfo("Processes two items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
+                .addCasingInfo("Bulk Production Frame", 10).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
+                .addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -171,18 +166,16 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     public IStructureDefinition<GT4Entity_AutoCrafter> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GT4Entity_AutoCrafter>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GT4Entity_AutoCrafter.class)
                                     .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.getIndexFromPage(0, 10))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.getIndexFromPage(0, 10)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
                     .build();
         }
@@ -229,8 +222,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
                         return r;
                     }
                 }
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-            }
+            } catch (IllegalArgumentException | IllegalAccessException e) {}
         } else if (this.mMachineMode == MODE.DISASSEMBLY || this.mMachineMode == MODE.CRAFTING) {
             return null;
         }
@@ -249,16 +241,20 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
             mMachineMode = mMachineMode.nextMode();
             if (mMachineMode == MODE.CRAFTING) {
                 PlayerUtils.messagePlayer(
-                        aPlayer, "Running the Auto-Crafter in mode: " + EnumChatFormatting.AQUA + "AutoCrafting");
+                        aPlayer,
+                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.AQUA + "AutoCrafting");
             } else if (mMachineMode == MODE.ASSEMBLY) {
                 PlayerUtils.messagePlayer(
-                        aPlayer, "Running the Auto-Crafter in mode: " + EnumChatFormatting.GREEN + "Assembly");
+                        aPlayer,
+                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.GREEN + "Assembly");
             } else if (mMachineMode == MODE.DISASSEMBLY) {
                 PlayerUtils.messagePlayer(
-                        aPlayer, "Running the Auto-Crafter in mode: " + EnumChatFormatting.RED + "Disassembly");
+                        aPlayer,
+                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.RED + "Disassembly");
             } else {
                 PlayerUtils.messagePlayer(
-                        aPlayer, "Running the Auto-Crafter in mode: " + EnumChatFormatting.YELLOW + "Circuit Assembly");
+                        aPlayer,
+                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.YELLOW + "Circuit Assembly");
             }
         }
         // 5.08 support
@@ -287,20 +283,20 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
         }
     }
 
-    //	@Override
-    //	public boolean checkRecipe(final ItemStack aStack) {
+    // @Override
+    // public boolean checkRecipe(final ItemStack aStack) {
     //
-    //		final long tVoltage = this.getMaxInputVoltage();
-    //		final byte tTier = this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+    // final long tVoltage = this.getMaxInputVoltage();
+    // final byte tTier = this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
     //
-    //		if (mMachineMode == MODE.DISASSEMBLY) {
-    //			return doDisassembly();
-    //		} else if (mMachineMode == MODE.CRAFTING) {
-    //			return doCrafting(aStack);
-    //		} else {
-    //			return super.checkRecipeGeneric(getMaxParallelRecipes(), 100, 200);
-    //		}
-    //	}
+    // if (mMachineMode == MODE.DISASSEMBLY) {
+    // return doDisassembly();
+    // } else if (mMachineMode == MODE.CRAFTING) {
+    // return doCrafting(aStack);
+    // } else {
+    // return super.checkRecipeGeneric(getMaxParallelRecipes(), 100, 200);
+    // }
+    // }
 
     private void setTier() {
         long tVoltage = getMaxInputVoltage();
@@ -329,12 +325,17 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
 
                 Object[] tempArray = tFluids.toArray(new FluidStack[] {});
                 FluidStack[] properArray;
-                properArray =
-                        ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray : new FluidStack[] {});
+                properArray = ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray
+                        : new FluidStack[] {});
 
                 // Logger.MACHINE_INFO("4");
                 if (checkRecipeGeneric(
-                        tBusItems.toArray(new ItemStack[] {}), properArray, getMaxParallelRecipes(), 100, 200, 10000))
+                        tBusItems.toArray(new ItemStack[] {}),
+                        properArray,
+                        getMaxParallelRecipes(),
+                        100,
+                        200,
+                        10000))
                     return true;
             }
             return false;
@@ -441,136 +442,43 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
         this.mMaxProgresstime = 0;
         return false; // do nothing
         /*
-        try {
-        	// Set Crafting input hatch
-        	if (!doesCrafterHave9SlotInput()) {
-        		return false;
-        	}
-
-        	// Read stored data from encrypted data stick.
-        	ItemStack storedData_Output[] = NBTUtils.readItemsFromNBT(aStack, "Output");
-        	ItemStack storedData_Input[] = NBTUtils.readItemsFromNBT(aStack);
-        	if (storedData_Output != null && storedData_Input != null) {
-        		ItemStack loadedData[] = new ItemStack[9];
-        		if (storedData_Input.length >= 1) {
-        			int number = 0;
-        			for (ItemStack a : storedData_Input) {
-        				if (a.getItem() == ModItems.ZZZ_Empty) {
-        					// Utils.LOG_WARNING("Allocating free memory into crafting manager slot
-        					// "+number+".");
-        					loadedData[number] = null;
-        				} else {
-        					// Utils.LOG_WARNING("Downloading "+a.getDisplayName()+" into crafting manager
-        					// slot "+number+".");
-        					loadedData[number] = a;
-        				}
-        				number++;
-        			}
-        		}
-
-        		// Remove inputs here
-        		ArrayList<ItemStack> mInputArray = new ArrayList<ItemStack>();
-        		ItemStack allInputs[];
-
-        		for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses) {
-        			if (x.mInventory.length > 0) {
-        				for (ItemStack r : x.mInventory) {
-        					if (r != null) {
-        						mInputArray.add(r);
-        					}
-        				}
-        			}
-        		}
-
-        		if (mInputArray.isEmpty()) {
-        			return false;
-        		} else {
-        			List<ItemStack> list = mInputArray;
-        			allInputs = list.toArray(new ItemStack[list.size()]);
-
-        			if (allInputs != null && allInputs.length > 0) {
-
-        				this.mEUt = 8 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
-        				this.mMaxProgresstime = MathUtils.roundToClosestInt((50 - (5
-        						* MathUtils.randDouble(((this.mTier - 2) <= 0 ? 1 : (this.mTier - 2)), this.mTier))));
-
-        				Logger.WARNING("MPT: " + mMaxProgresstime + " | " + mEUt);
-        				this.getBaseMetaTileEntity().setActive(true);
-
-        				// Setup some vars
-        				int counter = 0;
-
-        				ItemStack toUse[] = new ItemStack[9];
-
-        				outerloop: for (ItemStack inputItem : loadedData) {
-        					if (inputItem == null) {
-        						toUse[counter] = null;
-        						continue outerloop;
-        					}
-        					for (ItemStack r : allInputs) {
-        						if (r != null) {
-        							// Utils.LOG_WARNING("Input Bus Inventory Iteration - Found:"
-        							// +r.getDisplayName()+" | "+allInputs.length);
-        							if (GT_Utility.areStacksEqual(r, inputItem)) {
-        								if (this.getBaseMetaTileEntity().isServerSide()) {
-        									toUse[counter] = inputItem;
-        									counter++;
-        									continue outerloop;
-        								}
-
-        							}
-        						}
-        					}
-        					counter++;
-        				}
-
-        				int mCorrectInputs = 0;
-        				for (ItemStack isValid : toUse) {
-        					if (isValid == null || this.depleteInput(isValid)) {
-        						mCorrectInputs++;
-        					} else {
-        						Logger.WARNING("Input in Slot " + mCorrectInputs + " was not valid.");
-        					}
-        				}
-
-        				if (this.mTier > 5) {
-        					this.mMaxProgresstime >>= this.mTier - 5;
-        				}
-        				if (this.mEUt > 0)
-        					this.mEUt = (-this.mEUt);
-        				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        				this.mEfficiencyIncrease = 10000;
-
-        				if (mCorrectInputs == 9) {
-        					ItemStack mOutputItem = storedData_Output[0];
-        					NBTUtils.writeItemsToGtCraftingComponents(mOutputItem, loadedData, true);
-        					this.addOutput(mOutputItem);
-        					this.updateSlots();
-        					return true;
-        				} else {
-        					return false;
-        				}
-
-        			}
-        		}
-        	}
-        }
-        // End Debug
-        catch (Throwable t) {
-        	t.printStackTrace();
-        	this.mMaxProgresstime = 0;
-        }
-
-        this.mMaxProgresstime = 0;
-        return false;
-        */
+         * try { // Set Crafting input hatch if (!doesCrafterHave9SlotInput()) { return false; } // Read stored data
+         * from encrypted data stick. ItemStack storedData_Output[] = NBTUtils.readItemsFromNBT(aStack, "Output");
+         * ItemStack storedData_Input[] = NBTUtils.readItemsFromNBT(aStack); if (storedData_Output != null &&
+         * storedData_Input != null) { ItemStack loadedData[] = new ItemStack[9]; if (storedData_Input.length >= 1) {
+         * int number = 0; for (ItemStack a : storedData_Input) { if (a.getItem() == ModItems.ZZZ_Empty) { //
+         * Utils.LOG_WARNING("Allocating free memory into crafting manager slot // "+number+"."); loadedData[number] =
+         * null; } else { // Utils.LOG_WARNING("Downloading "+a.getDisplayName()+" into crafting manager // slot
+         * "+number+"."); loadedData[number] = a; } number++; } } // Remove inputs here ArrayList<ItemStack> mInputArray
+         * = new ArrayList<ItemStack>(); ItemStack allInputs[]; for (GT_MetaTileEntity_Hatch_InputBus x :
+         * this.mInputBusses) { if (x.mInventory.length > 0) { for (ItemStack r : x.mInventory) { if (r != null) {
+         * mInputArray.add(r); } } } } if (mInputArray.isEmpty()) { return false; } else { List<ItemStack> list =
+         * mInputArray; allInputs = list.toArray(new ItemStack[list.size()]); if (allInputs != null && allInputs.length
+         * > 0) { this.mEUt = 8 * (1 << this.mTier - 1) * (1 << this.mTier - 1); this.mMaxProgresstime =
+         * MathUtils.roundToClosestInt((50 - (5 MathUtils.randDouble(((this.mTier - 2) <= 0 ? 1 : (this.mTier - 2)),
+         * this.mTier)))); Logger.WARNING("MPT: " + mMaxProgresstime + " | " + mEUt);
+         * this.getBaseMetaTileEntity().setActive(true); // Setup some vars int counter = 0; ItemStack toUse[] = new
+         * ItemStack[9]; outerloop: for (ItemStack inputItem : loadedData) { if (inputItem == null) { toUse[counter] =
+         * null; continue outerloop; } for (ItemStack r : allInputs) { if (r != null) { //
+         * Utils.LOG_WARNING("Input Bus Inventory Iteration - Found:" // +r.getDisplayName()+" | "+allInputs.length); if
+         * (GT_Utility.areStacksEqual(r, inputItem)) { if (this.getBaseMetaTileEntity().isServerSide()) { toUse[counter]
+         * = inputItem; counter++; continue outerloop; } } } } counter++; } int mCorrectInputs = 0; for (ItemStack
+         * isValid : toUse) { if (isValid == null || this.depleteInput(isValid)) { mCorrectInputs++; } else {
+         * Logger.WARNING("Input in Slot " + mCorrectInputs + " was not valid."); } } if (this.mTier > 5) {
+         * this.mMaxProgresstime >>= this.mTier - 5; } if (this.mEUt > 0) this.mEUt = (-this.mEUt); this.mEfficiency =
+         * (10000 - (getIdealStatus() - getRepairStatus()) * 1000); this.mEfficiencyIncrease = 10000; if (mCorrectInputs
+         * == 9) { ItemStack mOutputItem = storedData_Output[0]; NBTUtils.writeItemsToGtCraftingComponents(mOutputItem,
+         * loadedData, true); this.addOutput(mOutputItem); this.updateSlots(); return true; } else { return false; } } }
+         * } } // End Debug catch (Throwable t) { t.printStackTrace(); this.mMaxProgresstime = 0; }
+         * this.mMaxProgresstime = 0; return false;
+         */
     }
 
     @Override
     public String[] getExtraInfoData() {
         final String tRunning = (this.mMaxProgresstime > 0 ? "Auto-Crafter running" : "Auto-Crafter stopped");
-        final String tMaintainance =
-                (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance");
+        final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues"
+                : "Needs Maintainance");
         String tSpecialText = "" + (60 + 12 * this.mTier) + "% chance to recover disassembled parts.";
         String tMode;
         if (mMachineMode == MODE.DISASSEMBLY) {
@@ -588,9 +496,8 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
             tSpecialText = "Does Auto-Crafter have 9-slot input bus? " + doesCrafterHave9SlotInput();
         }
 
-        return new String[] {
-            "Large Scale Auto-Asesembler v1.01c", tRunning, tMaintainance, "Mode: " + tMode, tSpecialText
-        };
+        return new String[] { "Large Scale Auto-Asesembler v1.01c", tRunning, tMaintainance, "Mode: " + tMode,
+                tSpecialText };
     }
 
     private String getMode() {

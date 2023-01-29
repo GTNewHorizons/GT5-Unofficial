@@ -1,16 +1,16 @@
 package gtPlusPlus.api.objects.data;
 
-import gtPlusPlus.api.objects.Logger;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import gtPlusPlus.api.objects.Logger;
+
 public class TypeCounter<V> implements Set<V> {
 
-    private Map<String, InternalTypeCounterObject<V>> mInternalMap =
-            new LinkedHashMap<String, InternalTypeCounterObject<V>>();
+    private Map<String, InternalTypeCounterObject<V>> mInternalMap = new LinkedHashMap<String, InternalTypeCounterObject<V>>();
     private String mHighestValueKey;
     private int mHighestValue = 0;
     private final Class mClass;
@@ -21,6 +21,7 @@ public class TypeCounter<V> implements Set<V> {
     }
 
     public static class InternalTypeCounterObject<Z> {
+
         private final Z mObject;
         private int mCounter = 0;
 

@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -7,9 +12,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.HashSet;
-import java.util.Set;
-import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Extruder extends RecipeGen_Base {
 
@@ -121,10 +123,10 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
                     material.getRod(2),
                     (int) Math.max(material.getMass() * 2L * 1, 1),
                     material.vVoltageMultiplier)) {
-                Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
 
         // Bolt Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1)))
@@ -143,8 +145,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
         // Rotor Recipe
         // Shape_Extruder_Rotor
-        if (mRotorShapeEnabled
-                && ItemUtils.checkForInvalidItems(material.getIngot(1))
+        if (mRotorShapeEnabled && ItemUtils.checkForInvalidItems(material.getIngot(1))
                 && ItemUtils.checkForInvalidItems(material.getRotor(1)))
             if (GT_Values.RA.addExtruderRecipe(
                     material.getIngot(5),
@@ -152,9 +153,9 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
                     material.getRotor(1),
                     200,
                     60)) {
-                Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+                        Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Success");
+                    } else {
+                        Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Failed");
+                    }
     }
 }

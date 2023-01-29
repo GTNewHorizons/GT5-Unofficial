@@ -111,9 +111,9 @@ public class Inventory_DecayablesChest implements IInventory {
     }
 
     /**
-     * This is the method that will handle saving the inventory contents, as it is called (or should be called!)
-     * anytime the inventory changes. Perfect. Much better than using onUpdate in an Item, as this will also
-     * let you change things in your inventory without ever opening a Gui, if you want.
+     * This is the method that will handle saving the inventory contents, as it is called (or should be called!) anytime
+     * the inventory changes. Perfect. Much better than using onUpdate in an Item, as this will also let you change
+     * things in your inventory without ever opening a Gui, if you want.
      */
     // 1.7.2+ renamed to markDirty
     @Override
@@ -144,9 +144,8 @@ public class Inventory_DecayablesChest implements IInventory {
     public void closeInventory() {}
 
     /**
-     * This method doesn't seem to do what it claims to do, as
-     * items can still be left-clicked and placed in the inventory
-     * even when this returns false
+     * This method doesn't seem to do what it claims to do, as items can still be left-clicked and placed in the
+     * inventory even when this returns false
      */
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {

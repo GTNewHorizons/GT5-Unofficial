@@ -1,10 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
@@ -13,12 +22,6 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import gtPlusPlus.core.util.minecraft.LangUtils;
-import java.util.concurrent.atomic.AtomicBoolean;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 
@@ -32,8 +35,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         this.mMaxTransferRate = aTransferRate * 1000;
     }
 
-    public int doCoverThings(
-            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         if (aCoverVariable == 0) {
             return aCoverVariable;
         }
@@ -68,15 +71,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         return aCoverVariable;
     }
 
-    public int onCoverScrewdriverclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
             aCoverVariable += (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
@@ -89,19 +85,13 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
             aCoverVariable = mMaxTransferRate;
         }
         GT_Utility.sendChatToPlayer(
-                aPlayer, LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
+                aPlayer,
+                LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
         return aCoverVariable;
     }
 
-    public boolean onCoverRightclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         boolean aShift = aPlayer.isSneaking();
         int aAmount = aShift ? 128 : 8;
         if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
@@ -116,7 +106,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
             aCoverVariable = mMaxTransferRate;
         }
         GT_Utility.sendChatToPlayer(
-                aPlayer, LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
+                aPlayer,
+                LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
         aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
         return true;
     }
@@ -194,40 +185,42 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             AtomicBoolean warn = new AtomicBoolean(false);
 
-            builder.widget(new CoverDataControllerWidget<>(
-                                    this::getCoverData, this::setCoverData, GTPP_Cover_Overflow.this)
+            builder.widget(
+                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GTPP_Cover_Overflow.this)
                             .addFollower(
                                     new CoverDataFollower_TextFieldWidget<>(),
                                     coverData -> String.valueOf(convert(coverData)),
                                     (coverData, state) -> new ISerializableObject.LegacyCoverData(
                                             (int) MathExpression.parseMathExpression(state)),
-                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50)
-                                            .setNumbersLong(val -> {
-                                                warn.set(false);
-                                                if (val > mMaxTransferRate) {
-                                                    val = (long) mMaxTransferRate;
-                                                    warn.set(true);
-                                                } else if (val < 0) {
-                                                    val = 0L;
-                                                }
-                                                return val;
-                                            })
-                                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                                            .setFocusOnGuiOpen(true)
+                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50).setNumbersLong(val -> {
+                                        warn.set(false);
+                                        if (val > mMaxTransferRate) {
+                                            val = (long) mMaxTransferRate;
+                                            warn.set(true);
+                                        } else if (val < 0) {
+                                            val = 0L;
+                                        }
+                                        return val;
+                                    }).setPattern(BaseTextFieldWidget.NATURAL_NUMS).setFocusOnGuiOpen(true)
                                             .setPos(startX + spaceX * 0, startY + spaceY * 0 + 8)
                                             .setSize(spaceX * 4 - 3, 12)))
-                    .widget(new TextWidget(GT_Utility.trans("323", "L"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0 + 8))
-                    .widget(TextWidget.dynamicText(() -> new Text((warn.get()
-                                                    ? GT_Utility.trans("325", "Max")
-                                                    : GT_Utility.trans("324", "Now"))
-                                            + ": " + convert(getCoverData())
-                                            + "/" + mMaxTransferRate + " "
-                                            + GT_Utility.trans("323", "L"))
-                                    .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get()))
-                            .setSynced(false)
-                            .setPos(startX + spaceX * 0, 4 + startY + spaceY * 1 + 6));
+                    .widget(
+                            new TextWidget(GT_Utility.trans("323", "L")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0 + 8))
+                    .widget(
+                            TextWidget
+                                    .dynamicText(
+                                            () -> new Text(
+                                                    (warn.get() ? GT_Utility.trans("325", "Max")
+                                                            : GT_Utility.trans("324", "Now")) + ": "
+                                                            + convert(getCoverData())
+                                                            + "/"
+                                                            + mMaxTransferRate
+                                                            + " "
+                                                            + GT_Utility.trans("323", "L")).color(
+                                                                    warn.get() ? COLOR_TEXT_WARN.get()
+                                                                            : COLOR_TEXT_GRAY.get()))
+                                    .setSynced(false).setPos(startX + spaceX * 0, 4 + startY + spaceY * 1 + 6));
         }
     }
 }

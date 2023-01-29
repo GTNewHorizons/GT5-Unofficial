@@ -1,19 +1,22 @@
 package gtPlusPlus.core.handler;
 
+import java.lang.reflect.Field;
+
+import net.minecraft.stats.AchievementList;
+import net.minecraftforge.event.entity.player.AchievementEvent;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.Field;
-import net.minecraft.stats.AchievementList;
-import net.minecraftforge.event.entity.player.AchievementEvent;
 
 public class StopAnnoyingFuckingAchievements {
 
     /**
      * Stops me getting fireworks every fucking time I open my inventory upon first loading a dev client.
+     * 
      * @param event
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)

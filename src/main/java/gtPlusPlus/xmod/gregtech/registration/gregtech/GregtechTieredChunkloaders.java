@@ -6,6 +6,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 
 public class GregtechTieredChunkloaders {
+
     public static void run() {
         if (LoadedMods.Gregtech) {
             Logger.INFO("Gregtech5u Content | Registering Chunk Loaders.");

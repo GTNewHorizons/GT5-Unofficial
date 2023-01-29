@@ -1,5 +1,15 @@
 package gtPlusPlus.core.item.general;
 
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
@@ -9,20 +19,10 @@ import gtPlusPlus.core.handler.events.CustomMovementHandler;
 import gtPlusPlus.core.handler.events.SneakManager;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.List;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 @Optional.InterfaceList(
-        value = {
-            @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-            @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")
-        })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
 public class ItemSlowBuildingRing extends Item implements IBauble {
 
     private final String unlocalizedName = "SlowBuildingRing";
@@ -38,11 +38,7 @@ public class ItemSlowBuildingRing extends Item implements IBauble {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack itemStack,
-            final World worldObj,
-            final Entity player,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
             final boolean p_77663_5_) {
         if (worldObj.isRemote) {
             return;
@@ -64,8 +60,9 @@ public class ItemSlowBuildingRing extends Item implements IBauble {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add("");
-        list.add(EnumChatFormatting.GREEN + "Worn as a Ring within Baubles. Prevents you from sprinting."
-                + EnumChatFormatting.GRAY);
+        list.add(
+                EnumChatFormatting.GREEN + "Worn as a Ring within Baubles. Prevents you from sprinting."
+                        + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + "Movement speed reduced to crouch speed." + EnumChatFormatting.GRAY);
         list.add(
                 EnumChatFormatting.GREEN + "Press shift while worn to toggle crouch on/off." + EnumChatFormatting.GRAY);

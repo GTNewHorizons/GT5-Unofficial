@@ -1,13 +1,15 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
-import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
+import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 
 public class ItemBlockSpawner extends ItemBlockMeta {
 
@@ -24,13 +26,12 @@ public class ItemBlockSpawner extends ItemBlockMeta {
             int x = this.getMetadata(aStack.getItemDamage());
             if (x >= 0) {
                 try {
-                    EntityRegistration x1 =
-                            EntityRegistry.instance().lookupModSpawn(TileEntityGenericSpawner.mSpawners.get(x), false);
+                    EntityRegistration x1 = EntityRegistry.instance()
+                            .lookupModSpawn(TileEntityGenericSpawner.mSpawners.get(x), false);
                     if (x1 != null) {
                         aList.add(EnumChatFormatting.RED + x1.getEntityName());
                     }
-                } catch (Throwable t) {
-                }
+                } catch (Throwable t) {}
             }
         }
         super.addInformation(aStack, aPlayer, aList, aBool);

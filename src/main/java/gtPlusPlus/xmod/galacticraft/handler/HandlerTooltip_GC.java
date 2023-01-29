@@ -1,17 +1,19 @@
 package gtPlusPlus.xmod.galacticraft.handler;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fluids.Fluid;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fluids.Fluid;
 
 public class HandlerTooltip_GC {
 
@@ -35,8 +37,8 @@ public class HandlerTooltip_GC {
                     if (GCBlocks != null) {
                         oMainClass = GCBlocks;
 
-                        Class<?> GCFuelLoader =
-                                ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader");
+                        Class<?> GCFuelLoader = ReflectionUtils
+                                .getClass("micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader");
 
                         if (GCFuelLoader != null) {
                             oFuelLoaderClass = GCFuelLoader;
@@ -51,8 +53,7 @@ public class HandlerTooltip_GC {
                             }
                         }
                     }
-                } catch (Throwable t) {
-                }
+                } catch (Throwable t) {}
             }
             if (mFuelNames == null) {
                 mFuelNames = new LinkedHashMap<Integer, String>();
@@ -69,8 +70,7 @@ public class HandlerTooltip_GC {
             if (mItemBlock != null && !mFuelNames.isEmpty()) {
                 Item aTempItem = event.itemStack.getItem();
                 Block aTempBlock = Block.getBlockFromItem(aTempItem);
-                if (aTempItem == mItemBlock
-                        || oFuelLoaderClass.isInstance(aTempBlock)
+                if (aTempItem == mItemBlock || oFuelLoaderClass.isInstance(aTempBlock)
                         || event.itemStack.getUnlocalizedName().toLowerCase().contains("fuelloader")) {
                     for (int aMapKey : mFuelNames.keySet()) {
                         String aFuel = mFuelNames.get(aMapKey);

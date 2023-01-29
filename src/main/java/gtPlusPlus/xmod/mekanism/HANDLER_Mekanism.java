@@ -1,15 +1,17 @@
 package gtPlusPlus.xmod.mekanism;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class HANDLER_Mekanism {
 
@@ -41,25 +43,19 @@ public class HANDLER_Mekanism {
                     tSteelCasing);
 
             // Energy Storage
-            final ItemStack tAdvancedEnergyCube =
-                    ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1).copy();
+            final ItemStack tAdvancedEnergyCube = ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1).copy();
             NBTUtils.setString(tAdvancedEnergyCube, "tier", "Advanced");
-            final ItemStack tBasicEnergyCube =
-                    ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1).copy();
+            final ItemStack tBasicEnergyCube = ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1).copy();
             NBTUtils.setString(tBasicEnergyCube, "tier", "Basic");
 
             // Gas tanks
-            final ItemStack tBasicGasTank =
-                    ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
+            final ItemStack tBasicGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
             NBTUtils.setInteger(tBasicGasTank, "tier", 0);
-            final ItemStack tAdvancedGasTank =
-                    ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
+            final ItemStack tAdvancedGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
             NBTUtils.setInteger(tAdvancedGasTank, "tier", 1);
-            final ItemStack tEliteGasTank =
-                    ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
+            final ItemStack tEliteGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
             NBTUtils.setInteger(tEliteGasTank, "tier", 2);
-            final ItemStack tMasterGasTank =
-                    ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
+            final ItemStack tMasterGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
             NBTUtils.setInteger(tMasterGasTank, "tier", 3);
 
             // Machines that use Osmium
@@ -347,25 +343,14 @@ public class HANDLER_Mekanism {
         }
     }
 
-    private static boolean addNewRecipe(
-            final Object InputItem1,
-            final Object InputItem2,
-            final Object InputItem3,
-            final Object InputItem4,
-            final Object InputItem5,
-            final Object InputItem6,
-            final Object InputItem7,
-            final Object InputItem8,
-            final Object InputItem9,
-            final ItemStack OutputItem) {
+    private static boolean addNewRecipe(final Object InputItem1, final Object InputItem2, final Object InputItem3,
+            final Object InputItem4, final Object InputItem5, final Object InputItem6, final Object InputItem7,
+            final Object InputItem8, final Object InputItem9, final ItemStack OutputItem) {
 
-        /*if (removeRecipe(OutputItem)){
-        	return RecipeUtils.recipeBuilder(
-        			InputItem1, InputItem2, InputItem3,
-        			InputItem4, InputItem5, InputItem6,
-        			InputItem7, InputItem8, InputItem9,
-        			OutputItem);
-        }*/
+        /*
+         * if (removeRecipe(OutputItem)){ return RecipeUtils.recipeBuilder( InputItem1, InputItem2, InputItem3,
+         * InputItem4, InputItem5, InputItem6, InputItem7, InputItem8, InputItem9, OutputItem); }
+         */
 
         removeRecipe(OutputItem);
         return RecipeUtils.recipeBuilder(
@@ -395,12 +380,8 @@ public class HANDLER_Mekanism {
                     }
                 }
             }
-        } catch (ClassNotFoundException
-                | NoSuchMethodException
-                | SecurityException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
             Logger.INFO("[Mek] Failed to use the built-in recipe remover from Mekanism.");
         }
         if (!removed) {

@@ -6,10 +6,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -21,17 +24,15 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
 
-public class GregtechMetaTileEntity_IndustrialElectrolyzer
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialElectrolyzer>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialElectrolyzer extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialElectrolyzer> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialElectrolyzer> STRUCTURE_DEFINITION = null;
 
-    public GregtechMetaTileEntity_IndustrialElectrolyzer(
-            final int aID, final String aName, final String aNameRegional) {
+    public GregtechMetaTileEntity_IndustrialElectrolyzer(final int aID, final String aName,
+            final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -52,23 +53,13 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Electrolyzer")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Electrolyzer")
                 .addInfo("180% faster than using single block machines of the same voltage")
-                .addInfo("Only uses 90% of the EU/t normally required")
-                .addInfo("Processes two items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center")
-                .addCasingInfo("Electrolyzer Casings", 10)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+                .addInfo("Only uses 90% of the EU/t normally required").addInfo("Processes two items per voltage tier")
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
+                .addController("Front Center").addCasingInfo("Electrolyzer Casings", 10).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -77,18 +68,16 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialElectrolyzer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialElectrolyzer>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialElectrolyzer.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(TAE.GTPP_INDEX(5))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.GTPP_INDEX(5)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 5))))
                     .build();
         }

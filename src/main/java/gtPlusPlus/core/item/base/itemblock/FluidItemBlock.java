@@ -1,12 +1,14 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import gtPlusPlus.core.fluids.BlockFluidBase;
-import gtPlusPlus.core.util.math.MathUtils;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.fluids.BlockFluidBase;
+import gtPlusPlus.core.util.math.MathUtils;
 
 public class FluidItemBlock extends ItemBlock {
 
@@ -18,13 +20,8 @@ public class FluidItemBlock extends ItemBlock {
         super(block);
         this.baseBlock = (BlockFluidBase) block;
         this.blockColour = this.baseBlock.getRenderColor(1);
-        this.name = this.baseBlock
-                .getLocalizedName()
-                .replace("tile", "")
-                .replace("fluid", "")
-                .replace("name", "")
-                .replace("block", "")
-                .replace(".", "");
+        this.name = this.baseBlock.getLocalizedName().replace("tile", "").replace("fluid", "").replace("name", "")
+                .replace("block", "").replace(".", "");
         // GT_OreDictUnificator.registerOre("frameGt"+block.getUnlocalizedName().replace("tile.",
         // "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox",
         // ""), UtilsItems.getSimpleStack(this));
@@ -36,18 +33,11 @@ public class FluidItemBlock extends ItemBlock {
 
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
-        /*if (this.thisFluid != null){
-        	this.name = "Molten "+this.thisFluid.getLocalizedName();
-        	return this.name;
-        }*/
-        this.name = "Molten "
-                + this.baseBlock
-                        .getLocalizedName()
-                        .replace("tile", "")
-                        .replace("fluid", "")
-                        .replace("name", "")
-                        .replace("block", "")
-                        .replace(".", "");
+        /*
+         * if (this.thisFluid != null){ this.name = "Molten "+this.thisFluid.getLocalizedName(); return this.name; }
+         */
+        this.name = "Molten " + this.baseBlock.getLocalizedName().replace("tile", "").replace("fluid", "")
+                .replace("name", "").replace("block", "").replace(".", "");
         return this.name;
     }
 
@@ -61,10 +51,10 @@ public class FluidItemBlock extends ItemBlock {
 
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        /*list.add("Temperature: "+MathUtils.celsiusToKelvin(this.thisFluid.getMeltingPointC())+"K");
-        if (this.sRadiation > 0){
-        	list.add(CORE.GT_Tooltip_Radioactive);
-        }*/
+        /*
+         * list.add("Temperature: "+MathUtils.celsiusToKelvin(this.thisFluid.getMeltingPointC())+"K"); if
+         * (this.sRadiation > 0){ list.add(CORE.GT_Tooltip_Radioactive); }
+         */
         super.addInformation(stack, aPlayer, list, bool);
     }
 }

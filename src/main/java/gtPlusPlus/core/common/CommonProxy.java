@@ -1,5 +1,15 @@
 package gtPlusPlus.core.common;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer;
+
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -34,15 +44,6 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
 
 public class CommonProxy {
 
@@ -223,8 +224,8 @@ public class CommonProxy {
         // Zombie
         EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemRope), 3, 100);
         EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemFiber), 5, 250);
-        EntityUtils.registerDropsForMob(
-                EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemSandstoneHammer), 1, 10);
+        EntityUtils
+                .registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemSandstoneHammer), 1, 10);
         EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemBomb), 2, 10);
         EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.TUMBAGA.getTinyDust(1), 1, 10);
         EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.POTIN.getTinyDust(1), 1, 10);
@@ -232,9 +233,15 @@ public class CommonProxy {
         // Blazes
         if (ItemUtils.doesOreDictHaveEntryFor("dustPyrotheum")) {
             EntityUtils.registerDropsForMob(
-                    EntityBlaze.class, ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), 1, 10);
+                    EntityBlaze.class,
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
+                    1,
+                    10);
             EntityUtils.registerDropsForMob(
-                    EntityBlaze.class, ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1), 1, 10);
+                    EntityBlaze.class,
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
+                    1,
+                    10);
         }
 
         // Special mobs Support
@@ -247,20 +254,26 @@ public class CommonProxy {
             EntityUtils.registerDropsForMob(aBrutishZombie, aFortune2, 1, 50);
             EntityUtils.registerDropsForMob(aBrutishZombie, aFortune3, 1, 1);
             EntityUtils.registerDropsForMob(
-                    aBrutishZombie, ItemUtils.getItemStackOfAmountFromOreDict("ingotRedAlloy", 1), 3, 200);
+                    aBrutishZombie,
+                    ItemUtils.getItemStackOfAmountFromOreDict("ingotRedAlloy", 1),
+                    3,
+                    200);
         }
 
         // GalaxySpace Support
         if (ReflectionUtils.doesClassExist("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze")) {
-            Class<?> aColdBlaze =
-                    ReflectionUtils.getClass("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze");
+            Class<?> aColdBlaze = ReflectionUtils
+                    .getClass("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze");
             ItemStack aSmallBlizz, aTinyBlizz, aSmallCryo, aTinyCryo;
             aSmallBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallBlizz", 1);
             aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);
             aSmallCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallCryotheum", 1);
             aTinyCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCryotheum", 1);
             EntityUtils.registerDropsForMob(
-                    aColdBlaze, ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1), 2, 500);
+                    aColdBlaze,
+                    ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1),
+                    2,
+                    500);
             if (aSmallBlizz != null) {
                 EntityUtils.registerDropsForMob(aColdBlaze, aSmallBlizz, 2, 750);
             }

@@ -10,9 +10,8 @@ public interface IPlugin {
     public String getPluginName();
 
     /**
-     * @return
-     * A {@link String} object which returns the {@link IPlugin}'s short name.
-     * This String should only contain 4 Characters.
+     * @return A {@link String} object which returns the {@link IPlugin}'s short name. This String should only contain 4
+     *         Characters.
      */
     public String getPluginAbbreviation();
 

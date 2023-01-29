@@ -3,6 +3,12 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -14,11 +20,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_Hatch {
 
@@ -27,35 +28,35 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     protected FluidStack mLockedStack = null;
     protected String mTempMod = null;
 
-    public GT_MetaTileEntity_Hatch_CustomFluidBase(
-            Fluid aFluid, int aAmount, final int aID, final String aName, final String aNameRegional) {
-        super(aID, aName, aNameRegional, 6, 3, new String[] {
-            "Fluid Input for Multiblocks", "Capacity: " + GT_Utility.formatNumbers(aAmount) + "L"
-        });
+    public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final int aID, final String aName,
+            final String aNameRegional) {
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                6,
+                3,
+                new String[] { "Fluid Input for Multiblocks", "Capacity: " + GT_Utility.formatNumbers(aAmount) + "L" });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
 
-    public GT_MetaTileEntity_Hatch_CustomFluidBase(
-            Fluid aFluid, int aAmount, final String aName, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final String aName,
+            final String aDescription, final ITexture[][][] aTextures) {
         super(aName, 6, 3, aDescription, aTextures);
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
 
-    public GT_MetaTileEntity_Hatch_CustomFluidBase(
-            Fluid aFluid,
-            int aAmount,
-            final String aName,
-            final String[] aDescription,
-            final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final String aName,
+            final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, 6, 3, aDescription[0], aTextures);
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
 
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         if (aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             FluidStack fs = GT_Utility.getFluidForFilledItem(aStack, true);
             return fs != null && fs.getFluid() == this.mLockedFluid;
@@ -71,15 +72,15 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN)}
-                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN)}
-                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
@@ -180,13 +181,10 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
             aColour = EnumChatFormatting.RED;
         }
         String aFluidName = "Accepted Fluid: " + aColour
-                + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty") + EnumChatFormatting.RESET;
-        return new String[] {
-            "Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
-            "Capacity: " + getCapacity() + "L",
-            aFluidName,
-            CORE.GT_Tooltip
-        };
+                + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty")
+                + EnumChatFormatting.RESET;
+        return new String[] { "Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
+                "Capacity: " + getCapacity() + "L", aFluidName, CORE.GT_Tooltip };
     }
 
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
@@ -195,7 +193,11 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_CustomFluidBase(
-                this.mLockedFluid, this.mFluidCapacity, this.mName, this.mDescription, this.mTextures);
+                this.mLockedFluid,
+                this.mFluidCapacity,
+                this.mName,
+                this.mDescription,
+                this.mTextures);
     }
 
     @Override

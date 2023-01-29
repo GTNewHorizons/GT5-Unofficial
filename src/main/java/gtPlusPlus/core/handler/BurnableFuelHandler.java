@@ -1,11 +1,12 @@
 package gtPlusPlus.core.handler;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.IFuelHandler;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class BurnableFuelHandler implements IFuelHandler {
 

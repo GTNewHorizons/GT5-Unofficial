@@ -7,8 +7,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
@@ -30,17 +39,10 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase<GregtechMTE_ElementalDuplicator> {
 
-    private final ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder> mReplicatorDataOrbHatches =
-            new ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder>();
+    private final ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder> mReplicatorDataOrbHatches = new ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder>();
     private static final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 3);
     private int mCasing = 0;
 
@@ -65,29 +67,17 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
 
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Produces Elemental Material from UU Matter")
-                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier")
-                .addInfo("Maximum 1x of each bus/hatch.")
-                .addInfo("Does not require both Output Hatch & Bus")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(9, 6, 9, true)
-                .addController("Top Center")
-                .addCasingInfo("Elemental Confinement Shell", 138)
-                .addCasingInfo("Matter Fabricator Casing", 24)
-                .addCasingInfo("Particle Containment Casing", 24)
-                .addCasingInfo("Matter Generation Coil", 24)
-                .addCasingInfo("High Voltage Current Capacitor", 20)
-                .addCasingInfo("Resonance Chamber III", 24)
-                .addCasingInfo("Modulator III", 16)
-                .addOtherStructurePart("Data Orb Repository", "1x", 1)
-                .addInputHatch("Any 1 dot hint", 1)
-                .addOutputBus("Any 1 dot hint", 1)
-                .addOutputHatch("Any 1 dot hint", 1)
-                .addEnergyHatch("Any 1 dot hint", 1)
-                .addMaintenanceHatch("Any 1 dot hint", 1)
-                .addMufflerHatch("Any 1 dot hint", 1)
+        tt.addMachineType(getMachineType()).addInfo("Produces Elemental Material from UU Matter")
+                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier").addInfo("Maximum 1x of each bus/hatch.")
+                .addInfo("Does not require both Output Hatch & Bus").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().beginStructureBlock(9, 6, 9, true).addController("Top Center")
+                .addCasingInfo("Elemental Confinement Shell", 138).addCasingInfo("Matter Fabricator Casing", 24)
+                .addCasingInfo("Particle Containment Casing", 24).addCasingInfo("Matter Generation Coil", 24)
+                .addCasingInfo("High Voltage Current Capacitor", 20).addCasingInfo("Resonance Chamber III", 24)
+                .addCasingInfo("Modulator III", 16).addOtherStructurePart("Data Orb Repository", "1x", 1)
+                .addInputHatch("Any 1 dot hint", 1).addOutputBus("Any 1 dot hint", 1)
+                .addOutputHatch("Any 1 dot hint", 1).addEnergyHatch("Any 1 dot hint", 1)
+                .addMaintenanceHatch("Any 1 dot hint", 1).addMufflerHatch("Any 1 dot hint", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -112,74 +102,21 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
                     // f = Resonance III
                     // g = Modulator III
 
-                    .addShape(STRUCTURE_PIECE_MAIN, (new String[][] {
-                        {
-                            "   ccc   ",
-                            "  ccccc  ",
-                            " ccccccc ",
-                            "ccchhhccc",
-                            "ccch~hccc",
-                            "ccchhhccc",
-                            " ccccccc ",
-                            "  ccccc  ",
-                            "   ccc   "
-                        },
-                        {
-                            "   cac   ",
-                            "  abfba  ",
-                            " abfgfba ",
-                            "cbfgdgfbc",
-                            "afgdddgfa",
-                            "cbfgdgfbc",
-                            " abfgfba ",
-                            "  abfba  ",
-                            "   cac   "
-                        },
-                        {
-                            "   cec   ",
-                            "  e   e  ",
-                            " e     e ",
-                            "c   d   c",
-                            "e  ddd  e",
-                            "c   d   c",
-                            " e     e ",
-                            "  e   e  ",
-                            "   cec   "
-                        },
-                        {
-                            "   cec   ",
-                            "  e   e  ",
-                            " e     e ",
-                            "c   d   c",
-                            "e  ddd  e",
-                            "c   d   c",
-                            " e     e ",
-                            "  e   e  ",
-                            "   cec   "
-                        },
-                        {
-                            "   cac   ",
-                            "  abfba  ",
-                            " abfgfba ",
-                            "cbfgdgfbc",
-                            "afgdddgfa",
-                            "cbfgdgfbc",
-                            " abfgfba ",
-                            "  abfba  ",
-                            "   cac   "
-                        },
-                        {
-                            "   ccc   ",
-                            "  ccccc  ",
-                            " ccccccc ",
-                            "ccchhhccc",
-                            "ccchhhccc",
-                            "ccchhhccc",
-                            " ccccccc ",
-                            "  ccccc  ",
-                            "   ccc   "
-                        },
-                    }))
+                    .addShape(
+                            STRUCTURE_PIECE_MAIN,
+                            (new String[][] {
+                                    { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccch~hccc", "ccchhhccc",
+                                            " ccccccc ", "  ccccc  ", "   ccc   " },
+                                    { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc",
+                                            " abfgfba ", "  abfba  ", "   cac   " },
+                                    { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c",
+                                            " e     e ", "  e   e  ", "   cec   " },
+                                    { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c",
+                                            " e     e ", "  e   e  ", "   cec   " },
+                                    { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc",
+                                            " abfgfba ", "  abfba  ", "   cac   " },
+                                    { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccchhhccc", "ccchhhccc",
+                                            " ccccccc ", "  ccccc  ", "   ccc   " }, }))
                     .addElement('a', ofBlock(getCasingBlock4(), getCasingMeta6()))
                     .addElement('b', ofBlock(getCasingBlock4(), getCasingMeta7()))
                     .addElement('d', ofBlock(getCasingBlock2(), getCasingMeta2()))
@@ -187,22 +124,26 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
                     .addElement('f', ofBlock(getCasingBlock3(), getCasingMeta4()))
                     .addElement('g', ofBlock(getCasingBlock3(), getCasingMeta5()))
                     .addElement(
-                            'c', lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                            'c',
+                            lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                     .addElement(
                             'h',
-                            lazy(t -> ofChain(
-                                    buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
-                                            .atLeast(InputHatch, OutputBus, OutputHatch, Maintenance, Muffler, Energy)
-                                            .casingIndex(getCasingTextureIndex())
-                                            .dot(1)
-                                            .build(),
-                                    buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
-                                            .hatchClass(GT_MetaTileEntity_Hatch_ElementalDataOrbHolder.class)
-                                            .adder(GregtechMTE_ElementalDuplicator::addDataOrbHatch)
-                                            .casingIndex(getCasingTextureIndex())
-                                            .dot(1)
-                                            .build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))))
+                            lazy(
+                                    t -> ofChain(
+                                            buildHatchAdder(GregtechMTE_ElementalDuplicator.class).atLeast(
+                                                    InputHatch,
+                                                    OutputBus,
+                                                    OutputHatch,
+                                                    Maintenance,
+                                                    Muffler,
+                                                    Energy).casingIndex(getCasingTextureIndex()).dot(1).build(),
+                                            buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
+                                                    .hatchClass(GT_MetaTileEntity_Hatch_ElementalDataOrbHolder.class)
+                                                    .adder(GregtechMTE_ElementalDuplicator::addDataOrbHatch)
+                                                    .casingIndex(getCasingTextureIndex()).dot(1).build(),
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta())))))
                     .build();
         }
         return STRUCTURE_DEFINITION;
@@ -217,8 +158,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
-        if (this.mInputHatches.size() != 1
-                || (this.mOutputBusses.size() != 1 && this.mOutputHatches.size() != 0)
+        if (this.mInputHatches.size() != 1 || (this.mOutputBusses.size() != 1 && this.mOutputHatches.size() != 0)
                 || this.mEnergyHatches.size() != 1
                 || this.mReplicatorDataOrbHatches.size() != 1) {
             return false;
@@ -324,14 +264,8 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     }
 
     @Override
-    public boolean checkRecipeGeneric(
-            ItemStack[] aItemInputs,
-            FluidStack[] aFluidInputs,
-            int aMaxParallelRecipes,
-            long aEUPercent,
-            int aSpeedBonusPercent,
-            int aOutputChanceRoll,
-            GT_Recipe aRecipe) {
+    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
+            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
         // Based on the Processing Array. A bit overkill, but very flexible.
 
         // Reset outputs and progress stats
@@ -346,8 +280,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 
         try {
             ItemStack aDataOrbStack = null;
-            recipe:
-            for (GT_Recipe nRecipe : this.getRecipeMap().mRecipeList) {
+            recipe: for (GT_Recipe nRecipe : this.getRecipeMap().mRecipeList) {
                 // log("Checking Recipe for: "+(nRecipe.mOutputs.length > 0 && nRecipe.mOutputs[0] != null ?
                 // nRecipe.mOutputs[0].getDisplayName() : nRecipe.mFluidOutputs[0].getLocalizedName()));
                 ItemStack aTempStack = getSpecialSlotStack(nRecipe);
@@ -455,24 +388,21 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     /**
      * finds a Recipe matching the aFluid and ItemStack Inputs.
      *
-     * @param aTileEntity    an Object representing the current coordinates of the executing Block/Entity/Whatever. This may be null, especially during Startup.
-     * @param aRecipe        in case this is != null it will try to use this Recipe first when looking things up.
-     * @param aNotUnificated if this is T the Recipe searcher will unificate the ItemStack Inputs
-     * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with the provided input
-     * @param aVoltage       Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
-     * @param aFluids        the Fluid Inputs
-     * @param aSpecialSlot   the content of the Special Slot, the regular Manager doesn't do anything with this, but some custom ones do.
-     * @param aInputs        the Item Inputs
+     * @param aTileEntity          an Object representing the current coordinates of the executing
+     *                             Block/Entity/Whatever. This may be null, especially during Startup.
+     * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things up.
+     * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
+     * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with the
+     *                             provided input
+     * @param aVoltage             Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
+     * @param aFluids              the Fluid Inputs
+     * @param aSpecialSlot         the content of the Special Slot, the regular Manager doesn't do anything with this,
+     *                             but some custom ones do.
+     * @param aInputs              the Item Inputs
      * @return the Recipe it has found or null for no matching Recipe
      */
-    public GT_Recipe findRecipe(
-            IHasWorldObjectAndCoords aTileEntity,
-            GT_Recipe aRecipe,
-            boolean aNotUnificated,
-            boolean aDontCheckStackSizes,
-            long aVoltage,
-            FluidStack[] aFluids,
-            ItemStack aSpecialSlot,
+    public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
             ItemStack... aInputs) {
 
         GT_Recipe_Map mRecipeMap = this.getRecipeMap();
@@ -508,8 +438,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
         if (aRecipe != null) {
             ItemStack aRecipeSpecial = getSpecialSlotStack(aRecipe);
-            if (!aRecipe.mFakeRecipe
-                    && aRecipe.mCanBeBuffered
+            if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
                     && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
                     && GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
                     && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
@@ -518,61 +447,51 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         }
 
         // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
-        if (mRecipeMap.mUsualInputCount > 0 && aInputs != null)
-            for (ItemStack tStack : aInputs)
-                if (tStack != null) {
-                    Collection<GT_Recipe> tRecipes = mRecipeMap.mRecipeItemMap.get(new GT_ItemStack(tStack));
-                    if (tRecipes != null) {
-                        for (GT_Recipe tRecipe : tRecipes) {
-                            if (!tRecipe.mFakeRecipe
-                                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                                ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
-                                if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
-                                        && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
-                                    return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt
-                                            ? tRecipe
-                                            : null;
-                                }
-                            }
-                            tRecipes = mRecipeMap.mRecipeItemMap.get(new GT_ItemStack(tStack, true));
+        if (mRecipeMap.mUsualInputCount > 0 && aInputs != null) for (ItemStack tStack : aInputs) if (tStack != null) {
+            Collection<GT_Recipe> tRecipes = mRecipeMap.mRecipeItemMap.get(new GT_ItemStack(tStack));
+            if (tRecipes != null) {
+                for (GT_Recipe tRecipe : tRecipes) {
+                    if (!tRecipe.mFakeRecipe
+                            && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                        ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
+                        if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
+                                && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
+                            return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt ? tRecipe : null;
                         }
                     }
-                    if (tRecipes != null) {
-                        for (GT_Recipe tRecipe : tRecipes) {
-                            if (!tRecipe.mFakeRecipe
-                                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                                ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
-                                if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
-                                        && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
-                                    return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt
-                                            ? tRecipe
-                                            : null;
-                                }
-                            }
+                    tRecipes = mRecipeMap.mRecipeItemMap.get(new GT_ItemStack(tStack, true));
+                }
+            }
+            if (tRecipes != null) {
+                for (GT_Recipe tRecipe : tRecipes) {
+                    if (!tRecipe.mFakeRecipe
+                            && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                        ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
+                        if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
+                                && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
+                            return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt ? tRecipe : null;
                         }
                     }
                 }
+            }
+        }
 
         // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that Map
         // too.
         if (mRecipeMap.mMinimalInputItems == 0 && aFluids != null)
-            for (FluidStack aFluid : aFluids)
-                if (aFluid != null) {
-                    Collection<GT_Recipe> tRecipes = mRecipeMap.mRecipeFluidMap.get(aFluid.getFluid());
-                    if (tRecipes != null)
-                        for (GT_Recipe tRecipe : tRecipes) {
-                            if (!tRecipe.mFakeRecipe
-                                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                                ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
-                                if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
-                                        && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
-                                    return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt
-                                            ? tRecipe
-                                            : null;
-                                }
-                            }
+            for (FluidStack aFluid : aFluids) if (aFluid != null) {
+                Collection<GT_Recipe> tRecipes = mRecipeMap.mRecipeFluidMap.get(aFluid.getFluid());
+                if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) {
+                    if (!tRecipe.mFakeRecipe
+                            && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                        ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
+                        if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
+                                && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
+                            return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt ? tRecipe : null;
                         }
+                    }
                 }
+            }
 
         // And nothing has been found.
         return null;
@@ -591,12 +510,8 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 
     private static boolean areDataOrbsEqual(ItemStack aOrb1, ItemStack aOrb2) {
         if (aOrb1 != null && aOrb2 != null) {
-            Materials tMaterial1 = Element.get(Behaviour_DataOrb.getDataName(aOrb1))
-                    .mLinkedMaterials
-                    .get(0);
-            Materials tMaterial2 = Element.get(Behaviour_DataOrb.getDataName(aOrb2))
-                    .mLinkedMaterials
-                    .get(0);
+            Materials tMaterial1 = Element.get(Behaviour_DataOrb.getDataName(aOrb1)).mLinkedMaterials.get(0);
+            Materials tMaterial2 = Element.get(Behaviour_DataOrb.getDataName(aOrb2)).mLinkedMaterials.get(0);
             if (tMaterial1.equals(tMaterial2)) {
                 return true;
             }

@@ -1,6 +1,5 @@
 package gtPlusPlus;
 
-import gtPlusPlus.api.objects.random.XSTR;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -13,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+
+import gtPlusPlus.api.objects.random.XSTR;
 
 public class GenerateDictionaries {
 
@@ -144,16 +145,15 @@ public class GenerateDictionaries {
                         return newSize > oldSize;
                     }
                 }
-            } catch (IOException e) {
-            }
+            } catch (IOException e) {}
             return false;
         }
 
         /**
-         * Reads the contents of a file line by line to a List of Strings using the default encoding for the VM.
-         * The file is always closed.
+         * Reads the contents of a file line by line to a List of Strings using the default encoding for the VM. The
+         * file is always closed.
          *
-         * @param file  the file to read, must not be {@code null}
+         * @param file the file to read, must not be {@code null}
          * @return the list of Strings representing each line in the file, never {@code null}
          * @throws IOException in case of an I/O error
          * @since 1.3

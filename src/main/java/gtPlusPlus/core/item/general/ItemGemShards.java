@@ -1,40 +1,25 @@
 package gtPlusPlus.core.item.general;
 
-import gtPlusPlus.core.item.base.BaseItemColourable;
-import gtPlusPlus.core.util.Utils;
 import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import gtPlusPlus.core.item.base.BaseItemColourable;
+import gtPlusPlus.core.util.Utils;
+
 public class ItemGemShards extends BaseItemColourable {
 
-    public ItemGemShards(
-            String unlocalizedName,
-            CreativeTabs creativeTab,
-            int stackSize,
-            int maxDmg,
-            String description,
-            EnumRarity regRarity,
-            EnumChatFormatting colour,
-            boolean Effect,
-            int rgb) {
+    public ItemGemShards(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg,
+            String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, int rgb) {
         super(unlocalizedName, creativeTab, stackSize, maxDmg, description, regRarity, colour, Effect, rgb);
     }
 
-    public ItemGemShards(
-            String unlocalizedName,
-            String displayName,
-            CreativeTabs creativeTab,
-            int stackSize,
-            int maxDmg,
-            String description,
-            EnumRarity regRarity,
-            EnumChatFormatting colour,
-            boolean Effect,
-            int rgb) {
+    public ItemGemShards(String unlocalizedName, String displayName, CreativeTabs creativeTab, int stackSize,
+            int maxDmg, String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, int rgb) {
         super(
                 unlocalizedName,
                 displayName,

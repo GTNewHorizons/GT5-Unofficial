@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
@@ -7,8 +10,6 @@ import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract {
 
@@ -24,8 +25,8 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings"); // Unused
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings"); // Unused
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", ""); // Unused
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", ""); // Unused
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", ""); // Unused
@@ -48,12 +49,12 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
 
     // private static final LargeTurbineTextureHandler mTurbineTextures = new LargeTurbineTextureHandler();
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide) {
-    	final GregtechMetaCasingBlocks4 i = this;
-    	return mTurbineTextures.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i);
-    }*/
+    /*
+     * @Override
+     * @SideOnly(Side.CLIENT) public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final
+     * int zCoord, final int aSide) { final GregtechMetaCasingBlocks4 i = this; return
+     * mTurbineTextures.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i); }
+     */
 
     @Override
     public IIcon getIcon(final int aSide, final int aMeta) {

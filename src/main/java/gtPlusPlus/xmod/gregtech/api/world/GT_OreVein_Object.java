@@ -14,17 +14,8 @@ public class GT_OreVein_Object {
     final Material aBetween; // Materials aBetween,
     final Material aSporadic; // Materials aSporadic
 
-    GT_OreVein_Object(
-            String mOreMixName,
-            int minY,
-            int maxY,
-            int weight,
-            int density,
-            int size,
-            Material aPrimary,
-            Material aSecondary,
-            Material aBetween,
-            Material aSporadic) {
+    GT_OreVein_Object(String mOreMixName, int minY, int maxY, int weight, int density, int size, Material aPrimary,
+            Material aSecondary, Material aBetween, Material aSporadic) {
         this.mOreMixName = mOreMixName;
         this.minY = minY;
         this.maxY = maxY;

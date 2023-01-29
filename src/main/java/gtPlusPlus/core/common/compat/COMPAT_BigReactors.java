@@ -1,8 +1,9 @@
 package gtPlusPlus.core.common.compat;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
-import net.minecraft.item.ItemStack;
 
 public class COMPAT_BigReactors {
 

@@ -1,12 +1,5 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
-import gtPlusPlus.core.inventories.Inventory_VolumetricFlaskSetter;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -16,6 +9,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
+import gtPlusPlus.core.inventories.Inventory_VolumetricFlaskSetter;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 
 public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISidedInventory {
 
@@ -167,10 +168,14 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                                 && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e)
                                 && ((aInputFluidStack == null && aFluidInCheckedSlot == null)
                                         || aInputFluidStack.isFluidEqual(aFluidInCheckedSlot))) {
-                            log("Input Slot Flask Contains: "
-                                    + (aInputFluidStack != null ? aInputFluidStack.getLocalizedName() : "Empty"));
-                            log("Output Slot Flask Contains: "
-                                    + (aFluidInCheckedSlot != null ? aFluidInCheckedSlot.getLocalizedName() : "Empty"));
+                            log(
+                                    "Input Slot Flask Contains: "
+                                            + (aInputFluidStack != null ? aInputFluidStack.getLocalizedName()
+                                                    : "Empty"));
+                            log(
+                                    "Output Slot Flask Contains: "
+                                            + (aFluidInCheckedSlot != null ? aFluidInCheckedSlot.getLocalizedName()
+                                                    : "Empty"));
                             aSize = f.stackSize + g.stackSize;
                             if (aSize > 16) {
                                 aInputStack = g.copy();
@@ -229,8 +234,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                 }
                 this.tickCount++;
             }
-        } catch (final Throwable t) {
-        }
+        } catch (final Throwable t) {}
     }
 
     public boolean anyPlayerInRange() {

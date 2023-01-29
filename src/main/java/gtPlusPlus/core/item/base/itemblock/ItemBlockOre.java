@@ -1,5 +1,17 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.CORE;
@@ -10,16 +22,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 public class ItemBlockOre extends ItemBlock {
 
@@ -47,8 +49,7 @@ public class ItemBlockOre extends ItemBlock {
         return this.mThisColour;
     }
 
-    private static Map<String, AutoMap<String>> mMapOreBlockItemToDimName =
-            new LinkedHashMap<String, AutoMap<String>>();
+    private static Map<String, AutoMap<String>> mMapOreBlockItemToDimName = new LinkedHashMap<String, AutoMap<String>>();
     private static boolean mInitOres_Everglades = false;
     private AutoMap<String> mDimsForThisOre = new AutoMap<String>();
 
@@ -57,10 +58,9 @@ public class ItemBlockOre extends ItemBlock {
 
         if (!mInitOres_Everglades) {
             for (WorldGen_GT_Ore_Layer f : gtPlusPlus.everglades.gen.gt.WorldGen_Ores.validOreveins.values()) {
-                Material[] m2 = new Material[] {f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic};
+                Material[] m2 = new Material[] { f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic };
                 for (Material m1 : m2) {
-                    AutoMap<String> aMap = mMapOreBlockItemToDimName.get(
-                            m1.getUnlocalizedName().toLowerCase());
+                    AutoMap<String> aMap = mMapOreBlockItemToDimName.get(m1.getUnlocalizedName().toLowerCase());
                     if (aMap == null) {
                         aMap = new AutoMap<String>();
                     }
@@ -87,8 +87,11 @@ public class ItemBlockOre extends ItemBlock {
          * Tooltip Handler for Ores
          */
         if (this.mThisMaterial == FLUORIDES.FLUORITE) {
-            list.add("Mined from Sandstone with a 1/" + (CORE.ConfigSwitches.chanceToDropFluoriteOre * 20)
-                    + " chance, or Limestone with a 1/" + (CORE.ConfigSwitches.chanceToDropFluoriteOre) + " chance.");
+            list.add(
+                    "Mined from Sandstone with a 1/" + (CORE.ConfigSwitches.chanceToDropFluoriteOre * 20)
+                            + " chance, or Limestone with a 1/"
+                            + (CORE.ConfigSwitches.chanceToDropFluoriteOre)
+                            + " chance.");
         }
 
         if (this.mThisMaterial != null) {
@@ -114,8 +117,8 @@ public class ItemBlockOre extends ItemBlock {
             }
 
             if (mDimsForThisOre.isEmpty()) {
-                AutoMap<String> A = mMapOreBlockItemToDimName.get(
-                        this.mThisMaterial.getUnlocalizedName().toLowerCase());
+                AutoMap<String> A = mMapOreBlockItemToDimName
+                        .get(this.mThisMaterial.getUnlocalizedName().toLowerCase());
                 if (A != null) {
                     mDimsForThisOre = A;
                 }
@@ -138,18 +141,17 @@ public class ItemBlockOre extends ItemBlock {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         if (this.mThisMaterial != null) {
             if (this.mThisRadiation > 0) {
                 if (entityHolding instanceof EntityPlayer) {
                     if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
                         EntityUtils.applyRadiationDamageToEntity(
-                                iStack.stackSize, this.mThisMaterial.vRadiationLevel, world, entityHolding);
+                                iStack.stackSize,
+                                this.mThisMaterial.vRadiationLevel,
+                                world,
+                                entityHolding);
                     }
                 }
             }

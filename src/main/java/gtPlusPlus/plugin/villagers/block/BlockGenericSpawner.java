@@ -2,13 +2,8 @@ package gtPlusPlus.plugin.villagers.block;
 
 import static gtPlusPlus.core.lib.CORE.RANDOM;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockSpawner;
-import gtPlusPlus.plugin.villagers.Core_VillagerAdditions;
-import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 import java.util.List;
+
 import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -16,6 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockSpawner;
+import gtPlusPlus.plugin.villagers.Core_VillagerAdditions;
+import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 
 public class BlockGenericSpawner extends BlockMobSpawner {
 

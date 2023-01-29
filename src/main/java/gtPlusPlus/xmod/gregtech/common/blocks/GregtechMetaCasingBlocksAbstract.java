@@ -1,13 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gtPlusPlus.core.creative.AddToCreativeTab;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,15 +17,23 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+
 public abstract class GregtechMetaCasingBlocksAbstract extends GT_Block_Casings_Abstract {
-    public GregtechMetaCasingBlocksAbstract(
-            final Class<? extends ItemBlock> aItemClass, final String aName, final Material aMaterial) {
+
+    public GregtechMetaCasingBlocksAbstract(final Class<? extends ItemBlock> aItemClass, final String aName,
+            final Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         this.setStepSound(soundTypeMetal);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GregTech_API.registerMachineBlock(this, -1);
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
     @Override
@@ -101,16 +104,16 @@ public abstract class GregtechMetaCasingBlocksAbstract extends GT_Block_Casings_
     }
 
     @Override
-    public void breakBlock(
-            final World aWorld, final int aX, final int aY, final int aZ, final Block aBlock, final int aMetaData) {
+    public void breakBlock(final World aWorld, final int aX, final int aY, final int aZ, final Block aBlock,
+            final int aMetaData) {
         if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 

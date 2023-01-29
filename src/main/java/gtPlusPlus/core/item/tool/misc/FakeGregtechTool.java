@@ -1,15 +1,17 @@
 package gtPlusPlus.core.item.tool.misc;
 
-import gregtech.api.enums.Materials;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.util.Utils;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import gregtech.api.enums.Materials;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.util.Utils;
 
 public class FakeGregtechTool extends CoreItem {
 

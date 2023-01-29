@@ -1,5 +1,13 @@
 package gtPlusPlus.core.util.minecraft.network;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.Arrays;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.NetHandlerPlayServer;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
@@ -7,14 +15,9 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.network.CustomPacket.PacketType;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.NetHandlerPlayServer;
 
 public class PacketHandler {
+
     public static final PacketHandler INSTANCE = new PacketHandler();
     private static final PacketType[] packetTypes = PacketType.values();
     final FMLEventChannel channel;
@@ -63,7 +66,8 @@ public class PacketHandler {
                 ((CustomPacket) pkt).readData(data);
             }
         } catch (IOException var7) {
-            Logger.ERROR("Exception in PacketHandler.onPacketData: {0}" + var7 + new Object[] {Arrays.toString(bData)});
+            Logger.ERROR(
+                    "Exception in PacketHandler.onPacketData: {0}" + var7 + new Object[] { Arrays.toString(bData) });
         }
     }
 }

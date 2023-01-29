@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTPP_Recipe;
@@ -8,8 +11,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntity_BasicWasher;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechSimpleWasher {
 
@@ -46,8 +47,7 @@ public class GregtechSimpleWasher {
         ItemStack dustDirty;
         for (Materials v : Materials.values()) {
             if (disablePlat) {
-                if (v == Materials.Platinum
-                        || v == Materials.Osmium
+                if (v == Materials.Platinum || v == Materials.Osmium
                         || v == Materials.Iridium
                         || v == Materials.Palladium) {
                     continue;
@@ -59,11 +59,11 @@ public class GregtechSimpleWasher {
             if (dustClean != null && dustDirty != null) {
                 GTPP_Recipe aRecipe = new GTPP_Recipe(
                         false,
-                        new ItemStack[] {dustDirty},
-                        new ItemStack[] {dustClean},
+                        new ItemStack[] { dustDirty },
+                        new ItemStack[] { dustClean },
                         null,
                         new int[] {},
-                        new FluidStack[] {FluidUtils.getFluidStack("water", 100)},
+                        new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
                         new FluidStack[] {},
                         5,
                         8,
@@ -89,11 +89,11 @@ public class GregtechSimpleWasher {
             if (crushedClean != null && crushedDirty != null) {
                 GTPP_Recipe aRecipe = new GTPP_Recipe(
                         false,
-                        new ItemStack[] {crushedDirty},
-                        new ItemStack[] {crushedClean},
+                        new ItemStack[] { crushedDirty },
+                        new ItemStack[] { crushedClean },
                         null,
                         new int[] {},
-                        new FluidStack[] {FluidUtils.getFluidStack("water", 100)},
+                        new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
                         new FluidStack[] {},
                         5,
                         8,

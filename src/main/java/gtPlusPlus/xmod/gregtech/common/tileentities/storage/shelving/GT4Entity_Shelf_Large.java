@@ -1,10 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -14,10 +20,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 
@@ -25,8 +27,8 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
     public int mItemCount;
     public ItemStack mItemStack;
 
-    public GT4Entity_Shelf_Large(
-            final int aID, final String aName, final String aNameRegional, final String aDescription, final int aSize) {
+    public GT4Entity_Shelf_Large(final int aID, final String aName, final String aNameRegional,
+            final String aDescription, final int aSize) {
         super(aID, aName, aNameRegional, aDescription);
         this.mSize = aSize;
         this.mItemCount = 0;
@@ -45,10 +47,9 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
         return new GT4Entity_Shelf_Large(this.mName, this.mDescription, mSize, this.mTextures);
     }
 
-    /*@Override
-    public int getInvSize() {
-    	return (mSize > 0 && mSize < 255 ? mSize : 255);
-    }*/
+    /*
+     * @Override public int getInvSize() { return (mSize > 0 && mSize < 255 ? mSize : 255); }
+     */
 
     @Override
     public boolean isGivingInformation() {
@@ -108,8 +109,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
     }
 
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
-        if (this.getBaseMetaTileEntity().isServerSide()
-                && this.getBaseMetaTileEntity().isAllowedToWork()) {
+        if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
             try {
                 if (this.mInventory[0] != null) {
                     this.mType = (byte) this.mIndex;
@@ -124,8 +124,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
                 if (this.mItemStack == null && this.mInventory[0] != null) {
                     this.mItemStack = this.mInventory[0].copy();
                 }
-                if (this.mInventory[0] != null
-                        && this.mItemCount < this.getMaxItemCount()
+                if (this.mInventory[0] != null && this.mItemCount < this.getMaxItemCount()
                         && GT_Utility.areStacksEqual(this.mInventory[0], this.mItemStack)) {
                     this.mItemCount += this.mInventory[0].stackSize;
                     if (this.mItemCount > this.getMaxItemCount()) {
@@ -139,15 +138,15 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
                     this.mInventory[1] = this.mItemStack.copy();
                     this.mInventory[1].stackSize = Math.min(this.mItemStack.getMaxStackSize(), this.mItemCount);
                     this.mItemCount -= this.mInventory[1].stackSize;
-                } else if (this.mItemCount > 0
-                        && GT_Utility.areStacksEqual(this.mInventory[1], this.mItemStack)
+                } else if (this.mItemCount > 0 && GT_Utility.areStacksEqual(this.mInventory[1], this.mItemStack)
                         && this.mInventory[1].getMaxStackSize() > this.mInventory[1].stackSize) {
-                    final int tmp = Math.min(
-                            this.mItemCount, this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
-                    final ItemStack itemStack = this.mInventory[1];
-                    itemStack.stackSize += tmp;
-                    this.mItemCount -= tmp;
-                }
+                            final int tmp = Math.min(
+                                    this.mItemCount,
+                                    this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
+                            final ItemStack itemStack = this.mInventory[1];
+                            itemStack.stackSize += tmp;
+                            this.mItemCount -= tmp;
+                        }
                 if (this.mItemStack != null) {
                     this.mInventory[2] = this.mItemStack.copy();
                     this.mInventory[2].stackSize = Math.min(this.mItemStack.getMaxStackSize(), this.mItemCount);
@@ -170,8 +169,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 
     public int getProgresstime() {
         try {
-            return this.mItemCount
-                    + ((this.mInventory[0] == null) ? 0 : this.mInventory[0].stackSize)
+            return this.mItemCount + ((this.mInventory[0] == null) ? 0 : this.mInventory[0].stackSize)
                     + ((this.mInventory[1] == null) ? 0 : this.mInventory[1].stackSize);
         } catch (Throwable t) {
             return 0;
@@ -186,31 +184,28 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
         return this.mSize;
     }
 
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return aIndex == 1;
     }
 
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
-        return aIndex == 0
-                && ((this.mInventory[0] == null && this.mItemStack == null)
-                        || GT_Utility.areStacksEqual(this.mInventory[0], aStack)
-                        || (this.mItemStack != null && GT_Utility.areStacksEqual(this.mItemStack, aStack)));
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
+        return aIndex == 0 && ((this.mInventory[0] == null && this.mItemStack == null)
+                || GT_Utility.areStacksEqual(this.mInventory[0], aStack)
+                || (this.mItemStack != null && GT_Utility.areStacksEqual(this.mItemStack, aStack)));
     }
 
     public String[] getInfoData() {
         if (this.mItemStack == null) {
-            return new String[] {
-                this.getLocalName(), "No Items Stored", "Free Space: " + Integer.toString(this.getMaxItemCount())
-            };
+            return new String[] { this.getLocalName(), "No Items Stored",
+                    "Free Space: " + Integer.toString(this.getMaxItemCount()) };
         }
-        return new String[] {
-            this.getLocalName(),
-            "Storing: " + this.mItemStack.getDisplayName() + " x" + Integer.toString(this.mItemCount),
-            "Space Remaining: " + Integer.toString(this.getMaxItemCount() - this.getItemCount()) + "/"
-                    + Integer.toString(this.getMaxItemCount())
-        };
+        return new String[] { this.getLocalName(),
+                "Storing: " + this.mItemStack.getDisplayName() + " x" + Integer.toString(this.mItemCount),
+                "Space Remaining: " + Integer.toString(this.getMaxItemCount() - this.getItemCount())
+                        + "/"
+                        + Integer.toString(this.getMaxItemCount()) };
     }
 
     @Override
@@ -263,18 +258,14 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(7, 16)
-                        .setSize(71, 45))
-                .widget(new SlotWidget(inventoryHandler, 0)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                        .setPos(79, 16))
-                .widget(new TextWidget("Item Amount")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 20))
-                .widget(TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(10, 30));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
+                .widget(
+                        new SlotWidget(inventoryHandler, 0)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                                .setPos(79, 16))
+                .widget(new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20)).widget(
+                        TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
     }
 }

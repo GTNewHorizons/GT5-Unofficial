@@ -2,7 +2,14 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import com.gtnewhorizon.gtnhlib.reflect.Fields;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -18,51 +25,33 @@ import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  *
- * This is the main construct for my Basic Machines such as the Automatic
- * Extractor Extend this class to make a simple Machine
+ * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
+ * Machine
  */
 public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
     private int mVoltageTier = 3;
 
-    public GregtechMetaCreativeEnergyBuffer(
-            final String aName,
-            final int aTier,
-            final String aDescription,
-            final ITexture[][][] aTextures,
-            final int aSlotCount) {
+    public GregtechMetaCreativeEnergyBuffer(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
         // TODO Auto-generated constructor stub
     }
 
-    public GregtechMetaCreativeEnergyBuffer(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final String aDescription,
-            final int aSlotCount) {
+    public GregtechMetaCreativeEnergyBuffer(final int aID, final String aName, final String aNameRegional,
+            final int aTier, final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Use Screwdriver to change voltage",
-            "Hold Shift while using Screwdriver to change amperage",
-            EnumChatFormatting.GREEN + "CREATIVE MACHINE",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Use Screwdriver to change voltage",
+                "Hold Shift while using Screwdriver to change amperage", EnumChatFormatting.GREEN + "CREATIVE MACHINE",
+                CORE.GT_Tooltip };
     }
 
     /*
@@ -77,25 +66,17 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
         final ITexture[][][] rTextures = new ITexture[2][17][];
         k = j ? g : h;
         for (byte i = -1; i < 16; i++) {
-            rTextures[0][i + 1] = new ITexture[] {new GT_RenderedTexture(k)};
-            rTextures[1][i + 1] = new ITexture[] {
-                new GT_RenderedTexture(k),
-                this.mInventory.length > 4
-                        ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mVoltageTier]
-                        : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mVoltageTier]
-            };
+            rTextures[0][i + 1] = new ITexture[] { new GT_RenderedTexture(k) };
+            rTextures[1][i + 1] = new ITexture[] { new GT_RenderedTexture(k),
+                    this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mVoltageTier]
+                            : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mVoltageTier] };
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return this.mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
     }
 
@@ -106,15 +87,19 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
         final double roundOff = Math.round(c * 100.00) / 100.00;
         PlayerUtils.messagePlayer(
                 playerIn,
-                "Energy: " + GT_Utility.formatNumbers(tempStorage) + " EU at " + V[this.mVoltageTier] + "v (" + roundOff
-                        + "%)");
+                "Energy: " + GT_Utility
+                        .formatNumbers(tempStorage) + " EU at " + V[this.mVoltageTier] + "v (" + roundOff + "%)");
         PlayerUtils.messagePlayer(playerIn, "Amperage: " + GT_Utility.formatNumbers(maxAmperesOut()) + "A");
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaCreativeEnergyBuffer(
-                this.mName, this.mTier, this.mDescription, this.mTextures, this.mInventory.length);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures,
+                this.mInventory.length);
     }
 
     @Override
@@ -170,23 +155,22 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
     public String[] getInfoData() {
         String[] infoData = super.getInfoData();
-        return new String[] {
-            infoData[0], "THIS IS A CREATIVE ITEM - FOR TESTING | Tier: " + this.mVoltageTier, infoData[1], infoData[2]
-        };
+        return new String[] { infoData[0], "THIS IS A CREATIVE ITEM - FOR TESTING | Tier: " + this.mVoltageTier,
+                infoData[1], infoData[2] };
     }
 
     @Override

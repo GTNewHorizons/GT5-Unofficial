@@ -2,6 +2,14 @@ package gtPlusPlus.core.item.base.dusts;
 
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -11,12 +19,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class BaseItemDustUnique extends Item {
 
@@ -26,17 +28,13 @@ public class BaseItemDustUnique extends Item {
     protected final String name;
     protected final String chemicalNotation;
 
-    public BaseItemDustUnique(
-            final String unlocalizedName, final String materialName, final int colour, final String pileSize) {
+    public BaseItemDustUnique(final String unlocalizedName, final String materialName, final int colour,
+            final String pileSize) {
         this(unlocalizedName, materialName, "NullFormula", colour, pileSize);
     }
 
-    public BaseItemDustUnique(
-            final String unlocalizedName,
-            final String materialName,
-            final String mChemicalFormula,
-            final int colour,
-            final String pileSize) {
+    public BaseItemDustUnique(final String unlocalizedName, final String materialName, final String mChemicalFormula,
+            final int colour, final String pileSize) {
         this.setUnlocalizedName(unlocalizedName);
         this.setMaxStackSize(64);
         this.setTextureName(this.getCorrectTexture(pileSize));
@@ -128,14 +126,13 @@ public class BaseItemDustUnique extends Item {
         return "gregtech" + ":" + "materialicons/SHINY/dust";
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.sRadiation > 0) {
             list.add(CORE.GT_Tooltip_Radioactive);
         }
-        if (this.chemicalNotation.length() > 0
-                && !chemicalNotation.equals("")
+        if (this.chemicalNotation.length() > 0 && !chemicalNotation.equals("")
                 && !chemicalNotation.equals("NullFormula")) {
             list.add(this.chemicalNotation);
         }

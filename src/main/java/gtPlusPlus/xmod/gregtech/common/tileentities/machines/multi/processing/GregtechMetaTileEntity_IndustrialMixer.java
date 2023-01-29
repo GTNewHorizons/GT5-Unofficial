@@ -6,10 +6,19 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -23,12 +32,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialMixer
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMixer> implements ISurvivalConstructable {
@@ -81,23 +84,13 @@ public class GregtechMetaTileEntity_IndustrialMixer
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Mixer")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Mixer")
                 .addInfo("250% faster than using single block machines of the same voltage")
-                .addInfo("Processes eight recipes per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 4, 3, false)
-                .addController("Second Layer Center")
-                .addCasingInfo(mCasingName, 6)
-                .addCasingInfo(mCasingName2, 2)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+                .addInfo("Processes eight recipes per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().beginStructureBlock(3, 4, 3, false).addController("Second Layer Center")
+                .addCasingInfo(mCasingName, 6).addCasingInfo(mCasingName2, 2).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -106,22 +99,18 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMixer>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"CCC", "CMC", "CCC"},
-                        {"C~C", "CMC", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "CMC", "CCC" },
+                                            { "C~C", "CMC", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialMixer.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(CASING_TEXTURE_ID)
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
-                    .addElement('M', ofBlock(GregTech_API.sBlockCasings4, 11))
-                    .build();
+                    .addElement('M', ofBlock(GregTech_API.sBlockCasings4, 11)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -236,7 +225,8 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         isBussesSeparate = !isBussesSeparate;
         GT_Utility.sendChatToPlayer(
-                aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
     }
 
     @Override

@@ -3,7 +3,22 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 import Ic2ExpReactorPlanner.SimulationData;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -15,6 +30,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
@@ -38,18 +54,6 @@ import gtPlusPlus.xmod.gregtech.api.gui.widget.DataStickSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Simulator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank implements IAddGregtechLogo {
 
@@ -110,14 +114,8 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Built in Reactor Planner",
-            "Built in Scanner",
-            "Built in Info-Bank",
-            "Displays Fusion Recipes",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Built in Reactor Planner", "Built in Scanner", "Built in Info-Bank",
+                "Displays Fusion Recipes", CORE.GT_Tooltip };
     }
 
     @Override
@@ -248,13 +246,13 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
         }
         for (i = 54; i < 58; i++) {
             if (this.mInventory[i] != null) {
-                if (!this.getWorld().isRemote)
-                    this.getWorld().spawnEntityInWorld((Entity) new EntityItem(
-                            this.getWorld(),
-                            this.getXCoord() + 0.5D,
-                            this.getYCoord() + 0.5D,
-                            this.getZCoord() + 0.5D,
-                            this.mInventory[i]));
+                if (!this.getWorld().isRemote) this.getWorld().spawnEntityInWorld(
+                        (Entity) new EntityItem(
+                                this.getWorld(),
+                                this.getXCoord() + 0.5D,
+                                this.getYCoord() + 0.5D,
+                                this.getZCoord() + 0.5D,
+                                this.mInventory[i]));
                 this.mInventory[i] = null;
             }
         }
@@ -308,22 +306,20 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
         if (this.mMode == MODE_ELECTROLYZER) {
             showElectrolyzerRecipe(0);
         }
-        this.getWorld()
-                .addBlockEvent(
-                        this.getXCoord(),
-                        this.getYCoord(),
-                        this.getZCoord(),
-                        GregTech_API.sBlockMachines,
-                        10,
-                        this.mMode);
-        this.getWorld()
-                .addBlockEvent(
-                        this.getXCoord(),
-                        this.getYCoord(),
-                        this.getZCoord(),
-                        GregTech_API.sBlockMachines,
-                        11,
-                        this.mMaxHeat);
+        this.getWorld().addBlockEvent(
+                this.getXCoord(),
+                this.getYCoord(),
+                this.getZCoord(),
+                GregTech_API.sBlockMachines,
+                10,
+                this.mMode);
+        this.getWorld().addBlockEvent(
+                this.getXCoord(),
+                this.getYCoord(),
+                this.getZCoord(),
+                GregTech_API.sBlockMachines,
+                11,
+                this.mMaxHeat);
     }
 
     public void showDescription(int aIndex) {
@@ -335,105 +331,104 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[0] == null) {
             this.mInventory[59] = null;
         } else {
-            this.mInventory[59] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[0].copy();
+            this.mInventory[59] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[0].copy();
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[1] == null) {
             this.mInventory[60] = null;
         } else {
-            this.mInventory[60] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[1].copy();
+            this.mInventory[60] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[1].copy();
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[2] == null) {
             this.mInventory[61] = null;
         } else {
-            this.mInventory[61] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[2].copy();
+            this.mInventory[61] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[2].copy();
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[3] == null) {
             this.mInventory[62] = null;
         } else {
-            this.mInventory[62] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[3].copy();
+            this.mInventory[62] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[3].copy();
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[4] == null) {
             this.mInventory[63] = null;
         } else {
-            this.mInventory[63] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[4].copy();
+            this.mInventory[63] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[4].copy();
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[5] == null) {
             this.mInventory[64] = null;
         } else {
-            this.mInventory[64] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[5].copy();
+            this.mInventory[64] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[5].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[6] == null) {
             this.mInventory[65] = null;
         } else {
-            this.mInventory[65] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[6].copy();
+            this.mInventory[65] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[6].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[7] == null) {
             this.mInventory[66] = null;
         } else {
-            this.mInventory[66] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[7].copy();
+            this.mInventory[66] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[7].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[8] == null) {
             this.mInventory[67] = null;
         } else {
-            this.mInventory[67] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[8].copy();
+            this.mInventory[67] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[8].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[9] == null) {
             this.mInventory[68] = null;
         } else {
-            this.mInventory[68] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[9].copy();
+            this.mInventory[68] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[9].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[10] == null) {
             this.mInventory[69] = null;
         } else {
-            this.mInventory[69] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[10].copy();
+            this.mInventory[69] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[10].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[11] == null) {
             this.mInventory[70] = null;
         } else {
-            this.mInventory[70] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[11].copy();
+            this.mInventory[70] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[11].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[12] == null) {
             this.mInventory[71] = null;
         } else {
-            this.mInventory[71] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[12].copy();
+            this.mInventory[71] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[12].copy();
             this.mExplosionStrength = 100.0F;
         }
         if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[13] == null) {
             this.mInventory[72] = null;
         } else {
-            this.mInventory[72] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex))
-                    .mStacks[13].copy();
+            this.mInventory[72] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions
+                    .get(aIndex)).mStacks[13].copy();
             this.mExplosionStrength = 100.0F;
         }
         this.mMaxHeat = aIndex;
-        this.getWorld()
-                .addBlockEvent(
-                        this.getXCoord(),
-                        this.getYCoord(),
-                        this.getZCoord(),
-                        GregTech_API.sBlockMachines,
-                        11,
-                        this.mMaxHeat);
+        this.getWorld().addBlockEvent(
+                this.getXCoord(),
+                this.getYCoord(),
+                this.getZCoord(),
+                GregTech_API.sBlockMachines,
+                11,
+                this.mMaxHeat);
     }
 
     public void switchDescriptionPageForward() {
@@ -448,50 +443,17 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 
     public void showCentrifugeRecipe(int aIndex) {
         /*
-        if (aIndex >= GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size() || aIndex < 0)
-        aIndex = 0;
-        GT_Recipe tRecipe = GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.get(aIndex);
-        if (tRecipe != null) {
-        if (tRecipe.mInput1 == null) {
-        this.mInventory[59] = null;
-        }
-        else {
-        this.mInventory[59] = tRecipe.mInput1.copy();
-        }
-        if (tRecipe.mInput2 == null) {
-        this.mInventory[60] = null;
-        }
-        else {
-        this.mInventory[60] = tRecipe.mInput2.copy();
-        }
-        if (tRecipe.mOutput1 == null) {
-        this.mInventory[61] = null;
-        }
-        else {
-        this.mInventory[61] = tRecipe.mOutput1.copy();
-        }
-        if (tRecipe.mOutput2 == null) {
-        this.mInventory[62] = null;
-        }
-        else {
-        this.mInventory[62] = tRecipe.mOutput2.copy();
-        }
-        if (tRecipe.mOutput3 == null) {
-        this.mInventory[63] = null;
-        }
-        else {
-        this.mInventory[63] = tRecipe.mOutput3.copy();
-        }
-        if (tRecipe.mOutput4 == null) {
-        this.mInventory[64] = null;
-        }
-        else {
-        this.mInventory[64] = tRecipe.mOutput4.copy();
-        }
-        this.mEU = tRecipe.mDuration * 5;
-        this.mMaxHeat = aIndex;
-        }
-        this.getWorld().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, (GregTech_API.sBlockList[1]).field_71990_ca, 11, this.mMaxHeat);
+         * if (aIndex >= GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size() || aIndex < 0) aIndex = 0; GT_Recipe
+         * tRecipe = GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.get(aIndex); if (tRecipe != null) { if
+         * (tRecipe.mInput1 == null) { this.mInventory[59] = null; } else { this.mInventory[59] =
+         * tRecipe.mInput1.copy(); } if (tRecipe.mInput2 == null) { this.mInventory[60] = null; } else {
+         * this.mInventory[60] = tRecipe.mInput2.copy(); } if (tRecipe.mOutput1 == null) { this.mInventory[61] = null; }
+         * else { this.mInventory[61] = tRecipe.mOutput1.copy(); } if (tRecipe.mOutput2 == null) { this.mInventory[62] =
+         * null; } else { this.mInventory[62] = tRecipe.mOutput2.copy(); } if (tRecipe.mOutput3 == null) {
+         * this.mInventory[63] = null; } else { this.mInventory[63] = tRecipe.mOutput3.copy(); } if (tRecipe.mOutput4 ==
+         * null) { this.mInventory[64] = null; } else { this.mInventory[64] = tRecipe.mOutput4.copy(); } this.mEU =
+         * tRecipe.mDuration * 5; this.mMaxHeat = aIndex; } this.getWorld().addBlockEvent(this.xCoord, this.yCoord,
+         * this.zCoord, (GregTech_API.sBlockList[1]).field_71990_ca, 11, this.mMaxHeat);
          */ }
 
     public void switchCentrifugePageForward() {
@@ -506,50 +468,17 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 
     public void showElectrolyzerRecipe(int aIndex) {
         /*
-        if (aIndex >= GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size() || aIndex < 0)
-        aIndex = 0;
-        GT_Recipe tRecipe = GT_Recipe_Map.sElectrolyzerRecipes.get(aIndex);
-        if (tRecipe != null) {
-        if (tRecipe.mInput1 == null) {
-        this.mInventory[59] = null;
-        }
-        else {
-        this.mInventory[59] = tRecipe.mInput1.copy();
-        }
-        if (tRecipe.mInput2 == null) {
-        this.mInventory[60] = null;
-        }
-        else {
-        this.mInventory[60] = tRecipe.mInput2.copy();
-        }
-        if (tRecipe.mOutput1 == null) {
-        this.mInventory[61] = null;
-        }
-        else {
-        this.mInventory[61] = tRecipe.mOutput1.copy();
-        }
-        if (tRecipe.mOutput2 == null) {
-        this.mInventory[62] = null;
-        }
-        else {
-        this.mInventory[62] = tRecipe.mOutput2.copy();
-        }
-        if (tRecipe.mOutput3 == null) {
-        this.mInventory[63] = null;
-        }
-        else {
-        this.mInventory[63] = tRecipe.mOutput3.copy();
-        }
-        if (tRecipe.mOutput4 == null) {
-        this.mInventory[64] = null;
-        }
-        else {
-        this.mInventory[64] = tRecipe.mOutput4.copy();
-        }
-        this.mEU = tRecipe.mDuration * tRecipe.mEUt;
-        this.mMaxHeat = aIndex;
-        }
-        this.getWorld().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, (GregTech_API.sBlockList[1]).field_71990_ca, 11, this.mMaxHeat);
+         * if (aIndex >= GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size() || aIndex < 0) aIndex = 0; GT_Recipe
+         * tRecipe = GT_Recipe_Map.sElectrolyzerRecipes.get(aIndex); if (tRecipe != null) { if (tRecipe.mInput1 == null)
+         * { this.mInventory[59] = null; } else { this.mInventory[59] = tRecipe.mInput1.copy(); } if (tRecipe.mInput2 ==
+         * null) { this.mInventory[60] = null; } else { this.mInventory[60] = tRecipe.mInput2.copy(); } if
+         * (tRecipe.mOutput1 == null) { this.mInventory[61] = null; } else { this.mInventory[61] =
+         * tRecipe.mOutput1.copy(); } if (tRecipe.mOutput2 == null) { this.mInventory[62] = null; } else {
+         * this.mInventory[62] = tRecipe.mOutput2.copy(); } if (tRecipe.mOutput3 == null) { this.mInventory[63] = null;
+         * } else { this.mInventory[63] = tRecipe.mOutput3.copy(); } if (tRecipe.mOutput4 == null) { this.mInventory[64]
+         * = null; } else { this.mInventory[64] = tRecipe.mOutput4.copy(); } this.mEU = tRecipe.mDuration *
+         * tRecipe.mEUt; this.mMaxHeat = aIndex; } this.getWorld().addBlockEvent(this.xCoord, this.yCoord, this.zCoord,
+         * (GregTech_API.sBlockList[1]).field_71990_ca, 11, this.mMaxHeat);
          */ }
 
     public void switchElectrolyzerPageForward() {
@@ -599,14 +528,13 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
             this.mMaxHeat = aIndex;
             this.mFusionOutput = tRecipe.mFluidOutputs[0].getLocalizedName();
         }
-        this.getWorld()
-                .addBlockEvent(
-                        this.getXCoord(),
-                        this.getYCoord(),
-                        this.getZCoord(),
-                        GregTech_API.sBlockMachines,
-                        11,
-                        this.mMaxHeat);
+        this.getWorld().addBlockEvent(
+                this.getXCoord(),
+                this.getYCoord(),
+                this.getZCoord(),
+                GregTech_API.sBlockMachines,
+                11,
+                this.mMaxHeat);
     }
 
     public void switchFusionPageForward() {
@@ -699,10 +627,10 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
         }
         if (this.getBaseMetaTileEntity().isServerSide()) {
             if (this.mMode == MODE_SCANNER) {
-                /*if (this.mInventory[55] == null) {
-                	this.mInventory[55] = this.mInventory[54];
-                	this.mInventory[54] = null;
-                }*/
+                /*
+                 * if (this.mInventory[55] == null) { this.mInventory[55] = this.mInventory[54]; this.mInventory[54] =
+                 * null; }
+                 */
                 if (this.mInventory[57] == null) {
                     this.mInventory[57] = this.mInventory[56];
                     this.mInventory[56] = null;
@@ -711,47 +639,31 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
                 // 54 - 55 || 56 - 57
                 // Do scanny bits
                 if (mSeedscanner && this.mMode == MODE_SCANNER) {
-                    /*if (doScan(this.mInventory[55]) == 4) {
-                        if ((this.mInventory[57] != null) && (this.mInventory[57].getUnlocalizedName().equals("gt.metaitem.01.32707"))) {
-                            GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "scanning");
-                        }
-                    }*/
-                    /*if (this.mEU > 0) {
-                    	if (!this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.mEU, false)) {
-                    		this.mProgress = 0;
-                    	}
-                    }*/
+                    /*
+                     * if (doScan(this.mInventory[55]) == 4) { if ((this.mInventory[57] != null) &&
+                     * (this.mInventory[57].getUnlocalizedName().equals("gt.metaitem.01.32707"))) {
+                     * GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().
+                     * getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "scanning"); } }
+                     */
+                    /*
+                     * if (this.mEU > 0) { if (!this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.mEU, false))
+                     * { this.mProgress = 0; } }
+                     */
                 }
 
-                /*if (mSeedscanner && this.mInventory[55] != null && GT_Utility.areStacksEqual(this.mInventory[55], Ic2Items.cropSeed, true) && this.mInventory[55].getTagCompound() != null) {
-                	if (this.mInventory[55].getTagCompound().getByte("scan") < 4) {
-                		if (this.mProgress >= 100) {
-                			this.mInventory[55].getTagCompound().setByte("scan", (byte) 4);
-                			this.mProgress = 0;
-                		}
-                		else if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(100, false)) {
-                			this.mProgress++;
-                		}
-                	}
-                	else {
-                		this.mProgress = 0;
-                		if (this.mInventory[56] == null) {
-                			this.mInventory[56] = this.mInventory[55];
-                			this.mInventory[55] = null;
-                		}
-                	}
-                }
-                else {
-                	this.mProgress = 0;
-                	if (this.mInventory[56] == null) {
-                		this.mInventory[56] = this.mInventory[55];
-                		this.mInventory[55] = null;
-                	}
-                }*/
+                /*
+                 * if (mSeedscanner && this.mInventory[55] != null && GT_Utility.areStacksEqual(this.mInventory[55],
+                 * Ic2Items.cropSeed, true) && this.mInventory[55].getTagCompound() != null) { if
+                 * (this.mInventory[55].getTagCompound().getByte("scan") < 4) { if (this.mProgress >= 100) {
+                 * this.mInventory[55].getTagCompound().setByte("scan", (byte) 4); this.mProgress = 0; } else if
+                 * (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(100, false)) { this.mProgress++; } } else {
+                 * this.mProgress = 0; if (this.mInventory[56] == null) { this.mInventory[56] = this.mInventory[55];
+                 * this.mInventory[55] = null; } } } else { this.mProgress = 0; if (this.mInventory[56] == null) {
+                 * this.mInventory[56] = this.mInventory[55]; this.mInventory[55] = null; } }
+                 */
             }
 
-            if (this.mMode == MODE_REACTOR_PLANNER
-                    && mReactorplanner
+            if (this.mMode == MODE_REACTOR_PLANNER && mReactorplanner
                     && this.mSimulator != null
                     && this.mSimulator.simulator != null
                     && this.mSimulator.simulatedReactor != null) {
@@ -769,22 +681,20 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
             }
 
             if (aTick % 20L == 0L) {
-                this.getWorld()
-                        .addBlockEvent(
-                                this.getXCoord(),
-                                this.getYCoord(),
-                                this.getZCoord(),
-                                GregTech_API.sBlockMachines,
-                                10,
-                                this.mMode);
-                this.getWorld()
-                        .addBlockEvent(
-                                this.getXCoord(),
-                                this.getYCoord(),
-                                this.getZCoord(),
-                                GregTech_API.sBlockMachines,
-                                11,
-                                this.mMaxHeat);
+                this.getWorld().addBlockEvent(
+                        this.getXCoord(),
+                        this.getYCoord(),
+                        this.getZCoord(),
+                        GregTech_API.sBlockMachines,
+                        10,
+                        this.mMode);
+                this.getWorld().addBlockEvent(
+                        this.getXCoord(),
+                        this.getYCoord(),
+                        this.getZCoord(),
+                        GregTech_API.sBlockMachines,
+                        11,
+                        this.mMaxHeat);
             }
         }
     }
@@ -792,16 +702,15 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
         super.receiveClientEvent(aEventID, aValue);
-        if (this.getWorld().isRemote)
-            switch (aEventID) {
-                case 10:
-                    this.mNeedsUpdate = true;
-                    this.mMode = aValue;
-                    break;
-                case 11:
-                    this.mMaxHeat = aValue;
-                    break;
-            }
+        if (this.getWorld().isRemote) switch (aEventID) {
+            case 10:
+                this.mNeedsUpdate = true;
+                this.mMode = aValue;
+                break;
+            case 11:
+                this.mMaxHeat = aValue;
+                break;
+        }
         return;
     }
 
@@ -880,36 +789,29 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aSide == aFacing
-                        ? 0
-                        : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_3)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_3) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Computer_Cube)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Computer_Cube) };
     }
 
-    protected static final int DID_NOT_FIND_RECIPE = 0,
-            FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
+    protected static final int DID_NOT_FIND_RECIPE = 0, FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
             FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
 
     /**
      * Calcualtes overclocked ness using long integers
-     * @param aEUt          - recipe EUt
-     * @param aDuration     - recipe Duration
+     * 
+     * @param aEUt      - recipe EUt
+     * @param aDuration - recipe Duration
      */
     protected void calculateOverclockedNess(int aEUt, int aDuration) {
         if (mTier == 0) {
@@ -935,9 +837,8 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
                 tempEUt <<= 2; // this actually controls overclocking
                 // xEUt *= 4;//this is effect of everclocking
                 mMaxProgress >>= 1; // this is effect of overclocking
-                xEUt = mMaxProgress == 0
-                        ? xEUt >> 1
-                        : xEUt << 2; // U know, if the time is less than 1 tick make the machine use 2x less power
+                xEUt = mMaxProgress == 0 ? xEUt >> 1 : xEUt << 2; // U know, if the time is less than 1 tick make the
+                                                                  // machine use 2x less power
             }
             if (xEUt > Integer.MAX_VALUE - 1) {
                 mEU = Integer.MAX_VALUE - 1;
@@ -991,8 +892,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
                     return 2;
                 }
                 ItemData tData = GT_OreDictUnificator.getAssociation(aStack);
-                if ((tData != null)
-                        && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
+                if ((tData != null) && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
                         && (tData.mMaterial.mMaterial.mElement != null)
                         && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
                         && (tData.mMaterial.mMaterial != Materials.Magic)
@@ -1038,8 +938,11 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
                     aStack.stackSize -= 1;
 
                     this.mInventory[57] = GT_Utility.copyAmount(1L, getSpecialSlot());
-                    this.mInventory[57].setTagCompound(GT_Utility.getNBTContainingShort(
-                            new NBTTagCompound(), "map_id", (short) aStack.getItemDamage()));
+                    this.mInventory[57].setTagCompound(
+                            GT_Utility.getNBTContainingShort(
+                                    new NBTTagCompound(),
+                                    "map_id",
+                                    (short) aStack.getItemDamage()));
                     calculateOverclockedNess(30, 128);
                     // In case recipe is too OP for that machine
                     if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
@@ -1134,361 +1037,306 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
                 break;
         }
 
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    if (clickData.mouseButton == 0) {
-                        switchModeForward();
-                    } else if (clickData.mouseButton == 1) {
-                        switchModeBackward();
-                    }
-                    if (!widget.isClient()) {
-                        GT_UIInfos.openGTTileEntityUI(
-                                getBaseMetaTileEntity(), widget.getContext().getPlayer());
-                    }
-                })
-                .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_COMPUTER_MODE)
-                .setPos(156 + (mMode == 5 ? 50 : 0), 4)
-                .setSize(16, 16));
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (clickData.mouseButton == 0) {
+                switchModeForward();
+            } else if (clickData.mouseButton == 1) {
+                switchModeBackward();
+            }
+            if (!widget.isClient()) {
+                GT_UIInfos.openGTTileEntityUI(getBaseMetaTileEntity(), widget.getContext().getPlayer());
+            }
+        }).setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_COMPUTER_MODE)
+                .setPos(156 + (mMode == 5 ? 50 : 0), 4).setSize(16, 16));
     }
 
     private void addPage0(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GTPP_UITextures.PICTURE_COMPUTER_TOP)
-                        .setPos(32, 4)
-                        .setSize(112, 76))
-                .widget(new ProgressBar()
-                        .setProgress(() -> (float) getBaseMetaTileEntity().getStoredEU()
-                                / getBaseMetaTileEntity().getEUCapacity())
-                        .setTexture(GTPP_UITextures.PROGRESSBAR_COMPUTER_ENERGY, 96)
-                        .setDirection(ProgressBar.Direction.RIGHT)
-                        .setPos(44, 8)
-                        .setSize(96, 5))
-                .widget(new TextWidget("Solaris 1.7.10")
-                        .setDefaultColor(Utils.rgbtoHexValue(100, 190, 255))
-                        .setPos(56, 70));
+        builder.widget(
+                new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_COMPUTER_TOP).setPos(32, 4).setSize(112, 76))
+                .widget(
+                        new ProgressBar()
+                                .setProgress(
+                                        () -> (float) getBaseMetaTileEntity().getStoredEU()
+                                                / getBaseMetaTileEntity().getEUCapacity())
+                                .setTexture(GTPP_UITextures.PROGRESSBAR_COMPUTER_ENERGY, 96)
+                                .setDirection(ProgressBar.Direction.RIGHT).setPos(44, 8).setSize(96, 5))
+                .widget(
+                        new TextWidget("Solaris 1.7.10").setDefaultColor(Utils.rgbtoHexValue(100, 190, 255))
+                                .setPos(56, 70));
     }
 
     private void addPage1(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(4, 103)
-                        .setSize(150, 59))
-                .widget(new DrawableWidget()
-                        .setDrawable(ModularUITextures.ITEM_SLOT)
-                        .setPos(4, 4)
-                        .setSize(146, 98))
-                .widget(new DrawableWidget()
-                        .setDrawable(GTPP_UITextures.PICTURE_V202)
-                        .setPos(155, 103)
-                        .setSize(17, 5))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> saveNuclearReactor())
-                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_SAVE)
-                        .setPos(156, 54)
-                        .setSize(16, 16))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> loadNuclearReactor())
-                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_LOAD)
-                        .setPos(156, 70)
-                        .setSize(16, 16))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchNuclearReactor())
-                        .setBackground(
-                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_NUCLEAR_SWITCH)
-                        .setPos(156, 86)
-                        .setSize(16, 16));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 103).setSize(150, 59))
+                .widget(new DrawableWidget().setDrawable(ModularUITextures.ITEM_SLOT).setPos(4, 4).setSize(146, 98))
+                .widget(new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_V202).setPos(155, 103).setSize(17, 5))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> saveNuclearReactor())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_SAVE)
+                                .setPos(156, 54).setSize(16, 16))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> loadNuclearReactor())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_LOAD)
+                                .setPos(156, 70).setSize(16, 16))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchNuclearReactor())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_NUCLEAR_SWITCH)
+                                .setPos(156, 86).setSize(16, 16));
         SlotWidget displaySlot = new NuclearSlotWidget(inventoryHandler, 54, null);
         for (int i = 0; i < 9 * 6; i++) {
-            builder.widget(new NuclearSlotWidget(inventoryHandler, i, displaySlot.getMcSlot())
-                    .setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(5 + (i % 9) * 16, 5 + (i / 9) * 16));
+            builder.widget(
+                    new NuclearSlotWidget(inventoryHandler, i, displaySlot.getMcSlot())
+                            .setBackground(GT_UITextures.TRANSPARENT).setPos(5 + (i % 9) * 16, 5 + (i / 9) * 16));
         }
-        builder.widget(displaySlot
-                .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_ARROW_4)
-                .setPos(152, 27));
-        builder.widget(new TextWidget("Reactorstats:")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 108))
-                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(mEU) + "EU at " + mEUOut + "EU/t")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 120))
-                .widget(TextWidget.dynamicString(() -> "HEM: " + (mHEM / 10000.0F))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 128))
-                .widget(TextWidget.dynamicString(() ->
-                                GT_Utility.formatNumbers(mHeat) + "/" + GT_Utility.formatNumbers(mMaxHeat) + "Heat")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 136))
-                .widget(TextWidget.dynamicString(() -> "Explosionpower: " + (mExplosionStrength / 100.0F))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 144))
-                .widget(TextWidget.dynamicString(() -> "Runtime: " + ((mProgress > 0) ? (mProgress / 20) : 0) + "secs")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 152));
+        builder.widget(
+                displaySlot.setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_ARROW_4)
+                        .setPos(152, 27));
+        builder.widget(new TextWidget("Reactorstats:").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 108))
+                .widget(
+                        TextWidget.dynamicString(() -> GT_Utility.formatNumbers(mEU) + "EU at " + mEUOut + "EU/t")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 120))
+                .widget(
+                        TextWidget.dynamicString(() -> "HEM: " + (mHEM / 10000.0F))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 128))
+                .widget(
+                        TextWidget.dynamicString(
+                                () -> GT_Utility.formatNumbers(mHeat) + "/"
+                                        + GT_Utility.formatNumbers(mMaxHeat)
+                                        + "Heat")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 136))
+                .widget(
+                        TextWidget.dynamicString(() -> "Explosionpower: " + (mExplosionStrength / 100.0F))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 144))
+                .widget(
+                        TextWidget.dynamicString(() -> "Runtime: " + ((mProgress > 0) ? (mProgress / 20) : 0) + "secs")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 152));
     }
 
     private void addPage2(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(48, 4)
-                .setSize(81, 67));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(48, 4).setSize(81, 67));
         builder.widget(new DataStickSlotWidget(inventoryHandler, 54).setPos(7, 27))
-                .widget(new SlotWidget(inventoryHandler, 55)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_MICROSCOPE)
-                        .setPos(25, 27))
-                .widget(new SlotWidget(inventoryHandler, 56)
-                        .setAccess(true, false)
-                        .setPos(133, 27))
-                .widget(new SlotWidget(inventoryHandler, 57)
-                        .setAccess(true, false)
-                        .setPos(151, 27));
-        builder.widget(new TextWidget("Scanner")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> mProgress == 0)
+                .widget(
+                        new SlotWidget(inventoryHandler, 55)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_MICROSCOPE)
+                                .setPos(25, 27))
+                .widget(new SlotWidget(inventoryHandler, 56).setAccess(true, false).setPos(133, 27))
+                .widget(new SlotWidget(inventoryHandler, 57).setAccess(true, false).setPos(151, 27));
+        builder.widget(
+                new TextWidget("Scanner").setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mProgress == 0)
                         .setPos(51, 7))
-                .widget(new TextWidget("Can be used to")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> mProgress == 0)
-                        .setPos(51, 24))
-                .widget(new TextWidget("scan things")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> mProgress == 0)
-                        .setPos(51, 32))
-                .widget(new TextWidget("Currently")
-                        .setDefaultColor(Utils.rgbtoHexValue(200, 20, 20))
-                        .setEnabled(widget -> mProgress == 0)
-                        .setPos(51, 48))
-                .widget(new TextWidget("Disabled")
-                        .setDefaultColor(Utils.rgbtoHexValue(200, 20, 20))
-                        .setEnabled(widget -> mProgress == 0)
-                        .setPos(51, 56))
-                .widget(new TextWidget("Progress:")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> mProgress != 0)
-                        .setPos(51, 24))
-                .widget(TextWidget.dynamicString(() -> MathUtils.findPercentage(
-                                        mProgress, getBaseMetaTileEntity().getMaxProgress())
-                                + " %")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> mProgress != 0)
-                        .setPos(51, 32))
+                .widget(
+                        new TextWidget("Can be used to").setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> mProgress == 0).setPos(51, 24))
+                .widget(
+                        new TextWidget("scan things").setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> mProgress == 0).setPos(51, 32))
+                .widget(
+                        new TextWidget("Currently").setDefaultColor(Utils.rgbtoHexValue(200, 20, 20))
+                                .setEnabled(widget -> mProgress == 0).setPos(51, 48))
+                .widget(
+                        new TextWidget("Disabled").setDefaultColor(Utils.rgbtoHexValue(200, 20, 20))
+                                .setEnabled(widget -> mProgress == 0).setPos(51, 56))
+                .widget(
+                        new TextWidget("Progress:")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(
+                                        widget -> mProgress != 0)
+                                .setPos(51, 24))
+                .widget(
+                        TextWidget.dynamicString(
+                                () -> MathUtils.findPercentage(mProgress, getBaseMetaTileEntity().getMaxProgress())
+                                        + " %")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mProgress != 0)
+                                .setPos(51, 32))
                 .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgress, val -> mProgress = val));
     }
 
     private void addPage3(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(4, 4)
-                        .setSize(86, 41))
-                .widget(new DrawableWidget()
-                        .setDrawable(GTPP_UITextures.PICTURE_ARROWS_SEPARATE)
-                        .setPos(110, 23)
-                        .setSize(40, 40))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchCentrifugePageBackward())
-                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
-                        .setPos(88, 65)
-                        .setSize(16, 16))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchCentrifugePageForward())
-                        .setBackground(
-                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
-                        .setPos(104, 65)
-                        .setSize(16, 16))
-                .widget(SlotWidget.phantom(inventoryHandler, 59)
-                        .disableInteraction()
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CENTRIFUGE)
-                        .setPos(121, 34))
-                .widget(SlotWidget.phantom(inventoryHandler, 60)
-                        .disableInteraction()
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CANISTER)
-                        .setPos(91, 4))
-                .widget(SlotWidget.phantom(inventoryHandler, 61)
-                        .disableInteraction()
-                        .setPos(121, 4))
-                .widget(SlotWidget.phantom(inventoryHandler, 62)
-                        .disableInteraction()
-                        .setPos(151, 34))
-                .widget(SlotWidget.phantom(inventoryHandler, 63)
-                        .disableInteraction()
-                        .setPos(121, 64))
-                .widget(SlotWidget.phantom(inventoryHandler, 64)
-                        .disableInteraction()
-                        .setPos(91, 34))
-                .widget(new TextWidget("Centrifuge")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 7))
-                .widget(TextWidget.dynamicString(() ->
-                                "Recipe: " + (mMaxHeat + 1) + "/" + GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size())
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 23))
-                .widget(TextWidget.dynamicString(() -> "EU: " + GT_Utility.formatNumbers(mEU))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 31));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(86, 41))
+                .widget(
+                        new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_ARROWS_SEPARATE).setPos(110, 23)
+                                .setSize(40, 40))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchCentrifugePageBackward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                                .setPos(88, 65).setSize(16, 16))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchCentrifugePageForward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                                .setPos(104, 65).setSize(16, 16))
+                .widget(
+                        SlotWidget.phantom(inventoryHandler, 59).disableInteraction()
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CENTRIFUGE)
+                                .setPos(121, 34))
+                .widget(
+                        SlotWidget.phantom(inventoryHandler, 60).disableInteraction()
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CANISTER)
+                                .setPos(91, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 61).disableInteraction().setPos(121, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 62).disableInteraction().setPos(151, 34))
+                .widget(SlotWidget.phantom(inventoryHandler, 63).disableInteraction().setPos(121, 64))
+                .widget(SlotWidget.phantom(inventoryHandler, 64).disableInteraction().setPos(91, 34))
+                .widget(new TextWidget("Centrifuge").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 7))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "Recipe: " + (mMaxHeat + 1)
+                                                + "/"
+                                                + GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 23))
+                .widget(
+                        TextWidget.dynamicString(() -> "EU: " + GT_Utility.formatNumbers(mEU))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 31));
     }
 
     private void addPage4(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(4, 4)
-                        .setSize(116, 61))
-                .widget(new DrawableWidget()
-                        .setDrawable(GTPP_UITextures.PICTURE_ARROWS_FUSION)
-                        .setPos(121, 23)
-                        .setSize(29, 40))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchFusionPageBackward())
-                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
-                        .setPos(88, 65)
-                        .setSize(16, 16))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchFusionPageForward())
-                        .setBackground(
-                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
-                        .setPos(104, 65)
-                        .setSize(16, 16))
-                .widget(SlotWidget.phantom(inventoryHandler, 59)
-                        .disableInteraction()
-                        .setPos(121, 4))
-                .widget(SlotWidget.phantom(inventoryHandler, 60)
-                        .disableInteraction()
-                        .setPos(121, 64))
-                .widget(SlotWidget.phantom(inventoryHandler, 61)
-                        .disableInteraction()
-                        .setPos(151, 34))
-                .widget(new TextWidget("Fusionreactor")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 7))
-                .widget(TextWidget.dynamicString(() -> "Recipe: " + (mMaxHeat + 1) + "/"
-                                + GT_TileEntity_ComputerCube.sFusionReactorRecipes.size())
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 15))
-                .widget(TextWidget.dynamicString(() -> "Start: " + GT_Utility.formatNumbers(mEU) + "EU")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 23))
-                .widget(TextWidget.dynamicString(() -> "EU/t: " + GT_Utility.formatNumbers(mEUOut))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 31))
-                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(mHeat) + " Ticks")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 39))
-                .widget(TextWidget.dynamicString(() -> GT_TileEntity_ComputerCube.sFusionReactorRecipes
-                                .get(mMaxHeat)
-                                .mFluidOutputs[0]
-                                .getLocalizedName())
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 55))
-                .widget(TextWidget.dynamicString(() -> mEUOut < 0
-                                ? "IN: " + GT_Utility.formatNumbers(-mEUOut * mHeat) + "EU"
-                                : "OUT: " + GT_Utility.formatNumbers(mEUOut * mHeat) + "EU")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 47));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(116, 61))
+                .widget(
+                        new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_ARROWS_FUSION).setPos(121, 23)
+                                .setSize(29, 40))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchFusionPageBackward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                                .setPos(88, 65).setSize(16, 16))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchFusionPageForward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                                .setPos(104, 65).setSize(16, 16))
+                .widget(SlotWidget.phantom(inventoryHandler, 59).disableInteraction().setPos(121, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 60).disableInteraction().setPos(121, 64))
+                .widget(SlotWidget.phantom(inventoryHandler, 61).disableInteraction().setPos(151, 34))
+                .widget(new TextWidget("Fusionreactor").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 7))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "Recipe: " + (mMaxHeat + 1)
+                                                + "/"
+                                                + GT_TileEntity_ComputerCube.sFusionReactorRecipes.size())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 15))
+                .widget(
+                        TextWidget.dynamicString(() -> "Start: " + GT_Utility.formatNumbers(mEU) + "EU")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 23))
+                .widget(
+                        TextWidget.dynamicString(() -> "EU/t: " + GT_Utility.formatNumbers(mEUOut))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 31))
+                .widget(
+                        TextWidget.dynamicString(() -> GT_Utility.formatNumbers(mHeat) + " Ticks")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 39))
+                .widget(
+                        TextWidget.dynamicString(
+                                () -> GT_TileEntity_ComputerCube.sFusionReactorRecipes.get(mMaxHeat).mFluidOutputs[0]
+                                        .getLocalizedName())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 55))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> mEUOut < 0 ? "IN: " + GT_Utility.formatNumbers(-mEUOut * mHeat) + "EU"
+                                                : "OUT: " + GT_Utility.formatNumbers(mEUOut * mHeat) + "EU")
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 47));
     }
 
     private void addPage5(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(4, 4)
-                        .setSize(200, 141))
-                .widget(new DrawableWidget()
-                        .setDrawable(() -> mExplosionStrength != 0 ? GTPP_UITextures.PICTURE_COMPUTER_GRID : null)
-                        .setPos(152, 6)
-                        .setSize(50, 50))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchDescriptionPageBackward())
-                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
-                        .setPos(190, 146)
-                        .setSize(16, 16))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchDescriptionPageForward())
-                        .setBackground(
-                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
-                        .setPos(206, 146)
-                        .setSize(16, 16));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(200, 141))
+                .widget(
+                        new DrawableWidget()
+                                .setDrawable(
+                                        () -> mExplosionStrength != 0 ? GTPP_UITextures.PICTURE_COMPUTER_GRID : null)
+                                .setPos(152, 6).setSize(50, 50))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchDescriptionPageBackward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                                .setPos(190, 146).setSize(16, 16))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchDescriptionPageForward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                                .setPos(206, 146).setSize(16, 16));
         for (int i = 0; i < 5; i++) {
-            builder.widget(SlotWidget.phantom(inventoryHandler, i + 59)
-                    .disableInteraction()
-                    .setPos(205, 37 + i * 18));
+            builder.widget(SlotWidget.phantom(inventoryHandler, i + 59).disableInteraction().setPos(205, 37 + i * 18));
         }
         for (int i = 0; i < 9; i++) {
-            builder.widget(SlotWidget.phantom(inventoryHandler, i + 64)
-                    .disableInteraction()
-                    .setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(152 + (i % 3) * 16, 6 + (i / 3) * 16));
+            builder.widget(
+                    SlotWidget.phantom(inventoryHandler, i + 64).disableInteraction()
+                            .setBackground(GT_UITextures.TRANSPARENT).setPos(152 + (i % 3) * 16, 6 + (i / 3) * 16));
         }
         int descriptionMaxLines = GT_Computercube_Description.sDescriptions.stream()
-                .sorted((d1, d2) -> d2.mDescription.length - d1.mDescription.length)
-                .collect(Collectors.toList())
-                .get(0)
-                .mDescription
-                .length;
+                .sorted((d1, d2) -> d2.mDescription.length - d1.mDescription.length).collect(Collectors.toList())
+                .get(0).mDescription.length;
         for (int i = 0; i < descriptionMaxLines; i++) {
             final int index = i;
             builder.widget(TextWidget.dynamicString(() -> {
-                        if (mMaxHeat >= 0 && mMaxHeat < GT_Computercube_Description.sDescriptions.size()) {
-                            String[] descriptions =
-                                    GT_Computercube_Description.sDescriptions.get(mMaxHeat).mDescription;
-                            if (index < descriptions.length) {
-                                return descriptions[index];
-                            }
-                        }
-                        return "";
-                    })
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(7, 7 + index * 8));
+                if (mMaxHeat >= 0 && mMaxHeat < GT_Computercube_Description.sDescriptions.size()) {
+                    String[] descriptions = GT_Computercube_Description.sDescriptions.get(mMaxHeat).mDescription;
+                    if (index < descriptions.length) {
+                        return descriptions[index];
+                    }
+                }
+                return "";
+            }).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 7 + index * 8));
         }
     }
 
     private void addPage6(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(4, 4)
-                        .setSize(86, 41))
-                .widget(new DrawableWidget()
-                        .setDrawable(GTPP_UITextures.PICTURE_ARROWS_SEPARATE)
-                        .setPos(110, 23)
-                        .setSize(40, 40))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchElectrolyzerPageBackward())
-                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
-                        .setPos(88, 65)
-                        .setSize(16, 16))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> switchElectrolyzerPageForward())
-                        .setBackground(
-                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
-                        .setPos(104, 65)
-                        .setSize(16, 16))
-                .widget(SlotWidget.phantom(inventoryHandler, 59)
-                        .disableInteraction()
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
-                        .setPos(121, 34))
-                .widget(SlotWidget.phantom(inventoryHandler, 60)
-                        .disableInteraction()
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CANISTER)
-                        .setPos(91, 4))
-                .widget(SlotWidget.phantom(inventoryHandler, 61)
-                        .disableInteraction()
-                        .setPos(121, 4))
-                .widget(SlotWidget.phantom(inventoryHandler, 62)
-                        .disableInteraction()
-                        .setPos(151, 34))
-                .widget(SlotWidget.phantom(inventoryHandler, 63)
-                        .disableInteraction()
-                        .setPos(121, 64))
-                .widget(SlotWidget.phantom(inventoryHandler, 64)
-                        .disableInteraction()
-                        .setPos(91, 34))
-                .widget(new TextWidget("Electrolyzer")
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 7))
-                .widget(TextWidget.dynamicString(() -> "Recipe: " + (mMaxHeat + 1) + "/"
-                                + GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size())
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 23))
-                .widget(TextWidget.dynamicString(() -> "EU: " + GT_Utility.formatNumbers(mEU))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(7, 31));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(86, 41))
+                .widget(
+                        new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_ARROWS_SEPARATE).setPos(110, 23)
+                                .setSize(40, 40))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchElectrolyzerPageBackward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                                .setPos(88, 65).setSize(16, 16))
+                .widget(
+                        new ButtonWidget().setOnClick((clickData, widget) -> switchElectrolyzerPageForward())
+                                .setBackground(
+                                        GTPP_UITextures.BUTTON_STANDARD_16x16,
+                                        GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                                .setPos(104, 65).setSize(16, 16))
+                .widget(
+                        SlotWidget.phantom(inventoryHandler, 59).disableInteraction()
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
+                                .setPos(121, 34))
+                .widget(
+                        SlotWidget.phantom(inventoryHandler, 60).disableInteraction()
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CANISTER)
+                                .setPos(91, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 61).disableInteraction().setPos(121, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 62).disableInteraction().setPos(151, 34))
+                .widget(SlotWidget.phantom(inventoryHandler, 63).disableInteraction().setPos(121, 64))
+                .widget(SlotWidget.phantom(inventoryHandler, 64).disableInteraction().setPos(91, 34))
+                .widget(new TextWidget("Electrolyzer").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 7))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "Recipe: " + (mMaxHeat + 1)
+                                                + "/"
+                                                + GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 23))
+                .widget(
+                        TextWidget.dynamicString(() -> "EU: " + GT_Utility.formatNumbers(mEU))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(7, 31));
     }
 
     private class NuclearSlotWidget extends SlotWidget {
@@ -1521,10 +1369,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
                 if (tStack == null) {
                     if (displaySlot.getStack() != null && aSlotIndex != 58) {
                         tSlot.putStack(displaySlot.getStack().copy());
-                        getSimulator()
-                                .slotClick(
-                                        aSlotIndex,
-                                        new GT_ItemStack(displaySlot.getStack().copy()));
+                        getSimulator().slotClick(aSlotIndex, new GT_ItemStack(displaySlot.getStack().copy()));
                     } else {
                         tSlot.putStack(new ItemStack(GT_TileEntity_ComputerCube.sReactorList.get(0).mItem, 1));
                         getSimulator().slotClick(aSlotIndex, GT_TileEntity_ComputerCube.sReactorList.get(0));
@@ -1535,9 +1380,11 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
                     if (GT_TileEntity_ComputerCube.sReactorList.get(i - 1).mItem == tStack.getItem()) {
                         tSlot.putStack(new ItemStack(GT_TileEntity_ComputerCube.sReactorList.get(i).mItem, 1, 0));
                         getSimulator().slotClick(aSlotIndex, GT_TileEntity_ComputerCube.sReactorList.get(i));
-                        /*if (tSlot.getStack() != null && tSlot.getStack().getItem() == GT_ModHandler.getIC2Item("reactorIsotopeCell", 1).getItem()) {
-                        	tSlot.getStack().setItemDamage(tSlot.getStack().getMaxDamage() - 1);
-                        }*/
+                        /*
+                         * if (tSlot.getStack() != null && tSlot.getStack().getItem() ==
+                         * GT_ModHandler.getIC2Item("reactorIsotopeCell", 1).getItem()) {
+                         * tSlot.getStack().setItemDamage(tSlot.getStack().getMaxDamage() - 1); }
+                         */
                         return;
                     }
                 }

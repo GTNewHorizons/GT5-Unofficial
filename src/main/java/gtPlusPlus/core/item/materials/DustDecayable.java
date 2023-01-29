@@ -2,19 +2,21 @@ package gtPlusPlus.core.item.materials;
 
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 
-import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
-import gtPlusPlus.core.item.base.BaseItemTickable;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
+import gtPlusPlus.core.item.base.BaseItemTickable;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class DustDecayable extends BaseItemTickable {
 
@@ -37,7 +39,7 @@ public class DustDecayable extends BaseItemTickable {
         this.mIcon[1] = reg.registerIcon(gt2);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         super.addInformation(stack, player, list, bool);
@@ -47,11 +49,7 @@ public class DustDecayable extends BaseItemTickable {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         if (world == null || iStack == null) {
             return;

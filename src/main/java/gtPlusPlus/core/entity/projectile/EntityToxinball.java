@@ -1,8 +1,7 @@
 package gtPlusPlus.core.entity.projectile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,7 +11,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public abstract class EntityToxinball extends EntityFireball {
+
     protected int entityX = -1;
     protected int entityY = -1;
     protected int entityZ = -1;
@@ -30,9 +33,8 @@ public abstract class EntityToxinball extends EntityFireball {
     protected void entityInit() {}
 
     /**
-     * Checks if the entity is in range to render by using the past in distance
-     * and comparing it to its average edge length * 64 * renderDistanceWeight
-     * Args: distance
+     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
+     * length * 64 * renderDistanceWeight Args: distance
      */
     @Override
     @SideOnly(Side.CLIENT)
@@ -75,9 +77,8 @@ public abstract class EntityToxinball extends EntityFireball {
      */
     @Override
     public void onUpdate() {
-        if (!this.worldObj.isRemote
-                && (this.shootingEntity != null && this.shootingEntity.isDead
-                        || !this.worldObj.blockExists(this.entityX, this.entityY, this.entityZ))) {
+        if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead
+                || !this.worldObj.blockExists(this.entityX, this.entityY, this.entityZ))) {
             this.setDead();
         } else {
             super.onUpdate();
@@ -106,11 +107,15 @@ public abstract class EntityToxinball extends EntityFireball {
 
             Vec3 vec3 = Vec3.createVectorHelper(this.entityX, this.entityY, this.entityZ);
             Vec3 vec31 = Vec3.createVectorHelper(
-                    this.entityX + this.motionX, this.entityY + this.motionY, this.entityZ + this.motionZ);
+                    this.entityX + this.motionX,
+                    this.entityY + this.motionY,
+                    this.entityZ + this.motionZ);
             MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
             vec3 = Vec3.createVectorHelper(this.entityX, this.entityY, this.entityZ);
             vec31 = Vec3.createVectorHelper(
-                    this.entityX + this.motionX, this.entityY + this.motionY, this.entityZ + this.motionZ);
+                    this.entityX + this.motionX,
+                    this.entityY + this.motionY,
+                    this.entityZ + this.motionZ);
 
             if (movingobjectposition != null) {
                 vec31 = Vec3.createVectorHelper(
@@ -122,9 +127,7 @@ public abstract class EntityToxinball extends EntityFireball {
             Entity entity = null;
             List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
                     this,
-                    this.boundingBox
-                            .addCoord(this.motionX, this.motionY, this.motionZ)
-                            .expand(1.0D, 1.0D, 1.0D));
+                    this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
 
             for (int i = 0; i < list.size(); ++i) {
@@ -161,9 +164,8 @@ public abstract class EntityToxinball extends EntityFireball {
             float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.rotationYaw = (float) (Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
 
-            for (this.rotationPitch = (float) (Math.atan2(f1, this.motionY) * 180.0D / Math.PI) - 90.0F;
-                    this.rotationPitch - this.prevRotationPitch < -180.0F;
-                    this.prevRotationPitch -= 360.0F) {
+            for (this.rotationPitch = (float) (Math.atan2(f1, this.motionY) * 180.0D / Math.PI)
+                    - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
                 ;
             }
 
@@ -211,8 +213,7 @@ public abstract class EntityToxinball extends EntityFireball {
     }
 
     /**
-     * Return the motion factor for this projectile. The factor is multiplied by
-     * the original motion.
+     * Return the motion factor for this projectile. The factor is multiplied by the original motion.
      */
     @Override
     protected float getMotionFactor() {
@@ -235,7 +236,7 @@ public abstract class EntityToxinball extends EntityFireball {
         aTag.setShort("zTile", (short) this.entityZ);
         aTag.setByte("inTile", (byte) Block.getIdFromBlock(this.block));
         aTag.setByte("inGround", (byte) (this.inGround ? 1 : 0));
-        aTag.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
+        aTag.setTag("direction", this.newDoubleNBTList(new double[] { this.motionX, this.motionY, this.motionZ }));
     }
 
     /**
@@ -260,8 +261,7 @@ public abstract class EntityToxinball extends EntityFireball {
     }
 
     /**
-     * Returns true if other Entities should be prevented from moving through
-     * this Entity.
+     * Returns true if other Entities should be prevented from moving through this Entity.
      */
     @Override
     public boolean canBeCollidedWith() {

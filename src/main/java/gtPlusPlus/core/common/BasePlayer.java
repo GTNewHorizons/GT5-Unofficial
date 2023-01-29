@@ -1,16 +1,18 @@
 package gtPlusPlus.core.common;
 
-import api.player.client.ClientPlayerAPI;
-import api.player.client.ClientPlayerBase;
-import gtPlusPlus.core.handler.events.CustomMovementHandler;
-import gtPlusPlus.core.handler.events.SneakManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MovementInputFromOptions;
 
+import api.player.client.ClientPlayerAPI;
+import api.player.client.ClientPlayerBase;
+import gtPlusPlus.core.handler.events.CustomMovementHandler;
+import gtPlusPlus.core.handler.events.SneakManager;
+
 public class BasePlayer extends ClientPlayerBase {
+
     private final Minecraft mc = Minecraft.getMinecraft();
     private final CustomMovementHandler customMovementInput = new CustomMovementHandler();
     private final GameSettings settings = this.mc.gameSettings;
@@ -20,7 +22,7 @@ public class BasePlayer extends ClientPlayerBase {
     }
 
     /*
-     * 		EntityPlayerSP.onLivingUpdate() - Adapted to PlayerAPI
+     * EntityPlayerSP.onLivingUpdate() - Adapted to PlayerAPI
      */
     @Override
     public void onLivingUpdate() {
@@ -61,7 +63,7 @@ public class BasePlayer extends ClientPlayerBase {
             this.customMovementInput.update(this.mc, (MovementInputFromOptions) this.player.movementInput, this.player);
 
             /*
-             * 		Begin ToggleSneak Changes - ToggleSprint
+             * Begin ToggleSneak Changes - ToggleSprint
              */
             SneakManager aSneak = SneakManager.get(this.player);
 
@@ -79,8 +81,7 @@ public class BasePlayer extends ClientPlayerBase {
             // as a whole
             if (isSprintDisabled) {
                 // Utils.LOG_INFO("Sprint pressed");
-                if (aSneak.optionDoubleTap
-                        && this.player.onGround
+                if (aSneak.optionDoubleTap && this.player.onGround
                         && !isMovingForward
                         && (this.player.movementInput.moveForward >= minSpeed)
                         && !this.player.isSprinting()
@@ -100,8 +101,7 @@ public class BasePlayer extends ClientPlayerBase {
                     }
                 }
 
-                if (!this.player.isSprinting()
-                        && (this.player.movementInput.moveForward >= minSpeed)
+                if (!this.player.isSprinting() && (this.player.movementInput.moveForward >= minSpeed)
                         && !this.player.isUsingItem()
                         && !this.player.isPotionActive(Potion.blindness)
                         && this.settings.keyBindSprint.getIsKeyPressed()) {
@@ -123,8 +123,7 @@ public class BasePlayer extends ClientPlayerBase {
                 // if(this.player.onGround && enoughHunger && !this.player.isUsingItem() &&
                 // !this.player.isPotionActive(Potion.blindness) && !this.customMovementInput.sprintHeldAndReleased)
 
-                if (!this.player.isUsingItem()
-                        && !this.player.isPotionActive(Potion.blindness)
+                if (!this.player.isUsingItem() && !this.player.isPotionActive(Potion.blindness)
                         && !this.customMovementInput.sprintHeldAndReleased) {
                     if ((canDoubleTap && !this.player.isSprinting()) || !canDoubleTap) {
                         if (aSneak.Sprinting()) {
@@ -135,8 +134,7 @@ public class BasePlayer extends ClientPlayerBase {
                     }
                 }
 
-                if (canDoubleTap
-                        && !state
+                if (canDoubleTap && !state
                         && this.player.onGround
                         && !isMovingForward
                         && (this.player.movementInput.moveForward >= minSpeed)
@@ -162,8 +160,7 @@ public class BasePlayer extends ClientPlayerBase {
                 this.player.setSprinting(false);
 
                 // Undo toggle if we resumed vanilla operation due to Hold&Release, DoubleTap, Fly, Ride
-                if ((this.customMovementInput.sprintHeldAndReleased == true)
-                        || isSprintDisabled
+                if ((this.customMovementInput.sprintHeldAndReleased == true) || isSprintDisabled
                         || this.customMovementInput.sprintDoubleTapped
                         || this.player.capabilities.isFlying
                         || this.player.isRiding()) {
@@ -172,42 +169,42 @@ public class BasePlayer extends ClientPlayerBase {
             }
 
             /*
-             * 		End ToggleSneak Changes - ToggleSprint
+             * End ToggleSneak Changes - ToggleSprint
              */
 
-            //			//
-            //			//  Debug Framework - Added 5/7/2014
-            //			//
-            //			if (this.showDebug && this.settings.keyBindPickBlock.getIsKeyPressed() && !this.handledDebugPress)
-            //			{
-            //				this.player.addChatMessage(new ChatComponentText("+--------------------------------------+"));
-            //				this.player.addChatMessage(new ChatComponentText("|        ToggleSneak Debug Info        |"));
-            //				this.player.addChatMessage(new ChatComponentText("+--------------------------------------+"));
-            //				this.player.addChatMessage(new ChatComponentText("                                        "));
-            //				this.player.addChatMessage(new ChatComponentText("isFlying       - " +
+            // //
+            // // Debug Framework - Added 5/7/2014
+            // //
+            // if (this.showDebug && this.settings.keyBindPickBlock.getIsKeyPressed() && !this.handledDebugPress)
+            // {
+            // this.player.addChatMessage(new ChatComponentText("+--------------------------------------+"));
+            // this.player.addChatMessage(new ChatComponentText("| ToggleSneak Debug Info |"));
+            // this.player.addChatMessage(new ChatComponentText("+--------------------------------------+"));
+            // this.player.addChatMessage(new ChatComponentText(" "));
+            // this.player.addChatMessage(new ChatComponentText("isFlying - " +
             // (this.player.capabilities.isFlying == true ? "True" : "False")));
-            //				this.player.addChatMessage(new ChatComponentText("isCreative     - " +
+            // this.player.addChatMessage(new ChatComponentText("isCreative - " +
             // (this.player.capabilities.isCreativeMode == true ? "True" : "False")));
-            //				this.player.addChatMessage(new ChatComponentText("enableFlyBoost - " +
+            // this.player.addChatMessage(new ChatComponentText("enableFlyBoost - " +
             // (SneakManager.optionEnableFlyBoost == true ? "True" : "False")));
-            //				this.player.addChatMessage(new ChatComponentText("flyBoostAmount - " +
+            // this.player.addChatMessage(new ChatComponentText("flyBoostAmount - " +
             // SneakManager.optionFlyBoostAmount));
-            //				this.player.addChatMessage(new ChatComponentText("                                        "));
-            //				this.player.addChatMessage(new ChatComponentText("keybindSprint  - " +
+            // this.player.addChatMessage(new ChatComponentText(" "));
+            // this.player.addChatMessage(new ChatComponentText("keybindSprint - " +
             // (this.settings.keyBindSprint.getIsKeyPressed() == true ? "True" : "False")));
-            //				this.player.addChatMessage(new ChatComponentText("keybindSneak   - " +
+            // this.player.addChatMessage(new ChatComponentText("keybindSneak - " +
             // (this.settings.keyBindSneak.getIsKeyPressed() == true ? "True" : "False")));
-            //				this.player.addChatMessage(new ChatComponentText("keybindJump    - " +
+            // this.player.addChatMessage(new ChatComponentText("keybindJump - " +
             // (this.settings.keyBindJump.getIsKeyPressed() == true ? "True" : "False")));
-            //				this.player.addChatMessage(new ChatComponentText("                                        "));
-            //				this.player.addChatMessage(new ChatComponentText("                                        "));
+            // this.player.addChatMessage(new ChatComponentText(" "));
+            // this.player.addChatMessage(new ChatComponentText(" "));
             //
-            //				this.handledDebugPress = true;
-            //			}
-            //			else if (this.showDebug && !this.settings.keyBindPickBlock.getIsKeyPressed() && this.handledDebugPress)
-            //			{
-            //				this.handledDebugPress = false;
-            //			}
+            // this.handledDebugPress = true;
+            // }
+            // else if (this.showDebug && !this.settings.keyBindPickBlock.getIsKeyPressed() && this.handledDebugPress)
+            // {
+            // this.handledDebugPress = false;
+            // }
 
         }
     }

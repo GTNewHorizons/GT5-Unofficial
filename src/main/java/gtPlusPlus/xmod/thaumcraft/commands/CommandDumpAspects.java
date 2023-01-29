@@ -2,17 +2,20 @@ package gtPlusPlus.xmod.thaumcraft.commands;
 
 import static gtPlusPlus.core.util.minecraft.PlayerUtils.messagePlayer;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.commands.CommandUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.thaumcraft.objects.ThreadAspectScanner;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.commands.CommandUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.thaumcraft.objects.ThreadAspectScanner;
+
 public class CommandDumpAspects implements ICommand {
+
     private final List<String> aliases;
     public static long mLastScanTime = System.currentTimeMillis();
 
@@ -56,7 +59,8 @@ public class CommandDumpAspects implements ICommand {
             Thread t = createNewThread();
             messagePlayer(P, "Beginning to dump information about all items/blocks & their aspects to file.");
             messagePlayer(
-                    P, "Please do not close your game during this process, you will be notified upon completion.");
+                    P,
+                    "Please do not close your game during this process, you will be notified upon completion.");
             t.start();
         } else {
             messagePlayer(

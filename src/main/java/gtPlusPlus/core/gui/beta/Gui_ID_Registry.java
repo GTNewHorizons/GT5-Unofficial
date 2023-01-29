@@ -1,13 +1,14 @@
 package gtPlusPlus.core.gui.beta;
 
-import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
+
 public class Gui_ID_Registry {
-    private static final Map<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classMap =
-            new HashMap<Class<? extends IGuiManagerMiscUtils>, MU_GuiId>();
+
+    private static final Map<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classMap = new HashMap<Class<? extends IGuiManagerMiscUtils>, MU_GuiId>();
     private static final Map<Integer, MU_GuiId> idMap = new HashMap<Integer, MU_GuiId>();
     private static int nextId = 0;
 
@@ -21,8 +22,8 @@ public class Gui_ID_Registry {
         // EntityMinecartBeehouse.class }));
     }
 
-    private static void registerGuiHandlers(
-            final Gui_Types MU_GuiType, final List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses) {
+    private static void registerGuiHandlers(final Gui_Types MU_GuiType,
+            final List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses) {
         for (final Class<? extends IGuiManagerMiscUtils> tileGuiHandlerClass : guiHandlerClasses) {
             final MU_GuiId guiId = new MU_GuiId(nextId++, MU_GuiType, tileGuiHandlerClass);
             classMap.put(tileGuiHandlerClass, guiId);
@@ -34,8 +35,8 @@ public class Gui_ID_Registry {
         final Class<? extends IGuiManagerMiscUtils> guiHandlerClass = guiHandler.getClass();
         MU_GuiId guiId = classMap.get(guiHandlerClass);
         if (guiId == null) {
-            for (final Map.Entry<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classGuiIdEntry :
-                    classMap.entrySet()) {
+            for (final Map.Entry<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classGuiIdEntry : classMap
+                    .entrySet()) {
                 if (((Class<?>) classGuiIdEntry.getKey()).isAssignableFrom(guiHandlerClass)) {
                     guiId = classGuiIdEntry.getValue();
                     break;

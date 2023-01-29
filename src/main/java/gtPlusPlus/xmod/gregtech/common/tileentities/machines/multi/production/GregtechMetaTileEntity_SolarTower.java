@@ -8,10 +8,21 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -29,14 +40,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_SolarTower>
         implements ISurvivalConstructable {
@@ -72,8 +75,7 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
     @Override
     protected final GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Contributing Green Energy towards the future")
+        tt.addMachineType(getMachineType()).addInfo("Contributing Green Energy towards the future")
                 .addInfo("Surround with rings of Solar Reflectors")
                 .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
                 .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
@@ -89,18 +91,12 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
                 .addInfo("Heat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)")
                 .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
                 .addInfo("Total number of reflectors based on how many rings are built:")
-                .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
-                .addSeparator()
-                .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
-                .addController("Top Middle")
-                .addCasingInfo("Structural Solar Casing", 229)
-                .addCasingInfo("Thermally Insulated Casing", 60)
-                .addCasingInfo("Salt Containment Casing", 66)
-                .addCasingInfo("Thermal Containment Casing", 60)
-                .addInputHatch("Any 2 dot hint(min 1)", 2)
-                .addOutputHatch("Any 2 dot hint(min 1)", 2)
-                .addMaintenanceHatch("Any 2 dot hint", 2)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340").addSeparator()
+                .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false).addController("Top Middle")
+                .addCasingInfo("Structural Solar Casing", 229).addCasingInfo("Thermally Insulated Casing", 60)
+                .addCasingInfo("Salt Containment Casing", 66).addCasingInfo("Thermal Containment Casing", 60)
+                .addInputHatch("Any 2 dot hint(min 1)", 2).addOutputHatch("Any 2 dot hint(min 1)", 2)
+                .addMaintenanceHatch("Any 2 dot hint", 2).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -108,300 +104,164 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
     private static final String STRUCTURE_PIECE_TOWER = "tower";
     private static final String STRUCTURE_PIECE_TOP = "top";
 
-    private static final String[] STRUCTURE_PIECE_SOLAR_HEATER_RING = {"ring1", "ring2", "ring3", "ring4", "ring5"};
+    private static final String[] STRUCTURE_PIECE_SOLAR_HEATER_RING = { "ring1", "ring2", "ring3", "ring4", "ring5" };
     private static final String SOLAR_HEATER_RING_1 = STRUCTURE_PIECE_SOLAR_HEATER_RING[0];
     private static final String SOLAR_HEATER_RING_2 = STRUCTURE_PIECE_SOLAR_HEATER_RING[1];
     private static final String SOLAR_HEATER_RING_3 = STRUCTURE_PIECE_SOLAR_HEATER_RING[2];
     private static final String SOLAR_HEATER_RING_4 = STRUCTURE_PIECE_SOLAR_HEATER_RING[3];
     private static final String SOLAR_HEATER_RING_5 = STRUCTURE_PIECE_SOLAR_HEATER_RING[4];
 
-    private static final ClassValue<IStructureDefinition<GregtechMetaTileEntity_SolarTower>> STRUCTURE_DEFINITION =
-            new ClassValue<IStructureDefinition<GregtechMetaTileEntity_SolarTower>>() {
-                @Override
-                protected IStructureDefinition<GregtechMetaTileEntity_SolarTower> computeValue(Class<?> type) {
-                    return StructureDefinition.<GregtechMetaTileEntity_SolarTower>builder()
+    private static final ClassValue<IStructureDefinition<GregtechMetaTileEntity_SolarTower>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GregtechMetaTileEntity_SolarTower>>() {
 
-                            // s = salt
-                            // c = thermal containment
-                            // i = thermal insulated
-                            // t = solar structural
-                            // h = hatch
-                            // g = solar heater
+        @Override
+        protected IStructureDefinition<GregtechMetaTileEntity_SolarTower> computeValue(Class<?> type) {
+            return StructureDefinition.<GregtechMetaTileEntity_SolarTower>builder()
 
-                            .addShape(STRUCTURE_PIECE_TOP, (new String[][] {
-                                {"     ", "     ", "  ~  ", "     ", "     "},
-                                {"     ", "  s  ", " sss ", "  s  ", "     "},
-                                {"  c  ", " ccc ", "ccscc", " ccc ", "  c  "},
-                                {"  c  ", " ccc ", "ccscc", " ccc ", "  c  "},
-                                {"  c  ", " ccc ", "ccscc", " ccc ", "  c  "},
-                                {"  c  ", " ccc ", "ccscc", " ccc ", "  c  "},
-                                {"  c  ", " ccc ", "ccscc", " ccc ", "  c  "},
-                            }))
-                            .addShape(STRUCTURE_PIECE_TOWER, (new String[][] {
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                                {" i ", "isi", " i "},
-                            }))
-                            .addShape(STRUCTURE_PIECE_BASE, (new String[][] {
-                                {
-                                    "           ",
-                                    "           ",
-                                    "     t     ",
-                                    "    ttt    ",
-                                    "   ttstt   ",
-                                    "  ttssstt  ",
-                                    "   ttstt   ",
-                                    "    ttt    ",
-                                    "     t     ",
-                                    "           ",
-                                    "           "
-                                },
-                                {
-                                    "           ",
-                                    "           ",
-                                    "     t     ",
-                                    "    ttt    ",
-                                    "   tssst   ",
-                                    "  ttssstt  ",
-                                    "   tssst   ",
-                                    "    ttt    ",
-                                    "     t     ",
-                                    "           ",
-                                    "           "
-                                },
-                                {
-                                    "           ",
-                                    "     t     ",
-                                    "    ttt    ",
-                                    "   ttttt   ",
-                                    "  ttssstt  ",
-                                    " tttsssttt ",
-                                    "  ttssstt  ",
-                                    "   ttttt   ",
-                                    "    ttt    ",
-                                    "     t     ",
-                                    "           "
-                                },
-                                {
-                                    "           ",
-                                    "     t     ",
-                                    "    ttt    ",
-                                    "   ttttt   ",
-                                    "  ttssstt  ",
-                                    " tttsssttt ",
-                                    "  ttssstt  ",
-                                    "   ttttt   ",
-                                    "    ttt    ",
-                                    "     t     ",
-                                    "           "
-                                },
-                                {
-                                    "    hhh    ",
-                                    "   ttttt   ",
-                                    "  ttttttt  ",
-                                    " ttttttttt ",
-                                    "htttsssttth",
-                                    "htttsssttth",
-                                    "htttsssttth",
-                                    " ttttttttt ",
-                                    "  ttttttt  ",
-                                    "   ttttt   ",
-                                    "    hhh    "
-                                },
-                                {
-                                    "    hhh    ",
-                                    "   ttttt   ",
-                                    "  ttttttt  ",
-                                    " ttttttttt ",
-                                    "httttttttth",
-                                    "httttttttth",
-                                    "httttttttth",
-                                    " ttttttttt ",
-                                    "  ttttttt  ",
-                                    "   ttttt   ",
-                                    "    hhh    "
-                                },
-                            }))
-                            .addShape(SOLAR_HEATER_RING_1, (new String[][] {
-                                {
-                                    "     ggggg     ",
-                                    "    g     g    ",
-                                    "   g       g   ",
-                                    "  g         g  ",
-                                    " g           g ",
-                                    "g             g",
-                                    "g             g",
-                                    "g             g",
-                                    "g             g",
-                                    "g             g",
-                                    " g           g ",
-                                    "  g         g  ",
-                                    "   g       g   ",
-                                    "    g     g    ",
-                                    "     ggggg     ",
-                                }
-                            }))
-                            .addShape(SOLAR_HEATER_RING_2, (new String[][] {
-                                {
-                                    "     ggggggggg     ",
-                                    "    g         g    ",
-                                    "   g           g   ",
-                                    "  g             g  ",
-                                    " g               g ",
-                                    "g                 g",
-                                    "g                 g",
-                                    "g                 g",
-                                    "g                 g",
-                                    "g                 g",
-                                    "g                 g",
-                                    "g                 g",
-                                    "g                 g",
-                                    "g                 g",
-                                    " g               g ",
-                                    "  g             g  ",
-                                    "   g           g   ",
-                                    "    g         g    ",
-                                    "     ggggggggg     ",
-                                }
-                            }))
-                            .addShape(SOLAR_HEATER_RING_3, (new String[][] {
-                                {
-                                    "     ggggggggggggg     ",
-                                    "    g             g    ",
-                                    "   g               g   ",
-                                    "  g                 g  ",
-                                    " g                   g ",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    "g                     g",
-                                    " g                   g ",
-                                    "  g                 g  ",
-                                    "   g               g   ",
-                                    "    g             g    ",
-                                    "     ggggggggggggg     ",
-                                }
-                            }))
-                            .addShape(SOLAR_HEATER_RING_4, (new String[][] {
-                                {
-                                    "     ggggggggggggggggg     ",
-                                    "    g                 g    ",
-                                    "   g                   g   ",
-                                    "  g                     g  ",
-                                    " g                       g ",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    "g                         g",
-                                    " g                       g ",
-                                    "  g                     g  ",
-                                    "   g                   g   ",
-                                    "    g                 g    ",
-                                    "     ggggggggggggggggg     ",
-                                }
-                            }))
-                            .addShape(SOLAR_HEATER_RING_5, (new String[][] {
-                                {
-                                    "     ggggggggggggggggggggg     ",
-                                    "    g                     g    ",
-                                    "   g                       g   ",
-                                    "  g                         g  ",
-                                    " g                           g ",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    "g                             g",
-                                    " g                           g ",
-                                    "  g                         g  ",
-                                    "   g                       g   ",
-                                    "    g                     g    ",
-                                    "     ggggggggggggggggggggg     ",
-                                }
-                            }))
-                            .addElement('g', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
-                                    .hatchClass(TileEntitySolarHeater.class)
-                                    .adder(GregtechMetaTileEntity_SolarTower::addSolarHeater)
-                                    // Use a positive casing index to make adder builder happy
-                                    .casingIndex(1)
-                                    .dot(1)
-                                    .continueIfSuccess()
-                                    .build()))
-                            .addElement(
-                                    't',
-                                    lazy(t -> onElementPass(
-                                            x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
-                            .addElement(
-                                    'i',
-                                    lazy(t -> onElementPass(
-                                            x -> ++x.mCasing2, ofBlock(t.getCasingBlock(), t.getCasingMeta2()))))
-                            .addElement(
-                                    's',
-                                    lazy(t -> onElementPass(
-                                            x -> ++x.mCasing3, ofBlock(t.getCasingBlock(), t.getCasingMeta3()))))
-                            .addElement(
-                                    'c',
-                                    lazy(t -> onElementPass(
-                                            x -> ++x.mCasing4, ofBlock(t.getCasingBlock2(), t.getCasingMeta4()))))
-                            .addElement('h', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
-                                    .atLeast(InputHatch, OutputHatch, Maintenance)
-                                    .casingIndex(t.getCasingTextureIndex())
-                                    .dot(2)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
-                            .build();
-                }
-            };
+                    // s = salt
+                    // c = thermal containment
+                    // i = thermal insulated
+                    // t = solar structural
+                    // h = hatch
+                    // g = solar heater
+
+                    .addShape(
+                            STRUCTURE_PIECE_TOP,
+                            (new String[][] { { "     ", "     ", "  ~  ", "     ", "     " },
+                                    { "     ", "  s  ", " sss ", "  s  ", "     " },
+                                    { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+                                    { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+                                    { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+                                    { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+                                    { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " }, }))
+                    .addShape(
+                            STRUCTURE_PIECE_TOWER,
+                            (new String[][] { { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
+                                    { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
+                                    { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
+                                    { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
+                                    { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " }, }))
+                    .addShape(
+                            STRUCTURE_PIECE_BASE,
+                            (new String[][] {
+                                    { "           ", "           ", "     t     ", "    ttt    ", "   ttstt   ",
+                                            "  ttssstt  ", "   ttstt   ", "    ttt    ", "     t     ", "           ",
+                                            "           " },
+                                    { "           ", "           ", "     t     ", "    ttt    ", "   tssst   ",
+                                            "  ttssstt  ", "   tssst   ", "    ttt    ", "     t     ", "           ",
+                                            "           " },
+                                    { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ",
+                                            " tttsssttt ", "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ",
+                                            "           " },
+                                    { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ",
+                                            " tttsssttt ", "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ",
+                                            "           " },
+                                    { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "htttsssttth",
+                                            "htttsssttth", "htttsssttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ",
+                                            "    hhh    " },
+                                    { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "httttttttth",
+                                            "httttttttth", "httttttttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ",
+                                            "    hhh    " }, }))
+                    .addShape(
+                            SOLAR_HEATER_RING_1,
+                            (new String[][] { { "     ggggg     ", "    g     g    ", "   g       g   ",
+                                    "  g         g  ", " g           g ", "g             g", "g             g",
+                                    "g             g", "g             g", "g             g", " g           g ",
+                                    "  g         g  ", "   g       g   ", "    g     g    ", "     ggggg     ", } }))
+                    .addShape(
+                            SOLAR_HEATER_RING_2,
+                            (new String[][] { { "     ggggggggg     ", "    g         g    ", "   g           g   ",
+                                    "  g             g  ", " g               g ", "g                 g",
+                                    "g                 g", "g                 g", "g                 g",
+                                    "g                 g", "g                 g", "g                 g",
+                                    "g                 g", "g                 g", " g               g ",
+                                    "  g             g  ", "   g           g   ", "    g         g    ",
+                                    "     ggggggggg     ", } }))
+                    .addShape(
+                            SOLAR_HEATER_RING_3,
+                            (new String[][] { { "     ggggggggggggg     ", "    g             g    ",
+                                    "   g               g   ", "  g                 g  ", " g                   g ",
+                                    "g                     g", "g                     g", "g                     g",
+                                    "g                     g", "g                     g", "g                     g",
+                                    "g                     g", "g                     g", "g                     g",
+                                    "g                     g", "g                     g", "g                     g",
+                                    "g                     g", " g                   g ", "  g                 g  ",
+                                    "   g               g   ", "    g             g    ",
+                                    "     ggggggggggggg     ", } }))
+                    .addShape(
+                            SOLAR_HEATER_RING_4,
+                            (new String[][] { { "     ggggggggggggggggg     ", "    g                 g    ",
+                                    "   g                   g   ", "  g                     g  ",
+                                    " g                       g ", "g                         g",
+                                    "g                         g", "g                         g",
+                                    "g                         g", "g                         g",
+                                    "g                         g", "g                         g",
+                                    "g                         g", "g                         g",
+                                    "g                         g", "g                         g",
+                                    "g                         g", "g                         g",
+                                    "g                         g", "g                         g",
+                                    "g                         g", "g                         g",
+                                    " g                       g ", "  g                     g  ",
+                                    "   g                   g   ", "    g                 g    ",
+                                    "     ggggggggggggggggg     ", } }))
+                    .addShape(
+                            SOLAR_HEATER_RING_5,
+                            (new String[][] { { "     ggggggggggggggggggggg     ", "    g                     g    ",
+                                    "   g                       g   ", "  g                         g  ",
+                                    " g                           g ", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    "g                             g", "g                             g",
+                                    " g                           g ", "  g                         g  ",
+                                    "   g                       g   ", "    g                     g    ",
+                                    "     ggggggggggggggggggggg     ", } }))
+                    .addElement(
+                            'g',
+                            lazy(
+                                    t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
+                                            .hatchClass(TileEntitySolarHeater.class)
+                                            .adder(GregtechMetaTileEntity_SolarTower::addSolarHeater)
+                                            // Use a positive casing index to make adder builder happy
+                                            .casingIndex(1).dot(1).continueIfSuccess().build()))
+                    .addElement(
+                            't',
+                            lazy(t -> onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
+                    .addElement(
+                            'i',
+                            lazy(
+                                    t -> onElementPass(
+                                            x -> ++x.mCasing2,
+                                            ofBlock(t.getCasingBlock(), t.getCasingMeta2()))))
+                    .addElement(
+                            's',
+                            lazy(
+                                    t -> onElementPass(
+                                            x -> ++x.mCasing3,
+                                            ofBlock(t.getCasingBlock(), t.getCasingMeta3()))))
+                    .addElement(
+                            'c',
+                            lazy(
+                                    t -> onElementPass(
+                                            x -> ++x.mCasing4,
+                                            ofBlock(t.getCasingBlock2(), t.getCasingMeta4()))))
+                    .addElement(
+                            'h',
+                            lazy(
+                                    t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
+                                            .atLeast(InputHatch, OutputHatch, Maintenance)
+                                            .casingIndex(t.getCasingTextureIndex()).dot(2).buildAndChain(
+                                                    onElementPass(
+                                                            x -> ++x.mCasing1,
+                                                            ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
+                    .build();
+        }
+    };
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -426,27 +286,53 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         boolean aCasingCount4 = mCasing4 == 60;
         boolean aAllStructure = aStructureTop && aStructureTower && aStructureBase;
         boolean aAllCasings = aCasingCount1 && aCasingCount2 && aCasingCount3 && aCasingCount4;
-        if (!aAllCasings
-                || !aAllStructure
+        if (!aAllCasings || !aAllStructure
                 || mMaintenanceHatches.size() != 1
                 || mInputHatches.size() < 1
                 || mOutputHatches.size() < 1) {
-            log("Bad Hatches - Solar Heaters: " + mSolarHeaters.size() + ", Maint: "
-                    + mMaintenanceHatches.size() + ", Input Hatches: "
-                    + mInputHatches.size() + ", Output Hatches: "
-                    + mOutputHatches.size() + ", Top: "
-                    + aStructureTop + ", Tower: "
-                    + aStructureTower + ", Base: "
-                    + aStructureBase + ", Casing Count: "
-                    + aCasingCount1 + " | Found: " + mCasing1 + ", Casing Count: "
-                    + aCasingCount2 + " | Found: " + mCasing2 + ", Casing Count: "
-                    + aCasingCount3 + " | Found: " + mCasing3 + ", Casing Count: "
-                    + aCasingCount4 + " | Found: " + mCasing4);
+            log(
+                    "Bad Hatches - Solar Heaters: " + mSolarHeaters.size()
+                            + ", Maint: "
+                            + mMaintenanceHatches.size()
+                            + ", Input Hatches: "
+                            + mInputHatches.size()
+                            + ", Output Hatches: "
+                            + mOutputHatches.size()
+                            + ", Top: "
+                            + aStructureTop
+                            + ", Tower: "
+                            + aStructureTower
+                            + ", Base: "
+                            + aStructureBase
+                            + ", Casing Count: "
+                            + aCasingCount1
+                            + " | Found: "
+                            + mCasing1
+                            + ", Casing Count: "
+                            + aCasingCount2
+                            + " | Found: "
+                            + mCasing2
+                            + ", Casing Count: "
+                            + aCasingCount3
+                            + " | Found: "
+                            + mCasing3
+                            + ", Casing Count: "
+                            + aCasingCount4
+                            + " | Found: "
+                            + mCasing4);
             return false;
         }
-        log("Built " + this.getLocalName() + " with " + mCasing1 + " Structural Solar casings, " + mCasing2
-                + " Thermally Insulated casings, " + mCasing3 + " Salt Containment casings, " + mCasing4
-                + " Thermal Containment casings.");
+        log(
+                "Built " + this.getLocalName()
+                        + " with "
+                        + mCasing1
+                        + " Structural Solar casings, "
+                        + mCasing2
+                        + " Thermally Insulated casings, "
+                        + mCasing3
+                        + " Salt Containment casings, "
+                        + mCasing4
+                        + " Thermal Containment casings.");
         return aAllCasings && aAllStructure;
     }
 
@@ -515,31 +401,16 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == 0 || aSide == 1) {
-            if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
-                    TextureFactory.builder()
-                            .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Default_Active)
-                            .extFacing()
-                            .build()
-                };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
-                TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Default)
-                        .extFacing()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
+                    TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Machine_Controller_Default_Active)
+                            .extFacing().build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)), TextureFactory
+                    .builder().addIcon(TexturesGtBlock.Overlay_Machine_Controller_Default).extFacing().build() };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12))};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)) };
     }
 
     @Override
@@ -650,8 +521,7 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         this.mEfficiencyIncrease = 100;
         this.mMaxProgresstime = 200;
 
-        if (this.mSolarHeaters.isEmpty()
-                || this.mSolarHeaters.size() < 340
+        if (this.mSolarHeaters.isEmpty() || this.mSolarHeaters.size() < 340
                 || this.getTotalRuntimeInTicks() % 200 == 0) {
             getConnectedSolarReflectors();
         }
@@ -673,12 +543,24 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
             if (aHeaters > 0 && w.isDaytime()) {
                 if (w.isRaining() && this.getBaseMetaTileEntity().getBiome().rainfall > 0.0F) {
                     this.mHeatLevel += GT_Utility.safeInt((long) ((aHeaters / 2) * aEfficiency * (10 + aTier)));
-                    log("Added Heat (rain): " + aHeaters / 2 + " * " + aEfficiency + " * " + (10 + aTier) + " = "
-                            + (aHeaters * aEfficiency * (10 + aTier)));
+                    log(
+                            "Added Heat (rain): " + aHeaters / 2
+                                    + " * "
+                                    + aEfficiency
+                                    + " * "
+                                    + (10 + aTier)
+                                    + " = "
+                                    + (aHeaters * aEfficiency * (10 + aTier)));
                 } else {
                     this.mHeatLevel += GT_Utility.safeInt((long) (aHeaters * aEfficiency * (10 + aTier)));
-                    log("Added Heat: " + aHeaters + " * " + aEfficiency + " * " + (10 + aTier) + " = "
-                            + (aHeaters * aEfficiency * (10 + aTier)));
+                    log(
+                            "Added Heat: " + aHeaters
+                                    + " * "
+                                    + aEfficiency
+                                    + " * "
+                                    + (10 + aTier)
+                                    + " = "
+                                    + (aHeaters * aEfficiency * (10 + aTier)));
                 }
             }
 
@@ -827,9 +709,8 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 
     @Override
     public String[] getExtraInfoData() {
-        return new String[] {
-            "Internal Heat Level: " + this.mHeatLevel, "Connected Solar Reflectors: " + this.mSolarHeaters.size()
-        };
+        return new String[] { "Internal Heat Level: " + this.mHeatLevel,
+                "Connected Solar Reflectors: " + this.mSolarHeaters.size() };
     }
 
     @Override

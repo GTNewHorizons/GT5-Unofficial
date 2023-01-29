@@ -1,14 +1,9 @@
 package gtPlusPlus.core.item.general.spawn;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,6 +13,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
@@ -41,8 +43,8 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
         return ItemUtils.simpleMetaStack(ModItems.itemCustomSpawnEgg, mReverseEntityMap.get(aEntityName), aSize);
     }
 
-    public static void registerEntityForSpawnEgg(
-            final int aMetaID, String parEntityToSpawnName, int aPrimaryColor, int aSecondaryColor) {
+    public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,
+            int aSecondaryColor) {
         registerEntityForSpawnEgg(
                 aMetaID,
                 parEntityToSpawnName,
@@ -52,13 +54,8 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
                 new ArrayList<String>());
     }
 
-    public static void registerEntityForSpawnEgg(
-            final int aMetaID,
-            String parEntityToSpawnName,
-            int aPrimaryColor,
-            int aSecondaryColor,
-            EnumRarity aRarity,
-            final ArrayList<String> aOreDictNames) {
+    public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,
+            int aSecondaryColor, EnumRarity aRarity, final ArrayList<String> aOreDictNames) {
         mTotalMetaItems++;
         mMaxStackSizeMap.put(aMetaID, 64);
         mRarityMap.put(aMetaID, aRarity);
@@ -91,24 +88,13 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     }
 
     /**
-     * Callback for item usage. If the item does something special on right
-     * clicking,
+     * Callback for item usage. If the item does something special on right clicking,
      *
-     * he will have one of those. Return True if something happen and false if
-     * it don't. This is for ITEMS, not BLOCKS
+     * he will have one of those. Return True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
-    public boolean onItemUse(
-            ItemStack par1ItemStack,
-            EntityPlayer par2EntityPlayer,
-            World par3World,
-            int par4,
-            int par5,
-            int par6,
-            int par7,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4,
+            int par5, int par6, int par7, float par8, float par9, float par10) {
         if (par3World.isRemote) {
             return true;
         } else {
@@ -139,8 +125,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     }
 
     /**
-     * Called whenever this item is equipped and the right mouse button is
-     * pressed.
+     * Called whenever this item is equipped and the right mouse button is pressed.
      *
      * Args: itemStack, world, entityPlayer
      */
@@ -149,8 +134,10 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
         if (par2World.isRemote) {
             return par1ItemStack;
         } else {
-            MovingObjectPosition movingobjectposition =
-                    getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+            MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(
+                    par2World,
+                    par3EntityPlayer,
+                    true);
 
             if (movingobjectposition == null) {
                 return par1ItemStack;
@@ -191,10 +178,10 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     }
 
     /**
-     * Spawns the creature specified by the egg's type in the location specified
-     * by
+     * Spawns the creature specified by the egg's type in the location specified by
      *
      * the last three parameters. Parameters: world, entityID, x, y, z.
+     * 
      * @param par1ItemStack
      */
     public Entity spawnEntity(ItemStack par1ItemStack, World parWorld, double parX, double parY, double parZ) {
@@ -208,7 +195,11 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
             if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull)) {
                 entityToSpawn = (EntityLiving) EntityList.createEntityByName(entityToSpawnNameFull, parWorld);
                 entityToSpawn.setLocationAndAngles(
-                        parX, parY, parZ, MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F), 0.0F);
+                        parX,
+                        parY,
+                        parZ,
+                        MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
+                        0.0F);
                 parWorld.spawnEntityInWorld(entityToSpawn);
                 entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
                 entityToSpawn.playLivingSound();
@@ -222,8 +213,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     }
 
     /**
-     * returns a list of items with the same ID, but different meta (eg: dye
-     * returns 16 items)
+     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
     @Override
     @SideOnly(Side.CLIENT)

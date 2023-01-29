@@ -1,9 +1,10 @@
 package gtPlusPlus.api.interfaces;
 
-import gtPlusPlus.api.objects.minecraft.BlockPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 
 public interface IEntityCatcher {
 

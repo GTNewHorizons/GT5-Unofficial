@@ -17,8 +17,10 @@ public class GregtechIndustrialSifter {
     }
 
     private static void run1() {
-        GregtechItemList.Industrial_Sifter.set(new GregtechMetaTileEntity_IndustrialSifter(
-                        840, "industrialsifter.controller.tier.single", "Large Sifter Control Block")
-                .getStackForm(1L));
+        GregtechItemList.Industrial_Sifter.set(
+                new GregtechMetaTileEntity_IndustrialSifter(
+                        840,
+                        "industrialsifter.controller.tier.single",
+                        "Large Sifter Control Block").getStackForm(1L));
     }
 }

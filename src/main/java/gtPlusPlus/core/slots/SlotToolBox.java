@@ -1,12 +1,13 @@
 package gtPlusPlus.core.slots;
 
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 
 public class SlotToolBox extends SlotGtTool {
 
@@ -51,12 +52,9 @@ public class SlotToolBox extends SlotGtTool {
         }
 
         // OpenMods
-        String[] OpenModsContent = new String[] {
-            "openblocks.common.item.ItemDevNull",
-            "openblocks.common.item.ItemHangGlider",
-            "openblocks.common.item.ItemWrench",
-            "openblocks.common.item.ItemSleepingBag"
-        };
+        String[] OpenModsContent = new String[] { "openblocks.common.item.ItemDevNull",
+                "openblocks.common.item.ItemHangGlider", "openblocks.common.item.ItemWrench",
+                "openblocks.common.item.ItemSleepingBag" };
         for (String t : OpenModsContent) {
             temp = ReflectionUtils.getClass(t);
             if (temp != null) {
@@ -73,11 +71,8 @@ public class SlotToolBox extends SlotGtTool {
         }
 
         // EIO
-        String[] EioContent = new String[] {
-            "crazypants.enderio.api.tool.ITool",
-            "crazypants.enderio.item.ItemMagnet",
-            "crazypants.enderio.item.ItemConduitProbe"
-        };
+        String[] EioContent = new String[] { "crazypants.enderio.api.tool.ITool", "crazypants.enderio.item.ItemMagnet",
+                "crazypants.enderio.item.ItemConduitProbe" };
         for (String t : EioContent) {
             temp = ReflectionUtils.getClass(t);
             if (temp != null) {

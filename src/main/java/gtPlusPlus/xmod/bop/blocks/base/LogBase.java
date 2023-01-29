@@ -1,14 +1,7 @@
 package gtPlusPlus.xmod.bop.blocks.base;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
+
 import net.minecraft.block.BlockLog;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,7 +11,17 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 public abstract class LogBase extends BlockLog {
+
     public String[] treeType = new String[] {};
     protected IIcon[] textureSide;
     protected IIcon[] textureTop;
@@ -30,7 +33,9 @@ public abstract class LogBase extends BlockLog {
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
         ItemUtils.addItemToOreDictionary(
-                ItemUtils.getSimpleStack(this), "log" + Utils.sanitizeString(blockNameLocalized), true);
+                ItemUtils.getSimpleStack(this),
+                "log" + Utils.sanitizeString(blockNameLocalized),
+                true);
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         LanguageRegistry.addName(this, blockNameLocalized);
@@ -72,8 +77,8 @@ public abstract class LogBase extends BlockLog {
 
         for (int i = 0; i < this.textureSide.length; ++i) {
             this.textureSide[i] = iIcon.registerIcon(CORE.MODID + ":" + "trees/" + "logs/" + "log_" + treeType[i]);
-            this.textureTop[i] =
-                    iIcon.registerIcon(CORE.MODID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
+            this.textureTop[i] = iIcon
+                    .registerIcon(CORE.MODID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
         }
 
         setVanillaVariable(this.field_150167_a, this.textureSide);

@@ -1,11 +1,12 @@
 package gtPlusPlus.core.recipe;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class Gregtech_Recipe_Adder {
 
@@ -16,35 +17,15 @@ public class Gregtech_Recipe_Adder {
     private static ItemStack outputStack1;
     private static ItemStack outputStack2;
 
-    public static void addRecipe(
-            final Item maceratorInput,
-            final int maceratorInputAmount1,
-            final Item maceratorOutput,
-            final int maceratorOutputAmount1,
-            final Item compressorInput,
-            final int compressorInputAmount1,
-            final Item compressorOutput,
-            final int compressorOutputAmount1,
-            final Item blastFurnaceInput,
-            final int blastFurnaceInputAmount1,
-            final Item blastFurnaceOutput,
-            final int blastFurnaceOutputAmount1,
-            final Item blastFurnaceInput2,
-            final int blastFurnaceInputAmount2,
-            final Item blastFurnaceOutput2,
-            final int blastFurnaceOutputAmount2,
-            final Item smeltingInput,
-            final int smeltingInputAmount1,
-            final Item smeltingOutput,
-            final int smeltingOutputAmount1,
-            final int euPerTick,
-            final int timeInTicks,
-            final boolean addMaceratorRecipe,
-            final boolean addCompressorRecipe,
-            final boolean addBlastFurnaceRecipe,
-            final int blastFurnaceTemp,
-            final boolean addSmeltingRecipe,
-            final boolean addMixerRecipe) {
+    public static void addRecipe(final Item maceratorInput, final int maceratorInputAmount1, final Item maceratorOutput,
+            final int maceratorOutputAmount1, final Item compressorInput, final int compressorInputAmount1,
+            final Item compressorOutput, final int compressorOutputAmount1, final Item blastFurnaceInput,
+            final int blastFurnaceInputAmount1, final Item blastFurnaceOutput, final int blastFurnaceOutputAmount1,
+            final Item blastFurnaceInput2, final int blastFurnaceInputAmount2, final Item blastFurnaceOutput2,
+            final int blastFurnaceOutputAmount2, final Item smeltingInput, final int smeltingInputAmount1,
+            final Item smeltingOutput, final int smeltingOutputAmount1, final int euPerTick, final int timeInTicks,
+            final boolean addMaceratorRecipe, final boolean addCompressorRecipe, final boolean addBlastFurnaceRecipe,
+            final int blastFurnaceTemp, final boolean addSmeltingRecipe, final boolean addMixerRecipe) {
         euT = euPerTick;
         ticks = timeInTicks;
 
@@ -92,15 +73,11 @@ public class Gregtech_Recipe_Adder {
         GT_ModHandler.addCompressionRecipe(input1, output1);
     }
 
-    private static void addBlastFurnaceRecipe(
-            final ItemStack input1,
-            final ItemStack input2,
-            final ItemStack output1,
-            final ItemStack output2,
-            final int tempRequired) {
+    private static void addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1,
+            final ItemStack output2, final int tempRequired) {
         Logger.INFO("Registering Blast Furnace Recipes.");
-        GT_Values.RA.addBlastRecipe(
-                input1, input2, GT_Values.NF, GT_Values.NF, output1, output2, ticks, euT, tempRequired);
+        GT_Values.RA
+                .addBlastRecipe(input1, input2, GT_Values.NF, GT_Values.NF, output1, output2, ticks, euT, tempRequired);
     }
 
     private static void addSmeltingRecipe(final ItemStack input1, final ItemStack output1) {

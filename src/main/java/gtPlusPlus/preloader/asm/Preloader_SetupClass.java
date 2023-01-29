@@ -1,8 +1,9 @@
 package gtPlusPlus.preloader.asm;
 
+import java.util.Map;
+
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import gtPlusPlus.preloader.Preloader_Logger;
-import java.util.Map;
 
 public class Preloader_SetupClass implements IFMLCallHook {
 

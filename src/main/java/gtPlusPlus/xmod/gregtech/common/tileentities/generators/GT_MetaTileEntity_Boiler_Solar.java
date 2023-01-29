@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -9,66 +14,55 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
+
     public GT_MetaTileEntity_Boiler_Solar(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional, "Steam Power by the Sun");
     }
 
-    public GT_MetaTileEntity_Boiler_Solar(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Boiler_Solar(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription, "Produces " + (this.getPollution() * 20) + " pollution/sec", CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Produces " + (this.getPollution() * 20) + " pollution/sec",
+                CORE.GT_Tooltip };
     }
 
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         final ITexture[][][] rTextures = new ITexture[4][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
-            final ITexture[] tmp0 = {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa))
-            };
+            final ITexture[] tmp0 = { new GT_RenderedTexture(
+                    Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM,
+                    Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
             rTextures[0][(i + 1)] = tmp0;
             final ITexture[] tmp1 = {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.BOILER_SOLAR)
-            };
+                    new GT_RenderedTexture(
+                            Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP,
+                            Dyes.getModulation(i, Dyes._NULL.mRGBa)),
+                    new GT_RenderedTexture(Textures.BlockIcons.BOILER_SOLAR) };
             rTextures[1][(i + 1)] = tmp1;
-            final ITexture[] tmp2 = {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa))
-            };
+            final ITexture[] tmp2 = { new GT_RenderedTexture(
+                    Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE,
+                    Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
             rTextures[2][(i + 1)] = tmp2;
             final ITexture[] tmp3 = {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)
-            };
+                    new GT_RenderedTexture(
+                            Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE,
+                            Dyes.getModulation(i, Dyes._NULL.mRGBa)),
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) };
             rTextures[3][(i + 1)] = tmp3;
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return this.mTextures[aSide >= 2 ? ((byte) (aSide != aFacing ? 2 : 3)) : aSide][aColorIndex + 1];
     }
 
@@ -111,11 +105,11 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 final byte i = aBaseMetaTileEntity.getFrontFacing();
                 final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
                 if (tTileEntity != null) {
-                    final FluidStack tDrained = aBaseMetaTileEntity.drain(
-                            ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
+                    final FluidStack tDrained = aBaseMetaTileEntity
+                            .drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
                     if (tDrained != null) {
-                        final int tFilledAmount = tTileEntity.fill(
-                                ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
+                        final int tFilledAmount = tTileEntity
+                                .fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
                         if (tFilledAmount > 0) {
                             tTileEntity.fill(
                                     ForgeDirection.getOrientation(i).getOpposite(),
@@ -156,16 +150,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 this.sendSound((byte) 1);
                 this.mSteam.amount = 12000;
             }
-            if ((this.mProcessingEnergy <= 0)
-                    && (aBaseMetaTileEntity.isAllowedToWork())
+            if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork())
                     && ((aTick % 256L) == 0L)
                     && (!aBaseMetaTileEntity.getWorld().isThundering())) {
-                final boolean bRain =
-                        aBaseMetaTileEntity.getWorld().isRaining() && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
+                final boolean bRain = aBaseMetaTileEntity.getWorld().isRaining()
+                        && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
                 this.mProcessingEnergy += (bRain && (aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4))
-                                || !aBaseMetaTileEntity.getSkyAtSide((byte) 1)
-                        ? 0
-                        : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
+                        || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0
+                                : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
             }
             if ((this.mTemperature < 500) && (this.mProcessingEnergy > 0) && ((aTick % 12L) == 0L)) {
                 this.mProcessingEnergy -= 1;

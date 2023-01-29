@@ -1,5 +1,16 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import java.util.List;
+import java.util.Vector;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.api.objects.Logger;
@@ -18,15 +29,6 @@ import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
-import java.util.List;
-import java.util.Vector;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityProjectTable extends TileEntity
         implements INetworkDataProvider, INetworkUpdateListener, IWrenchable {
@@ -142,8 +144,8 @@ public class TileEntityProjectTable extends TileEntity
                     ItemStack outputComponent = container.getOutputContent();
                     ItemStack[] craftInputComponent = container.getInputComponents();
 
-                    ItemStack newStick =
-                            NBTUtils.writeItemsToNBT(dataStick, new ItemStack[] {outputComponent}, "Output");
+                    ItemStack newStick = NBTUtils
+                            .writeItemsToNBT(dataStick, new ItemStack[] { outputComponent }, "Output");
                     newStick = NBTUtils.writeItemsToNBT(newStick, craftInputComponent);
                     NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
                     NBTUtils.setBoolean(newStick, "mEncrypted", true);
@@ -164,143 +166,135 @@ public class TileEntityProjectTable extends TileEntity
             }
 
             // Utils.LOG_INFO("Doing thing 1");
-            if (dataStick != null)
-                if (dataStick.getItem() instanceof ModularBauble) {
-                    Logger.INFO("Doing thing 2");
-                    ItemStack tBauble = dataStick;
-                    dataStick = null;
-                    this.inventoryOutputs.setInventorySlotContents(0, dataStick);
-                    if (this.inventoryGrid != null) {
-                        Logger.INFO("Doing things");
-                        ItemStack[] tStack = container.getInputComponents();
-                        if (tStack != null) {
-                            // Utils.LOG_INFO(""+tStack.length);
-                            if (tBauble != null) {
-                                for (int i = 0; i < tStack.length; i++) {
+            if (dataStick != null) if (dataStick.getItem() instanceof ModularBauble) {
+                Logger.INFO("Doing thing 2");
+                ItemStack tBauble = dataStick;
+                dataStick = null;
+                this.inventoryOutputs.setInventorySlotContents(0, dataStick);
+                if (this.inventoryGrid != null) {
+                    Logger.INFO("Doing things");
+                    ItemStack[] tStack = container.getInputComponents();
+                    if (tStack != null) {
+                        // Utils.LOG_INFO(""+tStack.length);
+                        if (tBauble != null) {
+                            for (int i = 0; i < tStack.length; i++) {
 
-                                    ItemStack testStack;
-                                    if ((testStack = container.inventoryGrid.getStackInSlot(i)) != null) {
-                                        Logger.INFO("FOUND: " + testStack.getDisplayName());
-                                    }
+                                ItemStack testStack;
+                                if ((testStack = container.inventoryGrid.getStackInSlot(i)) != null) {
+                                    Logger.INFO("FOUND: " + testStack.getDisplayName());
+                                }
 
-                                    if (tStack[i] != null) {
-                                        Logger.INFO("found " + tStack[i].getDisplayName());
-                                        try {
-                                            if (tStack[i].getItem() == Items.feather) {
-                                                ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_BELT);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                                this.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-                                            if (tStack[i].getItem() == Items.bed) {
-                                                ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_RING);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                                this.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-                                            if (tStack[i].getItem() == Items.boat) {
-                                                ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_AMULET);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                                this.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-
-                                            if (tStack[i].getItem() == Items.egg) {
-                                                ModularArmourUtils.setModifierLevel(
-                                                        tBauble,
-                                                        Modifiers.BOOST_HOLY,
-                                                        ModularArmourUtils.getModifierLevel(
-                                                                        tBauble, Modifiers.BOOST_HOLY)
-                                                                + 1);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                                this.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-
-                                            if (tStack[i].getItem() == Items.baked_potato) {
-                                                ModularArmourUtils.setModifierLevel(
-                                                        tBauble,
-                                                        Modifiers.BOOST_DEF,
-                                                        ModularArmourUtils.getModifierLevel(
-                                                                        tBauble, Modifiers.BOOST_DEF)
-                                                                + 1);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                                this.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-
-                                            if (tStack[i].getItem() == Items.cooked_beef) {
-                                                ModularArmourUtils.setModifierLevel(
-                                                        tBauble,
-                                                        Modifiers.BOOST_HP,
-                                                        ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HP)
-                                                                + 1);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                                this.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-
-                                            if (tStack[i]
-                                                    == ItemUtils.simpleMetaStack(
-                                                            "gregtech:gt.metaitem.01:17019", 17019, 1)) {
-                                                ModularArmourUtils.setModifierLevel(
-                                                        tBauble,
-                                                        Modifiers.BOOST_DEF,
-                                                        ModularArmourUtils.getModifierLevel(
-                                                                        tBauble, Modifiers.BOOST_DEF)
-                                                                + 1);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-                                            if (tStack[i] == ItemList.Electric_Motor_LV.get(1)) {
-                                                ModularArmourUtils.setModifierLevel(
-                                                        tBauble,
-                                                        Modifiers.BOOST_DAMAGE,
-                                                        ModularArmourUtils.getModifierLevel(
-                                                                        tBauble, Modifiers.BOOST_DAMAGE)
-                                                                + 1);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                            } else if (tStack[i] == ItemList.Electric_Motor_MV.get(1)) {
-                                                ModularArmourUtils.setModifierLevel(
-                                                        tBauble,
-                                                        Modifiers.BOOST_DAMAGE,
-                                                        ModularArmourUtils.getModifierLevel(
-                                                                        tBauble, Modifiers.BOOST_DAMAGE)
-                                                                + 2);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                            } else if (tStack[i] == ItemList.Electric_Motor_HV.get(1)) {
-                                                ModularArmourUtils.setModifierLevel(
-                                                        tBauble,
-                                                        Modifiers.BOOST_DAMAGE,
-                                                        ModularArmourUtils.getModifierLevel(
-                                                                        tBauble, Modifiers.BOOST_DAMAGE)
-                                                                + 3);
-                                                Logger.INFO("buffed Modular bauble");
-                                                tStack[i] = null;
-                                                container.inventoryGrid.setInventorySlotContents(i, null);
-                                            }
-                                        } catch (Throwable t) {
-
+                                if (tStack[i] != null) {
+                                    Logger.INFO("found " + tStack[i].getDisplayName());
+                                    try {
+                                        if (tStack[i].getItem() == Items.feather) {
+                                            ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_BELT);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                            this.inventoryGrid.setInventorySlotContents(i, null);
                                         }
+                                        if (tStack[i].getItem() == Items.bed) {
+                                            ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_RING);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                            this.inventoryGrid.setInventorySlotContents(i, null);
+                                        }
+                                        if (tStack[i].getItem() == Items.boat) {
+                                            ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_AMULET);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                            this.inventoryGrid.setInventorySlotContents(i, null);
+                                        }
+
+                                        if (tStack[i].getItem() == Items.egg) {
+                                            ModularArmourUtils.setModifierLevel(
+                                                    tBauble,
+                                                    Modifiers.BOOST_HOLY,
+                                                    ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HOLY)
+                                                            + 1);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                            this.inventoryGrid.setInventorySlotContents(i, null);
+                                        }
+
+                                        if (tStack[i].getItem() == Items.baked_potato) {
+                                            ModularArmourUtils.setModifierLevel(
+                                                    tBauble,
+                                                    Modifiers.BOOST_DEF,
+                                                    ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DEF)
+                                                            + 1);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                            this.inventoryGrid.setInventorySlotContents(i, null);
+                                        }
+
+                                        if (tStack[i].getItem() == Items.cooked_beef) {
+                                            ModularArmourUtils.setModifierLevel(
+                                                    tBauble,
+                                                    Modifiers.BOOST_HP,
+                                                    ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HP)
+                                                            + 1);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                            this.inventoryGrid.setInventorySlotContents(i, null);
+                                        }
+
+                                        if (tStack[i] == ItemUtils
+                                                .simpleMetaStack("gregtech:gt.metaitem.01:17019", 17019, 1)) {
+                                            ModularArmourUtils.setModifierLevel(
+                                                    tBauble,
+                                                    Modifiers.BOOST_DEF,
+                                                    ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DEF)
+                                                            + 1);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                        }
+                                        if (tStack[i] == ItemList.Electric_Motor_LV.get(1)) {
+                                            ModularArmourUtils.setModifierLevel(
+                                                    tBauble,
+                                                    Modifiers.BOOST_DAMAGE,
+                                                    ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)
+                                                            + 1);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                        } else if (tStack[i] == ItemList.Electric_Motor_MV.get(1)) {
+                                            ModularArmourUtils.setModifierLevel(
+                                                    tBauble,
+                                                    Modifiers.BOOST_DAMAGE,
+                                                    ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)
+                                                            + 2);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                        } else if (tStack[i] == ItemList.Electric_Motor_HV.get(1)) {
+                                            ModularArmourUtils.setModifierLevel(
+                                                    tBauble,
+                                                    Modifiers.BOOST_DAMAGE,
+                                                    ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)
+                                                            + 3);
+                                            Logger.INFO("buffed Modular bauble");
+                                            tStack[i] = null;
+                                            container.inventoryGrid.setInventorySlotContents(i, null);
+                                        }
+                                    } catch (Throwable t) {
+
                                     }
                                 }
-                                Logger.INFO("set new Modular bauble");
-                                this.inventoryOutputs.setInventorySlotContents(1, tBauble);
                             }
+                            Logger.INFO("set new Modular bauble");
+                            this.inventoryOutputs.setInventorySlotContents(1, tBauble);
                         }
                     }
                 }
+            }
         }
         super.updateEntity();
     }

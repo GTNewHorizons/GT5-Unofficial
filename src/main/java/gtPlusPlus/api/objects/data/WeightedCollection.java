@@ -1,12 +1,13 @@
 package gtPlusPlus.api.objects.data;
 
-import gtPlusPlus.api.objects.random.XSTR;
 import java.util.Collection;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
+
+import gtPlusPlus.api.objects.random.XSTR;
 
 public class WeightedCollection<E> implements Map<Integer, E> {
 

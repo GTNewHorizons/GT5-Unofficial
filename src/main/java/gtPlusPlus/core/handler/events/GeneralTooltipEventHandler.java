@@ -1,5 +1,11 @@
 package gtPlusPlus.core.handler.events;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
 import advsolar.common.AdvancedSolarPanel;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -11,11 +17,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class GeneralTooltipEventHandler {
 
@@ -36,9 +37,8 @@ public class GeneralTooltipEventHandler {
         if (CORE.ConfigSwitches.chanceToDropFluoriteOre > 0) {
             if (BlockEventHandler.blockLimestone != null && !BlockEventHandler.blockLimestone.isEmpty()) {
                 for (ItemStack h : BlockEventHandler.blockLimestone) {
-                    if (h != null
-                            && Block.getBlockFromItem(h.getItem())
-                                    == Block.getBlockFromItem(event.itemStack.getItem())) {
+                    if (h != null && Block.getBlockFromItem(h.getItem())
+                            == Block.getBlockFromItem(event.itemStack.getItem())) {
                         if (ItemUtils.getModId(h) != null
                                 && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
                             event.toolTip.add("May contain Fluorite Ore");
@@ -48,9 +48,8 @@ public class GeneralTooltipEventHandler {
             }
             if (BlockEventHandler.oreLimestone != null && !BlockEventHandler.oreLimestone.isEmpty()) {
                 for (ItemStack h : BlockEventHandler.oreLimestone) {
-                    if (h != null
-                            && Block.getBlockFromItem(h.getItem())
-                                    == Block.getBlockFromItem(event.itemStack.getItem())) {
+                    if (h != null && Block.getBlockFromItem(h.getItem())
+                            == Block.getBlockFromItem(event.itemStack.getItem())) {
                         if (ItemUtils.getModId(h) != null
                                 && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
                             event.toolTip.add("May contain Fluorite Ore");

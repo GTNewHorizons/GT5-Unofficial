@@ -1,5 +1,10 @@
 package gtPlusPlus.core.item.chemistry;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.*;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -17,10 +22,6 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.*;
 
 public class GenericChem extends ItemPackage {
 
@@ -48,7 +49,7 @@ public class GenericChem extends ItemPackage {
             "Teflon",
             MaterialState.SOLID,
             TextureSet.SET_SHINY,
-            new short[] {75, 45, 75},
+            new short[] { 75, 45, 75 },
             330,
             640,
             -1,
@@ -134,7 +135,10 @@ public class GenericChem extends ItemPackage {
     @Override
     public void items() {
         PhenolicResins = ItemUtils.generateSpecialUseDusts(
-                "phenolicresins", "Phenolic Resin", "HOC6H4CH2OH", Utils.rgbtoHexValue(80, 40, 40))[0];
+                "phenolicresins",
+                "Phenolic Resin",
+                "HOC6H4CH2OH",
+                Utils.rgbtoHexValue(80, 40, 40))[0];
         // MaterialGenerator.generate(BAKELITE, false);
         // MaterialGenerator.generate(NYLON, false);
         MaterialGenerator.generate(TEFLON, false);
@@ -225,24 +229,25 @@ public class GenericChem extends ItemPackage {
     public void fluids() {
 
         if (!FluidRegistry.isFluidRegistered("benzene")) {
-            Benzene = FluidUtils.generateFluidNoPrefix("benzene", "Benzene", 278, new short[] {100, 70, 30, 100}, true);
+            Benzene = FluidUtils
+                    .generateFluidNoPrefix("benzene", "Benzene", 278, new short[] { 100, 70, 30, 100 }, true);
         } else {
             Benzene = FluidRegistry.getFluid("benzene");
         }
 
-        NitroBenzene = FluidUtils.generateFluidNoPrefix(
-                "nitrobenzene", "Nitrobenzene", 278, new short[] {70, 50, 40, 100}, true);
+        NitroBenzene = FluidUtils
+                .generateFluidNoPrefix("nitrobenzene", "Nitrobenzene", 278, new short[] { 70, 50, 40, 100 }, true);
 
-        Aniline = FluidUtils.generateFluidNoPrefix("aniline", "Aniline", 266, new short[] {100, 100, 30, 100}, true);
+        Aniline = FluidUtils.generateFluidNoPrefix("aniline", "Aniline", 266, new short[] { 100, 100, 30, 100 }, true);
 
-        BoricAcid =
-                FluidUtils.generateFluidNoPrefix("boricacid", "Boric Acid", 278, new short[] {90, 30, 120, 100}, true);
+        BoricAcid = FluidUtils
+                .generateFluidNoPrefix("boricacid", "Boric Acid", 278, new short[] { 90, 30, 120, 100 }, true);
 
-        Polyurethane = FluidUtils.generateFluidNoPrefix(
-                "polyurethane", "Polyurethane", 350, new short[] {100, 70, 100, 100}, true);
+        Polyurethane = FluidUtils
+                .generateFluidNoPrefix("polyurethane", "Polyurethane", 350, new short[] { 100, 70, 100, 100 }, true);
 
         if (!FluidRegistry.isFluidRegistered("phenol")) {
-            Phenol = FluidUtils.generateFluidNoPrefix("phenol", "Phenol", 313, new short[] {100, 70, 30, 100}, true);
+            Phenol = FluidUtils.generateFluidNoPrefix("phenol", "Phenol", 313, new short[] { 100, 70, 30, 100 }, true);
         } else {
             Phenol = FluidRegistry.getFluid("phenol");
         }
@@ -252,50 +257,71 @@ public class GenericChem extends ItemPackage {
             HydrochloricAcid = FluidRegistry.getFluid("hydrochloricacid_gt5u");
         } else {
             HydrochloricAcid = FluidUtils.generateFluidNoPrefix(
-                    "hydrochloricacid", "Hydrochloric Acid", 285, new short[] {183, 200, 196, 100}, true);
+                    "hydrochloricacid",
+                    "Hydrochloric Acid",
+                    285,
+                    new short[] { 183, 200, 196, 100 },
+                    true);
         }
 
-        Cyclohexane = FluidUtils.generateFluidNoPrefix(
-                "cyclohexane", "Cyclohexane", 32 + 175, new short[] {100, 70, 30, 100}, true);
+        Cyclohexane = FluidUtils
+                .generateFluidNoPrefix("cyclohexane", "Cyclohexane", 32 + 175, new short[] { 100, 70, 30, 100 }, true);
         Cyclohexanone = FluidUtils.generateFluidNoPrefix(
-                "cyclohexanone", "Cyclohexanone", 32 + 175, new short[] {100, 70, 30, 100}, true);
+                "cyclohexanone",
+                "Cyclohexanone",
+                32 + 175,
+                new short[] { 100, 70, 30, 100 },
+                true);
 
-        Cadaverine = FluidUtils.generateFluidNoPrefix(
-                "cadaverine", "Cadaverine", 32 + 175, new short[] {100, 70, 30, 100}, true);
-        Putrescine = FluidUtils.generateFluidNoPrefix(
-                "putrescine", "Putrescine", 32 + 175, new short[] {100, 70, 30, 100}, true);
+        Cadaverine = FluidUtils
+                .generateFluidNoPrefix("cadaverine", "Cadaverine", 32 + 175, new short[] { 100, 70, 30, 100 }, true);
+        Putrescine = FluidUtils
+                .generateFluidNoPrefix("putrescine", "Putrescine", 32 + 175, new short[] { 100, 70, 30, 100 }, true);
 
         // Create 2-Ethylanthraquinone
         // 2-Ethylanthraquinone is prepared from the reaction of phthalic anhydride and ethylbenzene
         Ethylanthraquinone2 = FluidUtils.generateFluidNonMolten(
-                "2Ethylanthraquinone", "2-Ethylanthraquinone", 415, new short[] {227, 255, 159, 100}, null, null);
+                "2Ethylanthraquinone",
+                "2-Ethylanthraquinone",
+                415,
+                new short[] { 227, 255, 159, 100 },
+                null,
+                null);
         // Create 2-Ethylanthrahydroquinone
         // Palladium plate + Hydrogen(250) + 2-Ethylanthraquinone(500) = 600 Ethylanthrahydroquinone
         Ethylanthrahydroquinone2 = FluidUtils.generateFluidNonMolten(
                 "2Ethylanthrahydroquinone",
                 "2-Ethylanthrahydroquinone",
                 415,
-                new short[] {207, 225, 129, 100},
+                new short[] { 207, 225, 129, 100 },
                 null,
                 null);
         // Create Hydrogen Peroxide
         // Compressed Air(1500) + Ethylanthrahydroquinone(500) + Anthracene(5) = 450 Ethylanthraquinone && 200 Peroxide
         Hydrogen_Peroxide = FluidUtils.generateFluidNonMolten(
-                "HydrogenPeroxide", "Hydrogen Peroxide", 150, new short[] {210, 255, 255, 100}, null, null);
+                "HydrogenPeroxide",
+                "Hydrogen Peroxide",
+                150,
+                new short[] { 210, 255, 255, 100 },
+                null,
+                null);
 
         if (FluidRegistry.isFluidRegistered("nitricoxide")) {
             Nitric_Oxide = FluidRegistry.getFluid("nitricoxide");
             usingGregtechNitricOxide = true;
         } else {
-            Nitric_Oxide = FluidUtils.generateFluidNoPrefix(
-                    "nitricoxide", "Nitric Oxide", 200, new short[] {125, 200, 240, 100});
+            Nitric_Oxide = FluidUtils
+                    .generateFluidNoPrefix("nitricoxide", "Nitric Oxide", 200, new short[] { 125, 200, 240, 100 });
         }
         if (FluidRegistry.isFluidRegistered("nitrogendioxide")) {
             Nitrogen_Dioxide = FluidRegistry.getFluid("nitrogendioxide");
             usingGregtechNitrogenDioxide = true;
         } else {
             Nitrogen_Dioxide = FluidUtils.generateFluidNoPrefix(
-                    "nitrogendioxide", "Nitrogen Dioxide", 200, new short[] {100, 175, 255, 100});
+                    "nitrogendioxide",
+                    "Nitrogen Dioxide",
+                    200,
+                    new short[] { 100, 175, 255, 100 });
         }
 
         // Lithium Hydroperoxide - LiOH + H2O2 → LiOOH + 2 H2O
@@ -304,10 +330,15 @@ public class GenericChem extends ItemPackage {
         // v - Dehydrate
         // Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
         Lithium_Peroxide = FluidUtils.generateFluidNonMolten(
-                "LithiumPeroxide", "Lithium Peroxide", 446, new short[] {135, 135, 135, 100}, null, null);
+                "LithiumPeroxide",
+                "Lithium Peroxide",
+                446,
+                new short[] { 135, 135, 135, 100 },
+                null,
+                null);
 
-        Carbon_Disulfide = FluidUtils.generateFluidNoPrefix(
-                "CarbonDisulfide", "Carbon Disulfide", 350, new short[] {175, 175, 175, 100});
+        Carbon_Disulfide = FluidUtils
+                .generateFluidNoPrefix("CarbonDisulfide", "Carbon Disulfide", 350, new short[] { 175, 175, 175, 100 });
 
         if (FluidRegistry.isFluidRegistered("fluid.liquid_hydricsulfur")
                 || MaterialUtils.doesMaterialExist("HydricSulfide")) {
@@ -323,13 +354,15 @@ public class GenericChem extends ItemPackage {
                 }
             }
             if (aFluid == null) {
-                aFluid = FluidUtils.getWildcardFluidStack("liquid_hydricsulfur", 1000)
-                        .getFluid();
+                aFluid = FluidUtils.getWildcardFluidStack("liquid_hydricsulfur", 1000).getFluid();
             }
             Hydrogen_Sulfide = aFluid;
         } else {
             Hydrogen_Sulfide = FluidUtils.generateFluidNoPrefix(
-                    "HydrogenSulfide", "Hydrogen Sulfide", 446, new short[] {240, 130, 30, 100});
+                    "HydrogenSulfide",
+                    "Hydrogen Sulfide",
+                    446,
+                    new short[] { 240, 130, 30, 100 });
         }
     }
 
@@ -398,12 +431,10 @@ public class GenericChem extends ItemPackage {
     private void recipeSodiumEthoxide() {
         // C2H5OH + Na → C2H5ONa + H
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(16), ELEMENT.getInstance().SODIUM.getDust(1)
-                },
-                new FluidStack[] {Materials.Ethanol.getFluid(1000)},
-                new ItemStack[] {ItemUtils.getSimpleStack(mSodiumEthoxide, 9)},
-                new FluidStack[] {ELEMENT.getInstance().HYDROGEN.getFluidStack(1000)},
+                new ItemStack[] { CI.getNumberedCircuit(16), ELEMENT.getInstance().SODIUM.getDust(1) },
+                new FluidStack[] { Materials.Ethanol.getFluid(1000) },
+                new ItemStack[] { ItemUtils.getSimpleStack(mSodiumEthoxide, 9) },
+                new FluidStack[] { ELEMENT.getInstance().HYDROGEN.getFluidStack(1000) },
                 20 * 20,
                 120,
                 2);
@@ -412,16 +443,11 @@ public class GenericChem extends ItemPackage {
     private void recipePotassiumHydroxide() {
         // Ca(OH)2 + K2O + CO2 → CaCO3 + 2 KOH
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(18),
-                    Materials.Potash.getDust(3),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5),
-                },
-                new FluidStack[] {Materials.CarbonDioxide.getGas(1000)},
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5),
-                    ItemUtils.getSimpleStack(mPotassiumHydroxide, 6)
-                },
+                new ItemStack[] { CI.getNumberedCircuit(18), Materials.Potash.getDust(3),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), },
+                new FluidStack[] { Materials.CarbonDioxide.getGas(1000) },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5),
+                        ItemUtils.getSimpleStack(mPotassiumHydroxide, 6) },
                 new FluidStack[] {},
                 20 * 30,
                 120,
@@ -432,25 +458,20 @@ public class GenericChem extends ItemPackage {
 
         // Potassium ethyl xanthate - CH3CH2OH + CS2 + KOH → C3H5KOS2 + H2O
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(17), ItemUtils.getSimpleStack(mPotassiumHydroxide, 3),
-                },
-                new FluidStack[] {
-                    Materials.Ethanol.getFluid(1000), FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
-                },
-                new ItemStack[] {ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 12)},
-                new FluidStack[] {FluidUtils.getWater(1000)},
+                new ItemStack[] { CI.getNumberedCircuit(17), ItemUtils.getSimpleStack(mPotassiumHydroxide, 3), },
+                new FluidStack[] { Materials.Ethanol.getFluid(1000),
+                        FluidUtils.getFluidStack(Carbon_Disulfide, 1000), },
+                new ItemStack[] { ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 12) },
+                new FluidStack[] { FluidUtils.getWater(1000) },
                 20 * 60,
                 120,
                 4);
 
         // Sodium ethyl xanthate - CH3CH2ONa + CS2 → CH3CH2OCS2Na
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {CI.getNumberedCircuit(17), ItemUtils.getSimpleStack(mSodiumEthoxide, 9)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
-                },
-                new ItemStack[] {ItemUtils.getSimpleStack(mSodiumEthylXanthate, 12)},
+                new ItemStack[] { CI.getNumberedCircuit(17), ItemUtils.getSimpleStack(mSodiumEthoxide, 9) },
+                new FluidStack[] { FluidUtils.getFluidStack(Carbon_Disulfide, 1000), },
+                new ItemStack[] { ItemUtils.getSimpleStack(mSodiumEthylXanthate, 12) },
                 new FluidStack[] {},
                 20 * 60,
                 120,
@@ -483,28 +504,21 @@ public class GenericChem extends ItemPackage {
     private void recipeCarbonDisulfide() {
 
         CORE.RA.addBlastRecipe(
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 16)
-                },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 16) },
                 new FluidStack[] {},
-                new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("dustDarkAsh", 1)},
-                new FluidStack[] {FluidUtils.getFluidStack(Carbon_Disulfide, 4000)},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustDarkAsh", 1) },
+                new FluidStack[] { FluidUtils.getFluidStack(Carbon_Disulfide, 4000) },
                 20 * 60 * 10,
                 30,
                 1500);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(20),
-                    ItemUtils.getSimpleStack(mBrownCatalyst, 0),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000),
-                },
+                new ItemStack[] { CI.getNumberedCircuit(20), ItemUtils.getSimpleStack(mBrownCatalyst, 0),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4) },
+                new FluidStack[] { FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000), },
                 new ItemStack[] {},
-                new FluidStack[] {FluidUtils.getFluidStack(Carbon_Disulfide, 2000)},
+                new FluidStack[] { FluidUtils.getFluidStack(Carbon_Disulfide, 2000) },
                 20 * 60 * 5,
                 30,
                 2);
@@ -514,19 +528,14 @@ public class GenericChem extends ItemPackage {
 
         // Endgame soldering alloy meant for the bioware circuit line and beyond.
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 0),
-                    ItemList.Circuit_Chip_Biocell.get(64),
-                    ItemList.Gravistar.get(8),
-                    Materials.InfinityCatalyst.getDust(2)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack("plasma.tin", 18000),
-                    FluidUtils.getFluidStack("plasma.bismuth", 18000),
-                    FluidUtils.getFluidStack("cryotheum", 4000)
-                },
+                new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 0),
+                        ItemList.Circuit_Chip_Biocell.get(64), ItemList.Gravistar.get(8),
+                        Materials.InfinityCatalyst.getDust(2) },
+                new FluidStack[] { FluidUtils.getFluidStack("plasma.tin", 18000),
+                        FluidUtils.getFluidStack("plasma.bismuth", 18000),
+                        FluidUtils.getFluidStack("cryotheum", 4000) },
                 new ItemStack[] {},
-                new FluidStack[] {MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280)},
+                new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280) },
                 20 * 800,
                 3842160,
                 7);
@@ -542,7 +551,7 @@ public class GenericChem extends ItemPackage {
 
     private void recipeGrindingBallAlumina() {
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {CI.getNumberedCircuit(10), ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 64)},
+                new ItemStack[] { CI.getNumberedCircuit(10), ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 64) },
                 FluidUtils.getFluidStack(GenericChem.Aniline, 4000),
                 ItemUtils.getSimpleStack(mMillingBallAlumina, 8),
                 180 * 20,
@@ -551,9 +560,8 @@ public class GenericChem extends ItemPackage {
 
     private void recipeGrindingBallSoapstone() {
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(10), ItemUtils.getItemStackOfAmountFromOreDict("dustSoapstone", 32)
-                },
+                new ItemStack[] { CI.getNumberedCircuit(10),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustSoapstone", 32) },
                 FluidUtils.getFluidStack(AgrichemFluids.mLiquidResin, 2500),
                 ItemUtils.getSimpleStack(mMillingBallSoapstone, 8),
                 120 * 20,
@@ -685,12 +693,10 @@ public class GenericChem extends ItemPackage {
                 160,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                new FluidStack[] {
-                    MISC_MATERIALS.AMMONIA.getFluidStack(8000),
-                    ELEMENT.getInstance().OXYGEN.getFluidStack(5000)
-                },
-                new FluidStack[] {FluidUtils.getFluidStack(Nitric_Oxide, 4000), FluidUtils.getWater(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                new FluidStack[] { MISC_MATERIALS.AMMONIA.getFluidStack(8000),
+                        ELEMENT.getInstance().OXYGEN.getFluidStack(5000) },
+                new FluidStack[] { FluidUtils.getFluidStack(Nitric_Oxide, 4000), FluidUtils.getWater(9000) },
                 null,
                 160,
                 30);
@@ -769,12 +775,11 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + 6H = C6H12
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getTierTwoChip(), ItemUtils.getSimpleStack(mBrownCatalyst, 0)},
-                new FluidStack[] {FluidUtils.getFluidStack(Benzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000)},
+                new ItemStack[] { getTierTwoChip(), ItemUtils.getSimpleStack(mBrownCatalyst, 0) },
+                new FluidStack[] { FluidUtils.getFluidStack(Benzene, 1000),
+                        FluidUtils.getFluidStack("hydrogen", 6000) },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Cyclohexane, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Cyclohexane, 1000), },
                 20 * 120,
                 120,
                 2);
@@ -784,26 +789,20 @@ public class GenericChem extends ItemPackage {
 
         // C6H12 + 2O(Air) = C6H10O + H2O
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getTierTwoChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0)},
-                new FluidStack[] {FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("air", 4000)},
+                new ItemStack[] { getTierTwoChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0) },
+                new FluidStack[] { FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("air", 4000) },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Cyclohexanone, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Cyclohexanone, 1000), },
                 20 * 120,
                 120,
                 2);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getTierTwoChip(),
-                },
-                new FluidStack[] {FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("oxygen", 2000)
-                },
+                new ItemStack[] { getTierTwoChip(), },
+                new FluidStack[] { FluidUtils.getFluidStack(Cyclohexane, 1000),
+                        FluidUtils.getFluidStack("oxygen", 2000) },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Cyclohexanone, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Cyclohexanone, 1000), },
                 20 * 120,
                 120,
                 2);
@@ -812,12 +811,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystRed() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierOneChip(),
-                    CI.getEmptyCatalyst(10),
-                    ELEMENT.getInstance().IRON.getDust(2),
-                    ELEMENT.getInstance().COPPER.getDust(2),
-                },
+                new ItemStack[] { getTierOneChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().IRON.getDust(2),
+                        ELEMENT.getInstance().COPPER.getDust(2), },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mRedCatalyst, 10),
                 20 * 20,
@@ -827,12 +822,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystYellow() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierThreeChip(),
-                    CI.getEmptyCatalyst(10),
-                    ELEMENT.getInstance().TUNGSTEN.getDust(4),
-                    ELEMENT.getInstance().NICKEL.getDust(4),
-                },
+                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(10),
+                        ELEMENT.getInstance().TUNGSTEN.getDust(4), ELEMENT.getInstance().NICKEL.getDust(4), },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mYellowCatalyst, 10),
                 60 * 20,
@@ -842,12 +833,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystBlue() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierTwoChip(),
-                    CI.getEmptyCatalyst(10),
-                    ELEMENT.getInstance().COBALT.getDust(3),
-                    ELEMENT.getInstance().TITANIUM.getDust(3),
-                },
+                new ItemStack[] { getTierTwoChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().COBALT.getDust(3),
+                        ELEMENT.getInstance().TITANIUM.getDust(3), },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mBlueCatalyst, 10),
                 40 * 20,
@@ -857,12 +844,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystOrange() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierTwoChip(),
-                    CI.getEmptyCatalyst(10),
-                    ELEMENT.getInstance().VANADIUM.getDust(5),
-                    ELEMENT.getInstance().PALLADIUM.getDust(5),
-                },
+                new ItemStack[] { getTierTwoChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().VANADIUM.getDust(5),
+                        ELEMENT.getInstance().PALLADIUM.getDust(5), },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mOrangeCatalyst, 10),
                 40 * 20,
@@ -872,12 +855,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystPurple() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierFourChip(),
-                    CI.getEmptyCatalyst(10),
-                    ELEMENT.getInstance().IRIDIUM.getDust(6),
-                    ELEMENT.getInstance().RUTHENIUM.getDust(6),
-                },
+                new ItemStack[] { getTierFourChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().IRIDIUM.getDust(6),
+                        ELEMENT.getInstance().RUTHENIUM.getDust(6), },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mPurpleCatalyst, 10),
                 120 * 20,
@@ -887,12 +866,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystBrown() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierOneChip(),
-                    CI.getEmptyCatalyst(10),
-                    ELEMENT.getInstance().NICKEL.getDust(4),
-                    ELEMENT.getInstance().ALUMINIUM.getDust(4),
-                },
+                new ItemStack[] { getTierOneChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().NICKEL.getDust(4),
+                        ELEMENT.getInstance().ALUMINIUM.getDust(4), },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mBrownCatalyst, 10),
                 15 * 20,
@@ -902,12 +877,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystPink() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierThreeChip(),
-                    CI.getEmptyCatalyst(10),
-                    ELEMENT.getInstance().PLATINUM.getDust(4),
-                    ELEMENT.getInstance().RHODIUM.getDust(4),
-                },
+                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(10),
+                        ELEMENT.getInstance().PLATINUM.getDust(4), ELEMENT.getInstance().RHODIUM.getDust(4), },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mPinkCatalyst, 10),
                 30 * 20,
@@ -917,11 +888,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystFormaldehyde() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierThreeChip(),
-                    CI.getEmptyCatalyst(4),
-                    ItemUtils.getSimpleStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8)
-                },
+                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(4),
+                        ItemUtils.getSimpleStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4),
                 30 * 20,
@@ -931,11 +899,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystSolidAcid() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierThreeChip(),
-                    CI.getEmptyCatalyst(5),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLapis", 2)
-                },
+                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(5),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLapis", 2) },
                 MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000),
                 ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5),
                 30 * 20,
@@ -945,12 +910,8 @@ public class GenericChem extends ItemPackage {
     private void recipeCatalystInfiniteMutation() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getTierThreeChip(),
-                    CI.getEmptyCatalyst(5),
-                    Materials.Infinity.getDust(1),
-                    Materials.Naquadria.getDust(10)
-                },
+                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(5), Materials.Infinity.getDust(1),
+                        Materials.Naquadria.getDust(10) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 5),
                 5 * 20,
@@ -961,28 +922,23 @@ public class GenericChem extends ItemPackage {
 
         // Basic Recipe
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getTierOneChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 64)},
-                new FluidStack[] {FluidUtils.getHotWater(2000)},
+                new ItemStack[] { getTierOneChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 64) },
+                new FluidStack[] { FluidUtils.getHotWater(2000) },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Cadaverine, 250), FluidUtils.getFluidStack(Putrescine, 250),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Cadaverine, 250),
+                        FluidUtils.getFluidStack(Putrescine, 250), },
                 20 * 120,
                 120,
                 1);
 
         // Advanced Recipe
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getTierTwoChip(),
-                    ItemUtils.getSimpleStack(Items.rotten_flesh, 128),
-                    ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 8, 32)
-                },
-                new FluidStack[] {FluidUtils.getHotWater(3000)},
+                new ItemStack[] { getTierTwoChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 128),
+                        ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 8, 32) },
+                new FluidStack[] { FluidUtils.getHotWater(3000) },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Cadaverine, 750), FluidUtils.getFluidStack(Putrescine, 750),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Cadaverine, 750),
+                        FluidUtils.getFluidStack(Putrescine, 750), },
                 20 * 120,
                 240,
                 2);
@@ -992,14 +948,11 @@ public class GenericChem extends ItemPackage {
 
         // C6H5NO2 + 6H = C6H7N + 2H2O
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getTierThreeChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(NitroBenzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000)
-                },
+                new ItemStack[] { getTierThreeChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0) },
+                new FluidStack[] { FluidUtils.getFluidStack(NitroBenzene, 1000),
+                        FluidUtils.getFluidStack("hydrogen", 6000) },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Aniline, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Aniline, 1000), },
                 20 * 30,
                 500,
                 3);
@@ -1009,19 +962,13 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + HNO3 =H2SO4= C6H5NO2 +H2O
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getTierThreeChip(),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Benzene, 5000),
-                    FluidUtils.getFluidStack("sulfuricacid", 3000),
-                    FluidUtils.getFluidStack("nitricacid", 5000),
-                    FluidUtils.getDistilledWater(10000)
-                },
+                new ItemStack[] { getTierThreeChip(), },
+                new FluidStack[] { FluidUtils.getFluidStack(Benzene, 5000),
+                        FluidUtils.getFluidStack("sulfuricacid", 3000), FluidUtils.getFluidStack("nitricacid", 5000),
+                        FluidUtils.getDistilledWater(10000) },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack("dilutedsulfuricacid", 3000), FluidUtils.getFluidStack(NitroBenzene, 5000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack("dilutedsulfuricacid", 3000),
+                        FluidUtils.getFluidStack(NitroBenzene, 5000), },
                 20 * 30,
                 500,
                 4);
@@ -1031,16 +978,11 @@ public class GenericChem extends ItemPackage {
 
         // C6H4(CO)2O + C6H5CH2CH3 = C6H4(CO)2C6H3CH2CH3 + H2O
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(4), ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(CoalTar.Ethylbenzene, 1000),
-                },
+                new ItemStack[] { CI.getNumberedCircuit(4),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15), },
+                new FluidStack[] { FluidUtils.getFluidStack(CoalTar.Ethylbenzene, 1000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Ethylanthraquinone2, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Ethylanthraquinone2, 1000), },
                 20 * 15,
                 120,
                 2);
@@ -1050,16 +992,11 @@ public class GenericChem extends ItemPackage {
 
         // C6H4(CO)2C6H3CH2CH3 + 2H = C6H4(COH)2C6H3CH2CH3
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(4), ItemUtils.getSimpleStack(mOrangeCatalyst, 0),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Ethylanthraquinone2, 1000), FluidUtils.getFluidStack("hydrogen", 2000),
-                },
+                new ItemStack[] { CI.getNumberedCircuit(4), ItemUtils.getSimpleStack(mOrangeCatalyst, 0), },
+                new FluidStack[] { FluidUtils.getFluidStack(Ethylanthraquinone2, 1000),
+                        FluidUtils.getFluidStack("hydrogen", 2000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 1000), },
                 20 * 40,
                 120,
                 2);
@@ -1068,17 +1005,13 @@ public class GenericChem extends ItemPackage {
     private void recipeLithiumPeroxide() {
         // 2HLiO2 = Li2O2 + H2O2
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 8),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1)
-                },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 8),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1) },
                 null,
                 null,
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 4),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1),
-                },
-                new int[] {10000, 10000},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 4),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1), },
+                new int[] { 10000, 10000 },
                 20 * 100,
                 120);
     }
@@ -1087,81 +1020,56 @@ public class GenericChem extends ItemPackage {
 
         // LiOH + H2O2 = HLiO2 + H2O
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(4), ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000),
-                },
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 4),
-                },
+                new ItemStack[] { CI.getNumberedCircuit(4),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3), },
+                new FluidStack[] { FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000), },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 4), },
                 new FluidStack[] {},
                 20 * 30,
                 240,
                 1);
 
-        /*CORE.RA.addChemicalRecipe(
-        ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 7),
-        ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1),
-        20,
-        FluidUtils.getFluidStack("fluid.cellhydrogenperoxide", 50),
-        null,
-        ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 14),
-        CI.emptyCells(1),
-        20*30,
-        240);	*/
+        /*
+         * CORE.RA.addChemicalRecipe( ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 7),
+         * ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1), 20,
+         * FluidUtils.getFluidStack("fluid.cellhydrogenperoxide", 50), null,
+         * ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 14), CI.emptyCells(1), 20*30, 240);
+         */
     }
 
     private void recipeHydrogenPeroxide() {
 
         // C6H4(COH)2C6H3CH2CH3 + 2O =(C6H4CH)2= H2O2 + C6H4(CO)2C6H3CH2CH3
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(4),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack("air", 20000),
-                    FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
-                    FluidUtils.getFluidStack("fluid.anthracene", 50),
-                },
+                new ItemStack[] { CI.getNumberedCircuit(4), },
+                new FluidStack[] { FluidUtils.getFluidStack("air", 20000),
+                        FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
+                        FluidUtils.getFluidStack("fluid.anthracene", 50), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Ethylanthraquinone2, 5000),
-                    FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Ethylanthraquinone2, 5000),
+                        FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000), },
                 20 * 30,
                 240,
                 1);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    CI.getNumberedCircuit(4),
-                },
-                new FluidStack[] {
-                    Materials.Oxygen.getGas(10000),
-                    FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
-                    FluidUtils.getFluidStack("fluid.anthracene", 50),
-                },
+                new ItemStack[] { CI.getNumberedCircuit(4), },
+                new FluidStack[] { Materials.Oxygen.getGas(10000),
+                        FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
+                        FluidUtils.getFluidStack("fluid.anthracene", 50), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(Ethylanthraquinone2, 5000),
-                    FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(Ethylanthraquinone2, 5000),
+                        FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000), },
                 20 * 5,
                 240,
                 1);
 
-        /*		CORE.RA.addChemicalRecipe(
-        GT_ModHandler.getAirCell(15),
-        ItemUtils.getItemStackOfAmountFromOreDict("cell2Ethylanthrahydroquinone", 5),
-        20,
-        FluidUtils.getFluidStack("fluid.anthracene", 50),
-        FluidUtils.getFluidStack("fluid.2ethylanthrahydroquinone", 4450),
-        ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 2),
-        CI.emptyCells(18),
-        20*30,
-        240);*/
+        /*
+         * CORE.RA.addChemicalRecipe( GT_ModHandler.getAirCell(15),
+         * ItemUtils.getItemStackOfAmountFromOreDict("cell2Ethylanthrahydroquinone", 5), 20,
+         * FluidUtils.getFluidStack("fluid.anthracene", 50), FluidUtils.getFluidStack("fluid.2ethylanthrahydroquinone",
+         * 4450), ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 2), CI.emptyCells(18), 20*30, 240);
+         */
 
     }
 
@@ -1185,104 +1093,128 @@ public class GenericChem extends ItemPackage {
         GT_ModHandler.addShapelessCraftingRecipe(
                 GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 0L),
                 0,
-                new Object[] {OrePrefixes.circuit.get(Materials.Advanced)});
+                new Object[] { OrePrefixes.circuit.get(Materials.Advanced) });
 
         long bits = 0;
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 1L, new Object[0]), bits, new Object[] {
-                    "d  ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 1L, new Object[0]),
+                bits,
+                new Object[] { "d  ", " P ", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 2L, new Object[0]), bits, new Object[] {
-                    " d ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 2L, new Object[0]),
+                bits,
+                new Object[] { " d ", " P ", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 3L, new Object[0]), bits, new Object[] {
-                    "  d", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 3L, new Object[0]),
+                bits,
+                new Object[] { "  d", " P ", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 4L, new Object[0]), bits, new Object[] {
-                    "   ", " Pd", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 4L, new Object[0]),
+                bits,
+                new Object[] { "   ", " Pd", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 5L, new Object[0]), bits, new Object[] {
-                    "   ", " P ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 5L, new Object[0]),
+                bits,
+                new Object[] { "   ", " P ", "  d", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 6L, new Object[0]), bits, new Object[] {
-                    "   ", " P ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 6L, new Object[0]),
+                bits,
+                new Object[] { "   ", " P ", " d ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 7L, new Object[0]), bits, new Object[] {
-                    "   ", " P ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 7L, new Object[0]),
+                bits,
+                new Object[] { "   ", " P ", "d  ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 8L, new Object[0]), bits, new Object[] {
-                    "   ", "dP ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 8L, new Object[0]),
+                bits,
+                new Object[] { "   ", "dP ", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 9L, new Object[0]), bits, new Object[] {
-                    "P d", "   ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 9L, new Object[0]),
+                bits,
+                new Object[] { "P d", "   ", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 10L, new Object[0]), bits, new Object[] {
-                    "P  ", "  d", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 10L, new Object[0]),
+                bits,
+                new Object[] { "P  ", "  d", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 11L, new Object[0]), bits, new Object[] {
-                    "P  ", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 11L, new Object[0]),
+                bits,
+                new Object[] { "P  ", "   ", "  d", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 12L, new Object[0]), bits, new Object[] {
-                    "P  ", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 12L, new Object[0]),
+                bits,
+                new Object[] { "P  ", "   ", " d ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 13L, new Object[0]), bits, new Object[] {
-                    "  P", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 13L, new Object[0]),
+                bits,
+                new Object[] { "  P", "   ", "  d", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 14L, new Object[0]), bits, new Object[] {
-                    "  P", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 14L, new Object[0]),
+                bits,
+                new Object[] { "  P", "   ", " d ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 15L, new Object[0]), bits, new Object[] {
-                    "  P", "   ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 15L, new Object[0]),
+                bits,
+                new Object[] { "  P", "   ", "d  ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 16L, new Object[0]), bits, new Object[] {
-                    "  P", "d  ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 16L, new Object[0]),
+                bits,
+                new Object[] { "  P", "d  ", "   ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 17L, new Object[0]), bits, new Object[] {
-                    "   ", "   ", "d P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 17L, new Object[0]),
+                bits,
+                new Object[] { "   ", "   ", "d P", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 18L, new Object[0]), bits, new Object[] {
-                    "   ", "d  ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 18L, new Object[0]),
+                bits,
+                new Object[] { "   ", "d  ", "  P", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 19L, new Object[0]), bits, new Object[] {
-                    "d  ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 19L, new Object[0]),
+                bits,
+                new Object[] { "d  ", "   ", "  P", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 20L, new Object[0]), bits, new Object[] {
-                    " d ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 20L, new Object[0]),
+                bits,
+                new Object[] { " d ", "   ", "  P", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 21L, new Object[0]), bits, new Object[] {
-                    "d  ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 21L, new Object[0]),
+                bits,
+                new Object[] { "d  ", "   ", "P  ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 22L, new Object[0]), bits, new Object[] {
-                    " d ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 22L, new Object[0]),
+                bits,
+                new Object[] { " d ", "   ", "P  ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 23L, new Object[0]), bits, new Object[] {
-                    "  d", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 23L, new Object[0]),
+                bits,
+                new Object[] { "  d", "   ", "P  ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
         BioRecipes.addCraftingRecipe(
-                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 24L, new Object[0]), bits, new Object[] {
-                    "   ", "  d", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 24L, new Object[0]),
+                bits,
+                new Object[] { "   ", "  d", "P  ", 'P',
+                        GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L, new Object[0]) });
     }
 }

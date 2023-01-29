@@ -1,11 +1,7 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.MiningUtils;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,9 +15,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.MiningUtils;
+
 public class StaballoySpade extends ItemSpade {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.ItemStack)
      */
     @Override
@@ -33,8 +36,8 @@ public class StaballoySpade extends ItemSpade {
     }
 
     /**
-     * Creates an NBT tag for this item if it doesn't have one.
-     * This also set some default values.
+     * Creates an NBT tag for this item if it doesn't have one. This also set some default values.
+     * 
      * @param rStack
      * @return
      */
@@ -141,13 +144,7 @@ public class StaballoySpade extends ItemSpade {
     private int miningLevel;
 
     /*
-     *
-     *
-     *
-     *  Methods
-     *
-     *
-     *
+     * Methods
      */
 
     @Override
@@ -156,14 +153,8 @@ public class StaballoySpade extends ItemSpade {
     }
 
     @Override
-    public boolean onBlockDestroyed(
-            final ItemStack stack,
-            final World world,
-            final Block block,
-            final int X,
-            final int Y,
-            final int Z,
-            final EntityLivingBase entity) {
+    public boolean onBlockDestroyed(final ItemStack stack, final World world, final Block block, final int X,
+            final int Y, final int Z, final EntityLivingBase entity) {
         if (!world.isRemote) {
             if (entity instanceof EntityPlayer) {
                 this.GetDestroyOrientation((EntityPlayer) entity, getLookingDirection(stack), world, X, Y, Z, stack);
@@ -192,14 +183,8 @@ public class StaballoySpade extends ItemSpade {
         return false;
     }
 
-    private void GetDestroyOrientation(
-            EntityPlayer player,
-            final String FACING,
-            final World world,
-            final int X,
-            final int Y,
-            final int Z,
-            final ItemStack heldItem) {
+    private void GetDestroyOrientation(EntityPlayer player, final String FACING, final World world, final int X,
+            final int Y, final int Z, final ItemStack heldItem) {
         float DURABILITY_LOSS = 0;
         if (!world.isRemote) {
 
@@ -207,24 +192,24 @@ public class StaballoySpade extends ItemSpade {
                 DURABILITY_LOSS = 0;
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
-                        DURABILITY_LOSS =
-                                (DURABILITY_LOSS + this.removeBlockAndDropAsItem(world, X + i, Y, Z + j, heldItem));
+                        DURABILITY_LOSS = (DURABILITY_LOSS
+                                + this.removeBlockAndDropAsItem(world, X + i, Y, Z + j, heldItem));
                     }
                 }
             } else if (FACING.equals("facingEast") || FACING.equals("facingWest")) {
                 DURABILITY_LOSS = 0;
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
-                        DURABILITY_LOSS =
-                                (DURABILITY_LOSS + this.removeBlockAndDropAsItem(world, X, Y + i, Z + j, heldItem));
+                        DURABILITY_LOSS = (DURABILITY_LOSS
+                                + this.removeBlockAndDropAsItem(world, X, Y + i, Z + j, heldItem));
                     }
                 }
             } else if (FACING.equals("facingNorth") || FACING.equals("facingSouth")) {
                 DURABILITY_LOSS = 0;
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
-                        DURABILITY_LOSS =
-                                (DURABILITY_LOSS + this.removeBlockAndDropAsItem(world, X + j, Y + i, Z, heldItem));
+                        DURABILITY_LOSS = (DURABILITY_LOSS
+                                + this.removeBlockAndDropAsItem(world, X + j, Y + i, Z, heldItem));
                     }
                 }
             }
@@ -241,11 +226,16 @@ public class StaballoySpade extends ItemSpade {
             final int durNow = maxdmg - itemdmg;
             final int durLeft = (int) ((maxdmg - itemdmg) - DURABILITY_LOSS);
 
-            Logger.WARNING("Current Damage: " + itemdmg
-                    + " Max Damage: " + maxdmg
-                    + " Durability to be lost: " + dodmg
-                    + " Current Durability: " + durNow
-                    + " Remaining Durability: " + durLeft);
+            Logger.WARNING(
+                    "Current Damage: " + itemdmg
+                            + " Max Damage: "
+                            + maxdmg
+                            + " Durability to be lost: "
+                            + dodmg
+                            + " Current Durability: "
+                            + durNow
+                            + " Remaining Durability: "
+                            + durLeft);
 
             // Break Tool
             if (((durNow - dodmg) <= (900)) && (itemdmg != 0)) {
@@ -272,8 +262,8 @@ public class StaballoySpade extends ItemSpade {
     }
 
     // Should clear up blocks quicker if I chain it.
-    public int removeBlockAndDropAsItem(
-            final World world, final int X, final int Y, final int Z, final ItemStack heldItem) {
+    public int removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z,
+            final ItemStack heldItem) {
         Logger.WARNING("Trying to drop/remove a block.");
         try {
             final Block block = world.getBlock(X, Y, Z);
@@ -282,9 +272,8 @@ public class StaballoySpade extends ItemSpade {
             removalTool = block.getHarvestTool(0);
             if (removalTool != null) {
                 if (removalTool.equals("shovel")) {
-                    if (this.canPickaxeBlock(block, world, new int[] {X, Y, Z})) {
-                        if ((block != Blocks.bedrock)
-                                && (block.getBlockHardness(world, X, Y, Z) != -1)
+                    if (this.canPickaxeBlock(block, world, new int[] { X, Y, Z })) {
+                        if ((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1)
                                 && (block.getBlockHardness(world, X, Y, Z) <= 100)
                                 && (block != Blocks.water)
                                 && (block != Blocks.lava)) {
@@ -329,12 +318,12 @@ public class StaballoySpade extends ItemSpade {
             // Utils.LOG_WARNING("Player - F: "+direction);
             // Utils.LOG_WARNING("Player - getLookVec(): "+localPlayer.getLookVec().yCoord);
 
-            /*if (localPlayer.getLookVec().yCoord > 0){
-            	localPlayer.getLookVec().yCoord;
-            }*/
+            /*
+             * if (localPlayer.getLookVec().yCoord > 0){ localPlayer.getLookVec().yCoord; }
+             */
 
-            final MovingObjectPosition movingobjectposition =
-                    this.getMovingObjectPositionFromPlayer(world, aPlayer, false);
+            final MovingObjectPosition movingobjectposition = this
+                    .getMovingObjectPositionFromPlayer(world, aPlayer, false);
             if (movingobjectposition != null) {
                 final int sideHit = movingobjectposition.sideHit;
                 String playerStandingPosition = "";
@@ -379,7 +368,7 @@ public class StaballoySpade extends ItemSpade {
         return false;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(EnumChatFormatting.GOLD + "Spades a 3x3 area in the direction you are facing.");
@@ -398,8 +387,8 @@ public class StaballoySpade extends ItemSpade {
     }
 
     @Override
-    public boolean onBlockStartBreak(
-            final ItemStack itemstack, final int X, final int Y, final int Z, final EntityPlayer aPlayer) {
+    public boolean onBlockStartBreak(final ItemStack itemstack, final int X, final int Y, final int Z,
+            final EntityPlayer aPlayer) {
         this.checkFacing(itemstack, aPlayer, aPlayer.worldObj);
         return super.onBlockStartBreak(itemstack, X, Y, Z, aPlayer);
     }

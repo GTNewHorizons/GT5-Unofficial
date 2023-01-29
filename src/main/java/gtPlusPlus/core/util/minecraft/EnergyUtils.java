@@ -1,11 +1,12 @@
 package gtPlusPlus.core.util.minecraft;
 
+import net.minecraft.item.ItemRedstone;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_ModHandler;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
-import net.minecraft.item.ItemRedstone;
-import net.minecraft.item.ItemStack;
 
 public class EnergyUtils {
 
@@ -37,8 +38,8 @@ public class EnergyUtils {
         public static boolean discharge(ItemStack aStack, int aEnergyToDrain, int aTier) {
             if (isElectricItem(aStack)) {
                 int tTier = ((IElectricItem) aStack.getItem()).getTier(aStack);
-                int aDischargeValue =
-                        GT_ModHandler.dischargeElectricItem(aStack, aEnergyToDrain, tTier, true, false, false);
+                int aDischargeValue = GT_ModHandler
+                        .dischargeElectricItem(aStack, aEnergyToDrain, tTier, true, false, false);
                 // Logger.INFO("Trying to drain "+aDischargeValue);
                 return aDischargeValue > 0;
             } else {
@@ -119,5 +120,6 @@ public class EnergyUtils {
         }
     }
 
-    public static class RF {}
+    public static class RF {
+    }
 }

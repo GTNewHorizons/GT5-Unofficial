@@ -1,12 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.helpers.treefarm;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.FakeBlockPos;
-import gtPlusPlus.api.objects.minecraft.FakeWorld;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
@@ -16,6 +11,13 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.FakeBlockPos;
+import gtPlusPlus.api.objects.minecraft.FakeWorld;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
 
 public class TreeGenerator {
 
@@ -43,6 +45,7 @@ public class TreeGenerator {
     }
 
     public static class FakeTreeInFakeWorldGenerator extends WorldGenAbstractTree {
+
         /** The minimum height of a generated tree. */
         private final int minTreeHeight;
         /** True if this tree should grow Vines. */
@@ -64,8 +67,8 @@ public class TreeGenerator {
             this(4, 0, 0, false, 5000);
         }
 
-        public FakeTreeInFakeWorldGenerator(
-                int aMinHeight, int aWoodMeta, int aLeafMeta, boolean aVines, int aTreeCount) {
+        public FakeTreeInFakeWorldGenerator(int aMinHeight, int aWoodMeta, int aLeafMeta, boolean aVines,
+                int aTreeCount) {
             super(false);
             this.minTreeHeight = aMinHeight;
             this.metaWood = aWoodMeta;
@@ -93,8 +96,7 @@ public class TreeGenerator {
 
         @Override
         protected boolean func_150523_a(Block p_150523_1_) {
-            return p_150523_1_.getMaterial() == Material.air
-                    || p_150523_1_.getMaterial() == Material.leaves
+            return p_150523_1_.getMaterial() == Material.air || p_150523_1_.getMaterial() == Material.leaves
                     || p_150523_1_ == Blocks.grass
                     || p_150523_1_ == Blocks.dirt
                     || p_150523_1_ == Blocks.log
@@ -107,8 +109,7 @@ public class TreeGenerator {
         protected boolean isReplaceable(World world, int x, int y, int z) {
             FakeWorld aWorld = getWorld();
             Block block = aWorld.getBlock(x, y, z);
-            return block.isAir(null, x, y, z)
-                    || block.isLeaves(null, x, y, z)
+            return block.isAir(null, x, y, z) || block.isLeaves(null, x, y, z)
                     || block.isWood(null, x, y, z)
                     || func_150523_a(block);
         }
@@ -201,12 +202,17 @@ public class TreeGenerator {
                     FakeBlockPos aBlockToGrowPlantOn = aWorld.getBlockAtCoords(aWorldX, aWorldY - 1, aWorldZ);
 
                     boolean isSoil = block2.canSustainPlant(
-                            aWorld, aWorldX, aWorldY - 1, aWorldZ, ForgeDirection.UP, (BlockSapling) Blocks.sapling);
+                            aWorld,
+                            aWorldX,
+                            aWorldY - 1,
+                            aWorldZ,
+                            ForgeDirection.UP,
+                            (BlockSapling) Blocks.sapling);
                     if (
-                    /*isSoil &&*/ aWorldY < 256 - l - 1) {
+                    /* isSoil && */ aWorldY < 256 - l - 1) {
                         Logger.WARNING("Stepping through generateTree [4]");
-                        aBlockToGrowPlantOn.onPlantGrow(
-                                aWorld, aWorldX, aWorldY - 1, aWorldZ, aWorldX, aWorldY, aWorldZ);
+                        aBlockToGrowPlantOn
+                                .onPlantGrow(aWorld, aWorldX, aWorldY - 1, aWorldZ, aWorldX, aWorldY, aWorldZ);
                         b0 = 3;
                         byte b1 = 0;
                         int l1;
@@ -224,14 +230,18 @@ public class TreeGenerator {
                                 for (int k2 = aWorldZ - l1; k2 <= aWorldZ + l1; ++k2) {
                                     int l2 = k2 - aWorldZ;
 
-                                    if (Math.abs(j2) != l1
-                                            || Math.abs(l2) != l1
+                                    if (Math.abs(j2) != l1 || Math.abs(l2) != l1
                                             || CORE.RANDOM.nextInt(2) != 0 && i3 != 0) {
                                         Block block1 = aWorld.getBlock(i2, k1, k2);
 
                                         if (block1.isAir(null, i2, k1, k2) || block1.isLeaves(null, i2, k1, k2)) {
                                             this.setBlockAndNotifyAdequately(
-                                                    aWorld, i2, k1, k2, Blocks.leaves, this.metaLeaves);
+                                                    aWorld,
+                                                    i2,
+                                                    k1,
+                                                    k2,
+                                                    Blocks.leaves,
+                                                    this.metaLeaves);
                                         }
                                     }
                                 }
@@ -245,31 +255,56 @@ public class TreeGenerator {
                             if (block.isAir(null, aWorldX, aWorldY + k1, aWorldZ)
                                     || block.isLeaves(null, aWorldX, aWorldY + k1, aWorldZ)) {
                                 this.setBlockAndNotifyAdequately(
-                                        aWorld, aWorldX, aWorldY + k1, aWorldZ, Blocks.log, this.metaWood);
+                                        aWorld,
+                                        aWorldX,
+                                        aWorldY + k1,
+                                        aWorldZ,
+                                        Blocks.log,
+                                        this.metaWood);
 
                                 if (this.vinesGrow && k1 > 0) {
                                     if (CORE.RANDOM.nextInt(3) > 0
                                             && aWorld.isAirBlock(aWorldX - 1, aWorldY + k1, aWorldZ)) {
                                         this.setBlockAndNotifyAdequately(
-                                                aWorld, aWorldX - 1, aWorldY + k1, aWorldZ, Blocks.vine, 8);
+                                                aWorld,
+                                                aWorldX - 1,
+                                                aWorldY + k1,
+                                                aWorldZ,
+                                                Blocks.vine,
+                                                8);
                                     }
 
                                     if (CORE.RANDOM.nextInt(3) > 0
                                             && aWorld.isAirBlock(aWorldX + 1, aWorldY + k1, aWorldZ)) {
                                         this.setBlockAndNotifyAdequately(
-                                                aWorld, aWorldX + 1, aWorldY + k1, aWorldZ, Blocks.vine, 2);
+                                                aWorld,
+                                                aWorldX + 1,
+                                                aWorldY + k1,
+                                                aWorldZ,
+                                                Blocks.vine,
+                                                2);
                                     }
 
                                     if (CORE.RANDOM.nextInt(3) > 0
                                             && aWorld.isAirBlock(aWorldX, aWorldY + k1, aWorldZ - 1)) {
                                         this.setBlockAndNotifyAdequately(
-                                                aWorld, aWorldX, aWorldY + k1, aWorldZ - 1, Blocks.vine, 1);
+                                                aWorld,
+                                                aWorldX,
+                                                aWorldY + k1,
+                                                aWorldZ - 1,
+                                                Blocks.vine,
+                                                1);
                                     }
 
                                     if (CORE.RANDOM.nextInt(3) > 0
                                             && aWorld.isAirBlock(aWorldX, aWorldY + k1, aWorldZ + 1)) {
                                         this.setBlockAndNotifyAdequately(
-                                                aWorld, aWorldX, aWorldY + k1, aWorldZ + 1, Blocks.vine, 4);
+                                                aWorld,
+                                                aWorldX,
+                                                aWorldY + k1,
+                                                aWorldZ + 1,
+                                                Blocks.vine,
+                                                4);
                                     }
                                 }
                             }
@@ -286,26 +321,22 @@ public class TreeGenerator {
                                     for (j2 = aWorldZ - l1; j2 <= aWorldZ + l1; ++j2) {
                                         if (aWorld.getBlock(i2, k1, j2).isLeaves(null, i2, k1, j2)) {
                                             if (CORE.RANDOM.nextInt(4) == 0
-                                                    && aWorld.getBlock(i2 - 1, k1, j2)
-                                                            .isAir(null, i2 - 1, k1, j2)) {
+                                                    && aWorld.getBlock(i2 - 1, k1, j2).isAir(null, i2 - 1, k1, j2)) {
                                                 this.growVines(aWorld, i2 - 1, k1, j2, 8);
                                             }
 
                                             if (CORE.RANDOM.nextInt(4) == 0
-                                                    && aWorld.getBlock(i2 + 1, k1, j2)
-                                                            .isAir(null, i2 + 1, k1, j2)) {
+                                                    && aWorld.getBlock(i2 + 1, k1, j2).isAir(null, i2 + 1, k1, j2)) {
                                                 this.growVines(aWorld, i2 + 1, k1, j2, 2);
                                             }
 
                                             if (CORE.RANDOM.nextInt(4) == 0
-                                                    && aWorld.getBlock(i2, k1, j2 - 1)
-                                                            .isAir(null, i2, k1, j2 - 1)) {
+                                                    && aWorld.getBlock(i2, k1, j2 - 1).isAir(null, i2, k1, j2 - 1)) {
                                                 this.growVines(aWorld, i2, k1, j2 - 1, 1);
                                             }
 
                                             if (CORE.RANDOM.nextInt(4) == 0
-                                                    && aWorld.getBlock(i2, k1, j2 + 1)
-                                                            .isAir(null, i2, k1, j2 + 1)) {
+                                                    && aWorld.getBlock(i2, k1, j2 + 1).isAir(null, i2, k1, j2 + 1)) {
                                                 this.growVines(aWorld, i2, k1, j2 + 1, 4);
                                             }
                                         }
@@ -361,8 +392,16 @@ public class TreeGenerator {
 
         protected void setBlockAndNotifyAdequately(FakeWorld aWorld, int aX, int aY, int aZ, Block aBlock, int aMeta) {
             if (aBlock != null && (aMeta >= 0 && aMeta <= Short.MAX_VALUE)) {
-                Logger.WARNING("Setting block " + aX + ", " + aY + ", " + aZ + " | " + aBlock.getLocalizedName() + " | "
-                        + aMeta);
+                Logger.WARNING(
+                        "Setting block " + aX
+                                + ", "
+                                + aY
+                                + ", "
+                                + aZ
+                                + " | "
+                                + aBlock.getLocalizedName()
+                                + " | "
+                                + aMeta);
                 aWorld.setBlockAtCoords(aX, aY, aZ, aBlock, aMeta);
                 // aOutputsFromGenerator.put(ItemUtils.simpleMetaStack(aBlock, aMeta, 1));
             }

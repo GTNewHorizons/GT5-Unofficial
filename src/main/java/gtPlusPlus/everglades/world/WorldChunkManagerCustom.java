@@ -1,11 +1,9 @@
 package gtPlusPlus.everglades.world;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.everglades.biome.GenLayerEverglades;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
@@ -18,6 +16,10 @@ import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.everglades.biome.GenLayerEverglades;
+
 public class WorldChunkManagerCustom extends WorldChunkManager {
 
     private GenLayer genBiomes;
@@ -28,7 +30,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     /** A list of biomes that the player can spawn in. */
     private List<BiomeGenBase> biomesToSpawnIn;
 
-    @SuppressWarnings({"rawtypes"})
+    @SuppressWarnings({ "rawtypes" })
     public WorldChunkManagerCustom() {
         this.biomeCache = new BiomeCache(this);
         this.biomesToSpawnIn = new ArrayList();
@@ -58,8 +60,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     }
 
     /**
-     * Returns a list of rainfall values for the specified blocks. Args:
-     * listToReuse, x, z, width, length.
+     * Returns a list of rainfall values for the specified blocks. Args: listToReuse, x, z, width, length.
      */
     @Override
     public float[] getRainfall(float[] listToReuse, int x, int z, int width, int length) {
@@ -97,8 +98,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     }
 
     /**
-     * Return an adjusted version of a given temperature based on the y
-     * height
+     * Return an adjusted version of a given temperature based on the y height
      */
     @Override
     @SideOnly(Side.CLIENT)
@@ -110,8 +110,8 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
      * Returns an array of biomes for the location input.
      */
     @Override
-    public BiomeGenBase[] getBiomesForGeneration(
-            BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5) {
+    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4,
+            int par5) {
         IntCache.resetIntCache();
 
         if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5) {
@@ -139,9 +139,8 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     }
 
     /**
-     * Returns biomes to use for the blocks and loads the other data like
-     * temperature and humidity onto the WorldChunkManager Args:
-     * oldBiomeList, x, z, width, depth
+     * Returns biomes to use for the blocks and loads the other data like temperature and humidity onto the
+     * WorldChunkManager Args: oldBiomeList, x, z, width, depth
      */
     @Override
     public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] oldBiomeList, int x, int z, int width, int depth) {
@@ -149,13 +148,12 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     }
 
     /**
-     * Return a list of biomes for the specified blocks. Args: listToReuse,
-     * x, y, width, length, cacheFlag (if false, don't check biomeCache to
-     * avoid infinite loop in BiomeCacheBlock)
+     * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if false,
+     * don't check biomeCache to avoid infinite loop in BiomeCacheBlock)
      */
     @Override
-    public BiomeGenBase[] getBiomeGenAt(
-            BiomeGenBase[] listToReuse, int x, int y, int width, int length, boolean cacheFlag) {
+    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] listToReuse, int x, int y, int width, int length,
+            boolean cacheFlag) {
         IntCache.resetIntCache();
 
         if (listToReuse == null || listToReuse.length < width * length) {
@@ -214,14 +212,13 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     }
 
     /**
-     * Finds a valid position within a range, that is in one of the listed
-     * biomes. Searches {par1,par2} +-par3 blocks. Strongly favors positive
-     * y positions.
+     * Finds a valid position within a range, that is in one of the listed biomes. Searches {par1,par2} +-par3 blocks.
+     * Strongly favors positive y positions.
      */
     @Override
     @SuppressWarnings("rawtypes")
-    public ChunkPosition findBiomePosition(
-            int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_, Random p_150795_5_) {
+    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_,
+            Random p_150795_5_) {
         IntCache.resetIntCache();
         int l = p_150795_1_ - p_150795_3_ >> 2;
         int i1 = p_150795_2_ - p_150795_3_ >> 2;

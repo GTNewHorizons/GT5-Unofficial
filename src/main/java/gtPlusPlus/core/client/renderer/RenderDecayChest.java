@@ -1,5 +1,12 @@
 package gtPlusPlus.core.client.renderer;
 
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -7,17 +14,13 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.model.ModelDecayChest;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class RenderDecayChest extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation mChestTexture =
-            new ResourceLocation(CORE.MODID, "textures/blocks/TileEntities/DecayablesChest_full.png");
+    private static final ResourceLocation mChestTexture = new ResourceLocation(
+            CORE.MODID,
+            "textures/blocks/TileEntities/DecayablesChest_full.png");
     private ModelDecayChest mChestModel = new ModelDecayChest();
 
     public static RenderDecayChest INSTANCE;
@@ -29,12 +32,8 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
         Logger.INFO("Registered Lead Lined Chest Renderer.");
     }
 
-    public void renderTileEntityAt(
-            TileEntityDecayablesChest p_147500_1_,
-            double p_147500_2_,
-            double p_147500_4_,
-            double p_147500_6_,
-            float p_147500_8_) {
+    public void renderTileEntityAt(TileEntityDecayablesChest p_147500_1_, double p_147500_2_, double p_147500_4_,
+            double p_147500_6_, float p_147500_8_) {
 
         int i = 0;
 
@@ -78,9 +77,13 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
         }
     }
 
-    public void renderTileEntityAt(
-            TileEntity p_147500_1_, double p_147500_2_, double p_147500_4_, double p_147500_6_, float p_147500_8_) {
+    public void renderTileEntityAt(TileEntity p_147500_1_, double p_147500_2_, double p_147500_4_, double p_147500_6_,
+            float p_147500_8_) {
         this.renderTileEntityAt(
-                (TileEntityDecayablesChest) p_147500_1_, p_147500_2_, p_147500_4_, p_147500_6_, p_147500_8_);
+                (TileEntityDecayablesChest) p_147500_1_,
+                p_147500_2_,
+                p_147500_4_,
+                p_147500_6_,
+                p_147500_8_);
     }
 }

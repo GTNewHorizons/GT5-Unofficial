@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -9,8 +12,6 @@ import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEntity_BasicMachine {
 
@@ -26,32 +27,35 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
                 9,
                 "Dehydrator.png",
                 "",
-                new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE),
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT),
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP),
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
-                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP)
-                });
+                new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
+                        new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),
+                        new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE),
+                        new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT),
+                        new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
+                        new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP),
+                        new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
+                        new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP) });
     }
 
-    public GregtechMetaTileEntity_ReactorProcessingUnit(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GregtechMetaTileEntity_ReactorProcessingUnit(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures, String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 2, 9, aGUIName, aNEIName);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, CORE.GT_Tooltip};
+        return new String[] { this.mDescription, CORE.GT_Tooltip };
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_ReactorProcessingUnit(
-                this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
     @Override

@@ -1,8 +1,5 @@
 package gtPlusPlus.core.entity.monster;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -13,7 +10,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
+
 public class EntitySickBlaze extends EntityMob {
+
     /** Random offset used in floating behaviour */
     private float heightOffset = 0.5F;
     /** ticks until heightOffset is randomized */
@@ -81,9 +83,8 @@ public class EntitySickBlaze extends EntityMob {
     }
 
     /**
-     * Called frequently so the entity can update its state every tick as
-     * required. For example, zombies and skeletons use this to react to
-     * sunlight and start to burn.
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
      */
     @Override
     public void onLivingUpdate() {
@@ -107,8 +108,10 @@ public class EntitySickBlaze extends EntityMob {
         }
 
         if (this.rand.nextInt(24) == 0) {
-            /*this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire",
-            1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);*/
+            /*
+             * this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F +
+             * this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
+             */
         }
 
         if (!this.onGround && this.motionY < 0.0D) {
@@ -130,13 +133,11 @@ public class EntitySickBlaze extends EntityMob {
     }
 
     /**
-     * Basic mob attack. Default to touch of death in EntityCreature. Overridden
-     * by each mob to define their attack.
+     * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
      */
     @Override
     protected void attackEntity(Entity entity, float p_70785_2_) {
-        if (this.attackTime <= 0
-                && p_70785_2_ < 2.0F
+        if (this.attackTime <= 0 && p_70785_2_ < 2.0F
                 && entity.boundingBox.maxY > this.boundingBox.minY
                 && entity.boundingBox.minY < this.boundingBox.maxY) {
             this.attackTime = 20;
@@ -161,7 +162,12 @@ public class EntitySickBlaze extends EntityMob {
                 if (this.field_70846_g > 1) {
                     float f1 = MathHelper.sqrt_float(p_70785_2_) * 0.5F;
                     this.worldObj.playAuxSFXAtEntity(
-                            (EntityPlayer) null, 1009, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
+                            (EntityPlayer) null,
+                            1009,
+                            (int) this.posX,
+                            (int) this.posY,
+                            (int) this.posZ,
+                            0);
 
                     for (int i = 0; i < 1; ++i) {
                         EntityToxinballSmall entitysmalltoxinball = new EntityToxinballSmall(
@@ -193,8 +199,7 @@ public class EntitySickBlaze extends EntityMob {
     }
 
     /**
-     * Returns true if the entity is on fire. Used by render to add the fire
-     * effect on rendering.
+     * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
      */
     @Override
     public boolean isBurning() {
@@ -202,9 +207,8 @@ public class EntitySickBlaze extends EntityMob {
     }
 
     /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity
-     * has recently been hit by a player. @param par2 - Level of Looting used to
-     * kill this mob.
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     @Override
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {

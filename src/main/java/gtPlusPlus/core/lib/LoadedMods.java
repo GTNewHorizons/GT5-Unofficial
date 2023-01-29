@@ -2,13 +2,14 @@ package gtPlusPlus.core.lib;
 
 import static gtPlusPlus.core.lib.CORE.*;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.Loader;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
-import java.util.HashMap;
 
 public class LoadedMods {
 
@@ -363,9 +364,7 @@ public class LoadedMods {
     }
 
     public static String getModVersion(final String modName) {
-        final String ver = cpw.mods.fml.common.FMLCommonHandler.instance()
-                .findContainerFor(modName)
-                .getVersion();
+        final String ver = cpw.mods.fml.common.FMLCommonHandler.instance().findContainerFor(modName).getVersion();
         return ver;
     }
 

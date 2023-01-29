@@ -2,14 +2,15 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.preloader.DevHelper;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.preloader.DevHelper;
 
 public class ClassTransformer_TiConFluids {
 
@@ -67,8 +68,12 @@ public class ClassTransformer_TiConFluids {
             FMLRelaunchLog.log(
                     "[GT++ ASM] Bright Fluids",
                     Level.INFO,
-                    "Injecting " + methodName + " into " + className + ". ["
-                            + (isObfuscated ? "Obfuscated" : "Unobfuscated") + "]");
+                    "Injecting " + methodName
+                            + " into "
+                            + className
+                            + ". ["
+                            + (isObfuscated ? "Obfuscated" : "Unobfuscated")
+                            + "]");
             // Account for Obfuscated constructor args.
             String IBlockAccessName = isObfuscated ? "ahl" : "net/minecraft/world/IBlockAccess";
             String aConstructorTypes = "(L" + IBlockAccessName + ";III)I";
@@ -94,7 +99,7 @@ public class ClassTransformer_TiConFluids {
             mv.visitInsn(IRETURN);
             mv.visitLabel(l2);
             mv.visitLineNumber(21, l2);
-            mv.visitFrame(F_APPEND, 1, new Object[] {INTEGER}, 0, null);
+            mv.visitFrame(F_APPEND, 1, new Object[] { INTEGER }, 0, null);
             mv.visitVarInsn(ALOAD, 0);
             mv.visitVarInsn(ALOAD, 1);
             mv.visitVarInsn(ILOAD, 2);
@@ -102,7 +107,11 @@ public class ClassTransformer_TiConFluids {
             mv.visitVarInsn(ILOAD, 4);
             // net.minecraftforge.fluids.BlockFluidClassic.getLightValue(IBlockAccess, int, int, int)
             mv.visitMethodInsn(
-                    INVOKESPECIAL, "net/minecraftforge/fluids/BlockFluidClassic", methodName, aConstructorTypes, false);
+                    INVOKESPECIAL,
+                    "net/minecraftforge/fluids/BlockFluidClassic",
+                    methodName,
+                    aConstructorTypes,
+                    false);
             mv.visitInsn(IRETURN);
             Label l4 = new Label();
             mv.visitLabel(l4);
@@ -134,7 +143,9 @@ public class ClassTransformer_TiConFluids {
             MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
             if (name.equals(methodName) && desc.equals(aConstructorTypes)) {
                 FMLRelaunchLog.log(
-                        "[GT++ ASM] OreDictTransformer", Level.INFO, "Found target method. [" + mIsObfuscated + "]");
+                        "[GT++ ASM] OreDictTransformer",
+                        Level.INFO,
+                        "Found target method. [" + mIsObfuscated + "]");
                 return new localMethodVisitor(methodVisitor, mIsObfuscated);
             }
             return methodVisitor;

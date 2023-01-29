@@ -1,6 +1,26 @@
 package gtPlusPlus.xmod.gregtech.common.render;
 
+import java.io.*;
+import java.net.URL;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+
+import org.apache.commons.io.IOUtils;
+import org.lwjgl.opengl.GL11;
+
 import com.mojang.authlib.GameProfile;
+
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -11,32 +31,14 @@ import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.data.FileUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import java.io.*;
-import java.net.URL;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.opengl.GL11;
 
 public class GTPP_CapeRenderer extends RenderPlayer {
 
-    private static final ResourceLocation[] mCapes = {
-        new ResourceLocation("miscutils:textures/OrangeHD.png"),
-        new ResourceLocation("miscutils:textures/FancyCapeHD.png"),
-        new ResourceLocation("miscutils:textures/TesterCapeHD.png"),
-        new ResourceLocation("miscutils:textures/PatreonCapeHD.png"),
-        new ResourceLocation("miscutils:textures/DevCapeHD.png"),
-    };
+    private static final ResourceLocation[] mCapes = { new ResourceLocation("miscutils:textures/OrangeHD.png"),
+            new ResourceLocation("miscutils:textures/FancyCapeHD.png"),
+            new ResourceLocation("miscutils:textures/TesterCapeHD.png"),
+            new ResourceLocation("miscutils:textures/PatreonCapeHD.png"),
+            new ResourceLocation("miscutils:textures/DevCapeHD.png"), };
 
     private final boolean mInit;
 
@@ -93,8 +95,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             if (!hasResourceChecked) {
 
                 // Get players UUID
-                String aPlayerUUID =
-                        aPlayer != null ? aPlayer.getGameProfile().getId().toString() : "BAD";
+                String aPlayerUUID = aPlayer != null ? aPlayer.getGameProfile().getId().toString() : "BAD";
 
                 // If for whatever reason this fails, we just exit early.
                 if (aPlayerUUID.equals("BAD")) {
@@ -173,10 +174,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             }
 
             // If player is invisible, don't render.
-            if (GT_Utility.getFullInvisibility(aPlayer)
-                    || aPlayer.isInvisible()
-                    || GT_Utility.getPotion(
-                            aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
+            if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible()
+                    || GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
                 aEvent.setCanceled(true);
                 return false;
             }
@@ -185,14 +184,11 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 bindTexture(tResource);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-                double d0 = aPlayer.field_71091_bM
-                        + (aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks
+                double d0 = aPlayer.field_71091_bM + (aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks
                         - (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
-                double d1 = aPlayer.field_71096_bN
-                        + (aPlayer.field_71095_bQ - aPlayer.field_71096_bN) * aPartialTicks
+                double d1 = aPlayer.field_71096_bN + (aPlayer.field_71095_bQ - aPlayer.field_71096_bN) * aPartialTicks
                         - (aPlayer.prevPosY + (aPlayer.posY - aPlayer.prevPosY) * aPartialTicks);
-                double d2 = aPlayer.field_71097_bO
-                        + (aPlayer.field_71085_bR - aPlayer.field_71097_bO) * aPartialTicks
+                double d2 = aPlayer.field_71097_bO + (aPlayer.field_71085_bR - aPlayer.field_71097_bO) * aPartialTicks
                         - (aPlayer.prevPosZ + (aPlayer.posZ - aPlayer.prevPosZ) * aPartialTicks);
                 float f6 = aPlayer.prevRenderYawOffset
                         + (aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks;
@@ -211,9 +207,9 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                     f8 = 0.0F;
                 }
                 float f10 = aPlayer.prevCameraYaw + (aPlayer.cameraYaw - aPlayer.prevCameraYaw) * aPartialTicks;
-                f7 += MathHelper.sin((aPlayer.prevDistanceWalkedModified
-                                        + (aPlayer.distanceWalkedModified - aPlayer.prevDistanceWalkedModified)
-                                                * aPartialTicks)
+                f7 += MathHelper.sin(
+                        (aPlayer.prevDistanceWalkedModified
+                                + (aPlayer.distanceWalkedModified - aPlayer.prevDistanceWalkedModified) * aPartialTicks)
                                 * 6.0F)
                         * 32.0F
                         * f10;
@@ -238,6 +234,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
     @Deprecated
     /**
      * Should be able to get the username from a UUID
+     * 
      * @param name - Players Name
      * @param uuid - Players known UUID
      * @return - The newest Player name
@@ -250,8 +247,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                     UUID g = UUID.fromString(uuid);
                     if (g != null) {
                         Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
-                        GameProfile profile =
-                                MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
+                        GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
                         if (profile != null) {
                             Logger.WARNING("[Capes++] Found for UUID check: " + profile.getName() + ".");
                             return profile.getName();
@@ -260,8 +256,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                         g = UUID.fromString(uuid.replace("-", ""));
                         if (g != null) {
                             Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
-                            GameProfile profile =
-                                    MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
+                            GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
                             if (profile != null) {
                                 Logger.WARNING("[Capes++] Found for UUID check 2: " + profile.getName() + ".");
                                 return profile.getName();
@@ -273,8 +268,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             if (name != null) {
                 if (name.length() > 0) {
                     Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
-                    GameProfile profile =
-                            MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
+                    GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
                     if (profile != null) {
                         Logger.WARNING("[Capes++] Found for name check: " + profile.getName() + ".");
                         return profile.getName();
@@ -282,8 +276,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 }
             }
             Logger.WORLD("[Capes++] Failed UUID check for " + name + ".");
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return name;
     }
 
@@ -356,8 +349,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
         }
 
         private static final boolean isDownloadedCapeListBigger(File aFile) {
-            double aExistingFileSize =
-                    (doesCapeCacheExistLocally() ? getCapeCache().length() : 0);
+            double aExistingFileSize = (doesCapeCacheExistLocally() ? getCapeCache().length() : 0);
             double aNewFileSize = aFile.length();
             if (aNewFileSize > aExistingFileSize) {
                 return true;
@@ -405,8 +397,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 e.printStackTrace();
             }
             if (tempFile == null) {
-                tempFile = FileUtils.createFile(
-                        "", "gtpp-" + MathUtils.randInt(Short.MAX_VALUE, (Integer.MAX_VALUE / 2)), "tmp");
+                tempFile = FileUtils
+                        .createFile("", "gtpp-" + MathUtils.randInt(Short.MAX_VALUE, (Integer.MAX_VALUE / 2)), "tmp");
             }
             tempFile.deleteOnExit();
             return tempFile;
@@ -439,36 +431,50 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                                     int aCapeTypeID = aCapeTypeID2;
                                     Pair<String, String> aFinalString = new Pair<String, String>(
                                             "UUID: " + aSplitData[1],
-                                            "Username: "
-                                                    + (aSplitData[2] != null && aSplitData[0].length() > 0
-                                                            ? aSplitData[2]
-                                                            : "Not Specified"));
+                                            "Username: " + (aSplitData[2] != null && aSplitData[0].length() > 0
+                                                    ? aSplitData[2]
+                                                    : "Not Specified"));
                                     Logger.INFO("Cape Type: " + aCapeTypeID);
                                     switch (aCapeTypeID) {
                                         case 0:
                                             aCapeType1.add(aFinalString);
-                                            Logger.INFO("Added user to map " + aCapeTypeID + ", map now holds "
-                                                    + aCapeType1.size() + " users.");
+                                            Logger.INFO(
+                                                    "Added user to map " + aCapeTypeID
+                                                            + ", map now holds "
+                                                            + aCapeType1.size()
+                                                            + " users.");
                                             break;
                                         case 1:
                                             aCapeType2.add(aFinalString);
-                                            Logger.INFO("Added user to map " + aCapeTypeID + ", map now holds "
-                                                    + aCapeType2.size() + " users.");
+                                            Logger.INFO(
+                                                    "Added user to map " + aCapeTypeID
+                                                            + ", map now holds "
+                                                            + aCapeType2.size()
+                                                            + " users.");
                                             break;
                                         case 2:
                                             aCapeType3.add(aFinalString);
-                                            Logger.INFO("Added user to map " + aCapeTypeID + ", map now holds "
-                                                    + aCapeType3.size() + " users.");
+                                            Logger.INFO(
+                                                    "Added user to map " + aCapeTypeID
+                                                            + ", map now holds "
+                                                            + aCapeType3.size()
+                                                            + " users.");
                                             break;
                                         case 3:
                                             aCapeType4.add(aFinalString);
-                                            Logger.INFO("Added user to map " + aCapeTypeID + ", map now holds "
-                                                    + aCapeType4.size() + " users.");
+                                            Logger.INFO(
+                                                    "Added user to map " + aCapeTypeID
+                                                            + ", map now holds "
+                                                            + aCapeType4.size()
+                                                            + " users.");
                                             break;
                                         case 4:
                                             aCapeType5.add(aFinalString);
-                                            Logger.INFO("Added user to map " + aCapeTypeID + ", map now holds "
-                                                    + aCapeType5.size() + " users.");
+                                            Logger.INFO(
+                                                    "Added user to map " + aCapeTypeID
+                                                            + ", map now holds "
+                                                            + aCapeType5.size()
+                                                            + " users.");
                                             break;
                                         default:
                                             break;
@@ -477,8 +483,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                             }
                         }
                     }
-                    if (!aCapeType1.isEmpty()
-                            || !aCapeType2.isEmpty()
+                    if (!aCapeType1.isEmpty() || !aCapeType2.isEmpty()
                             || !aCapeType3.isEmpty()
                             || !aCapeType4.isEmpty()
                             || !aCapeType5.isEmpty()) {

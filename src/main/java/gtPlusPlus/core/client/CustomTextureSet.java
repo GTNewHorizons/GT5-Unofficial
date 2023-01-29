@@ -5,6 +5,7 @@ import gregtech.api.enums.TextureSet;
 public class CustomTextureSet extends TextureSet {
 
     public static enum TextureSets {
+
         REFINED(),
         GEM_A(),
         ENRICHED(),

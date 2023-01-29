@@ -1,9 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package Ic2ExpReactorPlanner;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import Ic2ExpReactorPlanner.components.Condensator;
 import Ic2ExpReactorPlanner.components.CoolantCell;
@@ -22,21 +26,18 @@ import gtPlusPlus.xmod.bartworks.BW_Utils;
 import gtPlusPlus.xmod.bartworks.BW_Utils.NonMeta_MaterialItem;
 import gtPlusPlus.xmod.goodgenerator.GG_Utils;
 import gtPlusPlus.xmod.goodgenerator.GG_Utils.GG_Fuel_Rod;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Factory class to handle creating components by id or name.
+ * 
  * @author Brian McCloud
  */
 public class ComponentFactory {
 
     public static int MAX_COMPONENT_ID = 64;
 
-    static ItemList[] aGtItems =
-            new ItemList[] {ItemList.Neutron_Reflector, ItemList.Moxcell_1, ItemList.Moxcell_2, ItemList.Moxcell_4};
+    static ItemList[] aGtItems = new ItemList[] { ItemList.Neutron_Reflector, ItemList.Moxcell_1, ItemList.Moxcell_2,
+            ItemList.Moxcell_4 };
 
     private ComponentFactory() {
         // do nothing, this class should not be instantiated.
@@ -52,8 +53,7 @@ public class ComponentFactory {
                 new FuelRod(
                         1,
                         "fuelRodUranium",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorUraniumSimple", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorUraniumSimple", 1).copy()),
                         20e3,
                         1,
                         null,
@@ -66,8 +66,7 @@ public class ComponentFactory {
                 new FuelRod(
                         2,
                         "dualFuelRodUranium",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorUraniumDual", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorUraniumDual", 1).copy()),
                         20e3,
                         1,
                         null,
@@ -80,8 +79,7 @@ public class ComponentFactory {
                 new FuelRod(
                         3,
                         "quadFuelRodUranium",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorUraniumQuad", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorUraniumQuad", 1).copy()),
                         20e3,
                         1,
                         null,
@@ -92,7 +90,16 @@ public class ComponentFactory {
         ITEM_LIST.put(
                 aID++,
                 new FuelRod(
-                        4, "fuelRodMox", new GT_ItemStack(aGtItems[1].get(1).copy()), 10e3, 1, null, 100, 2, 1, true));
+                        4,
+                        "fuelRodMox",
+                        new GT_ItemStack(aGtItems[1].get(1).copy()),
+                        10e3,
+                        1,
+                        null,
+                        100,
+                        2,
+                        1,
+                        true));
         ITEM_LIST.put(
                 aID++,
                 new FuelRod(
@@ -124,8 +131,7 @@ public class ComponentFactory {
                 new Reflector(
                         7,
                         "neutronReflector",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorReflector", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorReflector", 1).copy()),
                         30e3,
                         1,
                         null));
@@ -134,8 +140,7 @@ public class ComponentFactory {
                 new Reflector(
                         8,
                         "thickNeutronReflector",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorReflectorThick", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorReflectorThick", 1).copy()),
                         120e3,
                         1,
                         null));
@@ -144,8 +149,7 @@ public class ComponentFactory {
                 new Vent(
                         9,
                         "heatVent",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorVent", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorVent", 1).copy()),
                         1,
                         1000,
                         null,
@@ -157,8 +161,7 @@ public class ComponentFactory {
                 new Vent(
                         10,
                         "advancedHeatVent",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorVentDiamond", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorVentDiamond", 1).copy()),
                         1,
                         1000,
                         null,
@@ -170,8 +173,7 @@ public class ComponentFactory {
                 new Vent(
                         11,
                         "reactorHeatVent",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorVentCore", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorVentCore", 1).copy()),
                         1,
                         1000,
                         null,
@@ -183,8 +185,7 @@ public class ComponentFactory {
                 new Vent(
                         12,
                         "componentHeatVent",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorVentSpread", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorVentSpread", 1).copy()),
                         1,
                         1,
                         null,
@@ -196,8 +197,7 @@ public class ComponentFactory {
                 new Vent(
                         13,
                         "overclockedHeatVent",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorVentGold", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorVentGold", 1).copy()),
                         1,
                         1000,
                         null,
@@ -209,8 +209,7 @@ public class ComponentFactory {
                 new CoolantCell(
                         14,
                         "coolantCell10k",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCoolantSimple", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCoolantSimple", 1).copy()),
                         1,
                         10e3,
                         null));
@@ -219,8 +218,7 @@ public class ComponentFactory {
                 new CoolantCell(
                         15,
                         "coolantCell30k",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCoolantTriple", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCoolantTriple", 1).copy()),
                         1,
                         30e3,
                         null));
@@ -229,8 +227,7 @@ public class ComponentFactory {
                 new CoolantCell(
                         16,
                         "coolantCell60k",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorCoolantSix", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCoolantSix", 1).copy()),
                         1,
                         60e3,
                         null));
@@ -239,8 +236,7 @@ public class ComponentFactory {
                 new Exchanger(
                         17,
                         "heatExchanger",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorHeatSwitch", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorHeatSwitch", 1).copy()),
                         1,
                         2500,
                         null,
@@ -251,8 +247,7 @@ public class ComponentFactory {
                 new Exchanger(
                         18,
                         "advancedHeatExchanger",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorHeatSwitchDiamond", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorHeatSwitchDiamond", 1).copy()),
                         1,
                         10e3,
                         null,
@@ -263,8 +258,7 @@ public class ComponentFactory {
                 new Exchanger(
                         19,
                         "coreHeatExchanger",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorHeatSwitchCore", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorHeatSwitchCore", 1).copy()),
                         1,
                         5000,
                         null,
@@ -275,8 +269,7 @@ public class ComponentFactory {
                 new Exchanger(
                         20,
                         "componentHeatExchanger",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorHeatSwitchSpread", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorHeatSwitchSpread", 1).copy()),
                         1,
                         5000,
                         null,
@@ -287,8 +280,7 @@ public class ComponentFactory {
                 new Plating(
                         21,
                         "reactorPlating",
-                        new GT_ItemStack(
-                                GT_ModHandler.getIC2Item("reactorPlating", 1).copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorPlating", 1).copy()),
                         1,
                         1,
                         null,
@@ -299,8 +291,7 @@ public class ComponentFactory {
                 new Plating(
                         22,
                         "heatCapacityReactorPlating",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorPlatingHeat", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorPlatingHeat", 1).copy()),
                         1,
                         1,
                         null,
@@ -311,8 +302,7 @@ public class ComponentFactory {
                 new Plating(
                         23,
                         "containmentReactorPlating",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorPlatingExplosive", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorPlatingExplosive", 1).copy()),
                         1,
                         1,
                         null,
@@ -323,8 +313,7 @@ public class ComponentFactory {
                 new Condensator(
                         24,
                         "rshCondensator",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCondensator", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCondensator", 1).copy()),
                         1,
                         20e3,
                         null));
@@ -333,8 +322,7 @@ public class ComponentFactory {
                 new Condensator(
                         25,
                         "lzhCondensator",
-                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCondensatorLap", 1)
-                                .copy()),
+                        new GT_ItemStack(GT_ModHandler.getIC2Item("reactorCondensatorLap", 1).copy()),
                         1,
                         100e3,
                         null));
@@ -784,6 +772,7 @@ public class ComponentFactory {
 
     /**
      * Gets a default instances of the specified component (such as for drawing button images)
+     * 
      * @param id the id of the component.
      * @return the component with the specified id, or null if the id is out of range.
      */
@@ -798,6 +787,7 @@ public class ComponentFactory {
 
     /**
      * Gets a default instances of the specified component (such as for drawing button images)
+     * 
      * @param name the name of the component.
      * @return the component with the specified name, or null if the name is not found.
      */
@@ -810,6 +800,7 @@ public class ComponentFactory {
 
     /**
      * Creates a new instance of the specified component.
+     * 
      * @param id the id of the component to create.
      * @return a new instance of the specified component, or null if the id is out of range.
      */
@@ -824,6 +815,7 @@ public class ComponentFactory {
 
     /**
      * Creates a new instance of the specified component.
+     * 
      * @param name the name of the component to create.
      * @return a new instance of the specified component, or null if the name is not found.
      */
@@ -836,6 +828,7 @@ public class ComponentFactory {
 
     /**
      * Get the number of defined components.
+     * 
      * @return the number of defined components.
      */
     public static int getComponentCount() {

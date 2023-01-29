@@ -1,12 +1,15 @@
 package gtPlusPlus.xmod.ic2.block.RTGGenerator.gui;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+
 import gtPlusPlus.xmod.ic2.block.RTGGenerator.TileEntityRTG;
 import ic2.core.block.generator.container.ContainerRTGenerator;
 import ic2.core.slot.SlotInvSlot;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class CONTAINER_RTG extends ContainerRTGenerator {
+
     public CONTAINER_RTG(final EntityPlayer entityPlayer, final TileEntityRTG tileEntity1) {
         super(entityPlayer, tileEntity1);
         for (int i = 0; i < 4; i++) {

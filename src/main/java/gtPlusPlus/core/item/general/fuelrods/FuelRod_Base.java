@@ -1,8 +1,7 @@
 package gtPlusPlus.core.item.general.fuelrods;
 
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -10,6 +9,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
 
 public class FuelRod_Base extends Item {
 
@@ -51,7 +53,7 @@ public class FuelRod_Base extends Item {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
@@ -95,17 +97,15 @@ public class FuelRod_Base extends Item {
             formattedHeat = EnumChatFormatting.GRAY + tempHeat + EnumChatFormatting.GRAY;
         } else if ((tempCurrentHeat <= (this.maxHeat / 3)) && (tempCurrentHeat > 200)) {
             formattedHeat = EnumChatFormatting.YELLOW + tempHeat + EnumChatFormatting.GRAY;
-        } else if ((tempCurrentHeat >= (this.maxHeat / 3))
-                && (tempMax < ((this.maxHeat / 3) * 2))
+        } else if ((tempCurrentHeat >= (this.maxHeat / 3)) && (tempMax < ((this.maxHeat / 3) * 2))
                 && (tempCurrentHeat != 0)) {
-            formattedHeat = EnumChatFormatting.GOLD + tempHeat + EnumChatFormatting.GRAY;
-        } else if ((tempCurrentHeat >= ((this.maxHeat / 3) * 2))
-                && (tempMax <= this.maxHeat)
-                && (tempCurrentHeat != 0)) {
-            formattedHeat = EnumChatFormatting.RED + tempHeat + EnumChatFormatting.GRAY;
-        } else {
-            formattedHeat = EnumChatFormatting.BLUE + tempHeat + EnumChatFormatting.GRAY;
-        }
+                    formattedHeat = EnumChatFormatting.GOLD + tempHeat + EnumChatFormatting.GRAY;
+                } else
+            if ((tempCurrentHeat >= ((this.maxHeat / 3) * 2)) && (tempMax <= this.maxHeat) && (tempCurrentHeat != 0)) {
+                formattedHeat = EnumChatFormatting.RED + tempHeat + EnumChatFormatting.GRAY;
+            } else {
+                formattedHeat = EnumChatFormatting.BLUE + tempHeat + EnumChatFormatting.GRAY;
+            }
         list.add(EnumChatFormatting.GRAY + "A " + formattedType + " Fuel Rod.");
         list.add(EnumChatFormatting.GRAY + "Running at " + formattedHeat + "/" + formattedMaxHeat + " Kelvin.");
         list.add(EnumChatFormatting.GRAY + "Fuel Remaining: " + formattedFuelLeft + "L.");
@@ -174,15 +174,10 @@ public class FuelRod_Base extends Item {
     }
 
     // Ticking and NBT Handling
-    /* Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-     * update it's contents.
-     *
-     *  public int fuelRemaining = 0;
-    public int maximumFuel = 0;
-    public String fuelType = "";
-    public float heat = 0;
-    public float maxHeat = 5000;
-     *
+    /*
+     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
+     * update it's contents. public int fuelRemaining = 0; public int maximumFuel = 0; public String fuelType = "";
+     * public float heat = 0; public float maxHeat = 5000;
      */
     @Override
     public void onCreated(final ItemStack itemStack, final World world, final EntityPlayer player) {
@@ -196,11 +191,7 @@ public class FuelRod_Base extends Item {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack itemStack,
-            final World par2World,
-            final Entity par3Entity,
-            final int par4,
+    public void onUpdate(final ItemStack itemStack, final World par2World, final Entity par3Entity, final int par4,
             final boolean par5) {
         itemStack.stackTagCompound = new NBTTagCompound();
         itemStack.stackTagCompound.setInteger("fuelRemaining", this.getFuelRemaining(itemStack));

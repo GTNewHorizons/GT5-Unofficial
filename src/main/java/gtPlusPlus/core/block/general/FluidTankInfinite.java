@@ -1,13 +1,5 @@
 package gtPlusPlus.core.block.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,6 +13,15 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.ItemFluidContainer;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class FluidTankInfinite extends BlockContainer {
 
@@ -48,10 +49,8 @@ public class FluidTankInfinite extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 1
-                ? this.textureTop
-                : (p_149691_1_ == 0
-                        ? this.textureBottom
+        return p_149691_1_ == 1 ? this.textureTop
+                : (p_149691_1_ == 0 ? this.textureBottom
                         : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
     }
 
@@ -68,16 +67,8 @@ public class FluidTankInfinite extends BlockContainer {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float lx,
-            final float ly,
-            final float lz) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
@@ -90,8 +81,7 @@ public class FluidTankInfinite extends BlockContainer {
                     handItem = null;
                 }
                 if (handItem != null
-                        && (handItem instanceof IFluidContainerItem
-                                || handItem instanceof ItemFluidContainer
+                        && (handItem instanceof IFluidContainerItem || handItem instanceof ItemFluidContainer
                                 || FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
                     if (tank.tank.getFluid() == null) {
                         try {
@@ -118,7 +108,8 @@ public class FluidTankInfinite extends BlockContainer {
                 if (tank.tank.getFluid() != null) {
                     PlayerUtils.messagePlayer(
                             player,
-                            "This tank contains " + tank.tank.getFluidAmount() + "L of "
+                            "This tank contains " + tank.tank.getFluidAmount()
+                                    + "L of "
                                     + tank.tank.getFluid().getLocalizedName());
                 }
             }

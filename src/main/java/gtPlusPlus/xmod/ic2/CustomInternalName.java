@@ -1,7 +1,8 @@
 package gtPlusPlus.xmod.ic2;
 
-import ic2.core.init.InternalName;
 import net.minecraftforge.common.util.EnumHelper;
+
+import ic2.core.init.InternalName;
 
 public class CustomInternalName {
 
@@ -11,12 +12,12 @@ public class CustomInternalName {
     public static InternalName aHazmatBootsEx;
 
     public static void init() {
-        aHazmatHelmetEx =
-                EnumHelper.addEnum(InternalName.class, "itemArmorHazmatHelmetEx", new Class[] {}, new Object[] {});
-        aHazmatChestEx =
-                EnumHelper.addEnum(InternalName.class, "itemArmorHazmatChestplateEx", new Class[] {}, new Object[] {});
-        aHazmatLegsEx =
-                EnumHelper.addEnum(InternalName.class, "itemArmorHazmatLeggingsEx", new Class[] {}, new Object[] {});
+        aHazmatHelmetEx = EnumHelper
+                .addEnum(InternalName.class, "itemArmorHazmatHelmetEx", new Class[] {}, new Object[] {});
+        aHazmatChestEx = EnumHelper
+                .addEnum(InternalName.class, "itemArmorHazmatChestplateEx", new Class[] {}, new Object[] {});
+        aHazmatLegsEx = EnumHelper
+                .addEnum(InternalName.class, "itemArmorHazmatLeggingsEx", new Class[] {}, new Object[] {});
         aHazmatBootsEx = EnumHelper.addEnum(InternalName.class, "itemArmorRubBootsEx", new Class[] {}, new Object[] {});
     }
 }

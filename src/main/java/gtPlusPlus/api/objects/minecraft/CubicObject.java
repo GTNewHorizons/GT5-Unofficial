@@ -1,7 +1,8 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class CubicObject<T> {
 

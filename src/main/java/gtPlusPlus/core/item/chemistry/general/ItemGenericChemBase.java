@@ -1,11 +1,7 @@
 package gtPlusPlus.core.item.chemistry.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -18,6 +14,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.item.chemistry.GenericChem;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 public class ItemGenericChemBase extends Item {
 
     protected final IIcon base[];
@@ -25,34 +27,19 @@ public class ItemGenericChemBase extends Item {
     private final int aMetaSize = 28;
 
     /*
-     * 0 - Red Metal Catalyst //FeCu
-     * 1 - Yellow Metal Catalyst //WNi
-     * 2 - Blue Metal Catalyst //CoTi
-     * 3 - Orange Metal Catalyst //Vanadium Pd
-     * 4 - Purple Metal Catalyst //IrIdium Ruthenium
-     * 5 - Brown Metal Catalyst //NiAl
-     * 6 - Pink Metal Catalyst //PtRh
-     * 7 - Alumina Grinding Ball
-     * 8 - Soapstone Grinding Ball
-     * 9 - Sodium Ethoxide // 2 Sodium + 1 Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2
-     * 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na
-     * 11 - Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
-     * 12 - Potassium Hydroxide // KOH
-     * 13 - Formaldehyde Catalyst //Fe16V1
-     * 14 - Solid Acid Catalyst //H2SO4
-     * 15 - Infinite Mutation Catalyst (for Mutated Living Solder)
-     * 16 - Platinum Group Catalyst (for platline skip)
-     * 17 - Plastic Polymer Catalyst (for early plastics skip)
-     * 18 - Rubber Polymer Catalyst (for early rubbers skip)
-     * 19 - Adhesion Promoter Catalyst (for glue/solder skip)
-     * 20 - Tita-Tungsten Indium Catalyst (for titanium/tungsten/indium skip)
-     * 21 - Radioactivity Catalyst (for thorium/uranium/plutonium skip)
-     * 22 - Rare-Earth Group Catalyst (for monaline skip)
-     * 23 - Simple Naquadah Catalyst (for early naqline skip)
-     * 24 - Advanced Naquadah Catalyst (for late naqline skip)
-     * 25 - Raw Intelligence Catalyst (for stem cells skip)
-     * 26 - Ultimate Plasticizer Catalyst (for late plastics skip)
-     * 27 - Biological Intelligence Catalyst (for bio cells skip)
+     * 0 - Red Metal Catalyst //FeCu 1 - Yellow Metal Catalyst //WNi 2 - Blue Metal Catalyst //CoTi 3 - Orange Metal
+     * Catalyst //Vanadium Pd 4 - Purple Metal Catalyst //IrIdium Ruthenium 5 - Brown Metal Catalyst //NiAl 6 - Pink
+     * Metal Catalyst //PtRh 7 - Alumina Grinding Ball 8 - Soapstone Grinding Ball 9 - Sodium Ethoxide // 2 Sodium + 1
+     * Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na 11 -
+     * Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O 12 - Potassium Hydroxide // KOH 13 -
+     * Formaldehyde Catalyst //Fe16V1 14 - Solid Acid Catalyst //H2SO4 15 - Infinite Mutation Catalyst (for Mutated
+     * Living Solder) 16 - Platinum Group Catalyst (for platline skip) 17 - Plastic Polymer Catalyst (for early plastics
+     * skip) 18 - Rubber Polymer Catalyst (for early rubbers skip) 19 - Adhesion Promoter Catalyst (for glue/solder
+     * skip) 20 - Tita-Tungsten Indium Catalyst (for titanium/tungsten/indium skip) 21 - Radioactivity Catalyst (for
+     * thorium/uranium/plutonium skip) 22 - Rare-Earth Group Catalyst (for monaline skip) 23 - Simple Naquadah Catalyst
+     * (for early naqline skip) 24 - Advanced Naquadah Catalyst (for late naqline skip) 25 - Raw Intelligence Catalyst
+     * (for stem cells skip) 26 - Ultimate Plasticizer Catalyst (for late plastics skip) 27 - Biological Intelligence
+     * Catalyst (for bio cells skip)
      */
 
     public ItemGenericChemBase() {
@@ -84,8 +71,8 @@ public class ItemGenericChemBase extends Item {
     }
 
     @Override
-    public void onUpdate(
-            ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
+    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
+            boolean p_77663_5_) {
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 

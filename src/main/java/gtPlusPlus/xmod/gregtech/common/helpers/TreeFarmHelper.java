@@ -2,7 +2,37 @@ package gtPlusPlus.xmod.gregtech.common.helpers;
 
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.Event.Result;
@@ -30,33 +60,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.particles.BlockBreakParticles;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
-import java.util.concurrent.ConcurrentHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.BonemealEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class TreeFarmHelper {
 
@@ -83,23 +86,23 @@ public class TreeFarmHelper {
     }
 
     public static ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1] };
     }
 
     public static ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1] };
     }
 
     public static ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1] };
     }
 
     public static ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1] };
     }
 
     public static ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1] };
     }
 
     public static ITexture[] getFrontActive(final byte aColor) {
@@ -122,13 +125,8 @@ public class TreeFarmHelper {
         return getSides(aColor);
     }
 
-    public static boolean applyBonemeal(
-            final EntityPlayer player,
-            final World world,
-            final int intX,
-            final int intY,
-            final int intZ,
-            final short multiplier) {
+    public static boolean applyBonemeal(final EntityPlayer player, final World world, final int intX, final int intY,
+            final int intZ, final short multiplier) {
         final Block block = world.getBlock(intX, intY, intZ);
 
         int roll;
@@ -183,14 +181,10 @@ public class TreeFarmHelper {
     public static boolean cleanUp(final IGregTechTileEntity aBaseMetaTileEntity) {
         Logger.MACHINE_INFO("called cleanUp()");
         int cleanedUp = 0;
-        final int xDir =
-                net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing())
-                                .offsetX
-                        * 11;
-        final int zDir =
-                net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing())
-                                .offsetZ
-                        * 11;
+        final int xDir = net.minecraftforge.common.util.ForgeDirection
+                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 11;
+        final int zDir = net.minecraftforge.common.util.ForgeDirection
+                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 11;
 
         for (int h = 1; h < 175; h++) {
             for (int i = -11; i <= 11; i++) {
@@ -198,12 +192,10 @@ public class TreeFarmHelper {
 
                     final Block testBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 
-                    if ((((i == -8) || (i == 8))
-                                    || ((i == -9) || (i == 9))
-                                    || ((i == -10) || (i == 10))
-                                    || ((i == -11) || (i == 11)))
-                            && (((j == -8) || (j == 8))
-                                    || ((j == -9) || (j == 9))
+                    if ((((i == -8) || (i == 8)) || ((i == -9) || (i == 9))
+                            || ((i == -10) || (i == 10))
+                            || ((i == -11) || (i == 11)))
+                            && (((j == -8) || (j == 8)) || ((j == -9) || (j == 9))
                                     || ((j == -10) || (j == 10))
                                     || ((j == -11) || (j == 11)))) {
 
@@ -211,34 +203,54 @@ public class TreeFarmHelper {
                                 || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
                             // Logger.WARNING("5:"+testBlock.getUnlocalizedName());
                         } else {
-                            aBaseMetaTileEntity
-                                    .getWorld()
-                                    .setBlock(
-                                            aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                            aBaseMetaTileEntity.getYCoord() + h,
-                                            aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                            Blocks.bookshelf);
+                            aBaseMetaTileEntity.getWorld().setBlock(
+                                    aBaseMetaTileEntity.getXCoord() + xDir + i,
+                                    aBaseMetaTileEntity.getYCoord() + h,
+                                    aBaseMetaTileEntity.getZCoord() + zDir + j,
+                                    Blocks.bookshelf);
                         }
                     }
 
                     // If not in the middle - don't know how else to check this one without lots of !=
-                    if ((i != 7) && (i != -7) && (j != 7) && (j != -7) && (i != 6) && (i != -6) && (j != 6) && (j != -6)
-                            && (i != 5) && (i != -5) && (j != 5) && (j != -5) && (i != 4) && (i != -4) && (j != 4)
-                            && (j != -4) && (i != 3) && (i != -3) && (j != 3) && (j != -3) && (i != 2) && (i != -2)
-                            && (j != 2) && (j != -2) && (i != 1) && (i != -1) && (j != 1) && (j != -1) && (i != 0)
+                    if ((i != 7) && (i != -7)
+                            && (j != 7)
+                            && (j != -7)
+                            && (i != 6)
+                            && (i != -6)
+                            && (j != 6)
+                            && (j != -6)
+                            && (i != 5)
+                            && (i != -5)
+                            && (j != 5)
+                            && (j != -5)
+                            && (i != 4)
+                            && (i != -4)
+                            && (j != 4)
+                            && (j != -4)
+                            && (i != 3)
+                            && (i != -3)
+                            && (j != 3)
+                            && (j != -3)
+                            && (i != 2)
+                            && (i != -2)
+                            && (j != 2)
+                            && (j != -2)
+                            && (i != 1)
+                            && (i != -1)
+                            && (j != 1)
+                            && (j != -1)
+                            && (i != 0)
                             && (j != 0)) {
 
                         if (!testBlock.getUnlocalizedName().toLowerCase().contains("air")
                                 || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
                             // Logger.WARNING("0:"+testBlock.getUnlocalizedName());
                         } else {
-                            aBaseMetaTileEntity
-                                    .getWorld()
-                                    .setBlock(
-                                            aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                            aBaseMetaTileEntity.getYCoord() + h,
-                                            aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                            Blocks.melon_block);
+                            aBaseMetaTileEntity.getWorld().setBlock(
+                                    aBaseMetaTileEntity.getXCoord() + xDir + i,
+                                    aBaseMetaTileEntity.getYCoord() + h,
+                                    aBaseMetaTileEntity.getZCoord() + zDir + j,
+                                    Blocks.melon_block);
                         }
 
                         if (isLeaves(testBlock) || isWoodLog(testBlock)) {
@@ -295,8 +307,7 @@ public class TreeFarmHelper {
                 if (aDmg >= 32120 && aDmg <= 32128) {
                     return ToolType.Unbreakable;
                 }
-                Logger.INFO(
-                        "bad Tool in Slot 2 | " + aStack.getUnlocalizedName().toLowerCase() + " | " + aDmg);
+                Logger.INFO("bad Tool in Slot 2 | " + aStack.getUnlocalizedName().toLowerCase() + " | " + aDmg);
                 return null;
             }
 
@@ -372,9 +383,8 @@ public class TreeFarmHelper {
         }
 
         return (OrePrefixes.log.contains(new ItemStack(log, 1)) && ((tTool != null) && (tTool.equals("axe"))))
-                        || (log.getMaterial() != Material.wood)
-                ? false
-                : (OrePrefixes.fence.contains(new ItemStack(log, 1)) ? false : true);
+                || (log.getMaterial() != Material.wood) ? false
+                        : (OrePrefixes.fence.contains(new ItemStack(log, 1)) ? false : true);
     }
 
     public static boolean isLeaves(final Block log) {
@@ -390,8 +400,7 @@ public class TreeFarmHelper {
         if (log.getLocalizedName().toLowerCase().contains("leaves")) {
             return true;
         }
-        return OrePrefixes.leaves.contains(new ItemStack(log, 1))
-                || log.getMaterial() == Material.leaves
+        return OrePrefixes.leaves.contains(new ItemStack(log, 1)) || log.getMaterial() == Material.leaves
                 || OrePrefixes.treeLeaves.contains(new ItemStack(log, 1))
                 || log.getMaterial() == Material.vine
                 || OrePrefixes.mushroom.contains(new ItemStack(log, 1))
@@ -412,18 +421,14 @@ public class TreeFarmHelper {
     }
 
     public static boolean isDirtBlock(final Block dirt) {
-        return (dirt == Blocks.dirt
-                ? true
+        return (dirt == Blocks.dirt ? true
                 : (dirt == Blocks.grass ? true : (getHumus() == null ? false : (dirt == blockHumus ? true : false))));
     }
 
     public static boolean isFenceBlock(final Block fence) {
-        return (fence == Blocks.fence
-                ? true
-                : (fence == Blocks.fence_gate
-                        ? true
-                        : (fence == Blocks.nether_brick_fence
-                                ? true
+        return (fence == Blocks.fence ? true
+                : (fence == Blocks.fence_gate ? true
+                        : (fence == Blocks.nether_brick_fence ? true
                                 : (OrePrefixes.fence.contains(new ItemStack(fence, 1)) ? true : false))));
     }
 
@@ -438,19 +443,16 @@ public class TreeFarmHelper {
         return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
     }
 
-    /*public static boolean isSaplingBlock(Block sapling){
-    	return (sapling == Blocks.sapling ? true : (sapling == Blocks.))
-    }*/
+    /*
+     * public static boolean isSaplingBlock(Block sapling){ return (sapling == Blocks.sapling ? true : (sapling ==
+     * Blocks.)) }
+     */
 
     public static BlockPos checkForLogsInGrowArea(final IGregTechTileEntity aBaseMetaTileEntity) {
-        final int xDir =
-                net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing())
-                                .offsetX
-                        * 7;
-        final int zDir =
-                net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing())
-                                .offsetZ
-                        * 7;
+        final int xDir = net.minecraftforge.common.util.ForgeDirection
+                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
+        final int zDir = net.minecraftforge.common.util.ForgeDirection
+                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
         for (int i = -7; i <= 7; i++) {
             for (int j = -7; j <= 7; j++) {
                 for (int h = 0; h <= 1; h++) {
@@ -731,8 +733,8 @@ public class TreeFarmHelper {
                         final Block block = mWorld.getBlock(h.xPos, h.yPos, h.zPos);
                         if (block != null) {
                             final int dropMeta = mWorld.getBlockMetadata(h.xPos, h.yPos, h.zPos);
-                            final ArrayList<ItemStack> blockDrops =
-                                    block.getDrops(mWorld, h.xPos, h.yPos, h.zPos, dropMeta, 0);
+                            final ArrayList<ItemStack> blockDrops = block
+                                    .getDrops(mWorld, h.xPos, h.yPos, h.zPos, dropMeta, 0);
                             final ItemStack[] drops = ItemUtils.getBlockDrops(blockDrops);
                             mDrops.put(drops);
                             // Remove drop that was added to the bus.
@@ -804,13 +806,12 @@ public class TreeFarmHelper {
         if (wood == null) {
             return false;
         }
-        if (wood.isWood(world, x, y, z) || wood.getMaterial() == Material.sponge)
-            if (detectTree(world, x, y, z)) {
-                TreeChopTask chopper = new TreeChopTask(new ChunkPosition(x, y, z), checkFakePlayer(world), 128);
-                FMLCommonHandler.instance().bus().register(chopper);
-                // custom block breaking code, don't call vanilla code
-                return true;
-            }
+        if (wood.isWood(world, x, y, z) || wood.getMaterial() == Material.sponge) if (detectTree(world, x, y, z)) {
+            TreeChopTask chopper = new TreeChopTask(new ChunkPosition(x, y, z), checkFakePlayer(world), 128);
+            FMLCommonHandler.instance().bus().register(chopper);
+            // custom block breaking code, don't call vanilla code
+            return true;
+        }
         // return onBlockStartBreak(stack, x, y, z, player);
         return false;
     }
@@ -852,8 +853,7 @@ public class TreeFarmHelper {
         for (int offX = 0; offX < d; offX++) {
             for (int offY = 0; offY < d; offY++) {
                 for (int offZ = 0; offZ < d; offZ++) {
-                    int xPos = pos.chunkPosX - 1 + offX,
-                            yPos = pos.chunkPosY - 1 + offY,
+                    int xPos = pos.chunkPosX - 1 + offX, yPos = pos.chunkPosY - 1 + offY,
                             zPos = pos.chunkPosZ - 1 + offZ;
                     Block leaf = world.getBlock(xPos, yPos, zPos);
                     if (leaf != null && leaf.isLeaves(world, xPos, yPos, zPos)) {
@@ -912,7 +912,7 @@ public class TreeFarmHelper {
             ChunkPosition pos;
             while (left > 0) {
                 // completely done or can't do our job anymore?!
-                if (blocks.isEmpty() /* || tags.getBoolean("Broken")*/) {
+                if (blocks.isEmpty() /* || tags.getBoolean("Broken") */) {
                     finish();
                     return;
                 }
@@ -956,8 +956,8 @@ public class TreeFarmHelper {
         }
     }
 
-    public static void breakExtraBlock(
-            World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
+    public static void breakExtraBlock(World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity,
+            int refX, int refY, int refZ) {
         // prevent calling that stuff for air blocks, could lead to unexpected behaviour since it fires events
         if (world.isAirBlock(x, y, z)) return;
 
@@ -981,8 +981,8 @@ public class TreeFarmHelper {
         if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength / strength > 10f) return;
 
         // send the blockbreak event
-        BlockEvent.BreakEvent event =
-                ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x, y, z);
+        BlockEvent.BreakEvent event = ForgeHooks
+                .onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x, y, z);
         if (event.isCanceled()) return;
 
         if (player.capabilities.isCreativeMode) {
@@ -1007,8 +1007,8 @@ public class TreeFarmHelper {
             // ItemInWorldManager.removeBlock
             block.onBlockHarvested(world, x, y, z, meta, player);
 
-            if (block.removedByPlayer(
-                    world, player, x, y, z, true)) // boolean is if block can be harvested, checked above
+            if (block.removedByPlayer(world, player, x, y, z, true)) // boolean is if block can be harvested, checked
+                                                                     // above
             {
                 block.onBlockDestroyedByPlayer(world, x, y, z, meta);
                 block.harvestBlock(world, player, x, y, z, meta);

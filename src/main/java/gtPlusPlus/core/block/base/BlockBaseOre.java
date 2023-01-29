@@ -1,5 +1,14 @@
 package gtPlusPlus.core.block.base;
 
+import java.lang.reflect.Field;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -16,13 +25,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_RenderedTexture;
-import java.lang.reflect.Field;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
@@ -57,8 +59,8 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 
@@ -105,7 +107,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                     blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
                     this.blockMaterial.getRGBA());
             if (aIconSet != null) {
-                return new ITexture[] {new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};
+                return new ITexture[] { new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
             }
         }
 
@@ -126,7 +128,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 }
             }
         }
-        return new ITexture[] {new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] {240, 240, 240, 0})};
+        return new ITexture[] { new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] { 240, 240, 240, 0 }) };
     }
 
     @Override
@@ -134,52 +136,33 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
     public static class oldOreBlock extends BlockBaseModular implements ITexturedBlock {
 
-        public oldOreBlock(
-                final String unlocalizedName,
-                final String blockMaterial,
-                final BlockTypes blockType,
+        public oldOreBlock(final String unlocalizedName, final String blockMaterial, final BlockTypes blockType,
                 final int colour) {
             this(unlocalizedName, blockMaterial, net.minecraft.block.material.Material.iron, blockType, colour, 2);
         }
 
-        public oldOreBlock(
-                final String unlocalizedName,
-                final String blockMaterial,
-                final net.minecraft.block.material.Material vanillaMaterial,
-                final BlockTypes blockType,
-                final int colour,
-                final int miningLevel) {
+        public oldOreBlock(final String unlocalizedName, final String blockMaterial,
+                final net.minecraft.block.material.Material vanillaMaterial, final BlockTypes blockType,
+                final int colour, final int miningLevel) {
             super(unlocalizedName, blockMaterial, vanillaMaterial, blockType, colour, miningLevel);
         }
 
-        /*@Override
-        @SideOnly(Side.CLIENT)
-        public void registerBlockIcons(final IIconRegister iIcon)
-        {
-        	this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture());
-        	//this.base = iIcon.registerIcon(CORE.MODID + ":" + "blockStone");
-        	//this.overlay = iIcon.registerIcon(CORE.MODID + ":" + "blockOre_Overlay");
-        }
+        /*
+         * @Override
+         * @SideOnly(Side.CLIENT) public void registerBlockIcons(final IIconRegister iIcon) { this.blockIcon =
+         * iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture()); //this.base =
+         * iIcon.registerIcon(CORE.MODID + ":" + "blockStone"); //this.overlay = iIcon.registerIcon(CORE.MODID + ":" +
+         * "blockOre_Overlay"); }
+         * @Override public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3,
+         * final int par4){ if (this.blockColour == 0){ return MathUtils.generateSingularRandomHexValue(); } return
+         * this.blockColour; }
+         * @Override public int getRenderColor(final int aMeta) { if (this.blockColour == 0){ return
+         * MathUtils.generateSingularRandomHexValue(); } return this.blockColour; }
+         */
 
         @Override
-        public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4){
-        	if (this.blockColour == 0){
-        		return MathUtils.generateSingularRandomHexValue();
-        	}
-        	return this.blockColour;
-        }
-
-        @Override
-        public int getRenderColor(final int aMeta) {
-        	if (this.blockColour == 0){
-        		return MathUtils.generateSingularRandomHexValue();
-        	}
-        	return this.blockColour;
-        }*/
-
-        @Override
-        public boolean canCreatureSpawn(
-                final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+        public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+                final int z) {
             return false;
         }
 
@@ -218,7 +201,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                         blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
                         this.blockMaterial.getRGBA());
                 if (aIconSet != null) {
-                    return new ITexture[] {new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};
+                    return new ITexture[] { new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
                 }
             }
 
@@ -239,7 +222,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                     }
                 }
             }
-            return new ITexture[] {new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] {240, 240, 240, 0})};
+            return new ITexture[] { new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] { 240, 240, 240, 0 }) };
         }
     }
 }

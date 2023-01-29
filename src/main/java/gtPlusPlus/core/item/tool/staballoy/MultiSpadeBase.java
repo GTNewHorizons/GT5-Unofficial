@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,12 +12,11 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
 
 public class MultiSpadeBase extends StaballoySpade {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.ItemStack)
      */
     @Override
@@ -30,8 +32,8 @@ public class MultiSpadeBase extends StaballoySpade {
     protected final String displayName;
     public boolean isValid = true;
 
-    public MultiSpadeBase(
-            final String unlocalizedName, final ToolMaterial material, final int materialDurability, final int colour) {
+    public MultiSpadeBase(final String unlocalizedName, final ToolMaterial material, final int materialDurability,
+            final int colour) {
         super(Utils.sanitizeString(unlocalizedName), material);
         this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
         // this.setTextureName(CORE.MODID + ":" + "itemShovel");
@@ -44,8 +46,7 @@ public class MultiSpadeBase extends StaballoySpade {
         this.setCreativeTab(AddToCreativeTab.tabTools);
         try {
             this.isValid = this.addRecipe();
-        } catch (final Throwable e) {
-        }
+        } catch (final Throwable e) {}
         if ((colour != 0) && this.isValid) {
             if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null) {
                 GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
@@ -107,13 +108,10 @@ public class MultiSpadeBase extends StaballoySpade {
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
         return this.displayName;
-        /*String name;
-        if (getUnlocalizedName().toLowerCase().contains("wood")){
-        	name = "Wooden";
-        }
-        else {
-        }
-        return "Big "+name+" Spade";*/
+        /*
+         * String name; if (getUnlocalizedName().toLowerCase().contains("wood")){ name = "Wooden"; } else { } return
+         * "Big "+name+" Spade";
+         */
     }
 
     @Override

@@ -1,12 +1,7 @@
 package gtPlusPlus.core.item.wearable.armour.tinfoil;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
-import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,6 +23,13 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
+import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
+import gtPlusPlus.core.lib.CORE;
 
 public class ArmourTinFoilHat extends BaseArmourHelm {
 
@@ -72,7 +74,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {}
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         aList.add("DoomSquirter's protection against cosmic radiation!");
@@ -82,8 +84,8 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
     }
 
     @Override
-    public ArmorProperties getProperties(
-            EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+            int slot) {
         return new ArmorProperties(0, 0, 0);
     }
 
@@ -93,8 +95,8 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
     }
 
     @Override
-    public boolean itemInteractionForEntity(
-            ItemStack p_111207_1_, EntityPlayer p_111207_2_, EntityLivingBase p_111207_3_) {
+    public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_,
+            EntityLivingBase p_111207_3_) {
         return super.itemInteractionForEntity(p_111207_1_, p_111207_2_, p_111207_3_);
     }
 
@@ -132,8 +134,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
                     if (g.size() > 0) {
                         for (Entity e : g) {
                             if (e != null) {
-                                if (!EntityXPOrb.class.isInstance(e)
-                                        && !EntityBoat.class.isInstance(e)
+                                if (!EntityXPOrb.class.isInstance(e) && !EntityBoat.class.isInstance(e)
                                         && !EntitySnowball.class.isInstance(e)
                                         && !EntityFireball.class.isInstance(e)
                                         && !EntityEgg.class.isInstance(e)
@@ -158,8 +159,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
                             }
                         }
                     }
-                } catch (Throwable t) {
-                }
+                } catch (Throwable t) {}
             }
         }
 

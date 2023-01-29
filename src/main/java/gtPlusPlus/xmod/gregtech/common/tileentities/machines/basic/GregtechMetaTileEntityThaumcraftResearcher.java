@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -7,34 +11,22 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTileEntity {
 
-    public GregtechMetaTileEntityThaumcraftResearcher(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final String aDescription,
-            final int aSlotCount) {
+    public GregtechMetaTileEntityThaumcraftResearcher(final int aID, final String aName, final String aNameRegional,
+            final int aTier, final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public GregtechMetaTileEntityThaumcraftResearcher(
-            final String aName,
-            final int aTier,
-            final String aDescription,
-            final ITexture[][][] aTextures,
-            final int aSlotCount) {
+    public GregtechMetaTileEntityThaumcraftResearcher(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, "Generates Thaumcraft research notes, because it's magic."};
+        return new String[] { this.mDescription, "Generates Thaumcraft research notes, because it's magic." };
     }
 
     @Override
@@ -56,45 +48,34 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_A)
-        };
+        return new ITexture[] { getSides(aColor)[0],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_A) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_B)
-        };
+        return new ITexture[] { getSides(aColor)[0],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_B) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {getSides(aColor)[0]};
+        return new ITexture[] { getSides(aColor)[0] };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue)
-        };
+        return new ITexture[] { getSides(aColor)[0],
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
+        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -110,9 +91,8 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
-        };
+        return new ITexture[] { getSides(aColor)[0],
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
@@ -127,7 +107,11 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntityThaumcraftResearcher(
-                this.mName, this.mTier, this.mDescription, this.mTextures, this.mInventory.length);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures,
+                this.mInventory.length);
     }
 
     @Override
@@ -224,22 +208,20 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return aSide == this.getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return true;
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            this.getLocalName(),
-        };
+        return new String[] { this.getLocalName(), };
     }
 
     @Override

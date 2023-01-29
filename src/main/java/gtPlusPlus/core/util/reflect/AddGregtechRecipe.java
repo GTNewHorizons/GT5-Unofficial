@@ -1,16 +1,18 @@
 package gtPlusPlus.core.util.reflect;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public final class AddGregtechRecipe {
 
@@ -18,14 +20,12 @@ public final class AddGregtechRecipe {
 
         int aModifiedTime = (int) (aRecipe.mDuration * 0.8);
 
-        if (aRecipe.mInputs == null
-                || aRecipe.mFluidInputs == null
+        if (aRecipe.mInputs == null || aRecipe.mFluidInputs == null
                 || aRecipe.mFluidOutputs == null
                 || aRecipe.mOutputs == null) {
             return false;
         }
-        if (aRecipe.mInputs.length > 2
-                || aRecipe.mFluidInputs.length > 1
+        if (aRecipe.mInputs.length > 2 || aRecipe.mFluidInputs.length > 1
                 || aRecipe.mFluidOutputs.length > 1
                 || aRecipe.mOutputs.length > 9) {
             return false;
@@ -67,14 +67,8 @@ public final class AddGregtechRecipe {
                 aRecipe.mEUt);
     }
 
-    public static boolean addCokeAndPyrolyseRecipes(
-            ItemStack input1,
-            int circuitNumber,
-            FluidStack inputFluid1,
-            ItemStack output1,
-            FluidStack outputFluid1,
-            int timeInSeconds,
-            int euTick) {
+    public static boolean addCokeAndPyrolyseRecipes(ItemStack input1, int circuitNumber, FluidStack inputFluid1,
+            ItemStack output1, FluidStack outputFluid1, int timeInSeconds, int euTick) {
         // Seconds Conversion
         int TIME = timeInSeconds * 20;
         int TIMEPYRO = TIME + (TIME / 5);
@@ -84,14 +78,8 @@ public final class AddGregtechRecipe {
         return false;
     }
 
-    public static boolean PyrolyseOven(
-            final ItemStack p0,
-            final FluidStack p1,
-            final int p2,
-            final ItemStack p3,
-            final FluidStack p4,
-            final int p5,
-            final int p6) {
+    public static boolean PyrolyseOven(final ItemStack p0, final FluidStack p1, final int p2, final ItemStack p3,
+            final FluidStack p4, final int p5, final int p6) {
 
         try {
             IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
@@ -110,76 +98,40 @@ public final class AddGregtechRecipe {
                     return (boolean) addRecipe.invoke(IGT_RecipeAdder, p0, p1, p2, p3, p4, p5, p6);
                 }
             }
-        } catch (SecurityException
-                | NoSuchMethodException
-                | IllegalAccessException
-                | IllegalArgumentException
+        } catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
             return false;
         }
         return false;
     }
 
-    public static boolean addAssemblylineRecipe(
-            ItemStack aResearchItem,
-            int aResearchTime,
-            ItemStack[] aInputs,
-            FluidStack[] aFluidInputs,
-            ItemStack aOutput,
-            int aDuration,
-            int aEUt) {
+    public static boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
+            FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
         /*
-        try {
-        	IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
-        	if (IGT_RecipeAdder != null){
-        		Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
-
-        		for(Method current : classRA.getDeclaredMethods()){
-        			//Utils.LOG_INFO("-----------------------------------------------");
-        			////Utils.LOG_INFO("Found method: "+current.getName());
-        			//Utils.LOG_INFO("With Parameters: ");
-        			//Utils.LOG_INFO("===============================================");
-        			for (Class<?> P : current.getParameterTypes()){
-        				//Utils.LOG_INFO(""+P.getName());
-        				//Utils.LOG_INFO(""+P.getClass().getName());
-        			}
-        			//Utils.LOG_INFO("===============================================");
-        		}
-
-        		try {
-        			Method testRA = GT_Values.RA.getClass().getMethod("addAssemblylineRecipe", GT_Values.RA.getClass(), aResearchItem.getClass(), int.class, aInputs.getClass(), aFluidInputs.getClass(), aOutput.getClass(), int.class, int.class);
-        		testRA.invoke(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
-        		}
-        		catch (Throwable masndj){
-        			masndj.printStackTrace();
-        		}
-
-
-        		Method addRecipe = classRA.getDeclaredMethod(
-        				"addAssemblylineRecipe",
-        				ItemStack.class,
-        				int.class,
-        				ItemStack.class,
-        				FluidStack.class,
-        				ItemStack.class,
-        				int.class,
-        				int.class);
-        		if (addRecipe != null){
-        			return (boolean) addRecipe.invoke(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
-        		}
-        	}
-        }
-        catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        	Utils.LOG_INFO("[Assembly Line] - Failed to add recipe, due to GT not being .09 branch. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
-        	e.printStackTrace();
-        	return false;
-        }
-        Utils.LOG_INFO("[Assembly Line] - Failed to add recipe. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
+         * try { IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA; if (IGT_RecipeAdder != null){ Class<? extends
+         * IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass(); for(Method current : classRA.getDeclaredMethods()){
+         * //Utils.LOG_INFO("-----------------------------------------------");
+         * ////Utils.LOG_INFO("Found method: "+current.getName()); //Utils.LOG_INFO("With Parameters: ");
+         * //Utils.LOG_INFO("==============================================="); for (Class<?> P :
+         * current.getParameterTypes()){ //Utils.LOG_INFO(""+P.getName()); //Utils.LOG_INFO(""+P.getClass().getName());
+         * } //Utils.LOG_INFO("==============================================="); } try { Method testRA =
+         * GT_Values.RA.getClass().getMethod("addAssemblylineRecipe", GT_Values.RA.getClass(), aResearchItem.getClass(),
+         * int.class, aInputs.getClass(), aFluidInputs.getClass(), aOutput.getClass(), int.class, int.class);
+         * testRA.invoke(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt); } catch
+         * (Throwable masndj){ masndj.printStackTrace(); } Method addRecipe = classRA.getDeclaredMethod(
+         * "addAssemblylineRecipe", ItemStack.class, int.class, ItemStack.class, FluidStack.class, ItemStack.class,
+         * int.class, int.class); if (addRecipe != null){ return (boolean) addRecipe.invoke(aResearchItem,
+         * aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt); } } } catch (SecurityException |
+         * NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+         * Utils.LOG_INFO("[Assembly Line] - Failed to add recipe, due to GT not being .09 branch. Research: "
+         * +aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName()); e.printStackTrace(); return false; }
+         * Utils.LOG_INFO("[Assembly Line] - Failed to add recipe. Research: "+aResearchItem.getDisplayName()
+         * +" | Result: "+aOutput.getDisplayName());
          */ return false;
     }
 
-    public static boolean addCircuitAssemblerRecipe(
-            ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt) {
+    public static boolean addCircuitAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput,
+            int aDuration, int aEUt) {
         if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
             try {
                 IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
@@ -197,16 +149,16 @@ public final class AddGregtechRecipe {
                             boolean[] didAdd = new boolean[3];
                             FluidStack moltenMetal = FluidUtils.getFluidStack("molten.tin", 144);
                             // Tin
-                            didAdd[0] = (boolean)
-                                    addRecipe.invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
+                            didAdd[0] = (boolean) addRecipe
+                                    .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
                             moltenMetal = FluidUtils.getFluidStack("molten.lead", 144);
                             // Lead
-                            didAdd[1] = (boolean)
-                                    addRecipe.invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
+                            didAdd[1] = (boolean) addRecipe
+                                    .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
                             moltenMetal = FluidUtils.getFluidStack("molten.solderingalloy", 144 / 2);
                             // Soldering Alloy
-                            didAdd[2] = (boolean)
-                                    addRecipe.invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
+                            didAdd[2] = (boolean) addRecipe
+                                    .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
 
                             if (didAdd[0] && didAdd[1] && didAdd[2]) {
                                 return true;
@@ -214,15 +166,12 @@ public final class AddGregtechRecipe {
                                 return false;
                             }
                         } else {
-                            return (boolean)
-                                    addRecipe.invoke(IGT_RecipeAdder, aInputs, aFluidInput, aOutput, aDuration, aEUt);
+                            return (boolean) addRecipe
+                                    .invoke(IGT_RecipeAdder, aInputs, aFluidInput, aOutput, aDuration, aEUt);
                         }
                     }
                 }
-            } catch (SecurityException
-                    | NoSuchMethodException
-                    | IllegalAccessException
-                    | IllegalArgumentException
+            } catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException e) {
                 return false;
             }
@@ -230,14 +179,8 @@ public final class AddGregtechRecipe {
         return false;
     }
 
-    public static boolean addChemicalRecipeForBasicMachineOnly(
-            final ItemStack p0,
-            final ItemStack p1,
-            final FluidStack p2,
-            final FluidStack p3,
-            final ItemStack p4,
-            final ItemStack p5,
-            final int p6,
+    public static boolean addChemicalRecipeForBasicMachineOnly(final ItemStack p0, final ItemStack p1,
+            final FluidStack p2, final FluidStack p3, final ItemStack p4, final ItemStack p5, final int p6,
             final int p7) {
 
         if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
@@ -261,10 +204,7 @@ public final class AddGregtechRecipe {
                         return (boolean) addRecipe.invoke(IGT_RecipeAdder, p0, p1, p2, p3, p4, p5, p6, p7);
                     }
                 }
-            } catch (SecurityException
-                    | NoSuchMethodException
-                    | IllegalAccessException
-                    | IllegalArgumentException
+            } catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException e) {
 
             }

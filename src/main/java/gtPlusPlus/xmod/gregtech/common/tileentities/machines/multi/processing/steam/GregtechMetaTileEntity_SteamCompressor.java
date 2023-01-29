@@ -7,10 +7,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,7 +22,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
-import net.minecraft.item.ItemStack;
 
 public class GregtechMetaTileEntity_SteamCompressor
         extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCompressor> implements ISurvivalConstructable {
@@ -59,42 +61,31 @@ public class GregtechMetaTileEntity_SteamCompressor
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Steam Compressor")
-                .addInfo("Compresses " + getMaxParallelRecipes() + " things at a time")
-                .addSeparator()
-                .beginStructureBlock(3, 3, 4, true)
-                .addController("Front center")
-                .addCasingInfo(mCasingName, 28)
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Steam Compressor")
+                .addInfo("Compresses " + getMaxParallelRecipes() + " things at a time").addSeparator()
+                .beginStructureBlock(3, 3, 4, true).addController("Front center").addCasingInfo(mCasingName, 28)
                 .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
-                .addOtherStructurePart(TT_steamhatch, "Any casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamCompressor>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC", "CCC"},
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamCompressor>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { "CCC", "CCC", "CCC", "CCC" }, { "C~C", "C-C", "C-C", "CCC" },
+                                    { "CCC", "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             ofChain(
-                                    buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class)
-                                            .casingIndex(10)
-                                            .dot(1)
+                                    buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class).casingIndex(10).dot(1)
                                             .build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_SteamCompressor.class)
-                                            .atLeast(
-                                                    SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                                            .casingIndex(10)
-                                            .dot(1)
-                                            .build(),
+                                    buildHatchAdder(GregtechMetaTileEntity_SteamCompressor.class).atLeast(
+                                            SteamHatchElement.InputBus_Steam,
+                                            SteamHatchElement.OutputBus_Steam).casingIndex(10).dot(1).build(),
                                     onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings1, 10))))
                     .build();
         }

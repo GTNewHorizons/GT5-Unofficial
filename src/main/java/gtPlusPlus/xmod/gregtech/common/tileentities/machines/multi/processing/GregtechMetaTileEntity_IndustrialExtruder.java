@@ -6,10 +6,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -23,14 +30,9 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialExtruder
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialExtruder>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialExtruder extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialExtruder> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialExtruder> STRUCTURE_DEFINITION = null;
@@ -56,23 +58,16 @@ public class GregtechMetaTileEntity_IndustrialExtruder
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Material Extruder")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Material Extruder")
                 .addInfo("250% faster than using single block machines of the same voltage")
                 .addInfo("Processes four items per voltage tier")
                 .addInfo("Extrusion Shape for recipe goes in the Input Bus")
                 .addInfo("Each Input Bus can have a different shape!")
                 .addInfo("You can use several input buses per multiblock")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center")
-                .addCasingInfo("Inconel Reinforced Casings", 14)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Back Center", 2)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
+                .addController("Front Center").addCasingInfo("Inconel Reinforced Casings", 14)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Back Center", 2)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -80,20 +75,19 @@ public class GregtechMetaTileEntity_IndustrialExtruder
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialExtruder> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialExtruder>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "C-C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC", "CCC", "CCC"},
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialExtruder>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" },
+                                    { "C~C", "C-C", "C-C", "C-C", "CCC" }, { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialExtruder.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
                     .build();
         }
         return STRUCTURE_DEFINITION;

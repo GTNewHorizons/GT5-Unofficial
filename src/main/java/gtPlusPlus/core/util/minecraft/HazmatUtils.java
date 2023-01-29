@@ -2,6 +2,15 @@ package gtPlusPlus.core.util.minecraft;
 
 import static gregtech.api.GregTech_API.*;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
@@ -17,13 +26,6 @@ import ic2.core.Ic2Items;
 import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.item.armor.ItemArmorNanoSuit;
 import ic2.core.item.armor.ItemArmorQuantumSuit;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class HazmatUtils {
 
@@ -204,38 +206,28 @@ public class HazmatUtils {
 
         if (LoadedMods.isModLoaded("ThaumicTinkerer")) {
             /*
-            AutoMap<Item> aItems = new AutoMap<Item>();
-            Class aMainTT = ReflectionUtils.getClass("thaumic.tinkerer.common.ThaumicTinkerer");
-            Class aItemRegistryTT = ReflectionUtils.getClass("thaumic.tinkerer.common.registry.TTRegistry");
-            Field aRegistryInstance = ReflectionUtils.getField(aMainTT, "registry");
-            Object aRegistry = ReflectionUtils.getFieldValue(aRegistryInstance);
-            Method aFuckingStupidMethodHandlingMethod = ReflectionUtils.getMethod(aItemRegistryTT, "getFirstItemFromClass", new Class[] {Class.class});
-            Item aIchorHelm = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemHelm")});
-            Item aIchorChest = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemChest")});
-            Item aIchorLegs = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemLegs")});
-            Item aIchorBoots = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemBoots")});
-            aItems.add(aIchorHelm);
-            aItems.add(aIchorChest);
-            aItems.add(aIchorLegs);
-            aItems.add(aIchorBoots);
-            AutoMap<ItemStack> aItemMap = new AutoMap<ItemStack>();
-            int aIndex = 0;
-            for (Item aItem : aItems) {
-            Item aItemObject = null;
-            if (aItem != null) {
-            aItemMap.add(ItemUtils.getSimpleStack(aItemObject));
-            }
-            else {
-            Logger.INFO("[Hazmat] Could not get item "+aIndex+" from "+aItemRegistryTT.getName());
-            }
-            aIndex++;
-            }
-            Logger.INFO("[Hazmat] Registering "+aItemMap.size()+" Thaumic Tinkerer Items as hazmat gear.");
-            for (ItemStack aItem : aItemMap) {
-            addProtection(aItem);
-            }
-            Logger.INFO("[Hazmat] Registered Thaumic Tinkerer Items as hazmat gear.");
-            */
+             * AutoMap<Item> aItems = new AutoMap<Item>(); Class aMainTT =
+             * ReflectionUtils.getClass("thaumic.tinkerer.common.ThaumicTinkerer"); Class aItemRegistryTT =
+             * ReflectionUtils.getClass("thaumic.tinkerer.common.registry.TTRegistry"); Field aRegistryInstance =
+             * ReflectionUtils.getField(aMainTT, "registry"); Object aRegistry =
+             * ReflectionUtils.getFieldValue(aRegistryInstance); Method aFuckingStupidMethodHandlingMethod =
+             * ReflectionUtils.getMethod(aItemRegistryTT, "getFirstItemFromClass", new Class[] {Class.class}); Item
+             * aIchorHelm = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new
+             * Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemHelm")}); Item
+             * aIchorChest = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new
+             * Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemChest")}); Item
+             * aIchorLegs = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new
+             * Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemLegs")}); Item
+             * aIchorBoots = (Item) ReflectionUtils.invokeNonBool(aRegistry, aFuckingStupidMethodHandlingMethod, new
+             * Object[] {ReflectionUtils.getClass("thaumic.tinkerer.common.item.kami.armor.ItemGemBoots")});
+             * aItems.add(aIchorHelm); aItems.add(aIchorChest); aItems.add(aIchorLegs); aItems.add(aIchorBoots);
+             * AutoMap<ItemStack> aItemMap = new AutoMap<ItemStack>(); int aIndex = 0; for (Item aItem : aItems) { Item
+             * aItemObject = null; if (aItem != null) { aItemMap.add(ItemUtils.getSimpleStack(aItemObject)); } else {
+             * Logger.INFO("[Hazmat] Could not get item "+aIndex+" from "+aItemRegistryTT.getName()); } aIndex++; }
+             * Logger.INFO("[Hazmat] Registering "+aItemMap.size()+" Thaumic Tinkerer Items as hazmat gear."); for
+             * (ItemStack aItem : aItemMap) { addProtection(aItem); }
+             * Logger.INFO("[Hazmat] Registered Thaumic Tinkerer Items as hazmat gear.");
+             */
             Logger.INFO("[Hazmat] Did not register Thaumic Tinkerer Items as hazmat gear.");
         }
 
@@ -321,10 +313,8 @@ public class HazmatUtils {
     }
 
     /**
-     * Static function to replace
-     * {@link #ic2.core.item.armor.ItemArmorHazmat.hasCompleteHazmat(EntityLivingBase)}.
-     * Because IC2 doesn't let us register things ourself, anything registered via
-     * GT/GT++ will return true.
+     * Static function to replace {@link #ic2.core.item.armor.ItemArmorHazmat.hasCompleteHazmat(EntityLivingBase)}.
+     * Because IC2 doesn't let us register things ourself, anything registered via GT/GT++ will return true.
      *
      * @param living - Entity Wearing Armour
      * @return - Does {@link EntityLivingBase} have a full hazmat suit on?
@@ -403,8 +393,8 @@ public class HazmatUtils {
     }
 
     /**
-     * Registers the {@link ItemStack} to all types of protection. Provides full
-     * hazmat protection. Frost, Fire, Bio, Gas, Radioaton & Electricity.
+     * Registers the {@link ItemStack} to all types of protection. Provides full hazmat protection. Frost, Fire, Bio,
+     * Gas, Radioaton & Electricity.
      *
      * @param aStack - The Armour to provide protection.
      * @return - Did we register this ItemStack properly?
@@ -478,10 +468,9 @@ public class HazmatUtils {
     }
 
     /**
-     * Does this item provide hazmat protection? (Protection against Frost, Heat,
-     * Bio, Gas, Rads, Elec) An item may return false even if it protects against
-     * all six damage types. This is because it's not actually registered as hazmat
-     * correct.
+     * Does this item provide hazmat protection? (Protection against Frost, Heat, Bio, Gas, Rads, Elec) An item may
+     * return false even if it protects against all six damage types. This is because it's not actually registered as
+     * hazmat correct.
      *
      * @param aStack - The item to check for protection
      * @return

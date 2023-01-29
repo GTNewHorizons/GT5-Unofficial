@@ -2,28 +2,14 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.B;
 
-import gregtech.api.enums.OrePrefixes;
 import net.minecraftforge.common.util.EnumHelper;
 
+import gregtech.api.enums.OrePrefixes;
+
 public enum CustomOrePrefix {
-    milled(
-            "Milled Ores",
-            "Milled ",
-            " Ore",
-            true,
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true,
-            B[3],
-            -1,
-            64,
-            -1);
+
+    milled("Milled Ores", "Milled ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3],
+            -1, 64, -1);
 
     private final String mRegularLocalName;
     private final String mLocalizedMaterialPre;
@@ -45,24 +31,11 @@ public enum CustomOrePrefix {
 
     private OrePrefixes mSelfReference;
 
-    private CustomOrePrefix(
-            String aRegularLocalName,
-            String aLocalizedMaterialPre,
-            String aLocalizedMaterialPost,
-            boolean aIsUnificatable,
-            boolean aIsMaterialBased,
-            boolean aIsSelfReferencing,
-            boolean aIsContainer,
-            boolean aDontUnificateActively,
-            boolean aIsUsedForBlocks,
-            boolean aAllowNormalRecycling,
-            boolean aGenerateDefaultItem,
-            boolean aIsEnchantable,
-            boolean aIsUsedForOreProcessing,
-            int aMaterialGenerationBits,
-            long aMaterialAmount,
-            int aDefaultStackSize,
-            int aTextureindex) {
+    private CustomOrePrefix(String aRegularLocalName, String aLocalizedMaterialPre, String aLocalizedMaterialPost,
+            boolean aIsUnificatable, boolean aIsMaterialBased, boolean aIsSelfReferencing, boolean aIsContainer,
+            boolean aDontUnificateActively, boolean aIsUsedForBlocks, boolean aAllowNormalRecycling,
+            boolean aGenerateDefaultItem, boolean aIsEnchantable, boolean aIsUsedForOreProcessing,
+            int aMaterialGenerationBits, long aMaterialAmount, int aDefaultStackSize, int aTextureindex) {
 
         mRegularLocalName = aRegularLocalName;
         mLocalizedMaterialPre = aLocalizedMaterialPre;
@@ -88,44 +61,13 @@ public enum CustomOrePrefix {
         mSelfReference = EnumHelper.addEnum(
                 OrePrefixes.class,
                 this.name(),
-                new Class[] {
-                    String.class,
-                    String.class,
-                    String.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    int.class,
-                    long.class,
-                    int.class,
-                    int.class
-                },
-                new Object[] {
-                    mRegularLocalName,
-                    mLocalizedMaterialPre,
-                    mLocalizedMaterialPost,
-                    mIsUnificatable,
-                    mIsMaterialBased,
-                    mIsSelfReferencing,
-                    mIsContainer,
-                    mDontUnificateActively,
-                    mIsUsedForBlocks,
-                    mAllowNormalRecycling,
-                    mGenerateDefaultItem,
-                    mIsEnchantable,
-                    mIsUsedForOreProcessing,
-                    mMaterialGenerationBits,
-                    mMaterialAmount,
-                    mDefaultStackSize,
-                    mTextureindex
-                });
+                new Class[] { String.class, String.class, String.class, boolean.class, boolean.class, boolean.class,
+                        boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class,
+                        boolean.class, int.class, long.class, int.class, int.class },
+                new Object[] { mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost, mIsUnificatable,
+                        mIsMaterialBased, mIsSelfReferencing, mIsContainer, mDontUnificateActively, mIsUsedForBlocks,
+                        mAllowNormalRecycling, mGenerateDefaultItem, mIsEnchantable, mIsUsedForOreProcessing,
+                        mMaterialGenerationBits, mMaterialAmount, mDefaultStackSize, mTextureindex });
 
         return mSelfReference != null;
     }

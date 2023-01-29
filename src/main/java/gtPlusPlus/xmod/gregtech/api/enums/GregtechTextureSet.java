@@ -4,31 +4,20 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 
 public class GregtechTextureSet {
+
     public static final GregtechTextureSet SET_NONE = new GregtechTextureSet("NONE"),
-            SET_DULL = new GregtechTextureSet("DULL"),
-            SET_RUBY = new GregtechTextureSet("RUBY"),
-            SET_OPAL = new GregtechTextureSet("OPAL"),
-            SET_LEAF = new GregtechTextureSet("LEAF"),
-            SET_WOOD = new GregtechTextureSet("WOOD"),
-            SET_SAND = new GregtechTextureSet("SAND"),
-            SET_FINE = new GregtechTextureSet("FINE"),
-            SET_FIERY = new GregtechTextureSet("FIERY"),
-            SET_FLUID = new GregtechTextureSet("FLUID"),
-            SET_ROUGH = new GregtechTextureSet("ROUGH"),
-            SET_PAPER = new GregtechTextureSet("PAPER"),
-            SET_GLASS = new GregtechTextureSet("GLASS"),
-            SET_FLINT = new GregtechTextureSet("FLINT"),
-            SET_LAPIS = new GregtechTextureSet("LAPIS"),
-            SET_SHINY = new GregtechTextureSet("SHINY"),
-            SET_SHARDS = new GregtechTextureSet("SHARDS"),
-            SET_POWDER = new GregtechTextureSet("POWDER"),
-            SET_QUARTZ = new GregtechTextureSet("QUARTZ"),
-            SET_EMERALD = new GregtechTextureSet("EMERALD"),
-            SET_DIAMOND = new GregtechTextureSet("DIAMOND"),
-            SET_LIGNITE = new GregtechTextureSet("LIGNITE"),
-            SET_MAGNETIC = new GregtechTextureSet("MAGNETIC"),
-            SET_METALLIC = new GregtechTextureSet("METALLIC"),
-            SET_NETHERSTAR = new GregtechTextureSet("NETHERSTAR"),
+            SET_DULL = new GregtechTextureSet("DULL"), SET_RUBY = new GregtechTextureSet("RUBY"),
+            SET_OPAL = new GregtechTextureSet("OPAL"), SET_LEAF = new GregtechTextureSet("LEAF"),
+            SET_WOOD = new GregtechTextureSet("WOOD"), SET_SAND = new GregtechTextureSet("SAND"),
+            SET_FINE = new GregtechTextureSet("FINE"), SET_FIERY = new GregtechTextureSet("FIERY"),
+            SET_FLUID = new GregtechTextureSet("FLUID"), SET_ROUGH = new GregtechTextureSet("ROUGH"),
+            SET_PAPER = new GregtechTextureSet("PAPER"), SET_GLASS = new GregtechTextureSet("GLASS"),
+            SET_FLINT = new GregtechTextureSet("FLINT"), SET_LAPIS = new GregtechTextureSet("LAPIS"),
+            SET_SHINY = new GregtechTextureSet("SHINY"), SET_SHARDS = new GregtechTextureSet("SHARDS"),
+            SET_POWDER = new GregtechTextureSet("POWDER"), SET_QUARTZ = new GregtechTextureSet("QUARTZ"),
+            SET_EMERALD = new GregtechTextureSet("EMERALD"), SET_DIAMOND = new GregtechTextureSet("DIAMOND"),
+            SET_LIGNITE = new GregtechTextureSet("LIGNITE"), SET_MAGNETIC = new GregtechTextureSet("MAGNETIC"),
+            SET_METALLIC = new GregtechTextureSet("METALLIC"), SET_NETHERSTAR = new GregtechTextureSet("NETHERSTAR"),
             SET_GEM_VERTICAL = new GregtechTextureSet("GEM_VERTICAL"),
             SET_GEM_HORIZONTAL = new GregtechTextureSet("GEM_HORIZONTAL");
 
@@ -38,8 +27,8 @@ public class GregtechTextureSet {
     public GregtechTextureSet(final String aSetName) {
         this.mSetName = aSetName;
         this.mTextures[0] = new Textures.ItemIcons.CustomIcon("materialicons/" + this.mSetName + "/turbineBlade");
-        this.mTextures[1] =
-                new Textures.ItemIcons.CustomIcon("materialicons/" + this.mSetName + "/toolHeadSkookumChoocher");
+        this.mTextures[1] = new Textures.ItemIcons.CustomIcon(
+                "materialicons/" + this.mSetName + "/toolHeadSkookumChoocher");
         this.mTextures[2] = new Textures.ItemIcons.CustomIcon("materialicons/" + this.mSetName + "/void");
         this.mTextures[3] = new Textures.ItemIcons.CustomIcon("materialicons/" + this.mSetName + "/void");
         this.mTextures[4] = new Textures.ItemIcons.CustomIcon("materialicons/" + this.mSetName + "/void");

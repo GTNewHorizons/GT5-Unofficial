@@ -1,23 +1,24 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 
 public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_FluidGenerator {
 
-    public GT_MetaTileEntity_Hatch_AirIntake(
-            final int aID, final String aName, final String aNameRegional, final int aTier) {
+    public GT_MetaTileEntity_Hatch_AirIntake(final int aID, final String aName, final String aNameRegional,
+            final int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_AirIntake(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -56,8 +57,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public boolean doesHatchMeetConditionsToGenerate() {
-        return this.getBaseMetaTileEntity()
-                .getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing());
+        return this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing());
     }
 
     @Override

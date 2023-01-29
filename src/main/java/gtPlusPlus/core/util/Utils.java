@@ -1,5 +1,48 @@
 package gtPlusPlus.core.util;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.xml.bind.DatatypeConverter;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.EnumUtils;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
@@ -30,45 +73,6 @@ import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import javax.xml.bind.DatatypeConverter;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.EnumUtils;
 
 public class Utils {
 
@@ -83,6 +87,7 @@ public class Utils {
     }
 
     static class ShortTimerTask extends TimerTask {
+
         @Override
         public void run() {
             Logger.WARNING("Timer expired.");
@@ -174,9 +179,8 @@ public class Utils {
         if ((input == null) || (target == null)) {
             return false;
         }
-        return ((target.getItem() == input.getItem())
-                && (((target.getItemDamage() == WILDCARD_VALUE) && !strict)
-                        || (target.getItemDamage() == input.getItemDamage())));
+        return ((target.getItem() == input.getItem()) && (((target.getItemDamage() == WILDCARD_VALUE) && !strict)
+                || (target.getItemDamage() == input.getItemDamage())));
     }
 
     // Register an event to both busses.
@@ -217,12 +221,10 @@ public class Utils {
     }
 
     /*
-     * public static void recipeBuilderBlock(ItemStack slot_1, ItemStack slot_2,
-     * ItemStack slot_3, ItemStack slot_4, ItemStack slot_5, ItemStack slot_6,
-     * ItemStack slot_7, ItemStack slot_8, ItemStack slot_9, Block resultBlock){
-     * GameRegistry.addRecipe(new ItemStack(resultBlock), new Object[] {"ABC",
-     * "DEF", "GHI", 'A',slot_1,'B',slot_2,'C',slot_3,
-     * 'D',slot_4,'E',slot_5,'F',slot_6, 'G',slot_7,'H',slot_8,'I',slot_9 }); }
+     * public static void recipeBuilderBlock(ItemStack slot_1, ItemStack slot_2, ItemStack slot_3, ItemStack slot_4,
+     * ItemStack slot_5, ItemStack slot_6, ItemStack slot_7, ItemStack slot_8, ItemStack slot_9, Block resultBlock){
+     * GameRegistry.addRecipe(new ItemStack(resultBlock), new Object[] {"ABC", "DEF", "GHI",
+     * 'A',slot_1,'B',slot_2,'C',slot_3, 'D',slot_4,'E',slot_5,'F',slot_6, 'G',slot_7,'H',slot_8,'I',slot_9 }); }
      */
 
     public static String checkCorrectMiningToolForBlock(final Block currentBlock, final World currentWorld) {
@@ -242,8 +244,7 @@ public class Utils {
 
     /**
      *
-     * @param colourStr
-     *            e.g. "#FFFFFF"
+     * @param colourStr e.g. "#FFFFFF"
      * @return String - formatted "rgb(0,0,0)"
      */
     public static String hex2RgbFormatted(final String hexString) {
@@ -265,8 +266,7 @@ public class Utils {
 
     /**
      *
-     * @param colourStr
-     *            e.g. "#FFFFFF"
+     * @param colourStr e.g. "#FFFFFF"
      * @return
      */
     public static Color hex2Rgb(final String colorStr) {
@@ -278,8 +278,7 @@ public class Utils {
 
     /**
      *
-     * @param colourInt
-     *            e.g. 0XFFFFFF
+     * @param colourInt e.g. 0XFFFFFF
      * @return Colour
      */
     public static Color hex2Rgb(final int colourInt) {
@@ -288,15 +287,13 @@ public class Utils {
 
     /**
      *
-     * @param colourInt
-     *            e.g. 0XFFFFFF
+     * @param colourInt e.g. 0XFFFFFF
      * @return short[]
      */
     public static short[] hex2RgbShort(final int colourInt) {
         final Color rgb = Color.decode(String.valueOf(colourInt));
-        final short[] rgba = {
-            (short) rgb.getRed(), (short) rgb.getGreen(), (short) rgb.getBlue(), (short) rgb.getAlpha()
-        };
+        final short[] rgba = { (short) rgb.getRed(), (short) rgb.getGreen(), (short) rgb.getBlue(),
+                (short) rgb.getAlpha() };
         return rgba;
     }
 
@@ -336,8 +333,8 @@ public class Utils {
         GTplusplus.proxy.generateMysteriousParticles(entity);
     }
 
-    public static void spawnFX(
-            final World world, final int x, final int y, final int z, final String particleName, Object particleName2) {
+    public static void spawnFX(final World world, final int x, final int y, final int z, final String particleName,
+            Object particleName2) {
         if (!world.isRemote) {
             if ((particleName2 == null) || particleName2.equals("")) {
                 particleName2 = particleName;
@@ -404,8 +401,7 @@ public class Utils {
     }
 
     /*
-     * Original Code by Chandana Napagoda -
-     * https://cnapagoda.blogspot.com.au/2011/03/java-hex-color-code-generator.
+     * Original Code by Chandana Napagoda - https://cnapagoda.blogspot.com.au/2011/03/java-hex-color-code-generator.
      * html
      */
     public static Map<Integer, String> hexColourGenerator(final int colorCount) {
@@ -417,21 +413,16 @@ public class Utils {
         for (int a = 0; (a < colorCount) && (maxColorValue >= countValue); a++) {
             if (a != 0) {
                 countValue += devidedvalue;
-                hexColorMap.put(
-                        a,
-                        Integer.toHexString(0x10000 | countValue).substring(1).toUpperCase());
+                hexColorMap.put(a, Integer.toHexString(0x10000 | countValue).substring(1).toUpperCase());
             } else {
-                hexColorMap.put(
-                        a,
-                        Integer.toHexString(0x10000 | countValue).substring(1).toUpperCase());
+                hexColorMap.put(a, Integer.toHexString(0x10000 | countValue).substring(1).toUpperCase());
             }
         }
         return hexColorMap;
     }
 
     /*
-     * Original Code by Chandana Napagoda -
-     * https://cnapagoda.blogspot.com.au/2011/03/java-hex-color-code-generator.
+     * Original Code by Chandana Napagoda - https://cnapagoda.blogspot.com.au/2011/03/java-hex-color-code-generator.
      * html
      */
     public static Map<Integer, String> hexColourGeneratorRandom(final int colorCount) {
@@ -521,7 +512,9 @@ public class Utils {
             final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
             Logger.WARNING("Successfully created " + temp.getDisplayName() + "s.");
             FluidContainerRegistry.registerFluidContainer(
-                    FluidUtils.getFluidStack(s.toLowerCase(), 1000), temp.copy(), Ic2Items.cell.copy());
+                    FluidUtils.getFluidStack(s.toLowerCase(), 1000),
+                    temp.copy(),
+                    Ic2Items.cell.copy());
             ItemUtils.addItemToOreDictionary(temp.copy(), "cell" + s);
             return temp;
         } catch (final Exception e) {
@@ -547,7 +540,9 @@ public class Utils {
             final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
             Logger.WARNING("Successfully created " + temp.getDisplayName() + "s.");
             FluidContainerRegistry.registerFluidContainer(
-                    FluidUtils.getFluidStack(s.toLowerCase(), 1000), temp.copy(), Ic2Items.cell.copy());
+                    FluidUtils.getFluidStack(s.toLowerCase(), 1000),
+                    temp.copy(),
+                    Ic2Items.cell.copy());
             // ItemUtils.addItemToOreDictionary(temp.copy(), "cell"+s);
             return temp;
         } catch (final Exception e) {
@@ -647,8 +642,8 @@ public class Utils {
         return compareModVersion(currentVersion, expectedVersion, "//.");
     }
 
-    public static Versioning compareModVersion(
-            final String currentVersion, final String expectedVersion, final String delimiter) {
+    public static Versioning compareModVersion(final String currentVersion, final String expectedVersion,
+            final String delimiter) {
         final String[] a = parseVersion(currentVersion, delimiter);
         final String[] b = parseVersion(expectedVersion, delimiter);
         final int[] c = new int[a.length];
@@ -693,8 +688,8 @@ public class Utils {
         final float damage = gtMaterial.mToolQuality;
         final int efficiency = (int) gtMaterial.mToolSpeed;
         final int enchantability = gtMaterial.mEnchantmentToolsLevel;
-        final ToolMaterial temp =
-                EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, enchantability);
+        final ToolMaterial temp = EnumHelper
+                .addToolMaterial(name, harvestLevel, durability, efficiency, damage, enchantability);
         return temp;
     }
 
@@ -705,16 +700,26 @@ public class Utils {
         final float damage = material.vToolQuality;
         final int efficiency = material.vToolQuality;
         // int enchantability = material.mEnchantmentToolsLevel;
-        Logger.INFO("ToolMaterial stats for " + material.getLocalizedName() + " | harvestLevel:" + harvestLevel
-                + " | durability:" + durability + " | toolQuality:" + damage + " | toolSpeed:" + damage);
+        Logger.INFO(
+                "ToolMaterial stats for " + material.getLocalizedName()
+                        + " | harvestLevel:"
+                        + harvestLevel
+                        + " | durability:"
+                        + durability
+                        + " | toolQuality:"
+                        + damage
+                        + " | toolSpeed:"
+                        + damage);
         final ToolMaterial temp = EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, 0);
         return temp;
     }
 
     public static enum Versioning {
+
         EQUAL(0),
         NEWER(1),
         OLDER(-1);
+
         private final int versioningInfo;
 
         private Versioning(final int versionStatus) {
@@ -728,11 +733,7 @@ public class Utils {
 
     public static String addBookTitleLocalization(final String aTitle) {
         return GT_LanguageManager.addStringLocalization(
-                new StringBuilder()
-                        .append("Book.")
-                        .append(aTitle)
-                        .append(".Name")
-                        .toString(),
+                new StringBuilder().append("Book.").append(aTitle).append(".Name").toString(),
                 aTitle,
                 !GregTech_API.sPostloadFinished);
     }
@@ -741,17 +742,8 @@ public class Utils {
         String[] aLocalizationPages = new String[aPages.length];
         for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
             aLocalizationPages[i] = GT_LanguageManager.addStringLocalization(
-                    new StringBuilder()
-                            .append("Book.")
-                            .append(aTitle)
-                            .append(".Page")
-                            .append(
-                                    (i < 10)
-                                            ? new StringBuilder()
-                                                    .append("0")
-                                                    .append(i)
-                                                    .toString()
-                                            : Byte.valueOf(i))
+                    new StringBuilder().append("Book.").append(aTitle).append(".Page")
+                            .append((i < 10) ? new StringBuilder().append("0").append(i).toString() : Byte.valueOf(i))
                             .toString(),
                     aPages[i],
                     !GregTech_API.sPostloadFinished);
@@ -759,19 +751,14 @@ public class Utils {
         return aLocalizationPages;
     }
 
-    public static ItemStack getWrittenBook(
-            final ItemStack aBook,
-            final int aID,
-            final String aMapping,
-            final String aTitle,
-            final String aAuthor,
-            final String[] aPages) {
+    public static ItemStack getWrittenBook(final ItemStack aBook, final int aID, final String aMapping,
+            final String aTitle, final String aAuthor, final String[] aPages) {
         if (GT_Utility.isStringInvalid(aMapping)) {
             return null;
         }
         ItemStack rStack = CORE.sBookList.get(aMapping);
         if (rStack != null) {
-            return GT_Utility.copyAmount(1L, new Object[] {rStack});
+            return GT_Utility.copyAmount(1L, new Object[] { rStack });
         }
         if ((GT_Utility.isStringInvalid(aTitle)) || (GT_Utility.isStringInvalid(aAuthor)) || (aPages.length <= 0)) {
             return null;
@@ -791,45 +778,36 @@ public class Utils {
                     tNBTList.appendTag(new NBTTagString(aPages[i]));
                 } else {
                     Logger.INFO("WARNING: String for written Book too long! -> " + aPages[i]);
-                    GT_Log.err.println(new StringBuilder()
-                            .append("WARNING: String for written Book too long! -> ")
-                            .append(aPages[i])
-                            .toString());
+                    GT_Log.err.println(
+                            new StringBuilder().append("WARNING: String for written Book too long! -> ")
+                                    .append(aPages[i]).toString());
                 }
             } else {
                 Logger.INFO("WARNING: Too much Pages for written Book! -> " + aTitle);
-                GT_Log.err.println(new StringBuilder()
-                        .append("WARNING: Too much Pages for written Book! -> ")
-                        .append(aTitle)
-                        .toString());
+                GT_Log.err.println(
+                        new StringBuilder().append("WARNING: Too much Pages for written Book! -> ").append(aTitle)
+                                .toString());
                 break;
             }
         }
-        tNBTList.appendTag(new NBTTagString(new StringBuilder()
-                .append("Credits to ")
-                .append(aAuthor)
-                .append(" for writing this Book. This was Book Nr. ")
-                .append(aID)
-                .append(" at its creation. Gotta get 'em all!")
-                .toString()));
+        tNBTList.appendTag(
+                new NBTTagString(
+                        new StringBuilder().append("Credits to ").append(aAuthor)
+                                .append(" for writing this Book. This was Book Nr. ").append(aID)
+                                .append(" at its creation. Gotta get 'em all!").toString()));
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
-        GT_Log.out.println(new StringBuilder()
-                .append("GT++_Mod: Added Book to Book++ List  -  Mapping: '")
-                .append(aMapping)
-                .append("'  -  Name: '")
-                .append(aTitle)
-                .append("'  -  Author: '")
-                .append(aAuthor)
-                .append("'")
-                .toString());
+        GT_Log.out.println(
+                new StringBuilder().append("GT++_Mod: Added Book to Book++ List  -  Mapping: '").append(aMapping)
+                        .append("'  -  Name: '").append(aTitle).append("'  -  Author: '").append(aAuthor).append("'")
+                        .toString());
         NBTUtils.createIntegerTagCompound(rStack, "stats", "mMeta", vMeta);
         CORE.sBookList.put(aMapping, rStack);
         Logger.INFO("Creating book: " + aTitle + " by " + aAuthor + ". Using Meta " + vMeta + ".");
-        return GT_Utility.copy(new Object[] {rStack});
+        return GT_Utility.copy(new Object[] { rStack });
     }
 
-    @SuppressWarnings({"unused", "unchecked"})
+    @SuppressWarnings({ "unused", "unchecked" })
     public static Pair<Integer, Integer> getGregtechVersion() {
         Pair<Integer, Integer> version;
         if (GT_Mod.VERSION == 509) {
@@ -915,12 +893,10 @@ public class Utils {
             out.writeObject(bytes);
             out.flush();
             result = bos.toByteArray();
-        } catch (IOException e) {
-        } finally {
+        } catch (IOException e) {} finally {
             try {
                 bos.close();
-            } catch (IOException e) {
-            }
+            } catch (IOException e) {}
         }
         return calculateChecksumMD5(result);
     }

@@ -11,126 +11,20 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class ELEMENT {
 
-    public static final String[] NAMES = new String[] {
-        "Hydrogen",
-        "Helium",
-        "Lithium",
-        "Beryllium",
-        "Boron",
-        "Carbon",
-        "Nitrogen",
-        "Oxygen",
-        "Fluorine",
-        "Neon",
-        "Sodium",
-        "Magnesium",
-        "Aluminium",
-        "Silicon",
-        "Phosphorus",
-        "Sulfur",
-        "Chlorine",
-        "Argon",
-        "Potassium",
-        "Calcium",
-        "Scandium",
-        "Titanium",
-        "Vanadium",
-        "Chromium",
-        "Manganese",
-        "Iron",
-        "Cobalt",
-        "Nickel",
-        "Copper",
-        "Zinc",
-        "Gallium",
-        "Germanium",
-        "Arsenic",
-        "Selenium",
-        "Bromine",
-        "Krypton",
-        "Rubidium",
-        "Strontium",
-        "Yttrium",
-        "Zirconium",
-        "Niobium",
-        "Molybdenum",
-        "Technetium",
-        "Ruthenium",
-        "Rhodium",
-        "Palladium",
-        "Silver",
-        "Cadmium",
-        "Indium",
-        "Tin",
-        "Antimony",
-        "Tellurium",
-        "Iodine",
-        "Xenon",
-        "Caesium",
-        "Barium",
-        "Lanthanum",
-        "Cerium",
-        "Praseodymium",
-        "Neodymium",
-        "Promethium",
-        "Samarium",
-        "Europium",
-        "Gadolinium",
-        "Terbium",
-        "Dysprosium",
-        "Holmium",
-        "Erbium",
-        "Thulium",
-        "Ytterbium",
-        "Lutetium",
-        "Hafnium",
-        "Tantalum",
-        "Tungsten",
-        "Rhenium",
-        "Osmium",
-        "Iridium",
-        "Platinum",
-        "Gold",
-        "Mercury",
-        "Thallium",
-        "Lead",
-        "Bismuth",
-        "Polonium",
-        "Astatine",
-        "Radon",
-        "Francium",
-        "Radium",
-        "Actinium",
-        "Thorium",
-        "Protactinium",
-        "Uranium",
-        "Neptunium",
-        "Plutonium",
-        "Americium",
-        "Curium",
-        "Berkelium",
-        "Californium",
-        "Einsteinium",
-        "Fermium",
-        "Mendelevium",
-        "Nobelium",
-        "Lawrencium",
-        "Rutherfordium",
-        "Dubnium",
-        "Seaborgium",
-        "Bohrium",
-        "Hassium",
-        "Meitnerium",
-        "Darmstadtium",
-        "Roentgenium",
-        "Copernicium",
-        "Nihonium",
-        "Flerovium",
-        "Moscovium",
-        "Livermorium",
-        "Tennessine",
-        "Oganesson"
-    };
+    public static final String[] NAMES = new String[] { "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",
+            "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus",
+            "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium",
+            "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic", "Selenium",
+            "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum",
+            "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony",
+            "Tellurium", "Iodine", "Xenon", "Caesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium",
+            "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium",
+            "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum",
+            "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium",
+            "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium",
+            "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium",
+            "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium",
+            "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson" };
 
     // First 50 Elements
     public final Material HYDROGEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Hydrogen);
@@ -145,7 +39,7 @@ public final class ELEMENT {
     public final Material NEON = new Material(
             "Neon",
             MaterialState.PURE_GAS,
-            new short[] {240, 180, 30},
+            new short[] { 240, 180, 30 },
             -248,
             -246,
             10,
@@ -179,7 +73,7 @@ public final class ELEMENT {
     public final Material GERMANIUM = new Material(
             "Germanium",
             MaterialState.SOLID,
-            new short[] {200, 200, 200},
+            new short[] { 200, 200, 200 },
             937,
             2830,
             32,
@@ -191,7 +85,7 @@ public final class ELEMENT {
     public final Material SELENIUM = new Material(
             "Selenium",
             MaterialState.SOLID,
-            new short[] {190, 190, 190},
+            new short[] { 190, 190, 190 },
             217,
             685,
             34,
@@ -202,7 +96,7 @@ public final class ELEMENT {
     public final Material BROMINE = new Material(
             "Bromine",
             MaterialState.PURE_LIQUID,
-            new short[] {200, 25, 25},
+            new short[] { 200, 25, 25 },
             -7,
             58,
             35,
@@ -213,7 +107,7 @@ public final class ELEMENT {
     public final Material KRYPTON = new Material(
             "Krypton",
             MaterialState.PURE_GAS,
-            new short[] {5, 200, 220},
+            new short[] { 5, 200, 220 },
             -157,
             -153,
             36,
@@ -222,13 +116,13 @@ public final class ELEMENT {
             "Kr",
             0); // Not a GT Inherited Material
     public final Material RUBIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubidium);
-    public final Material STRONTIUM = MaterialUtils.generateMaterialFromGtENUM(
-            Materials.Strontium, new short[] {230, 210, 110}, TextureSet.SET_FLINT);
+    public final Material STRONTIUM = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.Strontium, new short[] { 230, 210, 110 }, TextureSet.SET_FLINT);
     public final Material YTTRIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yttrium);
     public final Material ZIRCONIUM = new Material(
             "Zirconium",
             MaterialState.SOLID,
-            new short[] {255, 250, 205},
+            new short[] { 255, 250, 205 },
             1855,
             4377,
             40,
@@ -242,7 +136,7 @@ public final class ELEMENT {
             "Technetium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {220, 220, 220},
+            new short[] { 220, 220, 220 },
             2200,
             4877,
             43,
@@ -253,7 +147,7 @@ public final class ELEMENT {
     public final Material RUTHENIUM = new Material(
             "Ruthenium",
             MaterialState.SOLID,
-            new short[] {220, 220, 220},
+            new short[] { 220, 220, 220 },
             2250,
             3900,
             44,
@@ -264,7 +158,7 @@ public final class ELEMENT {
     public final Material RHODIUM = new Material(
             "Rhodium",
             MaterialState.SOLID,
-            new short[] {220, 220, 220},
+            new short[] { 220, 220, 220 },
             1966,
             3727,
             45,
@@ -281,7 +175,7 @@ public final class ELEMENT {
     public final Material TELLURIUM = new Material(
             "Tellurium",
             MaterialState.SOLID,
-            new short[] {210, 210, 210},
+            new short[] { 210, 210, 210 },
             449,
             989,
             52,
@@ -293,7 +187,7 @@ public final class ELEMENT {
             "Iodine",
             MaterialState.SOLID,
             TextureSet.SET_SHINY,
-            new short[] {96, 96, 96},
+            new short[] { 96, 96, 96 },
             114,
             184,
             53,
@@ -304,7 +198,7 @@ public final class ELEMENT {
     public final Material XENON = new Material(
             "Xenon",
             MaterialState.PURE_GAS,
-            new short[] {5, 105, 210},
+            new short[] { 5, 105, 210 },
             -111,
             -108,
             54,
@@ -326,7 +220,7 @@ public final class ELEMENT {
     public final Material DYSPROSIUM = new Material(
             "Dysprosium",
             MaterialState.SOLID,
-            new short[] {180, 180, 180},
+            new short[] { 180, 180, 180 },
             1412,
             2562,
             66,
@@ -342,7 +236,7 @@ public final class ELEMENT {
     public final Material HAFNIUM = new Material(
             "Hafnium",
             MaterialState.SOLID,
-            new short[] {128, 128, 128},
+            new short[] { 128, 128, 128 },
             2150,
             5400,
             72,
@@ -357,7 +251,7 @@ public final class ELEMENT {
     public final Material RHENIUM = new Material(
             "Rhenium",
             MaterialState.SOLID,
-            new short[] {150, 150, 150},
+            new short[] { 150, 150, 150 },
             3180,
             3627,
             75,
@@ -373,7 +267,7 @@ public final class ELEMENT {
     public final Material THALLIUM = new Material(
             "Thallium",
             MaterialState.SOLID,
-            new short[] {175, 175, 175},
+            new short[] { 175, 175, 175 },
             304,
             1457,
             81,
@@ -387,7 +281,7 @@ public final class ELEMENT {
             "Polonium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {180, 170, 180},
+            new short[] { 180, 170, 180 },
             254,
             962,
             84,
@@ -399,7 +293,7 @@ public final class ELEMENT {
             "Astatine",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {170, 180, 170},
+            new short[] { 170, 180, 170 },
             302,
             337,
             85,
@@ -412,7 +306,7 @@ public final class ELEMENT {
             "Francium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {170, 160, 170},
+            new short[] { 170, 160, 170 },
             27,
             677,
             87,
@@ -424,7 +318,7 @@ public final class ELEMENT {
             "Radium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {165, 165, 165},
+            new short[] { 165, 165, 165 },
             700,
             1737,
             88,
@@ -436,7 +330,7 @@ public final class ELEMENT {
             "Actinium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {150, 165, 165},
+            new short[] { 150, 165, 165 },
             1050,
             3200,
             89,
@@ -459,7 +353,7 @@ public final class ELEMENT {
             "Protactinium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {190, 150, 170},
+            new short[] { 190, 150, 170 },
             1568,
             4027,
             91,
@@ -473,7 +367,7 @@ public final class ELEMENT {
             "Neptunium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {200, 220, 205},
+            new short[] { 200, 220, 205 },
             640,
             3902,
             93,
@@ -488,7 +382,7 @@ public final class ELEMENT {
             "Curium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {175, 85, 110},
+            new short[] { 175, 85, 110 },
             1340,
             3110,
             96,
@@ -500,7 +394,7 @@ public final class ELEMENT {
             "Berkelium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {110, 250, 85},
+            new short[] { 110, 250, 85 },
             985,
             710,
             97,
@@ -512,7 +406,7 @@ public final class ELEMENT {
             "Californium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {85, 110, 205},
+            new short[] { 85, 110, 205 },
             899,
             1472,
             98,
@@ -524,7 +418,7 @@ public final class ELEMENT {
             "Einsteinium",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {255, 85, 110},
+            new short[] { 255, 85, 110 },
             860,
             3500,
             99,
@@ -536,7 +430,7 @@ public final class ELEMENT {
             "Fermium",
             MaterialState.LIQUID,
             TextureSets.NUCLEAR.get(),
-            new short[] {75, 90, 25},
+            new short[] { 75, 90, 25 },
             1527,
             3850,
             100,
@@ -547,20 +441,20 @@ public final class ELEMENT {
 
     // Misc
     public final Material AER = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedAir, TextureSets.GEM_A.get());
-    public final Material IGNIS =
-            MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedFire, TextureSets.GEM_A.get());
-    public final Material TERRA =
-            MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedEarth, TextureSets.GEM_A.get());
-    public final Material AQUA =
-            MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedWater, TextureSets.GEM_A.get());
-    public final Material PERDITIO =
-            MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedEntropy, TextureSets.GEM_A.get());
-    public final Material ORDO =
-            MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedOrder, TextureSets.GEM_A.get());
+    public final Material IGNIS = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.InfusedFire, TextureSets.GEM_A.get());
+    public final Material TERRA = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.InfusedEarth, TextureSets.GEM_A.get());
+    public final Material AQUA = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.InfusedWater, TextureSets.GEM_A.get());
+    public final Material PERDITIO = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.InfusedEntropy, TextureSets.GEM_A.get());
+    public final Material ORDO = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.InfusedOrder, TextureSets.GEM_A.get());
 
     // Fictional
-    public final Material YELLORIUM = MaterialUtils.generateMaterialFromGtENUM(
-            Materials.Yellorium, new short[] {255, 242, 10}, TextureSets.NUCLEAR.get());
+    public final Material YELLORIUM = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.Yellorium, new short[] { 255, 242, 10 }, TextureSets.NUCLEAR.get());
     public final Material NAQUADAH = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadah);
     public final Material NAQUADAH_ENRICHED = MaterialUtils.generateMaterialFromGtENUM(Materials.NaquadahEnriched);
     public final Material NAQUADRIA = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadria);
@@ -586,7 +480,7 @@ public final class ELEMENT {
             "Uranium 232",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {88, 220, 103, 0},
+            new short[] { 88, 220, 103, 0 },
             1132,
             4131,
             92,
@@ -598,7 +492,7 @@ public final class ELEMENT {
             "Uranium 233",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {73, 220, 83, 0},
+            new short[] { 73, 220, 83, 0 },
             1132,
             4131,
             92,
@@ -610,7 +504,7 @@ public final class ELEMENT {
             "Thorium 232",
             MaterialState.SOLID,
             TextureSets.NUCLEAR.get(),
-            new short[] {15, 60, 15, 0},
+            new short[] { 15, 60, 15, 0 },
             Materials.Thorium.mMeltingPoint,
             Materials.Thorium.mBlastFurnaceTemp,
             90,
@@ -691,7 +585,8 @@ public final class ELEMENT {
             2,
             false); // Not a GT Inherited Material
 
-    public final Material MAGIC = MaterialUtils.generateMaterialFromGtENUM(Materials.Magic, new short[] {10, 185, 140});
+    public final Material MAGIC = MaterialUtils
+            .generateMaterialFromGtENUM(Materials.Magic, new short[] { 10, 185, 140 });
     public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
 
     static {
@@ -739,7 +634,7 @@ public final class ELEMENT {
                     "Trinium",
                     MaterialState.SOLID,
                     TextureSet.SET_FINE,
-                    new short[] {70, 110, 30},
+                    new short[] { 70, 110, 30 },
                     604,
                     4057,
                     181,
@@ -752,7 +647,7 @@ public final class ELEMENT {
                     "Refined Trinium",
                     MaterialState.SOLID,
                     TextureSets.REFINED.get(),
-                    new short[] {210, 255, 170},
+                    new short[] { 210, 255, 170 },
                     4304,
                     14057,
                     181,
@@ -760,7 +655,7 @@ public final class ELEMENT {
                     false,
                     "Ke",
                     0,
-                    new MaterialStack[] {new MaterialStack(TRINIUM, 1)}); // Not a GT Inherited Material
+                    new MaterialStack[] { new MaterialStack(TRINIUM, 1) }); // Not a GT Inherited Material
         }
     }
 
@@ -774,7 +669,7 @@ public final class ELEMENT {
                 "Celestial Tungsten",
                 MaterialState.SOLID,
                 TextureSets.REFINED.get(),
-                new short[] {50, 50, 50, 2},
+                new short[] { 50, 50, 50, 2 },
                 INSTANCE.TUNGSTEN.getMeltingPointC() + 6500,
                 INSTANCE.TUNGSTEN.getBoilingPointC() + 7500,
                 160,
@@ -786,7 +681,7 @@ public final class ELEMENT {
                 "Astral Titanium",
                 MaterialState.SOLID,
                 TextureSets.REFINED.get(),
-                new short[] {220, 160, 240, 2},
+                new short[] { 220, 160, 240, 2 },
                 INSTANCE.TITANIUM.getMeltingPointC() + 7500,
                 INSTANCE.TITANIUM.getBoilingPointC() + 7500,
                 145,
@@ -797,7 +692,7 @@ public final class ELEMENT {
         public static final Material CHRONOMATIC_GLASS = new Material(
                 "Chromatic Glass",
                 MaterialState.SOLID,
-                new short[] {255, 255, 255, 3},
+                new short[] { 255, 255, 255, 3 },
                 9200,
                 17550,
                 40,
@@ -821,7 +716,7 @@ public final class ELEMENT {
                 "Hypogen",
                 MaterialState.SOLID,
                 TextureSets.NUCLEAR.get(),
-                new short[] {220, 120, 75, 2},
+                new short[] { 220, 120, 75, 2 },
                 11255,
                 19377,
                 240,
@@ -833,7 +728,7 @@ public final class ELEMENT {
                 "Rhugnor",
                 MaterialState.SOLID,
                 TextureSets.ENRICHED.get(),
-                new short[] {190, 0, 255, 0},
+                new short[] { 190, 0, 255, 0 },
                 8750,
                 14757,
                 184,
@@ -845,7 +740,7 @@ public final class ELEMENT {
                 "Force",
                 MaterialState.SOLID,
                 TextureSets.ENRICHED.get(),
-                new short[] {250, 250, 20, 0},
+                new short[] { 250, 250, 20, 0 },
                 4550,
                 6830,
                 63,
@@ -859,7 +754,7 @@ public final class ELEMENT {
                 "Black Metal",
                 MaterialState.SOLID,
                 TextureSet.SET_METALLIC,
-                new short[] {5, 5, 5},
+                new short[] { 5, 5, 5 },
                 2350,
                 4650,
                 24,
@@ -867,16 +762,17 @@ public final class ELEMENT {
                 false,
                 "҈",
                 0,
-                new MaterialStack[] {
-                    new MaterialStack(getInstance().LEAD, 15),
-                    new MaterialStack(getInstance().MANGANESE, 25),
-                    new MaterialStack(getInstance().CARBON, 60)
-                }); // Not a GT Inherited Material
+                new MaterialStack[] { new MaterialStack(getInstance().LEAD, 15),
+                        new MaterialStack(getInstance().MANGANESE, 25), new MaterialStack(getInstance().CARBON, 60) }); // Not
+                                                                                                                        // a
+                                                                                                                        // GT
+                                                                                                                        // Inherited
+                                                                                                                        // Material
         public static final Material WHITE_METAL = new Material(
                 "White Metal",
                 MaterialState.SOLID,
                 TextureSet.SET_METALLIC,
-                new short[] {255, 255, 255},
+                new short[] { 255, 255, 255 },
                 4560,
                 7580,
                 35,
@@ -884,18 +780,15 @@ public final class ELEMENT {
                 false,
                 "҉",
                 0,
-                new MaterialStack[] {
-                    new MaterialStack(getInstance().COPPER, 5),
-                    new MaterialStack(getInstance().ANTIMONY, 10),
-                    new MaterialStack(getInstance().PLATINUM, 10),
-                    new MaterialStack(getInstance().TIN, 75)
-                }); // Not a GT Inherited Material
+                new MaterialStack[] { new MaterialStack(getInstance().COPPER, 5),
+                        new MaterialStack(getInstance().ANTIMONY, 10), new MaterialStack(getInstance().PLATINUM, 10),
+                        new MaterialStack(getInstance().TIN, 75) }); // Not a GT Inherited Material
 
         public static final Material GRANITE = new Material(
                 "Ancient Granite",
                 MaterialState.SOLID,
                 TextureSet.SET_SAND,
-                new short[] {107, 107, 107},
+                new short[] { 107, 107, 107 },
                 500,
                 2000,
                 16,
@@ -904,22 +797,21 @@ public final class ELEMENT {
                 "«»",
                 0,
                 false,
-                new MaterialStack[] {
-                    new MaterialStack(getInstance().OXYGEN, 16),
-                    new MaterialStack(getInstance().IRON, 10),
-                    new MaterialStack(getInstance().SILICONDIOXIDE, 10),
-                    new MaterialStack(getInstance().ALUMINIUMOXIDE, 6),
-                    new MaterialStack(getInstance().POTASSIUM, 6),
-                    new MaterialStack(getInstance().CALCIUM, 4),
-                    new MaterialStack(getInstance().SODIUM, 4),
-                    new MaterialStack(getInstance().YTTERBIUM, 2)
-                }); // Not a GT Inherited Material
+                new MaterialStack[] { new MaterialStack(getInstance().OXYGEN, 16),
+                        new MaterialStack(getInstance().IRON, 10), new MaterialStack(getInstance().SILICONDIOXIDE, 10),
+                        new MaterialStack(getInstance().ALUMINIUMOXIDE, 6),
+                        new MaterialStack(getInstance().POTASSIUM, 6), new MaterialStack(getInstance().CALCIUM, 4),
+                        new MaterialStack(getInstance().SODIUM, 4), new MaterialStack(getInstance().YTTERBIUM, 2) }); // Not
+                                                                                                                      // a
+                                                                                                                      // GT
+                                                                                                                      // Inherited
+                                                                                                                      // Material
 
         public static final Material RUNITE = new Material(
                 "Runite",
                 MaterialState.SOLID,
                 TextureSet.SET_FINE,
-                new short[] {60, 200, 190},
+                new short[] { 60, 200, 190 },
                 6750,
                 11550,
                 73,
@@ -931,7 +823,7 @@ public final class ELEMENT {
                 "Dragonblood",
                 MaterialState.SOLID,
                 TextureSet.SET_SHINY,
-                new short[] {220, 40, 20, 2},
+                new short[] { 220, 40, 20, 2 },
                 10160,
                 17850,
                 96,

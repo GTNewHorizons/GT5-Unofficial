@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -15,21 +18,19 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity_BasicGenerator {
 
     public int mEfficiency;
 
-    public GregtechMetaTileEntityGeothermalGenerator(
-            final int aID, final String aName, final String aNameRegional, final int aTier) {
+    public GregtechMetaTileEntityGeothermalGenerator(final int aID, final String aName, final String aNameRegional,
+            final int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires Pahoehoe Lava or Normal Lava as Fuel", new ITexture[0]);
         this.onConfigLoad();
     }
 
-    public GregtechMetaTileEntityGeothermalGenerator(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GregtechMetaTileEntityGeothermalGenerator(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         this.onConfigLoad();
     }
@@ -37,12 +38,8 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
     @Override
     public String[] getDescription() {
         String aPollution = "Causes " + this.getPollution() + " Pollution per second";
-        return new String[] {
-            this.mDescription,
-            "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-            aPollution,
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+                aPollution, CORE.GT_Tooltip };
     }
 
     @Override
@@ -90,83 +87,68 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
 
     @Override
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {
-            super.getFront(aColor)[0],
-            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
-        };
+        return new ITexture[] { super.getFront(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     @Override
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {
-            super.getBack(aColor)[0],
-            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK),
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Vertical)
-        };
+        return new ITexture[] { super.getBack(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK),
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Vertical) };
     }
 
     @Override
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            super.getBottom(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM)
-        };
+        return new ITexture[] { super.getBottom(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM) };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            super.getTop(aColor)[0],
-            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER)
-        };
+        return new ITexture[] { super.getTop(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
+                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER) };
     }
 
     @Override
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {super.getSides(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.BOILER_LAVA_FRONT)
-        };
+        return new ITexture[] { super.getSides(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.BOILER_LAVA_FRONT) };
     }
 
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] {
-            super.getFrontActive(aColor)[0],
-            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
-        };
+        return new ITexture[] { super.getFrontActive(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE),
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] {
-            super.getBackActive(aColor)[0],
-            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE),
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Vertical_Active)
-        };
+        return new ITexture[] { super.getBackActive(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE),
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Vertical_Active) };
     }
 
     @Override
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {
-            super.getBottomActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE)
-        };
+        return new ITexture[] { super.getBottomActive(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            super.getTopActive(aColor)[0],
-            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE)
-        };
+        return new ITexture[] { super.getTopActive(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
+                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE) };
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE)
-        };
+        return new ITexture[] { super.getSidesActive(aColor)[0],
+                new GT_RenderedTexture(Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE) };
     }
 
     @Override

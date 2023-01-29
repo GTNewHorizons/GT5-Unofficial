@@ -1,5 +1,23 @@
 package gtPlusPlus.xmod.gregtech.common;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,21 +45,6 @@ import gtPlusPlus.xmod.gregtech.common.helpers.MachineUpdateHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class Meta_GT_Proxy {
 
@@ -60,8 +63,7 @@ public class Meta_GT_Proxy {
 
     public static AchievementHandler mAssemblyAchievements;
 
-    public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips =
-            new LinkedHashMap<String, FormattedTooltipString>();
+    public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
 
     /**
      * Does this feature exist within GT? Saves loading useless content if not.
@@ -152,32 +154,13 @@ public class Meta_GT_Proxy {
                 }
             }
 
-            String[] aLangs = new String[] {
-                "de_DE", "en_US", "en_GB", "en_IC", "es_AR", "es_ES", "es_MX", "es_UY", "es_VE", "fr_CA", "fr_FR",
-                "it_IT", "ko_KR", "pt_BR", "pt_PT", "ru_RU", "sv_SE", "tr_TR", "zh_CN", "zh_TW",
-            };
-            String[] aLangValues = new String[] {
-                "Erhitztes Wasser",
-                "Heated Water",
-                "Heated Water",
-                "Heated Water",
-                "Agua caliente",
-                "Agua caliente",
-                "Agua caliente",
-                "Agua caliente",
-                "Agua caliente",
-                "Eau chauffée",
-                "Eau chauffée",
-                "Acqua riscaldata",
-                "온수",
-                "Água aquecida",
-                "Água aquecida",
-                "Вода с подогревом",
-                "Uppvärmt vatten",
-                "Isıtılmış Su",
-                "热水",
-                "热水",
-            };
+            String[] aLangs = new String[] { "de_DE", "en_US", "en_GB", "en_IC", "es_AR", "es_ES", "es_MX", "es_UY",
+                    "es_VE", "fr_CA", "fr_FR", "it_IT", "ko_KR", "pt_BR", "pt_PT", "ru_RU", "sv_SE", "tr_TR", "zh_CN",
+                    "zh_TW", };
+            String[] aLangValues = new String[] { "Erhitztes Wasser", "Heated Water", "Heated Water", "Heated Water",
+                    "Agua caliente", "Agua caliente", "Agua caliente", "Agua caliente", "Agua caliente", "Eau chauffée",
+                    "Eau chauffée", "Acqua riscaldata", "온수", "Água aquecida", "Água aquecida", "Вода с подогревом",
+                    "Uppvärmt vatten", "Isıtılmış Su", "热水", "热水", };
             for (int i = 0; i < aLangs.length; i++) {
                 Logger.REFLECTION(
                         "Trying to inject new lang data for " + aLangs[i] + ", using value: " + aLangValues[i]);
@@ -248,9 +231,12 @@ public class Meta_GT_Proxy {
 
             // Skip this material
             if (aMoltenFluid == null || aPlasma == null || aPlasma.isFluidEqual(NULL_PLASMA)) {
-                Logger.INFO("Could not generate Advanced Vacuum Freezer recipe. Cooling " + s
-                        + " plasma. Molten Form Exists? " + (aMoltenFluid != null) + " | Plasma Exists? "
-                        + (aPlasma != null));
+                Logger.INFO(
+                        "Could not generate Advanced Vacuum Freezer recipe. Cooling " + s
+                                + " plasma. Molten Form Exists? "
+                                + (aMoltenFluid != null)
+                                + " | Plasma Exists? "
+                                + (aPlasma != null));
                 continue;
             } else {
                 // Build a new plasma recipe
@@ -260,9 +246,9 @@ public class Meta_GT_Proxy {
                         new ItemStack[] {},
                         new ItemStack[] {},
                         null,
-                        new int[] {10000},
-                        new FluidStack[] {aPlasma, FluidUtils.getFluidStack("cryotheum", aTotalTickTime)},
-                        new FluidStack[] {aMoltenFluid},
+                        new int[] { 10000 },
+                        new FluidStack[] { aPlasma, FluidUtils.getFluidStack("cryotheum", aTotalTickTime) },
+                        new FluidStack[] { aMoltenFluid },
                         aTotalTickTime,
                         (int) GT_Values.V[4 + aAtomicTier],
                         aAtomicMass);
@@ -316,12 +302,8 @@ public class Meta_GT_Proxy {
                     Constructor<?> g = BaseCustomTileEntity.class.getConstructors()[0];
                     g.setAccessible(true);
                     return (BaseCustomTileEntity) g.newInstance();
-                } catch (InstantiationException
-                        | IllegalAccessException
-                        | IllegalArgumentException
-                        | InvocationTargetException
-                        | SecurityException e) {
-                }
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException | SecurityException e) {}
             }
         }
         try {
@@ -332,13 +314,10 @@ public class Meta_GT_Proxy {
                 Constructor<?> g = BaseCustomTileEntity.class.getConstructors()[0];
                 g.setAccessible(true);
                 return (BaseCustomTileEntity) g.newInstance();
-            } catch (InstantiationException
-                    | IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException
-                    | SecurityException e) {
-                GT_Log.err.println(
-                        "GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException | SecurityException e) {
+                GT_Log.err
+                        .println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
                 e.printStackTrace(GT_Log.err);
                 CORE.crash(
                         "GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
@@ -357,11 +336,8 @@ public class Meta_GT_Proxy {
                     Constructor<?> g = BaseCustomPower_MTE.class.getConstructors()[0];
                     g.setAccessible(true);
                     return (BaseCustomPower_MTE) g.newInstance();
-                } catch (InstantiationException
-                        | IllegalAccessException
-                        | IllegalArgumentException
-                        | InvocationTargetException
-                        | SecurityException e) {
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException | SecurityException e) {
                     // e.printStackTrace();
                 }
             }
@@ -375,13 +351,10 @@ public class Meta_GT_Proxy {
                 Constructor<?> g = BaseCustomPower_MTE.class.getConstructors()[0];
                 g.setAccessible(true);
                 return (BaseCustomPower_MTE) g.newInstance();
-            } catch (InstantiationException
-                    | IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException
-                    | SecurityException e) {
-                GT_Log.err.println(
-                        "GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException | SecurityException e) {
+                GT_Log.err
+                        .println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
                 e.printStackTrace(GT_Log.err);
                 CORE.crash(
                         "GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
@@ -410,8 +383,8 @@ public class Meta_GT_Proxy {
                 }
             }
         } else {
-            GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames =
-                    ArrayUtils.add(GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames, aClassName);
+            GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames = ArrayUtils
+                    .add(GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames, aClassName);
             return true;
         }
         return false;
@@ -452,8 +425,8 @@ public class Meta_GT_Proxy {
         mCustomGregtechMetaTooltips.put(aNbtTagName, aData);
     }
 
-    public static void conStructGtTileBlockTooltip(
-            ItemStack aStack, EntityPlayer aPlayer, List<Object> aList, boolean par4) {
+    public static void conStructGtTileBlockTooltip(ItemStack aStack, EntityPlayer aPlayer, List<Object> aList,
+            boolean par4) {
         try {
             int tDamage = aStack.getItemDamage();
             if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
@@ -471,18 +444,18 @@ public class Meta_GT_Proxy {
                                 if (tString.length >= 2) {
                                     StringBuffer tBuffer = new StringBuffer();
                                     Object tRep[] = new String[tString.length / 2];
-                                    for (int j = 0; j < tString.length; j++)
-                                        if (j % 2 == 0) tBuffer.append(tString[j]);
-                                        else {
-                                            tBuffer.append(" %s");
-                                            tRep[j / 2] = tString[j];
-                                        }
-                                    aList.add(String.format(
-                                            GT_LanguageManager.addStringLocalization(
-                                                    "TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++,
-                                                    tBuffer.toString(),
-                                                    !GregTech_API.sPostloadFinished),
-                                            tRep));
+                                    for (int j = 0; j < tString.length; j++) if (j % 2 == 0) tBuffer.append(tString[j]);
+                                    else {
+                                        tBuffer.append(" %s");
+                                        tRep[j / 2] = tString[j];
+                                    }
+                                    aList.add(
+                                            String.format(
+                                                    GT_LanguageManager.addStringLocalization(
+                                                            "TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++,
+                                                            tBuffer.toString(),
+                                                            !GregTech_API.sPostloadFinished),
+                                                    tRep));
                                 }
                             } else {
                                 String tTranslated = GT_LanguageManager.addStringLocalization(
@@ -506,26 +479,37 @@ public class Meta_GT_Proxy {
                         if ((aOffset) <= 10) {
                             tTier -= 2;
                             aList.add(EnumChatFormatting.BOLD + "16" + " Fuse Slots" + EnumChatFormatting.GRAY);
-                            aList.add("Per each fuse, you may insert " + EnumChatFormatting.YELLOW
-                                    + (GT_Values.V[tTier]) + EnumChatFormatting.GRAY + " EU/t");
-                            aList.add("However this " + EnumChatFormatting.ITALIC + EnumChatFormatting.RED + "MUST"
-                                    + EnumChatFormatting.GRAY + " be in a single Amp");
-                            aList.add("This machine can accept upto a single amp of "
-                                    + GT_Values.VN[Math.min(tTier + 2, 12)] + " as a result");
-                            aList.add(GT_LanguageManager.addStringLocalization(
+                            aList.add(
+                                    "Per each fuse, you may insert " + EnumChatFormatting.YELLOW
+                                            + (GT_Values.V[tTier])
+                                            + EnumChatFormatting.GRAY
+                                            + " EU/t");
+                            aList.add(
+                                    "However this " + EnumChatFormatting.ITALIC
+                                            + EnumChatFormatting.RED
+                                            + "MUST"
+                                            + EnumChatFormatting.GRAY
+                                            + " be in a single Amp");
+                            aList.add(
+                                    "This machine can accept upto a single amp of "
+                                            + GT_Values.VN[Math.min(tTier + 2, 12)]
+                                            + " as a result");
+                            aList.add(
+                                    GT_LanguageManager.addStringLocalization(
                                             "TileEntity_Breaker_Loss",
-                                            "Breaker Loss: " + EnumChatFormatting.RED + ""
+                                            "Breaker Loss: " + EnumChatFormatting.RED
+                                                    + ""
                                                     + (GT_Values.V[Math.max(tTier - 1, 0)] / 10)
-                                                    + EnumChatFormatting.GRAY + " EU/t",
-                                            !GregTech_API.sPostloadFinished)
-                                    + EnumChatFormatting.GRAY);
+                                                    + EnumChatFormatting.GRAY
+                                                    + " EU/t",
+                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
                         }
 
-                        aList.add(GT_LanguageManager.addStringLocalization(
+                        aList.add(
+                                GT_LanguageManager.addStringLocalization(
                                         "TileEntity_Special_Power_1",
                                         EnumChatFormatting.RED + "Special Power Handling, please read manual",
-                                        !GregTech_API.sPostloadFinished)
-                                + EnumChatFormatting.GRAY);
+                                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
                         // aList.add(GT_LanguageManager.addStringLocalization("TileEntity_BreakerBox_2",
                         // EnumChatFormatting.RED+"Special Power Handling, please read manual",
                         // !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
@@ -537,92 +521,126 @@ public class Meta_GT_Proxy {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         String inA = "0";
                         if (tTileEntity.getInputAmperage() >= 1L) {
-                            inA = " at " + EnumChatFormatting.YELLOW + tTileEntity.getInputAmperage()
-                                    + EnumChatFormatting.GRAY + " Amps";
+                            inA = " at " + EnumChatFormatting.YELLOW
+                                    + tTileEntity.getInputAmperage()
+                                    + EnumChatFormatting.GRAY
+                                    + " Amps";
                         } else {
-                            inA = " at " + EnumChatFormatting.WHITE + tTileEntity.getInputAmperage()
-                                    + EnumChatFormatting.GRAY + " Amps";
+                            inA = " at " + EnumChatFormatting.WHITE
+                                    + tTileEntity.getInputAmperage()
+                                    + EnumChatFormatting.GRAY
+                                    + " Amps";
                         }
-                        String a1 = "Voltage IN: " + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage()
-                                + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")"
-                                + EnumChatFormatting.GRAY + inA;
+                        String a1 = "Voltage IN: " + EnumChatFormatting.GREEN
+                                + tTileEntity.getInputVoltage()
+                                + " ("
+                                + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())]
+                                + ")"
+                                + EnumChatFormatting.GRAY
+                                + inA;
                         aList.add(a1);
                     }
 
                     if (tTileEntity.getOutputVoltage() > 0L) {
                         String outA = "0";
                         if (tTileEntity.getOutputAmperage() >= 1L) {
-                            outA = " at " + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage()
-                                    + EnumChatFormatting.GRAY + " Amps";
+                            outA = " at " + EnumChatFormatting.YELLOW
+                                    + tTileEntity.getOutputAmperage()
+                                    + EnumChatFormatting.GRAY
+                                    + " Amps";
                         } else {
-                            outA = " at " + EnumChatFormatting.WHITE + tTileEntity.getOutputAmperage()
-                                    + EnumChatFormatting.GRAY + " Amps";
+                            outA = " at " + EnumChatFormatting.WHITE
+                                    + tTileEntity.getOutputAmperage()
+                                    + EnumChatFormatting.GRAY
+                                    + " Amps";
                         }
-                        String a1 = "Voltage OUT: " + EnumChatFormatting.GREEN + tTileEntity.getOutputVoltage()
-                                + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")"
-                                + EnumChatFormatting.GRAY + outA;
+                        String a1 = "Voltage OUT: " + EnumChatFormatting.GREEN
+                                + tTileEntity.getOutputVoltage()
+                                + " ("
+                                + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())]
+                                + ")"
+                                + EnumChatFormatting.GRAY
+                                + outA;
                         aList.add(a1);
                     }
 
                     if (tTileEntity.getOutputVoltage() > 0L) {
-                        aList.add(GT_LanguageManager.addStringLocalization(
+                        aList.add(
+                                GT_LanguageManager.addStringLocalization(
                                         "TileEntity_Lossess_EU",
-                                        "Transmission Loss: " + EnumChatFormatting.DARK_BLUE + ""
+                                        "Transmission Loss: " + EnumChatFormatting.DARK_BLUE
+                                                + ""
                                                 + (tDamage < 30500 && tDamage >= 30400 ? 0 : 1),
-                                        !GregTech_API.sPostloadFinished)
-                                + EnumChatFormatting.GRAY);
+                                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
                     }
 
                     if (tTileEntity.getEUCapacity() > 0) {
-                        aList.add(GT_LanguageManager.addStringLocalization(
-                                        "TileEntity_EUp_STORE2", "Internal Capacity: ", !GregTech_API.sPostloadFinished)
-                                + EnumChatFormatting.BLUE
-                                + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY + " EU");
+                        aList.add(
+                                GT_LanguageManager.addStringLocalization(
+                                        "TileEntity_EUp_STORE2",
+                                        "Internal Capacity: ",
+                                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.BLUE
+                                        + tTileEntity.getEUCapacity()
+                                        + EnumChatFormatting.GRAY
+                                        + " EU");
                     }
                 }
 
-                /*if (tTileEntity.getEUCapacity() > 0L) {
-                    if (tTileEntity.getInputVoltage() > 0L) {
-                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + EnumChatFormatting.GRAY);
-                    }
-                    if (tTileEntity.getOutputVoltage() > 0L) {
-                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")" + EnumChatFormatting.GRAY);
-                    }
-                    if (tTileEntity.getOutputAmperage() > 1L) {
-                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage() + EnumChatFormatting.GRAY);
-                    }
-                    aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY);
-                }*/
+                /*
+                 * if (tTileEntity.getEUCapacity() > 0L) { if (tTileEntity.getInputVoltage() > 0L) {
+                 * aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ",
+                 * !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage() + " (" +
+                 * GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + EnumChatFormatting.GRAY); }
+                 * if (tTileEntity.getOutputVoltage() > 0L) {
+                 * aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ",
+                 * !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getOutputVoltage() + " ("
+                 * + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")" + EnumChatFormatting.GRAY);
+                 * } if (tTileEntity.getOutputAmperage() > 1L) {
+                 * aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ",
+                 * !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage() +
+                 * EnumChatFormatting.GRAY); }
+                 * aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ",
+                 * !GregTech_API.sPostloadFinished ) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() +
+                 * EnumChatFormatting.GRAY); }
+                 */
 
             }
             NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(GT_LanguageManager.addStringLocalization(
-                            "GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished));
+                    aList.add(
+                            GT_LanguageManager.addStringLocalization(
+                                    "GT_TileEntity_MUFFLER",
+                                    "has Muffler Upgrade",
+                                    !GregTech_API.sPostloadFinished));
                 }
                 if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(GT_LanguageManager.addStringLocalization(
-                            "GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished));
+                    aList.add(
+                            GT_LanguageManager.addStringLocalization(
+                                    "GT_TileEntity_STEAMCONVERTER",
+                                    "has Steam Upgrade",
+                                    !GregTech_API.sPostloadFinished));
                 }
                 int tAmount = 0;
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(tAmount + " "
-                            + GT_LanguageManager.addStringLocalization(
-                                    "GT_TileEntity_STEAMTANKS",
-                                    "Steam Tank Upgrades",
-                                    !GregTech_API.sPostloadFinished));
+                    aList.add(
+                            tAmount + " "
+                                    + GT_LanguageManager.addStringLocalization(
+                                            "GT_TileEntity_STEAMTANKS",
+                                            "Steam Tank Upgrades",
+                                            !GregTech_API.sPostloadFinished));
                 }
 
-                FluidStack afluid =
-                        net.minecraftforge.fluids.FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
+                FluidStack afluid = net.minecraftforge.fluids.FluidStack
+                        .loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
                 if (afluid != null) {
                     int tFluidAmount = afluid.amount;
                     if (tFluidAmount > 0) {
-                        aList.add(GT_LanguageManager.addStringLocalization(
-                                "GT_TileEntity_FLUIDTANK",
-                                "Tank Fluid: " + tFluidAmount + "L " + afluid.getLocalizedName() + "",
-                                !GregTech_API.sPostloadFinished));
+                        aList.add(
+                                GT_LanguageManager.addStringLocalization(
+                                        "GT_TileEntity_FLUIDTANK",
+                                        "Tank Fluid: " + tFluidAmount + "L " + afluid.getLocalizedName() + "",
+                                        !GregTech_API.sPostloadFinished));
                     }
                 }
             }

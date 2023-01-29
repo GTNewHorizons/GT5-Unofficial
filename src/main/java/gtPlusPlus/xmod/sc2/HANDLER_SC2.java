@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.sc2;
 
-import gtPlusPlus.core.lib.LoadedMods;
 import vswe.stevescarts.ModuleData.GppModuleData;
+import gtPlusPlus.core.lib.LoadedMods;
 
 public class HANDLER_SC2 {
 

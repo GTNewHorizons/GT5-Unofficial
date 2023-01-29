@@ -1,15 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
 
 public class GT_MethodHelper {
 
@@ -46,28 +48,25 @@ public class GT_MethodHelper {
                         Field aColor = ReflectionUtils.getField(BaseMetaTileEntity.class, "mColor");
                         Field aActive = ReflectionUtils.getField(BaseMetaTileEntity.class, "mActive");
                         Field aMetaTile = ReflectionUtils.getField(BaseMetaTileEntity.class, "mMetaTileEntity");
-                        Method aHasValidTile = ReflectionUtils.getMethod(
-                                BaseMetaTileEntity.class, "hasValidMetaTileEntity", new Class[] {});
+                        Method aHasValidTile = ReflectionUtils
+                                .getMethod(BaseMetaTileEntity.class, "hasValidMetaTileEntity", new Class[] {});
 
                         boolean hasValidTileObj = (boolean) aHasValidTile.invoke(aTile, new Object[] {});
                         boolean aActiveObj = aActive.getBoolean(aTile);
                         byte aFacingObj = aFacing.getByte(aTile);
-                        byte aColorObj = aColor.getByte(aTile);
-                        ;
+                        byte aColorObj = aColor.getByte(aTile);;
                         MetaTileEntity aMetaTileObj = (MetaTileEntity) aMetaTile.get(aTile);
 
                         if (rIcon != null) {
-                            return new ITexture[] {rIcon};
+                            return new ITexture[] { rIcon };
                         } else {
-                            return hasValidTileObj
-                                    ? aMetaTileObj.getTexture(
-                                            aTile,
-                                            aSide,
-                                            aFacingObj,
-                                            (byte) (aColorObj - 1),
-                                            aActiveObj,
-                                            aTile.getOutputRedstoneSignal(aSide) > 0)
-                                    : BlockIcons.ERROR_RENDERING;
+                            return hasValidTileObj ? aMetaTileObj.getTexture(
+                                    aTile,
+                                    aSide,
+                                    aFacingObj,
+                                    (byte) (aColorObj - 1),
+                                    aActiveObj,
+                                    aTile.getOutputRedstoneSignal(aSide) > 0) : BlockIcons.ERROR_RENDERING;
                         }
                     } catch (Throwable t) {
                         t.printStackTrace();

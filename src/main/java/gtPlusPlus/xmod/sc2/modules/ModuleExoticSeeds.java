@@ -2,18 +2,20 @@ package gtPlusPlus.xmod.sc2.modules;
 
 import static net.minecraft.init.Blocks.farmland;
 
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Field;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.Addons.ModuleAddon;
 import vswe.stevescarts.Modules.ICropModule;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
 
@@ -27,8 +29,7 @@ public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
             Item seedItem = seed.getItem();
             if (!(seedItem instanceof ItemSeeds)) return null;
 
-            Block cropBlock = (Block)
-                    ReflectionUtils.getField(ItemSeeds.class, "field_150925_a").get(seedItem);
+            Block cropBlock = (Block) ReflectionUtils.getField(ItemSeeds.class, "field_150925_a").get(seedItem);
 
             return cropBlock;
         } catch (Throwable t) {
@@ -54,22 +55,17 @@ public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
         int m = world.getBlockMetadata(x, y, z);
 
         // If Forestry is loaded, let's make this upgrade convert farmland to Humus.
-        /*if (LoadedMods.Forestry) {
-        	Block mFarmLand = world.getBlock(x, y-1, z);
-        	if (mFarmLand == farmland) {
-        		Block h = tryGetHumus();
-        		if (h != farmland) {
-        			world.setBlock(x, y-1, z, h);
-        		}
-        	}
-        }*/
+        /*
+         * if (LoadedMods.Forestry) { Block mFarmLand = world.getBlock(x, y-1, z); if (mFarmLand == farmland) { Block h
+         * = tryGetHumus(); if (h != farmland) { world.setBlock(x, y-1, z, h); } } }
+         */
 
         return b instanceof BlockCrops && m == 7;
     }
 
     /**
-     * Static Class & Block References for Forestry content.
-     * Stops Forestry being a hard requirement for this feature without having to make @Optional annotations.
+     * Static Class & Block References for Forestry content. Stops Forestry being a hard requirement for this feature
+     * without having to make @Optional annotations.
      */
     private static Class<?> mForestryHumusBlockClass;
 
@@ -86,8 +82,8 @@ public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
                     Field blocks = ReflectionUtils.getField(mForestryHumusBlockClass, "blocks");
                     if (blocks != null) {
                         Object blockRegistryCoreObject = blocks.get(null);
-                        mForestryBlockRegistryCoreClass =
-                                ReflectionUtils.getClass("forestry.core.blocks.BlockRegistryCore");
+                        mForestryBlockRegistryCoreClass = ReflectionUtils
+                                .getClass("forestry.core.blocks.BlockRegistryCore");
                         if (mForestryBlockRegistryCoreClass != null && blockRegistryCoreObject != null) {
                             Field soil = ReflectionUtils.getField(mForestryBlockRegistryCoreClass, "soil");
                             if (soil != null) {

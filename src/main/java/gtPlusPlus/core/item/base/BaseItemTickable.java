@@ -1,12 +1,7 @@
 package gtPlusPlus.core.item.base;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +11,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 
 public class BaseItemTickable extends CoreItem {
 
@@ -31,18 +33,13 @@ public class BaseItemTickable extends CoreItem {
         this(false, twoPass, unlocalName, colour, maxTicks, new String[] {});
     }
 
-    public BaseItemTickable(
-            boolean containerTick, boolean twoPass, final String unlocalName, final int colour, final int maxTicks) {
+    public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
+            final int maxTicks) {
         this(containerTick, twoPass, unlocalName, colour, maxTicks, new String[] {});
     }
 
-    public BaseItemTickable(
-            boolean containerTick,
-            boolean twoPass,
-            final String unlocalName,
-            final int colour,
-            final int maxTicks,
-            final String[] Description) {
+    public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
+            final int maxTicks, final String[] Description) {
         super(
                 unlocalName,
                 AddToCreativeTab.tabMisc,
@@ -63,11 +60,7 @@ public class BaseItemTickable extends CoreItem {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         if (world == null || iStack == null) {
             return;
@@ -82,10 +75,10 @@ public class BaseItemTickable extends CoreItem {
         }
     }
 
-    /*private final boolean setGregtechItemList() {
-    	ItemList.Component_LavaFilter.set(this);
-    	return ItemList.Component_LavaFilter.get(1) != null ? true : false;
-    }*/
+    /*
+     * private final boolean setGregtechItemList() { ItemList.Component_LavaFilter.set(this); return
+     * ItemList.Component_LavaFilter.get(1) != null ? true : false; }
+     */
 
     /**
      *
@@ -297,8 +290,8 @@ public class BaseItemTickable extends CoreItem {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(
-            ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list,
+            boolean bool) {
         World world = player.getEntityWorld();
         if (this.descriptionString.length > 0) {
             list.add(EnumChatFormatting.GRAY + this.descriptionString[0]);

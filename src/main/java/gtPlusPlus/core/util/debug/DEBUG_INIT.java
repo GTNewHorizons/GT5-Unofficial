@@ -10,12 +10,14 @@ public class DEBUG_INIT {
     }
 
     public static void registerItems() {
-        /*ModItems.itemDebugShapeSpawner = new DEBUG_ITEM_ShapeSpawner("itemDebugShapeSpawner", AddToCreativeTab.tabMisc, 1, 500);
-        GameRegistry.registerItem(ModItems.itemDebugShapeSpawner, "itemDebugShapeSpawner");
-        ModItems.itemBedLocator_Base = new BedLocator_Base("itemBedLocator_Base");
-        GameRegistry.registerItem(ModItems.itemBedLocator_Base, "itemBedLocator_Base");
-        ModItems.itemBaseItemWithCharge = new BaseItemWithCharge("itemBaseItemWithCharge", 0, 1000);
-        GameRegistry.registerItem(ModItems.itemBaseItemWithCharge, "itemBaseItemWithCharge");*/
+        /*
+         * ModItems.itemDebugShapeSpawner = new DEBUG_ITEM_ShapeSpawner("itemDebugShapeSpawner",
+         * AddToCreativeTab.tabMisc, 1, 500); GameRegistry.registerItem(ModItems.itemDebugShapeSpawner,
+         * "itemDebugShapeSpawner"); ModItems.itemBedLocator_Base = new BedLocator_Base("itemBedLocator_Base");
+         * GameRegistry.registerItem(ModItems.itemBedLocator_Base, "itemBedLocator_Base");
+         * ModItems.itemBaseItemWithCharge = new BaseItemWithCharge("itemBaseItemWithCharge", 0, 1000);
+         * GameRegistry.registerItem(ModItems.itemBaseItemWithCharge, "itemBaseItemWithCharge");
+         */
     }
 
     public static void registerTEs() {}

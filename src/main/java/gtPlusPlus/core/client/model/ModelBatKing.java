@@ -1,16 +1,19 @@
 package gtPlusPlus.core.client.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.entity.monster.EntityBatKing;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.entity.monster.EntityBatKing;
 
 @SideOnly(Side.CLIENT)
 public class ModelBatKing extends ModelBase {
+
     private ModelRenderer batHead;
     /** The body box of the bat model. */
     private ModelRenderer batBody;
@@ -68,14 +71,8 @@ public class ModelBatKing extends ModelBase {
     /**
      * Sets the models various rotation angles then renders the model.
      */
-    public void render(
-            Entity p_78088_1_,
-            float p_78088_2_,
-            float p_78088_3_,
-            float p_78088_4_,
-            float p_78088_5_,
-            float p_78088_6_,
-            float p_78088_7_) {
+    public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_,
+            float p_78088_6_, float p_78088_7_) {
         EntityBatKing entitybat = (EntityBatKing) p_78088_1_;
         float f6;
 

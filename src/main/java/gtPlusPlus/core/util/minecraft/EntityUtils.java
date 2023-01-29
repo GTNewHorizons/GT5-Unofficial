@@ -1,19 +1,11 @@
 package gtPlusPlus.core.util.minecraft;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.AABB;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import ic2.core.IC2Potion;
-import ic2.core.item.armor.ItemArmorHazmat;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +16,16 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+
+import cpw.mods.fml.common.registry.EntityRegistry;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.AABB;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.handler.events.EntityDeathHandler;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 
 public class EntityUtils {
 
@@ -81,14 +83,14 @@ public class EntityUtils {
     }
 
     // TODO
-    public static void registerEntityToBiomeSpawns(
-            final Class<EntityLiving> classy, final EnumCreatureType EntityType, final BiomeGenBase baseBiomeGen) {
-        EntityRegistry.addSpawn(
-                classy, 6, 1, 5, EntityType, baseBiomeGen); // change the values to vary the spawn rarity, biome, etc.
+    public static void registerEntityToBiomeSpawns(final Class<EntityLiving> classy, final EnumCreatureType EntityType,
+            final BiomeGenBase baseBiomeGen) {
+        EntityRegistry.addSpawn(classy, 6, 1, 5, EntityType, baseBiomeGen); // change the values to vary the spawn
+                                                                            // rarity, biome, etc.
     }
 
-    public static boolean applyRadiationDamageToEntity(
-            final int stackSize, final int radiationLevel, final World world, final Entity entityHolding) {
+    public static boolean applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world,
+            final Entity entityHolding) {
         if (!world.isRemote) {
             if ((radiationLevel > 0) && (entityHolding instanceof EntityLivingBase)) {
                 final EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
@@ -99,9 +101,7 @@ public class EntityUtils {
                         if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null) {
                             // Utils.LOG_INFO("t");
                             duration = (radiationLevel * 5)
-                                    + entityLiving
-                                            .getActivePotionEffect(IC2Potion.radiation)
-                                            .getDuration();
+                                    + entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
                         } else {
                             // Utils.LOG_INFO("f");
                             duration = radiationLevel * 30;
@@ -117,114 +117,101 @@ public class EntityUtils {
     }
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!HazmatUtils.providesProtetion_Frost(aEntity.getEquipmentInSlot(i))) {
-                return false;
-            }
+        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Frost(aEntity.getEquipmentInSlot(i))) {
+            return false;
+        }
         return true;
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!HazmatUtils.providesProtetion_Fire(aEntity.getEquipmentInSlot(i))) {
-                return false;
-            }
+        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Fire(aEntity.getEquipmentInSlot(i))) {
+            return false;
+        }
         return true;
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!HazmatUtils.providesProtetion_Biohazard(aEntity.getEquipmentInSlot(i))) {
-                return false;
-            }
+        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Biohazard(aEntity.getEquipmentInSlot(i))) {
+            return false;
+        }
         return true;
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!HazmatUtils.providesProtetion_Radiation(aEntity.getEquipmentInSlot(i))) {
-                return false;
-            }
+        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Radiation(aEntity.getEquipmentInSlot(i))) {
+            return false;
+        }
         return true;
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!HazmatUtils.providesProtetion_Electricity(aEntity.getEquipmentInSlot(i))) {
-                return false;
-            }
+        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Electricity(aEntity.getEquipmentInSlot(i))) {
+            return false;
+        }
         return true;
     }
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!HazmatUtils.providesProtetion_Gas(aEntity.getEquipmentInSlot(i))) {
-                return false;
-            }
+        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Gas(aEntity.getEquipmentInSlot(i))) {
+            return false;
+        }
         return true;
     }
 
     public static boolean applyRadioactivity(EntityLivingBase aEntity, int aLevel, int aAmountOfItems) {
-        if (aLevel > 0
-                && aEntity != null
+        if (aLevel > 0 && aEntity != null
                 && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD
                 && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD
                 && !ItemArmorHazmat.hasCompleteHazmat(aEntity)) {
             PotionEffect tEffect = null;
-            aEntity.addPotionEffect(new PotionEffect(
-                    Potion.moveSlowdown.id,
-                    aLevel * 140 * aAmountOfItems
-                            + Math.max(
+            aEntity.addPotionEffect(
+                    new PotionEffect(
+                            Potion.moveSlowdown.id,
+                            aLevel * 140 * aAmountOfItems + Math.max(
                                     0,
-                                    ((tEffect = aEntity.getActivePotionEffect(Potion.moveSlowdown)) == null
-                                            ? 0
+                                    ((tEffect = aEntity.getActivePotionEffect(Potion.moveSlowdown)) == null ? 0
                                             : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(
-                    Potion.digSlowdown.id,
-                    aLevel * 150 * aAmountOfItems
-                            + Math.max(
+                            Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(
+                    new PotionEffect(
+                            Potion.digSlowdown.id,
+                            aLevel * 150 * aAmountOfItems + Math.max(
                                     0,
-                                    ((tEffect = aEntity.getActivePotionEffect(Potion.digSlowdown)) == null
-                                            ? 0
+                                    ((tEffect = aEntity.getActivePotionEffect(Potion.digSlowdown)) == null ? 0
                                             : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(
-                    Potion.confusion.id,
-                    aLevel * 130 * aAmountOfItems
-                            + Math.max(
+                            Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(
+                    new PotionEffect(
+                            Potion.confusion.id,
+                            aLevel * 130 * aAmountOfItems + Math.max(
                                     0,
-                                    ((tEffect = aEntity.getActivePotionEffect(Potion.confusion)) == null
-                                            ? 0
+                                    ((tEffect = aEntity.getActivePotionEffect(Potion.confusion)) == null ? 0
                                             : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(
-                    Potion.weakness.id,
-                    aLevel * 150 * aAmountOfItems
-                            + Math.max(
+                            Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(
+                    new PotionEffect(
+                            Potion.weakness.id,
+                            aLevel * 150 * aAmountOfItems + Math.max(
                                     0,
-                                    ((tEffect = aEntity.getActivePotionEffect(Potion.weakness)) == null
-                                            ? 0
+                                    ((tEffect = aEntity.getActivePotionEffect(Potion.weakness)) == null ? 0
                                             : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(
-                    Potion.hunger.id,
-                    aLevel * 130 * aAmountOfItems
-                            + Math.max(
+                            Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(
+                    new PotionEffect(
+                            Potion.hunger.id,
+                            aLevel * 130 * aAmountOfItems + Math.max(
                                     0,
-                                    ((tEffect = aEntity.getActivePotionEffect(Potion.hunger)) == null
-                                            ? 0
+                                    ((tEffect = aEntity.getActivePotionEffect(Potion.hunger)) == null ? 0
                                             : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(
-                    IC2Potion.radiation.id,
-                    aLevel * 180 * aAmountOfItems
-                            + Math.max(
+                            Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(
+                    new PotionEffect(
+                            IC2Potion.radiation.id,
+                            aLevel * 180 * aAmountOfItems + Math.max(
                                     0,
-                                    ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null
-                                            ? 0
+                                    ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null ? 0
                                             : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
+                            Math.max(0, (5 * aLevel) / 7)));
             return true;
         }
         return false;
@@ -258,8 +245,7 @@ public class EntityUtils {
         } else {
             try {
                 dealFireDamage.invoke(entity, amount);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            }
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
         }
         return false;
     }
@@ -269,10 +255,10 @@ public class EntityUtils {
     }
 
     public static boolean isTileEntityRegistered(Class aTileClass, String aTileName) {
-        Field aRegistry = ReflectionUtils.getField(
-                ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "nameToClassMap");
-        Field aRegistry2 = ReflectionUtils.getField(
-                ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "classToNameMap");
+        Field aRegistry = ReflectionUtils
+                .getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "nameToClassMap");
+        Field aRegistry2 = ReflectionUtils
+                .getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "classToNameMap");
         try {
             Object o = aRegistry.get(null);
             if (o != null) {
@@ -298,16 +284,16 @@ public class EntityUtils {
     }
 
     public static double getDistance(Entity p1, Entity p2) {
-        return Math.sqrt(
-                Math.pow(p1.posX - p2.posX, 2) + Math.pow(p1.posY - p2.posY, 2) + Math.pow(p1.posZ - p2.posZ, 2));
+        return Math
+                .sqrt(Math.pow(p1.posX - p2.posX, 2) + Math.pow(p1.posY - p2.posY, 2) + Math.pow(p1.posZ - p2.posZ, 2));
     }
 
     public static AutoMap<Entity> getEntitiesWithinBoundingBoxExcluding(Entity aExclusion, AABB aBoundingBox) {
         if (aExclusion == null) {
             return new AutoMap<Entity>();
         } else {
-            List<Entity> aEntities =
-                    aBoundingBox.world().getEntitiesWithinAABBExcludingEntity(aExclusion, aBoundingBox.get());
+            List<Entity> aEntities = aBoundingBox.world()
+                    .getEntitiesWithinAABBExcludingEntity(aExclusion, aBoundingBox.get());
             return new AutoMap<Entity>(aEntities);
         }
     }
@@ -322,10 +308,12 @@ public class EntityUtils {
     }
 
     /**
-     * Provides the ability to provide custom drops upon the death of EntityLivingBase objects. Simplified function with static Max drop size of 1.
+     * Provides the ability to provide custom drops upon the death of EntityLivingBase objects. Simplified function with
+     * static Max drop size of 1.
+     * 
      * @param aMobClass - The Base Class you want to drop this item.
-     * @param aStack - The ItemStack, stack size is not respected.
-     * @param aChance - Chance out of 10000, where 100 is 1%. (1 = 0.01% - this is ok)
+     * @param aStack    - The ItemStack, stack size is not respected.
+     * @param aChance   - Chance out of 10000, where 100 is 1%. (1 = 0.01% - this is ok)
      */
     public static void registerDropsForMob(Class aMobClass, ItemStack aStack, int aChance) {
         registerDropsForMob(aMobClass, aStack, 1, aChance);
@@ -333,10 +321,11 @@ public class EntityUtils {
 
     /**
      * Provides the ability to provide custom drops upon the death of EntityLivingBase objects.
-     * @param aMobClass - The Base Class you want to drop this item.
-     * @param aStack - The ItemStack, stack size is not respected.
+     * 
+     * @param aMobClass  - The Base Class you want to drop this item.
+     * @param aStack     - The ItemStack, stack size is not respected.
      * @param aMaxAmount - The maximum size of the ItemStack which drops.
-     * @param aChance - Chance out of 10000, where 100 is 1%. (1 = 0.01% - this is ok)
+     * @param aChance    - Chance out of 10000, where 100 is 1%. (1 = 0.01% - this is ok)
      */
     public static void registerDropsForMob(Class aMobClass, ItemStack aStack, int aMaxAmount, int aChance) {
         EntityDeathHandler.registerDropsForMob(aMobClass, aStack, aMaxAmount, aChance);

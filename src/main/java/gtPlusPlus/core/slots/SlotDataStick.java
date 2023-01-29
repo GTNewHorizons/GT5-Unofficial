@@ -1,10 +1,11 @@
 package gtPlusPlus.core.slots;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.recipe.common.CI;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotDataStick extends Slot {
 

@@ -6,7 +6,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.MovementInputFromOptions;
 
 /*
- *		Replacement for MovementInputFromOptions - Built from the source of ToggleSneak 3.0.3
+ * Replacement for MovementInputFromOptions - Built from the source of ToggleSneak 3.0.3
  */
 
 public class CustomMovementHandler {
@@ -25,7 +25,7 @@ public class CustomMovementHandler {
     private boolean wasRiding;
 
     /*
-     * 		MovementInputFromOptions.updatePlayerMoveState()
+     * MovementInputFromOptions.updatePlayerMoveState()
      */
     public void update(final Minecraft mc, final MovementInputFromOptions options, final EntityPlayerSP thisPlayer) {
         options.moveStrafe = 0.0F;
@@ -98,14 +98,15 @@ public class CustomMovementHandler {
         }
 
         //
-        //  Sprint Toggle - Updated 6/18/2014
+        // Sprint Toggle - Updated 6/18/2014
         //
 
         // Establish conditions where we don't want to start a sprint - sneaking, riding, flying, hungry
-        final boolean enoughHunger =
-                (thisPlayer.getFoodStats().getFoodLevel() > 6.0F) || thisPlayer.capabilities.isFlying;
-        final boolean canSprint =
-                !options.sneak && !thisPlayer.isRiding() && !thisPlayer.capabilities.isFlying && enoughHunger;
+        final boolean enoughHunger = (thisPlayer.getFoodStats().getFoodLevel() > 6.0F)
+                || thisPlayer.capabilities.isFlying;
+        final boolean canSprint = !options.sneak && !thisPlayer.isRiding()
+                && !thisPlayer.capabilities.isFlying
+                && enoughHunger;
 
         this.isDisabled = !SneakManager.get(thisPlayer).Sprinting();
         this.canDoubleTap = SneakManager.get(thisPlayer).optionDoubleTap;
@@ -122,7 +123,7 @@ public class CustomMovementHandler {
 
         // Key Released
         if ((canSprint || this.isDisabled) && !settings.keyBindSprint.getIsKeyPressed() && this.handledSprintPress) {
-            // Was key held for longer than 300ms?  If so, mark it so we can resume vanilla behavior
+            // Was key held for longer than 300ms? If so, mark it so we can resume vanilla behavior
             if ((System.currentTimeMillis() - this.lastSprintPressed) > 300L) {
                 this.sprintHeldAndReleased = true;
             }

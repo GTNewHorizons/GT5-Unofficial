@@ -1,20 +1,9 @@
 package gtPlusPlus.core.block.base;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.CubicObject;
-import gtPlusPlus.api.objects.minecraft.SafeTexture;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.InventoryUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -28,6 +17,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.CubicObject;
+import gtPlusPlus.api.objects.minecraft.SafeTexture;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.InventoryUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class BasicTileBlockWithTooltip extends BlockContainer implements ITileTooltip {
 
@@ -45,6 +47,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * Does this block have any meta at all?
+     * 
      * @return
      */
     public final boolean hasMeta() {
@@ -53,12 +56,14 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * The amount of meta this block has.
+     * 
      * @return
      */
     public abstract int getMetaCount();
 
     /**
      * Does this {@link Block} require special {@link ItemBlock} handling?
+     * 
      * @return The {@link Class} that will be used for this {@link Block}.
      */
     public Class<? extends ItemBlock> getItemBlockClass() {
@@ -67,12 +72,14 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * A lazy way to declare the unlocal name for the block, makes boilerplating easy.
+     * 
      * @return The internal name for this block.
      */
     public abstract String getUnlocalBlockName();
 
     /**
      * Does this Block have {@link ITileTooltip} support?
+     * 
      * @return {@link boolean} that represents if this block supports {@link ITileTooltip} or not.
      */
     public final boolean hasTooltip() {
@@ -81,24 +88,29 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * Lazy Boilerplating.
+     * 
      * @return Block Hardness.
      */
     protected abstract float initBlockHardness();
 
     /**
      * Lazy Boilerplating.
+     * 
      * @return Block Resistance.
      */
     protected abstract float initBlockResistance();
 
     /**
      * Lazy Boilerplating.
+     * 
      * @return The {@link CreativeTab} this Block is shown on.
      */
     protected abstract CreativeTabs initCreativeTab();
 
     /**
-     * The ID used by the {@link ITileTooltip} handler. Return -1 if you are not providing a custom {@link ItemBlock} in {@link #getItemBlockClass}().
+     * The ID used by the {@link ITileTooltip} handler. Return -1 if you are not providing a custom {@link ItemBlock} in
+     * {@link #getItemBlockClass}().
+     * 
      * @return
      */
     @Override
@@ -122,12 +134,14 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * The name of the Tile Entity.
+     * 
      * @return
      */
     protected abstract String getTileEntityName();
 
     /**
      * The String used for texture pathing.
+     * 
      * @return Sanitized {@link String}, containing no spaces or illegal characters.
      */
     private final String getTileEntityNameForTexturePathing() {
@@ -135,10 +149,10 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     }
 
     /**
-     * An array of CubicObjects, one for each meta, else just a single cell array.
-     * Expected to be null regularly, as the default texture handling should suffice.
-     * Handy if re-using textures or using a non-standard structure for them. FULL texture path must be used,
-     * inclusive of the MODID and a colon.
+     * An array of CubicObjects, one for each meta, else just a single cell array. Expected to be null regularly, as the
+     * default texture handling should suffice. Handy if re-using textures or using a non-standard structure for them.
+     * FULL texture path must be used, inclusive of the MODID and a colon.
+     * 
      * @return
      */
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
@@ -171,8 +185,9 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         // Default Path Name, this will make us look inside 'miscutils\textures\blocks'
         final String aPrefixTexPath = CORE.MODID + ":";
         // Default Path Name, this will make us look in the sub-directory for this Tile Entity.
-        final String aTexPathMid =
-                "TileEntities" + CORE.SEPERATOR + getTileEntityNameForTexturePathing() + CORE.SEPERATOR;
+        final String aTexPathMid = "TileEntities" + CORE.SEPERATOR
+                + getTileEntityNameForTexturePathing()
+                + CORE.SEPERATOR;
         // Construct a full path
         String aTexPathBuilt = aPrefixTexPath + aTexPathMid;
         // File Name Suffixes, without meta tags
@@ -223,7 +238,12 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                 aStringRight = aTexPathBuilt + aStringRight;
                 // Convenience Blob
                 CubicObject<String> aMetaBlob = new CubicObject<String>(
-                        aStringBot, aStringTop, aStringBack, aStringFront, aStringLeft, aStringRight);
+                        aStringBot,
+                        aStringTop,
+                        aStringBack,
+                        aStringFront,
+                        aStringLeft,
+                        aStringRight);
                 mSidedTexturePathArray.put(aMetaBlob);
                 Logger.INFO("[TeTexture] Added Texture Path data to map for meta " + i);
             }
@@ -243,7 +263,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
             SafeTexture aWest = SafeTexture.register(aMetaBlob.WEST);
             SafeTexture aEast = SafeTexture.register(aMetaBlob.EAST);
             // Store them in an Array
-            SafeTexture[] aInjectBlob = new SafeTexture[] {aBottom, aTop, aBack, aFont, aWest, aEast};
+            SafeTexture[] aInjectBlob = new SafeTexture[] { aBottom, aTop, aBack, aFont, aWest, aEast };
             // Convenience Blob
             CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<SafeTexture>(aInjectBlob);
             // Store this Blob into
@@ -263,19 +283,20 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);
 
     /**
-     * Called when {@link #breakBlock}() is called, but before {@link InventoryUtils#dropInventoryItems} and the super call.
+     * Called when {@link #breakBlock}() is called, but before {@link InventoryUtils#dropInventoryItems} and the super
+     * call.
      */
     public void onBlockBreak() {}
 
     @Override
-    public final void breakBlock(
-            final World world, final int x, final int y, final int z, final Block block, final int number) {
+    public final void breakBlock(final World world, final int x, final int y, final int z, final Block block,
+            final int number) {
         onBlockBreak();
         InventoryUtils.dropInventoryItems(world, x, y, z, block);
         super.breakBlock(world, x, y, z, block, number);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public final void getSubBlocks(Item aItem, CreativeTabs p_149666_2_, List aList) {
         if (hasMeta()) {
@@ -288,8 +309,8 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 

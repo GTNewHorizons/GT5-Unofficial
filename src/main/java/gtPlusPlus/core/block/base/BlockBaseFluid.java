@@ -1,5 +1,17 @@
 package gtPlusPlus.core.block.base;
 
+import java.util.Random;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -10,16 +22,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import java.util.Random;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.BlockFluidClassic;
-import net.minecraftforge.fluids.Fluid;
 
 public class BlockBaseFluid extends BlockFluidClassic {
 
@@ -40,8 +42,8 @@ public class BlockBaseFluid extends BlockFluidClassic {
     }
 
     public BlockFluidClassic setParticleColor(int arg0) {
-        return this.setParticleColor(
-                (arg0 >> 16 & 255) / 255.0F, (arg0 >> 8 & 255) / 255.0F, (arg0 >> 0 & 255) / 255.0F);
+        return this
+                .setParticleColor((arg0 >> 16 & 255) / 255.0F, (arg0 >> 8 & 255) / 255.0F, (arg0 >> 0 & 255) / 255.0F);
     }
 
     public BlockFluidClassic setParticleColor(float arg0, float arg1, float arg2) {
@@ -93,11 +95,16 @@ public class BlockBaseFluid extends BlockFluidClassic {
                         arg2 + super.densityDir,
                         arg3,
                         super.densityDir == -1 ? ForgeDirection.UP : ForgeDirection.DOWN)
-                && !arg0.getBlock(arg1, arg2 + 2 * super.densityDir, arg3)
-                        .getMaterial()
-                        .blocksMovement()) {
+                && !arg0.getBlock(arg1, arg2 + 2 * super.densityDir, arg3).getMaterial().blocksMovement()) {
             EntityDropParticleFX arg11 = new EntityDropParticleFX(
-                    arg0, arg5, arg7, arg9, this.particleRed, this.particleGreen, this.particleBlue, super.densityDir);
+                    arg0,
+                    arg5,
+                    arg7,
+                    arg9,
+                    this.particleRed,
+                    this.particleGreen,
+                    this.particleBlue,
+                    super.densityDir);
             FMLClientHandler.instance().getClient().effectRenderer.addEffect(arg11);
         }
     }

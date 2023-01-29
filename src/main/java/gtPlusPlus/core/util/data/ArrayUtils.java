@@ -1,14 +1,16 @@
 package gtPlusPlus.core.util.data;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class ArrayUtils {
 
@@ -36,10 +38,12 @@ public class ArrayUtils {
         return newArray;
     }
 
-    /*public static <V> Object getMostCommonElement(List<V> list) {
-    	Optional r = list.stream().map(V::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
-    	return r.get();
-    }*/
+    /*
+     * public static <V> Object getMostCommonElement(List<V> list) { Optional r =
+     * list.stream().map(V::getTextureSet).collect(Collectors.groupingBy(Function.identity(),
+     * Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey); return
+     * r.get(); }
+     */
 
     public static Object[] removeNulls(final Object[] v) {
         List<Object> list = new ArrayList<Object>(Arrays.asList(v));

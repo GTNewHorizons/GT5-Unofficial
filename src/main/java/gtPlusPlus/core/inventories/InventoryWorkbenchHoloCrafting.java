@@ -19,37 +19,15 @@ public class InventoryWorkbenchHoloCrafting implements IInventory {
      */
     public InventoryWorkbenchHoloCrafting() {}
 
-    /*public void readFromNBT(NBTTagCompound nbt)
-    {
-    	NBTTagList list = nbt.getTagList("Items", 10);
-    	inventory = new ItemStack[INV_SIZE];
-    	for(int i = 0;i<list.tagCount();i++)
-    	{
-    		NBTTagCompound data = list.getCompoundTagAt(i);
-    		int slot = data.getInteger("Slot");
-    		if(slot >= 0 && slot < INV_SIZE)
-    		{
-    			inventory[slot] = ItemStack.loadItemStackFromNBT(data);
-    		}
-    	}
-    }
-
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-    	NBTTagList list = new NBTTagList();
-    	for(int i = 0;i<INV_SIZE;i++)
-    	{
-    		ItemStack stack = inventory[i];
-    		if(stack != null)
-    		{
-    			NBTTagCompound data = new NBTTagCompound();
-    			stack.writeToNBT(data);
-    			data.setInteger("Slot", i);
-    			list.appendTag(data);
-    		}
-    	}
-    	nbt.setTag("Items", list);
-    }*/
+    /*
+     * public void readFromNBT(NBTTagCompound nbt) { NBTTagList list = nbt.getTagList("Items", 10); inventory = new
+     * ItemStack[INV_SIZE]; for(int i = 0;i<list.tagCount();i++) { NBTTagCompound data = list.getCompoundTagAt(i); int
+     * slot = data.getInteger("Slot"); if(slot >= 0 && slot < INV_SIZE) { inventory[slot] =
+     * ItemStack.loadItemStackFromNBT(data); } } } public void writeToNBT(NBTTagCompound nbt) { NBTTagList list = new
+     * NBTTagList(); for(int i = 0;i<INV_SIZE;i++) { ItemStack stack = inventory[i]; if(stack != null) { NBTTagCompound
+     * data = new NBTTagCompound(); stack.writeToNBT(data); data.setInteger("Slot", i); list.appendTag(data); } }
+     * nbt.setTag("Items", list); }
+     */
 
     @Override
     public int getSizeInventory() {

@@ -17,8 +17,10 @@ public class GregtechIndustrialChisel {
                 new GregtechMetaTileEntity_AutoChisel(31068, "chisel.tier.03", "Precision Auto-Chisel", 3)
                         .getStackForm(1L));
 
-        GregtechItemList.Controller_IndustrialAutoChisel.set(new GregtechMetaTileEntity_IndustrialChisel(
-                        31069, "multimachine.adv.chisel", "Industrial 3D Copying Machine")
-                .getStackForm(1L));
+        GregtechItemList.Controller_IndustrialAutoChisel.set(
+                new GregtechMetaTileEntity_IndustrialChisel(
+                        31069,
+                        "multimachine.adv.chisel",
+                        "Industrial 3D Copying Machine").getStackForm(1L));
     }
 }

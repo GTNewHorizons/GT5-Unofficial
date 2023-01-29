@@ -15,6 +15,7 @@ public class BTF_FluidTank extends FluidTank {
 
     /**
      * Let's replace the Default handling with GT's own handling code, because it's probably better, right?
+     * 
      * @author Alkalus/GregoriusT
      */
     public FluidStack getFluid() {
@@ -38,13 +39,10 @@ public class BTF_FluidTank extends FluidTank {
         return this;
     }
 
-    /*	public abstract boolean isLiquidInput(byte arg0);
-
-    public abstract boolean isLiquidOutput(byte arg0);
-
-    public abstract boolean doesFillContainers();
-
-    public abstract boolean doesEmptyContainers();*/
+    /*
+     * public abstract boolean isLiquidInput(byte arg0); public abstract boolean isLiquidOutput(byte arg0); public
+     * abstract boolean doesFillContainers(); public abstract boolean doesEmptyContainers();
+     */
 
     public boolean canTankBeFilled() {
         return true;
@@ -85,13 +83,11 @@ public class BTF_FluidTank extends FluidTank {
     }
 
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid != null
-                && aFluid.getFluid().getID() > 0
+        if (aFluid != null && aFluid.getFluid().getID() > 0
                 && aFluid.amount > 0
                 && this.canTankBeFilled()
                 && this.isFluidInputAllowed(aFluid)) {
-            if (this.getFillableStack() != null
-                    && this.getFillableStack().getFluid().getID() > 0) {
+            if (this.getFillableStack() != null && this.getFillableStack().getFluid().getID() > 0) {
                 if (!this.getFillableStack().isFluidEqual(aFluid)) {
                     return 0;
                 } else {

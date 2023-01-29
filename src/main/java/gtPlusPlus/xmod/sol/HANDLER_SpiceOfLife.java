@@ -1,11 +1,13 @@
 package gtPlusPlus.xmod.sol;
 
+import java.lang.reflect.Constructor;
+
+import net.minecraft.item.Item;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.Constructor;
-import net.minecraft.item.Item;
 
 public class HANDLER_SpiceOfLife {
 
@@ -37,11 +39,12 @@ public class HANDLER_SpiceOfLife {
     private static Item getNewLunchBox(String aItemName, int aSlots) {
         Class aItemFoodContainer = ReflectionUtils.getClass("squeek.spiceoflife.items.ItemFoodContainer");
         if (aItemFoodContainer != null) {
-            Constructor aItemFoodContainerConstructor =
-                    ReflectionUtils.getConstructor(aItemFoodContainer, new Class[] {String.class, int.class});
+            Constructor aItemFoodContainerConstructor = ReflectionUtils
+                    .getConstructor(aItemFoodContainer, new Class[] { String.class, int.class });
             if (aItemFoodContainerConstructor != null) {
                 Object aNewObject = ReflectionUtils.createNewInstanceFromConstructor(
-                        aItemFoodContainerConstructor, new Object[] {aItemName, aSlots});
+                        aItemFoodContainerConstructor,
+                        new Object[] { aItemName, aSlots });
                 if (aNewObject instanceof Item) {
                     Item aNewInstance = (Item) aNewObject;
                     return aNewInstance;

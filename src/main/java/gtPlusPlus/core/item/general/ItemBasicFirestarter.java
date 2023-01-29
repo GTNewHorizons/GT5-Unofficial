@@ -1,15 +1,16 @@
 package gtPlusPlus.core.item.general;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class ItemBasicFirestarter extends CoreItem {
 
@@ -19,16 +20,8 @@ public class ItemBasicFirestarter extends CoreItem {
     }
 
     @Override
-    public boolean onItemUse(
-            final ItemStack thisItem,
-            final EntityPlayer thisPlayer,
-            final World thisWorld,
-            int blockX,
-            int blockY,
-            int blockZ,
-            final int p_77648_7_,
-            final float p_77648_8_,
-            final float p_77648_9_,
+    public boolean onItemUse(final ItemStack thisItem, final EntityPlayer thisPlayer, final World thisWorld, int blockX,
+            int blockY, int blockZ, final int p_77648_7_, final float p_77648_8_, final float p_77648_9_,
             final float p_77648_10_) {
         if (p_77648_7_ == 0) {
             --blockY;

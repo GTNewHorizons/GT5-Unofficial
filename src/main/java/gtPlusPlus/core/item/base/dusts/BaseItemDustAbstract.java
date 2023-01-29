@@ -1,11 +1,13 @@
 package gtPlusPlus.core.item.base.dusts;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.lib.CORE;
 
 public abstract class BaseItemDustAbstract extends Item {
 
@@ -13,8 +15,8 @@ public abstract class BaseItemDustAbstract extends Item {
     protected String materialName;
     protected String pileType;
 
-    public BaseItemDustAbstract(
-            final String unlocalizedName, final String materialName, final int colour, final String pileSize) {
+    public BaseItemDustAbstract(final String unlocalizedName, final String materialName, final int colour,
+            final String pileSize) {
         this.setUnlocalizedName(unlocalizedName);
         this.setMaxStackSize(64);
         if (pileSize.equalsIgnoreCase("dust")) {

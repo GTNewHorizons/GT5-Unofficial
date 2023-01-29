@@ -8,9 +8,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
 
 public class FirepitRender extends TileEntitySpecialRenderer {
+
     ResourceLocation texture = new ResourceLocation("miscutils" + ":" + "textures/blocks/FirePit/mossyFirepit.png");
 
     private final FirepitModel model;
@@ -27,8 +29,8 @@ public class FirepitRender extends TileEntitySpecialRenderer {
     }
 
     @Override
-    public void renderTileEntityAt(
-            final TileEntity entity, final double x, final double y, final double z, final float i) {
+    public void renderTileEntityAt(final TileEntity entity, final double x, final double y, final double z,
+            final float i) {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.1F, (float) y + 1.0F, (float) z + 0.5F);
         GL11.glRotatef(180, 0F, 0F, 1F);

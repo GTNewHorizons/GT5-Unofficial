@@ -6,10 +6,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -25,11 +32,6 @@ import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Entity_ThermalBoiler>
         implements ISurvivalConstructable {
@@ -113,32 +115,32 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                             if ((tRecipe.getOutput(0) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(0))) {
-                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(0))};
+                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(0)) };
                             }
                             if ((tRecipe.getOutput(1) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(1))) {
-                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(1))};
+                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(1)) };
                             }
                             if ((tRecipe.getOutput(2) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(2))) {
-                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(2))};
+                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(2)) };
                             }
                             if ((tRecipe.getOutput(3) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(3))) {
-                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(3))};
+                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(3)) };
                             }
                             if ((tRecipe.getOutput(4) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(4))) {
-                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(4))};
+                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(4)) };
                             }
                             if ((tRecipe.getOutput(5) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(5))) {
-                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(5))};
+                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(5)) };
                             }
                         }
                         // Give Obsidian without Lava Filter
@@ -146,7 +148,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                             if ((tRecipe.getOutput(6) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(6))) {
-                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(6))};
+                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(6)) };
                             }
                         }
                         return true;
@@ -234,22 +236,13 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Thermal Boiler Controller")
-                .addInfo("Converts Water & Heat into Steam")
-                .addInfo("Explodes if water is not supplied")
-                .addInfo("Consult user manual for more information")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center")
-                .addCasingInfo("Thermal Containment Casings", 10)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+        tt.addMachineType(getMachineType()).addInfo("Thermal Boiler Controller")
+                .addInfo("Converts Water & Heat into Steam").addInfo("Explodes if water is not supplied")
+                .addInfo("Consult user manual for more information").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
+                .addCasingInfo("Thermal Containment Casings", 10).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -273,18 +266,16 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     public IStructureDefinition<GT4Entity_ThermalBoiler> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GT4Entity_ThermalBoiler>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GT4Entity_ThermalBoiler.class)
                                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.getIndexFromPage(0, 1))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.getIndexFromPage(0, 1)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 11))))
                     .build();
         }

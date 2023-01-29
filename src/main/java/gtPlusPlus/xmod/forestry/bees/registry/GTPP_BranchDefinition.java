@@ -2,6 +2,9 @@ package gtPlusPlus.xmod.forestry.bees.registry;
 
 import static forestry.api.apiculture.EnumBeeChromosome.*;
 
+import java.util.Arrays;
+import java.util.function.Consumer;
+
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.genetics.IAllele;
@@ -9,10 +12,9 @@ import forestry.api.genetics.IClassification;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.*;
-import java.util.Arrays;
-import java.util.function.Consumer;
 
 public enum GTPP_BranchDefinition {
+
     LEGENDARY("gtpp.legendary", "Summa Potestas", alleles -> {
         AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_2);
         AlleleHelper.instance.set(alleles, HUMIDITY_TOLERANCE, Tolerance.BOTH_2);

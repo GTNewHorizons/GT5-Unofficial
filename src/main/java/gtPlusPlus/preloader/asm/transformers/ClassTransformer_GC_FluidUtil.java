@@ -2,13 +2,14 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class ClassTransformer_GC_FluidUtil {
 
@@ -78,7 +79,12 @@ public class ClassTransformer_GC_FluidUtil {
             mv.visitJumpInsn(GOTO, l1);
             Label l2 = new Label();
             mv.visitLabel(l2);
-            mv.visitFrame(F_FULL, 3, new Object[] {"java/lang/String", TOP, "java/util/Iterator"}, 0, new Object[] {});
+            mv.visitFrame(
+                    F_FULL,
+                    3,
+                    new Object[] { "java/lang/String", TOP, "java/util/Iterator" },
+                    0,
+                    new Object[] {});
             mv.visitVarInsn(ALOAD, 2);
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Iterator", "next", "()Ljava/lang/Object;", true);
             mv.visitTypeInsn(CHECKCAST, "java/lang/String");
@@ -113,13 +119,12 @@ public class ClassTransformer_GC_FluidUtil {
             mv.visitMaxs(2, 3);
             mv.visitEnd();
         } else if (aMethodName.equals("fillWithGCFuel")) {
-            mv = getWriter()
-                    .visitMethod(
-                            ACC_PUBLIC + ACC_STATIC,
-                            "fillWithGCFuel",
-                            "(Lnet/minecraftforge/fluids/FluidTank;Lnet/minecraftforge/fluids/FluidStack;Z)I",
-                            null,
-                            null);
+            mv = getWriter().visitMethod(
+                    ACC_PUBLIC + ACC_STATIC,
+                    "fillWithGCFuel",
+                    "(Lnet/minecraftforge/fluids/FluidTank;Lnet/minecraftforge/fluids/FluidStack;Z)I",
+                    null,
+                    null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -176,14 +181,8 @@ public class ClassTransformer_GC_FluidUtil {
             mv.visitFrame(
                     F_FULL,
                     6,
-                    new Object[] {
-                        "net/minecraftforge/fluids/FluidTank",
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack",
-                        TOP,
-                        "java/util/Iterator"
-                    },
+                    new Object[] { "net/minecraftforge/fluids/FluidTank", "net/minecraftforge/fluids/FluidStack",
+                            INTEGER, "net/minecraftforge/fluids/FluidStack", TOP, "java/util/Iterator" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 5);
@@ -236,12 +235,8 @@ public class ClassTransformer_GC_FluidUtil {
             mv.visitFrame(
                     F_FULL,
                     4,
-                    new Object[] {
-                        "net/minecraftforge/fluids/FluidTank",
-                        "net/minecraftforge/fluids/FluidStack",
-                        INTEGER,
-                        "net/minecraftforge/fluids/FluidStack"
-                    },
+                    new Object[] { "net/minecraftforge/fluids/FluidTank", "net/minecraftforge/fluids/FluidStack",
+                            INTEGER, "net/minecraftforge/fluids/FluidStack" },
                     0,
                     new Object[] {});
             mv.visitVarInsn(ALOAD, 3);

@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -17,9 +14,15 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.damagesources.GT_DamageSources;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
+
 public abstract class TOOL_Gregtech_Base implements Interface_ToolStats {
-    public static final Enchantment[] FORTUNE_ENCHANTMENT = {Enchantment.fortune};
-    public static final Enchantment[] LOOTING_ENCHANTMENT = {Enchantment.looting};
+
+    public static final Enchantment[] FORTUNE_ENCHANTMENT = { Enchantment.fortune };
+    public static final Enchantment[] LOOTING_ENCHANTMENT = { Enchantment.looting };
     public static final Enchantment[] ZERO_ENCHANTMENTS = new Enchantment[0];
     public static final int[] ZERO_ENCHANTMENT_LEVELS = new int[0];
 
@@ -127,8 +130,7 @@ public abstract class TOOL_Gregtech_Base implements Interface_ToolStats {
         return GT_DamageSources.getCombatDamage(
                 (aPlayer instanceof EntityPlayer) ? "player" : "mob",
                 aPlayer,
-                (aEntity instanceof EntityLivingBase)
-                        ? this.getDeathMessage(aPlayer, (EntityLivingBase) aEntity)
+                (aEntity instanceof EntityLivingBase) ? this.getDeathMessage(aPlayer, (EntityLivingBase) aEntity)
                         : null);
     }
 
@@ -138,18 +140,9 @@ public abstract class TOOL_Gregtech_Base implements Interface_ToolStats {
     }
 
     @Override
-    public int convertBlockDrops(
-            final List<ItemStack> aDrops,
-            final ItemStack aStack,
-            final EntityPlayer aPlayer,
-            final Block aBlock,
-            final int aX,
-            final int aY,
-            final int aZ,
-            final byte aMetaData,
-            final int aFortune,
-            final boolean aSilkTouch,
-            final BlockEvent.HarvestDropsEvent aEvent) {
+    public int convertBlockDrops(final List<ItemStack> aDrops, final ItemStack aStack, final EntityPlayer aPlayer,
+            final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData, final int aFortune,
+            final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
         return 0;
     }
 
@@ -179,14 +172,14 @@ public abstract class TOOL_Gregtech_Base implements Interface_ToolStats {
     public void onStatsAddedToTool(final Gregtech_MetaTool aItem, final int aID) {}
 
     @Override
-    public float getNormalDamageAgainstEntity(
-            final float aOriginalDamage, final Entity aEntity, final ItemStack aStack, final EntityPlayer aPlayer) {
+    public float getNormalDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack,
+            final EntityPlayer aPlayer) {
         return aOriginalDamage;
     }
 
     @Override
-    public float getMagicDamageAgainstEntity(
-            final float aOriginalDamage, final Entity aEntity, final ItemStack aStack, final EntityPlayer aPlayer) {
+    public float getMagicDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack,
+            final EntityPlayer aPlayer) {
         return aOriginalDamage;
     }
 }

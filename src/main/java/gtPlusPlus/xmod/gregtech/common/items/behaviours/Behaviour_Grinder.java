@@ -1,9 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.items.behaviours;
 
-import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.GT_MetaBase_Item;
 import java.util.List;
+
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,6 +9,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gregtech.api.enums.SubTag;
+import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.items.GT_MetaBase_Item;
 
 public class Behaviour_Grinder implements IItemBehaviour<GT_MetaBase_Item> {
 
@@ -21,35 +23,15 @@ public class Behaviour_Grinder implements IItemBehaviour<GT_MetaBase_Item> {
     }
 
     @Override
-    public boolean onItemUse(
-            GT_MetaBase_Item var1,
-            ItemStack var2,
-            EntityPlayer var3,
-            World var4,
-            int var5,
-            int var6,
-            int var7,
-            int var8,
-            float var9,
-            float var10,
-            float var11) {
+    public boolean onItemUse(GT_MetaBase_Item var1, ItemStack var2, EntityPlayer var3, World var4, int var5, int var6,
+            int var7, int var8, float var9, float var10, float var11) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item var1,
-            ItemStack var2,
-            EntityPlayer var3,
-            World var4,
-            int var5,
-            int var6,
-            int var7,
-            int var8,
-            float var9,
-            float var10,
-            float var11) {
+    public boolean onItemUseFirst(GT_MetaBase_Item var1, ItemStack var2, EntityPlayer var3, World var4, int var5,
+            int var6, int var7, int var8, float var9, float var10, float var11) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -97,15 +79,15 @@ public class Behaviour_Grinder implements IItemBehaviour<GT_MetaBase_Item> {
     }
 
     @Override
-    public EntityArrow getProjectile(
-            GT_MetaBase_Item var1, SubTag var2, ItemStack var3, World var4, double var5, double var7, double var9) {
+    public EntityArrow getProjectile(GT_MetaBase_Item var1, SubTag var2, ItemStack var3, World var4, double var5,
+            double var7, double var9) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public EntityArrow getProjectile(
-            GT_MetaBase_Item var1, SubTag var2, ItemStack var3, World var4, EntityLivingBase var5, float var6) {
+    public EntityArrow getProjectile(GT_MetaBase_Item var1, SubTag var2, ItemStack var3, World var4,
+            EntityLivingBase var5, float var6) {
         // TODO Auto-generated method stub
         return null;
     }

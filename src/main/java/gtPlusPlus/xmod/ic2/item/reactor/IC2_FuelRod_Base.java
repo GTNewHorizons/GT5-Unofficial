@@ -1,8 +1,9 @@
 package gtPlusPlus.xmod.ic2.item.reactor;
 
+import net.minecraft.item.ItemStack;
+
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
-import net.minecraft.item.ItemStack;
 
 public class IC2_FuelRod_Base implements IReactorComponent {
 
@@ -13,8 +14,8 @@ public class IC2_FuelRod_Base implements IReactorComponent {
     }
 
     @Override
-    public boolean acceptUraniumPulse(
-            IReactor var1, ItemStack var2, ItemStack var3, int var4, int var5, int var6, int var7, boolean var8) {
+    public boolean acceptUraniumPulse(IReactor var1, ItemStack var2, ItemStack var3, int var4, int var5, int var6,
+            int var7, boolean var8) {
         // TODO Auto-generated method stub
         return false;
     }

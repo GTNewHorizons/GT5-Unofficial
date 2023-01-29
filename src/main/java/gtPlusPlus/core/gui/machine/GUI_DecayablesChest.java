@@ -1,20 +1,23 @@
 package gtPlusPlus.core.gui.machine;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_DecayablesChest;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUI_DecayablesChest extends GuiContainer {
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/FishTrap.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/FishTrap.png");
 
     public GUI_DecayablesChest(final InventoryPlayer player_inventory, final TileEntityDecayablesChest te) {
         super(new Container_DecayablesChest(player_inventory, te));

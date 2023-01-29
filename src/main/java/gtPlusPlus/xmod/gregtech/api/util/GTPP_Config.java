@@ -2,14 +2,16 @@ package gtPlusPlus.xmod.gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
 public class GTPP_Config implements Runnable {
+
     public static boolean troll = false;
 
     public static Configuration sConfigFileIDs;
@@ -23,8 +25,8 @@ public class GTPP_Config implements Runnable {
 
     public static int addIDConfig(Object aCategory, String aName, int aDefault) {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
-        Property tProperty =
-                sConfigFileIDs.get(aCategory.toString().replaceAll("\\|", "."), aName.replaceAll("\\|", "."), aDefault);
+        Property tProperty = sConfigFileIDs
+                .get(aCategory.toString().replaceAll("\\|", "."), aName.replaceAll("\\|", "."), aDefault);
         int rResult = tProperty.getInt(aDefault);
         if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sConfigFileIDs.save();
         return rResult;
@@ -37,7 +39,7 @@ public class GTPP_Config implements Runnable {
         try {
             if (GT_Utility.isStringValid(rName = aStack.getUnlocalizedName())) return rName.toString();
         } catch (Throwable e) {
-            /*Do nothing*/
+            /* Do nothing */
         }
         String sName = aStack.getItem().toString();
         String[] tmp = sName.split("@");
@@ -53,7 +55,9 @@ public class GTPP_Config implements Runnable {
     public boolean get(Object aCategory, String aName, boolean aDefault) {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-                aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         boolean rResult = tProperty.getBoolean(aDefault);
         if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
         return rResult;
@@ -66,7 +70,9 @@ public class GTPP_Config implements Runnable {
     public int get(Object aCategory, String aName, int aDefault) {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-                aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         int rResult = tProperty.getInt(aDefault);
         if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
         return rResult;
@@ -79,7 +85,9 @@ public class GTPP_Config implements Runnable {
     public double get(Object aCategory, String aName, double aDefault) {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-                aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         double rResult = tProperty.getDouble(aDefault);
         if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
         return rResult;
@@ -92,7 +100,9 @@ public class GTPP_Config implements Runnable {
     public String get(Object aCategory, String aName, String aDefault) {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-                aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         String rResult = tProperty.getString();
         if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
         return rResult;

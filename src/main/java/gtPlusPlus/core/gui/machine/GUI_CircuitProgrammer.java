@@ -1,20 +1,23 @@
 package gtPlusPlus.core.gui.machine;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_CircuitProgrammer;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUI_CircuitProgrammer extends GuiContainer {
 
-    private static final ResourceLocation craftingTableGuiTextures =
-            new ResourceLocation(CORE.MODID, "textures/gui/CircuitProgrammer.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/CircuitProgrammer.png");
 
     public GUI_CircuitProgrammer(final InventoryPlayer player_inventory, final TileEntityCircuitProgrammer te) {
         super(new Container_CircuitProgrammer(player_inventory, te));

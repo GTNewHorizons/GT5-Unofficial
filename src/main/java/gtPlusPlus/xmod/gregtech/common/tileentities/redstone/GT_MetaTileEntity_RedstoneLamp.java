@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_RedstoneLamp extends GT_MetaTileEntity_RedstoneBase {
 
@@ -56,21 +57,16 @@ public class GT_MetaTileEntity_RedstoneLamp extends GT_MetaTileEntity_RedstoneBa
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return this.mTextures[(aActive ? 1 : 0)][aColorIndex + 1];
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(sIconList[0])};
+        return new ITexture[] { new GT_RenderedTexture(sIconList[0]) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(sIconList[1])};
+        return new ITexture[] { new GT_RenderedTexture(sIconList[1]) };
     }
 }

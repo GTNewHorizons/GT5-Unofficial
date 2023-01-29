@@ -1,11 +1,7 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +10,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ItemBlockNBT extends ItemBlock {
 
@@ -71,18 +73,8 @@ public class ItemBlockNBT extends ItemBlock {
     }
 
     @Override
-    public boolean placeBlockAt(
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ,
-            int aMeta) {
+    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
+            float hitX, float hitY, float hitZ, int aMeta) {
         if (!(aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3))) {
             return false;
         }
@@ -95,8 +87,8 @@ public class ItemBlockNBT extends ItemBlock {
             if (tTileEntity.isServerSide()) {
                 Logger.INFO("Setting Tile Entity information");
                 NBTTagCompound aNBT = GT_Utility.ItemNBT.getNBT(aStack);
-                tTileEntity.setOwnerInformation(
-                        aNBT.getString("mOwner"), aNBT.getString("mUUID"), aNBT.getBoolean("mOP"));
+                tTileEntity
+                        .setOwnerInformation(aNBT.getString("mOwner"), aNBT.getString("mUUID"), aNBT.getBoolean("mOP"));
             }
         }
         return true;

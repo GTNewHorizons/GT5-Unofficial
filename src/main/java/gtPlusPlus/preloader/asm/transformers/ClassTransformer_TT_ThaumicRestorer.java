@@ -2,15 +2,18 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
+import org.apache.logging.log4j.Level;
+import org.objectweb.asm.*;
+
 import cpw.mods.fml.common.Loader;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.Preloader_Logger;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import org.apache.logging.log4j.Level;
-import org.objectweb.asm.*;
 
 public class ClassTransformer_TT_ThaumicRestorer {
 
@@ -44,15 +47,15 @@ public class ClassTransformer_TT_ThaumicRestorer {
     // thaumic.tinkerer.common.block.tile.TileRepairer
 
     private static final boolean isTConstructTool(ItemStack aStack) {
-        return ReflectionUtils.invoke(null, mIsTcTool, new Object[] {aStack});
+        return ReflectionUtils.invoke(null, mIsTcTool, new Object[] { aStack });
     }
 
     private static final int getDamage(ItemStack aStack) {
-        return (int) ReflectionUtils.invokeNonBool(null, mGetTcDamage, new Object[] {aStack});
+        return (int) ReflectionUtils.invokeNonBool(null, mGetTcDamage, new Object[] { aStack });
     }
 
     private static final boolean fixDamage(ItemStack aStack, int aAmount) {
-        return ReflectionUtils.invoke(null, mFixTcDamage, new Object[] {aStack, aAmount});
+        return ReflectionUtils.invoke(null, mFixTcDamage, new Object[] { aStack, aAmount });
     }
 
     private static final int drawEssentia(TileEntity aTile) {
@@ -60,7 +63,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
     }
 
     private static final void sparkle(float a, float b, float c, int d) {
-        ReflectionUtils.invokeVoid(ReflectionUtils.getFieldValue(mProxyTC), mSparkle, new Object[] {a, b, c, d});
+        ReflectionUtils.invokeVoid(ReflectionUtils.getFieldValue(mProxyTC), mSparkle, new Object[] { a, b, c, d });
     }
 
     public static void updateEntity(TileEntity aTile) {
@@ -72,14 +75,14 @@ public class ClassTransformer_TT_ThaumicRestorer {
             mThaumicTinkerer = ReflectionUtils.getClass("thaumic.tinkerer.common.ThaumicTinkerer");
             mTCProxy = ReflectionUtils.getClass("thaumcraft.common.CommonProxy");
             // Set the methods we need
-            mIsTcTool = ReflectionUtils.getMethod(
-                    mTinkersConstructCompat, "isTConstructTool", new Class[] {ItemStack.class});
-            mGetTcDamage =
-                    ReflectionUtils.getMethod(mTinkersConstructCompat, "getDamage", new Class[] {ItemStack.class});
-            mFixTcDamage = ReflectionUtils.getMethod(
-                    mTinkersConstructCompat, "fixDamage", new Class[] {ItemStack.class, int.class});
-            mSparkle = ReflectionUtils.getMethod(
-                    mTCProxy, "sparkle", new Class[] {float.class, float.class, float.class, int.class});
+            mIsTcTool = ReflectionUtils
+                    .getMethod(mTinkersConstructCompat, "isTConstructTool", new Class[] { ItemStack.class });
+            mGetTcDamage = ReflectionUtils
+                    .getMethod(mTinkersConstructCompat, "getDamage", new Class[] { ItemStack.class });
+            mFixTcDamage = ReflectionUtils
+                    .getMethod(mTinkersConstructCompat, "fixDamage", new Class[] { ItemStack.class, int.class });
+            mSparkle = ReflectionUtils
+                    .getMethod(mTCProxy, "sparkle", new Class[] { float.class, float.class, float.class, int.class });
             mDrawEssentia = ReflectionUtils.getMethod(mTileRepairerClass, "drawEssentia", new Class[] {});
             // Set the fields we need
             mRepairTiconTools = ReflectionUtils.getField(mTTConfigHandler, "repairTConTools");
@@ -101,8 +104,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
                 ReflectionUtils.setField(aTile, mTicksExisted, ticksExisted);
                 boolean aDidRun = false;
                 if (ticksExisted % 10 == 0) {
-                    if (Loader.isModLoaded("TConstruct")
-                            && repairTConTools
+                    if (Loader.isModLoaded("TConstruct") && repairTConTools
                             && inventorySlots[0] != null
                             && isTConstructTool(inventorySlots[0])) {
                         final int dmg = getDamage(inventorySlots[0]);
@@ -126,8 +128,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
                         dmgLastTick = ((inventorySlots[0] == null) ? 0 : getDamage(inventorySlots[0]));
                         aDidRun = true;
                     }
-                    if (inventorySlots[0] != null
-                            && inventorySlots[0].getItemDamage() > 0
+                    if (inventorySlots[0] != null && inventorySlots[0].getItemDamage() > 0
                             && inventorySlots[0].getItem().isRepairable()) {
                         final int essentia2 = drawEssentia(aTile);
                         final int dmg2 = inventorySlots[0].getItemDamage();
@@ -273,7 +274,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLineNumber(61, l4);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitJumpInsn(IFNULL, l3);
@@ -282,7 +286,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLineNumber(62, l5);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitMethodInsn(
@@ -297,7 +304,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLineNumber(63, l6);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitMethodInsn(
@@ -318,14 +328,21 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLineNumber(65, l9);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(
-                INVOKEVIRTUAL, "thaumic/tinkerer/common/block/tile/TileRepairer", "drawEssentia", "()I", false);
+                INVOKEVIRTUAL,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "drawEssentia",
+                "()I",
+                false);
         mv.visitVarInsn(ISTORE, 2);
         Label l10 = new Label();
         mv.visitLabel(l10);
         mv.visitLineNumber(66, l10);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitVarInsn(ILOAD, 2);
@@ -356,7 +373,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLabel(l14);
         mv.visitLineNumber(69, l14);
         mv.visitFieldInsn(
-                GETSTATIC, "thaumic/tinkerer/common/ThaumicTinkerer", "tcProxy", "Lthaumcraft/common/CommonProxy;");
+                GETSTATIC,
+                "thaumic/tinkerer/common/ThaumicTinkerer",
+                "tcProxy",
+                "Lthaumcraft/common/CommonProxy;");
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "xCoord", "I");
         mv.visitInsn(I2D);
@@ -401,7 +421,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
         Label l17 = new Label();
         mv.visitJumpInsn(GOTO, l17);
         mv.visitLabel(l13);
-        mv.visitFrame(Opcodes.F_APPEND, 2, new Object[] {Opcodes.INTEGER, Opcodes.INTEGER}, 0, null);
+        mv.visitFrame(Opcodes.F_APPEND, 2, new Object[] { Opcodes.INTEGER, Opcodes.INTEGER }, 0, null);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitInsn(ICONST_0);
         mv.visitFieldInsn(PUTFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "tookLastTick", "Z");
@@ -420,7 +440,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitVarInsn(ALOAD, 0);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         Label l19 = new Label();
@@ -429,10 +452,13 @@ public class ClassTransformer_TT_ThaumicRestorer {
         Label l20 = new Label();
         mv.visitJumpInsn(GOTO, l20);
         mv.visitLabel(l19);
-        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[] {"thaumic/tinkerer/common/block/tile/TileRepairer"});
+        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[] { "thaumic/tinkerer/common/block/tile/TileRepairer" });
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitMethodInsn(
@@ -445,9 +471,9 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitFrame(
                 Opcodes.F_FULL,
                 2,
-                new Object[] {"thaumic/tinkerer/common/block/tile/TileRepairer", Opcodes.INTEGER},
+                new Object[] { "thaumic/tinkerer/common/block/tile/TileRepairer", Opcodes.INTEGER },
                 2,
-                new Object[] {"thaumic/tinkerer/common/block/tile/TileRepairer", Opcodes.INTEGER});
+                new Object[] { "thaumic/tinkerer/common/block/tile/TileRepairer", Opcodes.INTEGER });
         mv.visitFieldInsn(PUTFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "dmgLastTick", "I");
         Label l21 = new Label();
         mv.visitLabel(l21);
@@ -458,21 +484,30 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitFrame(Opcodes.F_CHOP, 1, null, 0, null);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         Label l22 = new Label();
         mv.visitJumpInsn(IFNULL, l22);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitMethodInsn(INVOKEVIRTUAL, "" + aItemStack + "", "" + aGetItemDamage + "", "()I", false);
         mv.visitJumpInsn(IFLE, l22);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitMethodInsn(INVOKEVIRTUAL, "" + aItemStack + "", "" + aGetItem + "", "()L" + aItem + ";", false);
@@ -483,14 +518,21 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLineNumber(79, l23);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(
-                INVOKEVIRTUAL, "thaumic/tinkerer/common/block/tile/TileRepairer", "drawEssentia", "()I", false);
+                INVOKEVIRTUAL,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "drawEssentia",
+                "()I",
+                false);
         mv.visitVarInsn(ISTORE, 1);
         Label l24 = new Label();
         mv.visitLabel(l24);
         mv.visitLineNumber(80, l24);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitMethodInsn(INVOKEVIRTUAL, "" + aItemStack + "", "" + aGetItemDamage + "", "()I", false);
@@ -500,7 +542,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLineNumber(81, l25);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitInsn(ICONST_0);
@@ -529,7 +574,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitLabel(l29);
         mv.visitLineNumber(85, l29);
         mv.visitFieldInsn(
-                GETSTATIC, "thaumic/tinkerer/common/ThaumicTinkerer", "tcProxy", "Lthaumcraft/common/CommonProxy;");
+                GETSTATIC,
+                "thaumic/tinkerer/common/ThaumicTinkerer",
+                "tcProxy",
+                "Lthaumcraft/common/CommonProxy;");
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "xCoord", "I");
         mv.visitInsn(I2D);
@@ -574,7 +622,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
         Label l32 = new Label();
         mv.visitJumpInsn(GOTO, l32);
         mv.visitLabel(l28);
-        mv.visitFrame(Opcodes.F_APPEND, 2, new Object[] {Opcodes.INTEGER, Opcodes.INTEGER}, 0, null);
+        mv.visitFrame(Opcodes.F_APPEND, 2, new Object[] { Opcodes.INTEGER, Opcodes.INTEGER }, 0, null);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitInsn(ICONST_0);
         mv.visitFieldInsn(PUTFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "tookLastTick", "Z");
@@ -593,7 +641,10 @@ public class ClassTransformer_TT_ThaumicRestorer {
         mv.visitVarInsn(ALOAD, 0);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         Label l34 = new Label();
@@ -602,18 +653,23 @@ public class ClassTransformer_TT_ThaumicRestorer {
         Label l35 = new Label();
         mv.visitJumpInsn(GOTO, l35);
         mv.visitLabel(l34);
-        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[] {"thaumic/tinkerer/common/block/tile/TileRepairer"});
+        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[] { "thaumic/tinkerer/common/block/tile/TileRepairer" });
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(
-                GETFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "inventorySlots", "[L" + aItemStack + ";");
+                GETFIELD,
+                "thaumic/tinkerer/common/block/tile/TileRepairer",
+                "inventorySlots",
+                "[L" + aItemStack + ";");
         mv.visitInsn(ICONST_0);
         mv.visitInsn(AALOAD);
         mv.visitMethodInsn(INVOKEVIRTUAL, "" + aItemStack + "", "" + aGetItemDamage + "", "()I", false);
         mv.visitLabel(l35);
         mv.visitFrame(
-                Opcodes.F_FULL, 1, new Object[] {"thaumic/tinkerer/common/block/tile/TileRepairer"}, 2, new Object[] {
-                    "thaumic/tinkerer/common/block/tile/TileRepairer", Opcodes.INTEGER
-                });
+                Opcodes.F_FULL,
+                1,
+                new Object[] { "thaumic/tinkerer/common/block/tile/TileRepairer" },
+                2,
+                new Object[] { "thaumic/tinkerer/common/block/tile/TileRepairer", Opcodes.INTEGER });
         mv.visitFieldInsn(PUTFIELD, "thaumic/tinkerer/common/block/tile/TileRepairer", "dmgLastTick", "I");
         mv.visitLabel(l1);
         mv.visitLineNumber(92, l1);
@@ -643,7 +699,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
             this.cv = cv;
         }
 
-        private final String[] aMethodsToStrip = new String[] {"updateEntity", "func_145845_h"};
+        private final String[] aMethodsToStrip = new String[] { "updateEntity", "func_145845_h" };
         public boolean isObfuscated = false;
 
         @Override
@@ -668,8 +724,8 @@ public class ClassTransformer_TT_ThaumicRestorer {
             }
 
             if (found) {
-                Preloader_Logger.LOG(
-                        "Thaumic Tinkerer RepairItem Patch", Level.INFO, "Found method " + name + ", removing.");
+                Preloader_Logger
+                        .LOG("Thaumic Tinkerer RepairItem Patch", Level.INFO, "Found method " + name + ", removing.");
             }
             return methodVisitor;
         }

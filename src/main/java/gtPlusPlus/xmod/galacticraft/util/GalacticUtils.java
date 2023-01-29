@@ -1,14 +1,16 @@
 package gtPlusPlus.xmod.galacticraft.util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.entity.Entity;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GalacticUtils {
 
@@ -51,8 +53,7 @@ public class GalacticUtils {
         getRocketTier = m1;
         getRocket = m2;
         getBuggy = m3;
-        if (a1 != null
-                && a2 != null
+        if (a1 != null && a2 != null
                 && a3 != null
                 && a4 != null
                 && a5 != null
@@ -94,8 +95,7 @@ public class GalacticUtils {
             if (getRocketTier != null) {
                 try {
                     return (int) getRocketTier.invoke(aEntity, new Object[] {});
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                }
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
             }
         }
         return -1;
@@ -110,8 +110,7 @@ public class GalacticUtils {
                     if (aIDockable.isInstance(rocket) && rocket != null) {
                         return getRocketTier((Entity) rocket);
                     }
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                }
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
             } else if (aBuggyPad.isInstance(aEntity)) {
                 Object buggy;
                 try {
@@ -119,8 +118,7 @@ public class GalacticUtils {
                     if (aIDockable.isInstance(buggy) && buggy != null) {
                         return 0;
                     }
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                }
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
             }
         }
         return -1;
@@ -138,8 +136,7 @@ public class GalacticUtils {
         if (aTieredRocket.isInstance(aEntity)) {
             return getValidFuelForTier(getRocketTier(aEntity));
         } else {
-            Logger.SPACE(
-                    "Failed to get valid rocket fuel for " + aEntity.getClass().getCanonicalName());
+            Logger.SPACE("Failed to get valid rocket fuel for " + aEntity.getClass().getCanonicalName());
             return getValidFuelForTier(0);
         }
     }

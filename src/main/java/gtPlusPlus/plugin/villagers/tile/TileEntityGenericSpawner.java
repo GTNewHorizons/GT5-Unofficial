@@ -1,15 +1,17 @@
 package gtPlusPlus.plugin.villagers.tile;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 
@@ -30,10 +32,8 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
     /**
      * Registers a New Mob Spawner Type
      *
-     * @param aID
-     *            - the Spawner type ID
-     * @param aEntity
-     *            - the Entity which you'd like to spawn
+     * @param aID     - the Spawner type ID
+     * @param aEntity - the Entity which you'd like to spawn
      */
     public static boolean registerNewMobSpawner(int aID, Class<Entity> aEntity) {
         int registered = mSpawners.size();
@@ -63,8 +63,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
     /**
      * Constructs a new Spawner, based on an existing type registered.
      *
-     * @param aID
-     *            - The ID in the {@link mSpawners} map.
+     * @param aID - The ID in the {@link mSpawners} map.
      */
     public TileEntityGenericSpawner(int aID) {
         mID = aID;
@@ -81,10 +80,8 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
     /**
      * Constructs a new Spawner, then registers it.
      *
-     * @param aID
-     *            - The ID to be used in the {@link mSpawners} map.
-     * @param aEntity
-     *            - The {@link Entity} type which will be spawned.
+     * @param aID     - The ID to be used in the {@link mSpawners} map.
+     * @param aEntity - The {@link Entity} type which will be spawned.
      */
     public TileEntityGenericSpawner(int aID, Entity aEntity) {
         mID = aID;
@@ -178,10 +175,8 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 
             if (Utils.isServer()) {
                 try {
-                    Map<?, ?> a1 = (Map<?, ?>) ReflectionUtils.getField(TileEntity.class, "nameToClassMap")
-                            .get(this);
-                    Map<?, ?> a2 = (Map<?, ?>) ReflectionUtils.getField(TileEntity.class, "classToNameMap")
-                            .get(this);
+                    Map<?, ?> a1 = (Map<?, ?>) ReflectionUtils.getField(TileEntity.class, "nameToClassMap").get(this);
+                    Map<?, ?> a2 = (Map<?, ?>) ReflectionUtils.getField(TileEntity.class, "classToNameMap").get(this);
                     if (a1 != null) {
                         if (nameToClassMap_Ex == null) {
                             nameToClassMap_Ex = a1;
@@ -211,27 +206,20 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
                         }
                     }
 
-                    /*Field mInternalLogicField = ReflectionUtils.getField(getClass(), "field_145882_a");
-                    if (mInternalLogicField != null) {
-                    	MobSpawnerBaseLogic a = (MobSpawnerBaseLogic) mInternalLogicField.get(this);
-                    	if (a != null) {
-                    		ReflectionUtils.setField(this, "field_145882_a", getLogic());
-                    		if (a.equals(getLogic())) {
-                    			isReady = true;
-                    			return true;
-                    		}
-                    	}
-                    }*/
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                }
+                    /*
+                     * Field mInternalLogicField = ReflectionUtils.getField(getClass(), "field_145882_a"); if
+                     * (mInternalLogicField != null) { MobSpawnerBaseLogic a = (MobSpawnerBaseLogic)
+                     * mInternalLogicField.get(this); if (a != null) { ReflectionUtils.setField(this, "field_145882_a",
+                     * getLogic()); if (a.equals(getLogic())) { isReady = true; return true; } } }
+                     */
+                } catch (IllegalArgumentException | IllegalAccessException e) {}
             }
             return false;
         }
     }
 
     /**
-     * Called when a client event is received with the event number and argument,
-     * see World.sendClientEvent
+     * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
     @Override
     public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {

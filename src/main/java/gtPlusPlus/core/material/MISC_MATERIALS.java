@@ -10,8 +10,8 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 public final class MISC_MATERIALS {
 
     /*
-     * Some of these materials purely exist as data objects, items will most likely be assigned seperately.
-     * Most are just compositions which will have dusts assigned to them.
+     * Some of these materials purely exist as data objects, items will most likely be assigned seperately. Most are
+     * just compositions which will have dusts assigned to them.
      */
 
     public static void run() {
@@ -76,7 +76,7 @@ public final class MISC_MATERIALS {
     public static final Material SOLAR_SALT_HOT = new Material(
             "Solar Salt (Hot)",
             MaterialState.PURE_LIQUID, // State
-            new short[] {200, 25, 25}, // Material Colour
+            new short[] { 200, 25, 25 }, // Material Colour
             1200, // Melting Point in C
             3300, // Boiling Point in C
             -1, // Protons
@@ -173,7 +173,7 @@ public final class MISC_MATERIALS {
             "Wood's Glass", // Material Name
             MaterialState.SOLID, // State
             TextureSets.GEM_A.get(), // Texture Set
-            new short[] {220, 60, 255}, // Material Colour
+            new short[] { 220, 60, 255 }, // Material Colour
             -1,
             -1,
             -1,
@@ -201,17 +201,12 @@ public final class MISC_MATERIALS {
             -1,
             -1,
             -1, // Radiation
-            new MaterialStack[] {
-                new MaterialStack(ORES.GREENOCKITE, 1),
-                new MaterialStack(ORES.LANTHANITE_CE, 1),
-                new MaterialStack(ORES.AGARDITE_CD, 1),
-                new MaterialStack(ORES.YTTRIALITE, 1),
-                new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.NetherQuartz), 1),
-                new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Galena), 1),
-                new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite), 1),
-                new MaterialStack(ORES.CRYOLITE, 1),
-                new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1)
-            });
+            new MaterialStack[] { new MaterialStack(ORES.GREENOCKITE, 1), new MaterialStack(ORES.LANTHANITE_CE, 1),
+                    new MaterialStack(ORES.AGARDITE_CD, 1), new MaterialStack(ORES.YTTRIALITE, 1),
+                    new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.NetherQuartz), 1),
+                    new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Galena), 1),
+                    new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite), 1),
+                    new MaterialStack(ORES.CRYOLITE, 1), new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1) });
 
     public static final Material RARE_EARTH_MID = new Material(
             "Rare Earth (II)", // Material Name
@@ -223,17 +218,12 @@ public final class MISC_MATERIALS {
             -1,
             -1,
             -1, // Radiation
-            new MaterialStack[] {
-                new MaterialStack(ORES.LANTHANITE_ND, 1),
-                new MaterialStack(ORES.AGARDITE_ND, 1),
-                new MaterialStack(ORES.YTTRIAITE, 1),
-                new MaterialStack(ORES.CROCROITE, 1),
-                new MaterialStack(ORES.NICHROMITE, 1),
-                new MaterialStack(ORES.ZIRCON, 1),
-                new MaterialStack(ELEMENT.STANDALONE.GRANITE, 1),
-                new MaterialStack(ELEMENT.STANDALONE.BLACK_METAL, 1),
-                new MaterialStack(ELEMENT.STANDALONE.RUNITE, 1)
-            });
+            new MaterialStack[] { new MaterialStack(ORES.LANTHANITE_ND, 1), new MaterialStack(ORES.AGARDITE_ND, 1),
+                    new MaterialStack(ORES.YTTRIAITE, 1), new MaterialStack(ORES.CROCROITE, 1),
+                    new MaterialStack(ORES.NICHROMITE, 1), new MaterialStack(ORES.ZIRCON, 1),
+                    new MaterialStack(ELEMENT.STANDALONE.GRANITE, 1),
+                    new MaterialStack(ELEMENT.STANDALONE.BLACK_METAL, 1),
+                    new MaterialStack(ELEMENT.STANDALONE.RUNITE, 1) });
 
     public static final Material RARE_EARTH_HIGH = new Material(
             "Rare Earth (III)", // Material Name
@@ -245,17 +235,11 @@ public final class MISC_MATERIALS {
             -1,
             -1,
             -1, // Radiation
-            new MaterialStack[] {
-                new MaterialStack(ORES.GADOLINITE_Y, 1),
-                new MaterialStack(ORES.LEPERSONNITE, 1),
-                new MaterialStack(ORES.FLORENCITE, 1),
-                new MaterialStack(ORES.FLUORCAPHITE, 1),
-                new MaterialStack(ORES.LAUTARITE, 1),
-                new MaterialStack(ORES.DEMICHELEITE_BR, 1),
-                new MaterialStack(ORES.ALBURNITE, 1),
-                new MaterialStack(ORES.SAMARSKITE_Y, 1),
-                new MaterialStack(ORES.AGARDITE_LA, 1),
-            });
+            new MaterialStack[] { new MaterialStack(ORES.GADOLINITE_Y, 1), new MaterialStack(ORES.LEPERSONNITE, 1),
+                    new MaterialStack(ORES.FLORENCITE, 1), new MaterialStack(ORES.FLUORCAPHITE, 1),
+                    new MaterialStack(ORES.LAUTARITE, 1), new MaterialStack(ORES.DEMICHELEITE_BR, 1),
+                    new MaterialStack(ORES.ALBURNITE, 1), new MaterialStack(ORES.SAMARSKITE_Y, 1),
+                    new MaterialStack(ORES.AGARDITE_LA, 1), });
 
     public static final Material WATER = new Material(
             "Water",
@@ -369,7 +353,7 @@ public final class MISC_MATERIALS {
     public static final Material ACETIC_ANHYDRIDE = new Material(
             "Acetic Anhydride",
             MaterialState.PURE_LIQUID, // State
-            new short[] {250, 240, 110}, // Material Colour
+            new short[] { 250, 240, 110 }, // Material Colour
             -73, // Melting Point in C
             139, // Boiling Point in C
             -1, // Protons
@@ -385,7 +369,7 @@ public final class MISC_MATERIALS {
     public static final Material CHLOROACETIC_ACID = new Material(
             "Chloroacetic Acid",
             MaterialState.PURE_LIQUID, // State
-            new short[] {230, 200, 90}, // Material Colour
+            new short[] { 230, 200, 90 }, // Material Colour
             63, // Melting Point in C
             189, // Boiling Point in C
             -1, // Protons
@@ -402,7 +386,7 @@ public final class MISC_MATERIALS {
     public static final Material DICHLOROACETIC_ACID = new Material(
             "Dichloroacetic Acid",
             MaterialState.PURE_LIQUID, // State
-            new short[] {190, 160, 60}, // Material Colour
+            new short[] { 190, 160, 60 }, // Material Colour
             13, // Melting Point in C
             194, // Boiling Point in C
             -1, // Protons
@@ -419,7 +403,7 @@ public final class MISC_MATERIALS {
     public static final Material TRICHLOROACETIC_ACID = new Material(
             "Trichloroacetic Acid",
             MaterialState.PURE_LIQUID, // State
-            new short[] {120, 100, 30}, // Material Colour
+            new short[] { 120, 100, 30 }, // Material Colour
             57, // Melting Point in C
             196, // Boiling Point in C
             -1, // Protons
@@ -437,7 +421,7 @@ public final class MISC_MATERIALS {
             "Chloroacetic Mixture",
             MaterialState.LIQUID, // State
             null,
-            new short[] {210, 160, 10},
+            new short[] { 210, 160, 10 },
             40,
             192,
             -1,
@@ -454,7 +438,7 @@ public final class MISC_MATERIALS {
     public static final Material SODIUM_CYANIDE = new Material(
             "Sodium Cyanide",
             MaterialState.SOLID, // State
-            new short[] {180, 190, 255}, // Material Colour
+            new short[] { 180, 190, 255 }, // Material Colour
             563, // Melting Point in C
             1496, // Boiling Point in C
             -1, // Protons
@@ -470,7 +454,7 @@ public final class MISC_MATERIALS {
     public static final Material CALCIUM_CHLORIDE = new Material(
             "Calcium Chloride",
             MaterialState.SOLID, // State
-            new short[] {180, 190, 255}, // Material Colour
+            new short[] { 180, 190, 255 }, // Material Colour
             563, // Melting Point in C
             1496, // Boiling Point in C
             -1, // Protons
@@ -485,7 +469,7 @@ public final class MISC_MATERIALS {
     public static final Material CYANOACETIC_ACID = new Material(
             "Cyanoacetic Acid",
             MaterialState.SOLID, // State
-            new short[] {130, 130, 40}, // Material Colour
+            new short[] { 130, 130, 40 }, // Material Colour
             66, // Melting Point in C
             108, // Boiling Point in C
             -1, // Protons
@@ -502,7 +486,7 @@ public final class MISC_MATERIALS {
     public static final Material SOLID_ACID_MIXTURE = new Material(
             "Solid Acid Catalyst Mixture",
             MaterialState.LIQUID, // State
-            new short[] {80, 40, 0}, // Material Colour
+            new short[] { 80, 40, 0 }, // Material Colour
             -10, // Melting Point in C
             337, // Boiling Point in C
             -1, // Protons
@@ -518,7 +502,7 @@ public final class MISC_MATERIALS {
     public static final Material COPPER_SULFATE = new Material(
             "Copper(II) Sulfate",
             MaterialState.SOLID, // State
-            new short[] {200, 200, 200}, // Material Colour
+            new short[] { 200, 200, 200 }, // Material Colour
             590, // Melting Point in C
             650, // Boiling Point in C
             -1, // Protons
@@ -534,7 +518,7 @@ public final class MISC_MATERIALS {
     public static final Material COPPER_SULFATE_HYDRATED = new Material(
             "Copper(II) Sulfate Pentahydrate",
             MaterialState.SOLID, // State
-            new short[] {90, 170, 255}, // Material Colour
+            new short[] { 90, 170, 255 }, // Material Colour
             590, // Melting Point in C
             650, // Boiling Point in C
             -1, // Protons
@@ -550,7 +534,7 @@ public final class MISC_MATERIALS {
     public static final Material ETHYL_CYANOACETATE = new Material(
             "Ethyl Cyanoacetate",
             MaterialState.PURE_LIQUID, // State
-            new short[] {0, 75, 160}, // Material Colour
+            new short[] { 0, 75, 160 }, // Material Colour
             -22, // Melting Point in C
             210, // Boiling Point in C
             -1, // Protons
@@ -567,7 +551,7 @@ public final class MISC_MATERIALS {
     public static final Material CYANOACRYLATE_POLYMER = new Material(
             "Cyanoacrylate Polymer",
             MaterialState.LIQUID, // State
-            new short[] {140, 150, 160}, // Material Colour
+            new short[] { 140, 150, 160 }, // Material Colour
             -25, // Melting Point in C
             55, // Boiling Point in C
             -1, // Protons
@@ -584,7 +568,7 @@ public final class MISC_MATERIALS {
     public static final Material ETHYL_CYANOACRYLATE = new Material(
             "Ethyl Cyanoacrylate (Super Glue)",
             MaterialState.PURE_LIQUID, // State
-            new short[] {170, 190, 200}, // Material Colour
+            new short[] { 170, 190, 200 }, // Material Colour
             -25, // Melting Point in C
             55, // Boiling Point in C
             -1, // Protons
@@ -601,7 +585,7 @@ public final class MISC_MATERIALS {
     public static final Material MUTATED_LIVING_SOLDER = new Material(
             "Mutated Living Solder",
             MaterialState.PURE_LIQUID, // State
-            new short[] {147, 109, 155}, // Material Colour
+            new short[] { 147, 109, 155 }, // Material Colour
             -200, // Melting Point in C
             500, // Boiling Point in C
             -1, // Protons

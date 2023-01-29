@@ -8,10 +8,19 @@ import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -28,12 +37,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_EBF>
         implements ISurvivalConstructable {
@@ -71,23 +74,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Factory Grade Advanced Blast Furnace")
+        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Blast Furnace")
                 .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
                 .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
-                .addInfo("Constructed exactly the same as a normal EBF")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .addController("Bottom center")
-                .addCasingInfo(mCasingName, 8)
-                .addInputHatch("Any Casing", 1)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addStructureHint(mHatchName, 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
+                .addInfo("Constructed exactly the same as a normal EBF").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().addController("Bottom center").addCasingInfo(mCasingName, 8)
+                .addInputHatch("Any Casing", 1).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addStructureHint(mHatchName, 1).addEnergyHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -95,34 +89,25 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_EBF>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"HHH", "H-H", "HHH"},
-                        {"HHH", "H-H", "HHH"},
-                        {"C~C", "CCC", "CCC"},
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_EBF>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
+                                    { "C~C", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             ofChain(
                                     buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
-                                            .adder(GregtechMetaTileEntity_Adv_EBF::addPyrotheumHatch)
-                                            .hatchId(968)
-                                            .casingIndex(CASING_TEXTURE_ID)
-                                            .dot(1)
-                                            .build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
-                                            .atLeast(
-                                                    InputBus,
-                                                    OutputBus,
-                                                    Maintenance,
-                                                    Energy,
-                                                    Muffler,
-                                                    InputHatch,
-                                                    OutputHatch)
-                                            .casingIndex(CASING_TEXTURE_ID)
-                                            .dot(1)
-                                            .build(),
+                                            .adder(GregtechMetaTileEntity_Adv_EBF::addPyrotheumHatch).hatchId(968)
+                                            .casingIndex(CASING_TEXTURE_ID).dot(1).build(),
+                                    buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class).atLeast(
+                                            InputBus,
+                                            OutputBus,
+                                            Maintenance,
+                                            Energy,
+                                            Muffler,
+                                            InputHatch,
+                                            OutputHatch).casingIndex(CASING_TEXTURE_ID).dot(1).build(),
                                     onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
                     .addElement(
                             'H',
@@ -260,13 +245,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean checkRecipeGeneric(
-            ItemStack[] aItemInputs,
-            FluidStack[] aFluidInputs,
-            int aMaxParallelRecipes,
-            long aEUPercent,
-            int aSpeedBonusPercent,
-            int aOutputChanceRoll) {
+    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
+            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
         // Based on the Processing Array. A bit overkill, but very flexible.
 
         // Reset outputs and progress stats
@@ -279,14 +259,13 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         long tEnergy = getMaxInputEnergy();
 
-        GT_Recipe tRecipe = this.getRecipeMap()
-                .findRecipe(
-                        getBaseMetaTileEntity(),
-                        mLastRecipe,
-                        false,
-                        gregtech.api.enums.GT_Values.V[tTier],
-                        aFluidInputs,
-                        aItemInputs);
+        GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
+                getBaseMetaTileEntity(),
+                mLastRecipe,
+                false,
+                gregtech.api.enums.GT_Values.V[tTier],
+                aFluidInputs,
+                aItemInputs);
         // Remember last recipe - an optimization for findRecipe()
         this.mLastRecipe = tRecipe;
 
@@ -294,14 +273,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
             return false;
         }
 
-        GT_ParallelHelper helper = new GT_ParallelHelper()
-                .setRecipe(tRecipe)
-                .setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs)
-                .setAvailableEUt(tEnergy)
-                .setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption()
-                .enableOutputCalculation();
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
+                .enableConsumption().enableOutputCalculation();
         if (!mVoidExcess) {
             helper.enableVoidProtection(this);
         }
@@ -319,17 +293,11 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                .setRecipeEUt(tRecipe.mEUt)
-                .setEUt(tEnergy)
-                .setDuration(tRecipe.mDuration)
-                .setEUtDiscount(aEUPercent / 100.0f)
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                 .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel()))
-                .enableHeatOC()
-                .enableHeatDiscount()
-                .setRecipeHeat(tRecipe.mSpecialValue)
-                .setMultiHeat((int) getCoilLevel().getHeat())
+                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).enableHeatOC()
+                .enableHeatDiscount().setRecipeHeat(tRecipe.mSpecialValue).setMultiHeat((int) getCoilLevel().getHeat())
                 .calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
@@ -378,8 +346,10 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         isBussesSeparate = !isBussesSeparate;
-        aPlayer.addChatMessage(new ChatComponentTranslation(
-                isBussesSeparate ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
+        aPlayer.addChatMessage(
+                new ChatComponentTranslation(
+                        isBussesSeparate ? "interaction.separateBusses.enabled"
+                                : "interaction.separateBusses.disabled"));
     }
 
     @Override

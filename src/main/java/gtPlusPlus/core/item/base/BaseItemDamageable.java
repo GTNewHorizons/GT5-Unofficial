@@ -1,11 +1,7 @@
 package gtPlusPlus.core.item.base;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -14,6 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+
 public class BaseItemDamageable extends Item {
 
     private final EnumRarity rarity;
@@ -21,16 +23,9 @@ public class BaseItemDamageable extends Item {
     protected String itemName;
     private final boolean hasEffect;
 
-    public BaseItemDamageable(
-            final String unlocalizedName,
-            final CreativeTabs creativeTab,
-            final int stackSize,
-            final int maxDmg,
-            final String description,
-            final EnumRarity regRarity,
-            final EnumChatFormatting colour,
-            final boolean Effect,
-            final ItemStack OverrideItem) {
+    public BaseItemDamageable(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
+            final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
+            final boolean Effect, final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(CORE.MODID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -47,7 +42,7 @@ public class BaseItemDamageable extends Item {
         return this.itemDescription;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         int dmg = (int) getItemDamage(stack);
@@ -55,12 +50,17 @@ public class BaseItemDamageable extends Item {
             list.add(EnumChatFormatting.GRAY + this.itemDescription);
         }
         if (dmg > 3 && dmg <= 25) {
-            list.add(EnumChatFormatting.GRAY
-                    + "You have discovered that smashing this against valuable stones has some function..");
+            list.add(
+                    EnumChatFormatting.GRAY
+                            + "You have discovered that smashing this against valuable stones has some function..");
         } else if (dmg > 0) {
             int maxDamage = 250;
-            list.add(EnumChatFormatting.GRAY + "" + (maxDamage - getItemDamage(stack)) + "/" + maxDamage
-                    + " gems remaining.");
+            list.add(
+                    EnumChatFormatting.GRAY + ""
+                            + (maxDamage - getItemDamage(stack))
+                            + "/"
+                            + maxDamage
+                            + " gems remaining.");
         }
     }
 

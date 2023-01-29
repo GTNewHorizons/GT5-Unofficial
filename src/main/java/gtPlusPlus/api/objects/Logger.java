@@ -1,11 +1,12 @@
 package gtPlusPlus.api.objects;
 
+import org.apache.logging.log4j.LogManager;
+
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
-import org.apache.logging.log4j.LogManager;
 
 public class Logger {
 
@@ -88,6 +89,7 @@ public class Logger {
     public static void BEES(final String s) {
         modLogger.info("[Bees] " + s);
     }
+
     /**
      * Special Logger for Debugging Bee related content
      */
@@ -109,6 +111,7 @@ public class Logger {
             }
         }
     }
+
     /**
      * Special Logger for Debugging Materials related content
      */
@@ -145,7 +148,7 @@ public class Logger {
     public static void RECIPE(String string) {
         if (enabled) {
             if (
-            /*CORE_Preloader.DEV_ENVIRONMENT || */ CORE_Preloader.DEBUG_MODE) {
+            /* CORE_Preloader.DEV_ENVIRONMENT || */ CORE_Preloader.DEBUG_MODE) {
                 modLogger.info("[Recipe] " + string);
             }
         }

@@ -1,5 +1,25 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GT_Values;
@@ -35,24 +55,6 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemUtils {
 
@@ -136,8 +138,8 @@ public class ItemUtils {
         return temp != null ? temp : null;
     }
 
-    public static void getItemForOreDict(
-            final String FQRN, final String oreDictName, final String itemName, final int meta) {
+    public static void getItemForOreDict(final String FQRN, final String oreDictName, final String itemName,
+            final int meta) {
         try {
             Item em = null;
             final Item em1 = getItemFromFQRN(FQRN);
@@ -151,9 +153,8 @@ public class ItemUtils {
                 GT_OreDictUnificator.registerOre(oreDictName, metaStack);
 
                 /*
-                 * ItemStack itemStackWithMeta = new ItemStack(em,1,meta);
-                 * GT_OreDictUnificator.registerOre(oreDictName, new
-                 * ItemStack(itemStackWithMeta.getItem()));
+                 * ItemStack itemStackWithMeta = new ItemStack(em,1,meta); GT_OreDictUnificator.registerOre(oreDictName,
+                 * new ItemStack(itemStackWithMeta.getItem()));
                  */
             }
         } catch (final NullPointerException e) {
@@ -176,8 +177,8 @@ public class ItemUtils {
         addItemToOreDictionary(stack, oreDictName, false);
     }
 
-    public static ItemStack getItemStackWithMeta(
-            final boolean MOD, final String FQRN, final String itemName, final int meta, final int itemstackSize) {
+    public static ItemStack getItemStackWithMeta(final boolean MOD, final String FQRN, final String itemName,
+            final int meta, final int itemstackSize) {
         if (MOD) {
             try {
                 Item em = null;
@@ -281,14 +282,14 @@ public class ItemUtils {
     }
 
     public static Item getItemFromFQRN(final String fqrn) // fqrn = fully qualified resource name
-            {
+    {
         final String[] fqrnSplit = fqrn.split(":");
         return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
     }
 
-    public static ItemStack getItemStackFromFQRN(
-            final String fqrn, final int Size) // fqrn = fully qualified resource name
-            {
+    public static ItemStack getItemStackFromFQRN(final String fqrn, final int Size) // fqrn = fully qualified resource
+                                                                                    // name
+    {
         Logger.INFO("Trying to split string '" + fqrn + "'.");
         final String[] fqrnSplit = fqrn.split(":");
         if (fqrnSplit.length < 2) {
@@ -311,8 +312,8 @@ public class ItemUtils {
         return null;
     }
 
-    public static void generateSpawnEgg(
-            final String entityModID, final String parSpawnName, final int colourEgg, final int colourOverlay) {
+    public static void generateSpawnEgg(final String entityModID, final String parSpawnName, final int colourEgg,
+            final int colourOverlay) {
         final Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay)
                 .setUnlocalizedName("spawn_egg_" + parSpawnName.toLowerCase())
                 .setTextureName(CORE.MODID + ":spawn_egg");
@@ -332,7 +333,7 @@ public class ItemUtils {
         String mTemp = oredictName;
 
         if (oredictName.contains("-") || oredictName.contains("_")) {
-            mTemp = Utils.sanitizeString(mTemp, new char[] {'-', '_'});
+            mTemp = Utils.sanitizeString(mTemp, new char[] { '-', '_' });
         } else {
             mTemp = Utils.sanitizeString(mTemp);
         }
@@ -379,7 +380,7 @@ public class ItemUtils {
         try {
 
             if (oredictName.contains("-") || oredictName.contains("_")) {
-                oredictName = Utils.sanitizeString(oredictName, new char[] {'-', '_'});
+                oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
             } else {
                 oredictName = Utils.sanitizeString(oredictName);
             }
@@ -422,18 +423,17 @@ public class ItemUtils {
     }
 
     // NullFormula
-    public static Item[] generateSpecialUseDusts(
-            final String unlocalizedName, final String materialName, final int Colour) {
+    public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
+            final int Colour) {
         return generateSpecialUseDusts(unlocalizedName, materialName, "NullFormula", Colour);
     }
 
-    public static Item[] generateSpecialUseDusts(
-            final String unlocalizedName, final String materialName, String mChemForm, final int Colour) {
+    public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
+            String mChemForm, final int Colour) {
         final Item[] output = {
-            new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
-            new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
-            new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, mChemForm, Colour, "Tiny")
-        };
+                new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
+                new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
+                new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, mChemForm, Colour, "Tiny") };
 
         // Generate Shaped/Shapeless Recipes
 
@@ -479,7 +479,16 @@ public class ItemUtils {
 
         if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
             if (RecipeUtils.addShapedRecipe(
-                    smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust)) {
+                    smallDust,
+                    smallDust,
+                    null,
+                    smallDust,
+                    smallDust,
+                    null,
+                    null,
+                    null,
+                    null,
+                    normalDust)) {
                 Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Success");
             } else {
                 Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Failed");
@@ -504,33 +513,32 @@ public class ItemUtils {
         return output;
     }
 
-    public static Item generateSpecialUsePlate(
-            final String internalName, final String displayName, final short[] rgb, final int radioactivity) {
-        return generateSpecialUsePlate(
-                internalName, displayName, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
-    }
-
-    public static Item generateSpecialUsePlate(
-            final String internalName,
-            final String displayName,
-            final String mFormula,
-            final short[] rgb,
+    public static Item generateSpecialUsePlate(final String internalName, final String displayName, final short[] rgb,
             final int radioactivity) {
         return generateSpecialUsePlate(
-                internalName, displayName, mFormula, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
+                internalName,
+                displayName,
+                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]),
+                radioactivity);
     }
 
-    public static Item generateSpecialUsePlate(
-            final String internalName, final String displayName, final int rgb, final int radioactivity) {
+    public static Item generateSpecialUsePlate(final String internalName, final String displayName,
+            final String mFormula, final short[] rgb, final int radioactivity) {
+        return generateSpecialUsePlate(
+                internalName,
+                displayName,
+                mFormula,
+                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]),
+                radioactivity);
+    }
+
+    public static Item generateSpecialUsePlate(final String internalName, final String displayName, final int rgb,
+            final int radioactivity) {
         return new BaseItemPlate_OLD(internalName, displayName, rgb, radioactivity);
     }
 
-    public static Item generateSpecialUsePlate(
-            final String internalName,
-            final String displayName,
-            final String mFormula,
-            final int rgb,
-            final int radioactivity) {
+    public static Item generateSpecialUsePlate(final String internalName, final String displayName,
+            final String mFormula, final int rgb, final int radioactivity) {
         return new BaseItemPlate_OLD(internalName, displayName, mFormula, rgb, radioactivity);
     }
 
@@ -538,8 +546,8 @@ public class ItemUtils {
         return generateSpecialUseDusts(material, onlyLargeDust, false);
     }
 
-    public static Item[] generateSpecialUseDusts(
-            final Material material, final boolean onlyLargeDust, final boolean disableExtraRecipes) {
+    public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust,
+            final boolean disableExtraRecipes) {
         final String materialName = material.getLocalizedName();
         final String unlocalizedName = Utils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
@@ -548,23 +556,26 @@ public class ItemUtils {
         Item[] output = null;
         if (onlyLargeDust == false) {
             output = new Item[] {
-                new BaseItemDustUnique(
-                        "itemDust" + unlocalizedName, materialName, isChemFormvalid ? aChemForm : "", Colour, "Dust"),
-                new BaseItemDustUnique(
-                        "itemDustSmall" + unlocalizedName,
-                        materialName,
-                        isChemFormvalid ? aChemForm : "",
-                        Colour,
-                        "Small"),
-                new BaseItemDustUnique(
-                        "itemDustTiny" + unlocalizedName,
-                        materialName,
-                        isChemFormvalid ? aChemForm : "",
-                        Colour,
-                        "Tiny")
-            };
+                    new BaseItemDustUnique(
+                            "itemDust" + unlocalizedName,
+                            materialName,
+                            isChemFormvalid ? aChemForm : "",
+                            Colour,
+                            "Dust"),
+                    new BaseItemDustUnique(
+                            "itemDustSmall" + unlocalizedName,
+                            materialName,
+                            isChemFormvalid ? aChemForm : "",
+                            Colour,
+                            "Small"),
+                    new BaseItemDustUnique(
+                            "itemDustTiny" + unlocalizedName,
+                            materialName,
+                            isChemFormvalid ? aChemForm : "",
+                            Colour,
+                            "Tiny") };
         } else {
-            output = new Item[] {new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust")};
+            output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
         }
 
         new RecipeGen_DustGeneration(material, disableExtraRecipes);
@@ -596,13 +607,8 @@ public class ItemUtils {
                 null);
     }
 
-    public static MultiPickaxeBase generateMultiPick(
-            final boolean GT_Durability,
-            final ToolMaterial customMaterial,
-            final String name,
-            final int durability,
-            final short[] rgba,
-            final Object enchantment) {
+    public static MultiPickaxeBase generateMultiPick(final boolean GT_Durability, final ToolMaterial customMaterial,
+            final String name, final int durability, final short[] rgba, final Object enchantment) {
         Logger.WARNING("Generating a Multi-Pick out of " + name);
         final short[] rgb = rgba;
         int dur = customMaterial.getMaxUses();
@@ -612,8 +618,11 @@ public class ItemUtils {
             Logger.WARNING("Using gregtech durability value, " + name + " is now " + dur + ".");
         } else if (dur <= 0) {
             dur = durability;
-            Logger.WARNING("Determined durability too low, " + name + " is now " + dur
-                    + " based on the GT material durability.");
+            Logger.WARNING(
+                    "Determined durability too low, " + name
+                            + " is now "
+                            + dur
+                            + " based on the GT material durability.");
         }
         if (dur <= 0) {
             Logger.WARNING("Still too low, " + name + " will now go unused.");
@@ -630,7 +639,11 @@ public class ItemUtils {
         }
 
         final MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(
-                name + " Multipick", (customMaterial), dur, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), enchantment);
+                name + " Multipick",
+                (customMaterial),
+                dur,
+                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]),
+                enchantment);
 
         if (MP_Redstone.isValid) {
             return MP_Redstone;
@@ -642,21 +655,25 @@ public class ItemUtils {
     public static MultiSpadeBase generateMultiShovel(final boolean GT_Durability, final Materials material) {
         final ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
         return generateMultiShovel(
-                GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa);
+                GT_Durability,
+                customMaterial,
+                material.mDefaultLocalName,
+                material.mDurability,
+                material.mRGBa);
     }
 
     public static MultiSpadeBase generateMultiShovel(final Material material) {
         final ToolMaterial customMaterial = Utils.generateToolMaterial(material);
         return generateMultiShovel(
-                true, customMaterial, material.getLocalizedName(), (int) material.vDurability, material.getRGBA());
+                true,
+                customMaterial,
+                material.getLocalizedName(),
+                (int) material.vDurability,
+                material.getRGBA());
     }
 
-    public static MultiSpadeBase generateMultiShovel(
-            final boolean GT_Durability,
-            final ToolMaterial customMaterial,
-            final String name,
-            final int durability,
-            final short[] rgba) {
+    public static MultiSpadeBase generateMultiShovel(final boolean GT_Durability, final ToolMaterial customMaterial,
+            final String name, final int durability, final short[] rgba) {
         Logger.WARNING("Generating a Multi-Spade out of " + name);
         final short[] rgb = rgba;
         int dur = customMaterial.getMaxUses();
@@ -666,15 +683,21 @@ public class ItemUtils {
             Logger.WARNING("Using gregtech durability value, " + name + " is now " + dur + ".");
         } else if (dur <= 0) {
             dur = durability;
-            Logger.WARNING("Determined durability too low, " + name + " is now " + dur
-                    + " based on the GT material durability.");
+            Logger.WARNING(
+                    "Determined durability too low, " + name
+                            + " is now "
+                            + dur
+                            + " based on the GT material durability.");
         }
         if (dur <= 0) {
             Logger.WARNING("Still too low, " + name + " will now go unused.");
             return null;
         }
         final MultiSpadeBase MP_Redstone = new MultiSpadeBase(
-                name + " Multispade", (customMaterial), dur, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]));
+                name + " Multispade",
+                (customMaterial),
+                dur,
+                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]));
 
         if (MP_Redstone.isValid) {
             return MP_Redstone;
@@ -849,7 +872,11 @@ public class ItemUtils {
 
     public static ItemStack getGregtechCircuit(final int Meta) {
         return ItemUtils.getItemStackWithMeta(
-                LoadedMods.Gregtech, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
+                LoadedMods.Gregtech,
+                "gregtech:gt.integrated_circuit",
+                "Gregtech Circuit",
+                Meta,
+                0);
     }
 
     public static ItemStack[] getBlockDrops(final ArrayList<ItemStack> blockDrops) {
@@ -1024,7 +1051,7 @@ public class ItemUtils {
     }
 
     public static boolean checkForInvalidItems(ItemStack mInput) {
-        return checkForInvalidItems(new ItemStack[] {mInput});
+        return checkForInvalidItems(new ItemStack[] { mInput });
     }
 
     public static boolean checkForInvalidItems(ItemStack[] mInput) {
@@ -1034,8 +1061,7 @@ public class ItemUtils {
     /**
      *
      * @param mInputs
-     * @return {@link Boolean} - True if {@link ItemStack}[] only contains valid
-     *         items.
+     * @return {@link Boolean} - True if {@link ItemStack}[] only contains valid items.
      */
     public static boolean checkForInvalidItems(ItemStack[] mInputs, ItemStack[] mOutputs) {
         if (mInputs == null || mOutputs == null) {
@@ -1051,10 +1077,10 @@ public class ItemUtils {
                             return false;
                         } else if (stack.getItem() == ModItems.ZZZ_Empty
                                 || stack.getItem().getClass() == ModItems.ZZZ_Empty.getClass()) {
-                            return false;
-                        } else {
-                            continue;
-                        }
+                                    return false;
+                                } else {
+                                    continue;
+                                }
                     } else {
                         continue;
                     }
@@ -1072,10 +1098,10 @@ public class ItemUtils {
                             return false;
                         } else if (stack.getItem() == ModItems.ZZZ_Empty
                                 || stack.getItem().getClass() == ModItems.ZZZ_Empty.getClass()) {
-                            return false;
-                        } else {
-                            continue;
-                        }
+                                    return false;
+                                } else {
+                                    continue;
+                                }
                     } else {
                         continue;
                     }
@@ -1105,9 +1131,8 @@ public class ItemUtils {
         }
 
         /*
-        for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
-        	aTemp.setInventorySlotContents(o, g[o]);
-        }*/
+         * for (int o = 0; o < aInputInventory.getSizeInventory(); o++) { aTemp.setInventorySlotContents(o, g[o]); }
+         */
         return aTemp;
     }
 
@@ -1121,7 +1146,7 @@ public class ItemUtils {
         for (int i = 0; i < aInvSize; i++) {
             for (int i2 = 0; i2 < aInvSize; i2++) {
                 if (i != i2) {
-                    ItemStack[] t1 = new ItemStack[] {aInputs[i], aInputs[i2]};
+                    ItemStack[] t1 = new ItemStack[] { aInputs[i], aInputs[i2] };
                     if (t1[0] == null || t1[1] == null) {
                         continue;
                     } else if (!GT_Utility.areStacksEqual(t1[0], t1[1])) {
@@ -1174,10 +1199,8 @@ public class ItemUtils {
         }
         String aDisplay = null;
         try {
-            aDisplay = (""
-                            + StatCollector.translateToLocal(
-                                    aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name"))
-                    .trim();
+            aDisplay = ("" + StatCollector
+                    .translateToLocal(aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
             if (aStack.hasTagCompound()) {
                 if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
                     NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
@@ -1221,8 +1244,7 @@ public class ItemUtils {
         final Item mItem = aStack.getItem();
         final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
         final Class aSkookClass = aSkookum.getClass();
-        if (aSkookClass.isInstance(mItem)
-                || mItem instanceof GT_MetaGenerated_Tool_01
+        if (aSkookClass.isInstance(mItem) || mItem instanceof GT_MetaGenerated_Tool_01
                 || mItem instanceof MetaGeneratedGregtechTools
                 || mItem instanceof Gregtech_MetaTool
                 || mItem == aSkookum) {
@@ -1232,12 +1254,10 @@ public class ItemUtils {
     }
 
     public static boolean isToolWrench(ItemStack aWrench) {
-        if (isItemGregtechTool(aWrench)
-                && (aWrench.getItemDamage() == 16
-                        || aWrench.getItemDamage() == 120
-                        || aWrench.getItemDamage() == 122
-                        || aWrench.getItemDamage() == 124
-                        || aWrench.getItemDamage() == 7734)) {
+        if (isItemGregtechTool(aWrench) && (aWrench.getItemDamage() == 16 || aWrench.getItemDamage() == 120
+                || aWrench.getItemDamage() == 122
+                || aWrench.getItemDamage() == 124
+                || aWrench.getItemDamage() == 7734)) {
             return true;
         }
         return false;
@@ -1344,8 +1364,7 @@ public class ItemUtils {
     public static boolean isControlCircuit(ItemStack aStack) {
         if (aStack != null) {
             Item aItem = aStack.getItem();
-            if (aItem == CI.getNumberedBioCircuit(0).getItem()
-                    || aItem == CI.getNumberedCircuit(0).getItem()
+            if (aItem == CI.getNumberedBioCircuit(0).getItem() || aItem == CI.getNumberedCircuit(0).getItem()
                     || aItem == CI.getNumberedAdvancedCircuit(0).getItem()) {
                 return true;
             }

@@ -7,10 +7,16 @@ import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -28,14 +34,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialDehydrator
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialDehydrator>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialDehydrator extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialDehydrator> implements ISurvivalConstructable {
 
     private static int CASING_TEXTURE_ID;
     private static String mCasingName = "Vacuum Casing";
@@ -61,26 +62,17 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Factory Grade Vacuum Furnace")
+        tt.addMachineType(getMachineType()).addInfo("Factory Grade Vacuum Furnace")
                 .addInfo("Can toggle the operation temperature with a Screwdriver")
                 .addInfo("All Dehydrator recipes are Low Temp recipes")
                 .addInfo("Speed: +120% | EU Usage: 50% | Parallel: 4")
                 .addInfo("Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)")
                 .addInfo("Each 1800K over the min. Heat Capacity allows for one upgraded overclock")
                 .addInfo("Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 5, 3, true)
-                .addController("Bottom Center")
-                .addCasingInfo(mCasingName, 5)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 5, 3, true)
+                .addController("Bottom Center").addCasingInfo(mCasingName, 5).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -88,21 +80,16 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialDehydrator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialDehydrator>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"HHH", "H-H", "HHH"},
-                        {"HHH", "H-H", "HHH"},
-                        {"HHH", "H-H", "HHH"},
-                        {"C~C", "CCC", "CCC"},
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialDehydrator>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
+                                    { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialDehydrator.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(CASING_TEXTURE_ID)
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 10))))
                     .addElement(
                             'H',
@@ -148,8 +135,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     }
 
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return mDehydratorMode
-                ? GTPP_Recipe.GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes
+        return mDehydratorMode ? GTPP_Recipe.GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes
                 : GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes;
     }
 
@@ -185,13 +171,8 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     }
 
     @Override
-    public boolean checkRecipeGeneric(
-            ItemStack[] aItemInputs,
-            FluidStack[] aFluidInputs,
-            int aMaxParallelRecipes,
-            long aEUPercent,
-            int aSpeedBonusPercent,
-            int aOutputChanceRoll) {
+    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
+            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
         // Based on the Processing Array. A bit overkill, but very flexible.
 
         // Reset outputs and progress stats
@@ -204,14 +185,13 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         long tEnergy = getMaxInputEnergy();
 
-        GT_Recipe tRecipe = this.getRecipeMap()
-                .findRecipe(
-                        getBaseMetaTileEntity(),
-                        mLastRecipe,
-                        false,
-                        gregtech.api.enums.GT_Values.V[tTier],
-                        aFluidInputs,
-                        aItemInputs);
+        GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
+                getBaseMetaTileEntity(),
+                mLastRecipe,
+                false,
+                gregtech.api.enums.GT_Values.V[tTier],
+                aFluidInputs,
+                aItemInputs);
 
         // Remember last recipe - an optimization for findRecipe()
         this.mLastRecipe = tRecipe;
@@ -220,14 +200,9 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
             return false;
         }
 
-        GT_ParallelHelper helper = new GT_ParallelHelper()
-                .setRecipe(tRecipe)
-                .setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs)
-                .setAvailableEUt(tEnergy)
-                .setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption()
-                .enableOutputCalculation();
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
+                .enableConsumption().enableOutputCalculation();
         if (!mVoidExcess) {
             helper.enableVoidProtection(this);
         }
@@ -245,17 +220,11 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                .setRecipeEUt(tRecipe.mEUt)
-                .setEUt(tEnergy)
-                .setDuration(tRecipe.mDuration)
-                .setEUtDiscount(aEUPercent / 100.0f)
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                 .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel()))
-                .enableHeatOC()
-                .enableHeatDiscount()
-                .setRecipeHeat(tRecipe.mSpecialValue)
-                .setMultiHeat((int) getCoilLevel().getHeat())
+                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).enableHeatOC()
+                .enableHeatDiscount().setRecipeHeat(tRecipe.mSpecialValue).setMultiHeat((int) getCoilLevel().getHeat())
                 .calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());

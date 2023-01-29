@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import java.util.HashMap;
+
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -7,9 +12,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.HashMap;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlocksAbstract {
 
@@ -19,8 +21,8 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.pipesgears", GT_Material_Casings.INSTANCE);
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Eglin Steel Gear Box Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel-792 Gear Box Casing");
-        GT_LanguageManager.addStringLocalization(
-                this.getUnlocalizedName() + ".2.name", "Incoloy MA956 Gear Box Casing");
+        GT_LanguageManager
+                .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Incoloy MA956 Gear Box Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Nitinol-60 Gear Box Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Zeron-100 Gear Box Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Pikyonium Gear Box Casing");

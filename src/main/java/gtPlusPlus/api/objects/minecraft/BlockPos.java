@@ -1,14 +1,16 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.api.objects.data.AutoMap;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class BlockPos implements Serializable {
 
@@ -89,8 +91,7 @@ public class BlockPos implements Serializable {
             return false;
         }
         BlockPos otherPoint = (BlockPos) other;
-        return this.xPos == otherPoint.xPos
-                && this.yPos == otherPoint.yPos
+        return this.xPos == otherPoint.xPos && this.yPos == otherPoint.yPos
                 && this.zPos == otherPoint.zPos
                 && this.dim == otherPoint.dim;
     }

@@ -1,10 +1,11 @@
 package gtPlusPlus.core.slots;
 
-import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 
 public class SlotVolumetricFlask extends Slot {
 

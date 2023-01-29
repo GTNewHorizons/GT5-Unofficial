@@ -1,13 +1,14 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gtPlusPlus.core.material.ELEMENT;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gtPlusPlus.core.material.ELEMENT;
 
 public class RecipeLoader_GTNH {
 

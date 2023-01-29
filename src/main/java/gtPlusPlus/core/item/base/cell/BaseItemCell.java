@@ -1,5 +1,11 @@
 package gtPlusPlus.core.item.base.cell;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -7,11 +13,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.Ic2Items;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class BaseItemCell extends BaseItemComponent {
 
@@ -37,7 +38,9 @@ public class BaseItemCell extends BaseItemComponent {
         super(unlocalName, localName, RGBa);
         this.fluidColour = RGBa;
         FluidContainerRegistry.registerFluidContainer(
-                FluidUtils.getFluidStack(cellFluid, 1000), ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
+                FluidUtils.getFluidStack(cellFluid, 1000),
+                ItemUtils.getSimpleStack(this),
+                Ic2Items.cell.copy());
     }
 
     @Override

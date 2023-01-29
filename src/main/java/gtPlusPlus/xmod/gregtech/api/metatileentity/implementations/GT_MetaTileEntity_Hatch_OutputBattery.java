@@ -2,8 +2,12 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,16 +19,15 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.widget.ElectricSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hatch {
+
     public GT_MetaTileEntity_Hatch_OutputBattery(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Dischargeable Item Bus for Multiblocks");
     }
 
-    public GT_MetaTileEntity_Hatch_OutputBattery(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OutputBattery(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription, aTextures);
     }
 
@@ -38,7 +41,7 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
         } else {
             mSlots = 16;
         }
-        return new String[] {this.mDescription, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip};
+        return new String[] { this.mDescription, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip };
     }
 
     @Override
@@ -68,12 +71,12 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger) };
     }
 
     @Override
@@ -125,19 +128,18 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
 
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
-            for (int j = i + 1; j < mInventory.length; j++)
-                if (mInventory[j] != null
-                        && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(
-                            getBaseMetaTileEntity(),
-                            getBaseMetaTileEntity(),
-                            j,
-                            i,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1);
-                }
+            for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
+                    && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                        GT_Utility.moveStackFromSlotAToSlotB(
+                                getBaseMetaTileEntity(),
+                                getBaseMetaTileEntity(),
+                                j,
+                                i,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                    }
     }
 
     @Override
@@ -172,9 +174,7 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
                 if (mMetaTileEntity.dechargerSlotCount() > 0
                         && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
                     for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
-                                    k = mMetaTileEntity.dechargerSlotCount() + i;
-                            i < k;
-                            i++) {
+                            k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                         if (mMetaTileEntity.mInventory[i] != null
                                 && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
                             aBaseMetaTileEntity.increaseStoredEnergyUnits(

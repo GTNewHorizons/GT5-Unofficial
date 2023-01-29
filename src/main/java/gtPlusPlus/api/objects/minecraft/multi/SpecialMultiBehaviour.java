@@ -1,12 +1,14 @@
 package gtPlusPlus.api.objects.minecraft.multi;
 
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.util.GT_Utility;
+
 /**
- * Extend this class to implement custom behaviour for multiblocks.
- * The Trigger item when in a special slot or input bus, will cause the multiblock to behave as specified.
- * Not overriding a method here will cause the default values to be used.
+ * Extend this class to implement custom behaviour for multiblocks. The Trigger item when in a special slot or input
+ * bus, will cause the multiblock to behave as specified. Not overriding a method here will cause the default values to
+ * be used.
+ * 
  * @author Alkalus
  *
  */

@@ -1,8 +1,14 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -20,10 +26,6 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch_Muffler implements IAddGregtechLogo {
 
@@ -47,11 +49,11 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     private int mPollutionSmogLimit = 500000;
 
     public GT_MetaTileEntity_Hatch_Muffler_Adv(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, new String[] {""});
+        super(aID, aName, aNameRegional, aTier, 1, new String[] { "" });
     }
 
-    public GT_MetaTileEntity_Hatch_Muffler_Adv(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Muffler_Adv(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
@@ -64,10 +66,10 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
             desc[mDescArray.length + 1] = "Requires 3 Air on the exhaust face";
             desc[mDescArray.length + 2] = "Requires Air Filters";
             desc[mDescArray.length + 3] = "Mufflers require T2 Filters from IV-" + GT_Values.VN[9];
-            desc[mDescArray.length + 4] =
-                    "Reduces Pollution to " + this.calculatePollutionReductionForTooltip(100) + "%";
-            desc[mDescArray.length + 5] =
-                    "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100)) + "% of CO2/CO/SO2";
+            desc[mDescArray.length + 4] = "Reduces Pollution to " + this.calculatePollutionReductionForTooltip(100)
+                    + "%";
+            desc[mDescArray.length + 5] = "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100))
+                    + "% of CO2/CO/SO2";
             desc[mDescArray.length + 6] = CORE.GT_Tooltip;
             return desc;
         } else {
@@ -76,11 +78,11 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     }
 
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
     }
 
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
     }
 
     public boolean isValidSlot(int aIndex) {
@@ -89,7 +91,10 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                this.mName, this.mTier, StaticFields59.getDescriptionArray(this), this.mTextures);
+                this.mName,
+                this.mTier,
+                StaticFields59.getDescriptionArray(this),
+                this.mTextures);
     }
 
     @Override
@@ -99,8 +104,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     }
 
     private boolean airCheck() {
-        if (this.getBaseMetaTileEntity()
-                        .getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())
+        if (this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())
                 && this.getBaseMetaTileEntity()
                         .getAirAtSideAndDistance(this.getBaseMetaTileEntity().getFrontFacing(), 1)
                 && this.getBaseMetaTileEntity()
@@ -130,8 +134,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         double aVal1 = aPollution * Math.pow(0.64D, (double) (this.mTier - 1));
         int aVal2 = (int) aVal1;
         if (!hasValidFilter()) {
-            aVal2 = (int) ((double) aPollution * Math.pow(0.7D, (double) (this.mTier - 1)));
-            ;
+            aVal2 = (int) ((double) aPollution * Math.pow(0.7D, (double) (this.mTier - 1)));;
         }
         return aVal2;
     }
@@ -331,10 +334,8 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 
     @Override
     public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet()
-                .setMainBackground(GTPP_UITextures.BACKGROUND_YELLOW)
-                .setItemSlot(GTPP_UITextures.SLOT_ITEM_YELLOW)
-                .setTitleTab(
+        return new GUITextureSet().setMainBackground(GTPP_UITextures.BACKGROUND_YELLOW)
+                .setItemSlot(GTPP_UITextures.SLOT_ITEM_YELLOW).setTitleTab(
                         GTPP_UITextures.TAB_TITLE_YELLOW,
                         GTPP_UITextures.TAB_TITLE_DARK_YELLOW,
                         GTPP_UITextures.TAB_TITLE_ANGULAR_YELLOW);
@@ -342,9 +343,8 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new SlotWidget(inventoryHandler, 0)
-                .setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
-                .setBackground(getGUITextureSet().getItemSlot())
-                .setPos(79, 34));
+        builder.widget(
+                new SlotWidget(inventoryHandler, 0).setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
+                        .setBackground(getGUITextureSet().getItemSlot()).setPos(79, 34));
     }
 }

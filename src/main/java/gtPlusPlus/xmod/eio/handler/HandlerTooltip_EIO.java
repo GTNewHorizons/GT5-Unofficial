@@ -2,14 +2,16 @@ package gtPlusPlus.xmod.eio.handler;
 
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIngotTooltips;
 
+import java.lang.reflect.Field;
+
+import net.minecraft.item.Item;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
-import java.lang.reflect.Field;
-import net.minecraft.item.Item;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class HandlerTooltip_EIO {
 
@@ -37,14 +39,12 @@ public class HandlerTooltip_EIO {
                             }
                         }
                     }
-                } catch (Throwable e) {
-                }
+                } catch (Throwable e) {}
             }
 
             if (mIngot != null) {
                 // If the Item is an instance of ItemAlloy.class then proceed
-                if (event.itemStack.getItem() == mIngot
-                        || oIngotClass.isInstance(event.itemStack.getItem())
+                if (event.itemStack.getItem() == mIngot || oIngotClass.isInstance(event.itemStack.getItem())
                         || event.itemStack.getUnlocalizedName().toLowerCase().contains("item.itemAlloy")) {
 
                     // If stacks match, add a tooltip.

@@ -1,5 +1,15 @@
 package gtPlusPlus.nei;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -11,14 +21,6 @@ import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.VanillaColours;
 import gtPlusPlus.nei.handlers.NeiTextureHandler;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
@@ -45,14 +47,13 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
     }
 
     public void loadTransferRects() {
-        this.transferRects.add(
-                new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier(), new Object[0]));
+        this.transferRects
+                .add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier(), new Object[0]));
     }
 
     public void loadCraftingRecipes(ItemStack result) {
-        if (result == null
-                || (!DustDecayable.class.isInstance(result.getItem())
-                        && !BaseItemDustUnique.class.isInstance(result.getItem()))) {
+        if (result == null || (!DustDecayable.class.isInstance(result.getItem())
+                && !BaseItemDustUnique.class.isInstance(result.getItem()))) {
             return;
         }
         if (result != null) {
@@ -131,16 +132,16 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         if (cost > 0) {
 
             // NEI Strings
-            String s = I18n.format("GTPP.nei.info", new Object[] {cost});
-            String s0 = I18n.format("GTPP.nei.timetaken", new Object[] {cost});
+            String s = I18n.format("GTPP.nei.info", new Object[] { cost });
+            String s0 = I18n.format("GTPP.nei.timetaken", new Object[] { cost });
 
             // Time Strings
-            String s1 = I18n.format("GTPP.time.ticks", new Object[] {cost});
-            String s2 = I18n.format("GTPP.time.seconds", new Object[] {cost});
-            String s3 = I18n.format("GTPP.time.minutes", new Object[] {cost});
-            String s4 = I18n.format("GTPP.time.hours", new Object[] {cost});
-            String s5 = I18n.format("GTPP.time.days", new Object[] {cost});
-            String s6 = I18n.format("GTPP.time.months", new Object[] {cost});
+            String s1 = I18n.format("GTPP.time.ticks", new Object[] { cost });
+            String s2 = I18n.format("GTPP.time.seconds", new Object[] { cost });
+            String s3 = I18n.format("GTPP.time.minutes", new Object[] { cost });
+            String s4 = I18n.format("GTPP.time.hours", new Object[] { cost });
+            String s5 = I18n.format("GTPP.time.days", new Object[] { cost });
+            String s6 = I18n.format("GTPP.time.months", new Object[] { cost });
             int y = 20;
 
             int secs = cost / 20;
@@ -198,6 +199,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
     }
 
     public class DecayableRecipeNEI extends TemplateRecipeHandler.CachedRecipe implements Comparable<CachedRecipe> {
+
         private PositionedStack input;
         private PositionedStack output;
         public int time;

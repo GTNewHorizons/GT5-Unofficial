@@ -1,9 +1,10 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemStackData {
 

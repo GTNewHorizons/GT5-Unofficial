@@ -1,12 +1,13 @@
 package gtPlusPlus.core.recipe;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
 
 public class RECIPES_Extruder implements IOreRecipeRegistrator {
 
@@ -15,17 +16,11 @@ public class RECIPES_Extruder implements IOreRecipeRegistrator {
         OrePrefixes.dust.add((IOreRecipeRegistrator) this);
     }
 
-    public void registerOre(
-            final OrePrefixes aPrefix,
-            final Materials aMaterial,
-            final String aOreDictName,
-            final String aModName,
-            final ItemStack aStack) {
-        if (!CORE.GTNH
-                && ((aMaterial == Materials.Glass
-                                || aMaterial == Materials.WroughtIron
-                                || GT_OreDictUnificator.get(OrePrefixes.ingot, (Object) aMaterial, 1L) != null)
-                        && !aMaterial.contains(SubTag.NO_SMELTING))) {
+    public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
+            final String aModName, final ItemStack aStack) {
+        if (!CORE.GTNH && ((aMaterial == Materials.Glass || aMaterial == Materials.WroughtIron
+                || GT_OreDictUnificator.get(OrePrefixes.ingot, (Object) aMaterial, 1L) != null)
+                && !aMaterial.contains(SubTag.NO_SMELTING))) {
             final long aMaterialMass = aMaterial.getMass();
             final int tAmount = (int) (aPrefix.mMaterialAmount / 3628800L);
             if (tAmount > 0 && tAmount <= 64 && aPrefix.mMaterialAmount % 3628800L == 0L) {
@@ -37,17 +32,17 @@ public class RECIPES_Extruder implements IOreRecipeRegistrator {
                 }
 
                 GT_Values.RA.addExtruderRecipe(
-                        GT_Utility.copyAmount(1L, new Object[] {aStack}),
+                        GT_Utility.copyAmount(1L, new Object[] { aStack }),
                         GregtechItemList.Shape_Extruder_SmallGear.get(0L, new Object[0]),
-                        GT_OreDictUnificator.get(
-                                OrePrefixes.gearGtSmall, (Object) aMaterial.mSmeltInto, (long) tAmount),
+                        GT_OreDictUnificator
+                                .get(OrePrefixes.gearGtSmall, (Object) aMaterial.mSmeltInto, (long) tAmount),
                         ((int) Math.max(aMaterialMass * 5L * tAmount, tAmount) / 4),
                         8 * tVoltageMultiplier);
                 GT_Values.RA.addAlloySmelterRecipe(
-                        GT_Utility.copyAmount(2L, new Object[] {aStack}),
+                        GT_Utility.copyAmount(2L, new Object[] { aStack }),
                         ItemList.Shape_Mold_Gear_Small.get(0L, new Object[0]),
-                        GT_OreDictUnificator.get(
-                                OrePrefixes.gearGtSmall, (Object) aMaterial.mSmeltInto, (long) tAmount),
+                        GT_OreDictUnificator
+                                .get(OrePrefixes.gearGtSmall, (Object) aMaterial.mSmeltInto, (long) tAmount),
                         ((int) Math.max(aMaterialMass * 10L * tAmount, tAmount) / 4),
                         2 * tVoltageMultiplier);
             }

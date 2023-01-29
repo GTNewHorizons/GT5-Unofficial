@@ -1,11 +1,12 @@
 package gtPlusPlus.core.material;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 
 public class Particle {
 
@@ -80,14 +81,14 @@ public class Particle {
          */
 
         // Baryons
-        PROTON = new Particle(ElementaryGroup.BARYON, "Proton", new Particle[] {UP, UP, DOWN});
-        NEUTRON = new Particle(ElementaryGroup.BARYON, "Neutron", new Particle[] {UP, DOWN, DOWN});
-        LAMBDA = new Particle(ElementaryGroup.BARYON, "Lambda", new Particle[] {UP, DOWN, STRANGE});
-        OMEGA = new Particle(ElementaryGroup.BARYON, "Omega", new Particle[] {STRANGE, STRANGE, STRANGE});
+        PROTON = new Particle(ElementaryGroup.BARYON, "Proton", new Particle[] { UP, UP, DOWN });
+        NEUTRON = new Particle(ElementaryGroup.BARYON, "Neutron", new Particle[] { UP, DOWN, DOWN });
+        LAMBDA = new Particle(ElementaryGroup.BARYON, "Lambda", new Particle[] { UP, DOWN, STRANGE });
+        OMEGA = new Particle(ElementaryGroup.BARYON, "Omega", new Particle[] { STRANGE, STRANGE, STRANGE });
 
         // Mesons
-        PION = new Particle(ElementaryGroup.MESON, "Pion", new Particle[] {MUON, MUON_NEUTRINO});
-        ETA_MESON = new Particle(ElementaryGroup.MESON, "ETA Meson", new Particle[] {PION, PION, PION});
+        PION = new Particle(ElementaryGroup.MESON, "Pion", new Particle[] { MUON, MUON_NEUTRINO });
+        ETA_MESON = new Particle(ElementaryGroup.MESON, "ETA Meson", new Particle[] { PION, PION, PION });
 
         // Wildcard
         UNKNOWN = new Particle(ElementaryGroup.UNKNOWN, "Unknown");
@@ -113,15 +114,15 @@ public class Particle {
     public Particle(ElementaryGroup aParticleType, String aParticleName, Particle[] aComposition) {
         mParticleType = aParticleType;
         mParticleName = aParticleName;
-        mComposition = aComposition == null ? new Particle[] {this} : aComposition;
+        mComposition = aComposition == null ? new Particle[] { this } : aComposition;
         aMap.put(this);
     }
 
     public static ItemStack getIon(String aElementName, int aCharge) {
         for (String g : gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap.keySet()) {
             if (g.toLowerCase().equals(Utils.sanitizeString(aElementName.toLowerCase()))) {
-                Integer meta = gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap.get(
-                        Utils.sanitizeString(aElementName.toLowerCase()));
+                Integer meta = gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap
+                        .get(Utils.sanitizeString(aElementName.toLowerCase()));
                 if (meta == null) {
                     meta = 0;
                 }

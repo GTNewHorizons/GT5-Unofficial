@@ -3,6 +3,19 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
@@ -23,25 +36,13 @@ import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class Material {
 
     public static final Set<Material> mMaterialMap = new HashSet<Material>();
     public static HashMap<String, Material> mMaterialCache = new HashMap<String, Material>();
 
-    public static final Map<String, Map<String, ItemStack>> mComponentMap =
-            new HashMap<String, Map<String, ItemStack>>();
+    public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<String, Map<String, ItemStack>>();
 
     public static HashMap<String, String> sChemicalFormula = new HashMap<String, String>();
 
@@ -98,19 +99,12 @@ public class Material {
         this(materialName, defaultState, null, inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
             final MaterialStack... inputs) {
         this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", 0, false, false, inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
-            int radiationLevel,
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba, int radiationLevel,
             MaterialStack... materialStacks) {
         this(
                 materialName,
@@ -129,29 +123,13 @@ public class Material {
                 materialStacks);
     }
 
-    public Material(
-            String materialName,
-            MaterialState defaultState,
-            short[] rgba,
-            int j,
-            int k,
-            int l,
-            int m,
-            int radiationLevel,
-            MaterialStack[] materialStacks) {
+    public Material(String materialName, MaterialState defaultState, short[] rgba, int j, int k, int l, int m,
+            int radiationLevel, MaterialStack[] materialStacks) {
         this(materialName, defaultState, null, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
     }
 
-    public Material(
-            String materialName,
-            MaterialState defaultState,
-            final TextureSet set,
-            short[] rgba,
-            int meltingPoint,
-            int boilingPoint,
-            int protons,
-            int neutrons,
-            int radiationLevel,
+    public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba,
+            int meltingPoint, int boilingPoint, int protons, int neutrons, int radiationLevel,
             MaterialStack[] materialStacks) {
         this(
                 materialName,
@@ -170,16 +148,9 @@ public class Material {
                 materialStacks);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final MaterialStack... inputs) {
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
+            final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final MaterialStack... inputs) {
         this(
                 materialName,
                 defaultState,
@@ -195,17 +166,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final String chemSymbol,
-            final MaterialStack... inputs) {
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
+            final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final String chemSymbol, final MaterialStack... inputs) {
         this(
                 materialName,
                 defaultState,
@@ -221,17 +184,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            boolean generateCells,
-            final MaterialStack... inputs) {
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
+            final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, boolean generateCells, final MaterialStack... inputs) {
         this(
                 materialName,
                 defaultState,
@@ -250,17 +205,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final int radiationLevel,
-            final MaterialStack... inputs) {
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
+            final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final int radiationLevel, final MaterialStack... inputs) {
         this(
                 materialName,
                 defaultState,
@@ -276,18 +223,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final long durability,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final int radiationLevel,
-            final MaterialStack... inputs) {
+    public Material(final String materialName, final MaterialState defaultState, final long durability,
+            final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final int radiationLevel, final MaterialStack... inputs) {
         this(
                 materialName,
                 defaultState,
@@ -303,17 +241,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final String chemicalSymbol,
-            final int radiationLevel,
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
+            final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel,
             final MaterialStack... inputs) {
         this(
                 materialName,
@@ -330,18 +260,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final String chemicalSymbol,
-            final int radiationLevel,
-            boolean addCells,
+    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
+            final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean addCells,
             final MaterialStack... inputs) {
         this(
                 materialName,
@@ -361,18 +282,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            TextureSet textureSet,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final String chemicalSymbol,
-            final int radiationLevel,
+    public Material(final String materialName, final MaterialState defaultState, TextureSet textureSet,
+            final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel,
             final MaterialStack... inputs) {
         this(
                 materialName,
@@ -392,19 +304,9 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            TextureSet textureSet,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final String chemicalSymbol,
-            final int radiationLevel,
-            boolean addCells,
+    public Material(final String materialName, final MaterialState defaultState, TextureSet textureSet,
+            final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean addCells,
             final MaterialStack... inputs) {
         this(
                 materialName,
@@ -424,18 +326,9 @@ public class Material {
                 inputs);
     }
 
-    private Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final long durability,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final String chemicalSymbol,
-            final int radiationLevel,
+    private Material(final String materialName, final MaterialState defaultState, final long durability,
+            final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+            final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel,
             final MaterialStack... inputs) {
         this(
                 materialName,
@@ -455,21 +348,10 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final TextureSet set,
-            final long durability,
-            final short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            final String chemicalSymbol,
-            final int radiationLevel,
-            boolean generateCells,
-            final MaterialStack... inputs) {
+    public Material(final String materialName, final MaterialState defaultState, final TextureSet set,
+            final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint,
+            final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol,
+            final int radiationLevel, boolean generateCells, final MaterialStack... inputs) {
         this(
                 materialName,
                 defaultState,
@@ -488,22 +370,10 @@ public class Material {
                 inputs);
     }
 
-    public Material(
-            final String materialName,
-            final MaterialState defaultState,
-            final TextureSet set,
-            final long durability,
-            short[] rgba,
-            final int meltingPoint,
-            final int boilingPoint,
-            final long protons,
-            final long neutrons,
-            final boolean blastFurnace,
-            String chemicalSymbol,
-            final int radiationLevel,
-            boolean generateCells,
-            boolean generateFluid,
-            final MaterialStack... inputs) {
+    public Material(final String materialName, final MaterialState defaultState, final TextureSet set,
+            final long durability, short[] rgba, final int meltingPoint, final int boilingPoint, final long protons,
+            final long neutrons, final boolean blastFurnace, String chemicalSymbol, final int radiationLevel,
+            boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
 
         if (mMaterialMap.add(this)) {}
 
@@ -516,11 +386,10 @@ public class Material {
         try {
             this.unlocalizedName = Utils.sanitizeString(materialName);
             this.localizedName = materialName;
-            this.translatedName =
-                    GT_LanguageManager.addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
+            this.translatedName = GT_LanguageManager
+                    .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
             mMaterialCache.put(getLocalizedName().toLowerCase(), this);
-            Logger.INFO("Stored " + getLocalizedName() + " to cache with key: "
-                    + getLocalizedName().toLowerCase());
+            Logger.INFO("Stored " + getLocalizedName() + " to cache with key: " + getLocalizedName().toLowerCase());
 
             this.materialState = defaultState;
 
@@ -561,8 +430,7 @@ public class Material {
                             }
 
                             Short aAverage = MathUtils.getShortAverage(aDataSet);
-                            if (aAverage > Short.MAX_VALUE
-                                    || aAverage < Short.MIN_VALUE
+                            if (aAverage > Short.MAX_VALUE || aAverage < Short.MIN_VALUE
                                     || aAverage < 0
                                     || aAverage > 255) {
                                 if (aAverage > 255) {
@@ -576,7 +444,7 @@ public class Material {
                         }
 
                         if (mMixedRGB != null && mMixedRGB[0] != null && mMixedRGB[1] != null && mMixedRGB[2] != null) {
-                            this.RGBA = new short[] {mMixedRGB[0], mMixedRGB[1], mMixedRGB[2], 0};
+                            this.RGBA = new short[] { mMixedRGB[0], mMixedRGB[1], mMixedRGB[2], 0 };
                         } else {
                             this.RGBA = Materials.Steel.mRGBa;
                         }
@@ -679,11 +547,8 @@ public class Material {
                         aTempDura += safeCast_LongToInt(g.getStackMaterial().getMass() * 2000);
                     }
                 }
-                this.vDurability = aTempDura > 0
-                        ? aTempDura
-                        : (this.getComposites().isEmpty()
-                                ? 51200
-                                : 32000 * this.getComposites().size());
+                this.vDurability = aTempDura > 0 ? aTempDura
+                        : (this.getComposites().isEmpty() ? 51200 : 32000 * this.getComposites().size());
             }
 
             if ((this.vDurability >= 0) && (this.vDurability < 64000)) {
@@ -719,8 +584,10 @@ public class Material {
                     }
                     byte aAverage = MathUtils.getByteAverage(aDataSet);
                     if (aAverage > 0) {
-                        Logger.MATERIALS(this.getLocalizedName() + " is radioactive due to trace elements. Level: "
-                                + aAverage + ".");
+                        Logger.MATERIALS(
+                                this.getLocalizedName() + " is radioactive due to trace elements. Level: "
+                                        + aAverage
+                                        + ".");
                         this.isRadioactive = true;
                         this.vRadiationLevel = (byte) aAverage;
                     } else {
@@ -735,34 +602,16 @@ public class Material {
                 }
             }
 
-            /*if (vMaterialInput.size() > 0) {
-            	AutoMap<Integer> aDataSet = new AutoMap<Integer>();
-
-            	int bonus = 0;
-            	bonus += this.vMaterialInput.size();
-            	bonus += MathUtils.roundToClosestInt(meltingPointC/1000);
-
-
-
-            	aDataSet.put(bonus);
-
-            	for (MaterialStack m : this.vMaterialInput) {
-            		aDataSet.put(m.getStackMaterial().vTier);
-            	}
-            	int aAverage = MathUtils.getIntAverage(aDataSet);
-            	if (aAverage > Integer.MAX_VALUE || aAverage < Integer.MIN_VALUE) {
-            		aAverage = 0;
-            	}
-            	if (aAverage > 0) {
-            		this.vTier = Math.min(aAverage, 10);
-            	}
-            	else {
-            		this.vTier = MaterialUtils.getTierOfMaterial((int) MathUtils.celsiusToKelvin(meltingPoint));
-            	}
-            }
-            else {
-            	this.vTier = MaterialUtils.getTierOfMaterial((int) MathUtils.celsiusToKelvin(meltingPoint));
-            }*/
+            /*
+             * if (vMaterialInput.size() > 0) { AutoMap<Integer> aDataSet = new AutoMap<Integer>(); int bonus = 0; bonus
+             * += this.vMaterialInput.size(); bonus += MathUtils.roundToClosestInt(meltingPointC/1000);
+             * aDataSet.put(bonus); for (MaterialStack m : this.vMaterialInput) {
+             * aDataSet.put(m.getStackMaterial().vTier); } int aAverage = MathUtils.getIntAverage(aDataSet); if
+             * (aAverage > Integer.MAX_VALUE || aAverage < Integer.MIN_VALUE) { aAverage = 0; } if (aAverage > 0) {
+             * this.vTier = Math.min(aAverage, 10); } else { this.vTier = MaterialUtils.getTierOfMaterial((int)
+             * MathUtils.celsiusToKelvin(meltingPoint)); } } else { this.vTier = MaterialUtils.getTierOfMaterial((int)
+             * MathUtils.celsiusToKelvin(meltingPoint)); }
+             */
             this.vTier = MaterialUtils.getTierOfMaterial(meltingPoint);
 
             // Sets the materials 'tier'. Will probably replace this logic.
@@ -847,8 +696,12 @@ public class Material {
 
             sChemicalFormula.put(materialName.toLowerCase(), this.vChemicalFormula);
             Logger.MATERIALS("Creating a Material instance for " + materialName);
-            Logger.MATERIALS("Formula: " + this.vChemicalFormula + " Smallest Stack: "
-                    + this.smallestStackSizeWhenProcessing + " Smallest Ratio:" + ratio);
+            Logger.MATERIALS(
+                    "Formula: " + this.vChemicalFormula
+                            + " Smallest Stack: "
+                            + this.smallestStackSizeWhenProcessing
+                            + " Smallest Ratio:"
+                            + ratio);
             Logger.MATERIALS("Protons: " + this.vProtons);
             Logger.MATERIALS("Neutrons: " + this.vNeutrons);
             Logger.MATERIALS("Mass: " + this.vMass + "/units");
@@ -899,8 +752,11 @@ public class Material {
 
     public TextureSet setTextureSet(TextureSet set, int aTier) {
         if (set != null) {
-            Logger.MATERIALS("Set textureset for " + this.localizedName + " to be " + set.mSetName
-                    + ". This textureSet was supplied.");
+            Logger.MATERIALS(
+                    "Set textureset for " + this.localizedName
+                            + " to be "
+                            + set.mSetName
+                            + ". This textureSet was supplied.");
             return set;
         }
 
@@ -952,12 +808,18 @@ public class Material {
         if (aSet == null) {
             if (aGem >= this.getComposites().size() / 2) {
                 if (MathUtils.isNumberEven(aGem)) {
-                    Logger.MATERIALS("Set textureset for " + this.localizedName + " to be "
-                            + TextureSet.SET_GEM_HORIZONTAL.mSetName + ".");
+                    Logger.MATERIALS(
+                            "Set textureset for " + this.localizedName
+                                    + " to be "
+                                    + TextureSet.SET_GEM_HORIZONTAL.mSetName
+                                    + ".");
                     return TextureSet.SET_GEM_HORIZONTAL;
                 } else {
-                    Logger.MATERIALS("Set textureset for " + this.localizedName + " to be "
-                            + TextureSet.SET_GEM_VERTICAL.mSetName + ".");
+                    Logger.MATERIALS(
+                            "Set textureset for " + this.localizedName
+                                    + " to be "
+                                    + TextureSet.SET_GEM_VERTICAL.mSetName
+                                    + ".");
                     return TextureSet.SET_GEM_VERTICAL;
                 }
             }
@@ -981,16 +843,19 @@ public class Material {
                     sets.put(r.getStackMaterial());
                 }
             }
-            TextureSet mostUsedTypeTextureSet =
-                    MaterialUtils.getMostCommonTextureSet(new ArrayList<Material>(sets.values()));
+            TextureSet mostUsedTypeTextureSet = MaterialUtils
+                    .getMostCommonTextureSet(new ArrayList<Material>(sets.values()));
             if (mostUsedTypeTextureSet != null && mostUsedTypeTextureSet instanceof TextureSet) {
                 Logger.MATERIALS(
                         "Set textureset for " + this.localizedName + " to be " + mostUsedTypeTextureSet.mSetName + ".");
                 return mostUsedTypeTextureSet;
             }
         }
-        Logger.MATERIALS("Set textureset for " + this.localizedName + " to be " + Materials.Iron.mIconSet.mSetName
-                + ". [Fallback]");
+        Logger.MATERIALS(
+                "Set textureset for " + this.localizedName
+                        + " to be "
+                        + Materials.Iron.mIconSet.mSetName
+                        + ". [Fallback]");
         return Materials.Gold.mIconSet;
     }
 
@@ -1023,7 +888,7 @@ public class Material {
         if (this.RGBA != null) {
             return this.RGBA;
         }
-        return new short[] {255, 0, 0};
+        return new short[] { 255, 0, 0 };
     }
 
     public final short[] getRGBA() {
@@ -1031,10 +896,10 @@ public class Material {
             if (this.RGBA.length == 4) {
                 return this.RGBA;
             } else {
-                return new short[] {this.RGBA[0], this.RGBA[1], this.RGBA[2], 0};
+                return new short[] { this.RGBA[0], this.RGBA[1], this.RGBA[2], 0 };
             }
         }
-        return new short[] {255, 0, 0, 0};
+        return new short[] { 255, 0, 0, 0 };
     }
 
     public final int getRgbAsHex() {
@@ -1104,8 +969,10 @@ public class Material {
                     if (aPrefix == OrePrefixes.cell) {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
                         if (Erg != null && ItemUtils.checkForInvalidItems(Erg)) {
-                            Logger.MATERIALS("Found \"" + OrePrefixes.cellMolten.name() + this.unlocalizedName
-                                    + "\" using backup GT Materials option.");
+                            Logger.MATERIALS(
+                                    "Found \"" + OrePrefixes.cellMolten.name()
+                                            + this.unlocalizedName
+                                            + "\" using backup GT Materials option.");
                             g.put(aKey, Erg);
                             mComponentMap.put(unlocalizedName, g);
                             return Erg;
@@ -1128,16 +995,16 @@ public class Material {
     public final Block getBlock() {
         Block b = Block.getBlockFromItem(getBlock(1).getItem());
         if (b == null) {
-            Logger.INFO("[ERROR] Tried to get invalid block for " + this.getLocalizedName()
-                    + ", returning debug block instead.");
+            Logger.INFO(
+                    "[ERROR] Tried to get invalid block for " + this.getLocalizedName()
+                            + ", returning debug block instead.");
         }
         return b != null ? b : Blocks.lit_furnace;
     }
 
     public final ItemStack getBlock(final int stacksize) {
         ItemStack i = getComponentByPrefix(OrePrefixes.block, stacksize);
-        return i != null
-                ? i
+        return i != null ? i
                 : ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block" + this.unlocalizedName, stacksize);
     }
 
@@ -1280,11 +1147,13 @@ public class Material {
 
     /**
      * Ore Components
+     * 
      * @return
      */
     public final ItemStack getOre(final int stacksize) {
         return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                "ore" + Utils.sanitizeString(this.getUnlocalizedName()), stacksize);
+                "ore" + Utils.sanitizeString(this.getUnlocalizedName()),
+                stacksize);
     }
 
     public final Block getOreBlock(final int stacksize) {
@@ -1298,9 +1167,10 @@ public class Material {
                 return a3;
             }
 
-            Block x = Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                            "ore" + Utils.sanitizeString(this.unlocalizedName), stacksize)
-                    .getItem());
+            Block x = Block.getBlockFromItem(
+                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                            "ore" + Utils.sanitizeString(this.unlocalizedName),
+                            stacksize).getItem());
             if (x != null) {
                 return x;
             }
@@ -1336,8 +1206,8 @@ public class Material {
     }
 
     public final boolean hasSolidForm() {
-        if (ItemUtils.checkForInvalidItems(
-                new ItemStack[] {getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1)})) {
+        if (ItemUtils
+                .checkForInvalidItems(new ItemStack[] { getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1) })) {
             return true;
         }
         return false;
@@ -1479,8 +1349,10 @@ public class Material {
                                         if (dummyFormulaArray[e] > 1) {
 
                                             if (aChemFormula.length() > 3) {
-                                                dummyFormula =
-                                                        dummyFormula + "(" + aChemFormula + ")" + dummyFormulaArray[e];
+                                                dummyFormula = dummyFormula + "("
+                                                        + aChemFormula
+                                                        + ")"
+                                                        + dummyFormulaArray[e];
                                             } else {
                                                 dummyFormula = dummyFormula + aChemFormula + dummyFormulaArray[e];
                                             }
@@ -1535,17 +1407,17 @@ public class Material {
         Fluid aGTBaseFluid = null;
 
         // Clean up Internal Fluid Generation
-        final Materials n1 =
-                MaterialUtils.getMaterial(this.getLocalizedName(), Utils.sanitizeString(this.getLocalizedName()));
-        final Materials n2 =
-                MaterialUtils.getMaterial(this.getUnlocalizedName(), Utils.sanitizeString(this.getUnlocalizedName()));
+        final Materials n1 = MaterialUtils
+                .getMaterial(this.getLocalizedName(), Utils.sanitizeString(this.getLocalizedName()));
+        final Materials n2 = MaterialUtils
+                .getMaterial(this.getUnlocalizedName(), Utils.sanitizeString(this.getUnlocalizedName()));
 
         FluidStack f1 = FluidUtils.getWildcardFluidStack(n1, 1);
         FluidStack f2 = FluidUtils.getWildcardFluidStack(n2, 1);
-        FluidStack f3 = FluidUtils.getWildcardFluidStack(
-                Utils.sanitizeString(this.getUnlocalizedName(), new char[] {'-', '_'}), 1);
-        FluidStack f4 = FluidUtils.getWildcardFluidStack(
-                Utils.sanitizeString(this.getLocalizedName(), new char[] {'-', '_'}), 1);
+        FluidStack f3 = FluidUtils
+                .getWildcardFluidStack(Utils.sanitizeString(this.getUnlocalizedName(), new char[] { '-', '_' }), 1);
+        FluidStack f4 = FluidUtils
+                .getWildcardFluidStack(Utils.sanitizeString(this.getLocalizedName(), new char[] { '-', '_' }), 1);
 
         if (f1 != null) {
             aGTBaseFluid = f1.getFluid();
@@ -1560,14 +1432,16 @@ public class Material {
         ItemStack aFullCell = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getUnlocalizedName(), 1);
         ItemStack aFullCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getLocalizedName(), 1);
         ItemStack aFullCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                "cell" + Utils.sanitizeString(this.getUnlocalizedName(), new char[] {'-', '_'}), 1);
+                "cell" + Utils.sanitizeString(this.getUnlocalizedName(), new char[] { '-', '_' }),
+                1);
         ItemStack aFullCell4 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                "cell" + Utils.sanitizeString(this.getLocalizedName(), new char[] {'-', '_'}), 1);
+                "cell" + Utils.sanitizeString(this.getLocalizedName(), new char[] { '-', '_' }),
+                1);
 
         Logger.MATERIALS("Generating our own fluid.");
         // Generate a Cell if we need to, but first validate all four searches are invalid
 
-        if (!ItemUtils.checkForInvalidItems(new ItemStack[] {aFullCell, aFullCell2, aFullCell3, aFullCell4})) {
+        if (!ItemUtils.checkForInvalidItems(new ItemStack[] { aFullCell, aFullCell2, aFullCell3, aFullCell4 })) {
             if (this.vGenerateCells) {
                 Item g = new BaseItemCell(this);
                 aFullCell = ItemUtils.getSimpleStack(g);
@@ -1619,17 +1493,15 @@ public class Material {
                     this.vGenerateCells);
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
             return FluidUtils.generateGas(
-                    unlocalizedName, this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
-            /*return FluidUtils.addGTFluid(
-            this.getUnlocalizedName(),
-            this.getLocalizedName()+" Gas",
-            this.RGBA,
-            2,
-            this.getMeltingPointK(),
-            aFullCell,
-            ItemUtils.getEmptyCell(),
-            1000,
-            this.vGenerateCells);*/
+                    unlocalizedName,
+                    this.getLocalizedName(),
+                    getMeltingPointK(),
+                    getRGBA(),
+                    vGenerateCells);
+            /*
+             * return FluidUtils.addGTFluid( this.getUnlocalizedName(), this.getLocalizedName()+" Gas", this.RGBA, 2,
+             * this.getMeltingPointK(), aFullCell, ItemUtils.getEmptyCell(), 1000, this.vGenerateCells);
+             */
         } else { // Plasma
             return this.generatePlasma();
         }
@@ -1779,13 +1651,13 @@ public class Material {
         return registerComponentForMaterial(this, aPrefix, aStack);
     }
 
-    public static boolean registerComponentForMaterial(
-            Material componentMaterial, ComponentTypes aPrefix, ItemStack aStack) {
+    public static boolean registerComponentForMaterial(Material componentMaterial, ComponentTypes aPrefix,
+            ItemStack aStack) {
         return registerComponentForMaterial(componentMaterial, aPrefix.getGtOrePrefix(), aStack);
     }
 
-    public static boolean registerComponentForMaterial(
-            Material componentMaterial, OrePrefixes aPrefix, ItemStack aStack) {
+    public static boolean registerComponentForMaterial(Material componentMaterial, OrePrefixes aPrefix,
+            ItemStack aStack) {
         if (componentMaterial == null) {
             return false;
         }
@@ -1798,8 +1670,11 @@ public class Material {
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, aStack);
-            Logger.MATERIALS("Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                    + "] Map: [" + aKey + "]");
+            Logger.MATERIALS(
+                    "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
+                            + "] Map: ["
+                            + aKey
+                            + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             return true;
         } else {

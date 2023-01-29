@@ -1,15 +1,19 @@
 package gtPlusPlus.plugin.fishing.misc;
 
-import com.google.common.collect.Maps;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.plugin.fishing.item.BaseFish;
 import java.util.Map;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.google.common.collect.Maps;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.plugin.fishing.item.BaseFish;
+
 public enum BaseFishTypes {
+
     COD(0, "cod", 2, 0.1F, 5, 0.6F),
     SALMON(1, "salmon", 2, 0.1F, 6, 0.8F),
     CLOWNFISH(2, "clownfish", 1, 0.1F),
@@ -31,12 +35,7 @@ public enum BaseFishTypes {
     private final float field_150990_m;
     private boolean isCooked = false;
 
-    private BaseFishTypes(
-            int p_i45336_3_,
-            String p_i45336_4_,
-            int p_i45336_5_,
-            float p_i45336_6_,
-            int p_i45336_7_,
+    private BaseFishTypes(int p_i45336_3_, String p_i45336_4_, int p_i45336_5_, float p_i45336_6_, int p_i45336_7_,
             float p_i45336_8_) {
         this.mID = p_i45336_3_;
         this.mFishName = p_i45336_4_;

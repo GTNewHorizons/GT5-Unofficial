@@ -1,9 +1,7 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.block.*;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.lib.CORE;
+
 public class StaballoyAxe extends ItemAxe {
+
     public String mat;
 
     public StaballoyAxe(final String unlocalizedName, final ToolMaterial material) {
@@ -24,7 +27,7 @@ public class StaballoyAxe extends ItemAxe {
         this.setTextureName(CORE.MODID + ":" + unlocalizedName);
     }
 
-    //   EXPLODE TREE
+    // EXPLODE TREE
     byte[] tre = new byte[32000];
     byte unchecked = 0;
     byte needcheck = 1;
@@ -42,7 +45,7 @@ public class StaballoyAxe extends ItemAxe {
         return true;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(EnumChatFormatting.GOLD + "Fells entire trees in a single swipe!..");
@@ -92,22 +95,21 @@ public class StaballoyAxe extends ItemAxe {
         return false;
     }
 
-    private int check(
-            final World par1World, final int x, final int y, final int z, final int xo, final int yo, final int zo) {
+    private int check(final World par1World, final int x, final int y, final int z, final int xo, final int yo,
+            final int zo) {
         int f = 0;
         final int o = x + (z * 20) + (y * 400);
         if (this.tre[o] == this.needcheck) {
             this.tre[o] = this.ignore;
             final Block bit = par1World.getBlock(x + xo, y + yo, z + zo);
-            if ((bit instanceof BlockLog)
-                    || (bit instanceof BlockLeavesBase)
+            if ((bit instanceof BlockLog) || (bit instanceof BlockLeavesBase)
                     || (bit instanceof BlockHugeMushroom)
                     || (bit.getUnlocalizedName().toLowerCase().contains("log"))
                     || (bit.getUnlocalizedName().toLowerCase().contains("wood"))) {
                 f = 1;
                 this.tre[o] = this.harvest;
                 // if (bit instanceof BlockLog){
-                //	LoonTools.log("^ Found log @ "+x+xo+" "+y+yo+" "+z+zo+" ");
+                // LoonTools.log("^ Found log @ "+x+xo+" "+y+yo+" "+z+zo+" ");
                 // }
                 for (int xb = -1; xb < 2; xb++) {
                     for (int yb = -1; yb < 2; yb++) {
@@ -129,7 +131,7 @@ public class StaballoyAxe extends ItemAxe {
 
     public int checkTree(final World par1World, final int xo, final int yo, final int zo) {
         boolean f;
-        for (f = true; f == true; ) {
+        for (f = true; f == true;) {
             f = false;
             for (int y = 0; y < 80; y++) {
                 for (int z = 0; z < 20; z++) {
@@ -166,8 +168,8 @@ public class StaballoyAxe extends ItemAxe {
         return 1;
     }
 
-    private int check2(
-            final World par1World, final int x, final int y, final int z, final int xo, final int yo, final int zo) {
+    private int check2(final World par1World, final int x, final int y, final int z, final int xo, final int yo,
+            final int zo) {
         int f = 0;
         final int o = x + (z * 20) + (y * 400);
         if (this.tre[o] == this.needcheck) {
@@ -177,7 +179,7 @@ public class StaballoyAxe extends ItemAxe {
                 f = 1;
                 this.tre[o] = this.harvest;
                 // if (bit instanceof BlockLog){
-                //	LoonTools.log("^ Found log @ "+x+xo+" "+y+yo+" "+z+zo+" ");
+                // LoonTools.log("^ Found log @ "+x+xo+" "+y+yo+" "+z+zo+" ");
                 // }
                 for (int xb = -1; xb < 2; xb++) {
                     for (int yb = -1; yb < 2; yb++) {
@@ -188,8 +190,7 @@ public class StaballoyAxe extends ItemAxe {
                         }
                     }
                 }
-            } else if (bit instanceof BlockLeavesBase) {
-            } else {
+            } else if (bit instanceof BlockLeavesBase) {} else {
                 if (!canIgnore(bit)) {
                     return 2;
                 }
@@ -200,7 +201,7 @@ public class StaballoyAxe extends ItemAxe {
 
     public int checkTree2(final World par1World, final int xo, final int yo, final int zo) {
         boolean f;
-        for (f = true; f == true; ) {
+        for (f = true; f == true;) {
             f = false;
             for (int y = 0; y < 80; y++) {
                 for (int z = 0; z < 20; z++) {
@@ -246,8 +247,7 @@ public class StaballoyAxe extends ItemAxe {
                         final Block bit = par1World.getBlock(x + xo, y + yo, z + zo);
                         final int met = par1World.getBlockMetadata(x + xo, y + yo, z + zo);
 
-                        if ((bit instanceof BlockLog)
-                                || (bit instanceof BlockLeavesBase)
+                        if ((bit instanceof BlockLog) || (bit instanceof BlockLeavesBase)
                                 || (bit.getUnlocalizedName().toLowerCase().contains("log"))
                                 || (bit.getUnlocalizedName().toLowerCase().contains("wood"))) {
                             bit.harvestBlock(par1World, plr, x + xo, y + yo, z + zo, met);
@@ -259,20 +259,15 @@ public class StaballoyAxe extends ItemAxe {
         }
     }
 
-    private static void breakMushroom(
-            final World wld,
-            final Block bit,
-            final EntityPlayer plr,
-            final boolean silk,
-            final int x,
-            final int y,
-            final int z,
-            final int met) {
+    private static void breakMushroom(final World wld, final Block bit, final EntityPlayer plr, final boolean silk,
+            final int x, final int y, final int z, final int met) {
         if (silk) {
             final ItemStack stk = null; // TODO
-            /*if (bit==Blocks.brown_mushroom_block) stk = new ItemStack(LoonToolItems.brown_mushroom_block,1,met);
-            else if (bit==Blocks.red_mushroom_block) stk = new ItemStack(LoonToolItems.red_mushroom_block,1,met);
-            else stk = new ItemStack(bit,1,met);*/
+            /*
+             * if (bit==Blocks.brown_mushroom_block) stk = new ItemStack(LoonToolItems.brown_mushroom_block,1,met); else
+             * if (bit==Blocks.red_mushroom_block) stk = new ItemStack(LoonToolItems.red_mushroom_block,1,met); else stk
+             * = new ItemStack(bit,1,met);
+             */
             final EntityItem entityitem = new EntityItem(wld, x + 0.5, y + 0.5, z + 0.5, stk);
             entityitem.delayBeforeCanPickup = 10;
             wld.spawnEntityInWorld(entityitem);
@@ -282,12 +277,7 @@ public class StaballoyAxe extends ItemAxe {
         wld.setBlockToAir(x, y, z);
     }
 
-    public void exploadMushroom(
-            final World par1World,
-            final int xo,
-            final int yo,
-            final int zo,
-            final EntityPlayer plr,
+    public void exploadMushroom(final World par1World, final int xo, final int yo, final int zo, final EntityPlayer plr,
             final boolean silk) {
         for (int y = 0; y < 80; y++) {
             for (int z = 0; z < 20; z++) {
@@ -309,14 +299,8 @@ public class StaballoyAxe extends ItemAxe {
     }
 
     @Override
-    public boolean onBlockDestroyed(
-            final ItemStack itm,
-            final World wld,
-            final Block blk,
-            final int x,
-            final int y,
-            final int z,
-            final EntityLivingBase plr) {
+    public boolean onBlockDestroyed(final ItemStack itm, final World wld, final Block blk, final int x, final int y,
+            final int z, final EntityLivingBase plr) {
         if (!wld.isRemote) {
             final Block bit = wld.getBlock(x, y, z);
             final boolean silk = EnchantmentHelper.getSilkTouchModifier(plr);
@@ -333,8 +317,7 @@ public class StaballoyAxe extends ItemAxe {
                 }
             }
 
-            if ((bit instanceof BlockLog)
-                    || (bit.getUnlocalizedName().toLowerCase().contains("log"))
+            if ((bit instanceof BlockLog) || (bit.getUnlocalizedName().toLowerCase().contains("log"))
                     || (bit.getUnlocalizedName().toLowerCase().contains("wood"))) {
                 // LoonTools.log("cutting tree @ "+x+" "+y+" "+z+" ");
                 for (int n = 0; n < 32000; n++) {

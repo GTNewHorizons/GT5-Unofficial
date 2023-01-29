@@ -1,12 +1,15 @@
 package gtPlusPlus.preloader.asm;
 
-import cpw.mods.fml.common.FMLLog;
-import gtPlusPlus.preloader.Preloader_Logger;
 import java.io.File;
 import java.util.ArrayList;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
 import org.apache.logging.log4j.Level;
+
+import cpw.mods.fml.common.FMLLog;
+import gtPlusPlus.preloader.Preloader_Logger;
 
 public class AsmConfig {
 
@@ -104,8 +107,7 @@ public class AsmConfig {
             propOrder.add(prop.getName());
 
             prop = config.get("general", "enabledLwjglKeybindingFix", true);
-            prop.comment =
-                    "Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544";
+            prop.comment = "Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544";
             prop.setLanguageKey("gtpp.enabledLwjglKeybindingFix").setRequiresMcRestart(true);
             enabledLwjglKeybindingFix = prop.getBoolean(true);
             propOrder.add(prop.getName());
@@ -150,8 +152,8 @@ public class AsmConfig {
             Preloader_Logger.INFO("COFH Patch - Enabled: " + enableCofhPatch);
             Preloader_Logger.INFO("Gc Fuel Changes Patch - Enabled: " + enableGcFuelChanges);
             Preloader_Logger.INFO("Thaumcraft Aspect Safety Patch - Enabled: " + enableTcAspectSafety);
-            Preloader_Logger.INFO(
-                    "Fix bad usage of EntityLivingBase.setHealth Patch - Enabled: " + enabledFixEntitySetHealth);
+            Preloader_Logger
+                    .INFO("Fix bad usage of EntityLivingBase.setHealth Patch - Enabled: " + enabledFixEntitySetHealth);
 
         } catch (Exception var3) {
             FMLLog.log(Level.ERROR, var3, "GT++ ASM had a problem loading it's config", new Object[0]);

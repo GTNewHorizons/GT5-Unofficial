@@ -1,10 +1,11 @@
 package gtPlusPlus.core.common.compat;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.recipe.RECIPES_Tools;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import net.minecraft.item.ItemStack;
 
 public class COMPAT_ExtraUtils {
 

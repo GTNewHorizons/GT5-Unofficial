@@ -1,7 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
-import gregtech.api.enums.Textures;
 import net.minecraft.util.IIcon;
+
+import gregtech.api.enums.Textures;
 
 public class CasingTextureHandler2 {
 

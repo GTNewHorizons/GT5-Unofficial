@@ -2,9 +2,11 @@ package gtPlusPlus.xmod.thaumcraft.objects.wrapper.research;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.util.ResourceLocation;
 
 public class TC_ResearchCategoryList_Wrapper {
+
     public int minDisplayColumn;
     public int minDisplayRow;
     public int maxDisplayColumn;

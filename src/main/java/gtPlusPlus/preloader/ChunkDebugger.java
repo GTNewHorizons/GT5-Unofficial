@@ -1,19 +1,19 @@
 package gtPlusPlus.preloader;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
+
 public class ChunkDebugger {
 
-    public static final Map<Integer, Pair<String, String>> mChunkTicketsMap =
-            new LinkedHashMap<Integer, Pair<String, String>>();
-    public static final Map<String, Pair<String, String>> mChunksLoadedByModsMap =
-            new LinkedHashMap<String, Pair<String, String>>();
+    public static final Map<Integer, Pair<String, String>> mChunkTicketsMap = new LinkedHashMap<Integer, Pair<String, String>>();
+    public static final Map<String, Pair<String, String>> mChunksLoadedByModsMap = new LinkedHashMap<String, Pair<String, String>>();
 
     public static void storeTicketToCache(Ticket aTicket, World aWorld) {
         mChunkTicketsMap.put(
@@ -25,8 +25,12 @@ public class ChunkDebugger {
 
     public static void storeLoadChunkToCache(Ticket aTicket, ChunkCoordIntPair aChunk) {
         mChunksLoadedByModsMap.put(aChunk.toString(), new Pair<String, String>(aTicket.getModId(), aChunk.toString()));
-        Logger.REFLECTION("Chunk Loaded by " + aTicket.getModId() + " at position " + aChunk.toString()
-                + " for dimension " + aTicket.world.provider.dimensionId);
+        Logger.REFLECTION(
+                "Chunk Loaded by " + aTicket.getModId()
+                        + " at position "
+                        + aChunk.toString()
+                        + " for dimension "
+                        + aTicket.world.provider.dimensionId);
     }
 
     public static void removeTicketFromCache(Ticket aTicket) {

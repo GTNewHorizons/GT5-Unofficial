@@ -2,13 +2,15 @@ package gregtech.api.util;
 
 import static gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sSemiFluidLiquidFuels;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import java.util.HashMap;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class SemiFluidFuelHandler {
 
@@ -31,15 +33,17 @@ public class SemiFluidFuelHandler {
                     new ItemStack[] {},
                     null,
                     new int[] {},
-                    new FluidStack[] {p},
+                    new FluidStack[] { p },
                     null,
                     0,
                     0,
                     aFuelValue);
             if (aRecipe.mSpecialValue > 0) {
-                Logger.INFO("Added " + aRecipe.mFluidInputs[0].getLocalizedName()
-                        + " to the Semi-Fluid Generator fuel map. Fuel Produces " + (aRecipe.mSpecialValue * 1000)
-                        + "EU per 1000L.");
+                Logger.INFO(
+                        "Added " + aRecipe.mFluidInputs[0].getLocalizedName()
+                                + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                                + (aRecipe.mSpecialValue * 1000)
+                                + "EU per 1000L.");
                 sSemiFluidLiquidFuels.add(aRecipe);
                 return true;
             }
@@ -53,8 +57,7 @@ public class SemiFluidFuelHandler {
         final FluidStack aCreosote = FluidUtils.getFluidStack("creosote", 1000);
         final FluidStack aHeavyFuel = FluidUtils.getFluidStack("liquid_heavy_fuel", 1000);
         final FluidStack aHeavyOil = FluidUtils.getFluidStack("liquid_heavy_oil", 1000);
-        final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems =
-                new HashMap<Integer, Pair<FluidStack, Integer>>();
+        final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<Integer, Pair<FluidStack, Integer>>();
         // Find Fluids From items
         for (final GT_Recipe r : gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
 
@@ -76,8 +79,11 @@ public class SemiFluidFuelHandler {
                     }
                 }
                 g.mSpecialValue *= aContainsCreosote ? 6 : 3;
-                Logger.INFO("Added " + g.mFluidInputs[0].getLocalizedName()
-                        + " to the Semi-Fluid Generator fuel map. Fuel Produces " + g.mSpecialValue + "EU per 1000L.");
+                Logger.INFO(
+                        "Added " + g.mFluidInputs[0].getLocalizedName()
+                                + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                                + g.mSpecialValue
+                                + "EU per 1000L.");
                 sSemiFluidLiquidFuels.add(g);
             }
         }
@@ -99,15 +105,17 @@ public class SemiFluidFuelHandler {
                             new ItemStack[] {},
                             null,
                             new int[] {},
-                            new FluidStack[] {p.getKey()},
+                            new FluidStack[] { p.getKey() },
                             null,
                             0,
                             0,
                             aFuelValue);
                     if (aRecipe.mSpecialValue > 0) {
-                        Logger.INFO("Added " + aRecipe.mFluidInputs[0].getLocalizedName()
-                                + " to the Semi-Fluid Generator fuel map. Fuel Produces "
-                                + (aRecipe.mSpecialValue * 1000) + "EU per 1000L.");
+                        Logger.INFO(
+                                "Added " + aRecipe.mFluidInputs[0].getLocalizedName()
+                                        + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                                        + (aRecipe.mSpecialValue * 1000)
+                                        + "EU per 1000L.");
                         sSemiFluidLiquidFuels.add(aRecipe);
                     }
                 } else {

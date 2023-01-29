@@ -14,6 +14,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamTurbine {
+
     public GT_MetaTileEntity_ULV_SteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
@@ -24,12 +25,8 @@ public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamT
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Produces " + (this.getPollution() * 20) + " pollution/sec",
-            "Fuel Efficiency: " + this.getEfficiency() + "%",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Produces " + (this.getPollution() * 20) + " pollution/sec",
+                "Fuel Efficiency: " + this.getEfficiency() + "%", CORE.GT_Tooltip };
     }
 
     @Override
@@ -48,15 +45,13 @@ public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamT
 
     @Override
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(
-                ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + 1);
+        this.mEfficiency = GregTech_API.sMachineFile
+                .get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + 1);
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            super.getSidesActive(aColor)[0],
-            new GT_RenderedTexture((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active)
-        };
+        return new ITexture[] { super.getSidesActive(aColor)[0],
+                new GT_RenderedTexture((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active) };
     }
 }

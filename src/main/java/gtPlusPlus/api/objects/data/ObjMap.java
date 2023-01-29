@@ -6,6 +6,7 @@ import java.util.Arrays;
  * Object-2-object map based on IntIntMap4a
  */
 public class ObjMap<K, V> {
+
     private static final Object FREE_KEY = new Object();
     private static final Object REMOVED_KEY = new Object();
 
@@ -51,7 +52,7 @@ public class ObjMap<K, V> {
 
         if (k == FREE_KEY) return null; // end of chain already
         if (k.equals(key)) // we check FREE and REMOVED prior to this call
-        return (V) m_data[ptr + 1];
+            return (V) m_data[ptr + 1];
         while (true) {
             ptr = (ptr + 2) & m_mask2; // that's next index
             k = m_data[ptr];
@@ -72,7 +73,7 @@ public class ObjMap<K, V> {
             m_data[ptr] = key;
             m_data[ptr + 1] = value;
             if (m_size >= m_threshold) rehash(m_data.length * 2); // size is set inside
-            else ++m_size;
+            else++m_size;
             return null;
         } else if (k.equals(key)) // we check FREE and REMOVED prior to this call
         {
@@ -92,7 +93,7 @@ public class ObjMap<K, V> {
                 m_data[ptr] = key;
                 m_data[ptr + 1] = value;
                 if (m_size >= m_threshold) rehash(m_data.length * 2); // size is set inside
-                else ++m_size;
+                else++m_size;
                 return null;
             } else if (k.equals(key)) {
                 final Object ret = m_data[ptr + 1];
@@ -196,9 +197,11 @@ public class ObjMap<K, V> {
 
     /** Taken from FastUtil implementation */
 
-    /** Return the least power of two greater than or equal to the specified value.
+    /**
+     * Return the least power of two greater than or equal to the specified value.
      *
-     * <p>Note that this function will return 1 when the argument is 0.
+     * <p>
+     * Note that this function will return 1 when the argument is 0.
      *
      * @param x a long integer smaller than or equal to 2<sup>62</sup>.
      * @return the least power of two greater than or equal to the specified value.
@@ -214,18 +217,19 @@ public class ObjMap<K, V> {
         return (x | x >> 32) + 1;
     }
 
-    /** Returns the least power of two smaller than or equal to 2<sup>30</sup> and larger than or equal to <code>Math.ceil( expected / f )</code>.
+    /**
+     * Returns the least power of two smaller than or equal to 2<sup>30</sup> and larger than or equal to
+     * <code>Math.ceil( expected / f )</code>.
      *
      * @param expected the expected number of elements in a hash table.
-     * @param f the load factor.
+     * @param f        the load factor.
      * @return the minimum possible size for a backing array.
      * @throws IllegalArgumentException if the necessary size is larger than 2<sup>30</sup>.
      */
     public static int arraySize(final int expected, final float f) {
         final long s = Math.max(2, nextPowerOfTwo((long) Math.ceil(expected / f)));
-        if (s > (1 << 30))
-            throw new IllegalArgumentException(
-                    "Too large (" + expected + " expected elements with load factor " + f + ")");
+        if (s > (1 << 30)) throw new IllegalArgumentException(
+                "Too large (" + expected + " expected elements with load factor " + f + ")");
         return (int) s;
     }
 

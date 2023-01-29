@@ -1,11 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.objects;
 
+import net.minecraft.block.Block;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.objects.GT_CopiedBlockTexture;
-import net.minecraft.block.Block;
 
 /**
  * Made this to get rid of deprecation warnings <i>everywhere</i>.
+ * 
  * @author Alkalus
  *
  */

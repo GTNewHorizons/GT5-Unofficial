@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import java.util.HashMap;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
@@ -9,15 +14,11 @@ import gtPlusPlus.api.objects.data.WeightedCollection;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.HashMap;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeLoader_AlgaeFarm {
 
     private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
-    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCompostCache =
-            new HashMap<Integer, AutoMap<GT_Recipe>>();
+    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCompostCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
 
     public static void generateRecipes() {
         for (int i = 0; i < 10; i++) {
@@ -70,7 +71,8 @@ public class RecipeLoader_AlgaeFarm {
             aOutputTimeMulti.put(i, aValue);
         }
 
-        final int[] aDurations = new int[] {2000, 1800, 1600, 1400, 1200, 1000, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1};
+        final int[] aDurations = new int[] { 2000, 1800, 1600, 1400, 1200, 1000, 512, 256, 128, 64, 32, 16, 8, 4, 2,
+                1 };
 
         ItemStack[] aInputs = new ItemStack[] {};
 
@@ -78,8 +80,9 @@ public class RecipeLoader_AlgaeFarm {
             // Make it use 4 compost per tier if we have some available
             // Compost consumption maxes out at 1 stack per cycle
             ItemStack aCompost = ItemUtils.getSimpleStack(
-                    AgriculturalChem.mCompost, aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier - 1)) : 1);
-            aInputs = new ItemStack[] {aCompost};
+                    AgriculturalChem.mCompost,
+                    aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier - 1)) : 1);
+            aInputs = new ItemStack[] { aCompost };
             // Boost Tier by one if using compost so it gets a speed boost
             aTier++;
         }
@@ -93,8 +96,8 @@ public class RecipeLoader_AlgaeFarm {
                 aOutputs,
                 (Object) null,
                 new int[] {},
-                new FluidStack[] {GT_Values.NF},
-                new FluidStack[] {GT_Values.NF},
+                new FluidStack[] { GT_Values.NF },
+                new FluidStack[] { GT_Values.NF },
                 (int) (aDurations[aTier] * aOutputTimeMulti.get() / 2), // Time
                 0,
                 0);

@@ -1,13 +1,15 @@
 package gtPlusPlus.preloader;
 
+import net.minecraft.item.ItemStack;
+
+import org.apache.logging.log4j.Level;
+
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.item.ItemStack;
-import org.apache.logging.log4j.Level;
 
 public class Preloader_GT_OreDict {
 
@@ -21,21 +23,18 @@ public class Preloader_GT_OreDict {
 
         try {
             if (CORE_Preloader.enableOldGTcircuits) {
-                if ((bannedItem != null)
-                        && ItemUtils.getModId(bannedItem).toLowerCase().equals("gregtech")) {
+                if ((bannedItem != null) && ItemUtils.getModId(bannedItem).toLowerCase().equals("gregtech")) {
                     final int damageValue = bannedItem.getItemDamage() - 32000;
                     if (bannedItem.getItem() instanceof GT_MetaGenerated_Item_01) { // 700-720
                         if ((damageValue >= 700) && (damageValue <= 720)) {
                             return true;
                         }
                     } else {
-                        if (ReflectionUtils.doesClassExist(
-                                "gregtech.common.items.GT_MetaGenerated_Item_03")) { // 6/11/12/14/16/20/30-57/69-73/79-96
-                            final Class<?> MetaItem03 =
-                                    ReflectionUtils.getClass("gregtech.common.items.GT_MetaGenerated_Item_03");
+                        if (ReflectionUtils.doesClassExist("gregtech.common.items.GT_MetaGenerated_Item_03")) { // 6/11/12/14/16/20/30-57/69-73/79-96
+                            final Class<?> MetaItem03 = ReflectionUtils
+                                    .getClass("gregtech.common.items.GT_MetaGenerated_Item_03");
                             if (isInstanceOf(MetaItem03, bannedItem.getItem())) {
-                                if ((damageValue == 6)
-                                        || (damageValue == 7)
+                                if ((damageValue == 6) || (damageValue == 7)
                                         || (damageValue == 11)
                                         || (damageValue == 12)
                                         || (damageValue == 14)
@@ -58,12 +57,8 @@ public class Preloader_GT_OreDict {
             }
 
             // Mekanism Support - Let's not make Mek Osmium useful in GT anymore.
-            if ((((bannedItem != null)
-                                    && !LoadedMods.RedTech
-                                    && (ItemUtils.getModId(bannedItem)
-                                            .toLowerCase()
-                                            .equals("mekanism")))
-                            || (LoadedMods.Mekanism))
+            if ((((bannedItem != null) && !LoadedMods.RedTech
+                    && (ItemUtils.getModId(bannedItem).toLowerCase().equals("mekanism"))) || (LoadedMods.Mekanism))
                     && !LoadedMods.RedTech) {
                 // Circuits
                 if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemControlCircuit")) {
@@ -200,8 +195,7 @@ public class Preloader_GT_OreDict {
                                     "[GT++ ASM] OreDictTransformer",
                                     Level.INFO,
                                     "Item was not null, but still invalidly registering: %s",
-                                    bannedItem.getDisplayName() != null
-                                            ? bannedItem.getDisplayName()
+                                    bannedItem.getDisplayName() != null ? bannedItem.getDisplayName()
                                             : "INVALID ITEM FOUND");
                         } else {
                             FMLRelaunchLog.log(

@@ -1,10 +1,7 @@
 package gtPlusPlus.core.item.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +9,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gtPlusPlus.core.lib.CORE;
 
 public class ItemControlCore extends Item {
 
@@ -46,7 +48,7 @@ public class ItemControlCore extends Item {
         return this.icons[meta];
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < 10; i++) {
@@ -59,11 +61,13 @@ public class ItemControlCore extends Item {
         return this.getUnlocalizedName() + "_" + stack.getItemDamage();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        list.add(EnumChatFormatting.GRAY + "Allows a Multiblock to function upto " + GT_Values.VN[stack.getItemDamage()]
-                + "");
+        list.add(
+                EnumChatFormatting.GRAY + "Allows a Multiblock to function upto "
+                        + GT_Values.VN[stack.getItemDamage()]
+                        + "");
         list.add(EnumChatFormatting.GRAY + "Required Tier is determined by the sum of the eu/t of all Energy Inputs");
         list.add(EnumChatFormatting.GRAY + "Lower tiers may be used to underclock, which is useful in some situations");
     }
@@ -83,11 +87,9 @@ public class ItemControlCore extends Item {
                         return aReturnValue;
                     }
                 }
-            } catch (Throwable t) {
-            }
+            } catch (Throwable t) {}
         }
-        if (aReturnValue == null
-                || !aReturnValue.toLowerCase().contains("control core")
+        if (aReturnValue == null || !aReturnValue.toLowerCase().contains("control core")
                 || aReturnValue.length() <= 0) {
             aReturnValue = "Error";
         }

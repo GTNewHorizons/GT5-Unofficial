@@ -62,7 +62,7 @@ public class ModTileEntities {
                 "gtPlusPlus.core.tileentities.general.TileEntityFishTrap");
         Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator(
                 "gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest");
-        Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator(
-                "gtPlusPlus.core.tileentities.general.TileEggBox");
+        Meta_GT_Proxy
+                .setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEggBox");
     }
 }

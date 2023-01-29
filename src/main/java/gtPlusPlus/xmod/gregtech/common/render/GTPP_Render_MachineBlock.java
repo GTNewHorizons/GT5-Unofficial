@@ -1,5 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.render;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -11,12 +19,6 @@ import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.render.GT_Renderer_Block;
 import gtPlusPlus.xmod.gregtech.common.blocks.GTPP_Block_Machines;
 import gtPlusPlus.xmod.gregtech.common.helpers.GT_MethodHelper;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import org.lwjgl.opengl.GL11;
 
 public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
 
@@ -28,8 +30,8 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         RenderingRegistry.registerBlockHandler(this);
     }
 
-    private static ITexture[] getTexture(
-            IMetaTileEntity arg0, int arg1, int arg2, int arg3, boolean arg4, boolean arg5) {
+    private static ITexture[] getTexture(IMetaTileEntity arg0, int arg1, int arg2, int arg3, boolean arg4,
+            boolean arg5) {
         IGregTechTileEntity arg0b = arg0.getBaseMetaTileEntity();
         return arg0.getTexture(arg0b, (byte) arg1, (byte) arg2, (byte) arg3, arg4, arg5);
     }
@@ -43,8 +45,8 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
                 GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 if (tMetaTileEntity.getBaseMetaTileEntity() instanceof IPipeRenderedTileEntity) {
-                    float tThickness =
-                            ((IPipeRenderedTileEntity) tMetaTileEntity.getBaseMetaTileEntity()).getThickNess();
+                    float tThickness = ((IPipeRenderedTileEntity) tMetaTileEntity.getBaseMetaTileEntity())
+                            .getThickNess();
                     float sp = (1.0F - tThickness) / 2.0F;
                     aBlock.setBlockBounds(0.0F, sp, sp, 1.0F, sp + tThickness, sp + tThickness);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -202,24 +204,29 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         }
     }
 
-    public static boolean renderStandardBlock(
-            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+            RenderBlocks aRenderer) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         return tTileEntity instanceof ITexturedTileEntity
-                ? renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][] {
-                    GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 0),
-                    GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 1),
-                    GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 2),
-                    GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 3),
-                    GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 4),
-                    GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 5)
-                })
+                ? renderStandardBlock(
+                        aWorld,
+                        aX,
+                        aY,
+                        aZ,
+                        aBlock,
+                        aRenderer,
+                        new ITexture[][] { GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 0),
+                                GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 1),
+                                GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 2),
+                                GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 3),
+                                GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 4),
+                                GT_MethodHelper.getTexture(tTileEntity, aBlock, (byte) 5) })
                 : false;
     }
 
-    public static boolean renderStandardBlock(
-            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, ITexture[][] aTextures) {
+    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+            RenderBlocks aRenderer, ITexture[][] aTextures) {
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
         renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[0], true);
@@ -231,14 +238,8 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         return true;
     }
 
-    public static boolean renderPipeBlock(
-            IBlockAccess aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            Block aBlock,
-            IPipeRenderedTileEntity aTileEntity,
-            RenderBlocks aRenderer) {
+    public static boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+            IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
         byte aConnections = aTileEntity.getConnections();
         if ((aConnections & 192) != 0) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
@@ -564,22 +565,15 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         }
     }
 
-    public static void renderNegativeYFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0)) {
                 return;
             }
 
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
         }
 
         if (aIcon != null) {
@@ -593,22 +587,15 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         aRenderer.flipTexture = false;
     }
 
-    public static void renderPositiveYFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1)) {
                 return;
             }
 
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
         }
 
         if (aIcon != null) {
@@ -622,22 +609,15 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         aRenderer.flipTexture = false;
     }
 
-    public static void renderNegativeZFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2)) {
                 return;
             }
 
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
         }
 
         aRenderer.flipTexture = !aFullBlock;
@@ -652,22 +632,15 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         aRenderer.flipTexture = false;
     }
 
-    public static void renderPositiveZFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3)) {
                 return;
             }
 
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
         }
 
         if (aIcon != null) {
@@ -681,22 +654,15 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         aRenderer.flipTexture = false;
     }
 
-    public static void renderNegativeXFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4)) {
                 return;
             }
 
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
         }
 
         if (aIcon != null) {
@@ -710,22 +676,15 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         aRenderer.flipTexture = false;
     }
 
-    public static void renderPositiveXFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5)) {
                 return;
             }
 
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
         }
 
         aRenderer.flipTexture = !aFullBlock;
@@ -743,8 +702,7 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aMeta += 30400;
         if (aBlock instanceof GT_Block_Machines || aBlock instanceof GTPP_Block_Machines) {
-            if (aMeta > 0
-                    && aMeta < GregTech_API.METATILEENTITIES.length
+            if (aMeta > 0 && aMeta < GregTech_API.METATILEENTITIES.length
                     && GregTech_API.METATILEENTITIES[aMeta] != null
                     && !GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer)) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
@@ -755,21 +713,25 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     }
 
-    public boolean renderWorldBlock(
-            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
+    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
+            RenderBlocks aRenderer) {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity == null
-                ? false
+        return aTileEntity == null ? false
                 : (aTileEntity instanceof IGregTechTileEntity
-                                && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null
-                                && ((IGregTechTileEntity) aTileEntity)
-                                        .getMetaTileEntity()
-                                        .renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)
-                        ? true
-                        : (aTileEntity instanceof IPipeRenderedTileEntity
-                                ? renderPipeBlock(
-                                        aWorld, aX, aY, aZ, aBlock, (IPipeRenderedTileEntity) aTileEntity, aRenderer)
-                                : renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)));
+                        && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null
+                        && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity()
+                                .renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)
+                                        ? true
+                                        : (aTileEntity instanceof IPipeRenderedTileEntity
+                                                ? renderPipeBlock(
+                                                        aWorld,
+                                                        aX,
+                                                        aY,
+                                                        aZ,
+                                                        aBlock,
+                                                        (IPipeRenderedTileEntity) aTileEntity,
+                                                        aRenderer)
+                                                : renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)));
     }
 
     public boolean shouldRender3DInInventory(int aModel) {

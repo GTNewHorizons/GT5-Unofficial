@@ -36,8 +36,7 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return false;
     }
 
@@ -51,8 +50,7 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return false;
     }
 
@@ -66,8 +64,7 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return false;
     }
 
@@ -81,8 +78,7 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return false;
     }
 
@@ -96,8 +92,7 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
         return false;
     }
 }

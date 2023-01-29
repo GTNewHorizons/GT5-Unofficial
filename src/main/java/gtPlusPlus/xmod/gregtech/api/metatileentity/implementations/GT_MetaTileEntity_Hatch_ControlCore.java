@@ -1,7 +1,12 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.gui.*;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -16,9 +21,6 @@ import gtPlusPlus.core.item.general.ItemControlCore;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch {
 
@@ -40,24 +42,24 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_ControlCore(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_ControlCore(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription[0], aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, CORE.GT_Tooltip};
+        return new String[] { this.mDescription, CORE.GT_Tooltip };
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core) };
     }
 
     @Override
@@ -83,7 +85,10 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_ControlCore(
-                mName, mTier, StaticFields59.getDescriptionArray(this), mTextures);
+                mName,
+                mTier,
+                StaticFields59.getDescriptionArray(this),
+                mTextures);
     }
 
     @Override
@@ -107,19 +112,18 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
-            for (int j = i + 1; j < mInventory.length; j++)
-                if (mInventory[j] != null
-                        && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(
-                            getBaseMetaTileEntity(),
-                            getBaseMetaTileEntity(),
-                            j,
-                            i,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1);
-                }
+            for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
+                    && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                        GT_Utility.moveStackFromSlotAToSlotB(
+                                getBaseMetaTileEntity(),
+                                getBaseMetaTileEntity(),
+                                j,
+                                i,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                    }
     }
 
     @Override

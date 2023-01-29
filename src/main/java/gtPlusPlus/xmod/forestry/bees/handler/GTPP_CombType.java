@@ -1,12 +1,14 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
-import net.minecraft.item.ItemStack;
 
 public enum GTPP_CombType {
+
     DRAGONBLOOD(0, "Dragon Blood", true, 30, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
     FORCE(1, "Force", true, 30, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5));
 
@@ -47,7 +49,7 @@ public enum GTPP_CombType {
     }
 
     public int[] getColours() {
-        return mColour == null || mColour.length != 2 ? new int[] {0, 0} : mColour;
+        return mColour == null || mColour.length != 2 ? new int[] { 0, 0 } : mColour;
     }
 
     public ItemStack getStackForType(int count) {

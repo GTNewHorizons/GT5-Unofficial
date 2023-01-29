@@ -1,15 +1,7 @@
 package gtPlusPlus.core.item.base.misc;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +11,16 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 public class BaseItemMisc extends Item {
 
     public final String displayName;
@@ -27,11 +29,7 @@ public class BaseItemMisc extends Item {
     public final Object componentColour;
     public final String[] description;
 
-    public BaseItemMisc(
-            final String displayName,
-            final short[] RGB,
-            final int maxStackSize,
-            final MiscTypes miscType,
+    public BaseItemMisc(final String displayName, final short[] RGB, final int maxStackSize, final MiscTypes miscType,
             String[] description) {
 
         // Set-up the Misc Generic Item
@@ -92,10 +90,10 @@ public class BaseItemMisc extends Item {
         return (pass == 0) ? itemIcon : secondIcon;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public final void addInformation(
-            final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
+            final boolean bool) {
         if (this.description != null) { // Incase I don't add one
             if (this.description.length > 0) { // Incase I somehow add a blank one
                 for (int x = 0; x < this.description.length; x++) {
@@ -117,16 +115,13 @@ public class BaseItemMisc extends Item {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         // Nothing Fancy here yet.
     }
 
     public static enum MiscTypes {
+
         POTION("Potion", " Potion", "potion"),
         KEY("Key", " Key", "key"),
         BIGKEY("KeyBig", " Big Key", "bosskey"),

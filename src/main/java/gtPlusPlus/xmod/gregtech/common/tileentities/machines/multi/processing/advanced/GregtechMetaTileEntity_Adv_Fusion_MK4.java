@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import java.lang.reflect.Method;
+
+import net.minecraft.block.Block;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -19,8 +23,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.lang.reflect.Method;
-import net.minecraft.block.Block;
 
 public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
 
@@ -41,18 +43,12 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fusion Reactor")
-                .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-                .addSeparator()
-                .beginStructureBlock(15, 3, 15, false)
-                .addController("See diagram when placed")
-                .addCasingInfo("Fusion Machine Casings MK III", 79)
-                .addStructureInfo("Cover the coils with casing")
+        tt.addMachineType("Fusion Reactor").addInfo("HARNESSING THE POWER OF A NEUTRON STAR").addSeparator()
+                .beginStructureBlock(15, 3, 15, false).addController("See diagram when placed")
+                .addCasingInfo("Fusion Machine Casings MK III", 79).addStructureInfo("Cover the coils with casing")
                 .addOtherStructurePart("Advanced Fusion Coils", "Center part of the ring")
-                .addEnergyHatch("1-16, Specified casings", 2)
-                .addInputHatch("2-16, Specified casings", 1)
-                .addOutputHatch("1-16, Specified casings", 3)
-                .addStructureInfo("ALL Hatches must be UHV or better")
+                .addEnergyHatch("1-16, Specified casings", 2).addInputHatch("2-16, Specified casings", 1)
+                .addOutputHatch("1-16, Specified casings", 3).addStructureInfo("ALL Hatches must be UHV or better")
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -103,46 +99,34 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == aFacing) {
             return new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
-                TextureFactory.builder()
-                        .addIcon(this.getIconOverlay())
-                        .extFacing()
-                        .build()
-            };
+                    new GT_RenderedTexture(
+                            Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+                            Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+                    TextureFactory.builder().addIcon(this.getIconOverlay()).extFacing().build() };
         } else if (!aActive) {
-            return new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
-            };
+            return new ITexture[] { new GT_RenderedTexture(
+                    Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+                    Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         } else {
-            return new ITexture[] {
-                new GT_RenderedTexture(
-                        TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
-            };
+            return new ITexture[] { new GT_RenderedTexture(
+                    TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA,
+                    Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         }
     }
 
     @Override
     public ITexture getTextureOverlay() {
         return new GT_RenderedTexture(
-                this.mMaxProgresstime > 0
-                        ? TexturesGtBlock.Casing_Machine_Screen_3
+                this.mMaxProgresstime > 0 ? TexturesGtBlock.Casing_Machine_Screen_3
                         : TexturesGtBlock.Casing_Machine_Screen_1);
     }
 
     public IIconContainer getIconOverlay() {
-        return this.mMaxProgresstime > 0
-                ? TexturesGtBlock.Casing_Machine_Screen_3
+        return this.mMaxProgresstime > 0 ? TexturesGtBlock.Casing_Machine_Screen_3
                 : TexturesGtBlock.Casing_Machine_Screen_1;
     }
 
@@ -181,11 +165,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
             }
         }
 
-        return new String[] {
-            "Fusion Reactor MK " + tier,
-            "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + mEUStore + " / " + maxEUStore(),
-            "Plasma Output: " + plasmaOut + "L/t"
-        };
+        return new String[] { "Fusion Reactor MK " + tier, "EU Required: " + powerRequired + "EU/t",
+                "Stored EU: " + mEUStore + " / " + maxEUStore(), "Plasma Output: " + plasmaOut + "L/t" };
     }
 }

@@ -1,13 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks5;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IsaMill;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 public class TexturesGrinderMultiblock {
 
@@ -49,29 +50,12 @@ public class TexturesGrinderMultiblock {
     private static CustomIcon frontFace_8 = (GT8_9);
     private static CustomIcon frontFaceActive_8 = (GT8_9_Active);
 
-    CustomIcon[] GRINDER = new CustomIcon[] {
-        frontFace_0,
-        frontFace_1,
-        frontFace_2,
-        frontFace_3,
-        frontFace_4,
-        frontFace_5,
-        frontFace_6,
-        frontFace_7,
-        frontFace_8
-    };
+    CustomIcon[] GRINDER = new CustomIcon[] { frontFace_0, frontFace_1, frontFace_2, frontFace_3, frontFace_4,
+            frontFace_5, frontFace_6, frontFace_7, frontFace_8 };
 
-    CustomIcon[] GRINDER_ACTIVE = new CustomIcon[] {
-        frontFaceActive_0,
-        frontFaceActive_1,
-        frontFaceActive_2,
-        frontFaceActive_3,
-        frontFaceActive_4,
-        frontFaceActive_5,
-        frontFaceActive_6,
-        frontFaceActive_7,
-        frontFaceActive_8
-    };
+    CustomIcon[] GRINDER_ACTIVE = new CustomIcon[] { frontFaceActive_0, frontFaceActive_1, frontFaceActive_2,
+            frontFaceActive_3, frontFaceActive_4, frontFaceActive_5, frontFaceActive_6, frontFaceActive_7,
+            frontFaceActive_8 };
 
     private static int isIsaControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
@@ -82,13 +66,8 @@ public class TexturesGrinderMultiblock {
         return 0;
     }
 
-    public IIcon handleCasingsGT(
-            final IBlockAccess aWorld,
-            final int xCoord,
-            final int yCoord,
-            final int zCoord,
-            final int aSide,
-            final GregtechMetaCasingBlocks5 ii) {
+    public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
+            final int aSide, final GregtechMetaCasingBlocks5 ii) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         if (tMeta != 1) {
             return GregtechMetaCasingBlocks5.getStaticIcon(aSide, tMeta);
@@ -100,9 +79,8 @@ public class TexturesGrinderMultiblock {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
                         if (isIsaControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide) != 0) {
-                            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity)
-                                            aWorld.getTileEntity(xCoord + j, yCoord, zCoord + i))
-                                    .getMetaTileEntity();
+                            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
+                                    .getTileEntity(xCoord + j, yCoord, zCoord + i)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 - i * 3 - j);
                         }
                     }
@@ -113,9 +91,8 @@ public class TexturesGrinderMultiblock {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
                         if (isIsaControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide) != 0) {
-                            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity)
-                                            aWorld.getTileEntity(xCoord + j, yCoord + i, zCoord))
-                                    .getMetaTileEntity();
+                            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
+                                    .getTileEntity(xCoord + j, yCoord + i, zCoord)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 - j * tInvertLeftRightMod);
                         }
                     }
@@ -126,9 +103,8 @@ public class TexturesGrinderMultiblock {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
                         if (isIsaControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide) != 0) {
-                            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity)
-                                            aWorld.getTileEntity(xCoord, yCoord + i, zCoord + j))
-                                    .getMetaTileEntity();
+                            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
+                                    .getTileEntity(xCoord, yCoord + i, zCoord + j)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 + j * tInvertLeftRightMod);
                         }
                     }

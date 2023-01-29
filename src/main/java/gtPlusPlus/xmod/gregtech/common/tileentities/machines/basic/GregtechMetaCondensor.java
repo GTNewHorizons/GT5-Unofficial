@@ -1,10 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -19,9 +24,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaBoilerBase;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAddGregtechLogo {
 
@@ -29,49 +31,44 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
         super(aID, aName, aNameRegional, "A Steam condenser - [IC2->Steam]", new ITexture[0]);
     }
 
-    public GregtechMetaCondensor(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GregtechMetaCondensor(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "IC2 Steam + Water = Normal Steam.",
-            "Requires no power to run, although it's not very fast.",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "IC2 Steam + Water = Normal Steam.",
+                "Requires no power to run, although it's not very fast.", CORE.GT_Tooltip };
     }
 
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         final ITexture[][][] rTextures = new ITexture[5][17][];
         for (byte i = -1; i < 16; i++) {
-            rTextures[0][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa))
-            };
+            rTextures[0][(i + 1)] = new ITexture[] { new GT_RenderedTexture(
+                    Textures.BlockIcons.MACHINE_CASING_VENT,
+                    Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)) };
             rTextures[1][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)
-            };
+                    new GT_RenderedTexture(
+                            Textures.BlockIcons.MACHINE_CASING_VENT,
+                            Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) };
             rTextures[2][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)
-            };
+                    new GT_RenderedTexture(
+                            Textures.BlockIcons.MACHINE_CASING_VENT,
+                            Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) };
             rTextures[3][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER)
-            };
+                    new GT_RenderedTexture(
+                            Textures.BlockIcons.MACHINE_CASING_VENT,
+                            Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER) };
             rTextures[4][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE)
-            };
+                    new GT_RenderedTexture(
+                            Textures.BlockIcons.MACHINE_CASING_VENT,
+                            Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE) };
         }
         return rTextures;
     }
@@ -102,16 +99,16 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
                 if (i != aBaseMetaTileEntity.getFrontFacing()) {
                     final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
                     if (tTileEntity != null) {
-                        final FluidStack tDrained = aBaseMetaTileEntity.drain(
-                                ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
+                        final FluidStack tDrained = aBaseMetaTileEntity
+                                .drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
                         if (tDrained != null) {
-                            final int tFilledAmount = tTileEntity.fill(
-                                    ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
+                            final int tFilledAmount = tTileEntity
+                                    .fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
                             if (tFilledAmount > 0) {
                                 tTileEntity.fill(
                                         ForgeDirection.getOrientation(i).getOpposite(),
-                                        aBaseMetaTileEntity.drain(
-                                                ForgeDirection.getOrientation(i), tFilledAmount, true),
+                                        aBaseMetaTileEntity
+                                                .drain(ForgeDirection.getOrientation(i), tFilledAmount, true),
                                         true);
                             }
                         }
@@ -144,13 +141,13 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
                 this.sendSound((byte) 1);
                 this.mSteam.amount = getSteamCapacity() * 3 / 4;
             }
-            /*if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&
-              (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.bucket.get(IC2.getItemFromBlock(p_150898_0_)))))
-            {
-              this.mProcessingEnergy += 1000;
-              aBaseMetaTileEntity.decrStackSize(2, 1);
-              aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L));
-            }*/
+            /*
+             * if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&
+             * (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2],
+             * OrePrefixes.bucket.get(IC2.getItemFromBlock(p_150898_0_))))) { this.mProcessingEnergy += 1000;
+             * aBaseMetaTileEntity.decrStackSize(2, 1); aBaseMetaTileEntity.addStackToSlot(3,
+             * GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)); }
+             */
             if ((this.mTemperature < 1000) && (this.mProcessingEnergy > 0) && ((aTick % this.RI) == 0L)) {
                 this.mProcessingEnergy -= 40;
                 this.mTemperature += 2;
@@ -181,49 +178,49 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new SlotWidget(inventoryHandler, 0)
-                        .setPos(43, 25)
+        builder.widget(
+                new SlotWidget(inventoryHandler, 0).setPos(43, 25)
                         .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN))
-                .widget(new SlotWidget(inventoryHandler, 1)
-                        .setPos(43, 61)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT))
-                .widget(new SlotWidget(inventoryHandler, 2)
-                        .setPos(115, 61)
-                        .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_COAL))
-                .widget(new SlotWidget(inventoryHandler, 3)
-                        .setPos(115, 25)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST))
-                .widget(new ProgressBar()
-                        .setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
-                        .setTexture(
-                                GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(70, 25)
-                        .setSize(10, 54))
-                .widget(new ProgressBar()
-                        .setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                        .setTexture(
-                                GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(83, 25)
-                        .setSize(10, 54))
-                .widget(new ProgressBar()
-                        .setProgress(() -> (float) mTemperature / maxProgresstime())
-                        .setTexture(GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(96, 25)
-                        .setSize(10, 54))
-                .widget(new ProgressBar()
-                        // cap minimum so that one can easily see there's fuel remaining
-                        .setProgress(
-                                () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
-                        .setTexture(GTPP_UITextures.PROGRESSBAR_FUEL, 14)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(116, 45)
-                        .setSize(14, 14))
-                .widget(new DrawableWidget()
-                        .setDrawable(GTPP_UITextures.OVERLAY_SLOT_CANISTER_DARK)
-                        .setPos(43, 43)
-                        .setSize(18, 18));
+                .widget(
+                        new SlotWidget(inventoryHandler, 1).setPos(43, 61)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT))
+                .widget(
+                        new SlotWidget(inventoryHandler, 2).setPos(115, 61)
+                                .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_COAL))
+                .widget(
+                        new SlotWidget(inventoryHandler, 3).setPos(115, 25)
+                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST))
+                .widget(
+                        new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+                                .setTexture(
+                                        GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY,
+                                        GT_UITextures.PROGRESSBAR_BOILER_STEAM,
+                                        10)
+                                .setDirection(ProgressBar.Direction.UP).setPos(70, 25).setSize(10, 54))
+                .widget(
+                        new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
+                                .setTexture(
+                                        GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY,
+                                        GT_UITextures.PROGRESSBAR_BOILER_WATER,
+                                        10)
+                                .setDirection(ProgressBar.Direction.UP).setPos(83, 25).setSize(10, 54))
+                .widget(
+                        new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
+                                .setTexture(
+                                        GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY,
+                                        GT_UITextures.PROGRESSBAR_BOILER_HEAT,
+                                        10)
+                                .setDirection(ProgressBar.Direction.UP).setPos(96, 25).setSize(10, 54))
+                .widget(
+                        new ProgressBar()
+                                // cap minimum so that one can easily see there's fuel remaining
+                                .setProgress(
+                                        () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5)
+                                                : 0)
+                                .setTexture(GTPP_UITextures.PROGRESSBAR_FUEL, 14).setDirection(ProgressBar.Direction.UP)
+                                .setPos(116, 45).setSize(14, 14))
+                .widget(
+                        new DrawableWidget().setDrawable(GTPP_UITextures.OVERLAY_SLOT_CANISTER_DARK).setPos(43, 43)
+                                .setSize(18, 18));
     }
 }

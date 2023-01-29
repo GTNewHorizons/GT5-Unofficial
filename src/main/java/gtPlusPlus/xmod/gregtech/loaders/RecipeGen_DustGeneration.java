@@ -1,5 +1,11 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
@@ -16,10 +22,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import java.util.HashSet;
-import java.util.Set;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
@@ -57,8 +59,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                 Logger.INFO("9 Tiny dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
             }
 
-            if (RecipeUtils.addShapedRecipe(
-                    normalDust, null, null, null, null, null, null, null, null, M.getTinyDust(9))) {
+            if (RecipeUtils
+                    .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, M.getTinyDust(9))) {
                 Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getLocalizedName() + " - Success");
             } else {
                 Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getLocalizedName() + " - Failed");
@@ -67,13 +69,22 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
         if (smallDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
-                    smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust)) {
+                    smallDust,
+                    smallDust,
+                    null,
+                    smallDust,
+                    smallDust,
+                    null,
+                    null,
+                    null,
+                    null,
+                    normalDust)) {
                 Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
             } else {
                 Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
             }
-            if (RecipeUtils.addShapedRecipe(
-                    null, normalDust, null, null, null, null, null, null, null, M.getSmallDust(4))) {
+            if (RecipeUtils
+                    .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, M.getSmallDust(4))) {
                 Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
             } else {
                 Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
@@ -162,15 +173,10 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                         input[0] = CI.getNumberedCircuit(inputStacks.length + 10);
                     }
 
-                    /*for (int g = 0; g<4; g++) {
-                    	if(inputStacks.length > g) {
-                    		input[g] = inputStacks[g] != null ? inputStacks[g] : null;
-                    	}
-                    	else {
-                    		input[g] = CI.getNumberedCircuit(g+10);
-                    		break;
-                    	}
-                    }*/
+                    /*
+                     * for (int g = 0; g<4; g++) { if(inputStacks.length > g) { input[g] = inputStacks[g] != null ?
+                     * inputStacks[g] : null; } else { input[g] = CI.getNumberedCircuit(g+10); break; } }
+                     */
 
                     // Add mixer Recipe
                     FluidStack oxygen = GT_Values.NF;
@@ -213,14 +219,12 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     }
 
                     // Add Shapeless recipe for low tier alloys.
-                    /*if (tVoltageMultiplier <= 30){
-                    	if (RecipeUtils.addShapedGregtechRecipe(inputStacks, outputStacks)){
-                    		Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");
-                    	}
-                    	else {
-                    		Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
-                    	}
-                    }*/
+                    /*
+                     * if (tVoltageMultiplier <= 30){ if (RecipeUtils.addShapedGregtechRecipe(inputStacks,
+                     * outputStacks)){
+                     * Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success"); } else {
+                     * Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed"); } }
+                     */
                 }
             }
         }
@@ -252,14 +256,11 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     // Get us four ItemStacks to input into the mixer
                     ItemStack input1, input2, input3, input4;
                     input1 = inputStacks[0];
-                    input2 = (inputStacks.length >= 2)
-                            ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1])
+                    input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1])
                             : null;
-                    input3 = (inputStacks.length >= 3)
-                            ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2])
+                    input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2])
                             : null;
-                    input4 = (inputStacks.length >= 4)
-                            ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3])
+                    input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3])
                             : null;
 
                     if (inputStacks.length == 1) {
@@ -286,14 +287,12 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                                 if (x != null) {
                                     if (x.getStackMaterial() != null) {
                                         if (x.getStackMaterial().getDust(1) == null) {
-                                            MaterialState f =
-                                                    x.getStackMaterial().getState();
-                                            if (f == MaterialState.GAS
-                                                    || f == MaterialState.LIQUID
+                                            MaterialState f = x.getStackMaterial().getState();
+                                            if (f == MaterialState.GAS || f == MaterialState.LIQUID
                                                     || f == MaterialState.PURE_LIQUID
                                                     || f == MaterialState.PURE_GAS) {
-                                                oxygen = x.getStackMaterial().getFluidStack((int)
-                                                        (material.vSmallestRatio[compSlot] * 1000));
+                                                oxygen = x.getStackMaterial().getFluidStack(
+                                                        (int) (material.vSmallestRatio[compSlot] * 1000));
                                             }
                                         }
                                     }
@@ -341,19 +340,21 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
     public static boolean generatePackagerRecipes(Material aMatInfo) {
         AutoMap<Boolean> aResults = new AutoMap<Boolean>();
         // Small Dust
-        aResults.put(GT_Values.RA.addBoxingRecipe(
-                GT_Utility.copyAmount(4L, new Object[] {aMatInfo.getSmallDust(4)}),
-                ItemList.Schematic_Dust.get(0L, new Object[0]),
-                aMatInfo.getDust(1),
-                100,
-                4));
+        aResults.put(
+                GT_Values.RA.addBoxingRecipe(
+                        GT_Utility.copyAmount(4L, new Object[] { aMatInfo.getSmallDust(4) }),
+                        ItemList.Schematic_Dust.get(0L, new Object[0]),
+                        aMatInfo.getDust(1),
+                        100,
+                        4));
         // Tiny Dust
-        aResults.put(GT_Values.RA.addBoxingRecipe(
-                GT_Utility.copyAmount(9L, new Object[] {aMatInfo.getTinyDust(9)}),
-                ItemList.Schematic_Dust.get(0L, new Object[0]),
-                aMatInfo.getDust(1),
-                100,
-                4));
+        aResults.put(
+                GT_Values.RA.addBoxingRecipe(
+                        GT_Utility.copyAmount(9L, new Object[] { aMatInfo.getTinyDust(9) }),
+                        ItemList.Schematic_Dust.get(0L, new Object[0]),
+                        aMatInfo.getDust(1),
+                        100,
+                        4));
 
         for (boolean b : aResults) {
             if (!b) {
@@ -405,13 +406,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         }
     }
 
-    private boolean addBlastFurnaceRecipe(
-            Material aMatInfo,
-            final ItemStack input1,
-            final ItemStack input2,
-            final ItemStack output1,
-            final ItemStack output2,
-            final int tempRequired) {
+    private boolean addBlastFurnaceRecipe(Material aMatInfo, final ItemStack input1, final ItemStack input2,
+            final ItemStack output1, final ItemStack output2, final int tempRequired) {
 
         try {
             int timeTaken = 125 * aMatInfo.vTier * 10;

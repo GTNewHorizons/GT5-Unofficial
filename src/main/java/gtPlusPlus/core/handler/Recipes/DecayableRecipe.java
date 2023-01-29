@@ -1,9 +1,10 @@
 package gtPlusPlus.core.handler.Recipes;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 
 public class DecayableRecipe {
 
@@ -24,8 +25,7 @@ public class DecayableRecipe {
     public boolean equals(Object o) {
         if (o instanceof DecayableRecipe) {
             DecayableRecipe i = (DecayableRecipe) o;
-            if (i.mTime == this.mTime
-                    && GT_Utility.areStacksEqual(mInput, i.mInput)
+            if (i.mTime == this.mTime && GT_Utility.areStacksEqual(mInput, i.mInput)
                     && GT_Utility.areStacksEqual(mOutput, i.mOutput)) {
                 return true;
             }

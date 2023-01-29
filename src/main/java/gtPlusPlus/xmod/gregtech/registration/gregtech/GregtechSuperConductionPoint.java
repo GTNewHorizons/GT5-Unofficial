@@ -12,7 +12,7 @@ public class GregtechSuperConductionPoint {
     private static void run1() {
         // Steam Condensors
         // GregtechItemList.SuperConductorInputNode.set(new GregtechMetaTileEntitySuperCondensor(811,
-        //		"superconductor.01.input.single", "Power Phase Shifting Station", 8).getStackForm(1L));
+        // "superconductor.01.input.single", "Power Phase Shifting Station", 8).getStackForm(1L));
 
     }
 }

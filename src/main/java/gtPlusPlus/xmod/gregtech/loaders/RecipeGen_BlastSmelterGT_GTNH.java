@@ -1,5 +1,13 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import gregtech.api.util.*;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
@@ -8,12 +16,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeGen_BlastSmelterGT_GTNH {
 
@@ -46,13 +48,9 @@ public class RecipeGen_BlastSmelterGT_GTNH {
         return null;
     }
 
-    private static boolean isValid(
-            final ItemStack[] inputs,
-            final ItemStack outputs[],
-            final FluidStack[] fluidIn,
+    private static boolean isValid(final ItemStack[] inputs, final ItemStack outputs[], final FluidStack[] fluidIn,
             final FluidStack fluidOut) {
-        if (inputs != null
-                && outputs != null
+        if (inputs != null && outputs != null
                 && fluidIn != null
                 && fluidOut != null
                 && inputs.length > 0
@@ -83,8 +81,7 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                         if (CORE.GTNH) {
                             mType = "ingot";
                         }
-                        if (oreName.startsWith(mType)
-                                && !oreName.contains("double")
+                        if (oreName.startsWith(mType) && !oreName.contains("double")
                                 && !oreName.contains("triple")
                                 && !oreName.contains("quad")
                                 && !oreName.contains("quintuple")) {
@@ -98,8 +95,12 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                 if (validInput != null && validOutput != null) {
                     ItemStackData R = new ItemStackData(validInput);
                     setIngotToFluid(R, validOutput);
-                    Logger.MACHINE_INFO("[ABS][I2F] Cached " + validInput.getDisplayName() + " to "
-                            + validOutput.getLocalizedName() + ". Stored Under ID of " + R.getUniqueDataIdentifier());
+                    Logger.MACHINE_INFO(
+                            "[ABS][I2F] Cached " + validInput.getDisplayName()
+                                    + " to "
+                                    + validOutput.getLocalizedName()
+                                    + ". Stored Under ID of "
+                                    + R.getUniqueDataIdentifier());
                 }
             }
         }
@@ -122,9 +123,14 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                     ItemStackData R1 = new ItemStackData(validInput);
                     ItemStackData R2 = new ItemStackData(validOutput);
                     setHotToCold(R1, R2);
-                    Logger.MACHINE_INFO("[ABS][H2C] Cached " + validInput.getDisplayName() + " to "
-                            + validOutput.getDisplayName() + ". Stored Under ID of " + R1.getUniqueDataIdentifier()
-                            + ", links to ID " + R2.getUniqueDataIdentifier());
+                    Logger.MACHINE_INFO(
+                            "[ABS][H2C] Cached " + validInput.getDisplayName()
+                                    + " to "
+                                    + validOutput.getDisplayName()
+                                    + ". Stored Under ID of "
+                                    + R1.getUniqueDataIdentifier()
+                                    + ", links to ID "
+                                    + R2.getUniqueDataIdentifier());
                 }
             }
         }
@@ -159,9 +165,12 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                     if (x.mOutputs != null && x.mOutputs[0] != null) {
                         mMoltenCount = x.mOutputs[0].stackSize;
                         ItemStackData R = new ItemStackData(x.mOutputs[0]);
-                        Logger.MACHINE_INFO("[ABS] Found " + x.mOutputs[0].getDisplayName()
-                                + " as valid EBF output, finding it's fluid from the cache. We will require "
-                                + (144 * mMoltenCount) + "L. Looking for ID " + R.getUniqueDataIdentifier());
+                        Logger.MACHINE_INFO(
+                                "[ABS] Found " + x.mOutputs[0].getDisplayName()
+                                        + " as valid EBF output, finding it's fluid from the cache. We will require "
+                                        + (144 * mMoltenCount)
+                                        + "L. Looking for ID "
+                                        + R.getUniqueDataIdentifier());
                         FluidStack tempFluid = getFluidFromIngot(R);
                         if (tempFluid != null) {
                             // Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");

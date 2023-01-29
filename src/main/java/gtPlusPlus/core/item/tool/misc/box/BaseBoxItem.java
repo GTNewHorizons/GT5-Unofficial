@@ -1,5 +1,12 @@
 package gtPlusPlus.core.item.tool.misc.box;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
@@ -7,12 +14,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 public class BaseBoxItem extends CoreItem {
 
@@ -54,7 +55,12 @@ public class BaseBoxItem extends CoreItem {
             // If player not sneaking, open the inventory gui
             if (!player.isSneaking()) {
                 player.openGui(
-                        GTplusplus.instance, GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+                        GTplusplus.instance,
+                        GUI,
+                        world,
+                        (int) player.posX,
+                        (int) player.posY,
+                        (int) player.posZ);
             }
         }
         return itemstack;
@@ -63,7 +69,6 @@ public class BaseBoxItem extends CoreItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(
-                CORE.MODID + ":" + this.getUnlocalizedName().substring(5));
+        this.itemIcon = iconRegister.registerIcon(CORE.MODID + ":" + this.getUnlocalizedName().substring(5));
     }
 }

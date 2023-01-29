@@ -1,16 +1,9 @@
 package gtPlusPlus.core.item.food;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -24,21 +17,23 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 public class BaseItemMetaFood extends ItemFood {
 
     private static final HashMap<Integer, IIcon> mIconMap = new HashMap<Integer, IIcon>();
     private static int mTotalMetaItems = 0;
 
     /*
-     * 0 - Raw Human Meat
-     * 1 - Cooked Human Meat
-     * 2 - Raw Horse Meat
-     * 3 - Cooked Horse Meat
-     * 4 - Raw Wolf Meat
-     * 5 - Cooked Wolf Meat
-     * 6 - Raw Ocelot Meat
-     * 7 - Cooked Ocelot Meat
-     * 8 - Blaze Flesh
+     * 0 - Raw Human Meat 1 - Cooked Human Meat 2 - Raw Horse Meat 3 - Cooked Horse Meat 4 - Raw Wolf Meat 5 - Cooked
+     * Wolf Meat 6 - Raw Ocelot Meat 7 - Cooked Ocelot Meat 8 - Blaze Flesh
      */
 
     // listAllmeatraw
@@ -105,19 +100,13 @@ public class BaseItemMetaFood extends ItemFood {
     private static final HashMap<Integer, EnumRarity> mRarityMap = new HashMap<Integer, EnumRarity>();
     private static final HashMap<Integer, Integer> mHealAmountMap = new HashMap<Integer, Integer>();
     private static final HashMap<Integer, Float> mSaturationAmountMap = new HashMap<Integer, Float>();
-    private static final HashMap<Integer, AutoMap<PotionEffectPackage>> mPotionEffectsMap =
-            new HashMap<Integer, AutoMap<PotionEffectPackage>>();
+    private static final HashMap<Integer, AutoMap<PotionEffectPackage>> mPotionEffectsMap = new HashMap<Integer, AutoMap<PotionEffectPackage>>();
     private static final HashMap<Integer, Boolean> mHasSpecialBehaviourMap = new HashMap<Integer, Boolean>();
-    private static final HashMap<Integer, SpecialFoodBehaviour> mSpecialBehaviourMap =
-            new HashMap<Integer, SpecialFoodBehaviour>();
+    private static final HashMap<Integer, SpecialFoodBehaviour> mSpecialBehaviourMap = new HashMap<Integer, SpecialFoodBehaviour>();
     private static final HashMap<Integer, ArrayList<String>> mOreDictNames = new HashMap<Integer, ArrayList<String>>();
 
-    public static void registerNewMetaFood(
-            final int aMetaID,
-            String aTooltip,
-            final int aHealAmount,
-            final float aSaturationModifier,
-            final int aMaxStacksize) {
+    public static void registerNewMetaFood(final int aMetaID, String aTooltip, final int aHealAmount,
+            final float aSaturationModifier, final int aMaxStacksize) {
         registerNewMetaFood(
                 aMetaID,
                 aTooltip,
@@ -130,13 +119,8 @@ public class BaseItemMetaFood extends ItemFood {
                 new ArrayList<String>());
     }
 
-    public static void registerNewMetaFood(
-            final int aMetaID,
-            String aTooltip,
-            final int aHealAmount,
-            final float aSaturationModifier,
-            final int aMaxStacksize,
-            final ArrayList<String> aOreDictNames) {
+    public static void registerNewMetaFood(final int aMetaID, String aTooltip, final int aHealAmount,
+            final float aSaturationModifier, final int aMaxStacksize, final ArrayList<String> aOreDictNames) {
         registerNewMetaFood(
                 aMetaID,
                 aTooltip,
@@ -149,12 +133,8 @@ public class BaseItemMetaFood extends ItemFood {
                 aOreDictNames);
     }
 
-    public static void registerNewMetaFood(
-            final int aMetaID,
-            String aTooltip,
-            final int aHealAmount,
-            final float aSaturationModifier,
-            final int aMaxStacksize,
+    public static void registerNewMetaFood(final int aMetaID, String aTooltip, final int aHealAmount,
+            final float aSaturationModifier, final int aMaxStacksize,
             final AutoMap<PotionEffectPackage> aPotionEffects) {
         registerNewMetaFood(
                 aMetaID,
@@ -168,13 +148,8 @@ public class BaseItemMetaFood extends ItemFood {
                 new ArrayList<String>());
     }
 
-    public static void registerNewMetaFood(
-            final int aMetaID,
-            String aTooltip,
-            final int aHealAmount,
-            final float aSaturationModifier,
-            final int aMaxStacksize,
-            final AutoMap<PotionEffectPackage> aPotionEffects,
+    public static void registerNewMetaFood(final int aMetaID, String aTooltip, final int aHealAmount,
+            final float aSaturationModifier, final int aMaxStacksize, final AutoMap<PotionEffectPackage> aPotionEffects,
             final ArrayList<String> aOreDictNames) {
         registerNewMetaFood(
                 aMetaID,
@@ -188,15 +163,9 @@ public class BaseItemMetaFood extends ItemFood {
                 aOreDictNames);
     }
 
-    public static void registerNewMetaFood(
-            final int aMetaID,
-            String aTooltip,
-            EnumRarity aRarity,
-            final int aHealAmount,
-            final float aSaturationModifier,
-            final int aMaxStacksize,
-            final AutoMap<PotionEffectPackage> aPotionEffects,
-            final SpecialFoodBehaviour aSpecialBehaviour) {
+    public static void registerNewMetaFood(final int aMetaID, String aTooltip, EnumRarity aRarity,
+            final int aHealAmount, final float aSaturationModifier, final int aMaxStacksize,
+            final AutoMap<PotionEffectPackage> aPotionEffects, final SpecialFoodBehaviour aSpecialBehaviour) {
         registerNewMetaFood(
                 aMetaID,
                 aTooltip,
@@ -209,15 +178,9 @@ public class BaseItemMetaFood extends ItemFood {
                 new ArrayList<String>());
     }
 
-    public static void registerNewMetaFood(
-            final int aMetaID,
-            String aTooltip,
-            EnumRarity aRarity,
-            final int aHealAmount,
-            final float aSaturationModifier,
-            final int aMaxStacksize,
-            final AutoMap<PotionEffectPackage> aPotionEffects,
-            final SpecialFoodBehaviour aSpecialBehaviour,
+    public static void registerNewMetaFood(final int aMetaID, String aTooltip, EnumRarity aRarity,
+            final int aHealAmount, final float aSaturationModifier, final int aMaxStacksize,
+            final AutoMap<PotionEffectPackage> aPotionEffects, final SpecialFoodBehaviour aSpecialBehaviour,
             final ArrayList<String> aOreDictNames) {
         mTotalMetaItems++;
         mMaxStackSizeMap.put(aMetaID, aMaxStacksize);
@@ -285,11 +248,12 @@ public class BaseItemMetaFood extends ItemFood {
                 if (MathUtils.randInt(0, 100) <= aFoodEffect.getChance() || aFoodEffect.getChance() == 100) {
                     PotionEffect aEffect = aFoodEffect.getEffect();
                     if (aEffect != null && aEffect.getPotionID() > 0) {
-                        aPlayer.addPotionEffect(new PotionEffect(
-                                aEffect.getPotionID(),
-                                aEffect.getDuration() * 20,
-                                aEffect.getAmplifier(),
-                                aEffect.getIsAmbient()));
+                        aPlayer.addPotionEffect(
+                                new PotionEffect(
+                                        aEffect.getPotionID(),
+                                        aEffect.getDuration() * 20,
+                                        aEffect.getAmplifier(),
+                                        aEffect.getIsAmbient()));
                     }
                 }
             }
@@ -325,8 +289,8 @@ public class BaseItemMetaFood extends ItemFood {
     }
 
     @Override
-    public void onUpdate(
-            ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
+    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
+            boolean p_77663_5_) {
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 

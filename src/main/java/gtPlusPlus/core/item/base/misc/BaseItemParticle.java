@@ -1,16 +1,18 @@
 package gtPlusPlus.core.item.base.misc;
 
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.lib.CORE;
 
 public abstract class BaseItemParticle extends CoreItem {
 
@@ -43,7 +45,7 @@ public abstract class BaseItemParticle extends CoreItem {
         return super.getColorFromItemStack(stack, aaa);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < aMaxCount; i++) {

@@ -1,16 +1,8 @@
 package gtPlusPlus.xmod.bop.blocks.base;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,10 +13,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 public class LeavesBase extends BlockLeaves {
 
     protected IIcon[][] leafTextures = new IIcon[2][];
-    protected String[][] leafType = new String[][] {{}, {}};
+    protected String[][] leafType = new String[][] { {}, {} };
     protected String[] treeType = new String[] {};
     protected ItemStack[] bonusDrops;
 
@@ -77,8 +79,7 @@ public class LeavesBase extends BlockLeaves {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int metaID) {
-        return (metaID & 3) == 1
-                ? this.leafTextures[this.field_150127_b][1]
+        return (metaID & 3) == 1 ? this.leafTextures[this.field_150127_b][1]
                 : this.leafTextures[this.field_150127_b][0];
     }
 
@@ -93,8 +94,8 @@ public class LeavesBase extends BlockLeaves {
         for (int i = 0; i < leafType.length; ++i) {
             this.leafTextures[i] = new IIcon[leafType[i].length];
             for (int j = 0; j < leafType[i].length; ++j) {
-                this.leafTextures[i][j] =
-                        iIcon.registerIcon(CORE.MODID + ":" + "trees/" + "leaves/" + "leaves_" + leafType[i][j]);
+                this.leafTextures[i][j] = iIcon
+                        .registerIcon(CORE.MODID + ":" + "trees/" + "leaves/" + "leaves_" + leafType[i][j]);
             }
         }
         setVanillaVariable(this.field_150129_M, this.leafTextures);

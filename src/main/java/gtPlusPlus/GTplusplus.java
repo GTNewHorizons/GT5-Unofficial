@@ -2,6 +2,15 @@ package gtPlusPlus;
 
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.HashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.launchwrapper.Launch;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -50,30 +59,24 @@ import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.HashMap;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.launchwrapper.Launch;
 
 @MCVersion(value = "1.7.10")
 @Mod(
         modid = CORE.MODID,
         name = CORE.name,
         version = CORE.VERSION,
-        dependencies =
-                "required-after:Forge; after:TConstruct; after:PlayerAPI; after:dreamcraft; after:IC2; after:ihl; after:psychedelicraft; required-after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO; after:tectech; after:GTRedtech; after:beyondrealitycore; after:OpenBlocks; after:IC2NuclearControl; after:TGregworks; after:StevesCarts; after:xreliquary; required-after:gtnhlib@[0.0.10,)")
+        dependencies = "required-after:Forge; after:TConstruct; after:PlayerAPI; after:dreamcraft; after:IC2; after:ihl; after:psychedelicraft; required-after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO; after:tectech; after:GTRedtech; after:beyondrealitycore; after:OpenBlocks; after:IC2NuclearControl; after:TGregworks; after:StevesCarts; after:xreliquary; required-after:gtnhlib@[0.0.10,)")
 public class GTplusplus implements ActionListener {
 
     public static enum INIT_PHASE {
+
         SUPER(null),
         PRE_INIT(SUPER),
         INIT(PRE_INIT),
         POST_INIT(INIT),
         SERVER_START(POST_INIT),
         STARTED(SERVER_START);
+
         protected boolean mIsPhaseActive = false;
         private final INIT_PHASE mPrev;
 
@@ -117,20 +120,16 @@ public class GTplusplus implements ActionListener {
     public static void loadTextures() {
         Logger.INFO("Loading some textures on the client.");
         // Tools
-        Logger.WARNING("Processing texture: "
-                + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
-        Logger.WARNING("Processing texture: "
-                + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
-        Logger.WARNING("Processing texture: "
-                + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
-        Logger.WARNING("Processing texture: "
-                + TexturesGtTools.ELECTRIC_LIGHTER.getTextureFile().getResourcePath());
-        Logger.WARNING("Processing texture: "
-                + TexturesGtTools.ELECTRIC_BUTCHER_KNIFE.getTextureFile().getResourcePath());
+        Logger.WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
+        Logger.WARNING("Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
+        Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
+        Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_LIGHTER.getTextureFile().getResourcePath());
+        Logger.WARNING(
+                "Processing texture: " + TexturesGtTools.ELECTRIC_BUTCHER_KNIFE.getTextureFile().getResourcePath());
 
         // Blocks
-        Logger.WARNING("Processing texture: "
-                + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
+        Logger.WARNING(
+                "Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
     }
 
     public GTplusplus() {
@@ -209,15 +208,17 @@ public class GTplusplus implements ActionListener {
         BlockEventHandler.init();
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        Logger.INFO("| Recipes succesfully Loaded: "
-                + RegistrationHandler.recipesSuccess + " | Failed: "
-                + RegistrationHandler.recipesFailed + " |");
+        Logger.INFO(
+                "| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess
+                        + " | Failed: "
+                        + RegistrationHandler.recipesFailed
+                        + " |");
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 
         // Log free GT++ Meta IDs
         if (CORE.DEVENV) {
-            // 750	-  999  are reserved for Alkalus.
+            // 750 - 999 are reserved for Alkalus.
             for (int i = 750; i < 1000; i++) {
                 if (gregtech.api.GregTech_API.METATILEENTITIES[i] == null) {
                     Logger.INFO("MetaID " + i + " is free.");
@@ -254,15 +255,12 @@ public class GTplusplus implements ActionListener {
     public void actionPerformed(final ActionEvent arg0) {}
 
     /**
-     * This {@link EventHandler} is called after the
-     * {@link FMLPostInitializationEvent} stages of all loaded mods executes
-     * successfully. {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to
-     * inject recipe generation after Gregtech and all other mods are entirely
-     * loaded and initialized.
+     * This {@link EventHandler} is called after the {@link FMLPostInitializationEvent} stages of all loaded mods
+     * executes successfully. {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to inject recipe generation after
+     * Gregtech and all other mods are entirely loaded and initialized.
      *
-     * @param event
-     *            - The {@link EventHandler} object passed through from FML to
-     *            {@link #GTplusplus()}'s {@link #instance}.
+     * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s
+     *              {@link #instance}.
      */
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
@@ -272,9 +270,9 @@ public class GTplusplus implements ActionListener {
 
     protected void generateGregtechRecipeMaps() {
 
-        int[] mValidCount = new int[] {0, 0, 0};
-        int[] mInvalidCount = new int[] {0, 0, 0, 0, 0};
-        int[] mOriginalCount = new int[] {0, 0, 0};
+        int[] mValidCount = new int[] { 0, 0, 0 };
+        int[] mInvalidCount = new int[] { 0, 0, 0, 0, 0 };
+        int[] mOriginalCount = new int[] { 0, 0, 0 };
 
         RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
         FishPondFakeRecipe.generateFishPondRecipes();
@@ -289,102 +287,54 @@ public class GTplusplus implements ActionListener {
                 GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes,
                 GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT);
         mInvalidCount[2] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                GT_Recipe.GT_Recipe_Map.sVacuumRecipes, GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT);
+                GT_Recipe.GT_Recipe_Map.sVacuumRecipes,
+                GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT);
         mInvalidCount[3] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                GT_Recipe.GT_Recipe_Map.sMixerRecipes, GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT);
+                GT_Recipe.GT_Recipe_Map.sMixerRecipes,
+                GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT);
         mInvalidCount[4] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
                 GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
                 GTPP_Recipe.GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes);
         /*
-
-        //Large Centrifuge generation
-        mOriginalCount[0] = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size();
-        for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
-        	if (x != null) {
-        		if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
-        			if (CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
-        				mValidCount[0]++;
-        			}
-        			else {
-        				mInvalidCount[0]++;
-        			}
-        		}
-        		else {
-        			Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
-        			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
-        			Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
-        			Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
-        			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
-        		}
-        	}
-        	else {
-        		mInvalidCount[0]++;
-        	}
-        }
-
-        if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
-        	for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList) {
-        		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
-        	}
-        }
-
-        //Large Electrolyzer generation
-        mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size();
-        for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
-        	if (x != null) {
-        		if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
-        			if (CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
-        				mValidCount[1]++;
-        			}
-        			else {
-        				mInvalidCount[1]++;
-        			}
-        		}
-        		else {
-        			Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
-        			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
-        			Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
-        			Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
-        			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
-        		}
-        	}
-        	else {
-        		mInvalidCount[1]++;
-        	}
-        }
-
-        if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
-        	for (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList) {
-        		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
-        	}
-        }
-
-        //Advanced Vacuum Freezer generation
-        mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();
-        for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
-        	if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {
-        		if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
-        			if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
-        				mValidCount[2]++;
-        			}
-        		}
-        		else {
-        			mInvalidCount[2]++;
-        		}
-        	}
-        	else {
-        		mInvalidCount[2]++;
-        	}
-        }
-
-        //Redo plasma recipes in Adv. Vac.
-        //Meta_GT_Proxy.generatePlasmaRecipesForAdvVacFreezer();
-
-
-        String[] machineName = new String[] {"Centrifuge", "Electrolyzer", "Vacuum Freezer"};
-        for (int i=0;i<3;i++) {
-        	Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName[i]+". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]+" are invalid for this Multiblock's processing in some way.");
-        }*/
+         * //Large Centrifuge generation mOriginalCount[0] =
+         * GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size(); for (GT_Recipe x :
+         * GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) { if (x != null) { if
+         * (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) { if
+         * (CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances,
+         * x.mDuration, x.mEUt, x.mSpecialValue)) { mValidCount[0]++; } else { mInvalidCount[0]++; } } else {
+         * Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
+         * Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
+         * Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
+         * Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
+         * Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs)); } } else { mInvalidCount[0]++;
+         * } } if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) { for (GT_Recipe
+         * a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList) {
+         * GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a); } } //Large Electrolyzer generation
+         * mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size(); for (GT_Recipe x :
+         * GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) { if (x != null) { if
+         * (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) { if
+         * (CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances,
+         * x.mDuration, x.mEUt, x.mSpecialValue)) { mValidCount[1]++; } else { mInvalidCount[1]++; } } else {
+         * Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
+         * Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
+         * Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
+         * Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
+         * Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs)); } } else { mInvalidCount[1]++;
+         * } } if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) { for
+         * (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList) {
+         * GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a); } } //Advanced Vacuum Freezer
+         * generation mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size(); for (GT_Recipe x :
+         * GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) { if (x != null &&
+         * RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) { if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs))
+         * { if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances,
+         * x.mDuration, x.mEUt, x.mSpecialValue)) { mValidCount[2]++; } } else { mInvalidCount[2]++; } } else {
+         * mInvalidCount[2]++; } } //Redo plasma recipes in Adv. Vac.
+         * //Meta_GT_Proxy.generatePlasmaRecipesForAdvVacFreezer(); String[] machineName = new String[] {"Centrifuge",
+         * "Electrolyzer", "Vacuum Freezer"}; for (int i=0;i<3;i++) {
+         * Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName[i]
+         * +". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]
+         * +" are invalid for this Multiblock's processing in some way."); }
+         */
     }
 
     protected void dumpGtRecipeMap(final GT_Recipe_Map r) {
@@ -458,22 +408,23 @@ public class GTplusplus implements ActionListener {
         sMissingItemMappings.put(
                 "miscutils:itemCellZirconiumTetrafluoride",
                 GameRegistry.findItem(CORE.MODID, "ZirconiumTetrafluoride"));
-        sMissingItemMappings.put(
-                "miscutils:Li2BeF4", GameRegistry.findItem(CORE.MODID, "itemCellLithiumTetrafluoroberyllate"));
+        sMissingItemMappings
+                .put("miscutils:Li2BeF4", GameRegistry.findItem(CORE.MODID, "itemCellLithiumTetrafluoroberyllate"));
 
         // Cryolite
         sMissingBlockMappings.put("miscutils:oreCryolite", GameRegistry.findBlock(CORE.MODID, "oreCryoliteF"));
-        sMissingItemMappings.put(
-                "miscutils:itemDustTinyCryolite", GameRegistry.findItem(CORE.MODID, "itemDustTinyCryoliteF"));
-        sMissingItemMappings.put(
-                "miscutils:itemDustSmallCryolite", GameRegistry.findItem(CORE.MODID, "itemDustSmallCryoliteF"));
+        sMissingItemMappings
+                .put("miscutils:itemDustTinyCryolite", GameRegistry.findItem(CORE.MODID, "itemDustTinyCryoliteF"));
+        sMissingItemMappings
+                .put("miscutils:itemDustSmallCryolite", GameRegistry.findItem(CORE.MODID, "itemDustSmallCryoliteF"));
         sMissingItemMappings.put("miscutils:itemDustCryolite", GameRegistry.findItem(CORE.MODID, "itemDustCryoliteF"));
         sMissingItemMappings.put("miscutils:dustPureCryolite", GameRegistry.findItem(CORE.MODID, "dustPureCryoliteF"));
-        sMissingItemMappings.put(
-                "miscutils:dustImpureCryolite", GameRegistry.findItem(CORE.MODID, "dustImpureCryoliteF"));
+        sMissingItemMappings
+                .put("miscutils:dustImpureCryolite", GameRegistry.findItem(CORE.MODID, "dustImpureCryoliteF"));
         sMissingItemMappings.put("miscutils:crushedCryolite", GameRegistry.findItem(CORE.MODID, "crushedCryoliteF"));
         sMissingItemMappings.put(
-                "miscutils:crushedPurifiedCryolite", GameRegistry.findItem(CORE.MODID, "crushedPurifiedCryoliteF"));
+                "miscutils:crushedPurifiedCryolite",
+                GameRegistry.findItem(CORE.MODID, "crushedPurifiedCryoliteF"));
         sMissingItemMappings.put(
                 "miscutils:crushedCentrifugedCryolite",
                 GameRegistry.findItem(CORE.MODID, "crushedCentrifugedCryoliteF"));
@@ -481,17 +432,18 @@ public class GTplusplus implements ActionListener {
 
         // Fluorite
         sMissingBlockMappings.put("miscutils:oreFluorite", GameRegistry.findBlock(CORE.MODID, "oreFluoriteF"));
-        sMissingItemMappings.put(
-                "miscutils:itemDustTinyFluorite", GameRegistry.findItem(CORE.MODID, "itemDustTinyFluoriteF"));
-        sMissingItemMappings.put(
-                "miscutils:itemDustSmallFluorite", GameRegistry.findItem(CORE.MODID, "itemDustSmallFluoriteF"));
+        sMissingItemMappings
+                .put("miscutils:itemDustTinyFluorite", GameRegistry.findItem(CORE.MODID, "itemDustTinyFluoriteF"));
+        sMissingItemMappings
+                .put("miscutils:itemDustSmallFluorite", GameRegistry.findItem(CORE.MODID, "itemDustSmallFluoriteF"));
         sMissingItemMappings.put("miscutils:itemDustFluorite", GameRegistry.findItem(CORE.MODID, "itemDustFluoriteF"));
         sMissingItemMappings.put("miscutils:dustPureFluorite", GameRegistry.findItem(CORE.MODID, "dustPureFluoriteF"));
-        sMissingItemMappings.put(
-                "miscutils:dustImpureFluorite", GameRegistry.findItem(CORE.MODID, "dustImpureFluoriteF"));
+        sMissingItemMappings
+                .put("miscutils:dustImpureFluorite", GameRegistry.findItem(CORE.MODID, "dustImpureFluoriteF"));
         sMissingItemMappings.put("miscutils:crushedFluorite", GameRegistry.findItem(CORE.MODID, "crushedFluoriteF"));
         sMissingItemMappings.put(
-                "miscutils:crushedPurifiedFluorite", GameRegistry.findItem(CORE.MODID, "crushedPurifiedFluoriteF"));
+                "miscutils:crushedPurifiedFluorite",
+                GameRegistry.findItem(CORE.MODID, "crushedPurifiedFluoriteF"));
         sMissingItemMappings.put(
                 "miscutils:crushedCentrifugedFluorite",
                 GameRegistry.findItem(CORE.MODID, "crushedCentrifugedFluoriteF"));

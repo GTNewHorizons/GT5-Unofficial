@@ -11,9 +11,9 @@ public class FluidLoader {
 
     public static void generate() {
 
-        FluidFactory.generate(ID_DIRTY_WATER, "dirtywater", new short[] {25, 25, 180});
-        FluidFactory.generate(ID_RAW_SEWERAGE, "sewerage", new short[] {100, 45, 25});
-        FluidFactory.generate(ID_GUANO, "guano", new short[] {175, 175, 180});
-        FluidFactory.generate(ID_POOPJUICE, "poo", new short[] {75, 45, 10});
+        FluidFactory.generate(ID_DIRTY_WATER, "dirtywater", new short[] { 25, 25, 180 });
+        FluidFactory.generate(ID_RAW_SEWERAGE, "sewerage", new short[] { 100, 45, 25 });
+        FluidFactory.generate(ID_GUANO, "guano", new short[] { 175, 175, 180 });
+        FluidFactory.generate(ID_POOPJUICE, "poo", new short[] { 75, 45, 10 });
     }
 }

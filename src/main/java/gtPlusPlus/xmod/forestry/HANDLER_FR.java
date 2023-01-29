@@ -1,5 +1,12 @@
 package gtPlusPlus.xmod.forestry;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import binnie.extratrees.genetics.ExtraTreeSpecies;
 import cpw.mods.fml.common.Optional;
 import forestry.api.arboriculture.EnumGermlingType;
@@ -12,11 +19,6 @@ import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
 import gtPlusPlus.xmod.forestry.bees.recipe.FR_Gregtech_Recipes;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class HANDLER_FR {
 
@@ -42,8 +44,8 @@ public class HANDLER_FR {
         }
     }
 
-    public static boolean createBlockBreakParticles(
-            final World world, final int x, final int y, final int z, final Block block) {
+    public static boolean createBlockBreakParticles(final World world, final int x, final int y, final int z,
+            final Block block) {
         if (LoadedMods.Forestry) {
             createBlockBreakParticles_INTERNAL(world, x, y, z, block);
         }
@@ -51,8 +53,8 @@ public class HANDLER_FR {
     }
 
     @Optional.Method(modid = "Forestry")
-    private static void createBlockBreakParticles_INTERNAL(
-            final World world, final int x, final int y, final int z, final Block block) {
+    private static void createBlockBreakParticles_INTERNAL(final World world, final int x, final int y, final int z,
+            final Block block) {
         if (LoadedMods.Forestry) {
             Class oClass;
             try {
@@ -70,11 +72,8 @@ public class HANDLER_FR {
                             int.class);
                     mParticles.invoke(oProxy, world, x, y, z, block, 0);
                 }
-            } catch (SecurityException
-                    | IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException e) {
-            }
+            } catch (SecurityException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e) {}
         }
     }
 
@@ -88,13 +87,13 @@ public class HANDLER_FR {
                 aLog = TreeManager.woodItemAccess.getLog(woodType, false);
 
                 GregtechMetaTileEntityTreeFarm.sLogCache.put(value.getUID(), aLog);
-                GregtechMetaTileEntityTreeFarm.sLogCache.put(
-                        value.getUID() + "fireproof", TreeManager.woodItemAccess.getLog(woodType, true));
+                GregtechMetaTileEntityTreeFarm.sLogCache
+                        .put(value.getUID() + "fireproof", TreeManager.woodItemAccess.getLog(woodType, true));
             } else {
                 aLog = ReflectionUtils.getField(value, "vanillaWood");
 
-                GregtechMetaTileEntityTreeFarm.sLogCache.put(
-                        value.getUID(), ReflectionUtils.getField(value, "vanillaWood"));
+                GregtechMetaTileEntityTreeFarm.sLogCache
+                        .put(value.getUID(), ReflectionUtils.getField(value, "vanillaWood"));
             }
 
             GregtechMetaTileEntityTreeFarm.addFakeRecipeToNEI(aSaplingStack, aLog);
@@ -104,8 +103,8 @@ public class HANDLER_FR {
     @Optional.Method(modid = "ExtraTrees")
     private static void mapExtraTreesSaplingToLog() {
         for (ExtraTreeSpecies value : ExtraTreeSpecies.values()) {
-            ItemStack aSaplingStack = TreeManager.treeRoot.getMemberStack(
-                    TreeManager.treeRoot.templateAsIndividual(value.getTemplate()), 0);
+            ItemStack aSaplingStack = TreeManager.treeRoot
+                    .getMemberStack(TreeManager.treeRoot.templateAsIndividual(value.getTemplate()), 0);
             ItemStack aLog = null;
             if (value.getLog() != null) {
                 aLog = value.getLog().getItemStack();

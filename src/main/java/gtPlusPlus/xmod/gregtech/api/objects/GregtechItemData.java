@@ -1,12 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.objects;
 
+import java.util.*;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.objects.GT_ArrayList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import java.util.*;
-import net.minecraft.item.ItemStack;
 
 public class GregtechItemData {
+
     private static final GregtechMaterialStack[] EMPTY_GT_MaterialStack_ARRAY = new GregtechMaterialStack[0];
 
     public final List<Object> mExtraData = new GT_ArrayList<>(false, 1);
@@ -16,14 +19,14 @@ public class GregtechItemData {
     public boolean mBlackListed = false;
     public ItemStack mUnificationTarget = null;
 
-    public GregtechItemData(
-            final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial, final boolean aBlackListed) {
+    public GregtechItemData(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial,
+            final boolean aBlackListed) {
         this.mPrefix = aPrefix;
         this.mMaterial = aMaterial == null ? null : new GregtechMaterialStack(aMaterial, aPrefix.mMaterialAmount);
         this.mBlackListed = aBlackListed;
         this.mByProducts = (aPrefix.mSecondaryMaterial == null) || (aPrefix.mSecondaryMaterial.mMaterial == null)
                 ? EMPTY_GT_MaterialStack_ARRAY
-                : new GregtechMaterialStack[] {aPrefix.mSecondaryMaterial.clone()};
+                : new GregtechMaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
     }
 
     public GregtechItemData(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial) {
@@ -37,8 +40,7 @@ public class GregtechItemData {
         if (aByProducts == null) {
             this.mByProducts = EMPTY_GT_MaterialStack_ARRAY;
         } else {
-            final GregtechMaterialStack[] tByProducts = aByProducts.length < 1
-                    ? EMPTY_GT_MaterialStack_ARRAY
+            final GregtechMaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_GT_MaterialStack_ARRAY
                     : new GregtechMaterialStack[aByProducts.length];
             int j = 0;
             for (int i = 0; i < aByProducts.length; i++) {
@@ -53,15 +55,12 @@ public class GregtechItemData {
         }
     }
 
-    public GregtechItemData(
-            final GT_Materials aMaterial, final long aAmount, final GregtechMaterialStack... aByProducts) {
+    public GregtechItemData(final GT_Materials aMaterial, final long aAmount,
+            final GregtechMaterialStack... aByProducts) {
         this(new GregtechMaterialStack(aMaterial, aAmount), aByProducts);
     }
 
-    public GregtechItemData(
-            final GT_Materials aMaterial,
-            final long aAmount,
-            final GT_Materials aByProduct,
+    public GregtechItemData(final GT_Materials aMaterial, final long aAmount, final GT_Materials aByProduct,
             final long aByProductAmount) {
         this(new GregtechMaterialStack(aMaterial, aAmount), new GregtechMaterialStack(aByProduct, aByProductAmount));
     }
@@ -100,6 +99,7 @@ public class GregtechItemData {
         }
 
         Collections.sort(rList, new Comparator<GregtechMaterialStack>() {
+
             @Override
             public int compare(final GregtechMaterialStack a, final GregtechMaterialStack b) {
                 return a.mAmount == b.mAmount ? 0 : a.mAmount > b.mAmount ? -1 : +1;

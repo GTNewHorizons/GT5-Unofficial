@@ -6,10 +6,20 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import team.chisel.carving.Carving;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -24,12 +34,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import team.chisel.carving.Carving;
 
 public class GregtechMetaTileEntity_IndustrialChisel
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialChisel> implements ISurvivalConstructable {
@@ -60,22 +64,13 @@ public class GregtechMetaTileEntity_IndustrialChisel
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Factory Grade Auto Chisel")
-                .addInfo("Target block goes in GUI slot")
-                .addInfo("If no target provided, firdt chisel result is used")
+        tt.addMachineType(getMachineType()).addInfo("Factory Grade Auto Chisel")
+                .addInfo("Target block goes in GUI slot").addInfo("If no target provided, firdt chisel result is used")
                 .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Sturdy Printer Casing", 10)
-                .addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1)
-                .addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
+                .addController("Front center").addCasingInfo("Sturdy Printer Casing", 10).addInputBus("Any casing", 1)
+                .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
+                .addMufflerHatch("Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -83,17 +78,15 @@ public class GregtechMetaTileEntity_IndustrialChisel
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialChisel> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialChisel>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "C-C", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialChisel.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(90)
-                                    .dot(1)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler).casingIndex(90).dot(1)
                                     .buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
                     .build();
@@ -201,18 +194,17 @@ public class GregtechMetaTileEntity_IndustrialChisel
         if (tIsCached || aInput != null && hasChiselResults(aInput)) {
             ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);
             if (tOutput != null) {
-                if (mCachedRecipe != null
-                        && GT_Utility.areStacksEqual(aInput, mInputCache)
+                if (mCachedRecipe != null && GT_Utility.areStacksEqual(aInput, mInputCache)
                         && GT_Utility.areStacksEqual(tOutput, mOutputCache)) {
                     return mCachedRecipe;
                 }
                 // We can chisel this
                 GTPP_Recipe aRecipe = new GTPP_Recipe(
                         false,
-                        new ItemStack[] {ItemUtils.getSimpleStack(aInput, 1)},
-                        new ItemStack[] {ItemUtils.getSimpleStack(tOutput, 1)},
+                        new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
+                        new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
                         null,
-                        new int[] {10000},
+                        new int[] { 10000 },
                         new FluidStack[] {},
                         new FluidStack[] {},
                         20,
@@ -256,14 +248,9 @@ public class GregtechMetaTileEntity_IndustrialChisel
             int aEUPercent = getEuDiscountForParallelism();
             int aSpeedBonusPercent = 200;
 
-            GT_ParallelHelper helper = new GT_ParallelHelper()
-                    .setRecipe(tRecipe)
-                    .setItemInputs(aItemInputs)
-                    .setFluidInputs(aFluidInputs)
-                    .setAvailableEUt(tEnergy)
-                    .setMaxParallel(aMaxParallelRecipes)
-                    .enableConsumption()
-                    .enableOutputCalculation();
+            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                    .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
+                    .enableConsumption().enableOutputCalculation();
             if (!mVoidExcess) {
                 helper.enableVoidProtection(this);
             }
@@ -281,14 +268,10 @@ public class GregtechMetaTileEntity_IndustrialChisel
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                    .setRecipeEUt(tRecipe.mEUt)
-                    .setEUt(tEnergy)
-                    .setDuration(tRecipe.mDuration)
-                    .setEUtDiscount(aEUPercent / 100.0f)
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+                    .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                     .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                    .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel()))
-                    .calculate();
+                    .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).calculate();
             lEUt = -calculator.getConsumption();
             mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
 

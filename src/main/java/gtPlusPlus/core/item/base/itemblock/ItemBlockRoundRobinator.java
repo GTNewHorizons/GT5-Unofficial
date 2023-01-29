@@ -1,15 +1,18 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class ItemBlockRoundRobinator extends ItemBlockWithMetadata {
+
     private final Block mBlock;
 
     public ItemBlockRoundRobinator(final Block aBlock) {
@@ -17,7 +20,7 @@ public class ItemBlockRoundRobinator extends ItemBlockWithMetadata {
         this.mBlock = aBlock;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add("Attempts to output items evenly on all four horizontal planes");

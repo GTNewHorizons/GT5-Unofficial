@@ -1,12 +1,14 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import java.util.Locale;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.xmod.gregtech.api.interfaces.IBaseCustomMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import java.util.Locale;
-import net.minecraft.item.ItemStack;
 
 public abstract class CustomMetaTileBase extends MetaTileEntity {
 
@@ -39,8 +41,7 @@ public abstract class CustomMetaTileBase extends MetaTileEntity {
     @Override
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         super.setBaseMetaTileEntity(aBaseMetaTileEntity);
-        if (mBaseCustomMetaTileEntity != null
-                && aBaseMetaTileEntity == null
+        if (mBaseCustomMetaTileEntity != null && aBaseMetaTileEntity == null
                 && mBaseCustomMetaTileEntity.getMetaTileEntity() != null) {
             mBaseCustomMetaTileEntity.getMetaTileEntity().inValidate();
             mBaseCustomMetaTileEntity.setMetaTileEntity(null);
@@ -56,10 +57,7 @@ public abstract class CustomMetaTileBase extends MetaTileEntity {
     }
 
     public ItemStack getStackForm(long aAmount) {
-        return new ItemStack(
-                Meta_GT_Proxy.sBlockMachines,
-                (int) aAmount,
-                this.getBaseMetaTileEntity().getMetaTileID());
+        return new ItemStack(Meta_GT_Proxy.sBlockMachines, (int) aAmount, this.getBaseMetaTileEntity().getMetaTileID());
     }
 
     public String getLocalName() {
@@ -69,25 +67,17 @@ public abstract class CustomMetaTileBase extends MetaTileEntity {
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
-     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantlee
-     * 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
-     * 2 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
-     * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
-     * 4 = BaseMetaPipeEntity, Wrench lvl 0 to dismantle
-     * 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle
-     * 6 = BaseMetaPipeEntity, Wrench lvl 2 to dismantle
-     * 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle
-     * 8 = BaseMetaPipeEntity, Cutter lvl 0 to dismantle
-     * 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle
-     * 10 = BaseMetaPipeEntity, Cutter lvl 2 to dismantle
-     * 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle
+     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantlee 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle 2 =
+     * BaseMetaTileEntity, Wrench lvl 2 to dismantle 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle 4 =
+     * BaseMetaPipeEntity, Wrench lvl 0 to dismantle 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle 6 =
+     * BaseMetaPipeEntity, Wrench lvl 2 to dismantle 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle 8 =
+     * BaseMetaPipeEntity, Cutter lvl 0 to dismantle 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle 10 =
+     * BaseMetaPipeEntity, Cutter lvl 2 to dismantle 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle
      *
      * == Reserved for Alk now
      *
-     * 12 = BaseMetaPipeEntity, Wrench lvl 0 to dismantle
-     * 13 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle
-     * 14 = BaseMetaPipeEntity, Wrench lvl 2 to dismantle
-     * 15 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle
+     * 12 = BaseMetaPipeEntity, Wrench lvl 0 to dismantle 13 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle 14 =
+     * BaseMetaPipeEntity, Wrench lvl 2 to dismantle 15 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle
      */
     @Override
     public byte getTileEntityBaseType() {

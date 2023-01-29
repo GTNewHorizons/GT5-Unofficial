@@ -1,14 +1,16 @@
 package gtPlusPlus.core.item.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gtPlusPlus.core.lib.CORE;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
+import gtPlusPlus.core.lib.CORE;
 
 public class ItemCreativeTab extends Item {
 
@@ -42,7 +44,7 @@ public class ItemCreativeTab extends Item {
         return this.icons[meta];
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < 10; i++) {

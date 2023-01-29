@@ -1,7 +1,8 @@
 package gtPlusPlus.core.util.reflect;
 
-import cpw.mods.fml.common.SidedProxy;
 import java.lang.reflect.Field;
+
+import cpw.mods.fml.common.SidedProxy;
 
 public class ProxyFinder {
 

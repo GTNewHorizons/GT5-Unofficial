@@ -1,5 +1,12 @@
 package gtPlusPlus.core.container;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
@@ -8,12 +15,6 @@ import gtPlusPlus.core.slots.SlotModularBauble;
 import gtPlusPlus.core.slots.SlotModularBaubleUpgrades;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class Container_ModularityTable extends Container {
 
@@ -61,8 +62,12 @@ public class Container_ModularityTable extends Container {
             for (var7 = 0; var7 < 3; ++var7) {
                 // Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 *
                 // 18));
-                this.addSlotToContainer(new SlotModularBaubleUpgrades(
-                        this.inventoryGrid, nextFreeSlot, 8 + 18 + (var7 * 18), 17 + (var6 * 18)));
+                this.addSlotToContainer(
+                        new SlotModularBaubleUpgrades(
+                                this.inventoryGrid,
+                                nextFreeSlot,
+                                8 + 18 + (var7 * 18),
+                                17 + (var6 * 18)));
                 this.slotGrid[o] = nextFreeSlot;
                 nextFreeSlot++;
                 o++;
@@ -88,10 +93,10 @@ public class Container_ModularityTable extends Container {
     /**
      * Callback for when the crafting matrix is changed.
      */
-    /* public void onCraftMatrixChanged(IInventory p_75130_1_)
-    {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
-    }*/
+    /*
+     * public void onCraftMatrixChanged(IInventory p_75130_1_) { this.craftResult.setInventorySlotContents(0,
+     * CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj)); }
+     */
 
     /**
      * Called when the container is closed.
@@ -100,12 +105,10 @@ public class Container_ModularityTable extends Container {
     public void onContainerClosed(EntityPlayer p_75134_1_) {
         super.onContainerClosed(p_75134_1_);
         if (!this.worldObj.isRemote) {
-            /*    for (int i = 0; i < 9; ++i){
-                ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i);
-                if (itemstack != null){
-                    p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
-                }
-            }*/
+            /*
+             * for (int i = 0; i < 9; ++i){ ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i); if
+             * (itemstack != null){ p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false); } }
+             */
         }
     }
 
@@ -117,8 +120,8 @@ public class Container_ModularityTable extends Container {
     }
 
     @Override
-    public ItemStack slotClick(
-            final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
+    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
+            final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
@@ -160,82 +163,31 @@ public class Container_ModularityTable extends Container {
 
         return null;
 
-        /*ItemStack var3 = null;
-        final Slot var4 = (Slot)this.inventorySlots.get(par2);
-
-        if ((var4 != null) && var4.getHasStack())
-        {
-        	final ItemStack var5 = var4.getStack();
-        	var3 = var5.copy();
-
-        	if (par2 == 0)
-        	{
-        		if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, true))
-        		{
-        			return null;
-        		}
-
-        		var4.onSlotChange(var5, var3);
-        	}
-        	else if ((par2 >= InOutputSlotNumber) && (par2 < InventoryOutSlotNumber))
-        	{
-        		if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false))
-        		{
-        			return null;
-        		}
-        	}
-        	else if ((par2 >= InventoryOutSlotNumber) && (par2 < FullSlotNumber))
-        	{
-        		if (!this.mergeItemStack(var5, InOutputSlotNumber, InventoryOutSlotNumber, false))
-        		{
-        			return null;
-        		}
-        	}
-        	else if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, false))
-        	{
-        		return null;
-        	}
-
-        	if (var5.stackSize == 0)
-        	{
-        		var4.putStack((ItemStack)null);
-        	}
-        	else
-        	{
-        		var4.onSlotChanged();
-        	}
-
-        	if (var5.stackSize == var3.stackSize)
-        	{
-        		return null;
-        	}
-
-        	var4.onPickupFromSlot(par1EntityPlayer, var5);
-        }
-
-        return var3;*/
+        /*
+         * ItemStack var3 = null; final Slot var4 = (Slot)this.inventorySlots.get(par2); if ((var4 != null) &&
+         * var4.getHasStack()) { final ItemStack var5 = var4.getStack(); var3 = var5.copy(); if (par2 == 0) { if
+         * (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, true)) { return null; }
+         * var4.onSlotChange(var5, var3); } else if ((par2 >= InOutputSlotNumber) && (par2 < InventoryOutSlotNumber)) {
+         * if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false)) { return null; } } else if
+         * ((par2 >= InventoryOutSlotNumber) && (par2 < FullSlotNumber)) { if (!this.mergeItemStack(var5,
+         * InOutputSlotNumber, InventoryOutSlotNumber, false)) { return null; } } else if (!this.mergeItemStack(var5,
+         * InOutputSlotNumber, FullSlotNumber, false)) { return null; } if (var5.stackSize == 0) {
+         * var4.putStack((ItemStack)null); } else { var4.onSlotChanged(); } if (var5.stackSize == var3.stackSize) {
+         * return null; } var4.onPickupFromSlot(par1EntityPlayer, var5); } return var3;
+         */
     }
 
     // Can merge Slot
-    /*public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){
-        return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
-    }*/
+    /*
+     * public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){ return p_94530_2_.inventory !=
+     * this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_); }
+     */
 
-    /*public ItemStack getOutputContent(){
-    	ItemStack output = this.craftResult.getStackInSlot(0);
-    	if (output != null){
-    		return output;
-    	}
-    	return null;
-    }
-
-    public ItemStack[] getInputComponents(){
-    	ItemStack inputs[] = new ItemStack[9];
-    	for (int r=0;r<this.craftMatrix.getSizeInventory();r++){
-    		ItemStack temp = this.craftMatrix.getStackInSlot(r);
-    		inputs[r] = temp;
-    	}
-    	return inputs;
-    }*/
+    /*
+     * public ItemStack getOutputContent(){ ItemStack output = this.craftResult.getStackInSlot(0); if (output != null){
+     * return output; } return null; } public ItemStack[] getInputComponents(){ ItemStack inputs[] = new ItemStack[9];
+     * for (int r=0;r<this.craftMatrix.getSizeInventory();r++){ ItemStack temp = this.craftMatrix.getStackInSlot(r);
+     * inputs[r] = temp; } return inputs; }
+     */
 
 }

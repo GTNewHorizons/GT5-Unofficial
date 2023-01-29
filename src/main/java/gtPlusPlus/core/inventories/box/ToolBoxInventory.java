@@ -1,11 +1,13 @@
 package gtPlusPlus.core.inventories.box;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.item.tool.misc.box.CustomBoxInventory;
 import gtPlusPlus.core.item.tool.misc.box.UniversalToolBox;
 import gtPlusPlus.core.slots.SlotToolBox;
-import net.minecraft.item.ItemStack;
 
 public class ToolBoxInventory extends CustomBoxInventory {
+
     public ToolBoxInventory(ItemStack stack) {
         super(stack, "Tool Box", UniversalToolBox.SLOTS);
     }

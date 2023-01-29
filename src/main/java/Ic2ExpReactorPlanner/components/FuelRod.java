@@ -1,16 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package Ic2ExpReactorPlanner.components;
 
-import gregtech.api.objects.GT_ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.objects.GT_ItemStack;
+
 /**
  * Represents some form of fuel rod (may be single, dual, or quad).
+ * 
  * @author Brian McCloud
  */
 public class FuelRod extends ReactorItem {
@@ -31,17 +32,9 @@ public class FuelRod extends ReactorItem {
         GTNHbehavior = value;
     }
 
-    public FuelRod(
-            final int id,
-            final String baseName,
-            GT_ItemStack aItem,
-            final double maxDamage,
-            final double maxHeat,
-            final String sourceMod,
-            final int energyMult,
-            final double heatMult,
-            final int rodCount,
-            final boolean moxStyle) {
+    public FuelRod(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage,
+            final double maxHeat, final String sourceMod, final int energyMult, final double heatMult,
+            final int rodCount, final boolean moxStyle) {
         super(id, baseName, aItem, maxDamage, maxHeat, sourceMod);
         this.energyMult = energyMult;
         this.heatMult = heatMult;

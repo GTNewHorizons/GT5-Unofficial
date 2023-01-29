@@ -20,10 +20,16 @@ public class COMPAT_MorePlanets {
         ItemUtils.getItemForOreDict("MorePlanet:diona_item", "ingotFronisium", "Fronisium Ingot", 1);
         ItemUtils.getItemForOreDict("MorePlanet:sirius-b_item", "ingotSulfur", "Sulfur Ingot", 3);
         ItemUtils.getItemForOreDict(
-                "MorePlanet:koentus_item", "ingotKoentusMeteoricIron", "Koentus Meteoric Iron Ingot", 4);
+                "MorePlanet:koentus_item",
+                "ingotKoentusMeteoricIron",
+                "Koentus Meteoric Iron Ingot",
+                4);
         ItemUtils.getItemForOreDict("MorePlanet:mercury_item", "ingotMetallic", "Metallic Ingot", 2);
         ItemUtils.getItemForOreDict(
-                "MorePlanet:polongnius_item", "ingotPolongiusMeteoricIron", "Polongius Meteoric Iron Ingot", 4);
+                "MorePlanet:polongnius_item",
+                "ingotPolongiusMeteoricIron",
+                "Polongius Meteoric Iron Ingot",
+                4);
         ItemUtils.getItemForOreDict("MorePlanet:mercury_item", "ingotMeteoricSteel", "Meteoric Steel Ingot", 3);
         ItemUtils.getItemForOreDict("MorePlanet:sirius-b_item", "dustSulfur", "Sulfur Dust", 2);
 

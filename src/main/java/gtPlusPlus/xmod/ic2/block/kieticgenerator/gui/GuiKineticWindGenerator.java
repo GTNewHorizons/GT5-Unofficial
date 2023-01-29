@@ -1,17 +1,20 @@
 package gtPlusPlus.xmod.ic2.block.kieticgenerator.gui;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
 import ic2.core.block.kineticgenerator.container.ContainerWindKineticGenerator;
 import ic2.core.util.GuiTooltipHelper;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiKineticWindGenerator extends GuiContainer {
+
     public ContainerWindKineticGenerator container;
     public String name;
 
@@ -24,22 +27,31 @@ public class GuiKineticWindGenerator extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(final int par1, final int par2) {
-        this.fontRendererObj.drawString(
-                this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6, 4210752);
+        this.fontRendererObj
+                .drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6, 4210752);
         if (this.container.base.checkrotor()) {
             if (!this.container.base.rotorspace()) {
                 this.fontRendererObj.drawString(
-                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotorspace"), 20, 52, 2157374);
+                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotorspace"),
+                        20,
+                        52,
+                        2157374);
             } else if ((this.container.base.checkrotor()) && (!this.container.base.guiisminWindStrength())) {
                 this.fontRendererObj.drawString(
-                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.windweak1"), 27, 52, 2157374);
+                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.windweak1"),
+                        27,
+                        52,
+                        2157374);
                 this.fontRendererObj.drawString(
-                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.windweak2"), 24, 69, 2157374);
+                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.windweak2"),
+                        24,
+                        69,
+                        2157374);
             } else {
                 this.fontRendererObj.drawString(
                         StatCollector.translateToLocalFormatted(
                                 "ic2.WindKineticGenerator.gui.output",
-                                new Object[] {Integer.valueOf(this.container.base.getKuOutput())}),
+                                new Object[] { Integer.valueOf(this.container.base.getKuOutput()) }),
                         55,
                         52,
                         2157374);
@@ -65,7 +77,10 @@ public class GuiKineticWindGenerator extends GuiContainer {
             }
         } else {
             this.fontRendererObj.drawString(
-                    StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotormiss"), 27, 52, 2157374);
+                    StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotormiss"),
+                    27,
+                    52,
+                    2157374);
         }
     }
 
@@ -82,6 +97,7 @@ public class GuiKineticWindGenerator extends GuiContainer {
         }
     }
 
-    private static final ResourceLocation background =
-            new ResourceLocation(IC2.textureDomain, "textures/gui/GUIWindKineticGenerator.png");
+    private static final ResourceLocation background = new ResourceLocation(
+            IC2.textureDomain,
+            "textures/gui/GUIWindKineticGenerator.png");
 }

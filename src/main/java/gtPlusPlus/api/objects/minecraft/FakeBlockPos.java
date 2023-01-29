@@ -1,12 +1,14 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import java.util.HashSet;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class FakeBlockPos extends BlockPos {
 
@@ -43,7 +45,13 @@ public class FakeBlockPos extends BlockPos {
     }
 
     public String getUniqueIdentifier() {
-        String S = "" + this.xPos + "@" + this.yPos + "@" + this.zPos + this.aBlockAtPos.getLocalizedName() + "@"
+        String S = "" + this.xPos
+                + "@"
+                + this.yPos
+                + "@"
+                + this.zPos
+                + this.aBlockAtPos.getLocalizedName()
+                + "@"
                 + this.aBlockMetaAtPos;
         return S;
     }
@@ -222,18 +230,17 @@ public class FakeBlockPos extends BlockPos {
     }
 
     /**
-     * Called when a plant grows on this block, only implemented for saplings using the WorldGen*Trees classes right now.
-     * Modder may implement this for custom plants.
-     * This does not use ForgeDirection, because large/huge trees can be located in non-representable direction,
-     * so the source location is specified.
-     * Currently this just changes the block to dirt if it was grass.
+     * Called when a plant grows on this block, only implemented for saplings using the WorldGen*Trees classes right
+     * now. Modder may implement this for custom plants. This does not use ForgeDirection, because large/huge trees can
+     * be located in non-representable direction, so the source location is specified. Currently this just changes the
+     * block to dirt if it was grass.
      *
      * Note: This happens DURING the generation, the generation may not be complete when this is called.
      *
-     * @param world Current world
-     * @param x Soil X
-     * @param y Soil Y
-     * @param z Soil Z
+     * @param world   Current world
+     * @param x       Soil X
+     * @param y       Soil Y
+     * @param z       Soil Z
      * @param sourceX Plant growth location X
      * @param sourceY Plant growth location Y
      * @param sourceZ Plant growth location Z

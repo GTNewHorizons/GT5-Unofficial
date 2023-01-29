@@ -1,10 +1,11 @@
 package gtPlusPlus.api.thermal.sample;
 
-import gtPlusPlus.api.thermal.energy.IThermalHandler;
-import gtPlusPlus.api.thermal.energy.ThermalStorage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gtPlusPlus.api.thermal.energy.IThermalHandler;
+import gtPlusPlus.api.thermal.energy.ThermalStorage;
 
 public class TileThermalHandler extends TileEntity implements IThermalHandler {
 

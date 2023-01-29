@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import java.lang.reflect.Field;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
@@ -13,7 +15,6 @@ import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_Choocher;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricButcherKnife;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricLighter;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricSnips;
-import java.lang.reflect.Field;
 
 public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 
@@ -41,14 +42,11 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
                         "Skookum Choocher",
                         "Can Really Chooch. Does a Skookum job at Hammering and Wrenching stuff.",
                         new TOOL_Gregtech_Choocher(),
-                        new Object[] {
-                            GregtechToolDictNames.craftingToolSkookumChoocher,
-                            ToolDictNames.craftingToolHardHammer,
-                            ToolDictNames.craftingToolWrench,
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)
-                        }),
+                        new Object[] { GregtechToolDictNames.craftingToolSkookumChoocher,
+                                ToolDictNames.craftingToolHardHammer, ToolDictNames.craftingToolWrench,
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) }),
                 GregTech_API.sWrenchList);
 
         // Electric File
@@ -57,13 +55,10 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
                 "Angle Grinder",
                 "Hand-held electric filing device",
                 new TOOL_Gregtech_AngleGrinder(),
-                new Object[] {
-                    GregtechToolDictNames.craftingToolAngleGrinder,
-                    ToolDictNames.craftingToolFile,
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)
-                });
+                new Object[] { GregtechToolDictNames.craftingToolAngleGrinder, ToolDictNames.craftingToolFile,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
 
         GT_HashSet<GT_ItemStack> aWireCutterList = new GT_HashSet<GT_ItemStack>();
         // Does not exist prior to 5.09.32, use an empty field if we can't find the existing one.
@@ -89,23 +84,23 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
                         "Automatic Snips",
                         "Hand-held electric wire cutter",
                         new TOOL_Gregtech_ElectricSnips(),
-                        new Object[] {
-                            GregtechToolDictNames.craftingToolElectricSnips,
-                            ToolDictNames.craftingToolWireCutter,
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L)
-                        }),
+                        new Object[] { GregtechToolDictNames.craftingToolElectricSnips,
+                                ToolDictNames.craftingToolWireCutter,
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L) }),
                 aWireCutterList);
 
         // Electric Lighter
         this.addTool(
-                ELECTRIC_LIGHTER, "Pyromatic 9k", "Electric Fire!", new TOOL_Gregtech_ElectricLighter(), new Object[] {
-                    GregtechToolDictNames.craftingToolElectricLighter,
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)
-                });
+                ELECTRIC_LIGHTER,
+                "Pyromatic 9k",
+                "Electric Fire!",
+                new TOOL_Gregtech_ElectricLighter(),
+                new Object[] { GregtechToolDictNames.craftingToolElectricLighter,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
 
         // Electric Butcher Knife
         this.addTool(
@@ -113,12 +108,9 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
                 "Meat-o-matic",
                 "Electric butcher knife",
                 new TOOL_Gregtech_ElectricButcherKnife(),
-                new Object[] {
-                    GregtechToolDictNames.craftingToolElectricButcherKnife,
-                    ToolDictNames.craftingToolKnife,
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)
-                });
+                new Object[] { GregtechToolDictNames.craftingToolElectricButcherKnife, ToolDictNames.craftingToolKnife,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
     }
 }

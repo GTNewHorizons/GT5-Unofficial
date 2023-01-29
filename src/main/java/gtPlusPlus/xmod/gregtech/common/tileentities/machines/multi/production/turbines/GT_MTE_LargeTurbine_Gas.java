@@ -2,6 +2,12 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import static gtPlusPlus.core.lib.CORE.RANDOM;
 
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -9,10 +15,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbineBase {
@@ -67,9 +69,8 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             int tEU = 0;
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(
-                    aFluids.get(0),
-                    0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
+            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
+                                                                          // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             // log("Fuel Value of "+aFluids.get(0).getLocalizedName()+" is "+fuelValue+"eu");
             if (aOptFlow < fuelValue) {
@@ -85,8 +86,9 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             actualOptimalFlow = GT_Utility.safeInt((long) (aOptFlow * (double) flowMultipliers[1] / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow
-                    * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for
+            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
+                                                                                        // optimal flow. Variable
+                                                                                        // required outside of loop for
             // multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;
@@ -94,9 +96,8 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             storedFluid = 0;
             for (FluidStack aFluid : aFluids) {
                 if (aFluid.isFluidEqual(firstFuelType)) {
-                    flow = Math.min(
-                            aFluid.amount,
-                            remainingFlow); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
+                    flow = Math.min(aFluid.amount, remainingFlow); // try to use up to 125% of optimal flow w/o
+                                                                   // exceeding remainingFlow
                     depleteInput(new FluidStack(aFluid, flow)); // deplete that amount
                     this.storedFluid += aFluid.amount;
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches

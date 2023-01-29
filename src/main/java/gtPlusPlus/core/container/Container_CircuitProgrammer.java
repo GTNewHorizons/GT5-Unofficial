@@ -1,17 +1,18 @@
 package gtPlusPlus.core.container;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
-import gtPlusPlus.core.slots.SlotIntegratedCircuit;
-import gtPlusPlus.core.slots.SlotNoInput;
-import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
+import gtPlusPlus.core.slots.SlotIntegratedCircuit;
+import gtPlusPlus.core.slots.SlotNoInput;
+import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 
 public class Container_CircuitProgrammer extends Container {
 
@@ -46,12 +47,10 @@ public class Container_CircuitProgrammer extends Container {
         int o = 0;
 
         // Storage Side
-        /*for (var6 = 0; var6 < 3; var6++) {
-        	for (var7 = 0; var7 < 5; var7++) {
-        		this.addSlotToContainer(new SlotIntegratedCircuit(o, this.inventoryChest, o, 44 + (var7 * 18), 15 + (var6 * 18)));
-        		o++;
-        	}
-        }*/
+        /*
+         * for (var6 = 0; var6 < 3; var6++) { for (var7 = 0; var7 < 5; var7++) { this.addSlotToContainer(new
+         * SlotIntegratedCircuit(o, this.inventoryChest, o, 44 + (var7 * 18), 15 + (var6 * 18))); o++; } }
+         */
 
         int xStart = 8;
         int yStart = 5;
@@ -106,13 +105,12 @@ public class Container_CircuitProgrammer extends Container {
             }
 
             Logger.INFO("4");
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
     }
 
     @Override
-    public ItemStack slotClick(
-            final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
+    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
+            final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
@@ -146,18 +144,12 @@ public class Container_CircuitProgrammer extends Container {
             var3 = var5.copy();
 
             /*
-             * if (par2 == 0) { if (!this.mergeItemStack(var5,
-             * InOutputSlotNumber, FullSlotNumber, true)) { return null; }
-             *
-             * var4.onSlotChange(var5, var3); } else if (par2 >=
-             * InOutputSlotNumber && par2 < InventoryOutSlotNumber) { if
-             * (!this.mergeItemStack(var5, InventoryOutSlotNumber,
-             * FullSlotNumber, false)) { return null; } } else if (par2 >=
-             * InventoryOutSlotNumber && par2 < FullSlotNumber) { if
-             * (!this.mergeItemStack(var5, InOutputSlotNumber,
-             * InventoryOutSlotNumber, false)) { return null; } } else if
-             * (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber,
-             * false)) { return null; }
+             * if (par2 == 0) { if (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, true)) { return null;
+             * } var4.onSlotChange(var5, var3); } else if (par2 >= InOutputSlotNumber && par2 < InventoryOutSlotNumber)
+             * { if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false)) { return null; } } else
+             * if (par2 >= InventoryOutSlotNumber && par2 < FullSlotNumber) { if (!this.mergeItemStack(var5,
+             * InOutputSlotNumber, InventoryOutSlotNumber, false)) { return null; } } else if
+             * (!this.mergeItemStack(var5, InOutputSlotNumber, FullSlotNumber, false)) { return null; }
              */
 
             if (var5.stackSize == 0) {

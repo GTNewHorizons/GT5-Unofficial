@@ -1,18 +1,21 @@
 package gtPlusPlus.core.item.base.dusts;
 
+import java.util.*;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
+import org.apache.commons.lang3.StringUtils;
+
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import java.util.*;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import org.apache.commons.lang3.StringUtils;
 
 public class BaseItemDustEx extends BaseItemComponent {
 
@@ -20,8 +23,8 @@ public class BaseItemDustEx extends BaseItemComponent {
 
     protected IIcon[] baseAr = new IIcon[3];
     protected IIcon[] overlayAr = new IIcon[3];
-    public static final ComponentTypes[] componentTypeAr =
-            new ComponentTypes[] {ComponentTypes.DUST, ComponentTypes.DUSTSMALL, ComponentTypes.DUSTTINY};
+    public static final ComponentTypes[] componentTypeAr = new ComponentTypes[] { ComponentTypes.DUST,
+            ComponentTypes.DUSTSMALL, ComponentTypes.DUSTTINY };
 
     public BaseItemDustEx(final Material material) {
         super(material, componentTypeAr[0]);

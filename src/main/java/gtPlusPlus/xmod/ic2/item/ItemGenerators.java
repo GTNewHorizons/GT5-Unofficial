@@ -1,13 +1,16 @@
 package gtPlusPlus.xmod.ic2.item;
 
-import ic2.core.item.block.ItemBlockIC2;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import ic2.core.item.block.ItemBlockIC2;
+
 public class ItemGenerators extends ItemBlockIC2 {
+
     public ItemGenerators(final Block block) {
         super(block);
 
@@ -37,12 +40,14 @@ public class ItemGenerators extends ItemBlockIC2 {
         final int meta = itemStack.getItemDamage();
         switch (meta) {
             case 0:
-                info.add(StatCollector.translateToLocal("ic2.item.tooltip.PowerOutput") + " 1-32 EU/t "
-                        + StatCollector.translateToLocal("ic2.item.tooltip.max"));
+                info.add(
+                        StatCollector.translateToLocal("ic2.item.tooltip.PowerOutput") + " 1-32 EU/t "
+                                + StatCollector.translateToLocal("ic2.item.tooltip.max"));
                 break;
             case 1:
-                info.add(StatCollector.translateToLocal("ic2.item.tooltip.PowerOutput") + " 1-512 EU/t "
-                        + StatCollector.translateToLocal("ic2.item.tooltip.max"));
+                info.add(
+                        StatCollector.translateToLocal("ic2.item.tooltip.PowerOutput") + " 1-512 EU/t "
+                                + StatCollector.translateToLocal("ic2.item.tooltip.max"));
         }
     }
 }

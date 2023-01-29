@@ -8,10 +8,19 @@ import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -28,16 +37,9 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import java.util.HashSet;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialRockBreaker
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialRockBreaker>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialRockBreaker extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialRockBreaker> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> STRUCTURE_DEFINITION = null;
@@ -63,24 +65,14 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Rock Breaker")
-                .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
-                .addInfo("Circuit goes in the GUI slot")
-                .addInfo("1 = cobble, 2 = stone, 3 = obsidian")
-                .addInfo("Supply Water/Lava")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 4, 3, true)
-                .addController("Bottom Center")
-                .addCasingInfo("Thermal Processing Casing", 9)
-                .addCasingInfo("Thermal Containment Casing", 16)
-                .addInputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Rock Breaker")
+                .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8").addInfo("Circuit goes in the GUI slot")
+                .addInfo("1 = cobble, 2 = stone, 3 = obsidian").addInfo("Supply Water/Lava")
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 4, 3, true)
+                .addController("Bottom Center").addCasingInfo("Thermal Processing Casing", 9)
+                .addCasingInfo("Thermal Containment Casing", 16).addInputBus("Any Casing", 1)
+                .addInputHatch("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -89,22 +81,18 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialRockBreaker>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"HHH", "H-H", "HHH"},
-                        {"HHH", "H-H", "HHH"},
-                        {"C~C", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
+                                            { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialRockBreaker.class)
                                     .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(16))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.GTPP_INDEX(16)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0))))
-                    .addElement('H', ofBlock(ModBlocks.blockCasings2Misc, 11))
-                    .build();
+                    .addElement('H', ofBlock(ModBlocks.blockCasings2Misc, 11)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -171,7 +159,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
         if (sRecipe_Cobblestone == null || sRecipe_SmoothStone == null || sRecipe_Redstone == null) {
             generateRecipes();
         }
-        FluidStack[] aInputFluids = new FluidStack[] {FluidUtils.getWater(1000), FluidUtils.getLava(1000)};
+        FluidStack[] aInputFluids = new FluidStack[] { FluidUtils.getWater(1000), FluidUtils.getLava(1000) };
         GT_Recipe aTemp = sRecipe_Cobblestone.copy();
         aTemp.mFluidInputs = aInputFluids;
         sFakeRecipeMap.add(aTemp);
@@ -203,10 +191,10 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
     private static final void generateRecipes() {
         sRecipe_Cobblestone = new GTPP_Recipe(
                 false,
-                new ItemStack[] {CI.getNumberedCircuit(1)},
-                new ItemStack[] {ItemUtils.getSimpleStack(Blocks.cobblestone)},
+                new ItemStack[] { CI.getNumberedCircuit(1) },
+                new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cobblestone) },
                 null,
-                new int[] {10000},
+                new int[] { 10000 },
                 null,
                 null,
                 16,
@@ -214,10 +202,10 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
                 0);
         sRecipe_SmoothStone = new GTPP_Recipe(
                 false,
-                new ItemStack[] {CI.getNumberedCircuit(2)},
-                new ItemStack[] {ItemUtils.getSimpleStack(Blocks.stone)},
+                new ItemStack[] { CI.getNumberedCircuit(2) },
+                new ItemStack[] { ItemUtils.getSimpleStack(Blocks.stone) },
                 null,
-                new int[] {10000},
+                new int[] { 10000 },
                 null,
                 null,
                 16,
@@ -225,12 +213,11 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
                 0);
         sRecipe_Redstone = new GTPP_Recipe(
                 false,
-                new ItemStack[] {
-                    CI.getNumberedCircuit(3), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L)
-                },
-                new ItemStack[] {ItemUtils.getSimpleStack(Blocks.obsidian)},
+                new ItemStack[] { CI.getNumberedCircuit(3),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
+                new ItemStack[] { ItemUtils.getSimpleStack(Blocks.obsidian) },
                 null,
-                new int[] {10000},
+                new int[] { 10000 },
                 null,
                 null,
                 128,
@@ -256,7 +243,8 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
             if (!aItems.isEmpty()) {
                 for (ItemStack aItem : aItems) {
                     if (GT_Utility.areStacksEqual(
-                            aItem, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                            aItem,
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                         aHasRedstone = true;
                         break;
                     }
@@ -315,14 +303,9 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
             int aEUPercent = getEuDiscountForParallelism();
             int aSpeedBonusPercent = 200;
 
-            GT_ParallelHelper helper = new GT_ParallelHelper()
-                    .setRecipe(tRecipe)
-                    .setItemInputs(aItemInputs)
-                    .setFluidInputs(aFluidInputs)
-                    .setAvailableEUt(tEnergy)
-                    .setMaxParallel(aMaxParallelRecipes)
-                    .enableConsumption()
-                    .enableOutputCalculation();
+            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                    .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
+                    .enableConsumption().enableOutputCalculation();
             if (!mVoidExcess) {
                 helper.enableVoidProtection(this);
             }
@@ -340,14 +323,10 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                    .setRecipeEUt(tRecipe.mEUt)
-                    .setEUt(tEnergy)
-                    .setDuration(tRecipe.mDuration)
-                    .setEUtDiscount(aEUPercent / 100.0f)
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+                    .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                     .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                    .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel()))
-                    .calculate();
+                    .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).calculate();
             lEUt = -calculator.getConsumption();
             mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
 

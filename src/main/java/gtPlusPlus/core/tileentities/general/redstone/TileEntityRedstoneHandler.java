@@ -1,11 +1,5 @@
 package gtPlusPlus.core.tileentities.general.redstone;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.api.interfaces.IToolable;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +7,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.interfaces.IToolable;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public abstract class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 
@@ -27,7 +28,9 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 
     /**
      * Sets the Redstone Handler Type.
-     * @param aTileType - A type of the handler designated by an int. 0 = receiver, 1 = emitter, 2 = both, anything else = nothing.
+     * 
+     * @param aTileType - A type of the handler designated by an int. 0 = receiver, 1 = emitter, 2 = both, anything else
+     *                  = nothing.
      */
     public TileEntityRedstoneHandler(int aTileType) {
         mTileType = aTileType;
@@ -117,7 +120,11 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
             if (mTilePos.world.getBlockLightValue(xCoord, yCoord, zCoord) != getLightBrightness() / 0.0625f) {
                 mTilePos.getBlockAtPos().setLightLevel(getLightBrightness() / 0.0625f);
                 mTilePos.world.setLightValue(
-                        EnumSkyBlock.Block, xCoord, yCoord, zCoord, (int) (getLightBrightness() / 0.0625f));
+                        EnumSkyBlock.Block,
+                        xCoord,
+                        yCoord,
+                        zCoord,
+                        (int) (getLightBrightness() / 0.0625f));
                 mTilePos.world.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
                 Logger.INFO("Updating Light");
             }
@@ -165,7 +172,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 
     /**
      * Used to see if one of the blocks next to you or your block is getting power from a neighboring block. Used by
-     * items like TNT or Doors so they don't have redstone going straight into them.  Args: x, y, z
+     * items like TNT or Doors so they don't have redstone going straight into them. Args: x, y, z
      */
     public boolean isGettingIndirectlyPowered() {
         if (mTilePos == null) {
@@ -182,7 +189,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
     }
 
     /**
-     * Gets the power level from a certain block face.  Args: x, y, z, direction
+     * Gets the power level from a certain block face. Args: x, y, z, direction
      */
     public int getIndirectPowerForSide(int aSide) {
         if (mTilePos == null || aSide < 0 || aSide > 5) {
@@ -202,21 +209,16 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
     }
 
     /**
-     * Determine if this block can make a redstone connection on the side provided,
-     * Useful to control which sides are inputs and outputs for redstone wires.
+     * Determine if this block can make a redstone connection on the side provided, Useful to control which sides are
+     * inputs and outputs for redstone wires.
      *
-     * Side:
-     *  -1: UP
-     *   0: NORTH
-     *   1: EAST
-     *   2: SOUTH
-     *   3: WEST
+     * Side: -1: UP 0: NORTH 1: EAST 2: SOUTH 3: WEST
      *
      * @param world The current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
-     * @param side The side that is trying to make the connection
+     * @param x     X Position
+     * @param y     Y Position
+     * @param z     Z Position
+     * @param side  The side that is trying to make the connection
      * @return True to make the connection
      */
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
@@ -227,12 +229,14 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
     }
 
     /**
-     * Called to determine whether to allow the a block to handle its own indirect power rather than using the default rules.
+     * Called to determine whether to allow the a block to handle its own indirect power rather than using the default
+     * rules.
+     * 
      * @param world The world
-     * @param x The x position of this block instance
-     * @param y The y position of this block instance
-     * @param z The z position of this block instance
-     * @param side The INPUT side of the block to be powered - ie the opposite of this block's output side
+     * @param x     The x position of this block instance
+     * @param y     The y position of this block instance
+     * @param z     The z position of this block instance
+     * @param side  The INPUT side of the block to be powered - ie the opposite of this block's output side
      * @return Whether Block#isProvidingWeakPower should be called when determining indirect power
      */
     public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side) {
@@ -243,15 +247,14 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
     }
 
     /**
-     * If this block should be notified of weak changes.
-     * Weak changes are changes 1 block away through a solid block.
+     * If this block should be notified of weak changes. Weak changes are changes 1 block away through a solid block.
      * Similar to comparators.
      *
      * @param world The current world
-     * @param x X Position
-     * @param y Y position
-     * @param z Z position
-     * @param side The side to check
+     * @param x     X Position
+     * @param y     Y position
+     * @param z     Z position
+     * @param side  The side to check
      * @return true To be notified of changes
      */
     public boolean getWeakChanges(IBlockAccess world, int x, int y, int z) {
@@ -263,6 +266,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 
     /**
      * Override this to change the level of redstone output.
+     * 
      * @return
      */
     public int getRedstoneLevel() {
@@ -290,6 +294,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 
     /**
      * Returns the amount of week power this block is providing to a side.
+     * 
      * @param world
      * @param x
      * @param y
@@ -303,8 +308,10 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
         }
         return getOutputPowerLevel();
     }
+
     /**
      * Returns the amount of strong power this block is providing to a side.
+     * 
      * @param world
      * @param x
      * @param y

@@ -1,10 +1,11 @@
 package gtPlusPlus.api.objects.minecraft;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.data.AutoMap;
-import java.util.Collection;
-import java.util.Iterator;
 
 public class NoConflictGTRecipeMap implements Collection<GT_Recipe> {
 

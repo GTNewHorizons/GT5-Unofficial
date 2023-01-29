@@ -1,14 +1,5 @@
 package gtPlusPlus.core.block.general;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockContainer;
@@ -20,6 +11,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 
 public class BlockSuperLight extends BlockContainer {
 
@@ -52,8 +53,7 @@ public class BlockSuperLight extends BlockContainer {
     }
 
     /**
-     * Returns a new instance of a block's tile entity class. Called on placing the
-     * block.
+     * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
     public TileEntity createNewTileEntity(World aWorld, int p_149915_2_) {
         return new TileEntitySuperLight();
@@ -117,8 +117,8 @@ public class BlockSuperLight extends BlockContainer {
 
             try {
                 if (mLastUpdateTick == 0 || (System.currentTimeMillis() - mLastUpdateTick) >= 30000) {
-                    boolean powered =
-                            (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
+                    boolean powered = (this.worldObj
+                            .isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
                     boolean aLastState = mPowered;
                     // Logger.INFO("Powered: "+powered);
                     mPowered = powered;
@@ -126,8 +126,7 @@ public class BlockSuperLight extends BlockContainer {
                         updateLighting(powered);
                     }
                 }
-            } catch (Throwable t) {
-            }
+            } catch (Throwable t) {}
         }
 
         @Override
@@ -153,8 +152,11 @@ public class BlockSuperLight extends BlockContainer {
             AutoMap<BlockPos> aBlocksToUpdate = new AutoMap<BlockPos>();
             Logger.INFO("Trying to relight area.");
 
-            BlockPos aStartIterationPoint =
-                    new BlockPos(this.xCoord - 24, this.yCoord - 4, this.zCoord - 24, this.worldObj);
+            BlockPos aStartIterationPoint = new BlockPos(
+                    this.xCoord - 24,
+                    this.yCoord - 4,
+                    this.zCoord - 24,
+                    this.worldObj);
             for (int x = 0; x < 50; x++) {
                 for (int y = 0; y < 10; y++) {
                     for (int z = 0; z < 50; z++) {
@@ -177,7 +179,12 @@ public class BlockSuperLight extends BlockContainer {
                                     if (aBlockGet instanceof BlockAir) {
                                         Logger.INFO("Lit air.");
                                         this.worldObj.setBlock(
-                                                xOff, yOff, zOff, ModBlocks.MatterFabricatorEffectBlock, 0, 3);
+                                                xOff,
+                                                yOff,
+                                                zOff,
+                                                ModBlocks.MatterFabricatorEffectBlock,
+                                                0,
+                                                3);
                                     }
                                     // aBlockGet.setLightLevel(15);
                                     aLitCounter++;

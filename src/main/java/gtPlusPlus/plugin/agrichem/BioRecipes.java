@@ -2,6 +2,21 @@ package gtPlusPlus.plugin.agrichem;
 
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -27,19 +42,6 @@ import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
 import ic2.core.Ic2Items;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class BioRecipes {
 
@@ -111,8 +113,8 @@ public class BioRecipes {
 
         // 5.08 Salt Water Solution ;)
         if (!FluidUtils.doesFluidExist("saltwater")) {
-            mSalineWater =
-                    FluidUtils.generateFluidNoPrefix("saltwater", "Salt Water", 200, new short[] {10, 30, 220, 100});
+            mSalineWater = FluidUtils
+                    .generateFluidNoPrefix("saltwater", "Salt Water", 200, new short[] { 10, 30, 220, 100 });
         } else {
             Materials aSaltWater = MaterialUtils.getMaterial("saltwater");
             if (aSaltWater != null) {
@@ -125,7 +127,7 @@ public class BioRecipes {
                 mSalineWater = FluidUtils.getWildcardFluidStack("saltwater", 1).getFluid();
             }
             if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellSaltWater", 1) == null) {
-                new BaseItemComponent("saltwater", "Salt Water", new short[] {10, 30, 220});
+                new BaseItemComponent("saltwater", "Salt Water", new short[] { 10, 30, 220 });
             }
         }
 
@@ -136,8 +138,7 @@ public class BioRecipes {
         mAmmonia = MISC_MATERIALS.AMMONIA.getFluidStack(1).getFluid();
         mEthylene = FluidUtils.getFluidStack("ethylene", 1).getFluid();
         mEthanol = FluidUtils.getFluidStack("bioethanol", 1).getFluid();
-        mDilutedSulfuricAcid =
-                FluidUtils.getFluidStack("dilutedsulfuricacid", 1).getFluid();
+        mDilutedSulfuricAcid = FluidUtils.getFluidStack("dilutedsulfuricacid", 1).getFluid();
         mSulfuricAcid = FluidUtils.getFluidStack("sulfuricacid", 1).getFluid();
         mFormaldehyde = FluidUtils.getFluidStack("fluid.formaldehyde", 1).getFluid();
         mMethane = FluidUtils.getFluidStack("methane", 1).getFluid();
@@ -221,9 +222,8 @@ public class BioRecipes {
 
         // Turn into Cellulose
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getGreenAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10)
-                },
+                new ItemStack[] { getGreenAlgaeRecipeChip(),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 5),
                 5 * 30,
@@ -274,10 +274,8 @@ public class BioRecipes {
 
         // Turn into Cellulose
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getGoldenBrownAlgaeRecipeChip(),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 10)
-                },
+                new ItemStack[] { getGoldenBrownAlgaeRecipeChip(),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 10) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 5),
                 5 * 30,
@@ -292,9 +290,8 @@ public class BioRecipes {
 
         // Turn into Cellulose
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getRedAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 10)
-                },
+                new ItemStack[] { getRedAlgaeRecipeChip(),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 10) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 5),
                 5 * 30,
@@ -314,7 +311,7 @@ public class BioRecipes {
 
         // Craft into Wood Pellets
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12)},
+                new ItemStack[] { getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 24),
                 12 * 4,
@@ -336,17 +333,11 @@ public class BioRecipes {
 
         // Plastic
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(16), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 500),
-                    FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 500),
-                },
+                new ItemStack[] { getBioChip(16), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4), },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 500),
+                        FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 500), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mLiquidPlastic, (1000)),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mLiquidPlastic, (1000)), },
                 10 * 20,
                 240,
                 2);
@@ -355,16 +346,14 @@ public class BioRecipes {
     private static void recipeWoodPellets() {
         // Shapeless Recipe
         RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] {
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1)
-                },
+                new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1) },
                 ItemUtils.getSimpleStack(AgriculturalChem.mWoodBrick, 2));
 
         // Extruder Recipe
@@ -377,7 +366,7 @@ public class BioRecipes {
 
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 8)},
+                new ItemStack[] { getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 8) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(AgriculturalChem.mWoodBrick, 2),
                 20 * 5,
@@ -414,7 +403,7 @@ public class BioRecipes {
 
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {getBioChip(3), ItemUtils.getOrePrefixStack(OrePrefixes.dust, Materials.Wood, 50)},
+                new ItemStack[] { getBioChip(3), ItemUtils.getOrePrefixStack(OrePrefixes.dust, Materials.Wood, 50) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(AgriculturalChem.mWoodBrick, 1),
                 100 * 20,
@@ -425,7 +414,7 @@ public class BioRecipes {
 
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4)},
+                new ItemStack[] { getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4) },
                 GT_Values.NF,
                 ItemUtils.getSimpleStack(Items.paper, 4),
                 2 * 20,
@@ -435,12 +424,9 @@ public class BioRecipes {
     private static void recipeCatalystCarrier() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getBioChip(20),
-                    ItemUtils.getItemStackOfAmountFromOreDict("plateSteel", GTNH ? 8 : 4),
-                    ItemUtils.getItemStackOfAmountFromOreDict("wireFineCopper", GTNH ? 4 : 2),
-                    ItemUtils.getItemStackOfAmountFromOreDict("screwTin", GTNH ? 6 : 3)
-                },
+                new ItemStack[] { getBioChip(20), ItemUtils.getItemStackOfAmountFromOreDict("plateSteel", GTNH ? 8 : 4),
+                        ItemUtils.getItemStackOfAmountFromOreDict("wireFineCopper", GTNH ? 4 : 2),
+                        ItemUtils.getItemStackOfAmountFromOreDict("screwTin", GTNH ? 6 : 3) },
                 GT_Values.NF,
                 CI.getEmptyCatalyst(1),
                 300 * 20,
@@ -450,12 +436,9 @@ public class BioRecipes {
     private static void recipeAluminiumSilverCatalyst() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] {
-                    getBioChip(4),
-                    CI.getEmptyCatalyst(10),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4)
-                },
+                new ItemStack[] { getBioChip(4), CI.getEmptyCatalyst(10),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4) },
                 GT_Values.NF,
                 CI.getGreenCatalyst(10),
                 20 * 20,
@@ -464,41 +447,29 @@ public class BioRecipes {
 
     private static void recipeAceticAcid() {
 
-        /*		GT_Values.RA.addMixerRecipe(
-        			CI.getGreenCatalyst(10),
-        			var2,
-        			var3, var4,
-        			var5, // Fluid in
-        			var6, // Fluid out
-        			var7, // Item Out
-        			var8, // Time
-        			var9); // Eu
-        */
+        /*
+         * GT_Values.RA.addMixerRecipe( CI.getGreenCatalyst(10), var2, var3, var4, var5, // Fluid in var6, // Fluid out
+         * var7, // Item Out var8, // Time var9); // Eu
+         */
 
         // CH4O + CO = C2H4O2
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {CI.getGreenCatalyst(0)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mMethanol, 700),
-                    FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 700),
-                },
+                new ItemStack[] { CI.getGreenCatalyst(0) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mMethanol, 700),
+                        FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 700), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 700),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 700), },
                 120 * 20,
                 60,
                 1);
 
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {CI.getNumberedBioCircuit(14), CI.emptyCells(1)},
+                new ItemStack[] { CI.getNumberedBioCircuit(14), CI.emptyCells(1) },
                 FluidUtils.getFluidStack(mFermentationBase, 1000),
                 null,
-                new ItemStack[] {
-                    ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 2),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellAceticAcid", 1)
-                },
-                new int[] {10000, 10000},
+                new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 2),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellAceticAcid", 1) },
+                new int[] { 10000, 10000 },
                 60 * 20,
                 16);
     }
@@ -564,14 +535,10 @@ public class BioRecipes {
             }
             if (ItemUtils.checkForInvalidItems(a)) {
                 CORE.RA.addChemicalPlantRecipe(
-                        new ItemStack[] {getBioChip(2), ItemUtils.getSimpleStack(a, 10)},
-                        new FluidStack[] {
-                            FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
-                        },
+                        new ItemStack[] { getBioChip(2), ItemUtils.getSimpleStack(a, 10) },
+                        new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000), },
                         new ItemStack[] {},
-                        new FluidStack[] {
-                            FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000),
-                        },
+                        new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000), },
                         30 * 20,
                         2,
                         0);
@@ -580,14 +547,10 @@ public class BioRecipes {
         for (ItemStack a : aSeeds) {
             if (ItemUtils.checkForInvalidItems(a)) {
                 CORE.RA.addChemicalPlantRecipe(
-                        new ItemStack[] {getBioChip(3), ItemUtils.getSimpleStack(a, 20)},
-                        new FluidStack[] {
-                            FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
-                        },
+                        new ItemStack[] { getBioChip(3), ItemUtils.getSimpleStack(a, 20) },
+                        new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000), },
                         new ItemStack[] {},
-                        new FluidStack[] {
-                            FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000),
-                        },
+                        new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000), },
                         30 * 20,
                         2,
                         0);
@@ -596,31 +559,20 @@ public class BioRecipes {
 
         // Sugar Cane
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getBioChip(4), ItemUtils.getSimpleStack(Items.reeds, 32)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
-                },
+                new ItemStack[] { getBioChip(4), ItemUtils.getSimpleStack(Items.reeds, 32) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000), },
                 30 * 20,
                 30,
                 0);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(5),
-                    ItemUtils.getSimpleStack(Items.reeds, 32),
-                    ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 2)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000),
-                },
+                new ItemStack[] { getBioChip(5), ItemUtils.getSimpleStack(Items.reeds, 32),
+                        ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 2) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000), },
                 10 * 20,
                 30,
                 0);
@@ -629,33 +581,20 @@ public class BioRecipes {
         if (OreDictUtils.containsValidEntries("cropSugarbeet")) {
 
             CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] {
-                        getBioChip(4), ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4),
-                    },
-                    new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
-                    },
+                    new ItemStack[] { getBioChip(4), ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4), },
+                    new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000), },
                     new ItemStack[] {},
-                    new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000),
-                    },
+                    new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000), },
                     30 * 20,
                     30,
                     0);
 
             CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] {
-                        getBioChip(5),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4),
-                        ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 2)
-                    },
-                    new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000),
-                    },
+                    new ItemStack[] { getBioChip(5), ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4),
+                            ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 2) },
+                    new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000), },
                     new ItemStack[] {},
-                    new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000),
-                    },
+                    new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000), },
                     10 * 20,
                     30,
                     0);
@@ -663,19 +602,13 @@ public class BioRecipes {
 
         // Produce Acetone, Butanol and Ethanol
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(5),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellFermentationBase", 48),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 16),
-                },
+                new ItemStack[] { getBioChip(5), ItemUtils.getItemStackOfAmountFromOreDict("cellFermentationBase", 48),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 16), },
                 new FluidStack[] {},
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellButanol", 18),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellAcetone", 9),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellEthanol", 3),
-                    CI.emptyCells(18)
-                },
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellButanol", 18),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellAcetone", 9),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellEthanol", 3), CI.emptyCells(18) },
                 new FluidStack[] {},
                 100 * 20,
                 32,
@@ -685,16 +618,12 @@ public class BioRecipes {
     private static void recipePropionicAcid() {
         // C2H4 + CO + H2O = C3H6O2
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {CI.getGreenCatalyst(0)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mEthylene, 1000),
-                    FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 1000),
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
-                },
+                new ItemStack[] { CI.getGreenCatalyst(0) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mEthylene, 1000),
+                        FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 1000),
+                        FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 1000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 1000), },
                 10 * 20,
                 60,
                 1);
@@ -731,29 +660,21 @@ public class BioRecipes {
     private static void recipeSodiumHydroxide() {
         // NaCl·H2O = NaOH + Cl + H
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getBioChip(4)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mSalineWater, 1000),
-                },
-                new ItemStack[] {ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 3)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mChlorine, 1000),
-                    FluidUtils.getFluidStack(BioRecipes.mHydrogen, 1000),
-                },
+                new ItemStack[] { getBioChip(4) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mSalineWater, 1000), },
+                new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 3) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mChlorine, 1000),
+                        FluidUtils.getFluidStack(BioRecipes.mHydrogen, 1000), },
                 300 * 20,
                 120,
                 1);
 
         // Na + H2O = NaOH + H
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getBioChip(5), ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 5)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000),
-                },
-                new ItemStack[] {ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 15)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mHydrogen, 5000),
-                },
+                new ItemStack[] { getBioChip(5), ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 5) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000), },
+                new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 15) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mHydrogen, 5000), },
                 60 * 20,
                 60,
                 1);
@@ -764,34 +685,24 @@ public class BioRecipes {
         if (OreDictUtils.containsValidEntries("fuelCoke")) {
             // Na2CO3 + Al2O3 =C= 2NaAlO2 + CO2
             CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] {
-                        getBioChip(18),
-                        ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 1),
-                        ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
-                        ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5)
-                    },
+                    new ItemStack[] { getBioChip(18), ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 1),
+                            ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
+                            ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5) },
                     new FluidStack[] {},
-                    new ItemStack[] {ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8)},
-                    new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000),
-                    },
+                    new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8) },
+                    new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000), },
                     120 * 20,
                     120,
                     1);
         }
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(18),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 2),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5)
-                },
+                new ItemStack[] { getBioChip(18), ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 2),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5) },
                 new FluidStack[] {},
-                new ItemStack[] {ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000),
-                },
+                new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000), },
                 180 * 20,
                 120,
                 1);
@@ -799,8 +710,8 @@ public class BioRecipes {
 
     private static void recipePelletMold() {
         GregtechItemList.Pellet_Mold.set(ItemUtils.getSimpleStack(AgriculturalChem.mPelletMold, 1));
-        GT_Values.RA.addLatheRecipe(
-                ALLOY.TUMBAGA.getBlock(1), GregtechItemList.Pellet_Mold.get(1), null, 20 * 30 * 15, 90);
+        GT_Values.RA
+                .addLatheRecipe(ALLOY.TUMBAGA.getBlock(1), GregtechItemList.Pellet_Mold.get(1), null, 20 * 30 * 15, 90);
     }
 
     private static void recipeAluminiumPellet() {
@@ -865,19 +776,15 @@ public class BioRecipes {
 
         for (String aOreName : aOreNames) {
             CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedBioCircuit(14),
-                        ItemUtils.getSimpleStack(aOreCache.get(aOreName), aOreData2.get(aOreName))
-                    },
-                    new FluidStack[] {FluidUtils.getSteam(2000 * aOreData2.get(aOreName))},
-                    new ItemStack[] {
-                        ItemUtils.getSimpleStack(
-                                AgriculturalChem.mCleanAluminiumMix, (int) (Math.ceil(aOreData3.get(aOreName) * 1.4)))
-                    },
-                    new FluidStack[] {
-                        FluidUtils.getFluidStack(
-                                AgriculturalChem.RedMud, 100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4)))
-                    },
+                    new ItemStack[] { CI.getNumberedBioCircuit(14),
+                            ItemUtils.getSimpleStack(aOreCache.get(aOreName), aOreData2.get(aOreName)) },
+                    new FluidStack[] { FluidUtils.getSteam(2000 * aOreData2.get(aOreName)) },
+                    new ItemStack[] { ItemUtils.getSimpleStack(
+                            AgriculturalChem.mCleanAluminiumMix,
+                            (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))) },
+                    new FluidStack[] { FluidUtils.getFluidStack(
+                            AgriculturalChem.RedMud,
+                            100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))) },
                     20 * 60,
                     aOreData1.get(aOreName),
                     aOreName.equals("Bauxite") ? 2 : 1);
@@ -935,7 +842,7 @@ public class BioRecipes {
                     ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLithium", 5),
                     ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 2),
                     ItemUtils.getItemStackOfAmountFromOreDict("dustSmallPotassium", 5),
-                    new int[] {7500, 8000, 8500, 9000, 7500, 8500},
+                    new int[] { 7500, 8000, 8500, 9000, 7500, 8500 },
                     60 * 30,
                     60);
         }
@@ -951,7 +858,7 @@ public class BioRecipes {
                     ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLithium", 7),
                     ItemUtils.getItemStackOfAmountFromOreDict("dustAsh", 2),
                     ItemUtils.getItemStackOfAmountFromOreDict("dustAsh", 2),
-                    new int[] {7500, 8000, 8500, 9000, 9000, 9000},
+                    new int[] { 7500, 8000, 8500, 9000, 9000, 9000 },
                     45 * 30,
                     90);
         }
@@ -959,50 +866,33 @@ public class BioRecipes {
 
     private static void recipeAlginicAcid() {
 
-        /*// Turn into Cellulose Pulp
-        CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
-        		getBioChip(7),
-        		ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 20),
-        		ItemUtils.getSimpleStack(AgriculturalChem.mAlginicAcid, 5)
-        },
-        		GT_Values.NF,
-        		ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 20),
-        		90 * 20,
-        		16);*/
+        /*
+         * // Turn into Cellulose Pulp CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] { getBioChip(7),
+         * ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 20),
+         * ItemUtils.getSimpleStack(AgriculturalChem.mAlginicAcid, 5) }, GT_Values.NF,
+         * ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 20), 90 * 20, 16);
+         */
     }
 
     private static void recipeSulfuricAcid() {
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(7),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 6)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000),
-                },
+                new ItemStack[] { getBioChip(7), ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 6) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5000), },
                 50 * 20,
                 60,
                 1);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(7),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 2),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 10)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000),
-                },
+                new ItemStack[] { getBioChip(7),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 2),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 10) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5000), },
                 6 * 20,
                 180,
                 3);
@@ -1012,32 +902,22 @@ public class BioRecipes {
 
         // 2NH3 + CO2 = CH4N2O + H2O
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(9),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mAmmonia, 600),
-                    FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 300),
-                },
+                new ItemStack[] { getBioChip(9), },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mAmmonia, 600),
+                        FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 300), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mUrea, 300),
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 300),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mUrea, 300),
+                        FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 300), },
                 5 * 20,
                 30,
                 1);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(9),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mUrea, 200),
-                    FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 200),
-                },
+                new ItemStack[] { getBioChip(9), },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mUrea, 200),
+                        FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 200), },
                 new ItemStack[] {},
-                new FluidStack[] {FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 200)},
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 200) },
                 5 * 20,
                 30,
                 1);
@@ -1046,17 +926,10 @@ public class BioRecipes {
     private static void recipeRawBioResin() {
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(3),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 5),
-                    ItemUtils.getSimpleStack(Blocks.dirt, 1)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 100),
-                },
-                new ItemStack[] {
-                    ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1),
-                },
+                new ItemStack[] { getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 5),
+                        ItemUtils.getSimpleStack(Blocks.dirt, 1) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 100), },
+                new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1), },
                 new FluidStack[] {},
                 1 * 20,
                 30,
@@ -1066,24 +939,18 @@ public class BioRecipes {
     private static void recipeLiquidResin() {
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mEthanol, 200),
-                },
+                new ItemStack[] { getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mEthanol, 200), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 500),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 500), },
                 5 * 20,
                 30,
                 1);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 8)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 144),
-                },
-                new ItemStack[] {ItemUtils.getSimpleStack(Ic2Items.resin, 32)},
+                new ItemStack[] { getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 8) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 144), },
+                new ItemStack[] { ItemUtils.getSimpleStack(Ic2Items.resin, 32) },
                 new FluidStack[] {},
                 60 * 20,
                 30,
@@ -1095,15 +962,11 @@ public class BioRecipes {
         if (LoadedMods.Forestry) {
             aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertForestry, 32);
             CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] {
-                        getBioChip(11),
-                        ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
-                        ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8)
-                    },
-                    new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mUrea, 200),
-                    },
-                    new ItemStack[] {aFert},
+                    new ItemStack[] { getBioChip(11),
+                            ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
+                            ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8) },
+                    new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mUrea, 200), },
+                    new ItemStack[] { aFert },
                     new FluidStack[] {},
                     30 * 20,
                     60,
@@ -1112,15 +975,10 @@ public class BioRecipes {
 
         aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertIC2, 32);
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(12),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mUrea, 200),
-                },
-                new ItemStack[] {aFert},
+                new ItemStack[] { getBioChip(12), ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mUrea, 200), },
+                new ItemStack[] { aFert },
                 new FluidStack[] {},
                 30 * 20,
                 60,
@@ -1130,32 +988,21 @@ public class BioRecipes {
     private static void recipeMethane() {
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {getBioChip(12), ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 10)},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 500),
-                },
+                new ItemStack[] { getBioChip(12), ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 10) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 500), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mMethane, 500),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mMethane, 500), },
                 5 * 20,
                 64,
                 1);
 
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(13),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 8),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
-                    ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 4)
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mMethane, 2000),
-                },
+                new ItemStack[] { getBioChip(13), ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 8),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
+                        ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 4) },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mMethane, 2000), },
                 new ItemStack[] {},
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mEthylene, 2000),
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mEthylene, 2000), },
                 10 * 20,
                 60,
                 1);
@@ -1165,15 +1012,11 @@ public class BioRecipes {
 
         // 6CH4 = C6H6 + 18H
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(19), CI.getGreenCatalyst(0),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mMethane, 6000),
-                },
+                new ItemStack[] { getBioChip(19), CI.getGreenCatalyst(0), },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mMethane, 6000), },
                 new ItemStack[] {},
-                new FluidStack[] {FluidUtils.getFluidStack(BioRecipes.mBenzene, 1000), Materials.Hydrogen.getGas(18000)
-                },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mBenzene, 1000),
+                        Materials.Hydrogen.getGas(18000) },
                 8 * 20,
                 120,
                 2);
@@ -1183,14 +1026,10 @@ public class BioRecipes {
 
         // C8H10 = C8H8 + 2H
         CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] {
-                    getBioChip(20), CI.getGreenCatalyst(0),
-                },
-                new FluidStack[] {
-                    FluidUtils.getFluidStack(BioRecipes.mEthylbenzene, 100),
-                },
+                new ItemStack[] { getBioChip(20), CI.getGreenCatalyst(0), },
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mEthylbenzene, 100), },
                 new ItemStack[] {},
-                new FluidStack[] {FluidUtils.getFluidStack(BioRecipes.mStyrene, 100), Materials.Hydrogen.getGas(200)},
+                new FluidStack[] { FluidUtils.getFluidStack(BioRecipes.mStyrene, 100), Materials.Hydrogen.getGas(200) },
                 16 * 20,
                 480,
                 2);
@@ -1200,127 +1039,138 @@ public class BioRecipes {
         GT_ModHandler.addShapelessCraftingRecipe(
                 GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 0L),
                 0,
-                new Object[] {OrePrefixes.circuit.get(Materials.Primitive)});
+                new Object[] { OrePrefixes.circuit.get(Materials.Primitive) });
 
         long bits = 0;
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 1L, new Object[0]), bits, new Object[] {
-                    "d  ", " P ", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 1L, new Object[0]),
+                bits,
+                new Object[] { "d  ", " P ", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 2L, new Object[0]), bits, new Object[] {
-                    " d ", " P ", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 2L, new Object[0]),
+                bits,
+                new Object[] { " d ", " P ", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 3L, new Object[0]), bits, new Object[] {
-                    "  d", " P ", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 3L, new Object[0]),
+                bits,
+                new Object[] { "  d", " P ", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 4L, new Object[0]), bits, new Object[] {
-                    "   ", " Pd", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 4L, new Object[0]),
+                bits,
+                new Object[] { "   ", " Pd", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 5L, new Object[0]), bits, new Object[] {
-                    "   ", " P ", "  d", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 5L, new Object[0]),
+                bits,
+                new Object[] { "   ", " P ", "  d", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 6L, new Object[0]), bits, new Object[] {
-                    "   ", " P ", " d ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 6L, new Object[0]),
+                bits,
+                new Object[] { "   ", " P ", " d ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 7L, new Object[0]), bits, new Object[] {
-                    "   ", " P ", "d  ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 7L, new Object[0]),
+                bits,
+                new Object[] { "   ", " P ", "d  ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 8L, new Object[0]), bits, new Object[] {
-                    "   ", "dP ", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 8L, new Object[0]),
+                bits,
+                new Object[] { "   ", "dP ", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 9L, new Object[0]), bits, new Object[] {
-                    "P d", "   ", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 9L, new Object[0]),
+                bits,
+                new Object[] { "P d", "   ", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 10L, new Object[0]), bits, new Object[] {
-                    "P  ", "  d", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 10L, new Object[0]),
+                bits,
+                new Object[] { "P  ", "  d", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 11L, new Object[0]), bits, new Object[] {
-                    "P  ", "   ", "  d", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 11L, new Object[0]),
+                bits,
+                new Object[] { "P  ", "   ", "  d", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 12L, new Object[0]), bits, new Object[] {
-                    "P  ", "   ", " d ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 12L, new Object[0]),
+                bits,
+                new Object[] { "P  ", "   ", " d ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 13L, new Object[0]), bits, new Object[] {
-                    "  P", "   ", "  d", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 13L, new Object[0]),
+                bits,
+                new Object[] { "  P", "   ", "  d", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 14L, new Object[0]), bits, new Object[] {
-                    "  P", "   ", " d ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 14L, new Object[0]),
+                bits,
+                new Object[] { "  P", "   ", " d ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 15L, new Object[0]), bits, new Object[] {
-                    "  P", "   ", "d  ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 15L, new Object[0]),
+                bits,
+                new Object[] { "  P", "   ", "d  ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 16L, new Object[0]), bits, new Object[] {
-                    "  P", "d  ", "   ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 16L, new Object[0]),
+                bits,
+                new Object[] { "  P", "d  ", "   ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 17L, new Object[0]), bits, new Object[] {
-                    "   ", "   ", "d P", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 17L, new Object[0]),
+                bits,
+                new Object[] { "   ", "   ", "d P", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 18L, new Object[0]), bits, new Object[] {
-                    "   ", "d  ", "  P", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 18L, new Object[0]),
+                bits,
+                new Object[] { "   ", "d  ", "  P", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 19L, new Object[0]), bits, new Object[] {
-                    "d  ", "   ", "  P", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 19L, new Object[0]),
+                bits,
+                new Object[] { "d  ", "   ", "  P", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 20L, new Object[0]), bits, new Object[] {
-                    " d ", "   ", "  P", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 20L, new Object[0]),
+                bits,
+                new Object[] { " d ", "   ", "  P", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 21L, new Object[0]), bits, new Object[] {
-                    "d  ", "   ", "P  ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 21L, new Object[0]),
+                bits,
+                new Object[] { "d  ", "   ", "P  ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 22L, new Object[0]), bits, new Object[] {
-                    " d ", "   ", "P  ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 22L, new Object[0]),
+                bits,
+                new Object[] { " d ", "   ", "P  ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 23L, new Object[0]), bits, new Object[] {
-                    "  d", "   ", "P  ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 23L, new Object[0]),
+                bits,
+                new Object[] { "  d", "   ", "P  ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
         addCraftingRecipe(
-                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 24L, new Object[0]), bits, new Object[] {
-                    "   ", "  d", "P  ", 'P', GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0])
-                });
+                GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 24L, new Object[0]),
+                bits,
+                new Object[] { "   ", "  d", "P  ", 'P',
+                        GregtechItemList.Circuit_BioRecipeSelector.getWildcard(1L, new Object[0]) });
     }
 
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
-        Method mAddRecipe = ReflectionUtils.getMethod(GT_ModHandler.class, "addCraftingRecipe", new Class[] {
-            ItemStack.class,
-            Enchantment[].class,
-            int[].class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            boolean.class,
-            Object[].class
-        });
+        Method mAddRecipe = ReflectionUtils.getMethod(
+                GT_ModHandler.class,
+                "addCraftingRecipe",
+                new Class[] { ItemStack.class, Enchantment[].class, int[].class, boolean.class, boolean.class,
+                        boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class,
+                        boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, Object[].class });
         boolean didInvoke = false;
         if (mAddRecipe != null) {
             try {

@@ -1,10 +1,11 @@
 package gregtech.api.util;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 
@@ -17,16 +18,12 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
     public final int mDuration;
     public final int mEUt;
 
-    public GasSpargingRecipe(
-            FluidStack aSpargeGas,
-            FluidStack aSpentFuel,
-            FluidStack aSpargedFuel,
-            FluidStack[] aOutputs,
-            int[] aMaxOutputQuantity) {
+    public GasSpargingRecipe(FluidStack aSpargeGas, FluidStack aSpentFuel, FluidStack aSpargedFuel,
+            FluidStack[] aOutputs, int[] aMaxOutputQuantity) {
         mInputGas = aSpargeGas;
         mInputSpentFuel = aSpentFuel;
         mOutputSpargedFuel = aSpargedFuel;
-        mFluidInputs = new FluidStack[] {mInputGas, mInputSpentFuel};
+        mFluidInputs = new FluidStack[] { mInputGas, mInputSpentFuel };
         aOutputs = ArrayUtils.insertElementAtIndex(aOutputs, 0, aSpargeGas);
         aOutputs = ArrayUtils.insertElementAtIndex(aOutputs, 1, aSpargedFuel);
         mFluidOutputs = aOutputs;
@@ -60,8 +57,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
     }
 
     public boolean isValid() {
-        if (mInputGas == null
-                || mInputGas.amount <= 0
+        if (mInputGas == null || mInputGas.amount <= 0
                 || mInputSpentFuel == null
                 || mInputSpentFuel.amount <= 0
                 || mFluidOutputs == null

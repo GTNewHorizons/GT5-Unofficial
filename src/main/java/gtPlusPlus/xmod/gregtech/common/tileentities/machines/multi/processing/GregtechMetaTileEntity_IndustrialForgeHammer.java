@@ -7,10 +7,20 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
@@ -26,17 +36,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialForgeHammer
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialForgeHammer>
-        implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialForgeHammer extends
+        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialForgeHammer> implements ISurvivalConstructable {
 
     private int mCasing;
     private int mAnvil;
@@ -64,11 +66,9 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Controller Block for the Industrial Forge Hammer")
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Forge Hammer")
                 .addInfo("Speed: +100% | EU Usage: 100% | Parallel: Tier x Anvil Tier x 8")
-                .addInfo("T1 - Vanilla Anvil")
-                .addInfo("Anvil goes in Middle 3x3x3 Structure");
+                .addInfo("T1 - Vanilla Anvil").addInfo("Anvil goes in Middle 3x3x3 Structure");
         if (LoadedMods.Railcraft) {
             tt.addInfo("T2 - Steel Anvil");
         }
@@ -79,17 +79,10 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer
             tt.addInfo("T3 - Thaumic Anvil");
             tt.addInfo("T4 - Void Anvil");
         }
-        tt.addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center")
-                .addCasingInfo("Forge Casing", 10)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+        tt.addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
+                .addController("Front Center").addCasingInfo("Forge Casing", 10).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -109,21 +102,18 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer
                 aBlockMap.put(sVoidAnvil, 0);
             }
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialForgeHammer>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCC", "CCC", "CCC"},
-                        {"C~C", "CAC", "CCC"},
-                        {"CCC", "CCC", "CCC"},
-                    }))
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "CAC", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialForgeHammer.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.getIndexFromPage(1, 11))
-                                    .dot(1)
-                                    .buildAndChain(
+                                    .casingIndex(TAE.getIndexFromPage(1, 11)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 6))))
-                    .addElement('A', onElementPass(x -> ++x.mAnvil, ofBlocksFlat(aBlockMap, sAnvil, 0)))
-                    .build();
+                    .addElement('A', onElementPass(x -> ++x.mAnvil, ofBlocksFlat(aBlockMap, sAnvil, 0))).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -174,8 +164,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer
 
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
-        Block aAnvil = this.getBaseMetaTileEntity()
-                .getBlockAtSide(this.getBaseMetaTileEntity().getBackFacing());
+        Block aAnvil = this.getBaseMetaTileEntity().getBlockAtSide(this.getBaseMetaTileEntity().getBackFacing());
         if (aAnvil != null) {
             int aAnvilTier = getAnvilTier(aAnvil);
             if (aAnvilTier > 0) {

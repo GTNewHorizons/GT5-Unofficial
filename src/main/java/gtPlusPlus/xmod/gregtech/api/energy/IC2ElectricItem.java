@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
  * The item should have a maximum damage of 13.
  */
 public interface IC2ElectricItem {
+
     /**
      * Determine if the item can be used in a machine or as an armor part to supply energy.
      *
@@ -38,8 +39,8 @@ public interface IC2ElectricItem {
     double getMaxCharge(ItemStack itemStack);
 
     /**
-     * Get the item's tier, lower tiers can't send energy to higher ones.
-     * Batteries are Tier 1, Energy Crystals are Tier 2, Lapotron Crystals are Tier 3.
+     * Get the item's tier, lower tiers can't send energy to higher ones. Batteries are Tier 1, Energy Crystals are Tier
+     * 2, Lapotron Crystals are Tier 3.
      *
      * @return Item's tier
      */

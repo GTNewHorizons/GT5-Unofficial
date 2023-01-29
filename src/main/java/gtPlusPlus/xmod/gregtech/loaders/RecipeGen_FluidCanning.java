@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
@@ -9,9 +14,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.util.HashSet;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_FluidCanning implements Runnable {
 
@@ -60,30 +62,19 @@ public class RecipeGen_FluidCanning implements Runnable {
         this(aExtracting, aEmpty, aFull, aFluid, GT_Values.NF, null, null);
     }
 
-    public RecipeGen_FluidCanning(
-            boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn, FluidStack aFluidOut) {
+    public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn,
+            FluidStack aFluidOut) {
         this(aExtracting, aEmpty, aFull, aFluidIn, aFluidOut, null, null);
     }
 
-    public RecipeGen_FluidCanning(
-            boolean aExtracting,
-            ItemStack aEmpty,
-            ItemStack aFull,
-            FluidStack aFluid,
-            Integer aDuration,
-            Integer aEUt) {
+    public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluid,
+            Integer aDuration, Integer aEUt) {
         this(aExtracting, aEmpty, aFull, aFluid, GT_Values.NF, aDuration, aEUt);
     }
 
     // Alternative Constructor
-    public RecipeGen_FluidCanning(
-            boolean aExtracting,
-            ItemStack aEmpty,
-            ItemStack aFull,
-            FluidStack aFluidIn,
-            FluidStack aFluidOut,
-            Integer aDuration,
-            Integer aEUt) {
+    public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn,
+            FluidStack aFluidOut, Integer aDuration, Integer aEUt) {
         ItemStack aInput;
         ItemStack aOutput;
         FluidStack aFluidInput;
@@ -91,8 +82,8 @@ public class RecipeGen_FluidCanning implements Runnable {
 
         // Safety check on the duration
         if (aDuration == null || aDuration <= 0) {
-            aDuration =
-                    (aFluidIn != null) ? (aFluidIn.amount / 62) : ((aFluidOut != null) ? (aFluidOut.amount / 62) : 10);
+            aDuration = (aFluidIn != null) ? (aFluidIn.amount / 62)
+                    : ((aFluidOut != null) ? (aFluidOut.amount / 62) : 10);
         }
 
         // Safety check on the EU
@@ -121,12 +112,12 @@ public class RecipeGen_FluidCanning implements Runnable {
 
         GTPP_Recipe aRecipe = new GTPP_Recipe(
                 true,
-                new ItemStack[] {aInput},
-                new ItemStack[] {aOutput},
+                new ItemStack[] { aInput },
+                new ItemStack[] { aOutput },
                 null,
-                new int[] {10000},
-                new FluidStack[] {aFluidInput},
-                new FluidStack[] {aFluidOutput},
+                new int[] { 10000 },
+                new FluidStack[] { aFluidInput },
+                new FluidStack[] { aFluidOutput },
                 aDuration,
                 aEUt,
                 0);
@@ -187,9 +178,15 @@ public class RecipeGen_FluidCanning implements Runnable {
         boolean result = false;
         CORE.crash();
         Logger.INFO(
-                "[FE-Debug] " + aRecipe.mFluidOutputs[0].amount + "L of " + aRecipe.mFluidOutputs[0].getLocalizedName()
-                        + " fluid extractor from 1 " + aRecipe.mInputs[0].getDisplayName() + " - Success. Time: "
-                        + aRecipe.mDuration + ", Voltage: " + aRecipe.mEUt);
+                "[FE-Debug] " + aRecipe.mFluidOutputs[0].amount
+                        + "L of "
+                        + aRecipe.mFluidOutputs[0].getLocalizedName()
+                        + " fluid extractor from 1 "
+                        + aRecipe.mInputs[0].getDisplayName()
+                        + " - Success. Time: "
+                        + aRecipe.mDuration
+                        + ", Voltage: "
+                        + aRecipe.mEUt);
         int aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
         int aCount2 = aCount1;
         GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(aRecipe);
@@ -201,10 +198,14 @@ public class RecipeGen_FluidCanning implements Runnable {
             // "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+",
             // "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
         } else {
-            Logger.INFO("[ERROR] Failed adding Extraction recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
-                    + ", " + ItemUtils.getArrayStackNames(aRecipe.mOutputs) + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs) + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
+            Logger.INFO(
+                    "[ERROR] Failed adding Extraction recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mOutputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
             dumpStack();
         }
         return result;
@@ -223,10 +224,14 @@ public class RecipeGen_FluidCanning implements Runnable {
             // "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+",
             // "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
         } else {
-            Logger.INFO("[ERROR] Failed adding Canning recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
-                    + ", " + ItemUtils.getArrayStackNames(aRecipe.mOutputs) + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs) + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
+            Logger.INFO(
+                    "[ERROR] Failed adding Canning recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mOutputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
             dumpStack();
         }
         return result;
@@ -235,16 +240,21 @@ public class RecipeGen_FluidCanning implements Runnable {
     private void dumpStack() {
         int parents = 2;
         for (int i = 0; i < 6; i++) {
-            Logger.INFO((disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG | "
-                    + (i == 0 ? "Called from: " : "Parent: ") + ReflectionUtils.getMethodName(i + parents));
+            Logger.INFO(
+                    (disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG | "
+                            + (i == 0 ? "Called from: " : "Parent: ")
+                            + ReflectionUtils.getMethodName(i + parents));
         }
     }
 
     private String buildLogString() {
         int solidSize = getMapSize(GT_Recipe_Map.sCannerRecipes);
         int fluidSize = getMapSize(GT_Recipe_Map.sFluidCannerRecipes);
-        return (disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG | Solids: " + solidSize + " | Liquids: "
-                + fluidSize + " | ";
+        return (disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG | Solids: "
+                + solidSize
+                + " | Liquids: "
+                + fluidSize
+                + " | ";
     }
 
     private final int getMapSize(GT_Recipe_Map aMap) {

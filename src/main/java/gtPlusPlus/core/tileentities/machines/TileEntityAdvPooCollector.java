@@ -1,9 +1,5 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityChicken;
@@ -17,6 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 
@@ -100,12 +101,13 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
                 }
             }
             aPooAmount = Math.max(Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aPooAmount), 1);
-            return Math.max(
-                    1,
-                    (aPooAmount
-                            * MathUtils.getRandomFromArray(
-                                    new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4})
-                            / 10));
+            return Math
+                    .max(
+                            1,
+                            (aPooAmount
+                                    * MathUtils.getRandomFromArray(
+                                            new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4 })
+                                    / 10));
         } else {
             return 0;
         }

@@ -1,15 +1,16 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.inventories.Inventory_EggBox;
-import gtPlusPlus.core.item.general.ItemGiantEgg;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.inventories.Inventory_EggBox;
+import gtPlusPlus.core.item.general.ItemGiantEgg;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class TileEntityEggBox extends TileEntity implements ISidedInventory {
 
@@ -75,8 +76,7 @@ public class TileEntityEggBox extends TileEntity implements ISidedInventory {
                 }
                 updateSlots();
             }
-        } catch (final Throwable t) {
-        }
+        } catch (final Throwable t) {}
     }
 
     public void tryUpdateDecayable(final ItemGiantEgg d, ItemStack iStack, final World world) {
@@ -194,8 +194,8 @@ public class TileEntityEggBox extends TileEntity implements ISidedInventory {
             this.numPlayersUsing++;
             cachedChestType = 1;
         }
-        this.worldObj.addBlockEvent(
-                this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+        this.worldObj
+                .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
         this.getInventory().openInventory();
@@ -207,8 +207,8 @@ public class TileEntityEggBox extends TileEntity implements ISidedInventory {
             this.numPlayersUsing--;
             cachedChestType = 1;
         }
-        this.worldObj.addBlockEvent(
-                this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+        this.worldObj
+                .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
         this.getInventory().closeInventory();
@@ -257,8 +257,8 @@ public class TileEntityEggBox extends TileEntity implements ISidedInventory {
     }
 
     /**
-     * Causes the TileEntity to reset all it's cached values for it's container
-     * Block, metadata and in the case of chests, the adjacent chest check
+     * Causes the TileEntity to reset all it's cached values for it's container Block, metadata and in the case of
+     * chests, the adjacent chest check
      */
     public void updateContainingBlockInfo() {
         super.updateContainingBlockInfo();
@@ -266,8 +266,7 @@ public class TileEntityEggBox extends TileEntity implements ISidedInventory {
     }
 
     /**
-     * Performs the check for adjacent chests to determine if this chest is double
-     * or not.
+     * Performs the check for adjacent chests to determine if this chest is double or not.
      */
     public void checkForAdjacentChests() {
         if (!this.adjacentChestChecked) {
@@ -284,8 +283,7 @@ public class TileEntityEggBox extends TileEntity implements ISidedInventory {
         this.prevLidAngle = this.lidAngle;
         f = 0.04F;
         double d2;
-        if (this.numPlayersUsing > 0
-                && this.lidAngle == 0.0F
+        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F
                 && this.adjacentChestZNeg == null
                 && this.adjacentChestXNeg == null) {
             double d1 = (double) this.xCoord + 0.5D;
@@ -331,8 +329,7 @@ public class TileEntityEggBox extends TileEntity implements ISidedInventory {
     }
 
     /**
-     * Called when a client event is received with the event number and argument,
-     * see World.sendClientEvent
+     * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
     public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {
         if (p_145842_1_ == 1) {

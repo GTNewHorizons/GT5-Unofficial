@@ -1,11 +1,7 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.MiningUtils;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,9 +15,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.MiningUtils;
+
 public class StaballoyPickaxe extends ItemPickaxe {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.ItemStack)
      */
     @Override
@@ -30,8 +33,8 @@ public class StaballoyPickaxe extends ItemPickaxe {
     }
 
     /**
-     * Creates an NBT tag for this item if it doesn't have one.
-     * This also set some default values.
+     * Creates an NBT tag for this item if it doesn't have one. This also set some default values.
+     * 
      * @param rStack
      * @return
      */
@@ -138,13 +141,7 @@ public class StaballoyPickaxe extends ItemPickaxe {
     protected int miningLevel;
 
     /*
-     *
-     *
-     *
-     *  Methods
-     *
-     *
-     *
+     * Methods
      */
 
     @Override
@@ -153,18 +150,19 @@ public class StaballoyPickaxe extends ItemPickaxe {
     }
 
     @Override
-    public boolean onBlockDestroyed(
-            final ItemStack stack,
-            final World world,
-            final Block block,
-            final int X,
-            final int Y,
-            final int Z,
-            final EntityLivingBase entity) {
+    public boolean onBlockDestroyed(final ItemStack stack, final World world, final Block block, final int X,
+            final int Y, final int Z, final EntityLivingBase entity) {
         if (!world.isRemote) {
             if (entity instanceof EntityPlayer) {
                 this.GetDestroyOrientation(
-                        (EntityPlayer) entity, block, getLookingDirection(stack), world, X, Y, Z, stack);
+                        (EntityPlayer) entity,
+                        block,
+                        getLookingDirection(stack),
+                        world,
+                        X,
+                        Y,
+                        Z,
+                        stack);
             }
         }
         return super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
@@ -185,7 +183,7 @@ public class StaballoyPickaxe extends ItemPickaxe {
                 bDurabilityLoss = (bDurabilityLoss + bHardness);
                 // Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
 
-                correctTool = this.canPickaxeBlock(removalist, world, new int[] {X, Y, Z});
+                correctTool = this.canPickaxeBlock(removalist, world, new int[] { X, Y, Z });
                 Logger.WARNING("" + correctTool);
 
                 if (!correctTool) {
@@ -217,15 +215,8 @@ public class StaballoyPickaxe extends ItemPickaxe {
         return false;
     }
 
-    private void GetDestroyOrientation(
-            EntityPlayer entity,
-            final Block block,
-            final String FACING,
-            final World world,
-            final int X,
-            final int Y,
-            final int Z,
-            final ItemStack heldItem) {
+    private void GetDestroyOrientation(EntityPlayer entity, final Block block, final String FACING, final World world,
+            final int X, final int Y, final int Z, final ItemStack heldItem) {
         float DURABILITY_LOSS = 0;
         if (!world.isRemote) {
 
@@ -274,11 +265,16 @@ public class StaballoyPickaxe extends ItemPickaxe {
             final int durNow = maxdmg - itemdmg;
             final int durLeft = (int) ((maxdmg - itemdmg) - DURABILITY_LOSS);
 
-            Logger.WARNING("Current Damage: " + itemdmg
-                    + " Max Damage: " + maxdmg
-                    + " Durability to be lost: " + dodmg
-                    + " Current Durability: " + durNow
-                    + " Remaining Durability: " + durLeft);
+            Logger.WARNING(
+                    "Current Damage: " + itemdmg
+                            + " Max Damage: "
+                            + maxdmg
+                            + " Durability to be lost: "
+                            + dodmg
+                            + " Current Durability: "
+                            + durNow
+                            + " Remaining Durability: "
+                            + durLeft);
 
             // Break Tool
             if (((durNow - dodmg) <= (99)) && (itemdmg != 0)) {
@@ -293,14 +289,14 @@ public class StaballoyPickaxe extends ItemPickaxe {
                 this.damageItem(heldItem, (durNow - durLeft) - 1, entity);
             }
 
-            /*if (heldItem.getItemDamage() <= ((heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS)){
-            	Utils.LOG_WARNING("2: "+DURABILITY_LOSS+" 3: "+((heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS));
-            	setItemDamage(heldItem, (int) (heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS));
-            }
-            else {
-            	Utils.LOG_WARNING("3: "+( heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage())));
-            	setItemDamage(heldItem, heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage()));
-            }*/
+            /*
+             * if (heldItem.getItemDamage() <= ((heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS)){
+             * Utils.LOG_WARNING("2: "+DURABILITY_LOSS+" 3: "+((heldItem.getMaxDamage()-heldItem.getItemDamage())-
+             * DURABILITY_LOSS)); setItemDamage(heldItem, (int)
+             * (heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS)); } else {
+             * Utils.LOG_WARNING("3: "+( heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage())));
+             * setItemDamage(heldItem, heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage())); }
+             */
             // Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());
             DURABILITY_LOSS = 0;
         }
@@ -315,8 +311,8 @@ public class StaballoyPickaxe extends ItemPickaxe {
     }
 
     // Should clear up blocks quicker if I chain it.
-    public final void removeBlockAndDropAsItem(
-            final World world, final int X, final int Y, final int Z, final ItemStack heldItem) {
+    public final void removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z,
+            final ItemStack heldItem) {
         try {
             final Block block = world.getBlock(X, Y, Z);
             final float dur = this.calculateDurabilityLoss(world, X, Y, Z);
@@ -325,19 +321,19 @@ public class StaballoyPickaxe extends ItemPickaxe {
             removalTool = block.getHarvestTool(1);
 
             Logger.WARNING("Removing.1 " + removalTool);
-            /*if ((removalTool.equalsIgnoreCase("pickaxe") || removalTool.equalsIgnoreCase("null") || removalTool == null)){
-            Utils.LOG_WARNING("Removing.2");
-            if (UtilsMining.getBlockType(block, world, new int[]{X,Y,Z}, miningLevel))			{
-            	Utils.LOG_WARNING("Removing.3");	*/
-            if (this.canPickaxeBlock(block, world, new int[] {X, Y, Z})) {
+            /*
+             * if ((removalTool.equalsIgnoreCase("pickaxe") || removalTool.equalsIgnoreCase("null") || removalTool ==
+             * null)){ Utils.LOG_WARNING("Removing.2"); if (UtilsMining.getBlockType(block, world, new int[]{X,Y,Z},
+             * miningLevel)) { Utils.LOG_WARNING("Removing.3");
+             */
+            if (this.canPickaxeBlock(block, world, new int[] { X, Y, Z })) {
                 Logger.WARNING("Removing.4");
 
                 if (block == Blocks.air) {
                     return;
                 }
 
-                if ((block != Blocks.bedrock)
-                        && (block.getBlockHardness(world, X, Y, Z) >= 0)
+                if ((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) >= 0)
                         && (block.getBlockHardness(world, X, Y, Z) <= 100)
                         && (block != Blocks.water)
                         && (block != Blocks.lava)) {
@@ -353,9 +349,9 @@ public class StaballoyPickaxe extends ItemPickaxe {
                         }
                     }
                 }
-                /*}
-
-                }*/
+                /*
+                 * } }
+                 */
             } else {
                 Logger.WARNING("Incorrect Tool for mining this block.");
             }
@@ -370,12 +366,12 @@ public class StaballoyPickaxe extends ItemPickaxe {
             // Utils.LOG_WARNING("Player - F: "+direction);
             // Utils.LOG_WARNING("Player - getLookVec(): "+localPlayer.getLookVec().yCoord);
 
-            /*if (localPlayer.getLookVec().yCoord > 0){
-            	localPlayer.getLookVec().yCoord;
-            }*/
+            /*
+             * if (localPlayer.getLookVec().yCoord > 0){ localPlayer.getLookVec().yCoord; }
+             */
 
-            final MovingObjectPosition movingobjectposition =
-                    this.getMovingObjectPositionFromPlayer(world, aPlayer, false);
+            final MovingObjectPosition movingobjectposition = this
+                    .getMovingObjectPositionFromPlayer(world, aPlayer, false);
             if (movingobjectposition != null) {
                 final int sideHit = movingobjectposition.sideHit;
                 String playerStandingPosition = "";
@@ -420,12 +416,15 @@ public class StaballoyPickaxe extends ItemPickaxe {
         return false;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(EnumChatFormatting.GRAY + "Mines a 3x3 at 100 durability per block mined.");
-        list.add(EnumChatFormatting.GRAY + "Durability: " + (stack.getMaxDamage() - stack.getItemDamage()) + "/"
-                + stack.getMaxDamage());
+        list.add(
+                EnumChatFormatting.GRAY + "Durability: "
+                        + (stack.getMaxDamage() - stack.getItemDamage())
+                        + "/"
+                        + stack.getMaxDamage());
         // super.addInformation(stack, aPlayer, list, bool);
     }
 
@@ -441,8 +440,8 @@ public class StaballoyPickaxe extends ItemPickaxe {
     }
 
     @Override
-    public boolean onBlockStartBreak(
-            final ItemStack itemstack, final int X, final int Y, final int Z, final EntityPlayer aPlayer) {
+    public boolean onBlockStartBreak(final ItemStack itemstack, final int X, final int Y, final int Z,
+            final EntityPlayer aPlayer) {
         this.checkFacing(itemstack, aPlayer, aPlayer.getEntityWorld());
         return super.onBlockStartBreak(itemstack, X, Y, Z, aPlayer);
     }

@@ -18,8 +18,10 @@ public class GregtechIndustrialMixer {
 
     private static void run1() {
         // Industrial Mixer Multiblock
-        GregtechItemList.Industrial_Mixer.set(new GregtechMetaTileEntity_IndustrialMixer(
-                        811, "industrialmixer.controller.tier.single", "Industrial Mixing Machine")
-                .getStackForm(1L));
+        GregtechItemList.Industrial_Mixer.set(
+                new GregtechMetaTileEntity_IndustrialMixer(
+                        811,
+                        "industrialmixer.controller.tier.single",
+                        "Industrial Mixing Machine").getStackForm(1L));
     }
 }

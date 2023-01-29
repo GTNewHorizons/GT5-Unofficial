@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,10 +17,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
@@ -27,53 +28,30 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     private int mSecondTimer = 0;
     private long mRedstoneLevel = 0;
 
-    public GregtechMetaPollutionDetector(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final String aDescription,
-            final int aSlotCount) {
+    public GregtechMetaPollutionDetector(final int aID, final String aName, final String aNameRegional, final int aTier,
+            final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public GregtechMetaPollutionDetector(
-            final String aName,
-            final int aTier,
-            final String aDescription,
-            final ITexture[][][] aTextures,
-            final int aSlotCount) {
+    public GregtechMetaPollutionDetector(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Right click to check pollution levels.",
-            "Configure with screwdriver to set redstone output amount.",
-            "Does not use power.",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Right click to check pollution levels.",
+                "Configure with screwdriver to set redstone output amount.", "Does not use power.", CORE.GT_Tooltip };
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return aSide == aFacing
-                ? new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency)
-                }
-                : new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                    new GT_RenderedTexture(Textures.BlockIcons.VOID)
-                };
+                ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                        new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+                : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                        new GT_RenderedTexture(Textures.BlockIcons.VOID) };
     }
 
     @Override
@@ -94,85 +72,71 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
         return rTextures;
     }
 
-    /*@Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-    	return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
-    }*/
+    /*
+     * @Override public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final
+     * byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) { return
+     * this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 :
+     * aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1]; }
+     */
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
-        };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
+                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaPollutionDetector(
-                this.mName, this.mTier, this.mDescription, this.mTextures, this.mInventory.length);
+                this.mName,
+                this.mTier,
+                this.mDescription,
+                this.mTextures,
+                this.mInventory.length);
     }
 
     @Override
@@ -309,14 +273,14 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean allowPullStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(
-            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+            final ItemStack aStack) {
         return false;
     }
 
@@ -330,12 +294,9 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            this.getLocalName(),
-            "Current Pollution: " + this.mCurrentPollution,
-            "Average/10 Sec: " + this.mAveragePollution,
-            "Emit Redstone at pollution level: " + this.mRedstoneLevel
-        };
+        return new String[] { this.getLocalName(), "Current Pollution: " + this.mCurrentPollution,
+                "Average/10 Sec: " + this.mAveragePollution,
+                "Emit Redstone at pollution level: " + this.mRedstoneLevel };
     }
 
     @Override
@@ -521,8 +482,8 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean onRightclick(
-            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+            float aY, float aZ) {
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
     }
 

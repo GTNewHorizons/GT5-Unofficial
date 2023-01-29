@@ -1,5 +1,10 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.util.*;
+
+import net.minecraft.item.*;
+import net.minecraftforge.oredict.OreDictionary;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -17,44 +22,16 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.*;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.util.*;
-import net.minecraft.item.*;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class MaterialUtils {
 
     public static short firstID = 791;
 
-    @SuppressWarnings({"rawtypes", "unused"})
-    private static Class[][] commonTypes = {
-        {
-            Materials.class,
-            int.class,
-            TextureSet.class,
-            float.class,
-            int.class,
-            int.class,
-            int.class,
-            int.class,
-            int.class,
-            int.class,
-            int.class,
-            String.class,
-            int.class,
-            int.class,
-            int.class,
-            int.class,
-            boolean.class,
-            boolean.class,
-            int.class,
-            int.class,
-            int.class,
-            Dyes.class,
-            int.class,
-            List.class,
-            List.class
-        }
-    };
+    @SuppressWarnings({ "rawtypes", "unused" })
+    private static Class[][] commonTypes = { { Materials.class, int.class, TextureSet.class, float.class, int.class,
+            int.class, int.class, int.class, int.class, int.class, int.class, String.class, int.class, int.class,
+            int.class, int.class, boolean.class, boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
+            List.class, List.class } };
 
     public static List<?> oreDictValuesForEntry(final String oredictName) {
         List<?> oredictItemNames;
@@ -80,8 +57,8 @@ public class MaterialUtils {
         return generateMaterialFromGtENUM(material, customRGB, null);
     }
 
-    public static Material generateMaterialFromGtENUM(
-            final Materials material, short[] customRGB, TextureSet aCustomTextures) {
+    public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB,
+            TextureSet aCustomTextures) {
         String aMaterialKey = getMaterialName(material).toLowerCase();
         if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
             return mGeneratedMaterialMap.get(aMaterialKey);
@@ -153,10 +130,9 @@ public class MaterialUtils {
                 Logger.MATERIALS("[Debug] State set as gas.");
                 materialState = MaterialState.GAS;
             } /*
-              else if (material.getPlasma(1) != null){
-              	Logger.MATERIALS("[Debug] State set as plasma.");
-              	materialState = MaterialState.PLASMA;
-              }*/ else {
+               * else if (material.getPlasma(1) != null){ Logger.MATERIALS("[Debug] State set as plasma.");
+               * materialState = MaterialState.PLASMA; }
+               */ else {
                 Logger.MATERIALS(
                         "[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
                 materialState = MaterialState.SOLID;
@@ -167,10 +143,8 @@ public class MaterialUtils {
                 final String tempname = name.substring(7, name.length());
                 name = "Infused " + tempname;
             }
-            if (hasValidRGBA(rgba)
-                    || (element == Element.H)
-                    || ((material == Materials.InfusedAir)
-                            || (material == Materials.InfusedFire)
+            if (hasValidRGBA(rgba) || (element == Element.H)
+                    || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire)
                             || (material == Materials.InfusedEarth)
                             || (material == Materials.InfusedWater))) {
                 // ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
@@ -193,8 +167,10 @@ public class MaterialUtils {
                 mGeneratedMaterialMap.put(aMaterialKey, M);
                 return M;
             } else {
-                Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.name()
-                        + " | Valid RGB? " + (hasValidRGBA(rgba)));
+                Logger.DEBUG_MATERIALS(
+                        "Failed to generate GT++ material instance for " + material.name()
+                                + " | Valid RGB? "
+                                + (hasValidRGBA(rgba)));
             }
         } catch (Throwable t) {
             Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.name());
@@ -203,11 +179,8 @@ public class MaterialUtils {
         return null;
     }
 
-    public static Material generateQuickMaterial(
-            final String materialName,
-            final MaterialState defaultState,
-            final short[] colour,
-            final int sRadioactivity) {
+    public static Material generateQuickMaterial(final String materialName, final MaterialState defaultState,
+            final short[] colour, final int sRadioactivity) {
         String aMaterialKey = materialName.toLowerCase();
         if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
             return mGeneratedMaterialMap.get(aMaterialKey);
@@ -239,39 +212,15 @@ public class MaterialUtils {
 
         return aMeltingPoint < 1000 ? 0 : (MathUtils.roundToClosestInt(aMeltingPoint / 1000f));
 
-        /*if ((aMeltingPoint >= 0) && (aMeltingPoint <= 1000)){
-        	return 1;
-        }
-        else if((aMeltingPoint >= 1001) && (aMeltingPoint <= 2000)){
-        	return 2;
-        }
-        else if((aMeltingPoint >= 2001) && (aMeltingPoint <= 3000)){
-        	return 3;
-        }
-        else if((aMeltingPoint >= 3001) && (aMeltingPoint <= 4000)){
-        	return 4;
-        }
-        else if((aMeltingPoint >= 4001) && (aMeltingPoint <= 5000)){
-        	return 5;
-        }
-        else if((aMeltingPoint >= 5001) && (aMeltingPoint <= 6000)){
-        	return 6;
-        }
-        else if((aMeltingPoint >= 6001) && (aMeltingPoint <= 7000)){
-        	return 7;
-        }
-        else if((aMeltingPoint >= 7001) && (aMeltingPoint <= 8000)){
-        	return 8;
-        }
-        else if((aMeltingPoint >= 8001) && (aMeltingPoint <= 9000)){
-        	return 9;
-        }
-        else if((aMeltingPoint >= 9001) && (aMeltingPoint <= 9999)){
-        	return 10;
-        }
-        else {
-        	return 0;
-        }*/
+        /*
+         * if ((aMeltingPoint >= 0) && (aMeltingPoint <= 1000)){ return 1; } else if((aMeltingPoint >= 1001) &&
+         * (aMeltingPoint <= 2000)){ return 2; } else if((aMeltingPoint >= 2001) && (aMeltingPoint <= 3000)){ return 3;
+         * } else if((aMeltingPoint >= 3001) && (aMeltingPoint <= 4000)){ return 4; } else if((aMeltingPoint >= 4001) &&
+         * (aMeltingPoint <= 5000)){ return 5; } else if((aMeltingPoint >= 5001) && (aMeltingPoint <= 6000)){ return 6;
+         * } else if((aMeltingPoint >= 6001) && (aMeltingPoint <= 7000)){ return 7; } else if((aMeltingPoint >= 7001) &&
+         * (aMeltingPoint <= 8000)){ return 8; } else if((aMeltingPoint >= 8001) && (aMeltingPoint <= 9000)){ return 9;
+         * } else if((aMeltingPoint >= 9001) && (aMeltingPoint <= 9999)){ return 10; } else { return 0; }
+         */
     }
 
     public static int getVoltageForTier(int aTier) {
@@ -312,10 +261,9 @@ public class MaterialUtils {
                 return Integer.MAX_VALUE;
         }
 
-        /*else {
-        	int newTier = aTier - 1;
-        	return (int) ((4*(Math.pow(4, newTier)))*7.5);
-        }*/
+        /*
+         * else { int newTier = aTier - 1; return (int) ((4*(Math.pow(4, newTier)))*7.5); }
+         */
     }
 
     private static Materials getMaterialByName(String materialName) {
@@ -338,14 +286,11 @@ public class MaterialUtils {
         String mName = null;
 
         try {
-            mName = (String) ReflectionUtils.getField(Materials.class, "mDefaultLocalName")
-                    .get(mat);
+            mName = (String) ReflectionUtils.getField(Materials.class, "mDefaultLocalName").get(mat);
             if (mName == null) {
-                mName = (String)
-                        ReflectionUtils.getField(Materials.class, "mName").get(mat);
+                mName = (String) ReflectionUtils.getField(Materials.class, "mName").get(mat);
             }
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-        }
+        } catch (IllegalArgumentException | IllegalAccessException e) {}
 
         if (mName == null || mName.equals("")) {
             mName = mat.name();
@@ -365,9 +310,12 @@ public class MaterialUtils {
             }
         }
         return aCounter.getResults();
-        /*Optional<TextureSet> r = list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
-        TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
-        return o;*/
+        /*
+         * Optional<TextureSet> r =
+         * list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(),
+         * Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
+         * TextureSet o = (r != null && r.isPresent() && r.get() != null) ? r.get() : null; return o;
+         */
     }
 
     public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {
@@ -376,8 +324,11 @@ public class MaterialUtils {
             g = getMaterial(aFallbackMaterialName);
         }
         if (g == null) {
-            Logger.INFO("Failed finding material '" + aMaterialName + "' & fallback '" + aFallbackMaterialName
-                    + "', returning _NULL.");
+            Logger.INFO(
+                    "Failed finding material '" + aMaterialName
+                            + "' & fallback '"
+                            + aFallbackMaterialName
+                            + "', returning _NULL.");
             CORE.crash();
             // g = Materials._NULL;
         }
@@ -399,49 +350,14 @@ public class MaterialUtils {
     public static AutoMap<Material> getCompoundMaterialsRecursively(Material aMat) {
         return getCompoundMaterialsRecursively_Speiger(aMat);
         /*
-        AutoMap<Material> aDataSet = new AutoMap<Material>();
-        final int HARD_LIMIT = 1000;
-        int mLoopCounter = 0;
-        if (aMat.getComposites().size() > 0) {
-        	try {
-        		List<Material> xList = Lists.newLinkedList();
-        		for (MaterialStack kj : aMat.getComposites()) {
-        			xList.add(kj.getStackMaterial());
-        		}
-        		if (xList.isEmpty()) {
-        			aDataSet.put(aMat);
-        			return aDataSet;
-        		}
-        		ListIterator<Material> listIterator = xList.listIterator();
-        		while(listIterator.hasNext()){
-        			Material e = listIterator.next();
-        			listIterator.remove();
-        			if (mLoopCounter > HARD_LIMIT) {
-        				break;
-        			}
-
-        			if (e.getComposites().isEmpty()) {
-        				aDataSet.put(e);
-        			}
-        			else {
-        				for (MaterialStack x : e.getComposites()) {
-        					listIterator.add(x.getStackMaterial());
-        				}
-        			}
-        			mLoopCounter++;
-
-
-        		}}
-        	catch (Throwable t) {
-        		aDataSet.put(aMat);
-        		t.printStackTrace();
-        	}
-        }
-        if (aDataSet.isEmpty()) {
-        	aDataSet.put(aMat);
-        	return aDataSet;
-        }
-        return aDataSet;
+         * AutoMap<Material> aDataSet = new AutoMap<Material>(); final int HARD_LIMIT = 1000; int mLoopCounter = 0; if
+         * (aMat.getComposites().size() > 0) { try { List<Material> xList = Lists.newLinkedList(); for (MaterialStack kj
+         * : aMat.getComposites()) { xList.add(kj.getStackMaterial()); } if (xList.isEmpty()) { aDataSet.put(aMat);
+         * return aDataSet; } ListIterator<Material> listIterator = xList.listIterator(); while(listIterator.hasNext()){
+         * Material e = listIterator.next(); listIterator.remove(); if (mLoopCounter > HARD_LIMIT) { break; } if
+         * (e.getComposites().isEmpty()) { aDataSet.put(e); } else { for (MaterialStack x : e.getComposites()) {
+         * listIterator.add(x.getStackMaterial()); } } mLoopCounter++; }} catch (Throwable t) { aDataSet.put(aMat);
+         * t.printStackTrace(); } } if (aDataSet.isEmpty()) { aDataSet.put(aMat); return aDataSet; } return aDataSet;
          */ }
 
     public static AutoMap<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
@@ -476,8 +392,8 @@ public class MaterialUtils {
         generateComponentAndAssignToAMaterial(aType, aMaterial, true);
     }
 
-    public static void generateComponentAndAssignToAMaterial(
-            ComponentTypes aType, Material aMaterial, boolean generateRecipes) {
+    public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial,
+            boolean generateRecipes) {
         Item aGC;
         if (aType == ComponentTypes.PLATEHEAVY) {
             aGC = new BaseItemPlateHeavy(aMaterial);
@@ -530,8 +446,7 @@ public class MaterialUtils {
     }
 
     public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {
-        if (aGregtechMaterial == Materials._NULL
-                || aGregtechMaterial.equals(Materials._NULL)
+        if (aGregtechMaterial == Materials._NULL || aGregtechMaterial.equals(Materials._NULL)
                 || aGregtechMaterial.name().equals(Materials._NULL.name())) {
             return true;
         }

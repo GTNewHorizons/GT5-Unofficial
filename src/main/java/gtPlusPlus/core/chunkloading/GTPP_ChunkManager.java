@@ -1,11 +1,7 @@
 package gtPlusPlus.core.chunkloading;
 
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.ListMultimap;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 import java.util.*;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -14,17 +10,23 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
+
 /**
  *
- * This class handles re-initializing chunks after a server restart
- * Credits to Repo-Alt for the original implementation.
+ * This class handles re-initializing chunks after a server restart Credits to Repo-Alt for the original implementation.
+ * 
  * @author Repo-Alt, Alkalus
  *
  */
-public class GTPP_ChunkManager
-        implements ForgeChunkManager.LoadingCallback,
-                ForgeChunkManager.OrderedLoadingCallback,
-                ForgeChunkManager.PlayerOrderedLoadingCallback {
+public class GTPP_ChunkManager implements ForgeChunkManager.LoadingCallback, ForgeChunkManager.OrderedLoadingCallback,
+        ForgeChunkManager.PlayerOrderedLoadingCallback {
+
     private static GTPP_ChunkManager instance;
 
     public static boolean enableChunkloaders = true;

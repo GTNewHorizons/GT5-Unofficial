@@ -1,21 +1,10 @@
 package gtPlusPlus.core.block.general.redstone;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
-import gtPlusPlus.core.util.minecraft.InventoryUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -33,6 +22,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
+import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
+import gtPlusPlus.core.util.minecraft.InventoryUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+
 public abstract class BlockGenericRedstone extends BlockContainer {
 
     @SuppressWarnings("deprecation")
@@ -45,11 +47,12 @@ public abstract class BlockGenericRedstone extends BlockContainer {
         LanguageRegistry.addName(this, aDisplayName);
     }
 
-    private final HashMap<Integer, HashMap<ForgeDirection, IIcon>> mTextures =
-            new HashMap<Integer, HashMap<ForgeDirection, IIcon>>();
+    private final HashMap<Integer, HashMap<ForgeDirection, IIcon>> mTextures = new HashMap<Integer, HashMap<ForgeDirection, IIcon>>();
 
     /**
-     * A map of the textures used for this blocks. The key is the meta, then each internal map holds textures tied to each forge direction. Do not use unknown direction.
+     * A map of the textures used for this blocks. The key is the meta, then each internal map holds textures tied to
+     * each forge direction. Do not use unknown direction.
+     * 
      * @return
      */
     public HashMap<Integer, HashMap<ForgeDirection, IIcon>> getTextureArray() {
@@ -69,16 +72,8 @@ public abstract class BlockGenericRedstone extends BlockContainer {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float lx,
-            final float ly,
-            final float lz) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float lx, final float ly, final float lz) {
 
         if (world.isRemote) {
             return true;
@@ -99,7 +94,8 @@ public abstract class BlockGenericRedstone extends BlockContainer {
                         if (ItemUtils.isToolScrewdriver(mHandStack)) {
                             mDidTool = tile.onScrewdriverRMB();
                             PlayerUtils.messagePlayer(
-                                    player, "Adjusted Light level by 0.0625f. " + tile.getLightBrightness());
+                                    player,
+                                    "Adjusted Light level by 0.0625f. " + tile.getLightBrightness());
                         }
                     }
                     if (tile.isMalletable()) {
@@ -115,8 +111,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
                     }
                 }
             }
-        } catch (final Throwable t) {
-        }
+        } catch (final Throwable t) {}
         if (mDidTool) {
             return true;
         }
@@ -153,8 +148,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
                     }
                 }
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
 
         if (!mDidTool && !aPlayer.capabilities.isCreativeMode) {
             super.onBlockClicked(aWorld, aX, aY, aZ, aPlayer);
@@ -167,19 +161,14 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);
 
     @Override
-    public void breakBlock(
-            final World world, final int x, final int y, final int z, final Block block, final int number) {
+    public void breakBlock(final World world, final int x, final int y, final int z, final Block block,
+            final int number) {
         InventoryUtils.dropInventoryItems(world, x, y, z, block);
         super.breakBlock(world, x, y, z, block, number);
     }
 
     @Override
-    public void onBlockPlacedBy(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityLivingBase entity,
+    public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
             final ItemStack stack) {
         if (stack.hasDisplayName()) {
             ((TileEntityRedstoneHandler) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
@@ -187,8 +176,8 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 
@@ -198,16 +187,8 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     }
 
     @Override
-    public int onBlockPlaced(
-            World p_149660_1_,
-            int p_149660_2_,
-            int p_149660_3_,
-            int p_149660_4_,
-            int p_149660_5_,
-            float p_149660_6_,
-            float p_149660_7_,
-            float p_149660_8_,
-            int p_149660_9_) {
+    public int onBlockPlaced(World p_149660_1_, int p_149660_2_, int p_149660_3_, int p_149660_4_, int p_149660_5_,
+            float p_149660_6_, float p_149660_7_, float p_149660_8_, int p_149660_9_) {
         // TODO Auto-generated method stub
         return super.onBlockPlaced(
                 p_149660_1_,
@@ -251,8 +232,8 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     }
 
     @Override
-    public int getComparatorInputOverride(
-            World p_149736_1_, int p_149736_2_, int p_149736_3_, int p_149736_4_, int p_149736_5_) {
+    public int getComparatorInputOverride(World p_149736_1_, int p_149736_2_, int p_149736_3_, int p_149736_4_,
+            int p_149736_5_) {
         // TODO Auto-generated method stub
         return super.getComparatorInputOverride(p_149736_1_, p_149736_2_, p_149736_3_, p_149736_4_, p_149736_5_);
     }
@@ -315,9 +296,8 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     }
 
     /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which
-     * neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor
-     * Block
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor Block
      */
     public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block p_149695_5_) {
 
@@ -371,16 +351,15 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     public abstract Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_);
 
     /**
-     * Returns an item stack containing a single instance of the current block type.
-     * 'i' is the block's subtype/damage and is ignored for blocks which do not
-     * support subtypes. Blocks which cannot be harvested should return null.
+     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
+     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
      */
     @Override
     protected abstract ItemStack createStackedBlock(int p_149644_1_);
 
     @Override
-    public abstract ArrayList<ItemStack> getDrops(
-            final World world, final int x, final int y, final int z, final int metadata, final int fortune);
+    public abstract ArrayList<ItemStack> getDrops(final World world, final int x, final int y, final int z,
+            final int metadata, final int fortune);
 
     @Override
     public abstract Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_);

@@ -1,10 +1,16 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
+import java.lang.reflect.Constructor;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -18,9 +24,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import java.lang.reflect.Constructor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileEntity_Hatch
         implements IAddGregtechLogo {
@@ -30,40 +33,24 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     private final int mTotalSlotCount;
     private final boolean mAllowDuplicateUsageTypes;
 
-    public GT_MetaTileEntity_Hatch_NbtConsumable(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aInputSlots,
-            String aDescription,
-            boolean aAllowDuplicateTypes) {
+    public GT_MetaTileEntity_Hatch_NbtConsumable(int aID, String aName, String aNameRegional, int aTier,
+            int aInputSlots, String aDescription, boolean aAllowDuplicateTypes) {
         super(aID, aName, aNameRegional, aTier, aInputSlots * 2, aDescription);
         mInputslotCount = getInputSlotCount();
         mTotalSlotCount = getInputSlotCount() * 2;
         mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
-    public GT_MetaTileEntity_Hatch_NbtConsumable(
-            String aName,
-            int aTier,
-            int aInputSlots,
-            String aDescription,
-            boolean aAllowDuplicateTypes,
-            ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_NbtConsumable(String aName, int aTier, int aInputSlots, String aDescription,
+            boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
         mInputslotCount = getInputSlotCount();
         mTotalSlotCount = getInputSlotCount() * 2;
         mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
-    public GT_MetaTileEntity_Hatch_NbtConsumable(
-            String aName,
-            int aTier,
-            int aInputSlots,
-            String[] aDescription,
-            boolean aAllowDuplicateTypes,
-            ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_NbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription,
+            boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
         mInputslotCount = getInputSlotCount();
         mTotalSlotCount = getInputSlotCount() * 2;
@@ -101,9 +88,11 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     @Override
     public final MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         Constructor<?> aConstructor = ReflectionUtils.getConstructor(
-                getHatchEntityClass(), new Class[] {String.class, String[].class, ITexture[][][].class});
+                getHatchEntityClass(),
+                new Class[] { String.class, String[].class, ITexture[][][].class });
         GT_MetaTileEntity_Hatch_NbtConsumable aInstance = ReflectionUtils.createNewInstanceFromConstructor(
-                aConstructor, new Object[] {mName, StaticFields59.getDescriptionArray(this), mTextures});
+                aConstructor,
+                new Object[] { mName, StaticFields59.getDescriptionArray(this), mTextures });
         if (aInstance instanceof GT_MetaTileEntity_Hatch_NbtConsumable) {
             GT_MetaTileEntity_Hatch_NbtConsumable aMetaTile = (GT_MetaTileEntity_Hatch_NbtConsumable) aInstance;
             return aMetaTile;
@@ -269,29 +258,30 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     }
 
     @Override
-    public final boolean allowPullStack(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public final boolean allowPutStack(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing()
-                && isItemValidForUsageSlot(aStack)
+    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing() && isItemValidForUsageSlot(aStack)
                 && aIndex < mInputslotCount;
     }
 
     /**
-     * Items that get compared when checking for Usage Slot validity.
-     * Can return an empty map if isItemValidForUsageSlot() is overridden.
+     * Items that get compared when checking for Usage Slot validity. Can return an empty map if
+     * isItemValidForUsageSlot() is overridden.
+     * 
      * @return
      */
     public abstract AutoMap<ItemStack> getItemsValidForUsageSlots();
 
     /**
-     * Checks if the given item is valid for Usage Slots.
-     * Can be overridden for easier handling if you already have methods to check this.
+     * Checks if the given item is valid for Usage Slots. Can be overridden for easier handling if you already have
+     * methods to check this.
+     * 
      * @param aStack
      * @return
      */
@@ -316,16 +306,14 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
         switch (mTotalSlotCount) {
             case 8:
             case 18:
-                builder.widget(new DrawableWidget()
-                        .setDrawable(getGUITextureSet().getGregTechLogo())
-                        .setSize(17, 17)
-                        .setPos(152, 63));
+                builder.widget(
+                        new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                                .setPos(152, 63));
                 break;
             case 32:
-                builder.widget(new DrawableWidget()
-                        .setDrawable(getGUITextureSet().getGregTechLogo())
-                        .setSize(17, 17)
-                        .setPos(79, 35));
+                builder.widget(
+                        new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                                .setPos(79, 35));
                 break;
         }
     }
@@ -334,55 +322,32 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTotalSlotCount) {
             case 8:
-                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(0)
-                        .endAtSlot(3)
-                        .build()
-                        .setPos(25, 25));
-                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(4)
-                        .endAtSlot(7)
-                        .canInsert(false)
-                        .build()
-                        .setPos(115, 25));
-                builder.widget(new TextWidget("Stock")
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(25, 16))
-                        .widget(new TextWidget("Active")
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(115, 16));
+                builder.widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3).build()
+                                .setPos(25, 25));
+                builder.widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(4).endAtSlot(7).canInsert(false)
+                                .build().setPos(115, 25));
+                builder.widget(new TextWidget("Stock").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(25, 16))
+                        .widget(new TextWidget("Active").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(115, 16));
                 break;
             case 18:
-                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(0)
-                        .endAtSlot(8)
-                        .build()
-                        .setPos(25, 19));
-                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(9)
-                        .endAtSlot(17)
-                        .canInsert(false)
-                        .build()
-                        .setPos(97, 19));
-                builder.widget(new TextWidget("Stock")
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(25, 14))
-                        .widget(new TextWidget("Active")
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(15, 14));
+                builder.widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8).build()
+                                .setPos(25, 19));
+                builder.widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(9).endAtSlot(17).canInsert(false)
+                                .build().setPos(97, 19));
+                builder.widget(new TextWidget("Stock").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(25, 14))
+                        .widget(new TextWidget("Active").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(15, 14));
                 break;
             case 32:
-                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(0)
-                        .endAtSlot(15)
-                        .build()
-                        .setPos(7, 7));
-                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(16)
-                        .endAtSlot(31)
-                        .canInsert(false)
-                        .build()
-                        .setPos(96, 7));
+                builder.widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).build()
+                                .setPos(7, 7));
+                builder.widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(16).endAtSlot(31).canInsert(false)
+                                .build().setPos(96, 7));
                 break;
         }
     }

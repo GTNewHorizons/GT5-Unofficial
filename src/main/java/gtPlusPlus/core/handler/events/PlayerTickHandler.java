@@ -1,7 +1,8 @@
 package gtPlusPlus.core.handler.events;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerTickHandler {
 

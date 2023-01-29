@@ -1,15 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.helpers.autocrafter;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_AutoCrafter;
 import java.util.*;
 import java.util.Map.Entry;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_AutoCrafter;
 
 public class AC_Helper_Utils {
 
     // AC maps
-    public static final Map<Integer, GT4Entity_AutoCrafter> sAutocrafterMap =
-            new HashMap<Integer, GT4Entity_AutoCrafter>();
+    public static final Map<Integer, GT4Entity_AutoCrafter> sAutocrafterMap = new HashMap<Integer, GT4Entity_AutoCrafter>();
 
     // Add Crafter
     public static final int addCrafter(GT4Entity_AutoCrafter AC) {

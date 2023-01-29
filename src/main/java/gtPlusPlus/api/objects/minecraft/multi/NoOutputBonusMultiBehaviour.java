@@ -1,7 +1,8 @@
 package gtPlusPlus.api.objects.minecraft.multi;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NoOutputBonusMultiBehaviour extends SpecialMultiBehaviour {
 

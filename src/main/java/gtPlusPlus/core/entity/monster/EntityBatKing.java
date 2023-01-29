@@ -1,13 +1,7 @@
 package gtPlusPlus.core.entity.monster;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.entity.ai.batking.EntityAIBatKingAttack;
-import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Field;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -33,6 +27,14 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.entity.ai.batking.EntityAIBatKingAttack;
+import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+
 public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 
     public int courseChangeCooldown;
@@ -46,8 +48,11 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     private int explosionStrength = 1;
 
     private EntityAIBatKingAttack aiAttack = new EntityAIBatKingAttack(this, null, 1.0D, 20, 60, 15.0F, true);
-    private EntityAIAttackOnCollide aiAttackOnCollide =
-            new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.2D, false);
+    private EntityAIAttackOnCollide aiAttackOnCollide = new EntityAIAttackOnCollide(
+            this,
+            EntityPlayer.class,
+            1.2D,
+            false);
 
     public EntityBatKing(World p_i1680_1_) {
         super(p_i1680_1_);
@@ -118,8 +123,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     }
 
     /**
-     * Returns true if this entity should push and be pushed by other entities when
-     * colliding.
+     * Returns true if this entity should push and be pushed by other entities when colliding.
      */
     public boolean canBePushed() {
         return true;
@@ -294,8 +298,8 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     }
 
     /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk
-     * on. used for spiders and wolves to prevent them from trampling crops
+     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+     * prevent them from trampling crops
      */
     protected boolean canTriggerWalking() {
         return false;
@@ -359,8 +363,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
         if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < d4 * d4 * 8) {
             Logger.INFO("Trying to do ranged attack 2");
             double d5 = this.targetedEntity.posX - this.posX;
-            double d6 = this.targetedEntity.boundingBox.minY
-                    + (double) (this.targetedEntity.height / 2.0F)
+            double d6 = this.targetedEntity.boundingBox.minY + (double) (this.targetedEntity.height / 2.0F)
                     - (this.posY + (double) (this.height / 2.0F));
             double d7 = this.targetedEntity.posZ - this.posZ;
             this.renderYawOffset = this.rotationYaw = -((float) Math.atan2(d5, d7)) * 180.0F / (float) Math.PI;
@@ -374,11 +377,17 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
                     Logger.INFO("Trying to do ranged attack 3a1");
 
                     this.worldObj.playAuxSFXAtEntity(
-                            (EntityPlayer) null, 1008, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
+                            (EntityPlayer) null,
+                            1008,
+                            (int) this.posX,
+                            (int) this.posY,
+                            (int) this.posZ,
+                            0);
                     setIsBatHanging(true);
 
-                    EntityThrowableBomb entitylargefireball =
-                            new EntityThrowableBomb(this.worldObj, this /*d5, d6, d7*/);
+                    EntityThrowableBomb entitylargefireball = new EntityThrowableBomb(
+                            this.worldObj,
+                            this /* d5, d6, d7 */);
                     // entitylargefireball.field_92057_e = this.explosionStrength;
                     // entitylargefireball.accelerationX *= 2;
                     // entitylargefireball.accelerationY *= 2;
@@ -395,14 +404,18 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
                             Logger.INFO("Trying to do ranged attack 5a");
                             --this.attackCounter;
                             EntityArrow entityarrow = new EntityArrow(
-                                    this.worldObj, this, p_82196_1_, MathUtils.randFloat(1f, 3f), (float)
-                                            (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
+                                    this.worldObj,
+                                    this,
+                                    p_82196_1_,
+                                    MathUtils.randFloat(1f, 3f),
+                                    (float) (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
                             int i = MathUtils.randInt(0, 4);
                             int j = MathUtils.randInt(0, 3);
                             int k = MathUtils.randInt(0, 3);
-                            entityarrow.setDamage((double) (p_82196_2_ * 2.0F)
-                                    + this.rand.nextGaussian() * 0.25D
-                                    + (double) ((float) this.worldObj.difficultySetting.getDifficultyId() * 0.11F));
+                            entityarrow.setDamage(
+                                    (double) (p_82196_2_ * 2.0F) + this.rand.nextGaussian() * 0.25D
+                                            + (double) ((float) this.worldObj.difficultySetting.getDifficultyId()
+                                                    * 0.11F));
 
                             boolean boostAttack = MathUtils.randInt(0, 100) <= 21;
                             if (boostAttack) {
@@ -418,10 +431,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
                                 }
                             }
 
-                            this.playSound(
-                                    "mob.skeleton.say",
-                                    1.0F,
-                                    1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+                            this.playSound("mob.skeleton.say", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                             this.worldObj.spawnEntityInWorld(entityarrow);
                             Logger.INFO("Trying to do ranged attack 5a done");
                         }
@@ -435,20 +445,24 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
             }
         } else {
             Logger.INFO("Trying to do ranged attack 4a");
-            this.renderYawOffset =
-                    this.rotationYaw = -((float) Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float) Math.PI;
+            this.renderYawOffset = this.rotationYaw = -((float) Math.atan2(this.motionX, this.motionZ)) * 180.0F
+                    / (float) Math.PI;
 
             if (this.attackCounter > 0) {
                 Logger.INFO("Trying to do ranged attack 5a");
                 --this.attackCounter;
-                EntityArrow entityarrow = new EntityArrow(this.worldObj, this, p_82196_1_, 1.6F, (float)
-                        (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
+                EntityArrow entityarrow = new EntityArrow(
+                        this.worldObj,
+                        this,
+                        p_82196_1_,
+                        1.6F,
+                        (float) (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
                 int i = MathUtils.randInt(0, 4);
                 int j = MathUtils.randInt(0, 3);
                 int k = MathUtils.randInt(0, 3);
-                entityarrow.setDamage((double) (p_82196_2_ * 2.0F)
-                        + this.rand.nextGaussian() * 0.25D
-                        + (double) ((float) this.worldObj.difficultySetting.getDifficultyId() * 0.11F));
+                entityarrow.setDamage(
+                        (double) (p_82196_2_ * 2.0F) + this.rand.nextGaussian() * 0.25D
+                                + (double) ((float) this.worldObj.difficultySetting.getDifficultyId() * 0.11F));
 
                 boolean boostAttack = MathUtils.randInt(0, 100) <= 21;
                 if (boostAttack) {
@@ -479,8 +493,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     }
 
     /**
-     * Checks if the entity's current position is a valid location to spawn this
-     * entity.
+     * Checks if the entity's current position is a valid location to spawn this entity.
      */
     public boolean getCanSpawnHere() {
         return super.getCanSpawnHere() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL;
@@ -498,9 +511,8 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     }
 
     /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has
-     * recently been hit by a player. @param par2 - Level of Looting used to kill
-     * this mob.
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
         int j = this.rand.nextInt(2) + this.rand.nextInt(1 + p_70628_2_);
@@ -567,8 +579,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 
         if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < d4 * d4) {
             double d5 = this.targetedEntity.posX - this.posX;
-            double d6 = this.targetedEntity.boundingBox.minY
-                    + (double) (this.targetedEntity.height / 2.0F)
+            double d6 = this.targetedEntity.boundingBox.minY + (double) (this.targetedEntity.height / 2.0F)
                     - (this.posY + (double) (this.height / 2.0F));
             double d7 = this.targetedEntity.posZ - this.posZ;
             this.renderYawOffset = this.rotationYaw = -((float) Math.atan2(d5, d7)) * 180.0F / (float) Math.PI;
@@ -576,14 +587,24 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
             if (this.canEntityBeSeen(this.targetedEntity)) {
                 if (this.attackCounter == 10) {
                     this.worldObj.playAuxSFXAtEntity(
-                            (EntityPlayer) null, 1007, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
+                            (EntityPlayer) null,
+                            1007,
+                            (int) this.posX,
+                            (int) this.posY,
+                            (int) this.posZ,
+                            0);
                 }
 
                 ++this.attackCounter;
 
                 if (this.attackCounter == 20) {
                     this.worldObj.playAuxSFXAtEntity(
-                            (EntityPlayer) null, 1008, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
+                            (EntityPlayer) null,
+                            1008,
+                            (int) this.posX,
+                            (int) this.posY,
+                            (int) this.posZ,
+                            0);
                     EntityLargeFireball entitylargefireball = new EntityLargeFireball(this.worldObj, this, d5, d6, d7);
                     entitylargefireball.field_92057_e = this.explosionStrength;
                     double d8 = 4.0D;
@@ -598,8 +619,8 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
                 --this.attackCounter;
             }
         } else {
-            this.renderYawOffset =
-                    this.rotationYaw = -((float) Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float) Math.PI;
+            this.renderYawOffset = this.rotationYaw = -((float) Math.atan2(this.motionX, this.motionZ)) * 180.0F
+                    / (float) Math.PI;
 
             if (this.attackCounter > 0) {
                 --this.attackCounter;
@@ -629,8 +650,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
             axisalignedbb.offset(d4, d5, d6);
 
             /*
-             * if (!this.worldObj.getCollidingBoundingBoxes(this, axisalignedbb).isEmpty())
-             * { return false; }
+             * if (!this.worldObj.getCollidingBoundingBoxes(this, axisalignedbb).isEmpty()) { return false; }
              */
         }
 
@@ -643,9 +663,8 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     protected void fall(float p_70069_1_) {}
 
     /**
-     * Takes in the distance the entity has fallen this tick and whether its on the
-     * ground to update the fall distance and deal fall damage if landing on the
-     * ground. Args: distanceFallenThisTick, onGround
+     * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
+     * and deal fall damage if landing on the ground. Args: distanceFallenThisTick, onGround
      */
     protected void updateFallState(double p_70064_1_, boolean p_70064_3_) {}
 
@@ -670,11 +689,9 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 
             if (this.onGround) {
                 f2 = this.worldObj.getBlock(
-                                        MathHelper.floor_double(this.posX),
-                                        MathHelper.floor_double(this.boundingBox.minY) - 1,
-                                        MathHelper.floor_double(this.posZ))
-                                .slipperiness
-                        * 0.91F;
+                        MathHelper.floor_double(this.posX),
+                        MathHelper.floor_double(this.boundingBox.minY) - 1,
+                        MathHelper.floor_double(this.posZ)).slipperiness * 0.91F;
             }
 
             float f3 = 0.16277136F / (f2 * f2 * f2);
@@ -683,11 +700,9 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
 
             if (this.onGround) {
                 f2 = this.worldObj.getBlock(
-                                        MathHelper.floor_double(this.posX),
-                                        MathHelper.floor_double(this.boundingBox.minY) - 1,
-                                        MathHelper.floor_double(this.posZ))
-                                .slipperiness
-                        * 0.91F;
+                        MathHelper.floor_double(this.posX),
+                        MathHelper.floor_double(this.boundingBox.minY) - 1,
+                        MathHelper.floor_double(this.posZ)).slipperiness * 0.91F;
             }
 
             this.moveEntity(this.motionX, this.motionY, this.motionZ);

@@ -1,15 +1,5 @@
 package gtPlusPlus.core.gui.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.container.Container_Grindle;
-import gtPlusPlus.core.inventories.BaseInventoryGrindle;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -25,13 +15,26 @@ import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.container.Container_Grindle;
+import gtPlusPlus.core.inventories.BaseInventoryGrindle;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 @SideOnly(Side.CLIENT)
 public class GuiScreenGrindle extends GuiContainer {
+
     private static final Logger logger = LogManager.getLogger();
     private static final ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
     /** The player editing the book */
@@ -62,8 +65,9 @@ public class GuiScreenGrindle extends GuiContainer {
     private GuiButton buttonCancel;
 
     // Texture
-    private static final ResourceLocation iconLocation =
-            new ResourceLocation(CORE.MODID, "textures/gui/itemGrindle.png");
+    private static final ResourceLocation iconLocation = new ResourceLocation(
+            CORE.MODID,
+            "textures/gui/itemGrindle.png");
 
     /** The inventory to render on screen */
     private final BaseInventoryGrindle inventory;
@@ -168,8 +172,7 @@ public class GuiScreenGrindle extends GuiContainer {
     }
 
     /**
-     * Called when the screen is unloaded. Used to disable keyboard repeat
-     * events
+     * Called when the screen is unloaded. Used to disable keyboard repeat events
      */
     @Override
     public void onGuiClosed() {
@@ -177,8 +180,8 @@ public class GuiScreenGrindle extends GuiContainer {
     }
 
     private void updateButtons() {
-        this.buttonNextPage.visible =
-                !this.field_146480_s && ((this.currPage < (this.bookTotalPages - 1)) || this.bookIsUnsigned);
+        this.buttonNextPage.visible = !this.field_146480_s
+                && ((this.currPage < (this.bookTotalPages - 1)) || this.bookIsUnsigned);
         this.buttonPreviousPage.visible = !this.field_146480_s && (this.currPage > 0);
         this.buttonDone.visible = !this.bookIsUnsigned || !this.field_146480_s;
 
@@ -277,8 +280,7 @@ public class GuiScreenGrindle extends GuiContainer {
     }
 
     /**
-     * Fired when a key is typed. This is the equivalent of
-     * KeyListener.keyTyped(KeyEvent e).
+     * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
      */
     @Override
     protected void keyTyped(final char p_73869_1_, final int p_73869_2_) {
@@ -388,7 +390,7 @@ public class GuiScreenGrindle extends GuiContainer {
         // this.mc.getTextureManager().bindTexture(iconLocation);
         // final int k = (this.width - this.bookImageWidth) / 2;
         // this.drawTexturedModalRect(k, b0, 0, 0, this.bookImageWidth,
-        //		this.bookImageHeight);
+        // this.bookImageHeight);
 
         String s;
         String s1;
@@ -419,16 +421,16 @@ public class GuiScreenGrindle extends GuiContainer {
             this.fontRendererObj.drawString(s1, k + 36 + ((116 - l) / 2), b0 + 16 + 16, 0);
             final int i1 = this.fontRendererObj.getStringWidth(s);
             this.fontRendererObj.drawString(s, k + 36 + ((116 - i1) / 2), b0 + 48, 0);
-            final String s2 = I18n.format("book.byAuthor", new Object[] {this.editingPlayer.getCommandSenderName()});
+            final String s2 = I18n.format("book.byAuthor", new Object[] { this.editingPlayer.getCommandSenderName() });
             final int j1 = this.fontRendererObj.getStringWidth(s2);
-            this.fontRendererObj.drawString(
-                    EnumChatFormatting.DARK_GRAY + s2, k + 36 + ((116 - j1) / 2), b0 + 48 + 10, 0);
+            this.fontRendererObj
+                    .drawString(EnumChatFormatting.DARK_GRAY + s2, k + 36 + ((116 - j1) / 2), b0 + 48 + 10, 0);
             final String s3 = I18n.format("book.finalizeWarning", new Object[0]);
             this.fontRendererObj.drawSplitString(s3, k + 36, b0 + 80, 116, 0);
         } else {
             s = I18n.format(
                     "book.pageIndicator",
-                    new Object[] {Integer.valueOf(this.currPage + 1), Integer.valueOf(this.bookTotalPages)});
+                    new Object[] { Integer.valueOf(this.currPage + 1), Integer.valueOf(this.bookTotalPages) });
             s1 = "";
 
             if ((this.bookPages != null) && (this.currPage >= 0) && (this.currPage < this.bookPages.tagCount())) {
@@ -457,10 +459,11 @@ public class GuiScreenGrindle extends GuiContainer {
 
     @SideOnly(Side.CLIENT)
     static class NextPageButton extends GuiButton {
+
         private final boolean field_146151_o;
 
-        public NextPageButton(
-                final int p_i1079_1_, final int p_i1079_2_, final int p_i1079_3_, final boolean p_i1079_4_) {
+        public NextPageButton(final int p_i1079_1_, final int p_i1079_2_, final int p_i1079_3_,
+                final boolean p_i1079_4_) {
             super(p_i1079_1_, p_i1079_2_, p_i1079_3_, 23, 13, "");
             this.field_146151_o = p_i1079_4_;
         }
@@ -471,8 +474,7 @@ public class GuiScreenGrindle extends GuiContainer {
         @Override
         public void drawButton(final Minecraft p_146112_1_, final int p_146112_2_, final int p_146112_3_) {
             if (this.visible) {
-                final boolean flag = (p_146112_2_ >= this.xPosition)
-                        && (p_146112_3_ >= this.yPosition)
+                final boolean flag = (p_146112_2_ >= this.xPosition) && (p_146112_3_ >= this.yPosition)
                         && (p_146112_2_ < (this.xPosition + this.width))
                         && (p_146112_3_ < (this.yPosition + this.height));
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -494,8 +496,7 @@ public class GuiScreenGrindle extends GuiContainer {
     }
 
     /**
-     * Draw the background layer for the GuiContainer (everything behind the
-     * items)
+     * Draw the background layer for the GuiContainer (everything behind the items)
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(final float par1, final int par2, final int par3) {

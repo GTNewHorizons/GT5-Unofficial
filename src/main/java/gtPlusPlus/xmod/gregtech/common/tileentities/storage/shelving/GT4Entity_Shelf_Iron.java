@@ -6,8 +6,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT4Entity_Shelf_Iron extends GT4Entity_Shelf {
 
-    public GT4Entity_Shelf_Iron(
-            final int aID, final String aName, final String aNameRegional, final String aDescription) {
+    public GT4Entity_Shelf_Iron(final int aID, final String aName, final String aNameRegional,
+            final String aDescription) {
         super(aID, aName, aNameRegional, aDescription);
     }
 
@@ -21,22 +21,22 @@ public class GT4Entity_Shelf_Iron extends GT4Entity_Shelf {
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {texSideCabinet};
+        return new ITexture[] { texSideCabinet };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {texSide};
+        return new ITexture[] { texSide };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {texBottom};
+        return new ITexture[] { texBottom };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {texTop};
+        return new ITexture[] { texTop };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {texSide};
+        return new ITexture[] { texSide };
     }
 }

@@ -1,9 +1,5 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
-import gtPlusPlus.core.tileentities.base.TileBasicTank;
-import gtPlusPlus.core.util.minecraft.EnchantingUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,12 +7,18 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
 import org.lwjgl.input.Keyboard;
+
+import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
+import gtPlusPlus.core.tileentities.base.TileBasicTank;
+import gtPlusPlus.core.util.minecraft.EnchantingUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class TileEntityXpConverter extends TileBasicTank {
 
-    public BTF_FluidTank tankEssence =
-            new BTF_FluidTank((int) (64000 * EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP));
+    public BTF_FluidTank tankEssence = new BTF_FluidTank(
+            (int) (64000 * EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP));
     public BTF_FluidTank tankLiquidXp = new BTF_FluidTank(64000);
     private boolean mConvertToEssence = true;
 
@@ -36,11 +38,9 @@ public class TileEntityXpConverter extends TileBasicTank {
 
     public float getAdjustedVolume() {
         if (this.mConvertToEssence) {
-            if ((this.tankLiquidXp.getFluid() != null)
-                    && (this.tankLiquidXp.getFluidAmount() >= 100)
-                    && (this.tankEssence.getFluidAmount()
-                            <= (this.tankEssence.getCapacity()
-                                    - (100 * EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP)))) {
+            if ((this.tankLiquidXp.getFluid() != null) && (this.tankLiquidXp.getFluidAmount() >= 100)
+                    && (this.tankEssence.getFluidAmount() <= (this.tankEssence.getCapacity()
+                            - (100 * EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP)))) {
                 final FluidStack bigStorage = EnchantingUtils.getEssenceFromLiquidXp(100);
                 this.tankEssence.fill(bigStorage, true);
                 this.tankLiquidXp.drain(100, true);
@@ -48,8 +48,7 @@ public class TileEntityXpConverter extends TileBasicTank {
             }
         } else {
             final double rm = EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP;
-            if ((this.tankEssence.getFluid() != null)
-                    && (this.tankEssence.getFluidAmount() >= rm)
+            if ((this.tankEssence.getFluid() != null) && (this.tankEssence.getFluidAmount() >= rm)
                     && (this.tankLiquidXp.getFluidAmount() <= (this.tankLiquidXp.getCapacity() - rm))) {
                 final FluidStack bigStorage = EnchantingUtils.getLiquidXP(1);
                 this.tankLiquidXp.fill(bigStorage, true);
@@ -89,8 +88,8 @@ public class TileEntityXpConverter extends TileBasicTank {
         this.readFromNBT(tag);
     }
 
-    public void onScrewdriverRightClick(
-            final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ) {
+    public void onScrewdriverRightClick(final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY,
+            final float aZ) {
         if (this.isServerSide()) {
             if (this.mConvertToEssence) {
                 PlayerUtils.messagePlayer(aPlayer, "Converting from Mob Essence to Liquid Xp.");
@@ -243,9 +242,9 @@ public class TileEntityXpConverter extends TileBasicTank {
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
         if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
-            return new FluidTankInfo[] {this.tankEssence.getInfo()};
+            return new FluidTankInfo[] { this.tankEssence.getInfo() };
         } else {
-            return new FluidTankInfo[] {this.tankLiquidXp.getInfo()};
+            return new FluidTankInfo[] { this.tankLiquidXp.getInfo() };
         }
     }
 

@@ -1,13 +1,7 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.inventories.Inventory_RoundRobinator;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.command.IEntitySelector;
@@ -28,6 +22,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.inventories.Inventory_RoundRobinator;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class TileEntityRoundRobinator extends TileEntity implements ISidedInventory, IHopper {
 
@@ -186,7 +188,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int aSide) {
-        return new int[] {0, 1, 2, 3, 4};
+        return new int[] { 0, 1, 2, 3, 4 };
     }
 
     @Override
@@ -287,6 +289,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 
     /**
      * Toggle active state of side
+     * 
      * @param aSide - Forge Direction / Side
      * @return - True if the side is now Active, false if now disabled.
      */
@@ -297,8 +300,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 
     public void setSideActive(boolean aActive, int aSide) {
         try {
-            if (aSide < 2) {
-            } else {
+            if (aSide < 2) {} else {
                 if (aData < 1111) {
                     aData = 1111;
                 } else if (aData > 2222) {
@@ -445,6 +447,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 
     /**
      * Is Empty
+     * 
      * @return
      */
     private boolean isEmpty() {
@@ -557,8 +560,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
     }
 
     private static boolean canInsertItemIntoNeighbour(IInventory aNeighbour, ItemStack aStack, int aSlot, int aSide) {
-        return !aNeighbour.isItemValidForSlot(aSlot, aStack)
-                ? false
+        return !aNeighbour.isItemValidForSlot(aSlot, aStack) ? false
                 : !(aNeighbour instanceof ISidedInventory)
                         || ((ISidedInventory) aNeighbour).canInsertItem(aSlot, aStack, aSide);
     }
@@ -637,12 +639,9 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
     }
 
     private static boolean areItemStacksEqual(ItemStack aStack, ItemStack aStack2) {
-        return aStack.getItem() != aStack2.getItem()
-                ? false
-                : (aStack.getItemDamage() != aStack2.getItemDamage()
-                        ? false
-                        : (aStack.stackSize > aStack.getMaxStackSize()
-                                ? false
+        return aStack.getItem() != aStack2.getItem() ? false
+                : (aStack.getItemDamage() != aStack2.getItemDamage() ? false
+                        : (aStack.stackSize > aStack.getMaxStackSize() ? false
                                 : ItemStack.areItemStackTagsEqual(aStack, aStack2)));
     }
 

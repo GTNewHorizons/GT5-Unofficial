@@ -1,10 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.util.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +13,11 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class PlayerUtils {
 
@@ -42,9 +44,7 @@ public class PlayerUtils {
         try {
             final List<EntityPlayer> i = new ArrayList<>();
             final Iterator<EntityPlayerMP> iterator = MinecraftServer.getServer()
-                    .getConfigurationManager()
-                    .playerEntityList
-                    .iterator();
+                    .getConfigurationManager().playerEntityList.iterator();
             while (iterator.hasNext()) {
                 i.add((iterator.next()));
             }
@@ -53,8 +53,7 @@ public class PlayerUtils {
                     return temp;
                 }
             }
-        } catch (final Throwable e) {
-        }
+        } catch (final Throwable e) {}
         return null;
     }
 
@@ -81,8 +80,7 @@ public class PlayerUtils {
                     return temp;
                 }
             }
-        } catch (final NullPointerException e) {
-        }
+        } catch (final NullPointerException e) {}
         return null;
     }
 
@@ -226,11 +224,9 @@ public class PlayerUtils {
         // Cache Fake Player
         if (aPlayer instanceof FakePlayer
                 || (mThaumcraftFakePlayer != null && mThaumcraftFakePlayer.isInstance(aPlayer))
-                || (aPlayer.getCommandSenderName() == null
-                        || aPlayer.getCommandSenderName().length() <= 0)
-                || (aPlayer.isEntityInvulnerable()
-                                && !aPlayer.canCommandSenderUseCommand(0, "")
-                                && (aChunkLocation == null)
+                || (aPlayer.getCommandSenderName() == null || aPlayer.getCommandSenderName().length() <= 0)
+                || (aPlayer.isEntityInvulnerable() && !aPlayer.canCommandSenderUseCommand(0, "")
+                        && (aChunkLocation == null)
                         || (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0))) {
             mCachedFakePlayers.put(aPlayer.getUniqueID().toString(), aPlayer);
         }
@@ -260,8 +256,7 @@ public class PlayerUtils {
                 cacheFakePlayer(p);
                 return false;
             }
-            if (p.isEntityInvulnerable()
-                    && !p.canCommandSenderUseCommand(0, "")
+            if (p.isEntityInvulnerable() && !p.canCommandSenderUseCommand(0, "")
                     && (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0)) {
                 cacheFakePlayer(p);
                 return false;

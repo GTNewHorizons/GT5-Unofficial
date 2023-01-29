@@ -1,48 +1,44 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaTreeFarmerBase;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaTreeFarmerStructural extends GregtechMetaTreeFarmerBase {
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription};
+        return new String[] { this.mDescription };
     }
 
-    public GregtechMetaTreeFarmerStructural(
-            final int aID, final String aName, final String aNameRegional, final int aTier) {
+    public GregtechMetaTreeFarmerStructural(final int aID, final String aName, final String aNameRegional,
+            final int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Structural Blocks for the Tree Farmer.");
     }
 
-    public GregtechMetaTreeFarmerStructural(
-            final int aID,
-            final String aName,
-            final String aNameRegional,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription) {
+    public GregtechMetaTreeFarmerStructural(final int aID, final String aName, final String aNameRegional,
+            final int aTier, final int aInvSlotCount, final String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GregtechMetaTreeFarmerStructural(
-            final String aName,
-            final int aTier,
-            final int aInvSlotCount,
-            final String aDescription,
-            final ITexture[][][] aTextures) {
+    public GregtechMetaTreeFarmerStructural(final String aName, final int aTier, final int aInvSlotCount,
+            final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTreeFarmerStructural(
-                this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescription,
+                this.mTextures);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package gtPlusPlus.core.common.compat;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class COMPAT_OpenBlocks {
 

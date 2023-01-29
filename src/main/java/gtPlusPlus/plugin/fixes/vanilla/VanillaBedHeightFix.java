@@ -1,5 +1,11 @@
 package gtPlusPlus.plugin.fixes.vanilla;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.interfaces.IPlugin;
@@ -8,10 +14,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
 import gtPlusPlus.preloader.DevHelper;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 public class VanillaBedHeightFix implements IBugFix {
 
@@ -52,8 +54,7 @@ public class VanillaBedHeightFix implements IBugFix {
      * Fix created by deNULL -
      * https://github.com/deNULL/BugPatch/blob/master/src/main/java/ru/denull/BugPatch/mod/ClientEvents.java#L45
      *
-     * @param evt
-     *            - The event where a player sleeps
+     * @param evt - The event where a player sleeps
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerSleepInBed(PlayerSleepInBedEvent evt) {
@@ -62,12 +63,16 @@ public class VanillaBedHeightFix implements IBugFix {
             int correctY = 256 + evt.y;
             if (correctY <= 0) {
                 Logger.WARNING(
-                        "You're trying to sleep at y=" + evt.y + ", which is impossibly low. However, fixed y value is "
-                                + correctY + ", which is still below 0. Falling back to default behavior.");
+                        "You're trying to sleep at y=" + evt.y
+                                + ", which is impossibly low. However, fixed y value is "
+                                + correctY
+                                + ", which is still below 0. Falling back to default behavior.");
             } else {
-                Logger.WARNING("You're trying to sleep at y=" + evt.y
-                        + ". This is probably caused by overflow, stopping original event; retrying with y=" + correctY
-                        + ".");
+                Logger.WARNING(
+                        "You're trying to sleep at y=" + evt.y
+                                + ". This is probably caused by overflow, stopping original event; retrying with y="
+                                + correctY
+                                + ".");
                 evt.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
                 try {
                     mSleepInBedAt.invoke(evt.entityPlayer, evt.x, correctY, evt.z);

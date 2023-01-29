@@ -1,7 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -18,10 +24,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
@@ -46,14 +48,10 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            this.mDescription,
-            "Produces " + getPollution() + " pollution/sec",
-            "Consumes fuel only when temperature is less than 100C",
-            "Fuel with burn time greater than 500 is more efficient.",
-            "Doesn't explode if there's no water",
-            CORE.GT_Tooltip
-        };
+        return new String[] { this.mDescription, "Produces " + getPollution() + " pollution/sec",
+                "Consumes fuel only when temperature is less than 100C",
+                "Fuel with burn time greater than 500 is more efficient.", "Doesn't explode if there's no water",
+                CORE.GT_Tooltip };
     }
 
     public ITexture getOverlayIcon() {
@@ -91,25 +89,15 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
-        return this.mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.tier][aColor + 1], this.getCasingTexture()};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.tier][aColor + 1], this.getCasingTexture() };
     }
 
     public ITexture[] getBack(final byte aColor) {
@@ -125,7 +113,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.tier][aColor + 1], this.getCasingTexture()};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.tier][aColor + 1], this.getCasingTexture() };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -233,9 +221,8 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     // Since this type of machine can have different water and steam capacities, we need to override getTankInfo() to
     // support returning those different capacities.
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        return new FluidTankInfo[] {
-            new FluidTankInfo(this.mFluid, getCapacity()), new FluidTankInfo(this.mSteam, getSteamCapacity())
-        };
+        return new FluidTankInfo[] { new FluidTankInfo(this.mFluid, getCapacity()),
+                new FluidTankInfo(this.mSteam, getSteamCapacity()) };
     }
 
     @Override
@@ -306,12 +293,12 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] {getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_COAL};
+        return new IDrawable[] { getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_COAL };
     }
 
     @Override
     protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] {getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST};
+        return new IDrawable[] { getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST };
     }
 
     @Override

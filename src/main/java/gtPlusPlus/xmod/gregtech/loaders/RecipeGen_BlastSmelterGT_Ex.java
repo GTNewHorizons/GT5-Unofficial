@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -9,31 +12,20 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 
-    private final OrePrefixes[] mSmeltingPrefixes = {
-        OrePrefixes.crushed,
-        OrePrefixes.ingot,
-        OrePrefixes.crushedPurified,
-        OrePrefixes.crushedCentrifuged,
-        OrePrefixes.dust,
-        OrePrefixes.dustPure,
-        OrePrefixes.dustImpure,
-        OrePrefixes.dustRefined,
-        OrePrefixes.dustSmall,
-        OrePrefixes.dustTiny
-    };
+    private final OrePrefixes[] mSmeltingPrefixes = { OrePrefixes.crushed, OrePrefixes.ingot,
+            OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged, OrePrefixes.dust, OrePrefixes.dustPure,
+            OrePrefixes.dustImpure, OrePrefixes.dustRefined, OrePrefixes.dustSmall, OrePrefixes.dustTiny };
 
     public RecipeGen_BlastSmelterGT_Ex() {
         for (OrePrefixes tPrefix : this.mSmeltingPrefixes) tPrefix.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
 
         boolean keepHighTempRecipes = !CORE.GTNH;
 
@@ -45,14 +37,14 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                             && (!aMaterial.contains(SubTag.NO_SMELTING))) {
                         if (aMaterial.mBlastFurnaceRequired) {
                             addBlastRecipe(
-                                    GT_Utility.copyAmount(1L, new Object[] {aStack}),
+                                    GT_Utility.copyAmount(1L, new Object[] { aStack }),
                                     null,
                                     null,
                                     null,
                                     aMaterial.mBlastFurnaceTemp > 1750
-                                            ? GT_OreDictUnificator.get(
-                                                    OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L)
-                                            : GT_Utility.copyAmount(1L, new Object[] {tDustStack}),
+                                            ? GT_OreDictUnificator
+                                                    .get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L)
+                                            : GT_Utility.copyAmount(1L, new Object[] { tDustStack }),
                                     null,
                                     (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp,
                                     120,
@@ -71,14 +63,14 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                             && (!aMaterial.contains(SubTag.NO_SMELTING))) {
                         if (aMaterial.mBlastFurnaceRequired) {
                             addBlastRecipe(
-                                    GT_Utility.copyAmount(1L, new Object[] {aStack}),
+                                    GT_Utility.copyAmount(1L, new Object[] { aStack }),
                                     null,
                                     null,
                                     null,
                                     aMaterial.mBlastFurnaceTemp > 1750
-                                            ? GT_OreDictUnificator.get(
-                                                    OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L)
-                                            : GT_Utility.copyAmount(1L, new Object[] {tDustStack}),
+                                            ? GT_OreDictUnificator
+                                                    .get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L)
+                                            : GT_Utility.copyAmount(1L, new Object[] { tDustStack }),
                                     null,
                                     (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp,
                                     120,
@@ -91,7 +83,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                 if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600) {
                     if (aMaterial.mBlastFurnaceRequired) {
                         addBlastRecipe(
-                                GT_Utility.copyAmount(4L, new Object[] {aStack}),
+                                GT_Utility.copyAmount(4L, new Object[] { aStack }),
                                 null,
                                 null,
                                 null,
@@ -114,7 +106,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                     if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
                         if (aMaterial.mBlastFurnaceRequired) {
                             addBlastRecipe(
-                                    GT_Utility.copyAmount(9L, new Object[] {aStack}),
+                                    GT_Utility.copyAmount(9L, new Object[] { aStack }),
                                     null,
                                     null,
                                     null,
@@ -122,8 +114,8 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                                             ? GT_OreDictUnificator.get(
                                                     OrePrefixes.ingotHot,
                                                     aMaterial.mSmeltInto,
-                                                    GT_OreDictUnificator.get(
-                                                            OrePrefixes.ingot, aMaterial.mSmeltInto, 1L),
+                                                    GT_OreDictUnificator
+                                                            .get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L),
                                                     1L)
                                             : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L),
                                     null,
@@ -139,17 +131,15 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                     if (!aMaterial.contains(SubTag.NO_SMELTING)) {
                         if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
                             addBlastRecipe(
-                                    GT_Utility.copyAmount(1L, new Object[] {aStack}),
+                                    GT_Utility.copyAmount(1L, new Object[] { aStack }),
                                     null,
                                     null,
                                     null,
-                                    aMaterial.mBlastFurnaceTemp > 1750
-                                            ? GT_OreDictUnificator.get(
-                                                    OrePrefixes.ingotHot,
-                                                    aMaterial,
-                                                    GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                                                    1L)
-                                            : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                                    aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(
+                                            OrePrefixes.ingotHot,
+                                            aMaterial,
+                                            GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                                            1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                                     null,
                                     (int) Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp,
                                     120,
@@ -165,16 +155,8 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
         }
     }
 
-    public boolean addBlastRecipe(
-            ItemStack input1,
-            ItemStack input2,
-            FluidStack fluid1,
-            FluidStack fluid2,
-            ItemStack output1,
-            ItemStack output2,
-            int time,
-            int euCost,
-            Materials smeltInto) {
+    public boolean addBlastRecipe(ItemStack input1, ItemStack input2, FluidStack fluid1, FluidStack fluid2,
+            ItemStack output1, ItemStack output2, int time, int euCost, Materials smeltInto) {
 
         // Set up variables.
         ItemStack[] components;
@@ -194,7 +176,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
         }
         // Set up input components.
         ItemStack configCircuit = ItemUtils.getGregtechCircuit(count);
-        components = new ItemStack[] {configCircuit, input1, input2};
+        components = new ItemStack[] { configCircuit, input1, input2 };
         if (fluid1 != null || fluid2 != null) {
             // If it uses an input fluid, we cannot handle this. So let's not try. (Annealed copper for example)
             // return false;

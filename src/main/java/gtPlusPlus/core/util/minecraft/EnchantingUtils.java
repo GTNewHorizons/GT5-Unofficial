@@ -1,8 +1,9 @@
 package gtPlusPlus.core.util.minecraft;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class EnchantingUtils {
 

@@ -1,15 +1,5 @@
 package gtPlusPlus.core.block.machine;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.minecraft.CubicObject;
-import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +10,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.minecraft.CubicObject;
+import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class CircuitProgrammer extends BasicTileBlockWithTooltip {
 
@@ -43,16 +44,8 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float lx,
-            final float ly,
-            final float lz) {
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
@@ -69,8 +62,7 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
                         mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
                     }
                 }
-            } catch (final Throwable t) {
-            }
+            } catch (final Throwable t) {}
 
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
@@ -106,12 +98,7 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public void onBlockPlacedBy(
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityLivingBase entity,
+    public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
             final ItemStack stack) {
         if (stack.hasDisplayName()) {
             ((TileEntityCircuitProgrammer) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
@@ -119,8 +106,8 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public boolean canCreatureSpawn(
-            final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return false;
     }
 
@@ -156,15 +143,13 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
 
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] {
-            CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G",
-            CORE.MODID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
-            CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I"
-        };
-        CubicObject<String>[] aTextureData = new CubicObject[] {new CubicObject<String>(aTexData)};
+        String[] aTexData = new String[] { CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G",
+                CORE.MODID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
+                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
+        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<String>(aTexData) };
         return aTextureData;
     }
 }

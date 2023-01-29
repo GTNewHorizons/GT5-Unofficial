@@ -2,14 +2,15 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.W;
 
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -308,7 +309,7 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Reactor_II,
 
     // Multitank
-    /*Industrial_MultiTank,*/
+    /* Industrial_MultiTank, */
     Industrial_MultiTankDense,
     Casing_MultitankExterior,
 
@@ -379,9 +380,9 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Multi_Use,
 
     // Bedrock Mining Platforms
-    /*BedrockMiner_MKI, */
-    /*BedrockMiner_MKII, */
-    /*BedrockMiner_MKIII, */
+    /* BedrockMiner_MKI, */
+    /* BedrockMiner_MKII, */
+    /* BedrockMiner_MKIII, */
     Casing_BedrockMiner,
 
     // Large Packager
@@ -413,7 +414,7 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Naq_Reactor_A,
     Casing_Naq_Reactor_B,
     Casing_Naq_Reactor_C,
-    /*Controller_Naq_Reactor, */
+    /* Controller_Naq_Reactor, */
     Casing_Containment,
 
     // Arc Furnace
@@ -757,7 +758,7 @@ public enum GregtechItemList implements GregtechItemContainer {
     Charger_MAX,
 
     // Tiny Fusion
-    /*Miniature_Fusion, */
+    /* Miniature_Fusion, */
 
     // Component Makers
     Machine_LV_Component_Maker,
@@ -932,7 +933,7 @@ public enum GregtechItemList implements GregtechItemContainer {
     GT_Chisel_HV,
 
     // Plasma Tank
-    /*Plasma_Tank,*/
+    /* Plasma_Tank, */
 
     // ----------------------------------------------------------------------------
 
@@ -968,11 +969,11 @@ public enum GregtechItemList implements GregtechItemContainer {
     FakeMachineCasingPlate_UV,
     FakeMachineCasingPlate_MAX,
 
-// ----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
 
-;
+    ;
 
-    public static final GregtechItemList[] DYE_ONLY_ITEMS = {Energy_Buffer_1by1_EV, Energy_Buffer_1by1_EV};
+    public static final GregtechItemList[] DYE_ONLY_ITEMS = { Energy_Buffer_1by1_EV, Energy_Buffer_1by1_EV };
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 
@@ -1028,8 +1029,8 @@ public enum GregtechItemList implements GregtechItemContainer {
         if (GT_Utility.isStackInvalid(aStack)) {
             return false;
         }
-        return GT_Utility.areUnificationsEqual(
-                (ItemStack) aStack, aWildcard ? this.getWildcard(1) : this.get(1), aIgnoreNBT);
+        return GT_Utility
+                .areUnificationsEqual((ItemStack) aStack, aWildcard ? this.getWildcard(1) : this.get(1), aIgnoreNBT);
     }
 
     public static Block getBlockFromStack(Object aStack) {
@@ -1078,8 +1079,8 @@ public enum GregtechItemList implements GregtechItemContainer {
         if (GT_Utility.isStackInvalid(this.mStack)) {
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(
-                aAmount, this.mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility
+                .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(this.mStack));
     }
 
     @Override

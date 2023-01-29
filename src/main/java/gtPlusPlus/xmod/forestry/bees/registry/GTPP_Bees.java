@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.forestry.bees.registry;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gtPlusPlus.api.objects.Logger;
@@ -10,7 +12,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.*;
 import gtPlusPlus.xmod.forestry.bees.items.output.*;
-import java.util.HashMap;
 
 public class GTPP_Bees {
 

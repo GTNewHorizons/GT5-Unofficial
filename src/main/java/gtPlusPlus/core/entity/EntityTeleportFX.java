@@ -1,7 +1,5 @@
 package gtPlusPlus.core.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
@@ -10,7 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class EntityTeleportFX extends Entity {
+
     /** 'x' location the eye should float towards. */
     private double targetX;
     /** 'y' location the eye should float towards. */
@@ -20,7 +22,6 @@ public class EntityTeleportFX extends Entity {
 
     private int despawnTimer;
     private boolean shatterOrDrop;
-    private static final String __OBFID = "CL_00001716";
 
     public EntityTeleportFX(final World p_i1757_1_) {
         super(p_i1757_1_);
@@ -42,8 +43,8 @@ public class EntityTeleportFX extends Entity {
         return p_70112_1_ < (d1 * d1);
     }
 
-    public EntityTeleportFX(
-            final World p_i1758_1_, final double p_i1758_2_, final double p_i1758_4_, final double p_i1758_6_) {
+    public EntityTeleportFX(final World p_i1758_1_, final double p_i1758_2_, final double p_i1758_4_,
+            final double p_i1758_6_) {
         super(p_i1758_1_);
         this.despawnTimer = 0;
         this.setSize(0.25F, 0.25F);
@@ -106,9 +107,8 @@ public class EntityTeleportFX extends Entity {
         final float f = MathHelper.sqrt_double((this.motionX * this.motionX) + (this.motionZ * this.motionZ));
         this.rotationYaw = (float) ((Math.atan2(this.motionX, this.motionZ) * 180.0D) / Math.PI);
 
-        for (this.rotationPitch = (float) ((Math.atan2(this.motionY, f) * 180.0D) / Math.PI);
-                (this.rotationPitch - this.prevRotationPitch) < -180.0F;
-                this.prevRotationPitch -= 360.0F) {
+        for (this.rotationPitch = (float) ((Math.atan2(this.motionY, f) * 180.0D) / Math.PI); (this.rotationPitch
+                - this.prevRotationPitch) < -180.0F; this.prevRotationPitch -= 360.0F) {
             ;
         }
 
@@ -181,8 +181,13 @@ public class EntityTeleportFX extends Entity {
                 this.setDead();
 
                 if (this.shatterOrDrop) {
-                    this.worldObj.spawnEntityInWorld(new EntityItem(
-                            this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Items.ender_eye)));
+                    this.worldObj.spawnEntityInWorld(
+                            new EntityItem(
+                                    this.worldObj,
+                                    this.posX,
+                                    this.posY,
+                                    this.posZ,
+                                    new ItemStack(Items.ender_eye)));
                 } else {
                     this.worldObj.playAuxSFX(
                             2003,

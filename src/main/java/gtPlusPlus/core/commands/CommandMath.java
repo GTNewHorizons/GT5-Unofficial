@@ -1,17 +1,20 @@
 package gtPlusPlus.core.commands;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.MiningUtils;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.MiningUtils;
+
 public class CommandMath implements ICommand {
+
     private final List<String> aliases;
 
     protected String fullEntityName;

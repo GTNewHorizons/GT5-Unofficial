@@ -1,5 +1,17 @@
 package gtPlusPlus.core.item.base.ore;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,16 +26,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 public class BaseOreComponent extends Item {
 
@@ -52,7 +54,8 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         GT_OreDictUnificator.registerOre(
-                componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+                componentType.getComponent() + material.getUnlocalizedName(),
+                ItemUtils.getSimpleStack(this));
         if (LoadedMods.Thaumcraft) {
             // ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this),
             // TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
@@ -94,8 +97,11 @@ public class BaseOreComponent extends Item {
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, ItemUtils.getSimpleStack(this));
-            Logger.MATERIALS("Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                    + "] Map: [" + aKey + "]");
+            Logger.MATERIALS(
+                    "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
+                            + "] Map: ["
+                            + aKey
+                            + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             return true;
         } else {
@@ -105,19 +111,19 @@ public class BaseOreComponent extends Item {
         }
     }
 
-    /*@Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-    		return (this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME);
-    }*/
+    /*
+     * @Override public String getItemStackDisplayName(final ItemStack p_77653_1_) { return
+     * (this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME); }
+     */
 
     public final String getMaterialName() {
         return this.materialName;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public final void addInformation(
-            final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
+            final boolean bool) {
         if (this.materialName != null && !this.materialName.equals("")) {
             if (this.componentMaterial != null) {
                 if (!this.componentMaterial.vChemicalFormula.contains("?")) {
@@ -147,17 +153,16 @@ public class BaseOreComponent extends Item {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
             if (entityHolding instanceof EntityPlayer) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
                     EntityUtils.applyRadiationDamageToEntity(
-                            iStack.stackSize, this.componentMaterial.vRadiationLevel, world, entityHolding);
+                            iStack.stackSize,
+                            this.componentMaterial.vRadiationLevel,
+                            world,
+                            entityHolding);
                 }
             }
         }
@@ -165,6 +170,7 @@ public class BaseOreComponent extends Item {
 
     /**
      * Rendering Related
+     * 
      * @author Alkalus
      *
      */
@@ -186,19 +192,23 @@ public class BaseOreComponent extends Item {
                 this.overlay = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else if (CORE.ConfigSwitches.useGregtechTextures) {
-            // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+" is using `"+"gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the layer 0 texture path.");
-            this.base = par1IconRegister.registerIcon(
-                    "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
+            // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
+            // is using `"+"gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
+            // layer 0 texture path.");
+            this.base = par1IconRegister
+                    .registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
             if (this.componentType.hasOverlay()) {
-                // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+" is using `"+"gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"_OVERLAY"+"' as the layer 1 texture path.");
+                // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
+                // is using `"+"gregtech" + ":" + "materialicons/METALLIC/" +
+                // this.componentType.COMPONENT_NAME+"_OVERLAY"+"' as the layer 1 texture path.");
                 this.overlay = par1IconRegister.registerIcon(
                         "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
             }
         } else {
             this.base = par1IconRegister.registerIcon(CORE.MODID + ":" + "item" + this.componentType.getComponent());
             if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister.registerIcon(
-                        CORE.MODID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
+                this.overlay = par1IconRegister
+                        .registerIcon(CORE.MODID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
             }
         }
     }
@@ -230,6 +240,7 @@ public class BaseOreComponent extends Item {
     }
 
     public static enum ComponentTypes {
+
         DUST("dust", "", " Dust", true),
         DUSTIMPURE("dustImpure", "Impure ", " Dust", true),
         DUSTPURE("dustPure", "Purified ", " Dust", true),
@@ -243,8 +254,8 @@ public class BaseOreComponent extends Item {
         private String DISPLAY_NAME;
         private boolean HAS_OVERLAY;
 
-        private ComponentTypes(
-                final String LocalName, final String prefix, final String DisplayName, final boolean overlay) {
+        private ComponentTypes(final String LocalName, final String prefix, final String DisplayName,
+                final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;

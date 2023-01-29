@@ -1,5 +1,11 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -13,10 +19,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import java.util.HashSet;
-import java.util.Set;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_Fluorite extends RecipeGen_Base {
 
@@ -74,28 +76,55 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
         final ItemStack tinyDust = material.getTinyDust(1);
 
         if (RecipeUtils.addShapedRecipe(
-                tinyDust, tinyDust, tinyDust, tinyDust, tinyDust, tinyDust, tinyDust, tinyDust, tinyDust, normalDust)) {
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                normalDust)) {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
-        if (RecipeUtils.addShapedRecipe(
-                normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
+        if (RecipeUtils
+                .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils.addShapedRecipe(
-                smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust)) {
+                smallDust,
+                smallDust,
+                null,
+                smallDust,
+                smallDust,
+                null,
+                null,
+                null,
+                null,
+                normalDust)) {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils.addShapedRecipe(
-                null, normalDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
+                null,
+                normalDust,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                material.getSmallDust(4))) {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
@@ -133,8 +162,8 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
         // Macerate ore to Crushed
         if (GT_Values.RA.addPulveriserRecipe(
                 material.getOre(1),
-                new ItemStack[] {material.getCrushed(2)},
-                new int[] {10000},
+                new ItemStack[] { material.getCrushed(2) },
+                new int[] { 10000 },
                 20 * 20,
                 tVoltageMultiplier / 2)) {
             Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
@@ -142,8 +171,8 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
         // Macerate Centrifuged to Pure Dust
         if (GT_Values.RA.addPulveriserRecipe(
                 material.getCrushedCentrifuged(1),
-                new ItemStack[] {matDust, matDustA},
-                new int[] {10000, 1000},
+                new ItemStack[] { matDust, matDustA },
+                new int[] { 10000, 1000 },
                 20 * 20,
                 tVoltageMultiplier / 2)) {
             Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
@@ -154,10 +183,16 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
                 material.getCrushedCentrifuged(1),
                 tinyDustA,
                 dustStone)) {
-            Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
-                    + material.getCrushedPurified(1).getDisplayName() + " | Outputs: "
-                    + material.getCrushedCentrifuged(1).getDisplayName() + ", " + tinyDustA.getDisplayName() + ", "
-                    + dustStone.getDisplayName() + ".");
+            Logger.MATERIALS(
+                    "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
+                            + material.getCrushedPurified(1).getDisplayName()
+                            + " | Outputs: "
+                            + material.getCrushedCentrifuged(1).getDisplayName()
+                            + ", "
+                            + tinyDustA.getDisplayName()
+                            + ", "
+                            + dustStone.getDisplayName()
+                            + ".");
         }
 
         GT_Values.RA.addChemicalBathRecipe(
@@ -166,7 +201,7 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
                 FLUORIDES.FLUORITE.getCrushedPurified(8),
                 FLUORIDES.FLUORITE.getDustImpure(4),
                 FLUORIDES.FLUORITE.getDustPurified(2),
-                new int[] {10000, 5000, 1000},
+                new int[] { 10000, 5000, 1000 },
                 30 * 20,
                 240);
 
@@ -192,7 +227,7 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
                 null,
                 null,
                 null,
-                new int[] {10000, 10000}, // Chances
+                new int[] { 10000, 10000 }, // Chances
                 (int) Math.max(1L, material.getMass() * 8L), // Time
                 tVoltageMultiplier / 2)) { // Eu
             Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
@@ -210,7 +245,7 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
                 null,
                 null,
                 null,
-                new int[] {10000, 10000}, // Chances
+                new int[] { 10000, 10000 }, // Chances
                 (int) Math.max(1L, material.getMass() * 8L), // Time
                 tVoltageMultiplier / 2)) { // Eu
             Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
@@ -223,19 +258,15 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
         }
 
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(5), FLUORIDES.FLUORITE.getDust(37),
-                },
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(5), FLUORIDES.FLUORITE.getDust(37), },
                 FluidUtils.getFluidStack("sulfuricacid", 8000),
                 aGregtechHydro, // Fluid output (slot 2)
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
-                },
-                new int[] {10000, 1000, 1000, 3000, 2000},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2) },
+                new int[] { 10000, 1000, 1000, 3000, 2000 },
                 10 * 60 * 20,
                 240); // EU
     }

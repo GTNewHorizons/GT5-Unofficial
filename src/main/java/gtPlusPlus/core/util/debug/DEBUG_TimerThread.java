@@ -1,12 +1,14 @@
 package gtPlusPlus.core.util.debug;
 
-import gtPlusPlus.api.objects.Logger;
 import java.util.concurrent.TimeUnit;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class DEBUG_TimerThread implements Runnable {
 
@@ -26,8 +28,18 @@ public class DEBUG_TimerThread implements Runnable {
         final int stepX = Minecraft.getMinecraft().objectMouseOver.blockX;
         final int stepY = Minecraft.getMinecraft().objectMouseOver.blockY;
         final int stepZ = Minecraft.getMinecraft().objectMouseOver.blockZ;
-        Logger.INFO("Clicked on a Block @ " + "[X:" + stepX + "][Y:" + stepY + "][Z:" + stepZ + "]" + " with xDir:"
-                + xDir + " zDir:" + zDir);
+        Logger.INFO(
+                "Clicked on a Block @ " + "[X:"
+                        + stepX
+                        + "][Y:"
+                        + stepY
+                        + "][Z:"
+                        + stepZ
+                        + "]"
+                        + " with xDir:"
+                        + xDir
+                        + " zDir:"
+                        + zDir);
         this.world.setBlock(stepX, stepY, stepZ, Blocks.bedrock, 0, 3);
         Logger.INFO("Makng it Bedrock for future investment.");
         // for (int i = -1; i <= 1; i++) {
@@ -43,8 +55,18 @@ public class DEBUG_TimerThread implements Runnable {
                     // stepZ = stepZ+j;
                     // for (int h = -1; h <= 1; h++) {
                     // stepY = stepY+h;
-                    Logger.INFO("Placing Block @ " + "[X:" + i + "][Y:" + h + "][Z:" + j + "]" + " with xDir:" + xDir
-                            + " zDir:" + zDir);
+                    Logger.INFO(
+                            "Placing Block @ " + "[X:"
+                                    + i
+                                    + "][Y:"
+                                    + h
+                                    + "][Z:"
+                                    + j
+                                    + "]"
+                                    + " with xDir:"
+                                    + xDir
+                                    + " zDir:"
+                                    + zDir);
                     if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
                         this.world.setBlock(i, h, j, Blocks.stone, 0, 3);
                     } else {

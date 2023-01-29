@@ -6,10 +6,18 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -26,11 +34,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Cyclotron>
         implements ISurvivalConstructable {
@@ -83,70 +86,31 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_Cyclotron> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Cyclotron>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {
-                            "               ",
-                            "      hhh      ",
-                            "    hh   hh    ",
-                            "   h       h   ",
-                            "  h         h  ",
-                            "  h         h  ",
-                            " h           h ",
-                            " h           h ",
-                            " h           h ",
-                            "  h         h  ",
-                            "  h         h  ",
-                            "   h       h   ",
-                            "    hh   hh    ",
-                            "      hhh      ",
-                            "               ",
-                        },
-                        {
-                            "      hhh      ",
-                            "    hhccchh    ",
-                            "   hcchhhcch   ",
-                            "  hchh   hhch  ",
-                            " hch       hch ",
-                            " hch       hch ",
-                            "hch         hch",
-                            "hch         hch",
-                            "hch         hch",
-                            " hch       hch ",
-                            " hch       hch ",
-                            "  hchh   hhch  ",
-                            "   hcch~hcch   ",
-                            "    hhccchh    ",
-                            "      hhh      ",
-                        },
-                        {
-                            "               ",
-                            "      hhh      ",
-                            "    hh   hh    ",
-                            "   h       h   ",
-                            "  h         h  ",
-                            "  h         h  ",
-                            " h           h ",
-                            " h           h ",
-                            " h           h ",
-                            "  h         h  ",
-                            "  h         h  ",
-                            "   h       h   ",
-                            "    hh   hh    ",
-                            "      hhh      ",
-                            "               ",
-                        }
-                    }))
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Cyclotron>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] {
+                                    { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
+                                            "  h         h  ", "  h         h  ", " h           h ", " h           h ",
+                                            " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                            "    hh   hh    ", "      hhh      ", "               ", },
+                                    { "      hhh      ", "    hhccchh    ", "   hcchhhcch   ", "  hchh   hhch  ",
+                                            " hch       hch ", " hch       hch ", "hch         hch", "hch         hch",
+                                            "hch         hch", " hch       hch ", " hch       hch ", "  hchh   hhch  ",
+                                            "   hcch~hcch   ", "    hhccchh    ", "      hhh      ", },
+                                    { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
+                                            "  h         h  ", "  h         h  ", " h           h ", " h           h ",
+                                            " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                            "    hh   hh    ", "      hhh      ", "               ", } }))
                     .addElement(
                             'h',
                             buildHatchAdder(GregtechMetaTileEntity_Cyclotron.class)
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(44)
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta()))
-                    .build();
+                                    .casingIndex(44).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
+                    .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta())).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -187,29 +151,18 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-                .addInfo("Super Magnetic Speed Shooter")
-                .addSeparator()
+        tt.addMachineType(getMachineType()).addInfo("Super Magnetic Speed Shooter").addSeparator()
                 .addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
                 .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
-                .addInfo("Which will be extracted from the Isochronous Cyclotron")
-                .addSeparator()
+                .addInfo("Which will be extracted from the Isochronous Cyclotron").addSeparator()
                 .addInfo("Consists of the same layout as a Fusion Reactor")
                 .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
                 .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
-                .addInfo("All Hatches must be IV or better")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .addCasingInfo("Cyclotron Machine Casings", 40)
-                .addCasingInfo("Cyclotron Coil", 32)
-                .addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addInfo("All Hatches must be IV or better").addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator().addCasingInfo("Cyclotron Machine Casings", 40).addCasingInfo("Cyclotron Coil", 32)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
 
@@ -243,9 +196,9 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     @Override
     public boolean checkRecipe(ItemStack aStack) {
 
-        /*if (CORE.DEVENV) {
-        	return this.checkRecipeGeneric();
-        }*/
+        /*
+         * if (CORE.DEVENV) { return this.checkRecipeGeneric(); }
+         */
         this.fixAllMaintenanceIssue();
 
         // log("Recipe Check.");
@@ -257,7 +210,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
         GT_Recipe tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.findRecipe(
-                getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs, tItemInputs);
+                getBaseMetaTileEntity(),
+                false,
+                gregtech.api.enums.GT_Values.V[tTier],
+                tFluidInputs,
+                tItemInputs);
         if (tRecipe != null) {
             if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
 
@@ -293,18 +250,20 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
                         if (s.getItem() instanceof IonParticles) {
                             long aCharge = IonParticles.getChargeState(s);
                             if (aCharge == 0) {
-                                IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
-                                    -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1, -1,
-                                    -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                                    2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6
-                                }));
+                                IonParticles.setChargeState(
+                                        s,
+                                        MathUtils.getRandomFromArray(
+                                                new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2,
+                                                        -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                                        1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3,
+                                                        3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
                             }
                         }
                     }
                 }
 
                 this.mOutputItems = outputs;
-                this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+                this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
                 this.updateSlots();
                 return true;
             }
@@ -332,11 +291,13 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
                             if (s.getItem() instanceof IonParticles) {
                                 long aCharge = IonParticles.getChargeState(s);
                                 if (aCharge == 0) {
-                                    IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
-                                        -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1,
-                                        -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2,
-                                        2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6
-                                    }));
+                                    IonParticles.setChargeState(
+                                            s,
+                                            MathUtils.getRandomFromArray(
+                                                    new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2,
+                                                            -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1,
+                                                            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                                            3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
                                 }
                             }
                         }
@@ -380,11 +341,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
             }
         }
 
-        return new String[] {
-            "COMET - Compact Cyclotron MK " + tier,
-            "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + this.getEUVar() + " / " + maxEUStore()
-        };
+        return new String[] { "COMET - Compact Cyclotron MK " + tier, "EU Required: " + powerRequired + "EU/t",
+                "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
     }
 
     @Override

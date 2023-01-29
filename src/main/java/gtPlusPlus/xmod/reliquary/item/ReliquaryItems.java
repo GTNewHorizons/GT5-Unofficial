@@ -1,27 +1,28 @@
 package gtPlusPlus.xmod.reliquary.item;
 
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ReliquaryItems {
 
     private static Class<?> CLASS_MAIN = ReflectionUtils.getClass("xreliquary.Reliquary");
     private static Field FIELD_CONTENT = ReflectionUtils.getField(CLASS_MAIN, "CONTENT");
     private static Object OBJECT_CONTENT = ReflectionUtils.getFieldValue(FIELD_CONTENT);
-    private static Method METHOD_GETITEM =
-            ReflectionUtils.getMethod(OBJECT_CONTENT, "getItem", new Class[] {String.class});
+    private static Method METHOD_GETITEM = ReflectionUtils
+            .getMethod(OBJECT_CONTENT, "getItem", new Class[] { String.class });
 
     public static Item getItem(String name) {
         try {
             return (Item) METHOD_GETITEM.invoke(OBJECT_CONTENT, name);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
         return null;
     }
 

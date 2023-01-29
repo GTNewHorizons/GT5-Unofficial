@@ -2,6 +2,17 @@ package gtPlusPlus.xmod.gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.D1;
 
+import java.util.*;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -18,20 +29,12 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
-import java.util.*;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
+
     /**
-     * All instances of this Item Class are listed here.
-     * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
+     * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
+     * Type, if useStandardMetaItemRenderer() returns true.
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
@@ -110,7 +113,8 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
 
                     if (tRandomData instanceof Interface_ItemBehaviour) {
                         this.addItemBehavior(
-                                this.mOffset + aID, (Interface_ItemBehaviour<Gregtech_MetaItem_Base>) tRandomData);
+                                this.mOffset + aID,
+                                (Interface_ItemBehaviour<Gregtech_MetaItem_Base>) tRandomData);
                         tUseOreDict = false;
                     }
                     if (tRandomData instanceof IItemContainer) {
@@ -170,19 +174,14 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
      * @param aMaxCharge     Maximum Charge. (if this is == 0 it will remove the Electric Behavior)
      * @param aTransferLimit Transfer Limit.
      * @param aTier          The electric Tier.
-     * @param aSpecialData   If this Item has a Fixed Charge, like a SingleUse Battery (if > 0).
-     *                       Use -1 if you want to make this Battery chargeable (the use and canUse Functions will still discharge if you just use this)
-     *                       Use -2 if you want to make this Battery dischargeable.
-     *                       Use -3 if you want to make this Battery charge/discharge-able.
+     * @param aSpecialData   If this Item has a Fixed Charge, like a SingleUse Battery (if > 0). Use -1 if you want to
+     *                       make this Battery chargeable (the use and canUse Functions will still discharge if you just
+     *                       use this) Use -2 if you want to make this Battery dischargeable. Use -3 if you want to make
+     *                       this Battery charge/discharge-able.
      * @return the Item itself for convenience in constructing.
      */
-    public final Gregtech_MetaItem setElectricStats(
-            final int aMetaValue,
-            final long aMaxCharge,
-            final long aTransferLimit,
-            final long aTier,
-            final long aSpecialData,
-            final boolean aUseAnimations) {
+    public final Gregtech_MetaItem setElectricStats(final int aMetaValue, final long aMaxCharge,
+            final long aTransferLimit, final long aTier, final long aSpecialData, final boolean aUseAnimations) {
         if ((aMetaValue < 0) || (aMetaValue >= (this.mOffset + this.mEnabledItems.length()))) {
             return this;
         }
@@ -191,7 +190,7 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
         } else {
             this.mElectricStats.put(
                     (short) aMetaValue,
-                    new Long[] {aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData});
+                    new Long[] { aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData });
             if ((aMetaValue >= this.mOffset) && aUseAnimations) {
                 this.mIconList[aMetaValue - this.mOffset] = Arrays.copyOf(
                         this.mIconList[aMetaValue - this.mOffset],
@@ -206,21 +205,21 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
      * @param aMaxCharge     Maximum Charge. (if this is == 0 it will remove the Electric Behavior)
      * @param aTransferLimit Transfer Limit.
      * @param aTier          The electric Tier.
-     * @param aSpecialData   If this Item has a Fixed Charge, like a SingleUse Battery (if > 0).
-     *                       Use -1 if you want to make this Battery chargeable (the use and canUse Functions will still discharge if you just use this)
-     *                       Use -2 if you want to make this Battery dischargeable.
-     *                       Use -3 if you want to make this Battery charge/discharge-able.
+     * @param aSpecialData   If this Item has a Fixed Charge, like a SingleUse Battery (if > 0). Use -1 if you want to
+     *                       make this Battery chargeable (the use and canUse Functions will still discharge if you just
+     *                       use this) Use -2 if you want to make this Battery dischargeable. Use -3 if you want to make
+     *                       this Battery charge/discharge-able.
      * @return the Item itself for convenience in constructing.
      */
-    public final Gregtech_MetaItem setFluidContainerStats(
-            final int aMetaValue, final long aCapacity, final long aStacksize) {
+    public final Gregtech_MetaItem setFluidContainerStats(final int aMetaValue, final long aCapacity,
+            final long aStacksize) {
         if ((aMetaValue < 0) || (aMetaValue >= (this.mOffset + this.mEnabledItems.length()))) {
             return this;
         }
         if (aCapacity < 0) {
             this.mElectricStats.remove((short) aMetaValue);
         } else {
-            this.mFluidContainerStats.put((short) aMetaValue, new Long[] {aCapacity, Math.max(1, aStacksize)});
+            this.mFluidContainerStats.put((short) aMetaValue, new Long[] { aCapacity, Math.max(1, aStacksize) });
         }
         return this;
     }
@@ -298,11 +297,11 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
         for (short i = 0, j = (short) this.mEnabledItems.length(); i < j; i++) {
             if (this.mEnabledItems.get(i)) {
                 for (byte k = 1; k < this.mIconList[i].length; k++) {
-                    this.mIconList[i][k] = aIconRegister.registerIcon(
-                            CORE.MODID + ":" + this.getUnlocalizedName() + "/" + i + "/" + k);
+                    this.mIconList[i][k] = aIconRegister
+                            .registerIcon(CORE.MODID + ":" + this.getUnlocalizedName() + "/" + i + "/" + k);
                 }
-                this.mIconList[i][0] =
-                        aIconRegister.registerIcon(CORE.MODID + ":" + this.getUnlocalizedName() + "/" + i);
+                this.mIconList[i][0] = aIconRegister
+                        .registerIcon(CORE.MODID + ":" + this.getUnlocalizedName() + "/" + i);
             }
         }
     }

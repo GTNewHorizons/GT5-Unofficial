@@ -2,18 +2,20 @@ package gtPlusPlus.xmod.tinkers.material;
 
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
+import java.util.HashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.tinkers.HANDLER_Tinkers;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
-import java.util.HashMap;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.Fluid;
 
 public class BaseTinkersMaterial {
 
@@ -213,16 +215,20 @@ public class BaseTinkersMaterial {
         }
 
         // Smeltery.addMelting(new ItemStack(ExtraUtils.unstableIngot, 1, 0), ExtraUtils.decorative1, 5, 850,
-        //	aMaterial.getFluid(72));
+        // aMaterial.getFluid(72));
         TinkersUtils.registerFluidType(mLocalName, aMatBlock, 0, aMelt, aFluid, true);
         TinkersUtils.addMelting(aMaterial.getBlock(1), aMatBlock, 0, aMelt, aMaterial.getFluidStack(144 * 9));
         TinkersUtils.addMelting(aMaterial.getIngot(1), aMatBlock, 0, aMelt, aMaterial.getFluidStack(144));
         if (aMelt <= 3600) {
             ItemStack ingotcast = TinkersUtils.getPattern(1);
             TinkersUtils.addBasinRecipe(
-                    aMaterial.getBlock(1), aMaterial.getFluidStack(144 * 9), (ItemStack) null, true, 100);
-            TinkersUtils.addCastingTableRecipe(
-                    aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
+                    aMaterial.getBlock(1),
+                    aMaterial.getFluidStack(144 * 9),
+                    (ItemStack) null,
+                    true,
+                    100);
+            TinkersUtils
+                    .addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
         }
 
         boolean extended = TinkersUtils.generateCastingRecipes(aMaterial, aID);

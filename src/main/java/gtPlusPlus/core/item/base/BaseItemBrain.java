@@ -1,8 +1,7 @@
 package gtPlusPlus.core.item.base;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -10,22 +9,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /*
-*
-*
-	Key Point: You can access the NBT compound data from the Item class (in those methods that pass an ItemStack), but the NBT compound can only be set on an ItemStack.
-
-The steps to add NBT data to an ItemStack:
-   Create or otherwise get an ItemStack of the desired item
-   Create an NBTTagCompound and fill it with the appropriate data
-   Call ItemStack#setTagCompound() method to set it.
-
-*
-*/
+ * Key Point: You can access the NBT compound data from the Item class (in those methods that pass an ItemStack), but
+ * the NBT compound can only be set on an ItemStack. The steps to add NBT data to an ItemStack: Create or otherwise get
+ * an ItemStack of the desired item Create an NBTTagCompound and fill it with the appropriate data Call
+ * ItemStack#setTagCompound() method to set it.
+ */
 
 public class BaseItemBrain extends Item {
+
     // This is an array of all the types I am going to be adding.
-    String[] brainTypes = {"dead", "preserved", "fresh", "tasty"};
+    String[] brainTypes = { "dead", "preserved", "fresh", "tasty" };
 
     // This method allows us to have different language translation keys for
     // each item we add.
@@ -51,12 +48,12 @@ public class BaseItemBrain extends Item {
     // This is a fun method which allows us to run some code when our item is
     // shown in a creative tab. I am going to use it to add all the brain
     // types.
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item item, final CreativeTabs tab, final List itemList) {
         // This creates a loop with a counter. It will go through once for
-        // every listing in brainTypes,  and gives us a number associated
+        // every listing in brainTypes, and gives us a number associated
         // with each listing.
         for (int pos = 0; pos < this.brainTypes.length; pos++) {
             // This creates a new ItemStack instance. The item parameter
@@ -76,18 +73,19 @@ public class BaseItemBrain extends Item {
     }
 
     // This code will allow us to tell the items apart in game. You can change
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     // texture based on nbt data, but I won't be covering that.
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(
-            final ItemStack stack, final EntityPlayer player, final List tooltip, final boolean isAdvanced) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List tooltip,
+            final boolean isAdvanced) {
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("brainType")) {
             // StatCollector is a class which allows us to handle string
             // language translation. This requires that you fill out the
             // translation in you language class.
-            tooltip.add(StatCollector.translateToLocal(
-                    "tooltip.yourmod." + stack.getTagCompound().getString("brainType") + ".desc"));
+            tooltip.add(
+                    StatCollector.translateToLocal(
+                            "tooltip.yourmod." + stack.getTagCompound().getString("brainType") + ".desc"));
         } else // If the brain does not have valid tag data, a default message
         {
             tooltip.add(StatCollector.translateToLocal("tooltip.yourmod.nullbrain.desc"));

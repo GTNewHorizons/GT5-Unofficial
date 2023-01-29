@@ -1,5 +1,16 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -8,15 +19,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import java.util.HashMap;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 public class ItemBlockGtBlock extends ItemBlock {
 
@@ -71,8 +73,7 @@ public class ItemBlockGtBlock extends ItemBlock {
     }
 
     public String getUnlocalizedBlockName() {
-        return "block." + mMaterial.getUnlocalizedName() + "."
-                + this.thisBlockType.name().toLowerCase();
+        return "block." + mMaterial.getUnlocalizedName() + "." + this.thisBlockType.name().toLowerCase();
     }
 
     public String GetProperName() {
@@ -89,7 +90,8 @@ public class ItemBlockGtBlock extends ItemBlock {
         // Logger.INFO("Unlocal Name: "+this.getUnlocalizedName());
         // String aFormattedLangName = GetProperName();
         // return
-        // GT_LanguageManager.addStringLocalization("block."+mMaterial.getUnlocalizedName()+"."+this.thisBlockType.name().toLowerCase()+".name", aFormattedLangName);
+        // GT_LanguageManager.addStringLocalization("block."+mMaterial.getUnlocalizedName()+"."+this.thisBlockType.name().toLowerCase()+".name",
+        // aFormattedLangName);
     }
 
     public int getRenderColor(final int aMeta) {
@@ -128,8 +130,10 @@ public class ItemBlockGtBlock extends ItemBlock {
                             list.add("- " + mMaterial.getLocalizedName());
                         } else {
                             for (MaterialStack m : mMaterial.getComposites()) {
-                                list.add("- " + m.getStackMaterial().getLocalizedName() + " x"
-                                        + m.getPartsPerOneHundred());
+                                list.add(
+                                        "- " + m.getStackMaterial().getLocalizedName()
+                                                + " x"
+                                                + m.getPartsPerOneHundred());
                             }
                         }
                     }
@@ -156,11 +160,7 @@ public class ItemBlockGtBlock extends ItemBlock {
     }
 
     @Override
-    public void onUpdate(
-            final ItemStack iStack,
-            final World world,
-            final Entity entityHolding,
-            final int p_77663_4_,
+    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
             final boolean p_77663_5_) {
 
         if (!isModular && !isOre) {

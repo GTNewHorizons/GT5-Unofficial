@@ -1,9 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.render;
 
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.items.GT_VolumetricFlask;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import ic2.core.util.DrawUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,7 +9,13 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.items.GT_VolumetricFlask;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import ic2.core.util.DrawUtil;
 
 @SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
 public final class GTPP_FlaskRenderer implements net.minecraftforge.client.IItemRenderer {

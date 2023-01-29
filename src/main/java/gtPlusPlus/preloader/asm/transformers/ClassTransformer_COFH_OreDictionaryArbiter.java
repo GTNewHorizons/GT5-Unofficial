@@ -7,25 +7,30 @@ import static org.objectweb.asm.Opcodes.ASM5;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.RETURN;
 
-import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.lib.util.ItemWrapper;
-import com.google.common.base.Strings;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gnu.trove.map.TMap;
-import gnu.trove.map.hash.THashMap;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.DevHelper;
 import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.lib.util.ItemWrapper;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.DevHelper;
 
 public class ClassTransformer_COFH_OreDictionaryArbiter {
 
@@ -77,21 +82,20 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
         } catch (ClassNotFoundException e) {
             isObfuscated = true;
         }
-        String aItemStack =
-                isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack") : "net/minecraft/item/ItemStack";
+        String aItemStack = isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack")
+                : "net/minecraft/item/ItemStack";
         MethodVisitor mv;
         if (aMethodName.equals("registerOreDictionaryEntry")) {
             FMLRelaunchLog.log(
                     "[GT++ ASM] COFH OreDictionaryArbiter Patch",
                     Level.INFO,
                     "Injecting " + aMethodName + " into " + className + ". ItemStack: " + aItemStack);
-            mv = getWriter()
-                    .visitMethod(
-                            ACC_PUBLIC + ACC_STATIC,
-                            "registerOreDictionaryEntry",
-                            "(L" + aItemStack + ";Ljava/lang/String;)V",
-                            null,
-                            null);
+            mv = getWriter().visitMethod(
+                    ACC_PUBLIC + ACC_STATIC,
+                    "registerOreDictionaryEntry",
+                    "(L" + aItemStack + ";Ljava/lang/String;)V",
+                    null,
+                    null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -147,15 +151,12 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
             try {
                 oreIDs = (BiMap<String, Integer>) ReflectionUtils.getField(OreDictionaryArbiter.class, "oreIDs")
                         .get(null);
-                oreStacks = (TMap<Integer, ArrayList<ItemStack>>)
-                        ReflectionUtils.getField(OreDictionaryArbiter.class, "oreStacks")
-                                .get(null);
-                stackIDs = (TMap<ItemWrapper, ArrayList<Integer>>)
-                        ReflectionUtils.getField(OreDictionaryArbiter.class, "stackIDs")
-                                .get(null);
-                stackNames = (TMap<ItemWrapper, ArrayList<String>>)
-                        ReflectionUtils.getField(OreDictionaryArbiter.class, "stackNames")
-                                .get(null);
+                oreStacks = (TMap<Integer, ArrayList<ItemStack>>) ReflectionUtils
+                        .getField(OreDictionaryArbiter.class, "oreStacks").get(null);
+                stackIDs = (TMap<ItemWrapper, ArrayList<Integer>>) ReflectionUtils
+                        .getField(OreDictionaryArbiter.class, "stackIDs").get(null);
+                stackNames = (TMap<ItemWrapper, ArrayList<String>>) ReflectionUtils
+                        .getField(OreDictionaryArbiter.class, "stackNames").get(null);
             } catch (Throwable t) {
                 oreIDs = HashBiMap.create();
                 oreStacks = new THashMap<Integer, ArrayList<ItemStack>>();

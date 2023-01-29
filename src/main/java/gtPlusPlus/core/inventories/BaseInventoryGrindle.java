@@ -1,13 +1,15 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.item.base.BaseItemBackpack;
 import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+
+import gtPlusPlus.core.item.base.BaseItemBackpack;
 
 public class BaseInventoryGrindle implements IInventory {
 
@@ -20,8 +22,7 @@ public class BaseInventoryGrindle implements IInventory {
     public static final int INV_SIZE = 6;
 
     /**
-     * Inventory's size must be same as number of slots you add to the Container
-     * class
+     * Inventory's size must be same as number of slots you add to the Container class
      */
     private final ItemStack[] inventory = new ItemStack[INV_SIZE];
 
@@ -29,8 +30,7 @@ public class BaseInventoryGrindle implements IInventory {
     protected String uniqueID;
 
     /**
-     * @param itemstack
-     *            - the ItemStack to which this inventory belongs
+     * @param itemstack - the ItemStack to which this inventory belongs
      */
     public BaseInventoryGrindle(final ItemStack stack) {
         this.invItem = stack;
@@ -119,9 +119,8 @@ public class BaseInventoryGrindle implements IInventory {
     }
 
     /**
-     * This is the method that will handle saving the inventory contents, as it is
-     * called (or should be called!) anytime the inventory changes. Perfect. Much
-     * better than using onUpdate in an Item, as this will also let you change
+     * This is the method that will handle saving the inventory contents, as it is called (or should be called!) anytime
+     * the inventory changes. Perfect. Much better than using onUpdate in an Item, as this will also let you change
      * things in your inventory without ever opening a Gui, if you want.
      */
     // 1.7.2+ renamed to markDirty
@@ -151,8 +150,8 @@ public class BaseInventoryGrindle implements IInventory {
     public void closeInventory() {}
 
     /**
-     * This method doesn't seem to do what it claims to do, as items can still be
-     * left-clicked and placed in the inventory even when this returns false
+     * This method doesn't seem to do what it claims to do, as items can still be left-clicked and placed in the
+     * inventory even when this returns false
      */
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {

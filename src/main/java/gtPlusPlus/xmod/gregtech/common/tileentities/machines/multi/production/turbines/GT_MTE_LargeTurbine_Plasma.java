@@ -1,5 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,10 +16,6 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
-import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTurbineBase {
@@ -63,21 +65,14 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
     }
 
     @Override
-    public boolean checkRecipeGeneric(
-            ItemStack[] aItemInputs,
-            FluidStack[] aFluidInputs,
-            int aMaxParallelRecipes,
-            long aEUPercent,
-            int aSpeedBonusPercent,
-            int aOutputChanceRoll,
-            GT_Recipe aRecipe) {
+    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
+            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
         try {
             ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
             if (aEmptyTurbineRotorHatches.size() > 0) {
                 log("Found " + aEmptyTurbineRotorHatches.size() + " Assemblies without Turbine.");
-                hatch:
-                for (GT_MetaTileEntity_Hatch_Turbine aHatch : aEmptyTurbineRotorHatches) {
+                hatch: for (GT_MetaTileEntity_Hatch_Turbine aHatch : aEmptyTurbineRotorHatches) {
                     ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
                     for (ItemStack aTurbineItem : aTurbines) {
                         if (aTurbineItem == null) {
@@ -101,8 +96,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
             if (tFluids.size() > 0) {
-                if (baseEff == 0
-                        || optFlow == 0
+                if (baseEff == 0 || optFlow == 0
                         || counter >= 512
                         || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
                         || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
@@ -114,17 +108,18 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
                     for (int i = 0; i < getSpeedMultiplier(); i++) {
                         if (i == 0) {
-                            aTotalBaseEff += GT_Utility.safeInt((long)
-                                    ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))
+                            aTotalBaseEff += GT_Utility.safeInt(
+                                    (long) ((5F
+                                            + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))
                                             * 1000F));
                         }
-                        aTotalOptimalFlow += GT_Utility.safeInt((long) Math.max(
-                                Float.MIN_NORMAL,
-                                ((GT_MetaGenerated_Tool) aStack.getItem())
-                                                .getToolStats(aStack)
+                        aTotalOptimalFlow += GT_Utility.safeInt(
+                                (long) Math.max(
+                                        Float.MIN_NORMAL,
+                                        ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
                                                 .getSpeedMultiplier()
-                                        * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                        * 50));
+                                                * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
+                                                * 50));
                         if (aTotalOptimalFlow < 0) {
                             log("Int overflow, report to issue tracker");
                             aTotalOptimalFlow = 100;
@@ -154,8 +149,8 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             // This is how much the turbine can actually change during this tick
             int maxChangeAllowed = Math.max(10, GT_Utility.safeInt((long) Math.abs(difference) / 100));
 
-            if (Math.abs(difference)
-                    > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
+            if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed
+                                                           // change
                 int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
                 this.lEUt += change; // Apply the change
             } else {
@@ -169,7 +164,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             } else {
                 this.mMaxProgresstime = 20;
                 this.mEfficiencyIncrease = 10;
-                // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos.  no need to do it here.
+                // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
                 // Play sounds (GT++ addition - GT multiblocks play no sounds)
                 startProcess();
                 return true;
@@ -188,16 +183,16 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
 
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(
-                    aFluids.get(0),
-                    0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
+            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
+                                                                          // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            actualOptimalFlow = GT_Utility.safeInt(
-                    (long) Math.ceil((double) aOptFlow * (double) flowMultipliers[2] / (double) fuelValue));
+            actualOptimalFlow = GT_Utility
+                    .safeInt((long) Math.ceil((double) aOptFlow * (double) flowMultipliers[2] / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow
-                    * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for
+            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
+                                                                                        // optimal flow. Variable
+                                                                                        // required outside of loop for
             // multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;

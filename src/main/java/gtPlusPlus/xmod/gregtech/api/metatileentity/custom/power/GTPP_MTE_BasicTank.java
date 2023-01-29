@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -20,35 +21,23 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
     /**
      * @param aInvSlotCount should be 3
      */
-    public GTPP_MTE_BasicTank(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aInvSlotCount,
-            String aDescription,
-            ITexture... aTextures) {
+    public GTPP_MTE_BasicTank(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GTPP_MTE_BasicTank(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aInvSlotCount,
-            String[] aDescription,
-            ITexture... aTextures) {
+    public GTPP_MTE_BasicTank(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GTPP_MTE_BasicTank(
-            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GTPP_MTE_BasicTank(String aName, int aTier, int aInvSlotCount, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GTPP_MTE_BasicTank(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GTPP_MTE_BasicTank(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -137,8 +126,8 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
                     if (ItemList.Display_Fluid.isStackEqual(mInventory[getStackDisplaySlot()], true, true))
                         mInventory[getStackDisplaySlot()] = null;
                 } else {
-                    mInventory[getStackDisplaySlot()] =
-                            GT_Utility.getFluidDisplayStack(getDisplayedFluid(), displaysStackSize());
+                    mInventory[getStackDisplaySlot()] = GT_Utility
+                            .getFluidDisplayStack(getDisplayedFluid(), displaysStackSize());
                 }
             }
 
@@ -172,8 +161,8 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
             }
 
             if (doesFillContainers()) {
-                ItemStack tOutput =
-                        GT_Utility.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
+                ItemStack tOutput = GT_Utility
+                        .fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
                 if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
                     FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -196,11 +185,11 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null
-                || aFluid.getFluid().getID() <= 0
+        if (aFluid == null || aFluid.getFluid().getID() <= 0
                 || aFluid.amount <= 0
                 || !canTankBeFilled()
-                || !isFluidInputAllowed(aFluid)) return 0;
+                || !isFluidInputAllowed(aFluid))
+            return 0;
 
         if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
             if (aFluid.amount <= getCapacity()) {

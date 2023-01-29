@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -10,18 +13,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
-    public GT_MetaTileEntity_TieredTank(
-            final int aID, final String aName, final String aNameRegional, final int aTier) {
+    public GT_MetaTileEntity_TieredTank(final int aID, final String aName, final String aNameRegional,
+            final int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
     }
 
-    public GT_MetaTileEntity_TieredTank(
-            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_TieredTank(final String aName, final int aTier, final String aDescription,
+            final ITexture[][][] aTextures) {
         super(aName, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid", aTextures);
     }
 
@@ -32,14 +33,10 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
         String aTankPortableness = "portable";
 
         if (this.mFluid == null) {
-            aTip = new String[] {this.mDescription, "A " + aTankPortableness + " tank.", CORE.GT_Tooltip};
+            aTip = new String[] { this.mDescription, "A " + aTankPortableness + " tank.", CORE.GT_Tooltip };
         } else {
-            aTip = new String[] {
-                this.mDescription,
-                "A " + aTankPortableness + " tank.",
-                "Fluid: " + mFluid.getLocalizedName() + " " + mFluid.amount + "L",
-                CORE.GT_Tooltip
-            };
+            aTip = new String[] { this.mDescription, "A " + aTankPortableness + " tank.",
+                    "Fluid: " + mFluid.getLocalizedName() + " " + mFluid.amount + "L", CORE.GT_Tooltip };
         }
         return aTip;
     }
@@ -50,22 +47,13 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return aSide == 1
-                ? new ITexture[] {
-                    Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)
-                }
-                : new ITexture[] {
-                    Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)
-                };
+                ? new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+                        new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE) }
+                : new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+                        new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER) };
     }
 
     @Override
@@ -112,21 +100,12 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
     public String[] getInfoData() {
 
         if (this.mFluid == null) {
-            return new String[] {
-                GT_Values.VOLTAGE_NAMES[this.mTier] + " Fluid Tank",
-                "Stored Fluid:",
-                "No Fluid",
-                Integer.toString(0) + "L",
-                Integer.toString(this.getCapacity()) + "L"
-            };
+            return new String[] { GT_Values.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:", "No Fluid",
+                    Integer.toString(0) + "L", Integer.toString(this.getCapacity()) + "L" };
         }
-        return new String[] {
-            GT_Values.VOLTAGE_NAMES[this.mTier] + " Fluid Tank",
-            "Stored Fluid:",
-            this.mFluid.getLocalizedName(),
-            Integer.toString(this.mFluid.amount) + "L",
-            Integer.toString(this.getCapacity()) + "L"
-        };
+        return new String[] { GT_Values.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:",
+                this.mFluid.getLocalizedName(), Integer.toString(this.mFluid.amount) + "L",
+                Integer.toString(this.getCapacity()) + "L" };
     }
 
     @Override

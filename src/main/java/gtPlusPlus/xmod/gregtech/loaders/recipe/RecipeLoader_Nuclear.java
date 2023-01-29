@@ -2,6 +2,9 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -20,8 +23,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeLoader_Nuclear {
 
@@ -98,7 +99,7 @@ public class RecipeLoader_Nuclear {
                 ELEMENT.getInstance().URANIUM233.getSmallDust(1),
                 ELEMENT.getInstance().URANIUM235.getSmallDust(1),
                 ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-                new int[] {0, 0, 1000, 1000, 1000, 500},
+                new int[] { 0, 0, 1000, 1000, 1000, 500 },
                 500 * 20,
                 4000);
         // Mox
@@ -113,7 +114,7 @@ public class RecipeLoader_Nuclear {
                 ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
                 ELEMENT.getInstance().PLUTONIUM238.getTinyDust(1),
                 ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-                new int[] {0, 0, 500, 500, 500, 500},
+                new int[] { 0, 0, 500, 500, 500, 500 },
                 750 * 20,
                 4000);
 
@@ -129,14 +130,14 @@ public class RecipeLoader_Nuclear {
                 ELEMENT.getInstance().LUTETIUM.getSmallDust(1),
                 ELEMENT.getInstance().POLONIUM.getSmallDust(1),
                 ELEMENT.getInstance().THALLIUM.getTinyDust(1),
-                new int[] {0, 0, 5000, 5000, 5000, 2500},
+                new int[] { 0, 0, 5000, 5000, 5000, 2500 },
                 250 * 20,
                 4000);
     }
 
     private static void chemicalBathRecipes() {
 
-        int[] chances = {9000, 6000, 3000};
+        int[] chances = { 9000, 6000, 3000 };
         GT_Values.RA.addChemicalBathRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 12),
                 FluidUtils.getFluidStack("chlorine", 2400),
@@ -147,7 +148,7 @@ public class RecipeLoader_Nuclear {
                 30 * 20,
                 480);
 
-        chances = new int[] {9000, 3000, 1000};
+        chances = new int[] { 9000, 3000, 1000 };
         GT_Values.RA.addChemicalBathRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRutile", 5),
                 FluidUtils.getFluidStack("chlorine", 4000),
@@ -171,8 +172,8 @@ public class RecipeLoader_Nuclear {
 
     private static void chemicalReactorRecipes() {
 
-        ItemStack aGtHydrofluoricAcid =
-                ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 2);
+        ItemStack aGtHydrofluoricAcid = ItemUtils
+                .getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 2);
 
         GT_Values.RA.addChemicalRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), // Input
@@ -354,38 +355,36 @@ public class RecipeLoader_Nuclear {
 
         // Makes 7-Lithium
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(14),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricLithium", 1)
-                },
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(14),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricLithium", 1) },
                 FluidUtils.getFluidStack("sulfuriclithium", 440),
                 null,
-                new ItemStack[] {
-                    CI.emptyCells(1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 4)
-                },
-                new int[] {10000, 10000, 10000, 10000, 10000},
+                new ItemStack[] { CI.emptyCells(1), ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 4) },
+                new int[] { 10000, 10000, 10000, 10000, 10000 },
                 30 * 20,
                 30);
 
         // Makes Lithium Carbonate
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {CI.emptyCells(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20)
-                }, // Item input (Array, up to 2)
+                new ItemStack[] { CI.emptyCells(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20) }, // Item
+                                                                                                                        // input
+                                                                                                                        // (Array,
+                                                                                                                        // up
+                                                                                                                        // to
+                                                                                                                        // 2)
                 FluidUtils.getFluidStack("sulfuricacid", 10000),
                 FluidUtils.getFluidStack("sulfuriclithium", 10000),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 10),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), // LithiumCarbonate
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 10),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), // LithiumCarbonate
                 }, // Output Array of Items - Upto 9,
-                new int[] {10000, 10000, 10000, 10000, 10000},
+                new int[] { 10000, 10000, 10000, 10000, 10000 },
                 75 * 20, // Time in ticks
                 1000); // EU
 
@@ -394,13 +393,12 @@ public class RecipeLoader_Nuclear {
                 || LoadedMods.IHL) {
             // CaO + H2O = Ca(OH)2
             CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedBioCircuit(20), ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2)
-                    },
+                    new ItemStack[] { CI.getNumberedBioCircuit(20),
+                            ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2) },
                     FluidUtils.getFluidStack("water", 1000),
                     null, // Fluid output (slot 2)
-                    new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5)}, // Output
-                    new int[] {10000},
+                    new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5) }, // Output
+                    new int[] { 10000 },
                     12 * 20, // Time in ticks
                     120); // EU
         } else {
@@ -414,39 +412,35 @@ public class RecipeLoader_Nuclear {
 
         // 2 LiOH + CaCO3
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(20), ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 5)
-                }, // Item
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(20),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 5) }, // Item
                 null, // Fluid input (slot 1)
                 null, // Fluid output (slot 2)
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 2),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 3)
-                }, // Output
-                new int[] {10000, 10000},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 2),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 3) }, // Output
+                new int[] { 10000, 10000 },
                 120 * 20, // Time in ticks
                 1000); // EU
 
         // LiOH Liquid to Dust
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {CI.getNumberedAdvancedCircuit(22)},
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(22) },
                 FluidUtils.getFluidStack("lithiumhydroxide", 144),
                 null,
-                new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1)},
-                new int[] {10000},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1) },
+                new int[] { 10000 },
                 1 * 20, // Time in ticks
                 64); // EU
 
         // Zirconium Chloride -> TetraFluoride
         FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 9000);
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {
-                    CI.getNumberedAdvancedCircuit(11), ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
-                }, // Item
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(11),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9), }, // Item
                 FluidUtils.getFluidStack("hydrofluoricacid", 9 * 144),
                 aHydrogenChloride,
-                new ItemStack[] {FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9)},
-                new int[] {10000},
+                new ItemStack[] { FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9) },
+                new int[] { 10000 },
                 120 * 20, // Time in ticks
                 500); // EU
 
@@ -454,39 +448,35 @@ public class RecipeLoader_Nuclear {
         FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1);
         if (aGregtechHydro != null || Utils.getGregtechVersionAsInt() >= 50929) {
             CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedAdvancedCircuit(10),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9)
-                    },
+                    new ItemStack[] { CI.getNumberedAdvancedCircuit(10),
+                            ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9) },
                     FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 18 * 144),
                     aHydrogenChloride,
-                    new ItemStack[] {FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9)},
-                    new int[] {10000},
+                    new ItemStack[] { FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9) },
+                    new int[] { 10000 },
                     240 * 20, // Time in ticks
                     500); // EU
         }
 
         // Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {CI.getNumberedAdvancedCircuit(6), FLUORIDES.AMMONIUM_BIFLUORIDE.getCell(4)},
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(6), FLUORIDES.AMMONIUM_BIFLUORIDE.getCell(4) },
                 FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(2000), // Fluid input (slot 1)
                 FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(6000),
-                new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4)},
-                new int[] {10000},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4) },
+                new int[] { 10000 },
                 32 * 20, // Time in ticks
                 64); // EU
 
         // (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] {CI.getNumberedAdvancedCircuit(17), CI.emptyCells(5)},
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.emptyCells(5) },
                 FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(5000),
                 null,
-                new ItemStack[] {
-                    MISC_MATERIALS.AMMONIA.getCell(2),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
-                    FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1)
-                },
-                new int[] {10000, 10000, 10000},
+                new ItemStack[] { MISC_MATERIALS.AMMONIA.getCell(2),
+                        ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
+                        FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1) },
+                new int[] { 10000, 10000, 10000 },
                 5 * 60 * 20,
                 120);
     }
@@ -499,7 +489,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
-                new int[] {10000, 2500, 4000},
+                new int[] { 10000, 2500, 4000 },
                 20 * 20,
                 24);
 
@@ -509,7 +499,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1),
-                new int[] {10000, 1250, 2500},
+                new int[] { 10000, 1250, 2500 },
                 20 * 20,
                 24);
         GT_Values.RA.addElectromagneticSeparatorRecipe(
@@ -517,7 +507,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1),
-                new int[] {10000, 1250, 2500},
+                new int[] { 10000, 1250, 2500 },
                 20 * 20,
                 24);
     }
@@ -534,11 +524,20 @@ public class RecipeLoader_Nuclear {
                 500);
         // LFTR Fuel 1
         CORE.RA.addFluidExtractionRecipe(
-                NUCLIDE.LiFBeF2ZrF4U235.getDust(1), NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(144), 250, 1000);
+                NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
+                NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(144),
+                250,
+                1000);
         CORE.RA.addFluidExtractionRecipe(
-                NUCLIDE.LiFBeF2ZrF4UF4.getDust(1), NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(144), 150, 1500);
+                NUCLIDE.LiFBeF2ZrF4UF4.getDust(1),
+                NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(144),
+                150,
+                1500);
         CORE.RA.addFluidExtractionRecipe(
-                NUCLIDE.LiFBeF2ThF4UF4.getDust(1), NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(144), 150, 2000);
+                NUCLIDE.LiFBeF2ThF4UF4.getDust(1),
+                NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(144),
+                150,
+                2000);
 
         // ZIRCONIUM_TETRAFLUORIDE
         CORE.RA.addFluidExtractionRecipe(
@@ -574,82 +573,70 @@ public class RecipeLoader_Nuclear {
         // Zirconium
         GT_Values.RA.addSifterRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIlmenite", 1),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustWroughtIron", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1)
-                },
-                new int[] {5000, 278, 1000, 1000, 300, 300},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustWroughtIron", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1) },
+                new int[] { 5000, 278, 1000, 1000, 300, 300 },
                 20 * 30,
                 500);
         GT_Values.RA.addSifterRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedTin", 1),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1)
-                },
-                new int[] {10000, 556, 1500, 1000, 500, 500},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1) },
+                new int[] { 10000, 556, 1500, 1000, 500, 500 },
                 20 * 30,
                 500);
         GT_Values.RA.addSifterRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1)
-                },
-                new int[] {10000, 556, 1500, 1000, 500, 500},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1) },
+                new int[] { 10000, 556, 1500, 1000, 500, 500 },
                 20 * 30,
                 500);
 
         // Radium
         GT_Values.RA.addSifterRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUranium", 1),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1)
-                },
-                new int[] {10000, 556, 1000, 500, 500, 500},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
+                new int[] { 10000, 556, 1000, 500, 500, 500 },
                 20 * 30,
                 500);
         GT_Values.RA.addSifterRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUraninite", 1),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustUraninite", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1)
-                },
-                new int[] {10000, 556, 500, 250, 250, 250},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUraninite", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
+                new int[] { 10000, 556, 500, 250, 250, 250 },
                 20 * 30,
                 500);
         GT_Values.RA.addSifterRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPitchblende", 1),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustPitchblende", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1)
-                },
-                new int[] {10000, 556, 500, 250, 250, 250},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPitchblende", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
+                new int[] { 10000, 556, 500, 250, 250, 250 },
                 20 * 30,
                 500);
     }
@@ -657,6 +644,10 @@ public class RecipeLoader_Nuclear {
     private static void fluidHeater() {
 
         CORE.RA.addFluidHeaterRecipe(
-                FLUORIDES.SODIUM_FLUORIDE.getDust(1), null, FLUORIDES.SODIUM_FLUORIDE.getFluidStack(144), 20 * 30, 500);
+                FLUORIDES.SODIUM_FLUORIDE.getDust(1),
+                null,
+                FLUORIDES.SODIUM_FLUORIDE.getFluidStack(144),
+                20 * 30,
+                500);
     }
 }

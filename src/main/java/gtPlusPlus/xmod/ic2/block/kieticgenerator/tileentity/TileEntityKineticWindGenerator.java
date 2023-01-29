@@ -1,5 +1,17 @@
 package gtPlusPlus.xmod.ic2.block.kieticgenerator.tileentity;
 
+import java.util.List;
+import java.util.Vector;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.ChunkCache;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.tile.IKineticSource;
@@ -11,18 +23,9 @@ import ic2.core.block.kineticgenerator.container.ContainerWindKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
 import ic2.core.util.Util;
-import java.util.List;
-import java.util.Vector;
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCache;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityKineticWindGenerator extends TileEntityWindKineticGenerator implements IKineticSource, IHasGui {
+
     public final InvSlotConsumableKineticRotor rotorSlot;
     private double windStrength;
     private int obstructedCrossSection;
@@ -76,8 +79,8 @@ public class TileEntityKineticWindGenerator extends TileEntityWindKineticGenerat
             }
             this.windStrength = this.calcWindStrength();
 
-            final float speed = (float)
-                    Util.limit((this.windStrength - this.getMinWindStrength()) / this.getMaxWindStrength(), 0.0D, 2.0D);
+            final float speed = (float) Util
+                    .limit((this.windStrength - this.getMinWindStrength()) / this.getMaxWindStrength(), 0.0D, 2.0D);
 
             this.setRotationSpeed(speed * 2);
             if (this.windStrength >= this.getMinWindStrength()) {
@@ -137,12 +140,12 @@ public class TileEntityKineticWindGenerator extends TileEntityWindKineticGenerat
     @Override
     public String getRotorhealth() {
         if (!this.rotorSlot.isEmpty()) {
-            return StatCollector.translateToLocalFormatted("ic2.WindKineticGenerator.gui.rotorhealth", new Object[] {
-                Integer.valueOf((int) (100.0F
-                        - ((this.rotorSlot.get().getItemDamage()
-                                        / this.rotorSlot.get().getMaxDamage())
-                                * 100.0F)))
-            });
+            return StatCollector.translateToLocalFormatted(
+                    "ic2.WindKineticGenerator.gui.rotorhealth",
+                    new Object[] { Integer.valueOf(
+                            (int) (100.0F
+                                    - ((this.rotorSlot.get().getItemDamage() / this.rotorSlot.get().getMaxDamage())
+                                            * 100.0F))) });
         }
         return "";
     }

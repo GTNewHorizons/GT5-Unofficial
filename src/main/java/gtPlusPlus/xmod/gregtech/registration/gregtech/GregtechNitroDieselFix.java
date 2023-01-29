@@ -1,5 +1,16 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.objects.MaterialStack;
@@ -12,14 +23,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 public class GregtechNitroDieselFix {
 
@@ -79,9 +82,9 @@ public class GregtechNitroDieselFix {
                              * Reflectively get all the values to maintain 5.08.xx compat
                              */
                             GT_Recipe_Map recipeMapMultiblockChemReactor;
-                            recipeMapMultiblockChemReactor = (GT_Recipe_Map)
-                                    FieldUtils.getDeclaredField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes", true)
-                                            .get(null);
+                            recipeMapMultiblockChemReactor = (GT_Recipe_Map) FieldUtils
+                                    .getDeclaredField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes", true)
+                                    .get(null);
 
                             /**
                              * Do Recipe Stuff
@@ -104,8 +107,9 @@ public class GregtechNitroDieselFix {
                                     }
                                 }
                             }
-                            Logger.INFO("[Nitro] Found " + mIndexSingle
-                                    + " single block Chemical Reactor recipes to remove.");
+                            Logger.INFO(
+                                    "[Nitro] Found " + mIndexSingle
+                                            + " single block Chemical Reactor recipes to remove.");
 
                             // Iterate Multi Block recipes for Nitro production.
                             for (GT_Recipe rnd : xMulti) {
@@ -115,8 +119,9 @@ public class GregtechNitroDieselFix {
                                     }
                                 }
                             }
-                            Logger.INFO("[Nitro] Found " + mIndexMulti
-                                    + " multi block Chemical Reactor recipes to remove.");
+                            Logger.INFO(
+                                    "[Nitro] Found " + mIndexMulti
+                                            + " multi block Chemical Reactor recipes to remove.");
 
                             // Remove Single Block recipes found.
                             int mRemovedSingle = 0;
@@ -141,12 +146,13 @@ public class GregtechNitroDieselFix {
                             Materials mLightFuel = Materials.valueOf("LightFuel");
 
                             // Build a New Recipe set
-                            Materials mFuels[] = {mLightFuel, Materials.Fuel};
+                            Materials mFuels[] = { mLightFuel, Materials.Fuel };
                             for (Materials fuel : mFuels) {
                                 boolean didAdd[] = new boolean[3];
                                 Logger.INFO(
                                         "[Nitro] Getting ready to add back in the old nitro-diesel recipe to the mixer, using "
-                                                + fuel.mDefaultLocalName + " as the fuel input.");
+                                                + fuel.mDefaultLocalName
+                                                + " as the fuel input.");
                                 didAdd[0] = GT_Values.RA.addMixerRecipe(
                                         getCells(fuel, 4),
                                         getCells(mGlycerol, 1),
@@ -177,15 +183,20 @@ public class GregtechNitroDieselFix {
                                         ItemList.Cell_Empty.get(1L),
                                         20,
                                         30);
-                                Logger.INFO("[Nitro] Did the recipes add? 1: " + didAdd[0] + " |  2: " + didAdd[1]
-                                        + " |  3: " + didAdd[2]);
+                                Logger.INFO(
+                                        "[Nitro] Did the recipes add? 1: " + didAdd[0]
+                                                + " |  2: "
+                                                + didAdd[1]
+                                                + " |  3: "
+                                                + didAdd[2]);
                             }
 
                             for (Materials fuel : mFuels) {
                                 boolean didAdd[] = new boolean[3];
                                 Logger.INFO(
                                         "[Nitro] Getting ready to add back in the old nitro-diesel recipe to the chemical reactors, using "
-                                                + fuel.mDefaultLocalName + " as the fuel input.");
+                                                + fuel.mDefaultLocalName
+                                                + " as the fuel input.");
                                 didAdd[0] = GT_Values.RA.addChemicalRecipe(
                                         getCells(fuel, 4),
                                         getCells(mGlycerol, 1),
@@ -207,8 +218,12 @@ public class GregtechNitroDieselFix {
                                         mNitroFix.getFluid(5000L),
                                         ItemList.Cell_Empty.get(1L),
                                         20);
-                                Logger.INFO("[Nitro] Did the recipes add? 1: " + didAdd[0] + " |  2: " + didAdd[1]
-                                        + " |  3: " + didAdd[2]);
+                                Logger.INFO(
+                                        "[Nitro] Did the recipes add? 1: " + didAdd[0]
+                                                + " |  2: "
+                                                + didAdd[1]
+                                                + " |  3: "
+                                                + didAdd[2]);
                             }
 
                             Logger.INFO("[Nitro] Getting ready to add back in the old glycerol recipe!");
@@ -223,12 +238,8 @@ public class GregtechNitroDieselFix {
                         }
                     }
                 }
-            } catch (IllegalArgumentException
-                    | IllegalAccessException
-                    | InstantiationException
-                    | InvocationTargetException
-                    | NoSuchMethodException
-                    | SecurityException e) {
+            } catch (IllegalArgumentException | IllegalAccessException | InstantiationException
+                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 Logger.INFO("[Nitro] ================ Error ================");
                 e.printStackTrace();
                 Logger.INFO("[Nitro] ================ Error ================");

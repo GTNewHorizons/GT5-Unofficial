@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_Catalysts extends GT_MetaTileEntity_Hatch_NbtConsumable {
 
@@ -24,17 +25,17 @@ public class GT_MetaTileEntity_Hatch_Catalysts extends GT_MetaTileEntity_Hatch_N
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Catalyst)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Catalyst) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Catalyst)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Catalyst) };
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {this.mDescription, CORE.GT_Tooltip};
+        return new String[] { this.mDescription, CORE.GT_Tooltip };
     }
 
     @Override

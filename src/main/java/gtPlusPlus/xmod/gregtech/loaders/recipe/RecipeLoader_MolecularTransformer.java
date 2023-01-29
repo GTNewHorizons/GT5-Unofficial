@@ -21,8 +21,9 @@ public class RecipeLoader_MolecularTransformer {
             int aEU = MaterialUtils.getVoltageForTier(5);
             Logger.INFO("=======================");
             Logger.INFO("Generating GT recipe for Molecular Transformer.");
-            Logger.INFO("Input: " + aRecipe.inputStack.getDisplayName() + ", Output: "
-                    + aRecipe.outputStack.getDisplayName() + ", EU/t: " + aEU);
+            Logger.INFO(
+                    "Input: " + aRecipe.inputStack
+                            .getDisplayName() + ", Output: " + aRecipe.outputStack.getDisplayName() + ", EU/t: " + aEU);
             float aTicks = (float) aRecipe.energyPerOperation / (float) aEU;
             Logger.INFO("Ticks: " + aTicks);
             int aTicksRoundedUp = MathUtils.roundToClosestInt(Math.ceil(aTicks));

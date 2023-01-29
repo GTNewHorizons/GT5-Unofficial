@@ -1,5 +1,12 @@
 package gtPlusPlus.preloader.asm;
 
+import java.io.File;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Map;
+
+import net.minecraft.launchwrapper.Launch;
+
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
@@ -7,11 +14,6 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.Preloader_Logger;
 import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
-import java.io.File;
-import java.text.NumberFormat;
-import java.util.Locale;
-import java.util.Map;
-import net.minecraft.launchwrapper.Launch;
 
 @SortingIndex(10097)
 @MCVersion(value = "1.7.10")
@@ -33,7 +35,7 @@ public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         // This will return the name of the class
-        return new String[] {Preloader_Transformer_Handler.class.getName()};
+        return new String[] { Preloader_Transformer_Handler.class.getName() };
     }
 
     @Override
@@ -69,16 +71,24 @@ public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin {
         }
         CORE_Preloader.DEV_ENVIRONMENT = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         CORE_Preloader.DEBUG_MODE = AsmConfig.debugMode;
-        Preloader_Logger.INFO("Running on " + gtPlusPlus.preloader.CORE_Preloader.JAVA_VERSION
-                + " | Development Environment: " + CORE_Preloader.DEV_ENVIRONMENT);
+        Preloader_Logger.INFO(
+                "Running on " + gtPlusPlus.preloader.CORE_Preloader.JAVA_VERSION
+                        + " | Development Environment: "
+                        + CORE_Preloader.DEV_ENVIRONMENT);
         // Preloader_Logger.INFO("Is Client? "+Utils.isClient()+" | Is Server? "+Utils.isServer());
         Locale aDefaultLocale = Locale.getDefault();
         NumberFormat aFormat = NumberFormat.getInstance();
-        Locale aDisplayLocale =
-                ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultDisplayLocale"));
-        Locale aFormatLocale =
-                ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultFormatLocale"));
-        Preloader_Logger.INFO("Locale: " + aDefaultLocale + " | Test: " + aFormat.format(1000000000) + " | Display: "
-                + aDisplayLocale + " | Format: " + aFormatLocale);
+        Locale aDisplayLocale = ReflectionUtils
+                .getFieldValue(ReflectionUtils.getField(Locale.class, "defaultDisplayLocale"));
+        Locale aFormatLocale = ReflectionUtils
+                .getFieldValue(ReflectionUtils.getField(Locale.class, "defaultFormatLocale"));
+        Preloader_Logger.INFO(
+                "Locale: " + aDefaultLocale
+                        + " | Test: "
+                        + aFormat.format(1000000000)
+                        + " | Display: "
+                        + aDisplayLocale
+                        + " | Format: "
+                        + aFormatLocale);
     }
 }
