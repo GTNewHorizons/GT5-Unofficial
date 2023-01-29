@@ -126,6 +126,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      * HOWEVER, the returned IStructureDefinition is expected to be evaluated against current instance only, and should
      * not be used against other instances, even for those of the same class.
      */
+    @Override
     public abstract IStructureDefinition<T> getStructureDefinition();
 
     /**
@@ -154,8 +155,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         super.readMultiTileNBT(aNBT);
 
         // Multiblock inventories are a collection of inventories.  The first inventory is the default internal
-        // inventory,
-        // and the others are added by inventory extending blocks.
+        // inventory, and the others are added by inventory extending blocks.
         if (mInputInventory != null) multiBlockInputInventory.put("controller", mInputInventory);
         if (mOutputInventory != null) multiBlockOutputInventory.put("controller", mOutputInventory);
 

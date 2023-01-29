@@ -32,55 +32,21 @@ public class InventoryUpgrade extends AdvancedCasing {
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
-        mInventorySize = aNBT.getInteger("mInventorySize");
+        mInventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
         mInventoryName = "inventory" + GT_Values.VN[mTier];
         mInputInventory = new ItemStackHandler(mInventorySize);
         mOutputInventory = new ItemStackHandler(mInventorySize);
-
-        loadInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
-        loadInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
     }
 
     @Override
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
-        aNBT.setInteger("mInventorySize", mInventorySize);
-
-        writeInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
-        writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
-    }
-
-    protected void loadInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
-        if (inv != null) {
-            final NBTTagList tList = aNBT.getTagList(invListTag, 10);
-            for (int i = 0; i < tList.tagCount(); i++) {
-                final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-                final int tSlot = tNBT.getShort("s");
-                if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
-            }
-        }
-    }
-
-    protected void writeInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
-        if (inv != null && inv.getSlots() > 0) {
-            final NBTTagList tList = new NBTTagList();
-            for (int tSlot = 0; tSlot < inv.getSlots(); tSlot++) {
-                final ItemStack tStack = inv.getStackInSlot(tSlot);
-                if (tStack != null) {
-                    final NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("s", (byte) tSlot);
-                    tStack.writeToNBT(tag);
-                    tList.appendTag(tag);
-                }
-            }
-            aNBT.setTag(invListTag, tList);
-        }
     }
 
     @Override
     protected void onBaseTEDestroyed() {
         super.onBaseTEDestroyed();
-        IMultiBlockController controller = getTarget(false);
+        final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             controller.unregisterInventory(mInventoryName, mInputInventory, INPUT);
             controller.unregisterInventory(mInventoryName, mOutputInventory, OUTPUT);

@@ -262,6 +262,7 @@ public class GT_Values {
                 COVERS = "gt.covers", // String
                 CUSTOM_NAME = "name", // String
                 DISPAY = "gt.display", // String
+                TIER = "gt.tier", // Number
                 FACING = "gt.facing", // Byte
                 LOCK_UPGRADE = "gt.locked", // Boolean
                 MATERIAL = "gt.material", // String containing the Material Name.
@@ -295,6 +296,7 @@ public class GT_Values {
                 TARGET_Z = "gt.target.z", // Number
                 LOCKED_INVENTORY = "gt.locked.inventory", // String
                 LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
+                UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String
                 empty_ = "";
     }
 

@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.NBT;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.BaseMultiTileEntity;
+import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
 import gregtech.api.util.GT_Util;
 import java.lang.ref.WeakReference;
 import net.minecraft.nbt.NBTTagCompound;
@@ -110,14 +111,50 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
+    public MultiTileEntityClassContainer inputInventorySize(int aSize) {
+        mParameters.setInteger(NBT.INV_INPUT_SIZE, aSize);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer outputInventorySize(int aSize) {
+        mParameters.setInteger(NBT.INV_INPUT_SIZE, aSize);
+        return this;
+    }
+
     public MultiTileEntityClassContainer tankCapacity(Long aCapacity) {
         mParameters.setLong(NBT.TANK_CAPACITY, aCapacity);
         return this;
+    }
+
+    public MultiTileEntityClassContainer tier(int aTier) {
+        verifyDecendentOf(AdvancedCasing.class);
+
+        mParameters.setInteger(NBT.TIER, aTier);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer upgradeInventorySize(int aSize) {
+        verifyDecendentOf(AdvancedCasing.class);
+
+        mParameters.setInteger(NBT.UPGRADE_INVENTORY_SIZE, aSize);
+        return this;
+    }
+
+
+    @SuppressWarnings("unused")
+    public MultiTileEntityClassContainer setNBT(String key, Object val) {
+        return setNBT(new Tuple(key, val));
     }
 
     public MultiTileEntityClassContainer setNBT(Tuple... aTags) {
         /* Merge in arbitrary NBT tuples of (key, value).  Useful for anything for which a custom method has not yet been exposed */
         mParameters = GT_Util.fuseNBT(mParameters, GT_Util.makeNBT(aTags));
         return this;
+    }
+
+    private void verifyDecendentOf(Class<?> cls) {
+        if(!mClass.isAssignableFrom(cls)) {
+            throw new IllegalArgumentException("Expected a decendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+        }
     }
 }
