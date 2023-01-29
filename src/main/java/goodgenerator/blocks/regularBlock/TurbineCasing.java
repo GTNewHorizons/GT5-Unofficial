@@ -1,5 +1,9 @@
 package goodgenerator.blocks.regularBlock;
 
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LargeTurbineBase;
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.main.GoodGenerator;
@@ -8,9 +12,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 
 public class TurbineCasing extends Casing implements ITextureBlock {
 
@@ -18,13 +19,12 @@ public class TurbineCasing extends Casing implements ITextureBlock {
     public IIconContainer base;
 
     static {
-        for (int i = 0; i < 3; i++)
-            for (int j = 1; j <= 9; j++)
-                turbineShape[i][j - 1] = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_" + i + "" + j);
+        for (int i = 0; i < 3; i++) for (int j = 1; j <= 9; j++)
+            turbineShape[i][j - 1] = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_" + i + "" + j);
     }
 
     public TurbineCasing(String name, String texture) {
-        super(name, new String[] {GoodGenerator.MOD_ID + ":" + texture});
+        super(name, new String[] { GoodGenerator.MOD_ID + ":" + texture });
         base = new Textures.BlockIcons.CustomIcon("icons/" + texture);
     }
 
@@ -42,7 +42,7 @@ public class TurbineCasing extends Casing implements ITextureBlock {
 
     public ITexture[] getTurbineCasing(int iconIndex, boolean active, boolean hasTurbine) {
         int states = active ? 0 : hasTurbine ? 1 : 2;
-        return new ITexture[] {TextureFactory.of(base), TextureFactory.of(turbineShape[states][iconIndex])};
+        return new ITexture[] { TextureFactory.of(base), TextureFactory.of(turbineShape[states][iconIndex]) };
     }
 
     @Override
@@ -91,7 +91,7 @@ public class TurbineCasing extends Casing implements ITextureBlock {
 
     @Override
     public ITexture[] getTexture(Block aBlock, int aMeta, byte aSide) {
-        return new ITexture[] {TextureFactory.of(base)};
+        return new ITexture[] { TextureFactory.of(base) };
     }
 
     @Override

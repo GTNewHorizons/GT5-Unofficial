@@ -3,8 +3,13 @@ package goodgenerator.blocks.tileEntity;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+
 import goodgenerator.blocks.tileEntity.base.LargeFusionComputerPP;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
@@ -21,9 +26,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
@@ -38,33 +40,29 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fusion Reactor")
-                .addInfo("Galaxy Collapse.")
+        tt.addMachineType("Fusion Reactor").addInfo("Galaxy Collapse.")
                 .addInfo("Controller block for the Compact Fusion Reactor MK-V.")
                 .addInfo("167,772,160EU/t and 320M EU capacity per Energy Hatch")
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
                 .addInfo("Make sure the whole structure is built in the 3x3")
-                .addInfo("chuck area of the ring center (not controller).")
-                .addInfo("Performs 4/4 overclock.")
-                .addInfo("Startup < 160,000,000 EU: 320x Parallel")
-                .addInfo("Startup < 320,000,000 EU: 256x Parallel")
-                .addInfo("Startup < 640,000,000 EU: 192x Parallel")
-                .addInfo("Startup < 1,200,000,000 EU: 128x Parallel")
+                .addInfo("chuck area of the ring center (not controller).").addInfo("Performs 4/4 overclock.")
+                .addInfo("Startup < 160,000,000 EU: 320x Parallel").addInfo("Startup < 320,000,000 EU: 256x Parallel")
+                .addInfo("Startup < 640,000,000 EU: 192x Parallel").addInfo("Startup < 1,200,000,000 EU: 128x Parallel")
                 .addInfo("Startup < 2,000,000,000 EU: 64x Parallel")
-                .addInfo("Support" + EnumChatFormatting.BLUE + " Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
-                        + EnumChatFormatting.GRAY + " Energy/Laser Hatches!")
-                .addInfo("The structure is too complex!")
-                .addInfo(BLUE_PRINT_INFO)
-                .addSeparator()
+                .addInfo(
+                        "Support" + EnumChatFormatting.BLUE
+                                + " Tec"
+                                + EnumChatFormatting.DARK_BLUE
+                                + "Tech"
+                                + EnumChatFormatting.GRAY
+                                + " Energy/Laser Hatches!")
+                .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
                 .addCasingInfo("Fusion Machine Casing MK IV", 1664)
-                .addCasingInfo("Compact Fusion Coil MK-II Finaltype", 560)
-                .addCasingInfo("Infinity Frame Box", 128)
+                .addCasingInfo("Compact Fusion Coil MK-II Finaltype", 560).addCasingInfo("Infinity Frame Box", 128)
                 .addCasingInfo("Cosmic Neutronium Reinforced Borosilicate Glass Block", 63)
-                .addEnergyHatch("1-32, Hint block with dot 3", 3)
-                .addInputHatch("2-16, Hint block with dot 1", 1)
-                .addOutputHatch("1-16, Hint block with dot 2", 2)
-                .addStructureInfo("ALL Hatches must be UEV or better")
+                .addEnergyHatch("1-32, Hint block with dot 3", 3).addInputHatch("2-16, Hint block with dot 1", 1)
+                .addOutputHatch("1-16, Hint block with dot 2", 2).addStructureInfo("ALL Hatches must be UEV or better")
                 .toolTipFinisher("Good Generator");
         return tt;
     }
@@ -116,16 +114,10 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
     @Override
     public ITexture getTextureOverlay() {
-        if (this.mMaxProgresstime > 0)
-            return TextureFactory.of(TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Casing_Machine_Screen_3)
-                    .extFacing()
-                    .build());
-        else
-            return TextureFactory.of(TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Casing_Machine_Screen_1)
-                    .extFacing()
-                    .build());
+        if (this.mMaxProgresstime > 0) return TextureFactory
+                .of(TextureFactory.builder().addIcon(TexturesGtBlock.Casing_Machine_Screen_3).extFacing().build());
+        else return TextureFactory
+                .of(TextureFactory.builder().addIcon(TexturesGtBlock.Casing_Machine_Screen_1).extFacing().build());
     }
 
     @Override
@@ -140,10 +132,8 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
     @Override
     public int overclock(int mStartEnergy) {
-        return (mStartEnergy < 160000000)
-                ? 256
-                : ((mStartEnergy < 320000000)
-                        ? 64
+        return (mStartEnergy < 160000000) ? 256
+                : ((mStartEnergy < 320000000) ? 64
                         : ((mStartEnergy < 640000000) ? 16 : ((mStartEnergy < 1200000000) ? 4 : 1)));
     }
 
@@ -187,28 +177,14 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing)
-            return new ITexture[] {
-                TextureFactory.builder()
-                        .addIcon(MACHINE_CASING_FUSION_GLASS)
-                        .extFacing()
-                        .build(),
-                getTextureOverlay()
-            };
-        if (!aActive) return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(52)};
-        return new ITexture[] {
-            TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA)
-                    .extFacing()
-                    .build()
-        };
+            return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build(),
+                    getTextureOverlay() };
+        if (!aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
+        return new ITexture[] { TextureFactory.builder().addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA)
+                .extFacing().build() };
     }
 
     @Override

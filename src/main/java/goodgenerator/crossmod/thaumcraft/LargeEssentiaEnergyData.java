@@ -1,14 +1,16 @@
 package goodgenerator.crossmod.thaumcraft;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+
 import thaumcraft.api.aspects.Aspect;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class LargeEssentiaEnergyData {
 
@@ -16,8 +18,7 @@ public class LargeEssentiaEnergyData {
 
     public static String readJsonFile() {
         try {
-            URL url = Thread.currentThread()
-                    .getContextClassLoader()
+            URL url = Thread.currentThread().getContextClassLoader()
                     .getResource("assets/goodgenerator/data/essentia.json");
             assert url != null;
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
@@ -81,6 +82,7 @@ public class LargeEssentiaEnergyData {
 }
 
 class FuelData {
+
     private final int fuelValue;
     private final String category;
     private final float consumeSpeed;

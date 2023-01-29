@@ -1,5 +1,12 @@
 package goodgenerator.blocks.tileEntity;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumicenergistics.api.grid.IEssentiaGrid;
+import thaumicenergistics.api.grid.IMEEssentiaMonitor;
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGrid;
@@ -14,24 +21,17 @@ import appeng.tile.TileEvent;
 import appeng.tile.events.TileEventType;
 import cpw.mods.fml.common.Optional;
 import goodgenerator.util.ItemRefer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumicenergistics.api.grid.IEssentiaGrid;
-import thaumicenergistics.api.grid.IMEEssentiaMonitor;
 
 @Optional.InterfaceList(
         value = {
-            @Optional.Interface(
-                    iface = "appeng.api.networking.security.IActionHost",
-                    modid = "appliedenergistics2",
-                    striprefs = true),
-            @Optional.Interface(
-                    iface = "appeng.me.helpers.IGridProxyable",
-                    modid = "appliedenergistics2",
-                    striprefs = true),
-        })
+                @Optional.Interface(
+                        iface = "appeng.api.networking.security.IActionHost",
+                        modid = "appliedenergistics2",
+                        striprefs = true),
+                @Optional.Interface(
+                        iface = "appeng.me.helpers.IGridProxyable",
+                        modid = "appliedenergistics2",
+                        striprefs = true), })
 public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActionHost, IGridProxyable {
 
     private AENetworkProxy gridProxy = null;

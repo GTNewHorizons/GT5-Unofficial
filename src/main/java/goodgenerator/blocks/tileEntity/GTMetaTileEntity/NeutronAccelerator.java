@@ -28,12 +28,9 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Input EU to Accelerate the Neutron!",
-            "Max EU input: " + this.maxEUInput(),
-            "Max EU consumption: " + this.getMaxEUConsume(),
-            "Every EU can be transformed into 10~20 eV Neutron Kinetic Energy."
-        };
+        return new String[] { "Input EU to Accelerate the Neutron!", "Max EU input: " + this.maxEUInput(),
+                "Max EU consumption: " + this.getMaxEUConsume(),
+                "Every EU can be transformed into 10~20 eV Neutron Kinetic Energy." };
     }
 
     @Override

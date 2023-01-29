@@ -1,17 +1,19 @@
 package goodgenerator.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import goodgenerator.main.GoodGenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.main.GoodGenerator;
 
 public class MyItems extends Item {
 
@@ -111,7 +113,7 @@ public class MyItems extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
         if (tooltips.size() > 0) {
             p_77624_3_.addAll(tooltips);

@@ -4,19 +4,17 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class CharExchanger {
 
-    public static final String[] tierName = new String[] {
-        EnumChatFormatting.RED + "ULV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.GRAY + "LV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.AQUA + "MV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.GOLD + "HV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.DARK_PURPLE + "EV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.DARK_BLUE + "IV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.LIGHT_PURPLE + "LuV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.WHITE + "ZPM" + EnumChatFormatting.RESET,
-        EnumChatFormatting.DARK_AQUA + "UV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.DARK_RED + "UHV" + EnumChatFormatting.RESET,
-        EnumChatFormatting.GREEN + "UEV" + EnumChatFormatting.RESET,
-    };
+    public static final String[] tierName = new String[] { EnumChatFormatting.RED + "ULV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.GRAY + "LV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.AQUA + "MV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.GOLD + "HV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.DARK_PURPLE + "EV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.DARK_BLUE + "IV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.LIGHT_PURPLE + "LuV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.WHITE + "ZPM" + EnumChatFormatting.RESET,
+            EnumChatFormatting.DARK_AQUA + "UV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.DARK_RED + "UHV" + EnumChatFormatting.RESET,
+            EnumChatFormatting.GREEN + "UEV" + EnumChatFormatting.RESET, };
 
     public static char shifter(int unicode) {
         return (char) unicode;
@@ -51,13 +49,13 @@ public class CharExchanger {
     }
 
     /**
-     *  ">" : 1 <BR>
-     *  "<" : 2 <BR>
-     *  "==" : 13 <BR>
-     *  "!=" : 14 <BR>
-     *  ">=" : 11 <BR>
-     *  "<=" : 12 <BR>
-     *  INVALID : -1
+     * ">" : 1 <BR>
+     * "<" : 2 <BR>
+     * "==" : 13 <BR>
+     * "!=" : 14 <BR>
+     * ">=" : 11 <BR>
+     * "<=" : 12 <BR>
+     * INVALID : -1
      */
     public static int getOperator(String exp) {
         char c1, c2;
@@ -91,7 +89,7 @@ public class CharExchanger {
     public static boolean compareExpression(String exp, int num) {
         int op = getOperator(exp);
         String NumExp = exp;
-        String[] opChar = new String[] {">", "<", "=", "!"};
+        String[] opChar = new String[] { ">", "<", "=", "!" };
         if (op == -1) throw new IllegalArgumentException();
         for (String re : opChar) NumExp = NumExp.replace(re, "");
         long num2 = 0;

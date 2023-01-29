@@ -6,6 +6,18 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -16,6 +28,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -31,16 +44,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -50,50 +53,46 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     public GT_Recipe mLastRecipe;
     public int para;
     public int mEUStore;
-    private static final ClassValue<IStructureDefinition<LargeFusionComputer>> STRUCTURE_DEFINITION =
-            new ClassValue<IStructureDefinition<LargeFusionComputer>>() {
-                @Override
-                protected IStructureDefinition<LargeFusionComputer> computeValue(Class<?> type) {
-                    return StructureDefinition.<LargeFusionComputer>builder()
-                            .addShape(MAIN_NAME, transpose(new String[][] {L0, L1, L2, L3, L2, L1, L0}))
-                            .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                            .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
-                            .addElement('B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta())))
-                            .addElement('I', lazy(x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
-                                    .atLeast(GT_HatchElement.InputHatch)
-                                    .adder(LargeFusionComputer::addInjector)
-                                    .casingIndex(x.textureIndex())
-                                    .dot(1)
-                                    .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
-                            .addElement('O', lazy(x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
-                                    .atLeast(GT_HatchElement.OutputHatch)
-                                    .adder(LargeFusionComputer::addExtractor)
-                                    .casingIndex(x.textureIndex())
-                                    .dot(2)
-                                    .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
-                            .addElement('E', lazy(x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
-                                    .atLeast(HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
-                                    .adder(LargeFusionComputer::addEnergyInjector)
-                                    .casingIndex(x.textureIndex())
-                                    .dot(3)
-                                    .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
-                            .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
-                            .build();
-                }
-            };
+    private static final ClassValue<IStructureDefinition<LargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<LargeFusionComputer>>() {
+
+        @Override
+        protected IStructureDefinition<LargeFusionComputer> computeValue(Class<?> type) {
+            return StructureDefinition.<LargeFusionComputer>builder()
+                    .addShape(MAIN_NAME, transpose(new String[][] { L0, L1, L2, L3, L2, L1, L0 }))
+                    .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
+                    .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
+                    .addElement('B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta())))
+                    .addElement(
+                            'I',
+                            lazy(
+                                    x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
+                                            .atLeast(GT_HatchElement.InputHatch).adder(LargeFusionComputer::addInjector)
+                                            .casingIndex(x.textureIndex()).dot(1)
+                                            .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
+                    .addElement(
+                            'O',
+                            lazy(
+                                    x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
+                                            .atLeast(GT_HatchElement.OutputHatch)
+                                            .adder(LargeFusionComputer::addExtractor).casingIndex(x.textureIndex())
+                                            .dot(2).buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
+                    .addElement(
+                            'E',
+                            lazy(
+                                    x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
+                                            .atLeast(HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
+                                            .adder(LargeFusionComputer::addEnergyInjector).casingIndex(x.textureIndex())
+                                            .dot(3).buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
+                    .addElement('F', lazy(x -> ofFrame(x.getFrameBox()))).build();
+        }
+    };
 
     static {
         Textures.BlockIcons.setCasingTextureForId(
                 52,
                 TextureFactory.of(
-                        TextureFactory.builder()
-                                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW)
-                                .extFacing()
-                                .build(),
-                        TextureFactory.builder()
-                                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                                .extFacing()
-                                .glow()
+                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW).extFacing().build(),
+                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).extFacing().glow()
                                 .build()));
     }
 
@@ -142,8 +141,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.eEnergyMulti.clear();
-        if (structureCheck_EM(MAIN_NAME, 23, 3, 40)
-                && mInputHatches.size() > 1
+        if (structureCheck_EM(MAIN_NAME, 23, 3, 40) && mInputHatches.size() > 1
                 && !mOutputHatches.isEmpty()
                 && (mEnergyHatches.size() + eEnergyMulti.size()) != 0) {
             fixAllIssue();
@@ -197,7 +195,8 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             int offX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetX;
             int offZ = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetZ;
             GT_ChunkManager.requestChunkLoad(
-                    (TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
             GT_ChunkManager.requestChunkLoad(
                     (TileEntity) aBaseMetaTileEntity,
                     new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + 1 + offZ));
@@ -236,8 +235,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 mUpdate = 50;
                 mUpdated = false;
             }
-            if (--mUpdate == 0
-                    || --mStartUpCheck == 0
+            if (--mUpdate == 0 || --mStartUpCheck == 0
                     || cyclicUpdate_EM()
                     || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                 if (mUpdate <= -1000) {
@@ -251,38 +249,38 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
                             if (isValidMetaTileEntity(tHatch)) {
                                 if (aBaseMetaTileEntity.getStoredEU()
-                                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100))
-                                                < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity()
-                                                .decreaseStoredEnergyUnits(
-                                                        2048L * tierOverclock() * getMaxPara() * extraPara(100),
-                                                        false)) {
+                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100)) < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                                                2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                                                false)) {
                                     aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                            2048L * tierOverclock() * getMaxPara() * extraPara(100), true);
+                                            2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                                            true);
                                 } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
                                         && tHatch.getBaseMetaTileEntity()
                                                 .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(2048L * tierOverclock(), true);
-                                }
+                                                    aBaseMetaTileEntity
+                                                            .increaseStoredEnergyUnits(2048L * tierOverclock(), true);
+                                                }
                             }
                     }
                     if (this.eEnergyMulti != null) {
                         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti)
                             if (isValidMetaTileEntity(tHatch)) {
                                 if (aBaseMetaTileEntity.getStoredEU()
-                                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100))
-                                                < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity()
-                                                .decreaseStoredEnergyUnits(
-                                                        2048L * tierOverclock() * getMaxPara() * extraPara(100),
-                                                        false)) {
+                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100)) < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                                                2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                                                false)) {
                                     aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                            2048L * tierOverclock() * getMaxPara() * extraPara(100), true);
+                                            2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                                            true);
                                 } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
                                         && tHatch.getBaseMetaTileEntity()
                                                 .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(2048L * tierOverclock(), true);
-                                }
+                                                    aBaseMetaTileEntity
+                                                            .increaseStoredEnergyUnits(2048L * tierOverclock(), true);
+                                                }
                             }
                     }
                     if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
@@ -296,7 +294,8 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math.max(
-                                    0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
+                                    0,
+                                    Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
                             mOutputItems = null;
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
@@ -305,8 +304,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                             if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
                         }
                     } else {
-                        if (aTick % 100 == 0
-                                || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                        if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
                                 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
@@ -316,9 +314,9 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
                                     }
-                                    getBaseMetaTileEntity()
-                                            .decreaseStoredEnergyUnits(
-                                                    this.mLastRecipe.mSpecialValue - this.mEUt, false);
+                                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                                            this.mLastRecipe.mSpecialValue - this.mEUt,
+                                            false);
                                 }
                             }
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
@@ -330,8 +328,8 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                     stopMachine();
                 }
             }
-            aBaseMetaTileEntity.setErrorDisplayID(
-                    (aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
+            aBaseMetaTileEntity
+                    .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         }
     }
@@ -361,28 +359,13 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing)
-            return new ITexture[] {
-                TextureFactory.builder()
-                        .addIcon(MACHINE_CASING_FUSION_GLASS)
-                        .extFacing()
-                        .build(),
-                getTextureOverlay()
-            };
-        if (aActive) return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(52)};
-        return new ITexture[] {
-            TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_FUSION_GLASS)
-                    .extFacing()
-                    .build()
-        };
+            return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build(),
+                    getTextureOverlay() };
+        if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
+        return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build() };
     }
 
     @Override
@@ -427,14 +410,11 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             return (mStartEnergy < 160000000 ? 4 : (mStartEnergy < 320000000 ? 2 : 1));
         }
         if (tierOverclock() == 8) {
-            return (mStartEnergy < 160000000)
-                    ? 8
+            return (mStartEnergy < 160000000) ? 8
                     : ((mStartEnergy < 320000000) ? 4 : (mStartEnergy < 640000000) ? 2 : 1);
         }
-        return (mStartEnergy < 160000000)
-                ? 16
-                : ((mStartEnergy < 320000000)
-                        ? 8
+        return (mStartEnergy < 160000000) ? 16
+                : ((mStartEnergy < 320000000) ? 8
                         : ((mStartEnergy < 640000000) ? 4 : (mStartEnergy < 1280000000) ? 2 : 1));
     }
 
@@ -444,22 +424,26 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
         if (tFluidList.size() > 1) {
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(
-                    this.getBaseMetaTileEntity(), this.mLastRecipe, false, Integer.MAX_VALUE, tFluids);
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes
+                    .findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, Integer.MAX_VALUE, tFluids);
             if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
                 return false;
             }
             int pall = handleParallelRecipe(
-                    tRecipe, tFluids, null, Math.min(getMaxPara() * extraPara(tRecipe.mSpecialValue), (int)
-                            (getMaxEUInput() / tRecipe.mEUt / overclock(tRecipe.mSpecialValue))));
+                    tRecipe,
+                    tFluids,
+                    null,
+                    Math.min(
+                            getMaxPara() * extraPara(tRecipe.mSpecialValue),
+                            (int) (getMaxEUInput() / tRecipe.mEUt / overclock(tRecipe.mSpecialValue))));
             this.para = pall;
             if (mRunningOnLoad || pall > 0) {
                 this.mLastRecipe = tRecipe;
                 this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue) * pall);
-                this.mMaxProgresstime =
-                        Math.max(this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue), 1);
+                this.mMaxProgresstime = Math
+                        .max(this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue), 1);
                 this.mEfficiencyIncrease = 10000;
                 this.mOutputFluids = getMultiOutput(mLastRecipe, pall).getKey().toArray(new FluidStack[0]);
                 turnCasingActive(true);
@@ -569,35 +553,43 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
     @Override
     public String[] getInfoData() {
-        String tier = hatchTier() == 6
-                ? EnumChatFormatting.RED + "I" + EnumChatFormatting.RESET
-                : hatchTier() == 7
-                        ? EnumChatFormatting.YELLOW + "II" + EnumChatFormatting.RESET
+        String tier = hatchTier() == 6 ? EnumChatFormatting.RED + "I" + EnumChatFormatting.RESET
+                : hatchTier() == 7 ? EnumChatFormatting.YELLOW + "II" + EnumChatFormatting.RESET
                         : hatchTier() == 8 ? EnumChatFormatting.GRAY + "III" + EnumChatFormatting.RESET : "IV";
         float plasmaOut = 0;
         int powerRequired = 0;
         if (this.mLastRecipe != null) {
             powerRequired = this.mLastRecipe.mEUt * this.para * overclock(this.mLastRecipe.mSpecialValue);
             if (this.mLastRecipe.getFluidOutput(0) != null) {
-                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount
-                        / (float) this.mLastRecipe.mDuration
+                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount / (float) this.mLastRecipe.mDuration
                         * this.para;
             }
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
-            StatCollector.translateToLocal("scanner.info.UX.0") + ": " + EnumChatFormatting.LIGHT_PURPLE
-                    + GT_Utility.formatNumbers(this.para) + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.fusion.req") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(powerRequired) + EnumChatFormatting.RESET + "EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(mEUStore) + EnumChatFormatting.RESET + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(maxEUStore()) + EnumChatFormatting.RESET + " EU",
-            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(plasmaOut) + EnumChatFormatting.RESET + "L/t"
-        };
+        return new String[] { EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
+                StatCollector.translateToLocal("scanner.info.UX.0") + ": "
+                        + EnumChatFormatting.LIGHT_PURPLE
+                        + GT_Utility.formatNumbers(this.para)
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.fusion.req") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(powerRequired)
+                        + EnumChatFormatting.RESET
+                        + "EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(mEUStore)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(maxEUStore())
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(plasmaOut)
+                        + EnumChatFormatting.RESET
+                        + "L/t" };
     }
 
     protected long energyStorageCache;
@@ -607,217 +599,123 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements
-                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
-                                + GT_Utility.formatNumbers(energyStorageCache) + " EU")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
+                                                + GT_Utility.formatNumbers(energyStorageCache)
+                                                + " EU")
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
-                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
-                                + GT_Utility.formatNumbers(getEUVar()) + " EU")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
+                                                + GT_Utility.formatNumbers(getEUVar())
+                                                + " EU")
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
     }
 
-    public static final String[] L0 = {
-        "                                               ",
-        "                                               ",
-        "                    FCCCCCF                    ",
-        "                    FCIBICF                    ",
-        "                    FCCCCCF                    ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "  FFF                                     FFF  ",
-        "  CCC                                     CCC  ",
-        "  CIC                                     CIC  ",
-        "  CBC                                     CBC  ",
-        "  CIC                                     CIC  ",
-        "  CCC                                     CCC  ",
-        "  FFF                                     FFF  ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                                               ",
-        "                    FCCCCCF                    ",
-        "                    FCIBICF                    ",
-        "                    FCCCCCF                    ",
-        "                                               ",
-        "                                               ",
-    };
+    public static final String[] L0 = { "                                               ",
+            "                                               ", "                    FCCCCCF                    ",
+            "                    FCIBICF                    ", "                    FCCCCCF                    ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "  FFF                                     FFF  ",
+            "  CCC                                     CCC  ", "  CIC                                     CIC  ",
+            "  CBC                                     CBC  ", "  CIC                                     CIC  ",
+            "  CCC                                     CCC  ", "  FFF                                     FFF  ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                                               ",
+            "                                               ", "                    FCCCCCF                    ",
+            "                    FCIBICF                    ", "                    FCCCCCF                    ",
+            "                                               ", "                                               ", };
 
-    public static final String[] L1 = {
-        "                                               ",
-        "                    FCBBBCF                    ",
-        "                   CC     CC                   ",
-        "                CCCCC     CCCCC                ",
-        "              CCCCCCC     CCCCCCC              ",
-        "            CCCCCCC FCBBBCF CCCCCCC            ",
-        "           CCCCC               CCCCC           ",
-        "          CCCC                   CCCC          ",
-        "         CCC                       CCC         ",
-        "        CCC                         CCC        ",
-        "       CCC                           CCC       ",
-        "      CCC                             CCC      ",
-        "     CCC                               CCC     ",
-        "     CCC                               CCC     ",
-        "    CCC                                 CCC    ",
-        "    CCC                                 CCC    ",
-        "   CCC                                   CCC   ",
-        "   CCC                                   CCC   ",
-        "   CCC                                   CCC   ",
-        "  CCC                                     CCC  ",
-        " FCCCF                                   FCCCF ",
-        " C   C                                   C   C ",
-        " B   B                                   B   B ",
-        " B   B                                   B   B ",
-        " B   B                                   B   B ",
-        " C   C                                   C   C ",
-        " FCCCF                                   FCCCF ",
-        "  CCC                                     CCC  ",
-        "   CCC                                   CCC   ",
-        "   CCC                                   CCC   ",
-        "   CCC                                   CCC   ",
-        "    CCC                                 CCC    ",
-        "    CCC                                 CCC    ",
-        "     CCC                               CCC     ",
-        "     CCC                               CCC     ",
-        "      CCC                             CCC      ",
-        "       CCC                           CCC       ",
-        "        CCC                         CCC        ",
-        "         CCC                       CCC         ",
-        "          CCCC                   CCCC          ",
-        "           CCCCC               CCCCC           ",
-        "            CCCCCCC FCBBBCF CCCCCCC            ",
-        "              CCCCCCC     CCCCCCC              ",
-        "                CCCCC     CCCCC                ",
-        "                   CC     CC                   ",
-        "                    FCBBBCF                    ",
-        "                                               ",
-    };
+    public static final String[] L1 = { "                                               ",
+            "                    FCBBBCF                    ", "                   CC     CC                   ",
+            "                CCCCC     CCCCC                ", "              CCCCCCC     CCCCCCC              ",
+            "            CCCCCCC FCBBBCF CCCCCCC            ", "           CCCCC               CCCCC           ",
+            "          CCCC                   CCCC          ", "         CCC                       CCC         ",
+            "        CCC                         CCC        ", "       CCC                           CCC       ",
+            "      CCC                             CCC      ", "     CCC                               CCC     ",
+            "     CCC                               CCC     ", "    CCC                                 CCC    ",
+            "    CCC                                 CCC    ", "   CCC                                   CCC   ",
+            "   CCC                                   CCC   ", "   CCC                                   CCC   ",
+            "  CCC                                     CCC  ", " FCCCF                                   FCCCF ",
+            " C   C                                   C   C ", " B   B                                   B   B ",
+            " B   B                                   B   B ", " B   B                                   B   B ",
+            " C   C                                   C   C ", " FCCCF                                   FCCCF ",
+            "  CCC                                     CCC  ", "   CCC                                   CCC   ",
+            "   CCC                                   CCC   ", "   CCC                                   CCC   ",
+            "    CCC                                 CCC    ", "    CCC                                 CCC    ",
+            "     CCC                               CCC     ", "     CCC                               CCC     ",
+            "      CCC                             CCC      ", "       CCC                           CCC       ",
+            "        CCC                         CCC        ", "         CCC                       CCC         ",
+            "          CCCC                   CCCC          ", "           CCCCC               CCCCC           ",
+            "            CCCCCCC FCBBBCF CCCCCCC            ", "              CCCCCCC     CCCCCCC              ",
+            "                CCCCC     CCCCC                ", "                   CC     CC                   ",
+            "                    FCBBBCF                    ", "                                               ", };
 
-    public static final String[] L2 = {
-        "                    FCCCCCF                    ",
-        "                   CC     CC                   ",
-        "                CCCCC     CCCCC                ",
-        "              CCCCCHHHHHHHHHCCCCC              ",
-        "            CCCCHHHCC     CCHHHCCCC            ",
-        "           CCCHHCCCCC     CCCCCHHCCC           ",
-        "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
-        "         CCHCCCC               CCCCHCC         ",
-        "        CCHCCC                   CCCHCC        ",
-        "       CCHCE                       ECHCC       ",
-        "      ECHCC                         CCHCE      ",
-        "     CCHCE                           ECHCC     ",
-        "    CCHCC                             CCHCC    ",
-        "    CCHCC                             CCHCC    ",
-        "   CCHCC                               CCHCC   ",
-        "   CCHCC                               CCHCC   ",
-        "  CCHCC                                 CCHCC  ",
-        "  CCHCC                                 CCHCC  ",
-        "  CCHCC                                 CCHCC  ",
-        " CCHCC                                   CCHCC ",
-        "FCCHCCF                                 FCCHCCF",
-        "C  H  C                                 C  H  C",
-        "C  H  C                                 C  H  C",
-        "C  H  C                                 C  H  C",
-        "C  H  C                                 C  H  C",
-        "C  H  C                                 C  H  C",
-        "FCCHCCF                                 FCCHCCF",
-        " CCHCC                                   CCHCC ",
-        "  CCHCC                                 CCHCC  ",
-        "  CCHCC                                 CCHCC  ",
-        "  CCHCC                                 CCHCC  ",
-        "   CCHCC                               CCHCC   ",
-        "   CCHCC                               CCHCC   ",
-        "    CCHCC                             CCHCC    ",
-        "    CCHCC                             CCHCC    ",
-        "     CCHCE                           ECHCC     ",
-        "      ECHCC                         CCHCE      ",
-        "       CCHCE                       ECHCC       ",
-        "        CCHCCC                   CCCHCC        ",
-        "         CCHCCCC               CCCCHCC         ",
-        "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
-        "           CCCHHCCCCC     CCCCCHHCCC           ",
-        "            CCCCHHHCC     CCHHHCCCC            ",
-        "              CCCCCHHHHHHHHHCCCCC              ",
-        "                CCCCC     CCCCC                ",
-        "                   CC     CC                   ",
-        "                    FCCCCCF                    ",
-    };
+    public static final String[] L2 = { "                    FCCCCCF                    ",
+            "                   CC     CC                   ", "                CCCCC     CCCCC                ",
+            "              CCCCCHHHHHHHHHCCCCC              ", "            CCCCHHHCC     CCHHHCCCC            ",
+            "           CCCHHCCCCC     CCCCCHHCCC           ", "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
+            "         CCHCCCC               CCCCHCC         ", "        CCHCCC                   CCCHCC        ",
+            "       CCHCE                       ECHCC       ", "      ECHCC                         CCHCE      ",
+            "     CCHCE                           ECHCC     ", "    CCHCC                             CCHCC    ",
+            "    CCHCC                             CCHCC    ", "   CCHCC                               CCHCC   ",
+            "   CCHCC                               CCHCC   ", "  CCHCC                                 CCHCC  ",
+            "  CCHCC                                 CCHCC  ", "  CCHCC                                 CCHCC  ",
+            " CCHCC                                   CCHCC ", "FCCHCCF                                 FCCHCCF",
+            "C  H  C                                 C  H  C", "C  H  C                                 C  H  C",
+            "C  H  C                                 C  H  C", "C  H  C                                 C  H  C",
+            "C  H  C                                 C  H  C", "FCCHCCF                                 FCCHCCF",
+            " CCHCC                                   CCHCC ", "  CCHCC                                 CCHCC  ",
+            "  CCHCC                                 CCHCC  ", "  CCHCC                                 CCHCC  ",
+            "   CCHCC                               CCHCC   ", "   CCHCC                               CCHCC   ",
+            "    CCHCC                             CCHCC    ", "    CCHCC                             CCHCC    ",
+            "     CCHCE                           ECHCC     ", "      ECHCC                         CCHCE      ",
+            "       CCHCE                       ECHCC       ", "        CCHCCC                   CCCHCC        ",
+            "         CCHCCCC               CCCCHCC         ", "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
+            "           CCCHHCCCCC     CCCCCHHCCC           ", "            CCCCHHHCC     CCHHHCCCC            ",
+            "              CCCCCHHHHHHHHHCCCCC              ", "                CCCCC     CCCCC                ",
+            "                   CC     CC                   ", "                    FCCCCCF                    ", };
 
-    public static final String[] L3 = {
-        "                    FCOBOCF                    ",
-        "                   CC     CC                   ",
-        "                CCCHHHHHHHHHCCC                ",
-        "              CCHHHHHHHHHHHHHHHCC              ",
-        "            CCHHHHHHHHHHHHHHHHHHHCC            ",
-        "           CHHHHHHHCC     CCHHHHHHHC           ",
-        "          CHHHHHCCC FCOBOCF CCCHHHHHC          ",
-        "         CHHHHCC               CCHHHHC         ",
-        "        CHHHCC                   CCHHHC        ",
-        "       CHHHC                       CHHHC       ",
-        "      CHHHC                         CHHHC      ",
-        "     CHHHC                           CHHHC     ",
-        "    CHHHC                             CHHHC    ",
-        "    CHHHC                             CHHHC    ",
-        "   CHHHC                               CHHHC   ",
-        "   CHHHC                               CHHHC   ",
-        "  CHHHC                                 CHHHC  ",
-        "  CHHHC                                 CHHHC  ",
-        "  CHHHC                                 CHHHC  ",
-        " CHHHC                                   CHHHC ",
-        "FCHHHCF                                 FCHHHCF",
-        "C HHH C                                 C HHH C",
-        "O HHH O                                 O HHH O",
-        "B HHH B                                 B HHH B",
-        "O HHH O                                 O HHH O",
-        "C HHH C                                 C HHH C",
-        "FCHHHCF                                 FCHHHCF",
-        " CHHHC                                   CHHHC ",
-        "  CHHHC                                 CHHHC  ",
-        "  CHHHC                                 CHHHC  ",
-        "  CHHHC                                 CHHHC  ",
-        "   CHHHC                               CHHHC   ",
-        "   CHHHC                               CHHHC   ",
-        "    CHHHC                             CHHHC    ",
-        "    CHHHC                             CHHHC    ",
-        "     CHHHC                           CHHHC     ",
-        "      CHHHC                         CHHHC      ",
-        "       CHHHC                       CHHHC       ",
-        "        CHHHCC                   CCHHHC        ",
-        "         CHHHHCC               CCHHHHC         ",
-        "          CHHHHHCCC FCO~OCF CCCHHHHHC          ",
-        "           CHHHHHHHCC     CCHHHHHHHC           ",
-        "            CCHHHHHHHHHHHHHHHHHHHCC            ",
-        "              CCHHHHHHHHHHHHHHHCC              ",
-        "                CCCHHHHHHHHHCCC                ",
-        "                   CC     CC                   ",
-        "                    FCOBOCF                    ",
-    };
+    public static final String[] L3 = { "                    FCOBOCF                    ",
+            "                   CC     CC                   ", "                CCCHHHHHHHHHCCC                ",
+            "              CCHHHHHHHHHHHHHHHCC              ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
+            "           CHHHHHHHCC     CCHHHHHHHC           ", "          CHHHHHCCC FCOBOCF CCCHHHHHC          ",
+            "         CHHHHCC               CCHHHHC         ", "        CHHHCC                   CCHHHC        ",
+            "       CHHHC                       CHHHC       ", "      CHHHC                         CHHHC      ",
+            "     CHHHC                           CHHHC     ", "    CHHHC                             CHHHC    ",
+            "    CHHHC                             CHHHC    ", "   CHHHC                               CHHHC   ",
+            "   CHHHC                               CHHHC   ", "  CHHHC                                 CHHHC  ",
+            "  CHHHC                                 CHHHC  ", "  CHHHC                                 CHHHC  ",
+            " CHHHC                                   CHHHC ", "FCHHHCF                                 FCHHHCF",
+            "C HHH C                                 C HHH C", "O HHH O                                 O HHH O",
+            "B HHH B                                 B HHH B", "O HHH O                                 O HHH O",
+            "C HHH C                                 C HHH C", "FCHHHCF                                 FCHHHCF",
+            " CHHHC                                   CHHHC ", "  CHHHC                                 CHHHC  ",
+            "  CHHHC                                 CHHHC  ", "  CHHHC                                 CHHHC  ",
+            "   CHHHC                               CHHHC   ", "   CHHHC                               CHHHC   ",
+            "    CHHHC                             CHHHC    ", "    CHHHC                             CHHHC    ",
+            "     CHHHC                           CHHHC     ", "      CHHHC                         CHHHC      ",
+            "       CHHHC                       CHHHC       ", "        CHHHCC                   CCHHHC        ",
+            "         CHHHHCC               CCHHHHC         ", "          CHHHHHCCC FCO~OCF CCCHHHHHC          ",
+            "           CHHHHHHHCC     CCHHHHHHHC           ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
+            "              CCHHHHHHHHHHHHHHHCC              ", "                CCCHHHHHHHHHCCC                ",
+            "                   CC     CC                   ", "                    FCOBOCF                    ", };
 }

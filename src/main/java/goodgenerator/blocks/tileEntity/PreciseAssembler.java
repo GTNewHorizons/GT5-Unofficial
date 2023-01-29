@@ -7,6 +7,18 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -15,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LongPowerUsageBase;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
@@ -35,26 +48,16 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<PreciseAssembler>
         implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow =
-            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
+            "iconsets/OVERLAY_QTANK_GLOW");
     private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow =
-            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
+            "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<PreciseAssembler> multiDefinition = null;
     protected int casingAmount;
@@ -75,14 +78,14 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
     @Override
     public IStructureDefinition<PreciseAssembler> getStructureDefinition() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<PreciseAssembler>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC"},
-                        {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
-                        {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
-                        {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
-                        {"CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC"}
-                    }))
+            multiDefinition = StructureDefinition.<PreciseAssembler>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC" },
+                                    { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
+                                    { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
+                                    { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
+                                    { "CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC" } }))
                     .addElement(
                             'C',
                             GT_HatchElementBuilder.<PreciseAssembler>builder()
@@ -94,20 +97,19 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                                             Maintenance,
                                             Muffler,
                                             ExoticEnergy.or(Energy))
-                                    .adder(PreciseAssembler::addToPAssList)
-                                    .casingIndex(1539)
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            x -> x.casingAmount++,
-                                            StructureUtility.ofBlocksTiered(
-                                                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
-                                                    IntStream.range(0, 3)
-                                                            .mapToObj(meta -> org.apache.commons.lang3.tuple.Pair.of(
-                                                                    Loaders.preciseUnitCasing, meta))
-                                                            .collect(Collectors.toList()),
-                                                    -1,
-                                                    PreciseAssembler::setCasingTier,
-                                                    PreciseAssembler::getCasingTier))))
+                                    .adder(PreciseAssembler::addToPAssList).casingIndex(1539).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> x.casingAmount++,
+                                                    StructureUtility.ofBlocksTiered(
+                                                            (block, meta) -> block == Loaders.preciseUnitCasing ? meta
+                                                                    : -2,
+                                                            IntStream.range(0, 3).mapToObj(
+                                                                    meta -> org.apache.commons.lang3.tuple.Pair
+                                                                            .of(Loaders.preciseUnitCasing, meta))
+                                                                    .collect(Collectors.toList()),
+                                                            -1,
+                                                            PreciseAssembler::setCasingTier,
+                                                            PreciseAssembler::getCasingTier))))
                     .addElement('F', ofFrame(Materials.TungstenSteel))
                     .addElement('G', ofBlock(Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0))
                     .addElement(
@@ -115,8 +117,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                             StructureUtility.ofBlocksTiered(
                                     (block, meta) -> block == GregTech_API.sBlockCasings1 ? meta : -2,
                                     IntStream.range(0, 10)
-                                            .mapToObj(meta -> org.apache.commons.lang3.tuple.Pair.of(
-                                                    GregTech_API.sBlockCasings1, meta))
+                                            .mapToObj(
+                                                    meta -> org.apache.commons.lang3.tuple.Pair
+                                                            .of(GregTech_API.sBlockCasings1, meta))
                                             .collect(Collectors.toList()),
                                     -1,
                                     PreciseAssembler::setMachineTier,
@@ -198,14 +201,13 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
         if (this.mode == 0) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (!isValidMetaTileEntity(bus)) continue;
-                this.lastRecipe = getRecipeMap()
-                        .findRecipe(
-                                this.getBaseMetaTileEntity(),
-                                this.lastRecipe,
-                                false,
-                                Math.min(getMachineVoltageLimit(), getRealVoltage()),
-                                inputFluids,
-                                getStoredItemFromHatch(bus));
+                this.lastRecipe = getRecipeMap().findRecipe(
+                        this.getBaseMetaTileEntity(),
+                        this.lastRecipe,
+                        false,
+                        Math.min(getMachineVoltageLimit(), getRealVoltage()),
+                        inputFluids,
+                        getStoredItemFromHatch(bus));
                 if (this.lastRecipe != null && this.lastRecipe.mSpecialValue <= (casingTier + 1)) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -222,20 +224,22 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
         } else {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (!isValidMetaTileEntity(bus) || getStoredItemFromHatch(bus).length < 1) continue;
-                this.lastRecipe = getRecipeMap()
-                        .findRecipe(
-                                this.getBaseMetaTileEntity(),
-                                this.lastRecipe,
-                                false,
-                                Math.min(getMachineVoltageLimit(), getRealVoltage()),
-                                inputFluids,
-                                getStoredItemFromHatch(bus));
+                this.lastRecipe = getRecipeMap().findRecipe(
+                        this.getBaseMetaTileEntity(),
+                        this.lastRecipe,
+                        false,
+                        Math.min(getMachineVoltageLimit(), getRealVoltage()),
+                        inputFluids,
+                        getStoredItemFromHatch(bus));
                 if (this.lastRecipe != null) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     long fullInput = getRealVoltage();
-                    int pall = handleParallelRecipe(this.lastRecipe, inputFluids, getStoredItemFromHatch(bus), (int)
-                            Math.min((long) Math.pow(2, 4 + (casingTier + 1)), fullInput / this.lastRecipe.mEUt));
+                    int pall = handleParallelRecipe(
+                            this.lastRecipe,
+                            inputFluids,
+                            getStoredItemFromHatch(bus),
+                            (int) Math.min((long) Math.pow(2, 4 + (casingTier + 1)), fullInput / this.lastRecipe.mEUt));
                     if (pall <= 0) continue;
                     Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(this.lastRecipe, pall);
                     mOutputItems = Outputs.getValue().toArray(new ItemStack[0]);
@@ -307,8 +311,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                 reUpdate(1539 + casingTier);
             }
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 42
-                    && machineTier >= 0
+            return casingAmount >= 42 && machineTier >= 0
                     && casingTier >= 0
                     && mMaintenanceHatches.size() == 1
                     && !mMufflerHatches.isEmpty();
@@ -319,31 +322,18 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Precise Assembler/Assembler")
-                .addInfo("Controller block for the Precise Assembler")
-                .addInfo("The error is no more than 7nm.")
-                .addInfo("Can assemble precise component in Precise Mode.")
-                .addInfo("Can work like a normal assembler in Normal Mode.")
-                .addInfo("Use screwdriver to change mode.")
+        tt.addMachineType("Precise Assembler/Assembler").addInfo("Controller block for the Precise Assembler")
+                .addInfo("The error is no more than 7nm.").addInfo("Can assemble precise component in Precise Mode.")
+                .addInfo("Can work like a normal assembler in Normal Mode.").addInfo("Use screwdriver to change mode.")
                 .addInfo("Machine Casing and Energy Hatch limits the voltage tier the machine can work on.")
                 .addInfo("UHV Machine Casing will unlock all voltage, but you still need good Energy Hatch.")
                 .addInfo("Precise Electronic Unit Casing won't limit recipe in Normal Mode.")
-                .addInfo("But gives more parallel with more advanced one.")
-                .addInfo("It is 100% faster in Normal Mode.")
-                .addInfo("MK-I = 32x, MK-II = 64x, MK-III = 128x")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addInfo("The structure is too complex!")
-                .addInfo(BLUE_PRINT_INFO)
-                .addSeparator()
-                .addController("Front bottom")
-                .addInputHatch("Any Casing")
-                .addInputBus("Any Casing")
-                .addOutputHatch("Any Casing")
-                .addOutputBus("Any Casing")
-                .addEnergyHatch("Any Casing")
-                .addMufflerHatch("Any Casing")
-                .addMaintenanceHatch("Any Casing")
-                .toolTipFinisher("Good Generator");
+                .addInfo("But gives more parallel with more advanced one.").addInfo("It is 100% faster in Normal Mode.")
+                .addInfo("MK-I = 32x, MK-II = 64x, MK-III = 128x").addPollutionAmount(getPollutionPerSecond(null))
+                .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
+                .addController("Front bottom").addInputHatch("Any Casing").addInputBus("Any Casing")
+                .addOutputHatch("Any Casing").addOutputBus("Any Casing").addEnergyHatch("Any Casing")
+                .addMufflerHatch("Any Casing").addMaintenanceHatch("Any Casing").toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -444,27 +434,16 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         int t = Math.max(getCasingTier(), 0);
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(1539 + t),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1539 + t),
                     TextureFactory.of(textureFontOn),
-                    TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build()
-                };
-            else
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(1539 + t),
+                    TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build() };
+            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1539 + t),
                     TextureFactory.of(textureFontOff),
-                    TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
-                };
-        } else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1539 + t)};
+                    TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build() };
+        } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1539 + t) };
     }
 }

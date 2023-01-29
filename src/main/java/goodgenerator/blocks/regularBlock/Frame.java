@@ -1,11 +1,13 @@
 package goodgenerator.blocks.regularBlock;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class Frame extends Casing {
+
     public Frame(String name, String[] texture) {
         super(name, texture, Material.iron);
     }

@@ -1,7 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
-import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 import java.util.ArrayList;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -9,11 +9,13 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
+import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 
 public class EssentiaHatch extends TileEntity implements IAspectContainer, IEssentiaTransport {
 
@@ -89,7 +91,11 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
         TileEntity[] te = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             te[i] = ThaumcraftApiHelper.getConnectableTile(
-                    this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS[i]);
+                    this.worldObj,
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    ForgeDirection.VALID_DIRECTIONS[i]);
             if (te[i] != null) {
                 IEssentiaTransport pipe = (IEssentiaTransport) te[i];
                 if (!pipe.canOutputTo(ForgeDirection.VALID_DIRECTIONS[i])) {
@@ -104,13 +110,12 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
                     if (readyInput.equals(mLocked)) {
                         addToContainer(mLocked, pipe.takeEssentia(mLocked, 1, ForgeDirection.VALID_DIRECTIONS[i]));
                     }
-                    if (mLocked == null)
-                        addToContainer(
-                                pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
-                                pipe.takeEssentia(
-                                        pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
-                                        1,
-                                        ForgeDirection.VALID_DIRECTIONS[i]));
+                    if (mLocked == null) addToContainer(
+                            pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
+                            pipe.takeEssentia(
+                                    pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
+                                    1,
+                                    ForgeDirection.VALID_DIRECTIONS[i]));
                 }
             }
         }

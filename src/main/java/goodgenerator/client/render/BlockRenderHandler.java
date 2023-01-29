@@ -4,15 +4,17 @@ import static gregtech.common.render.GT_Renderer_Block.*;
 import static net.minecraftforge.common.util.ForgeDirection.*;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import goodgenerator.blocks.regularBlock.ITextureBlock;
-import gregtech.GT_Mod;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import goodgenerator.blocks.regularBlock.ITextureBlock;
+import gregtech.GT_Mod;
 
 public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
 
@@ -40,17 +42,59 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
             renderNegativeYFacing(
-                    null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, (byte) DOWN.ordinal()), true);
+                    null,
+                    aRenderer,
+                    aBlock,
+                    0,
+                    0,
+                    0,
+                    tc.getTexture(aBlock, metadata, (byte) DOWN.ordinal()),
+                    true);
             renderPositiveYFacing(
-                    null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, (byte) UP.ordinal()), true);
+                    null,
+                    aRenderer,
+                    aBlock,
+                    0,
+                    0,
+                    0,
+                    tc.getTexture(aBlock, metadata, (byte) UP.ordinal()),
+                    true);
             renderNegativeZFacing(
-                    null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, (byte) NORTH.ordinal()), true);
+                    null,
+                    aRenderer,
+                    aBlock,
+                    0,
+                    0,
+                    0,
+                    tc.getTexture(aBlock, metadata, (byte) NORTH.ordinal()),
+                    true);
             renderPositiveZFacing(
-                    null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, (byte) SOUTH.ordinal()), true);
+                    null,
+                    aRenderer,
+                    aBlock,
+                    0,
+                    0,
+                    0,
+                    tc.getTexture(aBlock, metadata, (byte) SOUTH.ordinal()),
+                    true);
             renderNegativeXFacing(
-                    null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, (byte) WEST.ordinal()), true);
+                    null,
+                    aRenderer,
+                    aBlock,
+                    0,
+                    0,
+                    0,
+                    tc.getTexture(aBlock, metadata, (byte) WEST.ordinal()),
+                    true);
             renderPositiveXFacing(
-                    null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, (byte) EAST.ordinal()), true);
+                    null,
+                    aRenderer,
+                    aBlock,
+                    0,
+                    0,
+                    0,
+                    tc.getTexture(aBlock, metadata, (byte) EAST.ordinal()),
+                    true);
         }
 
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
@@ -61,8 +105,8 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
+    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
+            RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
         if (aBlock instanceof ITextureBlock) {

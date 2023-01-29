@@ -1,10 +1,11 @@
 package goodgenerator.items;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+
 import ic2.api.item.IBoxable;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 
 public class DepletedFuelRod extends RadioactiveItem implements IReactorComponent, IBoxable {
 
@@ -21,8 +22,8 @@ public class DepletedFuelRod extends RadioactiveItem implements IReactorComponen
     public void processChamber(IReactor iReactor, ItemStack itemStack, int i, int i1, boolean b) {}
 
     @Override
-    public boolean acceptUraniumPulse(
-            IReactor iReactor, ItemStack itemStack, ItemStack itemStack1, int i, int i1, int i2, int i3, boolean b) {
+    public boolean acceptUraniumPulse(IReactor iReactor, ItemStack itemStack, ItemStack itemStack1, int i, int i1,
+            int i2, int i3, boolean b) {
         return false;
     }
 

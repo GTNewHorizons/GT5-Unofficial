@@ -1,6 +1,9 @@
 package goodgenerator.main;
 
+import net.minecraft.creativetab.CreativeTabs;
+
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -16,20 +19,19 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import goodgenerator.tabs.MyTabs;
-import net.minecraft.creativetab.CreativeTabs;
 
 @SuppressWarnings("ALL")
 @Mod(
         modid = GoodGenerator.MOD_ID,
         version = GoodGenerator.VERSION,
-        dependencies = "required-after:IC2; "
-                + "required-after:gregtech; "
+        dependencies = "required-after:IC2; " + "required-after:gregtech; "
                 + "required-after:bartworks; "
                 + "required-after:tectech; "
                 + "required-after:structurelib; "
                 + "before:miscutils; "
                 + "after:dreamcraft;")
 public final class GoodGenerator {
+
     public static final String MOD_ID = "GRADLETOKEN_MODID";
     public static final String MOD_NAME = "GRADLETOKEN_MODNAME";
     public static final String VERSION = "GRADLETOKEN_VERSION";
@@ -41,8 +43,7 @@ public final class GoodGenerator {
 
     public static SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
 
-    static {
-    }
+    static {}
 
     @Mod.Instance(GoodGenerator.MOD_ID)
     public static GoodGenerator instance;

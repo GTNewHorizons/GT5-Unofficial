@@ -5,6 +5,17 @@ import static goodgenerator.main.GG_Config_Loader.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
@@ -15,6 +26,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.Loaders;
@@ -34,15 +46,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements TecTechEnabledMulti, IConstructable, ISurvivalConstructable {
@@ -112,35 +115,32 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public IStructureDefinition<MultiNqGenerator> getStructure_EM() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<MultiNqGenerator>builder()
-                    .addShape(mName, transpose(new String[][] {
-                        {"AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA"},
-                        {"N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N"},
-                        {"N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N"},
-                        {"N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N"},
-                        {"N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N"},
-                        {"AAAAAAA", "A     A", "A CCC A", "A CPC A", "A CCC A", "A     A", "AAAAAAA"},
-                        {"ANNNNNA", "N     N", "N CCC N", "N CPC N", "N CCC N", "N     N", "ANNNNNA"},
-                        {"XXX~XXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX"},
-                    }))
+            multiDefinition = StructureDefinition.<MultiNqGenerator>builder().addShape(
+                    mName,
+                    transpose(
+                            new String[][] {
+                                    { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" },
+                                    { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
+                                    { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
+                                    { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
+                                    { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
+                                    { "AAAAAAA", "A     A", "A CCC A", "A CPC A", "A CCC A", "A     A", "AAAAAAA" },
+                                    { "ANNNNNA", "N     N", "N CCC N", "N CPC N", "N CCC N", "N     N", "ANNNNNA" }, {
+                                            "XXX~XXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX",
+                                            "XXXXXXX" }, }))
                     .addElement(
                             'X',
                             ofChain(
-                                    buildHatchAdder(MultiNqGenerator.class)
-                                            .atLeast(
-                                                    HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
-                                                    GT_HatchElement.InputHatch,
-                                                    GT_HatchElement.OutputHatch,
-                                                    GT_HatchElement.Maintenance)
-                                            .casingIndex(44)
-                                            .dot(1)
-                                            .build(),
+                                    buildHatchAdder(MultiNqGenerator.class).atLeast(
+                                            HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
+                                            GT_HatchElement.InputHatch,
+                                            GT_HatchElement.OutputHatch,
+                                            GT_HatchElement.Maintenance).casingIndex(44).dot(1).build(),
                                     ofBlock(GregTech_API.sBlockCasings3, 12)))
                     .addElement('A', ofBlock(GregTech_API.sBlockCasings3, 12))
                     .addElement('N', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
                     .addElement('C', ofBlock(Loaders.MAR_Casing, 0))
-                    .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
-                    .build();
+                    .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15)).build();
         }
         return multiDefinition;
     }
@@ -163,9 +163,9 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         this.times = aNBT.getInteger("mTimes");
         this.leftEnergy = aNBT.getLong("mLeftEnergy");
         this.basicOutput = aNBT.getInteger("mbasicOutput");
-        if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null)
-            this.lockedFluid = new FluidStack(
-                    FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")), aNBT.getInteger("mLockedFluidAmount"));
+        if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null) this.lockedFluid = new FluidStack(
+                FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")),
+                aNBT.getInteger("mLockedFluidAmount"));
         else this.lockedFluid = null;
         super.loadNBTData(aNBT);
     }
@@ -200,15 +200,16 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             }
         }
 
-        GT_Recipe tRecipe = MyRecipeAdder.instance.NqGFuels.findRecipe(
-                this.getBaseMetaTileEntity(), true, 1 << 30, tFluids.toArray(new FluidStack[0]));
+        GT_Recipe tRecipe = MyRecipeAdder.instance.NqGFuels
+                .findRecipe(this.getBaseMetaTileEntity(), true, 1 << 30, tFluids.toArray(new FluidStack[0]));
         if (tRecipe != null) {
             Pair<FluidStack, Integer> excitedInfo = getExcited(tFluids.toArray(new FluidStack[0]), false);
             int pall = excitedInfo == null ? 1 : excitedInfo.getValue();
             if (consumeFuel(
                     CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidInputs[0], pall),
                     tFluids.toArray(new FluidStack[0]))) {
-                mOutputFluids = new FluidStack[] {CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidOutputs[0], pall)};
+                mOutputFluids = new FluidStack[] {
+                        CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidOutputs[0], pall) };
                 basicOutput = tRecipe.mSpecialValue;
                 times = pall;
                 lockedFluid = excitedInfo == null ? null : excitedInfo.getKey();
@@ -233,8 +234,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     this.trueOutput = 0;
                     return true;
                 }
-                if (getCoolant(input, true) != null)
-                    eff = getCoolant(input, false).getValue();
+                if (getCoolant(input, true) != null) eff = getCoolant(input, false).getValue();
                 if (consumeFuel(lockedFluid, input)) time = times;
                 this.mEUt = basicOutput * eff * time / 100;
                 this.trueEff = eff;
@@ -248,11 +248,18 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Probably makes: " + EnumChatFormatting.RED + Math.abs(this.trueOutput) + EnumChatFormatting.RESET
+        info[4] = "Probably makes: " + EnumChatFormatting.RED
+                + Math.abs(this.trueOutput)
+                + EnumChatFormatting.RESET
                 + " EU/t";
-        info[6] = "Problems: " + EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus())
-                + EnumChatFormatting.RESET + " Efficiency: " + EnumChatFormatting.YELLOW + trueEff
-                + EnumChatFormatting.RESET + " %";
+        info[6] = "Problems: " + EnumChatFormatting.RED
+                + (this.getIdealStatus() - this.getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " Efficiency: "
+                + EnumChatFormatting.YELLOW
+                + trueEff
+                + EnumChatFormatting.RESET
+                + " %";
         return info;
     }
 
@@ -294,42 +301,39 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     public void addAutoEnergy(long outputPower) {
-        if (this.eDynamoMulti.size() > 0)
-            for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
-                long voltage = tHatch.maxEUOutput();
-                long power = voltage * tHatch.maxAmperesOut();
-                long outputAmperes;
-                if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
-                if (outputPower >= voltage) {
-                    leftEnergy += outputPower;
-                    outputAmperes = leftEnergy / voltage;
-                    leftEnergy -= outputAmperes * voltage;
-                    addEnergyOutput_EM(voltage, outputAmperes);
-                } else {
-                    addEnergyOutput_EM(outputPower, 1);
-                }
+        if (this.eDynamoMulti.size() > 0) for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+            long voltage = tHatch.maxEUOutput();
+            long power = voltage * tHatch.maxAmperesOut();
+            long outputAmperes;
+            if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
+            if (outputPower >= voltage) {
+                leftEnergy += outputPower;
+                outputAmperes = leftEnergy / voltage;
+                leftEnergy -= outputAmperes * voltage;
+                addEnergyOutput_EM(voltage, outputAmperes);
+            } else {
+                addEnergyOutput_EM(outputPower, 1);
             }
-        if (this.mDynamoHatches.size() > 0)
-            for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
-                long voltage = tHatch.maxEUOutput();
-                long power = voltage * tHatch.maxAmperesOut();
-                long outputAmperes;
-                if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
-                if (outputPower >= voltage) {
-                    leftEnergy += outputPower;
-                    outputAmperes = leftEnergy / voltage;
-                    leftEnergy -= outputAmperes * voltage;
-                    addEnergyOutput_EM(voltage, outputAmperes);
-                } else {
-                    addEnergyOutput_EM(outputPower, 1);
-                }
+        }
+        if (this.mDynamoHatches.size() > 0) for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+            long voltage = tHatch.maxEUOutput();
+            long power = voltage * tHatch.maxAmperesOut();
+            long outputAmperes;
+            if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
+            if (outputPower >= voltage) {
+                leftEnergy += outputPower;
+                outputAmperes = leftEnergy / voltage;
+                leftEnergy -= outputAmperes * voltage;
+                addEnergyOutput_EM(voltage, outputAmperes);
+            } else {
+                addEnergyOutput_EM(outputPower, 1);
             }
+        }
     }
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 3, 7, 0)
-                && mMaintenanceHatches.size() == 1
+        return structureCheck_EM(mName, 3, 7, 0) && mMaintenanceHatches.size() == 1
                 && mDynamoHatches.size() + eDynamoMulti.size() == 1;
     }
 
@@ -361,64 +365,54 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Naquadah Reactor")
-                .addInfo("Controller block for the Naquadah Reactor")
-                .addInfo("Environmental Friendly!")
-                .addInfo("Generate power with the High-energy liquid.")
-                .addInfo(String.format(
-                        "Consume liquid air %d L/s to keep running, otherwise" + EnumChatFormatting.YELLOW
-                                + " it will void your fuel" + EnumChatFormatting.GRAY + ".",
-                        LiquidAirConsumptionPerSecond))
+        tt.addMachineType("Naquadah Reactor").addInfo("Controller block for the Naquadah Reactor")
+                .addInfo("Environmental Friendly!").addInfo("Generate power with the High-energy liquid.")
+                .addInfo(
+                        String.format(
+                                "Consume liquid air %d L/s to keep running, otherwise" + EnumChatFormatting.YELLOW
+                                        + " it will void your fuel"
+                                        + EnumChatFormatting.GRAY
+                                        + ".",
+                                LiquidAirConsumptionPerSecond))
                 .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
-                .addInfo("The reactor will explode when there are more than" + EnumChatFormatting.RED + " ONE"
-                        + EnumChatFormatting.GRAY + " types of fuel in the hatch!")
+                .addInfo(
+                        "The reactor will explode when there are more than" + EnumChatFormatting.RED
+                                + " ONE"
+                                + EnumChatFormatting.GRAY
+                                + " types of fuel in the hatch!")
                 .addInfo("Consume coolant 1000 L/s to increase the efficiency:")
-                .addInfo(String.format(
-                        "IC2 Coolant %d%%, Super Coolant %d%%, Cryotheum %d%%",
-                        CoolantEfficiency[2], CoolantEfficiency[1], CoolantEfficiency[0]))
+                .addInfo(
+                        String.format(
+                                "IC2 Coolant %d%%, Super Coolant %d%%, Cryotheum %d%%",
+                                CoolantEfficiency[2],
+                                CoolantEfficiency[1],
+                                CoolantEfficiency[0]))
                 .addInfo("Consume excited liquid to increase the output power:")
                 .addInfo(String.format("molten caesium | %dx power | 180 L/s ", ExcitedLiquidCoe[3]))
                 .addInfo(String.format("molten uranium-235 | %dx power | 180 L/s", ExcitedLiquidCoe[2]))
                 .addInfo(String.format("molten naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
                 .addInfo(String.format("molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
-                .addInfo("The structure is too complex!")
-                .addInfo(BLUE_PRINT_INFO)
-                .addSeparator()
-                .beginStructureBlock(7, 8, 7, true)
-                .addController("Front bottom")
-                .addDynamoHatch("Any bottom layer casing, only accept ONE!")
-                .addInputHatch("Any bottom layer casing")
-                .addOutputHatch("Any bottom layer casing")
-                .addMaintenanceHatch("Any bottom layer casing")
+                .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
+                .beginStructureBlock(7, 8, 7, true).addController("Front bottom")
+                .addDynamoHatch("Any bottom layer casing, only accept ONE!").addInputHatch("Any bottom layer casing")
+                .addOutputHatch("Any bottom layer casing").addMaintenanceHatch("Any bottom layer casing")
                 .toolTipFinisher("Good Generator");
         return tt;
     }
 
     @Override
     @SuppressWarnings("ALL")
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(44),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
                     new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE),
-                    TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(44),
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)
-            };
+                    TextureFactory.builder().addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
+                            .glow().build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
+                    new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT) };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(44)};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44) };
     }
 
     @Override

@@ -4,10 +4,22 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LongPowerUsageBase;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.MyRecipeAdder;
@@ -22,14 +34,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<ComponentAssemblyLine>
         implements ISurvivalConstructable {
@@ -37,467 +41,121 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
     private int casingTier;
     private GT_Recipe lastRecipe;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<ComponentAssemblyLine> STRUCTURE_DEFINITION =
-            StructureDefinition.<ComponentAssemblyLine>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
-                        {
-                            "         ",
-                            "   III   ",
-                            " HHI~IHH ",
-                            "HH III HH",
-                            "H       H",
-                            "H       H",
-                            "H  JJJ  H",
-                            "H  N N  H",
-                            "H  N N  H",
-                            "HHHHHHHHH"
-                        },
-                        {
-                            "         ",
-                            " EHHHHHE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   BBB   ",
-                            " EL   LE ",
-                            "E GGDGG E",
-                            "HGG D GGH",
-                            "AG  C  GA",
-                            "AG     GA",
-                            "AG     GA",
-                            "AG HHH GA",
-                            "AG     GA",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   BBB   ",
-                            " EL   LE ",
-                            "E GGDGG E",
-                            "HGG D GGH",
-                            "HG  C  GH",
-                            "HG     GH",
-                            "HG     GH",
-                            "HG HHH GH",
-                            "HG     GH",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   BBB   ",
-                            " EL   LE ",
-                            "E GGDGG E",
-                            "HGG D GGH",
-                            "AG  C  GA",
-                            "AG     GA",
-                            "AG     GA",
-                            "AG HHH GA",
-                            "AG     GA",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   BBB   ",
-                            " EL   LE ",
-                            "E GGDGG E",
-                            "HGG D GGH",
-                            "HG  C  GH",
-                            "HG     GH",
-                            "HG     GH",
-                            "HG HHH GH",
-                            "HG     GH",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   BBB   ",
-                            " EL   LE ",
-                            "E GGDGG E",
-                            "HGG D GGH",
-                            "AG  C  GA",
-                            "AG     GA",
-                            "AG     GA",
-                            "AG HHH GA",
-                            "AG     GA",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   BBB   ",
-                            " EL   LE ",
-                            "E GGDGG E",
-                            "HGG D GGH",
-                            "HG  C  GH",
-                            "HG     GH",
-                            "HG     GH",
-                            "HG HHH GH",
-                            "HG     GH",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   BBB   ",
-                            " EL   LE ",
-                            "E GGDGG E",
-                            "HGG D GGH",
-                            "AG  C  GA",
-                            "AG     GA",
-                            "AG     GA",
-                            "AG HHH GA",
-                            "AG     GA",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A  N N  A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "   HBH   ",
-                            " EL   LE ",
-                            "E       E",
-                            "HC     CH",
-                            "AC     CA",
-                            "AC     CA",
-                            "A D   D A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "         ",
-                            " EHHHHHE ",
-                            "E       E",
-                            "H       H",
-                            "A       A",
-                            "A       A",
-                            "A       A",
-                            "A  HHH  A",
-                            "A       A",
-                            "MHHHHHHHM"
-                        },
-                        {
-                            "         ",
-                            "         ",
-                            " HHHHHHH ",
-                            "HH     HH",
-                            "H       H",
-                            "H       H",
-                            "H       H",
-                            "H       H",
-                            "H  KKK  H",
-                            "HHHHHHHHH"
-                        }
-                    })
-                    .addElement(
-                            'A',
-                            ofChain(
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 5),
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 13),
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 14),
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 15),
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0)))
-                    .addElement('H', ofBlock(GregTech_API.sBlockCasings8, 7))
-                    .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 5))
-                    .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 9))
-                    .addElement('G', ofBlock(GregTech_API.sBlockCasings9, 0))
-                    .addElement('E', ofBlock(GregTech_API.sBlockCasings9, 1))
-                    .addElement('F', ofBlock(GregTech_API.sBlockCasings4, 1))
-                    .addElement(
-                            'B',
-                            ofBlocksTiered(
-                                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                                    IntStream.range(0, 14)
-                                            .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                                            .collect(Collectors.toList()),
-                                    -1,
-                                    (t, meta) -> t.casingTier = meta,
-                                    t -> t.casingTier))
-                    .addElement(
-                            'J',
-                            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
-                                    .atLeast(InputBus)
-                                    .dot(1)
-                                    .casingIndex(183)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 7))
-                    .addElement(
-                            'K',
-                            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
-                                    .atLeast(OutputBus)
-                                    .dot(2)
-                                    .casingIndex(183)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 7))
-                    .addElement(
-                            'L',
-                            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
-                                    .atLeast(Energy, ExoticEnergy)
-                                    .dot(3)
-                                    .casingIndex(183)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 7))
-                    .addElement(
-                            'I',
-                            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
-                                    .atLeast(Maintenance)
-                                    .dot(4)
-                                    .casingIndex(183)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 7))
-                    .addElement(
-                            'M',
-                            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
-                                    .atLeast(InputHatch)
-                                    .dot(5)
-                                    .casingIndex(183)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 7))
-                    .addElement('N', GT_StructureUtility.ofFrame(Materials.TungstenSteel))
-                    .build();
+    private static final IStructureDefinition<ComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
+            .<ComponentAssemblyLine>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    new String[][] {
+                            { "         ", "   III   ", " HHI~IHH ", "HH III HH", "H       H", "H       H", "H  JJJ  H",
+                                    "H  N N  H", "H  N N  H", "HHHHHHHHH" },
+                            { "         ", " EHHHHHE ", "E       E", "H       H", "A       A", "A       A", "A  HHH  A",
+                                    "A       A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "AG  C  GA", "AG     GA", "AG     GA",
+                                    "AG HHH GA", "AG     GA", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "HG  C  GH", "HG     GH", "HG     GH",
+                                    "HG HHH GH", "HG     GH", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "AG  C  GA", "AG     GA", "AG     GA",
+                                    "AG HHH GA", "AG     GA", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "HG  C  GH", "HG     GH", "HG     GH",
+                                    "HG HHH GH", "HG     GH", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "AG  C  GA", "AG     GA", "AG     GA",
+                                    "AG HHH GA", "AG     GA", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "HG  C  GH", "HG     GH", "HG     GH",
+                                    "HG HHH GH", "HG     GH", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "AG  C  GA", "AG     GA", "AG     GA",
+                                    "AG HHH GA", "AG     GA", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A  N N  A", "MHHHHHHHM" },
+                            { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "         ", " EHHHHHE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
+                            { "         ", "         ", " HHHHHHH ", "HH     HH", "H       H", "H       H", "H       H",
+                                    "H       H", "H  KKK  H", "HHHHHHHHH" } })
+            .addElement(
+                    'A',
+                    ofChain(
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 5),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 13),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 14),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 15),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0)))
+            .addElement('H', ofBlock(GregTech_API.sBlockCasings8, 7))
+            .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 5))
+            .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 9))
+            .addElement('G', ofBlock(GregTech_API.sBlockCasings9, 0))
+            .addElement('E', ofBlock(GregTech_API.sBlockCasings9, 1))
+            .addElement('F', ofBlock(GregTech_API.sBlockCasings4, 1))
+            .addElement(
+                    'B',
+                    ofBlocksTiered(
+                            (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                            IntStream.range(0, 14).mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                                    .collect(Collectors.toList()),
+                            -1,
+                            (t, meta) -> t.casingTier = meta,
+                            t -> t.casingTier))
+            .addElement(
+                    'J',
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputBus).dot(1)
+                            .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
+            .addElement(
+                    'K',
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(OutputBus).dot(2)
+                            .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
+            .addElement(
+                    'L',
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Energy, ExoticEnergy)
+                            .dot(3).casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
+            .addElement(
+                    'I',
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Maintenance).dot(4)
+                            .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
+            .addElement(
+                    'M',
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputHatch).dot(5)
+                            .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
+            .addElement('N', GT_StructureUtility.ofFrame(Materials.TungstenSteel)).build();
 
     public ComponentAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -523,23 +181,33 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
         tt.addMachineType("High-Capacity Component Assembler")
                 .addInfo("Controller block for the Component Assembly Line.")
                 .addInfo("Assembles basic components (motors, pumps, etc.) in large batches.")
-                .addInfo("The " + EnumChatFormatting.BOLD + EnumChatFormatting.YELLOW
-                        + "Special Component Assembly Line Casing" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY)
+                .addInfo(
+                        "The " + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.YELLOW
+                                + "Special Component Assembly Line Casing"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY)
                 .addInfo("limits the recipes the machine can perform. See the NEI pages for details.")
-                .addInfo("Supports " + EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
-                        + EnumChatFormatting.GRAY + " laser and multi-amp hatches!")
+                .addInfo(
+                        "Supports " + EnumChatFormatting.BLUE
+                                + "Tec"
+                                + EnumChatFormatting.DARK_BLUE
+                                + "Tech"
+                                + EnumChatFormatting.GRAY
+                                + " laser and multi-amp hatches!")
                 .addInfo("Supports overclocking beyond MAX!")
                 .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
                 .beginStructureBlock(9, 10, 33, false)
                 .addStructureInfo("This structure is too complex! See schematic for details.")
                 .addOtherStructurePart("Borosilicate Glass", "Can be UV tier or higher")
-                .addInputBus("Start of conveyor belt", 1)
-                .addOutputBus("End of conveyor belt", 2)
-                .addEnergyHatch("Second-top layer", 3)
-                .addMaintenanceHatch("Around the controller", 4)
-                .addInputHatch("Bottom left and right corners", 5)
-                .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310" + EnumChatFormatting.GRAY + " via "
-                        + EnumChatFormatting.GREEN + "Good Generator");
+                .addInputBus("Start of conveyor belt", 1).addOutputBus("End of conveyor belt", 2)
+                .addEnergyHatch("Second-top layer", 3).addMaintenanceHatch("Around the controller", 4)
+                .addInputHatch("Bottom left and right corners", 5).toolTipFinisher(
+                        EnumChatFormatting.AQUA + "MadMan310"
+                                + EnumChatFormatting.GRAY
+                                + " via "
+                                + EnumChatFormatting.GREEN
+                                + "Good Generator");
 
         return tt;
     }
@@ -551,7 +219,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
 
     /**
      * Changes and adds new information to the default info data for the scanner.
-     * */
+     */
     @Override
     public String[] getInfoData() {
         String[] origin = super.getInfoData();
@@ -563,41 +231,18 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(183),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(183),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW).extFacing().glow().build() };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(183)};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183) };
     }
 
     @Override
@@ -612,8 +257,8 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
         long totalEU = getRealVoltage();
         ItemStack[] tItems = getStoredInputs().toArray(new ItemStack[0]);
         FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
-        this.lastRecipe =
-                getRecipeMap().findRecipe(getBaseMetaTileEntity(), this.lastRecipe, false, totalEU, tFluids, tItems);
+        this.lastRecipe = getRecipeMap()
+                .findRecipe(getBaseMetaTileEntity(), this.lastRecipe, false, totalEU, tFluids, tItems);
         if (this.lastRecipe == null) return false;
         if (this.lastRecipe.mSpecialValue > casingTier + 1) return false;
         if (!this.lastRecipe.isRecipeInputEqual(true, tFluids, tItems)) return false;

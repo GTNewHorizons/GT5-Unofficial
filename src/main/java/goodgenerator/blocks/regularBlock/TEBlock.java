@@ -1,14 +1,7 @@
 package goodgenerator.blocks.regularBlock;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import goodgenerator.blocks.tileEntity.EssentiaHatch;
-import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
-import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
-import goodgenerator.main.GoodGenerator;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -24,8 +17,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.blocks.tileEntity.EssentiaHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
+import goodgenerator.main.GoodGenerator;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Utility;
 
 public class TEBlock extends BlockContainer {
 
@@ -153,8 +155,8 @@ public class TEBlock extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
+            float par8, float par9) {
         if (world.isRemote) {
             return false;
         } else {
@@ -166,12 +168,8 @@ public class TEBlock extends BlockContainer {
                         Item tItem = tItemStack.getItem();
                         if (tItem instanceof IEssentiaContainerItem
                                 && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()) != null
-                                && ((IEssentiaContainerItem) tItem)
-                                                .getAspects(player.getHeldItem())
-                                                .size()
-                                        > 0) {
-                            Aspect tLocked = ((IEssentiaContainerItem) tItem)
-                                    .getAspects(player.getHeldItem())
+                                && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).size() > 0) {
+                            Aspect tLocked = ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem())
                                     .getAspects()[0];
                             ((EssentiaHatch) tile).setLockedAspect(tLocked);
                             GT_Utility.sendChatToPlayer(
@@ -192,8 +190,8 @@ public class TEBlock extends BlockContainer {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack == null) {
                         ((EssentiaOutputHatch) tile).clear();
-                        GT_Utility.sendChatToPlayer(
-                                player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                        GT_Utility
+                                .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
                     }
                     return true;
                 } else return false;

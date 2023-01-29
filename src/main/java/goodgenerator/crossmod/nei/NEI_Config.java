@@ -1,13 +1,15 @@
 package goodgenerator.crossmod.nei;
 
-import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
-import goodgenerator.main.GoodGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
+import goodgenerator.main.GoodGenerator;
+
 public class NEI_Config implements IConfigureNEI {
+
     public static boolean isAdded = true;
 
     @Override

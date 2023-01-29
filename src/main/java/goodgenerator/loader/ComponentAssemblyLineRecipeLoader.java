@@ -2,6 +2,18 @@ package goodgenerator.loader;
 
 import static goodgenerator.util.StackUtils.*;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -12,28 +24,13 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class ComponentAssemblyLineRecipeLoader {
-    private static final String[] compPrefixes = {
-        "Electric_Motor_",
-        "Electric_Piston_",
-        "Electric_Pump_",
-        "Robot_Arm_",
-        "Conveyor_Module_",
-        "Emitter_",
-        "Sensor_",
-        "Field_Generator_",
-    };
-    private static final String[] blacklistedDictPrefixes = {"circuit"};
-    private static final String[] softBlacklistedDictPrefixes = {"Any", "crafting"};
+
+    private static final String[] compPrefixes = { "Electric_Motor_", "Electric_Piston_", "Electric_Pump_",
+            "Robot_Arm_", "Conveyor_Module_", "Emitter_", "Sensor_", "Field_Generator_", };
+    private static final String[] blacklistedDictPrefixes = { "circuit" };
+    private static final String[] softBlacklistedDictPrefixes = { "Any", "crafting" };
 
     private static LinkedHashMap<List<GT_Recipe>, Pair<ItemList, Integer>> allAssemblerRecipes;
     private static LinkedHashMap<List<GT_Recipe.GT_Recipe_AssemblyLine>, Pair<ItemList, Integer>> allAsslineRecipes;
@@ -94,6 +91,7 @@ public class ComponentAssemblyLineRecipeLoader {
             }
         });
     }
+
     /** Assembly Line Recipes (LuV+) **/
     private static void generateAsslineRecipes() {
         allAsslineRecipes.forEach((recipeList, info) -> {
@@ -103,8 +101,7 @@ public class ComponentAssemblyLineRecipeLoader {
                     for (int i = 0; i < compPrefixes.length; i++)
                         if (info.getLeft().toString().startsWith(compPrefixes[i])) componentCircuit = i + 1;
                     if (componentCircuit == -1) {
-                        throw new NullPointerException(
-                                "Wrong circuit. Comp: " + info.getLeft().toString());
+                        throw new NullPointerException("Wrong circuit. Comp: " + info.getLeft().toString());
                     }
                     final boolean addProgrammedCircuit = componentCircuit <= 7;
                     // Arrays of the item and fluid inputs, that are updated to be multiplied and/or condensed in the
@@ -129,10 +126,10 @@ public class ComponentAssemblyLineRecipeLoader {
                                 ItemData data = GT_OreDictUnificator.getAssociation(input);
                                 // trying to fix some circuit oredicting issues
 
-                                if (data != null && data.mPrefix == OrePrefixes.circuit)
-                                    fixedInputs.addAll(multiplyAndSplitIntoStacks(
-                                            GT_OreDictUnificator.get(data.mPrefix, data.mMaterial.mMaterial, count),
-                                            INPUT_MULTIPLIER));
+                                if (data != null && data.mPrefix == OrePrefixes.circuit) fixedInputs.addAll(
+                                        multiplyAndSplitIntoStacks(
+                                                GT_OreDictUnificator.get(data.mPrefix, data.mMaterial.mMaterial, count),
+                                                INPUT_MULTIPLIER));
                                 else fixedInputs.addAll(multiplyAndSplitIntoStacks(input, INPUT_MULTIPLIER));
                             }
                         }
@@ -199,18 +196,18 @@ public class ComponentAssemblyLineRecipeLoader {
         inputs.addAll(newInputs);
     }
 
-    /** Tries to convert {@code input} into its molten form.
-     * Because the internal names for material fluids in GT5u, GT++, and BartWorks follow the same naming scheme,
-     * this method should work for any {@code ItemStack} from any of the 3 material systems.
-     * */
+    /**
+     * Tries to convert {@code input} into its molten form. Because the internal names for material fluids in GT5u,
+     * GT++, and BartWorks follow the same naming scheme, this method should work for any {@code ItemStack} from any of
+     * the 3 material systems.
+     */
     @Nullable
     private static FluidStack tryConvertItemStackToFluidMaterial(ItemStack input) {
         ArrayList<String> oreDicts = new ArrayList<>();
         for (int id : OreDictionary.getOreIDs(input)) {
             oreDicts.add(OreDictionary.getOreName(id));
         }
-        oreDictLoop:
-        for (String dict : oreDicts) {
+        oreDictLoop: for (String dict : oreDicts) {
             for (String blacklistedPrefix : blacklistedDictPrefixes) {
                 if (dict.startsWith(blacklistedPrefix)) {
                     return null;
@@ -232,19 +229,22 @@ public class ComponentAssemblyLineRecipeLoader {
 
             // Prevents things like AnyCopper or AnyIron from messing the search up.
             if (strippedOreDict.contains("Any")) continue;
-            if (strippedOreDict.contains("PTMEG"))
-                return FluidRegistry.getFluidStack(
-                        "molten.silicone", (int) (orePrefix.mMaterialAmount / (GT_Values.M / 144)) * input.stackSize);
+            if (strippedOreDict.contains("PTMEG")) return FluidRegistry.getFluidStack(
+                    "molten.silicone",
+                    (int) (orePrefix.mMaterialAmount / (GT_Values.M / 144)) * input.stackSize);
             return FluidRegistry.getFluidStack(
                     "molten." + strippedOreDict.toLowerCase(),
                     (int) (orePrefix.mMaterialAmount / (GT_Values.M / 144)) * input.stackSize);
         }
         return null;
     }
+
     /**
      * Gives the longest Ore Prefix that the OreDictionary string starts with. This makes it the most accurate prefix.
      * For example: If your OreDictionary is something like {@code gearGtSmallSpaceTime}, a conventional search would
-     * return something like {@code gearGt} instead of {@code gearGtSmall}. This makes the longer String the most accurate.
+     * return something like {@code gearGt} instead of {@code gearGtSmall}. This makes the longer String the most
+     * accurate.
+     * 
      * @param oreDict The Ore Dictionary entry
      * @return The longest ore prefix that the OreDict string starts with. This makes it the most accurate prefix.
      */
@@ -262,11 +262,12 @@ public class ComponentAssemblyLineRecipeLoader {
         }
         return matchingPrefix;
     }
+
     /**
-     * Transforms each {@code ItemStack}, if possible, into a more compact form.
-     * For example, a stack of 16 1x cables, when passed into the {@code items} array,
-     * will be converted into a single 16x cable. Also handles GraviStar conversion.
-     * */
+     * Transforms each {@code ItemStack}, if possible, into a more compact form. For example, a stack of 16 1x cables,
+     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar
+     * conversion.
+     */
     private static ArrayList<ItemStack> compactItems(List<ItemStack> items, int tier) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
         HashMap<ItemStack, Integer> totals = getTotalItems(items);
@@ -275,8 +276,7 @@ public class ComponentAssemblyLineRecipeLoader {
             ItemData data = GT_OreDictUnificator.getAssociation(itemstack);
             boolean isCompacted = false;
 
-            for (String dict : Arrays.stream(OreDictionary.getOreIDs(itemstack))
-                    .mapToObj(OreDictionary::getOreName)
+            for (String dict : Arrays.stream(OreDictionary.getOreIDs(itemstack)).mapToObj(OreDictionary::getOreName)
                     .collect(Collectors.toList())) {
                 if (dict.startsWith("circuit")) {
                     stacks.addAll(getWrappedCircuits(itemstack, totalItems, dict));
@@ -300,12 +300,15 @@ public class ComponentAssemblyLineRecipeLoader {
         stacks = mergeStacks(stacks);
         return stacks;
     }
+
     /** A helper method for compacting items */
-    private static void compactorHelper(
-            ItemData data, OrePrefixes compactInto, ArrayList<ItemStack> output, int total) {
+    private static void compactorHelper(ItemData data, OrePrefixes compactInto, ArrayList<ItemStack> output,
+            int total) {
         int materialRatio = (int) ((double) compactInto.mMaterialAmount / data.mPrefix.mMaterialAmount);
-        output.addAll(multiplyAndSplitIntoStacks(
-                GT_OreDictUnificator.get(compactInto, data.mMaterial.mMaterial, 1), total / materialRatio));
+        output.addAll(
+                multiplyAndSplitIntoStacks(
+                        GT_OreDictUnificator.get(compactInto, data.mMaterial.mMaterial, 1),
+                        total / materialRatio));
     }
 
     /**
@@ -329,8 +332,7 @@ public class ComponentAssemblyLineRecipeLoader {
                         allAssemblerRecipes.put(foundRecipes, Pair.of(currentComponent, t));
                     } else {
                         ArrayList<GT_Recipe.GT_Recipe_AssemblyLine> foundRecipes = new ArrayList<>();
-                        for (GT_Recipe.GT_Recipe_AssemblyLine recipe :
-                                GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                        for (GT_Recipe.GT_Recipe_AssemblyLine recipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
                             if (GT_Utility.areStacksEqual(currentComponent.get(1), recipe.mOutput)) {
                                 foundRecipes.add(recipe);
                             }

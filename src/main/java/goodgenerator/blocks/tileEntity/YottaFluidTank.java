@@ -5,6 +5,22 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.*;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
@@ -14,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.*;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.*;
+
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.client.GUI.GG_UITextures;
@@ -32,30 +49,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow =
-            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
+            "iconsets/OVERLAY_QTANK_GLOW");
     private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow =
-            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
+            "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<YottaFluidTank> multiDefinition = null;
     protected final ArrayList<YOTTAHatch> mYottaHatch = new ArrayList<>();
@@ -105,8 +108,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     public String getLockedFluidName() {
         if (!isFluidLocked) return StatCollector.translateToLocal("scanner.info.YOTTank.none");
-        if (mLockedFluidName == null
-                || mLockedFluidName.equals("")
+        if (mLockedFluidName == null || mLockedFluidName.equals("")
                 || FluidRegistry.getFluidStack(mLockedFluidName, 1) == null)
             return StatCollector.translateToLocal("scanner.info.YOTTank.next");
         return FluidRegistry.getFluidStack(mLockedFluidName, 1).getLocalizedName();
@@ -171,10 +173,9 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        int fluidSize = mStorageCurrent.compareTo(new BigInteger(Integer.MAX_VALUE + "")) > 0
-                ? Integer.MAX_VALUE
+        int fluidSize = mStorageCurrent.compareTo(new BigInteger(Integer.MAX_VALUE + "")) > 0 ? Integer.MAX_VALUE
                 : mStorageCurrent.intValue();
-        return new FluidTankInfo[] {new FluidTankInfo(FluidRegistry.getFluidStack(mFluidName, fluidSize), fluidSize)};
+        return new FluidTankInfo[] { new FluidTankInfo(FluidRegistry.getFluidStack(mFluidName, fluidSize), fluidSize) };
     }
 
     @Override
@@ -212,53 +213,50 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public IStructureDefinition<YottaFluidTank> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<YottaFluidTank>builder()
-                    .addShape(YOTTANK_BOTTOM, transpose(new String[][] {
-                        {"MM~MM", "MCCCM", "MCCCM", "MCCCM", "MMMMM"},
-                        {"     ", " OOO ", " OOO ", " OOO ", "     "}
-                    }))
-                    .addShape(YOTTANK_MID, transpose(new String[][] {{"GGGGG", "GRRRG", "GRRRG", "GRRRG", "GGGGG"}}))
-                    .addShape(YOTTANK_TOP, transpose(new String[][] {
-                        {"FFFFF", "F   F", "F   F", "F   F", "FFFFF"},
-                        {"CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC"}
-                    }))
+                    .addShape(
+                            YOTTANK_BOTTOM,
+                            transpose(
+                                    new String[][] { { "MM~MM", "MCCCM", "MCCCM", "MCCCM", "MMMMM" },
+                                            { "     ", " OOO ", " OOO ", " OOO ", "     " } }))
+                    .addShape(
+                            YOTTANK_MID,
+                            transpose(new String[][] { { "GGGGG", "GRRRG", "GRRRG", "GRRRG", "GGGGG" } }))
+                    .addShape(
+                            YOTTANK_TOP,
+                            transpose(
+                                    new String[][] { { "FFFFF", "F   F", "F   F", "F   F", "FFFFF" },
+                                            { "CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC" } }))
                     .addElement('C', ofBlock(Loaders.yottaFluidTankCasing, 0))
                     .addElement(
                             'G',
                             withChannel(
                                     "glass",
                                     BorosilicateGlass.ofBoroGlass(
-                                            (byte) 0, (byte) 1, Byte.MAX_VALUE, YottaFluidTank::setMeta, te ->
-                                                    (byte) te.getMeta())))
-                    .addElement('R', ofChain(cells(10)))
-                    .addElement('F', ofFrame(Materials.Steel))
+                                            (byte) 0,
+                                            (byte) 1,
+                                            Byte.MAX_VALUE,
+                                            YottaFluidTank::setMeta,
+                                            te -> (byte) te.getMeta())))
+                    .addElement('R', ofChain(cells(10))).addElement(
+                            'F',
+                            ofFrame(Materials.Steel))
                     .addElement(
                             'I',
                             ofChain(
-                                    buildHatchAdder(YottaFluidTank.class)
-                                            .atLeast(GT_HatchElement.InputHatch)
-                                            .adder(YottaFluidTank::addInput)
-                                            .casingIndex(1537)
-                                            .dot(1)
-                                            .build(),
+                                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.InputHatch)
+                                            .adder(YottaFluidTank::addInput).casingIndex(1537).dot(1).build(),
                                     ofBlock(Loaders.yottaFluidTankCasing, 0)))
                     .addElement(
                             'M',
                             ofChain(
-                                    buildHatchAdder(YottaFluidTank.class)
-                                            .atLeast(GT_HatchElement.Maintenance)
-                                            .casingIndex(1537)
-                                            .dot(2)
-                                            .build(),
+                                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.Maintenance)
+                                            .casingIndex(1537).dot(2).build(),
                                     ofBlock(Loaders.yottaFluidTankCasing, 0)))
                     .addElement(
                             'O',
                             ofChain(
-                                    buildHatchAdder(YottaFluidTank.class)
-                                            .atLeast(GT_HatchElement.OutputHatch)
-                                            .adder(YottaFluidTank::addOutput)
-                                            .casingIndex(1537)
-                                            .dot(1)
-                                            .build(),
+                                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.OutputHatch)
+                                            .adder(YottaFluidTank::addOutput).casingIndex(1537).dot(1).build(),
                                     ofBlock(Loaders.yottaFluidTankCasing, 0)))
                     .build();
         }
@@ -269,12 +267,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         List<IStructureElement<YottaFluidTank>> out = new ArrayList<>();
         for (int i = 0; i < num; ++i) {
             int finalI = i;
-            out.add(onElementPass(
-                    x -> {
-                        x.mStorage = x.mStorage.add(calStorage(finalI));
-                        x.maxCell = Math.max(x.maxCell, finalI);
-                    },
-                    ofBlock(Loaders.yottaFluidTankCell, i)));
+            out.add(onElementPass(x -> {
+                x.mStorage = x.mStorage.add(calStorage(finalI));
+                x.maxCell = Math.max(x.maxCell, finalI);
+            }, ofBlock(Loaders.yottaFluidTankCell, i)));
         }
         return out;
     }
@@ -321,41 +317,34 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocal("scanner.info.YOTTank.0"),
-            StatCollector.translateToLocal(
-                    EnumChatFormatting.GREEN + CharExchanger.formatNumber(getCap()) + EnumChatFormatting.RESET + " L"),
-            StatCollector.translateToLocal("scanner.info.YOTTank.1"),
-            StatCollector.translateToLocal(
-                    EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getFluidName()) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocal("scanner.info.YOTTank.2"),
-            StatCollector.translateToLocal(EnumChatFormatting.BLUE + CharExchanger.formatNumber(getStored())
-                    + EnumChatFormatting.RESET + " L"),
-            StatCollector.translateToLocal("scanner.info.YOTTank.3"),
-            StatCollector.translateToLocal(EnumChatFormatting.YELLOW
-                    + CharExchanger.formatNumber(getLockedFluidName())
-                    + EnumChatFormatting.RESET)
-        };
+        return new String[] { StatCollector.translateToLocal("scanner.info.YOTTank.0"), StatCollector.translateToLocal(
+                EnumChatFormatting.GREEN + CharExchanger.formatNumber(getCap()) + EnumChatFormatting.RESET + " L"),
+                StatCollector.translateToLocal("scanner.info.YOTTank.1"),
+                StatCollector.translateToLocal(
+                        EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getFluidName())
+                                + EnumChatFormatting.RESET),
+                StatCollector.translateToLocal("scanner.info.YOTTank.2"),
+                StatCollector.translateToLocal(
+                        EnumChatFormatting.BLUE + CharExchanger.formatNumber(getStored())
+                                + EnumChatFormatting.RESET
+                                + " L"),
+                StatCollector.translateToLocal("scanner.info.YOTTank.3"),
+                StatCollector.translateToLocal(
+                        EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getLockedFluidName())
+                                + EnumChatFormatting.RESET) };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fluid Tank")
-                .addInfo("Controller block for the YOTTank.")
-                .addInfo(
-                        "The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
+        tt.addMachineType("Fluid Tank").addInfo("Controller block for the YOTTank.").addInfo(
+                "The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
                 .addInfo("The max fluid cell tier is limited by the glass tier.")
                 .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-                .addInfo("The max height of the cell blocks is 15.")
-                .addInfo("The structure is too complex!")
-                .addInfo(BLUE_PRINT_INFO)
-                .addSeparator()
-                .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
-                .addController("Front of the second layer")
-                .addInputHatch("Hint block with dot 1")
-                .addMaintenanceHatch("Hint block with dot 2")
-                .addOutputHatch("Hint block with dot 3")
+                .addInfo("The max height of the cell blocks is 15.").addInfo("The structure is too complex!")
+                .addInfo(BLUE_PRINT_INFO).addSeparator().beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
+                .addController("Front of the second layer").addInputHatch("Hint block with dot 1")
+                .addMaintenanceHatch("Hint block with dot 2").addOutputHatch("Hint block with dot 3")
                 .toolTipFinisher("Good Generator");
         return tt;
     }
@@ -381,9 +370,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                         mLockedFluidName = tFluid.getFluid().getName();
                     }
                 }
-                if (mFluidName == null
-                        || mFluidName.equals("")
-                        || tFluid.getFluid().getName().equals(mFluidName)) {
+                if (mFluidName == null || mFluidName.equals("") || tFluid.getFluid().getName().equals(mFluidName)) {
                     if (mFluidName == null || mFluidName.equals("")) {
                         mFluidName = tFluid.getFluid().getName();
                     }
@@ -447,20 +434,21 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public boolean onSolderingToolRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             voidExcessEnabled ^= true;
-            aPlayer.addChatMessage(new ChatComponentTranslation(
-                    voidExcessEnabled ? "yottank.chat.voidExcessEnabled" : "yottank.chat.voidExcessDisabled"));
+            aPlayer.addChatMessage(
+                    new ChatComponentTranslation(
+                            voidExcessEnabled ? "yottank.chat.voidExcessEnabled" : "yottank.chat.voidExcessDisabled"));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean onWireCutterRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             if (mLockedFluidName == null || mLockedFluidName.equals("")) {
                 if (mFluidName != null && !mFluidName.equals("")) {
@@ -491,27 +479,16 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(1537),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537),
                     TextureFactory.of(textureFontOn),
-                    TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build()
-                };
-            else
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(1537),
+                    TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build() };
+            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537),
                     TextureFactory.of(textureFontOff),
-                    TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
-                };
-        } else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1537)};
+                    TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build() };
+        } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537) };
     }
 
     @Override
@@ -522,10 +499,28 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         int height = stackSize.stackSize;
         if (height > 15) height = 15;
         built += survivialBuildPiece(
-                YOTTANK_TOP, stackSize, 2, height + 2, 0, elementBudget - built, source, actor, false, true);
+                YOTTANK_TOP,
+                stackSize,
+                2,
+                height + 2,
+                0,
+                elementBudget - built,
+                source,
+                actor,
+                false,
+                true);
         while (height > 0) {
             built += survivialBuildPiece(
-                    YOTTANK_MID, stackSize, 2, height, 0, elementBudget - built, source, actor, false, true);
+                    YOTTANK_MID,
+                    stackSize,
+                    2,
+                    height,
+                    0,
+                    elementBudget - built,
+                    source,
+                    actor,
+                    false,
+                    true);
             height--;
         }
         return built;
@@ -536,29 +531,36 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements
-                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
-                                + CharExchanger.formatNumber(mStorage.toString()) + " L")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
+                                                + CharExchanger.formatNumber(mStorage.toString())
+                                                + " L")
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorage, val -> mStorage = val))
-                .widget(TextWidget.dynamicString(
-                                () -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.StringSyncer(() -> mFluidName, val -> mFluidName = val))
-                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
-                                + CharExchanger.formatNumber(mStorageCurrent.toString()) + " L")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
+                                                + CharExchanger.formatNumber(mStorageCurrent.toString())
+                                                + " L")
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorageCurrent, val -> mStorageCurrent = val))
-                .widget(TextWidget.dynamicString(
+                .widget(
+                        TextWidget.dynamicString(
                                 () -> StatCollector.translateToLocal("gui.YOTTank.3") + " " + getLockedFluidName())
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.StringSyncer(() -> mLockedFluidName, val -> mLockedFluidName = val))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcessEnabled, val -> voidExcessEnabled = val));
@@ -566,47 +568,33 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     protected ButtonWidget createSafeVoidButton() {
-        return (ButtonWidget) new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                    voidExcessEnabled = !voidExcessEnabled;
-                })
-                .setPlayClickSound(false)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                    ret.add(
-                            voidExcessEnabled
-                                    ? TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON
-                                    : TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-                .setSize(16, 16)
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            voidExcessEnabled = !voidExcessEnabled;
+        }).setPlayClickSound(false).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+            ret.add(
+                    voidExcessEnabled ? TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON
+                            : TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(174, doesBindPlayerInventory() ? 132 : 156).setSize(16, 16)
                 .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.void"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
     }
 
     @Override
     protected ButtonWidget createPowerPassButton() {
-        return (ButtonWidget) new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                    isFluidLocked = !isFluidLocked;
-                    if (!widget.getContext().isClient()) mLockedFluidName = isFluidLocked ? mFluidName : "";
-                })
-                .setPlayClickSound(false)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                    ret.add(
-                            isFluidLocked
-                                    ? GG_UITextures.OVERLAY_BUTTON_LOCK_ON
-                                    : GG_UITextures.OVERLAY_BUTTON_LOCK_OFF);
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .setPos(174, doesBindPlayerInventory() ? 116 : 140)
-                .setSize(16, 16)
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            isFluidLocked = !isFluidLocked;
+            if (!widget.getContext().isClient()) mLockedFluidName = isFluidLocked ? mFluidName : "";
+        }).setPlayClickSound(false).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+            ret.add(isFluidLocked ? GG_UITextures.OVERLAY_BUTTON_LOCK_ON : GG_UITextures.OVERLAY_BUTTON_LOCK_OFF);
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(174, doesBindPlayerInventory() ? 116 : 140).setSize(16, 16)
                 .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
     }

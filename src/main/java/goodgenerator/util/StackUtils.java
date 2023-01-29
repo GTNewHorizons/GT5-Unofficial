@@ -1,20 +1,23 @@
 package goodgenerator.util;
 
-import goodgenerator.items.MyMaterial;
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import goodgenerator.items.MyMaterial;
+import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_Utility;
 
 public class StackUtils {
 
     /**
      * Multiplies one ItemStack by a multiplier, and splits it into as many full stacks as it needs to.
-     * @param stack The ItemStack you want to multiply
+     * 
+     * @param stack      The ItemStack you want to multiply
      * @param multiplier The number the stack is multiplied by
      * @return A List of stacks that, in total, are the same as the input ItemStack after it has been multiplied.
      */
@@ -34,7 +37,7 @@ public class StackUtils {
 
     /**
      * Merges the ItemStacks in the array into full stacks.
-     * */
+     */
     public static ArrayList<ItemStack> mergeStacks(List<ItemStack> stacks) {
         ArrayList<ItemStack> output = new ArrayList<>();
         for (int index = 0; index < stacks.size(); index++) {
@@ -66,12 +69,8 @@ public class StackUtils {
 
     public static HashMap<ItemStack, Integer> getTotalItems(List<ItemStack> items) {
         HashMap<ItemStack, Integer> totals = new HashMap<>();
-        itemLoop:
-        for (ItemStack item : items) {
-            int t = items.stream()
-                    .filter(i2 -> GT_Utility.areStacksEqual(item, i2))
-                    .mapToInt(i -> i.stackSize)
-                    .sum();
+        itemLoop: for (ItemStack item : items) {
+            int t = items.stream().filter(i2 -> GT_Utility.areStacksEqual(item, i2)).mapToInt(i -> i.stackSize).sum();
             for (ItemStack i2 : totals.keySet()) if (GT_Utility.areStacksEqual(item, i2)) continue itemLoop;
             totals.put(GT_Utility.copyAmount(1, item), t);
         }

@@ -1,16 +1,10 @@
 package goodgenerator.util;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
-import gregtech.api.util.GT_OreDictUnificator;
 import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
@@ -18,6 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
+import gregtech.api.util.GT_OreDictUnificator;
 
 public class StructureHelper {
 
@@ -54,8 +57,8 @@ public class StructureHelper {
                 ItemStack tFrame = GT_OreDictUnificator.get(OrePrefixes.frameGt, aMaterials, 1);
                 if (tFrame.getItem() instanceof ItemBlock) {
                     ItemBlock tFrameStackItem = (ItemBlock) tFrame.getItem();
-                    return tFrameStackItem.placeBlockAt(
-                            tFrame, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrame));
+                    return tFrameStackItem
+                            .placeBlockAt(tFrame, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrame));
                 }
                 return false;
             }
@@ -63,28 +66,19 @@ public class StructureHelper {
     }
 
     // Only support to use meta to tier
-    public static <T> IStructureElement<T> addTieredBlock(
-            Block aBlock,
-            BiConsumer<T, Integer> aSetTheFuckingMeta,
-            Function<T, Integer> aGetTheFuckingMeta,
-            int maxMeta) {
-        return addTieredBlock(
-                aBlock,
-                (t, i) -> {
-                    aSetTheFuckingMeta.accept(t, i);
-                    return true;
-                },
-                aGetTheFuckingMeta,
-                maxMeta);
+    public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheFuckingMeta,
+            Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
+        return addTieredBlock(aBlock, (t, i) -> {
+            aSetTheFuckingMeta.accept(t, i);
+            return true;
+        }, aGetTheFuckingMeta, maxMeta);
     }
 
-    public static <T> IStructureElement<T> addTieredBlock(
-            Block aBlock,
-            BiPredicate<T, Integer> aSetTheFuckingMeta,
-            Function<T, Integer> aGetTheFuckingMeta,
-            int maxMeta) {
+    public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiPredicate<T, Integer> aSetTheFuckingMeta,
+            Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
 
         return new IStructureElement<T>() {
+
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block tBlock = world.getBlock(x, y, z);

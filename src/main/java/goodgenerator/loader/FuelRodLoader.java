@@ -2,12 +2,13 @@ package goodgenerator.loader;
 
 import static goodgenerator.util.DescTextLocalization.addText;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.DepletedFuelRod;
 import goodgenerator.items.FuelRod;
 import goodgenerator.main.GoodGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class FuelRodLoader {
 
@@ -38,41 +39,81 @@ public class FuelRodLoader {
 
     public static void RegisterRod() {
         rodCompressedUraniumDepleted = new DepletedFuelRod(
-                "rodCompressedUraniumDepleted", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 100);
+                "rodCompressedUraniumDepleted",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                100);
         rodCompressedUraniumDepleted_2 = new DepletedFuelRod(
-                "rodCompressedUraniumDepleted2", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 200);
+                "rodCompressedUraniumDepleted2",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                200);
         rodCompressedUraniumDepleted_4 = new DepletedFuelRod(
-                "rodCompressedUraniumDepleted4", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 400);
+                "rodCompressedUraniumDepleted4",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                400);
         rodCompressedPlutoniumDepleted = new DepletedFuelRod(
-                "rodCompressedPlutoniumDepleted", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 120);
+                "rodCompressedPlutoniumDepleted",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                120);
         rodCompressedPlutoniumDepleted_2 = new DepletedFuelRod(
-                "rodCompressedPlutoniumDepleted2", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 240);
+                "rodCompressedPlutoniumDepleted2",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                240);
         rodCompressedPlutoniumDepleted_4 = new DepletedFuelRod(
-                "rodCompressedPlutoniumDepleted4", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 480);
+                "rodCompressedPlutoniumDepleted4",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                480);
         rodLiquidUraniumDepleted = new DepletedFuelRod(
-                "rodLiquidUraniumDepleted", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 800);
+                "rodLiquidUraniumDepleted",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                800);
         rodLiquidUraniumDepleted_2 = new DepletedFuelRod(
-                "rodLiquidUraniumDepleted2", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 1600);
+                "rodLiquidUraniumDepleted2",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                1600);
         rodLiquidUraniumDepleted_4 = new DepletedFuelRod(
-                "rodLiquidUraniumDepleted4", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 3200);
+                "rodLiquidUraniumDepleted4",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                3200);
         rodLiquidPlutoniumDepleted = new DepletedFuelRod(
-                "rodLiquidPlutoniumDepleted", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 1000);
+                "rodLiquidPlutoniumDepleted",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                1000);
         rodLiquidPlutoniumDepleted_2 = new DepletedFuelRod(
-                "rodLiquidPlutoniumDepleted2", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 2000);
+                "rodLiquidPlutoniumDepleted2",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                2000);
         rodLiquidPlutoniumDepleted_4 = new DepletedFuelRod(
-                "rodLiquidPlutoniumDepleted4", addText("depletedfuelrod.tooltip", 1), GoodGenerator.GG, 4000);
+                "rodLiquidPlutoniumDepleted4",
+                addText("depletedfuelrod.tooltip", 1),
+                GoodGenerator.GG,
+                4000);
 
         GameRegistry.registerItem(rodCompressedUraniumDepleted, "rodCompressedUraniumDepleted", GoodGenerator.MOD_ID);
+        GameRegistry
+                .registerItem(rodCompressedUraniumDepleted_2, "rodCompressedUraniumDepleted2", GoodGenerator.MOD_ID);
+        GameRegistry
+                .registerItem(rodCompressedUraniumDepleted_4, "rodCompressedUraniumDepleted4", GoodGenerator.MOD_ID);
+        GameRegistry
+                .registerItem(rodCompressedPlutoniumDepleted, "rodCompressedPlutoniumDepleted", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(
-                rodCompressedUraniumDepleted_2, "rodCompressedUraniumDepleted2", GoodGenerator.MOD_ID);
+                rodCompressedPlutoniumDepleted_2,
+                "rodCompressedPlutoniumDepleted2",
+                GoodGenerator.MOD_ID);
         GameRegistry.registerItem(
-                rodCompressedUraniumDepleted_4, "rodCompressedUraniumDepleted4", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(
-                rodCompressedPlutoniumDepleted, "rodCompressedPlutoniumDepleted", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(
-                rodCompressedPlutoniumDepleted_2, "rodCompressedPlutoniumDepleted2", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(
-                rodCompressedPlutoniumDepleted_4, "rodCompressedPlutoniumDepleted4", GoodGenerator.MOD_ID);
+                rodCompressedPlutoniumDepleted_4,
+                "rodCompressedPlutoniumDepleted4",
+                GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rodLiquidUraniumDepleted, "rodLiquidUraniumDepleted", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rodLiquidUraniumDepleted_2, "rodLiquidUraniumDepleted2", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rodLiquidUraniumDepleted_4, "rodLiquidUraniumDepleted4", GoodGenerator.MOD_ID);

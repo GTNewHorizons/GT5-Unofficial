@@ -1,3 +1,4 @@
 package goodgenerator.loader;
 
-public class AchievementLoader {}
+public class AchievementLoader {
+}

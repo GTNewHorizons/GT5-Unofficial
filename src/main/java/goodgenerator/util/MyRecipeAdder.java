@@ -1,14 +1,5 @@
 package goodgenerator.util;
 
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import goodgenerator.client.GUI.GG_UITextures;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.UIHelper;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,41 +8,52 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Supplier;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+
+import goodgenerator.client.GUI.GG_UITextures;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.UIHelper;
+
 public class MyRecipeAdder {
 
     public static final MyRecipeAdder instance = new MyRecipeAdder();
 
-    public final liquidMentalFuelMapper NqGFuels = (liquidMentalFuelMapper)
-            new liquidMentalFuelMapper(
-                    new HashSet<>(50),
-                    "gg.recipe.naquadah_reactor",
-                    StatCollector.translateToLocal("tile.recipe.naquadah_reactor"),
-                    null,
-                    "goodgenerator:textures/gui/naquadah_reactor",
-                    0,
-                    0,
-                    0,
-                    1,
-                    1,
-                    StatCollector.translateToLocal("value.naquadah_reactor") + " ",
-                    1,
-                    " EU/t",
-                    false,
-                    true) {
-                @Override
-                public void addProgressBarUI(
-                        ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
-                    builder.widget(new DrawableWidget()
-                            .setDrawable(GG_UITextures.PICTURE_NAQUADAH_REACTOR)
-                            .setPos(new Pos2d(59, 20).add(windowOffset))
-                            .setSize(58, 42));
-                }
-            }.useModularUI(true);
+    public final liquidMentalFuelMapper NqGFuels = (liquidMentalFuelMapper) new liquidMentalFuelMapper(
+            new HashSet<>(50),
+            "gg.recipe.naquadah_reactor",
+            StatCollector.translateToLocal("tile.recipe.naquadah_reactor"),
+            null,
+            "goodgenerator:textures/gui/naquadah_reactor",
+            0,
+            0,
+            0,
+            1,
+            1,
+            StatCollector.translateToLocal("value.naquadah_reactor") + " ",
+            1,
+            " EU/t",
+            false,
+            true) {
+
+        @Override
+        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+                Pos2d windowOffset) {
+            builder.widget(
+                    new DrawableWidget().setDrawable(GG_UITextures.PICTURE_NAQUADAH_REACTOR)
+                            .setPos(new Pos2d(59, 20).add(windowOffset)).setSize(58, 42));
+        }
+    }.useModularUI(true);
 
     public final NaqFuelRefineMapper FRF = new NaqFuelRefineMapper(
             new HashSet<>(50),
@@ -71,56 +73,53 @@ public class MyRecipeAdder {
             true);
 
     public final NeutronActivatorMapper NA = (NeutronActivatorMapper) new NeutronActivatorMapper(
-                    new HashSet<>(150),
-                    "gg.recipe.neutron_activator",
-                    StatCollector.translateToLocal("tile.neutron_activator"),
-                    null,
-                    "goodgenerator:textures/gui/neutron_activator",
-                    9,
-                    9,
-                    0,
-                    0,
-                    0,
-                    null,
-                    0,
-                    null,
-                    false,
-                    true)
-            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+            new HashSet<>(150),
+            "gg.recipe.neutron_activator",
+            StatCollector.translateToLocal("tile.neutron_activator"),
+            null,
+            "goodgenerator:textures/gui/neutron_activator",
+            9,
+            9,
+            0,
+            0,
+            0,
+            null,
+            0,
+            null,
+            false,
+            true).setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
                 int minNKE = recipeInfo.recipe.mSpecialValue % 10000;
                 int maxNKE = recipeInfo.recipe.mSpecialValue / 10000;
                 return Arrays.asList(
                         StatCollector.translateToLocal("value.neutron_activator.0"),
-                                GT_Utility.formatNumbers(minNKE)
-                                        + StatCollector.translateToLocal("value.neutron_activator.2"),
+                        GT_Utility.formatNumbers(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
                         StatCollector.translateToLocal("value.neutron_activator.1"),
-                                GT_Utility.formatNumbers(maxNKE)
-                                        + StatCollector.translateToLocal("value.neutron_activator.2"));
+                        GT_Utility.formatNumbers(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
             });
 
     public final ExtremeHeatExchangerMapper XHE = (ExtremeHeatExchangerMapper) new ExtremeHeatExchangerMapper(
-                    new HashSet<>(50),
-                    "gg.recipe.extreme_heat_exchanger",
-                    StatCollector.translateToLocal("tile.extreme_heat_exchanger"),
-                    null,
-                    "goodgenerator:textures/gui/extreme_heat_exchanger",
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    null,
-                    0,
-                    null,
-                    false,
-                    true)
-            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+            new HashSet<>(50),
+            "gg.recipe.extreme_heat_exchanger",
+            StatCollector.translateToLocal("tile.extreme_heat_exchanger"),
+            null,
+            "goodgenerator:textures/gui/extreme_heat_exchanger",
+            0,
+            0,
+            0,
+            0,
+            0,
+            null,
+            0,
+            null,
+            false,
+            true).setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
                 FluidStack[] Inputs = recipeInfo.recipe.mFluidInputs;
                 FluidStack[] Outputs = recipeInfo.recipe.mFluidOutputs;
                 int threshold = recipeInfo.recipe.mSpecialValue;
                 return Arrays.asList(
                         StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                                + GT_Utility.formatNumbers(Inputs[0].amount) + " L/s",
+                                + GT_Utility.formatNumbers(Inputs[0].amount)
+                                + " L/s",
                         StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
                         GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s",
                         StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
@@ -146,21 +145,11 @@ public class MyRecipeAdder {
             true);
 
     public static class liquidMentalFuelMapper extends GT_Recipe.GT_Recipe_Map_Fuel {
-        public liquidMentalFuelMapper(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+
+        public liquidMentalFuelMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -181,7 +170,16 @@ public class MyRecipeAdder {
         }
 
         public void addFuel(FluidStack input, FluidStack output, int EUt, int ticks) {
-            super.addRecipe(true, null, null, null, new FluidStack[] {input}, new FluidStack[] {output}, ticks, 0, EUt);
+            super.addRecipe(
+                    true,
+                    null,
+                    null,
+                    null,
+                    new FluidStack[] { input },
+                    new FluidStack[] { output },
+                    ticks,
+                    0,
+                    EUt);
         }
     }
 
@@ -190,21 +188,11 @@ public class MyRecipeAdder {
     }
 
     public static class NaqFuelRefineMapper extends GT_Recipe.GT_Recipe_Map {
-        public NaqFuelRefineMapper(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+
+        public NaqFuelRefineMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -225,33 +213,23 @@ public class MyRecipeAdder {
             setUsualFluidInputCount(2);
         }
 
-        public void addNaqFuelRefineRecipe(
-                FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt, int ticks, int tier) {
-            super.addRecipe(false, input2, null, null, input1, new FluidStack[] {output}, ticks, EUt, tier);
+        public void addNaqFuelRefineRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt,
+                int ticks, int tier) {
+            super.addRecipe(false, input2, null, null, input1, new FluidStack[] { output }, ticks, EUt, tier);
         }
     }
 
-    public void addNaquadahFuelRefineRecipe(
-            FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt, int ticks, int tier) {
+    public void addNaquadahFuelRefineRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt,
+            int ticks, int tier) {
         FRF.addNaqFuelRefineRecipe(input1, input2, output, EUt, ticks, tier);
     }
 
     public static class NeutronActivatorMapper extends GT_Recipe.GT_Recipe_Map {
-        public NeutronActivatorMapper(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+
+        public NeutronActivatorMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -272,34 +250,22 @@ public class MyRecipeAdder {
             useModularUI(true);
         }
 
-        public void addNARecipe(
-                FluidStack[] input1,
-                ItemStack[] input2,
-                FluidStack[] output1,
-                ItemStack[] output2,
-                int ticks,
-                int special) {
+        public void addNARecipe(FluidStack[] input1, ItemStack[] input2, FluidStack[] output1, ItemStack[] output2,
+                int ticks, int special) {
             super.addRecipe(false, input2, output2, null, input1, output1, ticks, 0, special);
         }
 
         @Override
-        public void addProgressBarUI(
-                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
-            builder.widget(new DrawableWidget()
-                    .setDrawable(GG_UITextures.PICTURE_NEUTRON_ACTIVATOR)
-                    .setPos(new Pos2d(73, 22).add(windowOffset))
-                    .setSize(31, 21));
+        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+                Pos2d windowOffset) {
+            builder.widget(
+                    new DrawableWidget().setDrawable(GG_UITextures.PICTURE_NEUTRON_ACTIVATOR)
+                            .setPos(new Pos2d(73, 22).add(windowOffset)).setSize(31, 21));
         }
     }
 
-    public void addNeutronActivatorRecipe(
-            FluidStack[] input1,
-            ItemStack[] input2,
-            FluidStack[] output1,
-            ItemStack[] output2,
-            int ticks,
-            int maxNKE,
-            int minNKE) {
+    public void addNeutronActivatorRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack[] output1,
+            ItemStack[] output2, int ticks, int maxNKE, int minNKE) {
         if (maxNKE <= 0) maxNKE = 1;
         if (maxNKE >= 1100) maxNKE = 1100;
         if (minNKE < 0) minNKE = 0;
@@ -310,21 +276,11 @@ public class MyRecipeAdder {
     public static HashMap<Fluid, ExtremeHeatExchangerRecipe> mXHeatExchangerFuelMap = new HashMap<>();
 
     public static class ExtremeHeatExchangerMapper extends GT_Recipe.GT_Recipe_Map {
-        public ExtremeHeatExchangerMapper(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+
+        public ExtremeHeatExchangerMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -347,19 +303,13 @@ public class MyRecipeAdder {
         }
 
         @Override
-        public GT_Recipe addRecipe(
-                boolean aOptimize,
-                ItemStack[] aInputs,
-                ItemStack[] aOutputs,
-                Object aSpecial,
-                int[] aOutputChances,
-                FluidStack[] aFluidInputs,
-                FluidStack[] aFluidOutputs,
-                int aDuration,
-                int aEUt,
+        public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial,
+                int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
                 int aSpecialValue) {
-            ExtremeHeatExchangerRecipe tRecipe =
-                    new ExtremeHeatExchangerRecipe(aFluidInputs, aFluidOutputs, aSpecialValue);
+            ExtremeHeatExchangerRecipe tRecipe = new ExtremeHeatExchangerRecipe(
+                    aFluidInputs,
+                    aFluidOutputs,
+                    aSpecialValue);
             mXHeatExchangerFuelMap.put(aFluidInputs[0].getFluid(), tRecipe);
             return addRecipe(tRecipe);
         }
@@ -375,12 +325,11 @@ public class MyRecipeAdder {
         }
 
         @Override
-        public void addProgressBarUI(
-                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
-            builder.widget(new DrawableWidget()
-                    .setDrawable(GG_UITextures.PICTURE_EXTREME_HEAT_EXCHANGER)
-                    .setPos(new Pos2d(47, 13).add(windowOffset))
-                    .setSize(78, 59));
+        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+                Pos2d windowOffset) {
+            builder.widget(
+                    new DrawableWidget().setDrawable(GG_UITextures.PICTURE_EXTREME_HEAT_EXCHANGER)
+                            .setPos(new Pos2d(47, 13).add(windowOffset)).setSize(78, 59));
         }
     }
 
@@ -444,42 +393,27 @@ public class MyRecipeAdder {
         }
     }
 
-    public void addExtremeHeatExchangerRecipe(
-            FluidStack HotFluid,
-            FluidStack ColdFluid,
-            FluidStack WorkFluid,
-            FluidStack HeatedWorkFluid,
-            FluidStack OverHeatedWorkFluid,
-            int Threshold) {
+    public void addExtremeHeatExchangerRecipe(FluidStack HotFluid, FluidStack ColdFluid, FluidStack WorkFluid,
+            FluidStack HeatedWorkFluid, FluidStack OverHeatedWorkFluid, int Threshold) {
         XHE.addRecipe(
                 false,
                 null,
                 null,
                 null,
                 null,
-                new FluidStack[] {HotFluid, WorkFluid},
-                new FluidStack[] {HeatedWorkFluid, OverHeatedWorkFluid, ColdFluid},
+                new FluidStack[] { HotFluid, WorkFluid },
+                new FluidStack[] { HeatedWorkFluid, OverHeatedWorkFluid, ColdFluid },
                 0,
                 0,
                 Threshold);
     }
 
     public static class PreciseAssemblerMapper extends GT_Recipe.GT_Recipe_Map {
-        public PreciseAssemblerMapper(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+
+        public PreciseAssemblerMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -504,19 +438,16 @@ public class MyRecipeAdder {
         }
 
         @Override
-        public GT_Recipe addRecipe(
-                boolean aOptimize,
-                ItemStack[] aInputs,
-                ItemStack[] aOutputs,
-                Object aSpecial,
-                int[] aOutputChances,
-                FluidStack[] aFluidInputs,
-                FluidStack[] aFluidOutputs,
-                int aDuration,
-                int aEUt,
+        public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial,
+                int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
                 int aSpecialValue) {
-            PreciseAssemblerRecipe tRecipe =
-                    new PreciseAssemblerRecipe(aInputs, aFluidInputs, aOutputs[0], aEUt, aDuration, aSpecialValue);
+            PreciseAssemblerRecipe tRecipe = new PreciseAssemblerRecipe(
+                    aInputs,
+                    aFluidInputs,
+                    aOutputs[0],
+                    aEUt,
+                    aDuration,
+                    aSpecialValue);
             return addRecipe(tRecipe);
         }
 
@@ -537,36 +468,35 @@ public class MyRecipeAdder {
     }
 
     public static class PreciseAssemblerRecipe extends GT_Recipe {
-        public PreciseAssemblerRecipe(
-                ItemStack[] input1, FluidStack[] input2, ItemStack output, int EUt, int ticks, int tier) {
-            super(false, input1, new ItemStack[] {output}, null, null, input2, null, ticks, EUt, tier);
+
+        public PreciseAssemblerRecipe(ItemStack[] input1, FluidStack[] input2, ItemStack output, int EUt, int ticks,
+                int tier) {
+            super(false, input1, new ItemStack[] { output }, null, null, input2, null, ticks, EUt, tier);
         }
     }
 
-    public void addPreciseAssemblerRecipe(
-            ItemStack[] aItemInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aEUt, int aDuration, int aTier) {
+    public void addPreciseAssemblerRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, ItemStack aOutput,
+            int aEUt, int aDuration, int aTier) {
         if (aOutput == null) return;
         PA.addRecipe(
-                false, aItemInputs, new ItemStack[] {aOutput}, null, null, aFluidInputs, null, aDuration, aEUt, aTier);
+                false,
+                aItemInputs,
+                new ItemStack[] { aOutput },
+                null,
+                null,
+                aFluidInputs,
+                null,
+                aDuration,
+                aEUt,
+                aTier);
     }
 
     public static class ComponentAssemblyLineMapper extends GT_Recipe.GT_Recipe_Map {
 
-        public ComponentAssemblyLineMapper(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+        public ComponentAssemblyLineMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
+                String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
 
             super(
@@ -587,8 +517,9 @@ public class MyRecipeAdder {
                     aNEIAllowed);
             setUsualFluidInputCount(8);
             setNEITransferRect(new Rectangle(70, 15, 18, 54));
-            setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> Collections.singletonList(
-                    recipeInfo.recipeMap.mNEISpecialValuePre + GT_Values.VN[recipeInfo.recipe.mSpecialValue]));
+            setNEISpecialInfoFormatter(
+                    (recipeInfo, applyPrefixAndSuffix) -> Collections.singletonList(
+                            recipeInfo.recipeMap.mNEISpecialValuePre + GT_Values.VN[recipeInfo.recipe.mSpecialValue]));
         }
 
         @Override
@@ -610,12 +541,11 @@ public class MyRecipeAdder {
         public void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {}
 
         @Override
-        public void addProgressBarUI(
-                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
-            builder.widget(new DrawableWidget()
-                    .setDrawable(GG_UITextures.PICTURE_COMPONENT_ASSLINE)
-                    .setPos(new Pos2d(70, 22).add(windowOffset))
-                    .setSize(72, 40));
+        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+                Pos2d windowOffset) {
+            builder.widget(
+                    new DrawableWidget().setDrawable(GG_UITextures.PICTURE_COMPONENT_ASSLINE)
+                            .setPos(new Pos2d(70, 22).add(windowOffset)).setSize(72, 40));
         }
     }
 
@@ -636,17 +566,12 @@ public class MyRecipeAdder {
             false,
             true);
 
-    public GT_Recipe addComponentAssemblyLineRecipe(
-            ItemStack[] ItemInputArray,
-            FluidStack[] FluidInputArray,
-            ItemStack OutputItem,
-            int aDuration,
-            int aEUt,
-            int casingLevel) {
+    public GT_Recipe addComponentAssemblyLineRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray,
+            ItemStack OutputItem, int aDuration, int aEUt, int casingLevel) {
         return COMPASSLINE_RECIPES.addRecipe(
                 false,
                 ItemInputArray,
-                new ItemStack[] {OutputItem},
+                new ItemStack[] { OutputItem },
                 null,
                 FluidInputArray,
                 null,

@@ -1,5 +1,14 @@
 package goodgenerator.blocks.tileEntity;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LargeTurbineBase;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
@@ -12,13 +21,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBase {
 
@@ -54,8 +56,8 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow
-                * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for
+        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.
+                                                                           // Variable required outside of loop for
         // multi-hatch scenarios.
         this.realOptFlow = aOptFlow;
 
@@ -97,8 +99,7 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
             looseFit ^= true;
             GT_Utility.sendChatToPlayer(
                     aPlayer,
-                    looseFit
-                            ? trans("500", "Fitting: Loose - More Flow")
+                    looseFit ? trans("500", "Fitting: Loose - More Flow")
                             : trans("501", "Fitting: Tight - More Efficiency"));
         }
     }
@@ -145,23 +146,16 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Supercritical Steam Turbine")
-                .addInfo("Controller block for Supercritical Fluid Turbine")
+        tt.addMachineType("Supercritical Steam Turbine").addInfo("Controller block for Supercritical Fluid Turbine")
                 .addInfo("Needs a Turbine, place inside controller")
                 .addInfo("Use Supercritical Steam to generate power.")
-                .addInfo("Outputs Steam as well as producing power")
-                .addInfo("1L Supercritical Steam = 100 EU")
+                .addInfo("Outputs Steam as well as producing power").addInfo("1L Supercritical Steam = 100 EU")
                 .addInfo("Extreme Heated Steam will cause more damage to the turbine.")
                 .addInfo("Power output depends on turbine and fitting")
-                .addInfo("Use screwdriver to adjust fitting of turbine")
-                .addSeparator()
-                .beginStructureBlock(3, 3, 4, true)
-                .addController("Front center")
-                .addCasingInfo("SC Turbine Casing", 24)
-                .addDynamoHatch("Back center", 1)
-                .addMaintenanceHatch("Side centered", 2)
-                .addInputHatch("Supercritical Fluid, Side centered", 2)
-                .toolTipFinisher("Good Generator");
+                .addInfo("Use screwdriver to adjust fitting of turbine").addSeparator()
+                .beginStructureBlock(3, 3, 4, true).addController("Front center").addCasingInfo("SC Turbine Casing", 24)
+                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
+                .addInputHatch("Supercritical Fluid, Side centered", 2).toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -171,20 +165,12 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(1538),
-            aFacing == aSide
-                    ? (aActive
-                            ? TextureFactory.of(turbineOn)
-                            : hasTurbine() ? TextureFactory.of(turbineOff) : TextureFactory.of(turbineEmpty))
-                    : Textures.BlockIcons.getCasingTextureForId(1538)
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1538),
+                aFacing == aSide
+                        ? (aActive ? TextureFactory.of(turbineOn)
+                                : hasTurbine() ? TextureFactory.of(turbineOff) : TextureFactory.of(turbineEmpty))
+                        : Textures.BlockIcons.getCasingTextureForId(1538) };
     }
 }

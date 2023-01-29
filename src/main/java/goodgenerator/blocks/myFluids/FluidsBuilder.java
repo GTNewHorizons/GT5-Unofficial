@@ -1,11 +1,13 @@
 package goodgenerator.blocks.myFluids;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.crossmod.nei.NEI_Config;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.crossmod.nei.NEI_Config;
+
 public class FluidsBuilder {
+
     public FluidsBuilder() {}
 
     public static void Register() {

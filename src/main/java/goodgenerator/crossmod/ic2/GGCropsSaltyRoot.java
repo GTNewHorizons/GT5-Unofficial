@@ -1,18 +1,20 @@
 package goodgenerator.crossmod.ic2;
 
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+
+import speiger.src.crops.api.ICropCardInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.ItemRefer;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
-import java.util.Arrays;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import speiger.src.crops.api.ICropCardInfo;
 
 public class GGCropsSaltyRoot extends CropCard implements ICropCardInfo {
 
@@ -39,7 +41,7 @@ public class GGCropsSaltyRoot extends CropCard implements ICropCardInfo {
 
     @Override
     public String[] attributes() {
-        return new String[] {"Salt", "Gray", "Root", "Hydrophobic"};
+        return new String[] { "Salt", "Gray", "Root", "Hydrophobic" };
     }
 
     @Override

@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import goodgenerator.common.CommonProxy;
 
 public class ClientProxy extends CommonProxy {
+
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
