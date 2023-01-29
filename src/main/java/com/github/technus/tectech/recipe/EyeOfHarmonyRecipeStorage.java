@@ -38,15 +38,27 @@ public class EyeOfHarmonyRecipeStorage {
                 BlockDimensionDisplay blockDimensionDisplay =
                         (BlockDimensionDisplay) ModBlocks.blocks.get(dimAbbreviation);
 
-                try {
-                    if (dimAbbreviation.equals("DD")) {
-                        specialDeepDarkRecipe(this, blockDimensionDisplay);
-                    } else {
+                if (dimAbbreviation.equals("DD")) {
+                    specialDeepDarkRecipe(this, blockDimensionDisplay);
+                } else {
+
+                    GT5OreLayerHelper.NormalOreDimensionWrapper normalOre =
+                            GT5OreLayerHelper.dimToOreWrapper.getOrDefault(dimAbbreviation, null);
+                    GT5OreSmallHelper.SmallOreDimensionWrapper smallOre =
+                            GT5OreSmallHelper.dimToSmallOreWrapper.getOrDefault(dimAbbreviation, null);
+
+                    if ((normalOre == null) || (smallOre == null)) {
+                        System.out.println(dimAbbreviation
+                                + " dimension not found in dimToOreWrapper. Report error to GTNH team.");
+                        continue;
+                    }
+
+                    try {
                         put(
                                 dimAbbreviation,
                                 new EyeOfHarmonyRecipe(
-                                        GT5OreLayerHelper.dimToOreWrapper.get(dimAbbreviation),
-                                        GT5OreSmallHelper.dimToSmallOreWrapper.get(dimAbbreviation),
+                                        normalOre,
+                                        smallOre,
                                         blockDimensionDisplay,
                                         0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
                                         BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
@@ -54,11 +66,9 @@ public class EyeOfHarmonyRecipeStorage {
                                         timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
                                         blockDimensionDisplay.getDimensionRocketTier(),
                                         1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println(
-                            dimAbbreviation + " dimension not found in dimToOreWrapper. Report error to GTNH team.");
                 }
             }
         }

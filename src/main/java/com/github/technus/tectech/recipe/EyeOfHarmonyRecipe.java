@@ -103,8 +103,8 @@ public class EyeOfHarmonyRecipe {
         this.recipeTriggerItem = new ItemStack(block);
 
         this.outputItems = validDustGenerator(materialList);
-        this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
-        Collections.reverse(this.outputItems);
+        //        this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
+        //        Collections.reverse(this.outputItems);
 
         this.sumOfItems =
                 this.outputItems.stream().map(ItemStackLong::getStackSize).reduce(0L, Long::sum);
@@ -142,17 +142,16 @@ public class EyeOfHarmonyRecipe {
         // Tier 9 - 2304  Universium
 
         if (rocketTierOfRecipe <= 3) {
-            fluidStackArrayList.add(Materials.WhiteDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe - 1)));
+            fluidStackArrayList.add(Materials.WhiteDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe)));
         }
 
-        if ((4 <= rocketTierOfRecipe) && (rocketTierOfRecipe <= 7))  {
-            fluidStackArrayList.add(Materials.BlackDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe)));
+        if ((4 <= rocketTierOfRecipe) && (rocketTierOfRecipe <= 7)) {
+            fluidStackArrayList.add(Materials.BlackDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe - 4)));
         }
 
-        if (rocketTierOfRecipe >= 8)  {
+        if (rocketTierOfRecipe >= 8) {
             fluidStackArrayList.add(Materials.Universium.getMolten(576L * pow(4, (int) (rocketTierOfRecipe - 8))));
         }
-
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
@@ -254,7 +253,7 @@ public class EyeOfHarmonyRecipe {
     private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
 
     private static final double[] ORE_MULTIPLIER = {
-            PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
+        PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
     };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
