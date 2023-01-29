@@ -3714,7 +3714,36 @@ public class DreamCraftRecipeLoader {
                 300 * 20,
                 8_000_000);
 
-        // GTNH UMV, UXV Circuits
+        // GTNH UIV, UMV, UXV Circuits
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Circuit_Biomainframe.get(1L),
+                192000,
+                512,
+                2000000,
+                32,
+                new Object[] {
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 8),
+                    ItemList.Circuit_Biomainframe.get(2L),
+                    ItemList.Circuit_Parts_CapacitorXSMD.get(32L),
+                    ItemList.Circuit_Parts_ResistorXSMD.get(32L),
+                    ItemList.Circuit_Parts_TransistorXSMD.get(32L),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(32L),
+                    ItemList.Circuit_Chip_Ram.get(64L),
+                    ItemList.Circuit_Chip_NPIC.get(64L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64),
+                    new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
+                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64)
+                },
+                new FluidStack[] {
+                    new FluidStack(solderUEV, 3744),
+                    Materials.Naquadria.getMolten(4032L),
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 20000)
+                },
+                getItemContainer("NanoCircuit").get(1L),
+                8000,
+                32_000_000);
+
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Circuit_OpticalMainframe.get(1L),
                 384000,
