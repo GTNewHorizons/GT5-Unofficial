@@ -12,12 +12,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.elisis.gtnhlanth.loader.RecipeAdder;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
@@ -27,22 +34,19 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank>
         implements IConstructable, ISecondaryDescribable {
 
     private final IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
-            .addShape(mName, transpose(new String[][] {
-                {" sss ", "sssss", "sssss", "sssss", " sss "},
-                {"sgggs", "g---g", "g---g", "g---g", "sgggs"},
-                {"sgggs", "g---g", "g---g", "g---g", "sgggs"},
-                {"ss~ss", "shhhs", "shhhs", "shhhs", "sssss"},
-                {"s   s", "     ", "     ", "     ", "s   s"}
-            }))
+            .addShape(
+                    mName,
+                    transpose(
+                            new String[][] { { " sss ", "sssss", "sssss", "sssss", " sss " },
+                                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
+                                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
+                                    { "ss~ss", "shhhs", "shhhs", "shhhs", "sssss" },
+                                    { "s   s", "     ", "     ", "     ", "s   s" } }))
             .addElement(
                     's',
                     ofChain(
@@ -53,8 +57,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
                             ofHatchAdder(DissolutionTank::addMufflerToMachineList, 49, 1),
                             ofBlock(GregTech_API.sBlockCasings4, 1)))
             .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
-            .addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
-            .build();
+            .addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1)).build();
 
     public DissolutionTank(String name) {
         super(name);
@@ -92,8 +95,8 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
         long tVoltage = this.getMaxInputVoltage();
 
-        GT_Recipe tRecipe = RecipeAdder.instance.DissolutionTankRecipes.findRecipe(
-                getBaseMetaTileEntity(), false, tVoltage, tFluidInputArray, tItems);
+        GT_Recipe tRecipe = RecipeAdder.instance.DissolutionTankRecipes
+                .findRecipe(getBaseMetaTileEntity(), false, tVoltage, tFluidInputArray, tItems);
 
         if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) return false;
         // GT_Log.out.print("Recipe not null\n");
@@ -112,7 +115,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
             return false;
         }
 
-        this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+        this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
         this.mOutputItems = tRecipe.mOutputs;
         return true;
     }
@@ -131,8 +134,8 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         FluidStack fluidInputTwo = tFluidInputs.get(1);
 
         // majorInput = ((fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName()))
-        //     ? fluidInputOne
-        //     : fluidInputTwo);
+        // ? fluidInputOne
+        // : fluidInputTwo);
         // GT_Log.out.print(majorInput.getLocalizedName());
         if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
             if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
@@ -184,54 +187,30 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity te, byte side, byte facing, byte colorIndex, boolean active, boolean redstone) {
+    public ITexture[] getTexture(IGregTechTileEntity te, byte side, byte facing, byte colorIndex, boolean active,
+            boolean redstone) {
 
         if (side == facing) {
-            if (active)
-                return new ITexture[] {
-                    casingTexturePages[0][49],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                casingTexturePages[0][49],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (active) return new ITexture[] { casingTexturePages[0][49],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { casingTexturePages[0][49],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
         }
-        return new ITexture[] {casingTexturePages[0][49]};
+        return new ITexture[] { casingTexturePages[0][49] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Dissolution Tank")
-                .addInfo("Controller block for the Dissolution Tank")
+        tt.addMachineType("Dissolution Tank").addInfo("Controller block for the Dissolution Tank")
                 .addInfo("Input Water and Fluid, output Fluid")
-                .addInfo("You must input the Fluids at the correct Ratio")
-                .addInfo(BLUEPRINT_INFO)
-                .addSeparator()
-                .addController("Front bottom")
-                .addInputHatch("Hint block with dot 1")
-                .addInputBus("Hint block with dot 1")
-                .addOutputHatch("Hint block with dot 1")
-                .addOutputBus("Hint block with dot 1")
-                .addMaintenanceHatch("Hint block with dot 1")
+                .addInfo("You must input the Fluids at the correct Ratio").addInfo(BLUEPRINT_INFO).addSeparator()
+                .addController("Front bottom").addInputHatch("Hint block with dot 1")
+                .addInputBus("Hint block with dot 1").addOutputHatch("Hint block with dot 1")
+                .addOutputBus("Hint block with dot 1").addMaintenanceHatch("Hint block with dot 1")
                 .toolTipFinisher("GTNH: Lanthanides");
 
         return tt;

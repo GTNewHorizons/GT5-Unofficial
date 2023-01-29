@@ -12,11 +12,17 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.elisis.gtnhlanth.loader.RecipeAdder;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
@@ -26,9 +32,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester> implements IConstructable {
 
@@ -37,13 +40,13 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
     private HeatingCoilLevel heatLevel;
 
-    private final IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder()
-            .addShape(mName, transpose(new String[][] {
-                {"       ", " ttttt ", " t---t ", " t---t ", " t---t ", " ttttt ", "       "},
-                {"  ttt  ", " t---t ", "t-----t", "t-----t", "t-----t", " t---t ", "  ttt  "},
-                {" tccct ", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", " tccct "},
-                {" tt~tt ", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", " ttttt "},
-            }))
+    private final IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder().addShape(
+            mName,
+            transpose(
+                    new String[][] { { "       ", " ttttt ", " t---t ", " t---t ", " t---t ", " ttttt ", "       " },
+                            { "  ttt  ", " t---t ", "t-----t", "t-----t", "t-----t", " t---t ", "  ttt  " },
+                            { " tccct ", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", " tccct " },
+                            { " tt~tt ", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", " ttttt " }, }))
             .addElement(
                     't',
                     ofChain(
@@ -55,8 +58,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
                             ofBlock(GregTech_API.sBlockCasings4, 0)))
             .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
             .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-            .addElement('c', ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))
-            .build();
+            .addElement('c', ofCoil(Digester::setCoilLevel, Digester::getCoilLevel)).build();
 
     // private int mHeat;
     // private int mNeededHeat;
@@ -99,8 +101,8 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
         // GT_Log.out.print("Digester: " + Arrays.toString(mInventory));
 
         // Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
-        GT_Recipe tRecipe = RecipeAdder.instance.DigesterRecipes.findRecipe(
-                getBaseMetaTileEntity(), false, tVoltage, tFluidInputArray, tItems);
+        GT_Recipe tRecipe = RecipeAdder.instance.DigesterRecipes
+                .findRecipe(getBaseMetaTileEntity(), false, tVoltage, tFluidInputArray, tItems);
 
         if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) return false;
         // GT_Log.out.print("Recipe not null\n");
@@ -149,57 +151,32 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity te, byte side, byte facing, byte colorIndex, boolean active, boolean redstone) {
+    public ITexture[] getTexture(IGregTechTileEntity te, byte side, byte facing, byte colorIndex, boolean active,
+            boolean redstone) {
 
         // Oil Cracker textures cuz I'm lazy
 
         if (side == facing) {
-            if (active)
-                return new ITexture[] {
-                    casingTexturePages[0][47],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                casingTexturePages[0][47],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (active) return new ITexture[] { casingTexturePages[0][47],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { casingTexturePages[0][47],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
         }
-        return new ITexture[] {casingTexturePages[0][47]};
+        return new ITexture[] { casingTexturePages[0][47] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Digester")
-                .addInfo("Controller block for the Digester")
-                .addInfo("Input ores and fluid, output water.")
-                .addInfo(BLUEPRINT_INFO)
-                .addSeparator()
-                .addController("Front bottom")
-                .addInputHatch("Hint block with dot 1")
-                .addInputBus("Hint block with dot 1")
-                .addOutputHatch("Hint block with dot 1")
-                .addOutputBus("Hint block with dot 1")
-                .addMaintenanceHatch("Hint block with dot 1")
-                .addMufflerHatch("Hint block with dot 1")
-                .toolTipFinisher("GTNH: Lanthanides");
+        tt.addMachineType("Digester").addInfo("Controller block for the Digester")
+                .addInfo("Input ores and fluid, output water.").addInfo(BLUEPRINT_INFO).addSeparator()
+                .addController("Front bottom").addInputHatch("Hint block with dot 1")
+                .addInputBus("Hint block with dot 1").addOutputHatch("Hint block with dot 1")
+                .addOutputBus("Hint block with dot 1").addMaintenanceHatch("Hint block with dot 1")
+                .addMufflerHatch("Hint block with dot 1").toolTipFinisher("GTNH: Lanthanides");
         return tt;
     }
 

@@ -1,7 +1,8 @@
 package com.elisis.gtnhlanth.xmod.nei;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.nbt.NBTTagCompound;
+
+import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class IMC {
 

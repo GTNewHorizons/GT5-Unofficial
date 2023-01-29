@@ -1,5 +1,10 @@
 package com.elisis.gtnhlanth;
 
+import java.util.Arrays;
+import java.util.logging.Logger;
+
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.elisis.gtnhlanth.common.CommonProxy;
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
@@ -9,6 +14,7 @@ import com.elisis.gtnhlanth.loader.RecipeLoader;
 import com.elisis.gtnhlanth.xmod.nei.IMC;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -18,9 +24,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
-import java.util.Arrays;
-import java.util.logging.Logger;
-import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(
         modid = Tags.MODID,
@@ -73,9 +76,10 @@ public class GTNHLanthanides {
         GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffNameHashMap.keySet().toArray()));
         GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffHashMap.keySet().toArray()));
 
-        GT_Log.out.print("HMMM "
-                + Arrays.toString(OreDictionary.getOreIDs(
-                        WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))));
+        GT_Log.out.print(
+                "HMMM " + Arrays.toString(
+                        OreDictionary.getOreIDs(
+                                WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))));
     }
 
     @EventHandler

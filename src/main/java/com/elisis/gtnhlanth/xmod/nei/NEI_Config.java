@@ -1,6 +1,7 @@
 package com.elisis.gtnhlanth.xmod.nei;
 
 import codechicken.nei.api.IConfigureNEI;
+
 import com.elisis.gtnhlanth.Tags;
 
 public class NEI_Config implements IConfigureNEI {

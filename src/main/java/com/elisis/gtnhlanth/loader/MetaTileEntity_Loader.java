@@ -1,3 +1,4 @@
 package com.elisis.gtnhlanth.loader;
 
-public class MetaTileEntity_Loader {}
+public class MetaTileEntity_Loader {
+}
