@@ -782,16 +782,20 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         DropDownWidget dropDown = new DropDownWidget();
         builder.widget(dropDown.addDropDownItemsSimple(
                         controller.getInventoryNames(this),
-                        (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                            if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
-                                mLockedInventory = GT_Values.E;
-                                mLockedInventoryIndex = 0;
-                            } else {
-                                mLockedInventory = getNameOfInventoryFromIndex(controller, index);
-                                mLockedInventoryIndex = index;
-                            }
-                            setSelected.run();
-                        }),
+                        (buttonWidget, index, label, setSelected) -> {
+                            buttonWidget.setOnClick((clickData, widget) -> {
+                                if (getNameOfInventoryFromIndex(controller, index)
+                                        .equals("all")) {
+                                    mLockedInventory = GT_Values.E;
+                                    mLockedInventoryIndex = 0;
+                                } else {
+                                    mLockedInventory = getNameOfInventoryFromIndex(controller, index);
+                                    mLockedInventoryIndex = index;
+                                }
+                                setSelected.run();
+                            });
+                            label = controller.getInventoryNameFromID(this);
+                        },
                         true)
                 .setSelected(mLockedInventoryIndex)
                 .setExpandedMaxHeight(60)

@@ -23,7 +23,7 @@ public interface IMultiBlockController
 
     void unregisterCoveredPartOnSide(final int aSide, IMultiBlockPart part);
 
-    void registerInventory(String aName, int aInventorySize, int aType);
+    void registerInventory(String aName, String aID, int aInventorySize, int aType);
 
-    void unregisterInventory(String aName, int aType);
+    void unregisterInventory(String aName, String aID, int aType);
 }

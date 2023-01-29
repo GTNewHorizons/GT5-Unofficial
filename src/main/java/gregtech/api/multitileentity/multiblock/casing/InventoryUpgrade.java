@@ -10,13 +10,14 @@ public class InventoryUpgrade extends AdvancedCasing {
     public UUID mInventoryID;
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
+    public static final int BOTH = 2;
     private String mInventoryName = "inventory";
     private int mInventorySize = 16;
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {
-        aTarget.registerInventory(mInventoryID.toString(), mInventorySize, INPUT);
-        aTarget.registerInventory(mInventoryID.toString(), mInventorySize, OUTPUT);
+        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), mInventorySize, INPUT);
+        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), mInventorySize, OUTPUT);
     }
 
     @Override
@@ -47,8 +48,8 @@ public class InventoryUpgrade extends AdvancedCasing {
         super.onBaseTEDestroyed();
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
-            controller.unregisterInventory(mInventoryID.toString(), INPUT);
-            controller.unregisterInventory(mInventoryID.toString(), OUTPUT);
+            controller.unregisterInventory(mInventoryName, mInventoryID.toString(), INPUT);
+            controller.unregisterInventory(mInventoryName, mInventoryID.toString(), OUTPUT);
         }
     }
 }
