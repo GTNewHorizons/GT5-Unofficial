@@ -26,6 +26,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
+    protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
+
     private static final String TEXTURE_LOCATION = "multitileentity/machines/";
     public IIconContainer[] mTexturesInactive = emptyIconContainerArray;
     public IIconContainer[] mTexturesActive = emptyIconContainerArray;
@@ -36,8 +38,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(16);
-    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(16);
+    protected IItemHandlerModifiable mInputInventory = EMPTY_INVENTORY;
+    protected IItemHandlerModifiable mOutputInventory = EMPTY_INVENTORY;
     protected boolean mOutputInventoryChanged = false;
 
     @Override
@@ -96,6 +98,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aNBT.hasKey(NBT.ACTIVE)) mActive = aNBT.getBoolean(NBT.ACTIVE);
 
         /* Inventories */
+        mInputInventory = new ItemStackHandler(Math.max(aNBT.getInteger(NBT.INV_INPUT_SIZE), 0));
+        mOutputInventory = new ItemStackHandler(Math.max(aNBT.getInteger(NBT.INV_OUTPUT_SIZE), 0));
         loadInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
         loadInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
 
@@ -120,13 +124,11 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     }
 
     protected void loadInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
-        if (inv != null) {
-            final NBTTagList tList = aNBT.getTagList(invListTag, 10);
-            for (int i = 0; i < tList.tagCount(); i++) {
-                final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-                final int tSlot = tNBT.getShort("s");
-                if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
-            }
+        final NBTTagList tList = aNBT.getTagList(invListTag, 10);
+        for (int i = 0; i < tList.tagCount(); i++) {
+            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+            final int tSlot = tNBT.getShort("s");
+            if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
         }
     }
 

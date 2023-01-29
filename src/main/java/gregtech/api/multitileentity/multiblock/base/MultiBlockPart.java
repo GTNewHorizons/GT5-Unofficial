@@ -56,7 +56,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
-public class MultiBlockPart extends BaseNontickableMultiTileEntity
+public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes {
     public static final int NOTHING = 0,
             ENERGY_IN = B[0],

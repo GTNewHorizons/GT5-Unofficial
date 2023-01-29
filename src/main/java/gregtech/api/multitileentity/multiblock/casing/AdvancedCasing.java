@@ -1,5 +1,6 @@
 package gregtech.api.multitileentity.multiblock.casing;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,13 +23,12 @@ public abstract class AdvancedCasing extends MultiBlockPart {
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
-        mTier = aNBT.getInteger("mTier");
+        mTier = aNBT.getInteger(GT_Values.NBT.TIER);
     }
 
     @Override
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
-        aNBT.setInteger("mTier", mTier);
     }
 
     protected abstract void customWork(IMultiBlockController aTarget);
