@@ -28,7 +28,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        // These are only generated if a materials tier is < IV.
         switch (aPrefix) {
             case pipeHuge:
             case pipeLarge:
