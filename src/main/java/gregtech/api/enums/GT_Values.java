@@ -300,7 +300,6 @@ public class GT_Values {
                 UPGRADE_INVENTORY_UUID = "gt.invuuid.upg", // String
                 UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
                 UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
-                UPGRADE_INVENTORIES_AMOUNT = "gt.invlist.upg.size", // Number
                 empty_ = "";
     }
 

@@ -59,11 +59,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -89,8 +89,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     private final List<AdvancedCasing> mUpgradeCasings = new ArrayList<AdvancedCasing>();
     protected BuildState buildState = new BuildState();
 
-    protected Map<UUID, String> multiBlockInputInventoryNames = new LinkedHashMap<>();
-    protected Map<UUID, String> multiBlockOutputInventoryNames = new LinkedHashMap<>();
+    protected Map<String, String> multiBlockInputInventoryNames = new LinkedHashMap<>();
+    protected Map<String, String> multiBlockOutputInventoryNames = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
@@ -156,7 +156,32 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         saveUpgradeInventoriesToNBT(aNBT);
     }
 
-    private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {}
+    private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {
+        final NBTTagList tListInputInvs = new NBTTagList();
+        multiBlockInputInventory.forEach((tName, tInv) -> {
+            if (tName.equals("controller")) {
+            } else {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, tName);
+                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, tInv.getSlots());
+                writeInventory(tTag, tInv, NBT.INV_INPUT_LIST);
+                tListInputInvs.appendTag(tTag);
+            }
+        });
+        final NBTTagList tListOutputInvs = new NBTTagList();
+        multiBlockOutputInventory.forEach((tName, tInv) -> {
+            if (tName.equals("controller")) {
+            } else {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, tName);
+                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, tInv.getSlots());
+                writeInventory(tTag, tInv, NBT.INV_OUTPUT_LIST);
+                tListOutputInvs.appendTag(tTag);
+            }
+        });
+        aNBT.setTag(NBT.UPGRADE_INVENTORIES_INPUT, tListInputInvs);
+        aNBT.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, tListOutputInvs);
+    }
 
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
@@ -173,10 +198,29 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 Rotation.byIndex(aNBT.getByte(NBT.ROTATION)),
                 Flip.byIndex(aNBT.getByte(NBT.FLIP)));
 
-        getUpgradeInventoriesFromNBT(aNBT);
+        loadUpgradeInventoriesFromNBT(aNBT);
     }
 
-    private void getUpgradeInventoriesFromNBT(NBTTagCompound aNBT) {}
+    private void loadUpgradeInventoriesFromNBT(NBTTagCompound aNBT) {
+        final NBTTagList tListInput = aNBT.getTagList(NBT.UPGRADE_INVENTORIES_INPUT, 10);
+        for (int i = 0; i < tListInput.tagCount(); i++) {
+            final NBTTagCompound tNBT = tListInput.getCompoundTagAt(i);
+            String invUUID = tNBT.getString(NBT.UPGRADE_INVENTORY_UUID);
+            int tInvSize = tNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+            IItemHandlerModifiable tInv = new ItemStackHandler(tInvSize);
+            loadInventory(tNBT, tInv, NBT.INV_INPUT_LIST);
+            multiBlockInputInventory.put(invUUID, tInv);
+        }
+        final NBTTagList tListOutput = aNBT.getTagList(NBT.UPGRADE_INVENTORIES_OUTPUT, 10);
+        for (int i = 0; i < tListOutput.tagCount(); i++) {
+            final NBTTagCompound tNBT = tListOutput.getCompoundTagAt(i);
+            String invUUID = tNBT.getString(NBT.UPGRADE_INVENTORY_UUID);
+            int tInvSize = tNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+            IItemHandlerModifiable tInv = new ItemStackHandler(tInvSize);
+            loadInventory(tNBT, tInv, NBT.INV_OUTPUT_LIST);
+            multiBlockOutputInventory.put(invUUID, tInv);
+        }
+    }
 
     @Override
     public void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H) {
@@ -800,26 +844,30 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      * Item - MultiBlock related Item behaviour.
      */
     @Override
-    public void registerInventory(String aName, int aInventorySize, int aType) {
+    public void registerInventory(String aName, String aID, int aInventorySize, int aType) {
         if (aType == InventoryUpgrade.INPUT) {
-            if (multiBlockInputInventory.containsKey(aName)) return;
-            multiBlockInputInventory.put(aName, new ItemStackHandler(aInventorySize));
+            if (multiBlockInputInventory.containsKey(aID)) return;
+            multiBlockInputInventory.put(aID, new ItemStackHandler(aInventorySize));
+            multiBlockInputInventoryNames.put(aID, aName);
             return;
         }
         if (aType == InventoryUpgrade.OUTPUT) {
-            if (multiBlockOutputInventory.containsKey(aName)) return;
-            multiBlockOutputInventory.put(aName, new ItemStackHandler(aInventorySize));
+            if (multiBlockOutputInventory.containsKey(aID)) return;
+            multiBlockOutputInventory.put(aID, new ItemStackHandler(aInventorySize));
+            multiBlockInputInventoryNames.put(aID, aName);
             return;
         }
     }
 
     @Override
-    public void unregisterInventory(String aName, int aType) {
-        if (aType == InventoryUpgrade.INPUT && multiBlockInputInventory.containsKey(aName)) {
-            multiBlockInputInventory.remove(aName, multiBlockInputInventory.get(aName));
+    public void unregisterInventory(String aName, String aID, int aType) {
+        if (aType == InventoryUpgrade.INPUT && multiBlockInputInventory.containsKey(aID)) {
+            multiBlockInputInventory.remove(aID, multiBlockInputInventory.get(aID));
+            multiBlockInputInventoryNames.remove(aID, aName);
         }
-        if (aType == InventoryUpgrade.OUTPUT && multiBlockOutputInventory.containsKey(aName)) {
-            multiBlockOutputInventory.remove(aName, multiBlockOutputInventory.get(aName));
+        if (aType == InventoryUpgrade.OUTPUT && multiBlockOutputInventory.containsKey(aID)) {
+            multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
+            multiBlockInputInventoryNames.remove(aID, aName);
         }
     }
 
@@ -869,6 +917,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     protected Map<String, IItemHandlerModifiable> getMultiBlockInventory(MultiBlockPart aPart) {
         if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventory;
         else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventory;
+        return null;
+    }
+
+    protected Map<String, String> getMultiBlockInventoryNames(MultiBlockPart aPart) {
+        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventoryNames;
+        else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventoryNames;
         return null;
     }
 
@@ -1033,6 +1087,15 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
 
         return str.toString();
+    }
+
+    @Override
+    public String getInventoryNameFromID(MultiBlockPart aPart) {
+        Map<String, String> tInvNames = getMultiBlockInventoryNames(aPart);
+        if (tInvNames == null) {
+            return "all";
+        }
+        return tInvNames.getOrDefault(aPart.getLockedInventory(), "all");
     }
 
     @Override
