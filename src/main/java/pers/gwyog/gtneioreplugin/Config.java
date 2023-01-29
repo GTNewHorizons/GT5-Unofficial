@@ -1,10 +1,13 @@
 package pers.gwyog.gtneioreplugin;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import java.io.File;
+
 import net.minecraftforge.common.config.Configuration;
 
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
 public class Config {
+
     public Configuration tConfig;
 
     public Config(FMLPreInitializationEvent preinit, String cfgname) {

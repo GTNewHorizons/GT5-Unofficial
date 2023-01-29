@@ -2,19 +2,21 @@ package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
 import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
 
-import codechicken.nei.PositionedStack;
-import cpw.mods.fml.common.Loader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+
 import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+import codechicken.nei.PositionedStack;
+import cpw.mods.fml.common.Loader;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
 
@@ -57,12 +59,13 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private void addVeinWithLayers(OreLayerWrapper oreVein, int maximumMaterialIndex) {
-        this.arecipes.add(new CachedVeinStatRecipe(
-                oreVein.veinName,
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_PRIMARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_SECONDARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_BETWEEN),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_SPORADIC)));
+        this.arecipes.add(
+                new CachedVeinStatRecipe(
+                        oreVein.veinName,
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_PRIMARY),
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_SECONDARY),
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_BETWEEN),
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_SPORADIC)));
     }
 
     private Collection<OreLayerWrapper> getAllVeins() {
@@ -144,12 +147,12 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
         String[] dims = DimensionHelper.parseDimNames(GT5OreLayerHelper.bufferedDims.get(oreLayer));
-        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
-                .indexOf(s)));
+        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(s)));
         return dims;
     }
 
     public class CachedVeinStatRecipe extends CachedRecipe {
+
         public String veinName;
         public PositionedStack positionedStackPrimary;
         public PositionedStack positionedStackSecondary;
@@ -157,11 +160,8 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         public PositionedStack positionedStackSporadic;
         private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
-        public CachedVeinStatRecipe(
-                String veinName,
-                List<ItemStack> stackListPrimary,
-                List<ItemStack> stackListSecondary,
-                List<ItemStack> stackListBetween,
+        public CachedVeinStatRecipe(String veinName, List<ItemStack> stackListPrimary,
+                List<ItemStack> stackListSecondary, List<ItemStack> stackListBetween,
                 List<ItemStack> stackListSporadic) {
             this.veinName = veinName;
             positionedStackPrimary = new PositionedStack(stackListPrimary, 2, 0);

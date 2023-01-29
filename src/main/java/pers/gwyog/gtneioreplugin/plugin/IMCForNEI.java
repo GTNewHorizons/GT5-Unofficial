@@ -1,10 +1,12 @@
 package pers.gwyog.gtneioreplugin.plugin;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.nbt.NBTTagCompound;
+
 import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
+import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class IMCForNEI {
+
     public static void IMCSender() {
         // Though these 2 are already registered in NEI jar, we need to re-register
         // because new DimensionDisplayItems made tabs a bit taller.

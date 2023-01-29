@@ -1,14 +1,17 @@
 package pers.gwyog.gtneioreplugin.util;
 
-import codechicken.nei.recipe.GuiRecipe;
-import cpw.mods.fml.common.FMLLog;
 import java.lang.reflect.Field;
+
 import net.minecraft.client.Minecraft;
+
 import org.apache.logging.log4j.Level;
 
+import codechicken.nei.recipe.GuiRecipe;
+import cpw.mods.fml.common.FMLLog;
+
 public class GuiRecipeHelper {
-    private static final String INIT_ERROR =
-            "pers.gwyog.gtneioreplugin.util.GuiRecipeHelper failed setting up reflection : ";
+
+    private static final String INIT_ERROR = "pers.gwyog.gtneioreplugin.util.GuiRecipeHelper failed setting up reflection : ";
     private static final int DEFAULT_XSIZE = 176;
 
     public static Field xSizeField;

@@ -1,11 +1,13 @@
 package pers.gwyog.gtneioreplugin.plugin.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.block.Block;
+
 import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModBlocks {
 

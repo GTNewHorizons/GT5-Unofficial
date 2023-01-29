@@ -1,5 +1,17 @@
 package pers.gwyog.gtneioreplugin;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import pers.gwyog.gtneioreplugin.plugin.IMCForNEI;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
+import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -7,16 +19,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import pers.gwyog.gtneioreplugin.plugin.IMCForNEI;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
-import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
-import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 @Mod(
         modid = GTNEIOrePlugin.MODID,
@@ -24,6 +26,7 @@ import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
         version = GTNEIOrePlugin.VERSION,
         dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
+
     public static final String MODID = "GRADLETOKEN_MODID";
     public static final String NAME = "GRADLETOKEN_MODNAME";
     public static final String VERSION = "GRADLETOKEN_VERSION";
@@ -34,10 +37,10 @@ public class GTNEIOrePlugin {
     public static boolean toolTips = true;
     public static int maxTooltipLines = 11;
     public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
+
         @Override
         public Item getTabIconItem() {
-            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null)
-                    .getItem();
+            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null).getItem();
         }
     };
 

@@ -2,19 +2,22 @@ package pers.gwyog.gtneioreplugin.util;
 
 import static pers.gwyog.gtneioreplugin.util.GT5CFGHelper.oreVeinNotInAnyDim;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import net.minecraft.item.ItemStack;
 
 public class GT5OreSmallHelper {
+
     private static final int SMALL_ORE_BASE_META = 16000;
     public static boolean restrictBiomeSupport = false;
     public static boolean gcBasicSupport = false;
@@ -26,6 +29,7 @@ public class GT5OreSmallHelper {
     public static HashMap<String, SmallOreDimensionWrapper> dimToSmallOreWrapper = new HashMap<>();
 
     public static class SmallOreDimensionWrapper {
+
         public final ArrayList<OreSmallWrapper> internalDimOreList = new ArrayList<>();
         public final HashMap<OreSmallWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
 
@@ -36,8 +40,8 @@ public class GT5OreSmallHelper {
                 totalWeight += oreVein.amountPerChunk;
             }
             for (OreSmallWrapper oreVein : internalDimOreList) {
-                oreVeinToProbabilityInDimension.put(
-                        oreVein, ((double) oreVein.amountPerChunk) / ((double) totalWeight));
+                oreVeinToProbabilityInDimension
+                        .put(oreVein, ((double) oreVein.amountPerChunk) / ((double) totalWeight));
             }
         }
     }
@@ -125,8 +129,8 @@ public class GT5OreSmallHelper {
 
             for (String dim : dims.split(",")) {
                 if (!dim.isEmpty()) {
-                    SmallOreDimensionWrapper dimensionSmallOres =
-                            dimToSmallOreWrapper.getOrDefault(dim, new SmallOreDimensionWrapper());
+                    SmallOreDimensionWrapper dimensionSmallOres = dimToSmallOreWrapper
+                            .getOrDefault(dim, new SmallOreDimensionWrapper());
                     dimensionSmallOres.internalDimOreList.add(veinInfo);
                     dimToSmallOreWrapper.put(dim, dimensionSmallOres);
                 }
@@ -144,37 +148,27 @@ public class GT5OreSmallHelper {
         Class<?> clazzGTOreSmall = null;
         try {
             clazzGTOreSmall = Class.forName("gregtech.common" + ".GT_Worldgen_GT_Ore_SmallPieces");
-        } catch (ClassNotFoundException e) {
-        }
+        } catch (ClassNotFoundException e) {}
         if (clazzGTOreSmall != null) {
             try {
                 Field fieldRestrictBiome = clazzGTOreSmall.getField("mRestrictBiome");
                 restrictBiomeSupport = true;
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
             try {
                 Field fieldGCMoon = clazzGTOreSmall.getField("mMoon");
                 Field fieldGCMars = clazzGTOreSmall.getField("mMars");
                 gcBasicSupport = true;
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
         }
     }
 
     public static Materials[] getDroppedDusts() {
-        return new Materials[] {
-            Materials.Stone,
-            Materials.Netherrack,
-            Materials.Endstone,
-            Materials.GraniteBlack,
-            Materials.GraniteRed,
-            Materials.Marble,
-            Materials.Basalt,
-            Materials.Stone
-        };
+        return new Materials[] { Materials.Stone, Materials.Netherrack, Materials.Endstone, Materials.GraniteBlack,
+                Materials.GraniteRed, Materials.Marble, Materials.Basalt, Materials.Stone };
     }
 
     public static class OreSmallWrapper {
+
         public String oreGenName;
         public short oreMeta;
         public String worldGenHeightRange;
@@ -193,10 +187,8 @@ public class GT5OreSmallHelper {
             this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
             this.amountPerChunk = worldGen.mAmount;
             try {
-                this.oreMaterial = GT_OreDictUnificator.getAssociation(
-                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mMeta))
-                        .mMaterial
-                        .mMaterial;
+                this.oreMaterial = GT_OreDictUnificator
+                        .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mMeta)).mMaterial.mMaterial;
             } catch (Exception e) {
                 e.printStackTrace();
             }

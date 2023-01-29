@@ -1,20 +1,23 @@
 package pers.gwyog.gtneioreplugin.util;
 
-import com.google.common.base.Strings;
 import java.util.Arrays;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
+import com.google.common.base.Strings;
+
 public class StringPaddingHack {
+
     private static final int SPACE_WIDTH = 4;
     private static final int BOLD_SPACE_WIDTH = 5;
 
     /**
-     * Given a list of strings, arrange them into the requested number of columns with the specified spacing.
-     * Up to 3 additional spaces might be added between columns because this function relies on quirky font behaviors.
+     * Given a list of strings, arrange them into the requested number of columns with the specified spacing. Up to 3
+     * additional spaces might be added between columns because this function relies on quirky font behaviors.
      *
-     * @param strings List of strings to wrap into columns
-     * @param numColumns Number of columns, minimum of 1
+     * @param strings          List of strings to wrap into columns
+     * @param numColumns       Number of columns, minimum of 1
      * @param minColumnSpacing Minimum amount of extra spaces between columns.
      * @return strings wrapped into columns
      */
@@ -36,8 +39,8 @@ public class StringPaddingHack {
                     remainder--;
                     extra = 1;
                 }
-                columns[i] = Arrays.copyOfRange(
-                        strings, (sliceSize * i) + totalExtra, (sliceSize * (i + 1) + totalExtra + extra));
+                columns[i] = Arrays
+                        .copyOfRange(strings, (sliceSize * i) + totalExtra, (sliceSize * (i + 1) + totalExtra + extra));
 
                 totalExtra += extra;
             }
@@ -60,14 +63,13 @@ public class StringPaddingHack {
     }
 
     /**
-     * Pads strings with spaces so that they are of equal length and adds to
-     * that the number of spaces specified and up to 3 if minExtraSpaces is
-     * below 3. Added spaces might be bold.
+     * Pads strings with spaces so that they are of equal length and adds to that the number of spaces specified and up
+     * to 3 if minExtraSpaces is below 3. Added spaces might be bold.
      *
-     * Relies on the quirk of bold space characters being 1 pixel wider than
-     * regular space characters in the default font renderer.
+     * Relies on the quirk of bold space characters being 1 pixel wider than regular space characters in the default
+     * font renderer.
      *
-     * @param strings List of strings
+     * @param strings        List of strings
      * @param minExtraSpaces The minimum number of extra spaces to add
      * @return List of strings padded with spaces to an equal length
      */

@@ -3,19 +3,22 @@ package pers.gwyog.gtneioreplugin.util;
 import static pers.gwyog.gtneioreplugin.util.GT5CFGHelper.oreVeinNotInAnyDim;
 import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 
 public class GT5OreLayerHelper {
 
     public static class NormalOreDimensionWrapper {
+
         public final ArrayList<OreLayerWrapper> internalDimOreList = new ArrayList<>();
         public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
 
@@ -57,8 +60,8 @@ public class GT5OreLayerHelper {
 
             for (String dim : dims.split(",")) {
                 if (!dim.isEmpty()) {
-                    NormalOreDimensionWrapper dimensionOres =
-                            dimToOreWrapper.getOrDefault(dim, new NormalOreDimensionWrapper());
+                    NormalOreDimensionWrapper dimensionOres = dimToOreWrapper
+                            .getOrDefault(dim, new NormalOreDimensionWrapper());
                     dimensionOres.internalDimOreList.add(veinInfo);
                     dimToOreWrapper.put(dim, dimensionOres);
                 }
@@ -73,11 +76,11 @@ public class GT5OreLayerHelper {
     }
 
     public static String getDims(OreLayerWrapper oreLayer) {
-        return GT5CFGHelper.GT5CFG(
-                oreLayer.veinName.replace("ore.mix.custom" + ".", "").replace("ore.mix.", ""));
+        return GT5CFGHelper.GT5CFG(oreLayer.veinName.replace("ore.mix.custom" + ".", "").replace("ore.mix.", ""));
     }
 
     public static class OreLayerWrapper {
+
         public String veinName, worldGenHeightRange;
         public short[] Meta = new short[4];
         public short randomWeight, size, density;
@@ -98,23 +101,14 @@ public class GT5OreLayerHelper {
             // Black magic, don't ask me how it works, I have no idea.
             try {
                 this.mPrimaryVeinMaterial = GT_OreDictUnificator.getAssociation(
-                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta))
-                        .mMaterial
-                        .mMaterial;
+                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta)).mMaterial.mMaterial;
                 this.mSecondaryMaterial = GT_OreDictUnificator.getAssociation(
-                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta))
-                        .mMaterial
-                        .mMaterial;
+                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta)).mMaterial.mMaterial;
                 this.mBetweenMaterial = GT_OreDictUnificator.getAssociation(
-                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta))
-                        .mMaterial
-                        .mMaterial;
+                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta)).mMaterial.mMaterial;
                 this.mSporadicMaterial = GT_OreDictUnificator.getAssociation(
-                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta))
-                        .mMaterial
-                        .mMaterial;
-            } catch (Exception ignored) {
-            }
+                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta)).mMaterial.mMaterial;
+            } catch (Exception ignored) {}
 
             this.size = worldGen.mSize;
             this.density = worldGen.mDensity;
@@ -135,8 +129,7 @@ public class GT5OreLayerHelper {
         }
 
         public boolean containsOre(short materialIndex) {
-            return Meta[VEIN_PRIMARY] == materialIndex
-                    || Meta[VEIN_SECONDARY] == materialIndex
+            return Meta[VEIN_PRIMARY] == materialIndex || Meta[VEIN_SECONDARY] == materialIndex
                     || Meta[VEIN_BETWEEN] == materialIndex
                     || Meta[VEIN_SPORADIC] == materialIndex;
         }

@@ -1,15 +1,17 @@
 package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import net.minecraft.client.resources.I18n;
+
+import pers.gwyog.gtneioreplugin.plugin.PluginBase;
+import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.GuiRecipe;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import net.minecraft.client.resources.I18n;
-import pers.gwyog.gtneioreplugin.plugin.PluginBase;
-import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 public abstract class PluginGT5Base extends PluginBase {
 
@@ -33,7 +35,8 @@ public abstract class PluginGT5Base extends PluginBase {
         if (!getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000)
                 .contains("Awakened"))
             return getLocalizedNameForItem(
-                    GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000);
+                    GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)),
+                    index % 1000);
         else return "Aw. Draconium Ore";
     }
 
@@ -56,8 +59,8 @@ public abstract class PluginGT5Base extends PluginBase {
     /**
      * Produce a rectangle covering the area of displayed dimension names
      *
-     * @param gui An instance of the currentscreen
-     * @param recipe The recipe index being handled
+     * @param gui      An instance of the currentscreen
+     * @param recipe   The recipe index being handled
      * @param dimNames Dimension names to produce a rectangle for
      * @return Rectangle area of dimension names
      */
@@ -74,9 +77,11 @@ public abstract class PluginGT5Base extends PluginBase {
     protected int getMaximumMaterialIndex(short meta, boolean smallOre) {
         int offset = smallOre ? 16000 : 0;
         if (!getGTOreLocalizedName((short) (meta + offset + 5000))
-                .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 7;
+                .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000))))
+            return 7;
         else if (!getGTOreLocalizedName((short) (meta + offset + 5000))
-                .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 6;
+                .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000))))
+            return 6;
         else return 5;
     }
 

@@ -1,21 +1,23 @@
 package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-import gregtech.api.util.GT_Utility;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
 import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper.UndergroundFluidWrapper;
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
+import gregtech.api.util.GT_Utility;
 
 public class PluginGT5UndergroundFluid extends PluginBase {
 
@@ -26,8 +28,8 @@ public class PluginGT5UndergroundFluid extends PluginBase {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
-            for (Map.Entry<String, List<UndergroundFluidWrapper>> entry :
-                    GT5UndergroundFluidHelper.getAllEntries().entrySet()) {
+            for (Map.Entry<String, List<UndergroundFluidWrapper>> entry : GT5UndergroundFluidHelper.getAllEntries()
+                    .entrySet()) {
                 Fluid fluid = FluidRegistry.getFluid(entry.getKey());
                 if (fluid != null) {
                     this.arecipes.add(new CachedUndergroundFluidRecipe(fluid, entry.getValue()));
@@ -63,8 +65,8 @@ public class PluginGT5UndergroundFluid extends PluginBase {
     public void loadUsageRecipes(ItemStack ingredient) {
         String dimension = ItemDimensionDisplay.getDimension(ingredient);
         if (dimension != null) {
-            for (Map.Entry<String, List<UndergroundFluidWrapper>> entry :
-                    GT5UndergroundFluidHelper.getAllEntries().entrySet()) {
+            for (Map.Entry<String, List<UndergroundFluidWrapper>> entry : GT5UndergroundFluidHelper.getAllEntries()
+                    .entrySet()) {
                 boolean found = false;
                 for (UndergroundFluidWrapper wrapper : entry.getValue()) {
                     if (wrapper.dimension.equals(dimension)) {
@@ -105,8 +107,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
                     black,
                     false);
             GuiDraw.drawStringC(
-                    recipe.minAmounts.get(i).toString() + "-"
-                            + recipe.maxAmounts.get(i).toString(),
+                    recipe.minAmounts.get(i).toString() + "-" + recipe.maxAmounts.get(i).toString(),
                     xAmount,
                     y,
                     black,
@@ -134,16 +135,19 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         private final List<Integer> minAmounts = new ArrayList<>();
 
         private CachedUndergroundFluidRecipe(Fluid fluid, List<UndergroundFluidWrapper> wrappers) {
-            targetFluidDisplay =
-                    new PositionedStack(GT_Utility.getFluidDisplayStack(fluid), getGuiWidth() / 2 - halfItemLength, 3);
+            targetFluidDisplay = new PositionedStack(
+                    GT_Utility.getFluidDisplayStack(fluid),
+                    getGuiWidth() / 2 - halfItemLength,
+                    3);
             int y = 50 - halfItemLength;
             for (UndergroundFluidWrapper wrapper : wrappers) {
                 ItemStack dimensionDisplay = ItemDimensionDisplay.getItem(wrapper.dimension);
                 if (dimensionDisplay != null) {
-                    dimensionDisplayItems.add(new PositionedStack(
-                            dimensionDisplay,
-                            xDimensionDisplay - halfItemLength,
-                            y + GuiDraw.fontRenderer.FONT_HEIGHT / 2));
+                    dimensionDisplayItems.add(
+                            new PositionedStack(
+                                    dimensionDisplay,
+                                    xDimensionDisplay - halfItemLength,
+                                    y + GuiDraw.fontRenderer.FONT_HEIGHT / 2));
                     y += lineSpace;
                     chances.add(wrapper.chance);
                     maxAmounts.add(wrapper.maxAmount);

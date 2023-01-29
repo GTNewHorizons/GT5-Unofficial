@@ -2,11 +2,6 @@ package pers.gwyog.gtneioreplugin.util;
 
 import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.LOG;
 
-import com.google.common.collect.BiMap;
-import gregtech.GT_Mod;
-import gregtech.api.objects.GT_UO_Dimension;
-import gregtech.api.objects.GT_UO_DimensionList;
-import gregtech.api.objects.GT_UO_Fluid;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,16 +12,23 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.google.common.collect.BiMap;
+
+import gregtech.GT_Mod;
+import gregtech.api.objects.GT_UO_Dimension;
+import gregtech.api.objects.GT_UO_DimensionList;
+import gregtech.api.objects.GT_UO_Fluid;
+
 public class GT5UndergroundFluidHelper {
 
     /**
-     * Need to store fluid name instead of fluid
-     * because fluid instance might be different between gas and liquid
+     * Need to store fluid name instead of fluid because fluid instance might be different between gas and liquid
      */
     private static final Map<String, List<UndergroundFluidWrapper>> fluidMap = new HashMap<>();
 
@@ -35,8 +37,8 @@ public class GT5UndergroundFluidHelper {
         try {
             Field fieldDimensionList = GT_UO_DimensionList.class.getDeclaredField("fDimensionList");
             fieldDimensionList.setAccessible(true);
-            BiMap<String, GT_UO_Dimension> dimensionList =
-                    (BiMap<String, GT_UO_Dimension>) fieldDimensionList.get(GT_Mod.gregtechproxy.mUndergroundOil);
+            BiMap<String, GT_UO_Dimension> dimensionList = (BiMap<String, GT_UO_Dimension>) fieldDimensionList
+                    .get(GT_Mod.gregtechproxy.mUndergroundOil);
             for (Map.Entry<String, GT_UO_Dimension> dimensionEntry : dimensionList.entrySet()) {
                 String rawDimension = dimensionEntry.getKey();
                 String dimension = null;
@@ -45,20 +47,18 @@ public class GT5UndergroundFluidHelper {
                 } catch (NumberFormatException ignored) {
                     Field fieldProviders = DimensionManager.class.getDeclaredField("providers");
                     fieldProviders.setAccessible(true);
-                    Hashtable<Integer, Class<? extends WorldProvider>> providers =
-                            (Hashtable<Integer, Class<? extends WorldProvider>>) fieldProviders.get(null);
+                    Hashtable<Integer, Class<? extends WorldProvider>> providers = (Hashtable<Integer, Class<? extends WorldProvider>>) fieldProviders
+                            .get(null);
 
                     // some short dimension names like Io might be caught by multiple dimension classes,
                     // so we'll check them all.
-                    //                    List<WorldProvider> dimensionCandidates = providers.values()
+                    // List<WorldProvider> dimensionCandidates = providers.values()
                     List<Class<? extends WorldProvider>> dimensionCandidates = providers.values().stream()
-                            .filter(p -> p.getName().contains(rawDimension))
-                            .collect(Collectors.toList());
-                    loop:
-                    for (Class<? extends WorldProvider> candidate : dimensionCandidates) {
+                            .filter(p -> p.getName().contains(rawDimension)).collect(Collectors.toList());
+                    loop: for (Class<? extends WorldProvider> candidate : dimensionCandidates) {
                         for (int i = 0; i < DimensionHelper.DimNameTrimmed.length; i++) {
-                            if (DimensionHelper.DimNameTrimmed[i].equalsIgnoreCase(
-                                    candidate.newInstance().getDimensionName())) {
+                            if (DimensionHelper.DimNameTrimmed[i]
+                                    .equalsIgnoreCase(candidate.newInstance().getDimensionName())) {
                                 dimension = DimensionHelper.DimNameDisplayed[i];
                                 break loop;
                             }
@@ -76,8 +76,8 @@ public class GT5UndergroundFluidHelper {
 
                 Field fieldFluids = GT_UO_Dimension.class.getDeclaredField("fFluids");
                 fieldFluids.setAccessible(true);
-                BiMap<String, GT_UO_Fluid> fluids =
-                        (BiMap<String, GT_UO_Fluid>) fieldFluids.get(dimensionEntry.getValue());
+                BiMap<String, GT_UO_Fluid> fluids = (BiMap<String, GT_UO_Fluid>) fieldFluids
+                        .get(dimensionEntry.getValue());
 
                 int maxChance = 0;
                 for (Map.Entry<String, GT_UO_Fluid> fluidEntry : fluids.entrySet()) {
@@ -105,8 +105,8 @@ public class GT5UndergroundFluidHelper {
         }
 
         for (List<UndergroundFluidWrapper> wrappers : fluidMap.values()) {
-            wrappers.sort(Comparator.comparingInt(
-                    w -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(w.dimension)));
+            wrappers.sort(
+                    Comparator.comparingInt(w -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(w.dimension)));
         }
     }
 
