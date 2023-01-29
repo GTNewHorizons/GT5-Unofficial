@@ -59,6 +59,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -88,6 +89,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     private final List<AdvancedCasing> mUpgradeCasings = new ArrayList<AdvancedCasing>();
     protected BuildState buildState = new BuildState();
 
+    protected Map<UUID, String> multiBlockInputInventoryNames = new LinkedHashMap<>();
+    protected Map<UUID, String> multiBlockOutputInventoryNames = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
