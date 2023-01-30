@@ -107,8 +107,13 @@ public class CircuitImprintLoader {
                     ? FluidRegistry.getFluid("molten.indalloy140")
                     : FluidRegistry.getFluid("molten.solderingalloy");
 
+            Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
+                    ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
+                    : FluidRegistry.getFluid("molten.solderingalloy");
+
             if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))
-                    || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderIndalloy, 0))) {
+                    || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderIndalloy, 0))
+                    || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderUEV, 0))) {
                 GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null)
                     BWRecipes.instance

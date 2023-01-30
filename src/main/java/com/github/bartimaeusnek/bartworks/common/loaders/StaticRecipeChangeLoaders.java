@@ -609,7 +609,7 @@ public class StaticRecipeChangeLoaders {
                             "Electric Implosion Compressor",
                             (String) null,
                             "gregtech:textures/gui/basicmachines/Default",
-                            1,
+                            2,
                             2,
                             0,
                             0,
@@ -652,6 +652,24 @@ public class StaticRecipeChangeLoaders {
                     100 * 20,
                     128_000_000,
                     1); // aSpecialVaue has no meaning here.
+        }
+
+        if (Loader.isModLoaded("universalsingularities")) {
+
+            // Raw Exposed Optical Chip
+            eicMap.addRecipe(
+                    false,
+                    new ItemStack[] {
+                        ItemList.Circuit_Silicon_Wafer7.get(1L),
+                        GT_ModHandler.getModItem("universalsingularities", "universal.general.singularity", 1L, 20)
+                    },
+                    new ItemStack[] {ItemList.Circuit_Chip_Optical.get(16L)},
+                    null,
+                    new FluidStack[] {GT_Values.NF},
+                    new FluidStack[] {GT_Values.NF},
+                    5 * 20,
+                    125_829_120,
+                    1);
         }
 
         eicMap.addRecipe(

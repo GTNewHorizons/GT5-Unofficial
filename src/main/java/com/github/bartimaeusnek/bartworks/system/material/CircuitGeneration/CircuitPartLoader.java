@@ -155,5 +155,10 @@ public class CircuitPartLoader implements Runnable {
             Circuit_Parts_TransistorXSMD,
             Circuit_Parts_CapacitorXSMD,
             Circuit_Parts_InductorASMD,
-            Circuit_Parts_InductorXSMD));
+            Circuit_Parts_InductorXSMD,
+            Circuit_Chip_Optical,
+            Circuit_Board_Optical,
+            Optically_Perfected_CPU,
+            Optical_Cpu_Containment_Housing,
+            Optically_Compatible_Memory));
 }
