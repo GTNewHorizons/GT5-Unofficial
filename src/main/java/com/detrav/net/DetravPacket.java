@@ -5,9 +5,9 @@ package com.detrav.net;
  */
 public abstract class DetravPacket {
 
-    public abstract int getPacketID() ;
+    public abstract int getPacketID();
 
-    public abstract byte[] encode() ;
+    public abstract byte[] encode();
 
     public abstract void process();
 }

@@ -1,11 +1,14 @@
 package com.detrav;
 
-import com.detrav.utils.FluidColors;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.config.Configuration;
+
 import org.apache.logging.log4j.LogManager;
 
 import com.detrav.net.DetravNetwork;
 import com.detrav.proxies.CommonProxy;
 import com.detrav.utils.DetravCreativeTab;
+import com.detrav.utils.FluidColors;
 import com.detrav.utils.GTppHelper;
 
 import cpw.mods.fml.common.Loader;
@@ -17,12 +20,13 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.config.Configuration;
 
-@Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
-public class DetravScannerMod
-{
+@Mod(
+        modid = DetravScannerMod.MODID,
+        version = DetravScannerMod.VERSION,
+        dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
+public class DetravScannerMod {
+
     public static final String MODID = "detravscannermod";
     public static final String VERSION = "GRADLETOKEN_VERSION";
     public static final String DEBUGOVERRIDE = "@false";
@@ -33,7 +37,7 @@ public class DetravScannerMod
     public static boolean isGTppLoaded = false;
 
     public static final org.apache.logging.log4j.Logger Logger = LogManager.getLogger("GT Scanner Mod");
-    
+
     @SidedProxy(clientSide = "com.detrav.proxies.ClientProxy", serverSide = "com.detrav.proxies.ServerProxy")
     public static CommonProxy proxy;
 
@@ -54,8 +58,7 @@ public class DetravScannerMod
         Configuration Config = new Configuration(event.getSuggestedConfigurationFile());
         Config.load();
 
-
-        if (Config.hasChanged()){
+        if (Config.hasChanged()) {
             Config.save();
         }
 

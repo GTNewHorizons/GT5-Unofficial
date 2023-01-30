@@ -1,10 +1,11 @@
 package com.detrav.proxies;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+
 import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.gui.DetravScannerGUI;
 import cpw.mods.fml.common.network.IGuiHandler;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -39,11 +40,9 @@ public class CommonProxy implements IGuiHandler {
         }
     }
 
-
     public void openProspectorGUI() {
-        //just Client code
+        // just Client code
     }
-
 
     public void onPreInit() {
 

@@ -1,13 +1,7 @@
 package com.detrav.items.tools;
 
-import com.detrav.enums.Textures01;
-import com.detrav.items.behaviours.BehaviourDetravToolElectricProspector;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -22,14 +16,21 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import java.util.List;
+import com.detrav.enums.Textures01;
+import com.detrav.items.behaviours.BehaviourDetravToolElectricProspector;
+
+import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
+import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 
 /**
- * Created by wital_000 on 19.03.2016.
- * modified by bartimaeusnek on 05.06.2018
+ * Created by wital_000 on 19.03.2016. modified by bartimaeusnek on 05.06.2018
  */
 public class DetravToolElectricProspectorBase implements IToolStats {
-	
+
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 50 : 100;
     }
@@ -69,7 +70,10 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     @Override
     public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
-        return GT_DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
+        return GT_DamageSources.getCombatDamage(
+                (aPlayer instanceof EntityPlayer) ? "player" : "mob",
+                aPlayer,
+                (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
     }
 
     public String getCraftingSound() {
@@ -142,7 +146,8 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     @Override
-    public int convertBlockDrops(List<ItemStack> list, ItemStack itemStack, EntityPlayer entityPlayer, Block block, int i, int i1, int i2, byte b, int i3, boolean b1, BlockEvent.HarvestDropsEvent harvestDropsEvent) {
+    public int convertBlockDrops(List<ItemStack> list, ItemStack itemStack, EntityPlayer entityPlayer, Block block,
+            int i, int i1, int i2, byte b, int i3, boolean b1, BlockEvent.HarvestDropsEvent harvestDropsEvent) {
         return 0;
     }
 
@@ -165,7 +170,8 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
+                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
@@ -180,10 +186,17 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got Pick Up'ed by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " got Pick Up'ed by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 
-	public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-		return aDefault;
-	}
+    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
+            int aX, int aY, int aZ) {
+        return aDefault;
+    }
 }

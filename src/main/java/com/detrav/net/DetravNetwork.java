@@ -1,7 +1,13 @@
 package com.detrav.net;
 
+import java.util.EnumMap;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -12,10 +18,6 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.MessageToMessageCodec;
-import net.minecraft.entity.player.EntityPlayerMP;
-
-import java.util.EnumMap;
-import java.util.List;
 
 /**
  * Created by wital_000 on 20.03.2016.
@@ -34,7 +36,10 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
 
     @Override
     protected void encode(ChannelHandlerContext ctx, DetravPacket msg, List<Object> out) throws Exception {
-        out.add(new FMLProxyPacket(Unpooled.buffer().writeByte(msg.getPacketID()).writeBytes(msg.encode()).copy(),(String) ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
+        out.add(
+                new FMLProxyPacket(
+                        Unpooled.buffer().writeByte(msg.getPacketID()).writeBytes(msg.encode()).copy(),
+                        (String) ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -46,17 +51,22 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     }
 
     public void sendToPlayer(DetravPacket aPacket, EntityPlayerMP aPlayer) {
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPlayer);
+        ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGET)
+                .set(FMLOutboundHandler.OutboundTarget.PLAYER);
+        ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
+                .set(aPlayer);
         ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).writeAndFlush(aPacket);
     }
+
     public void sendToServer(DetravPacket aPacket) {
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.CLIENT)).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+        ((FMLEmbeddedChannel) this.mChannel.get(Side.CLIENT)).attr(FMLOutboundHandler.FML_MESSAGETARGET)
+                .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         ((FMLEmbeddedChannel) this.mChannel.get(Side.CLIENT)).writeAndFlush(aPacket);
     }
 
     @ChannelHandler.Sharable
     static final class HandlerShared extends SimpleChannelInboundHandler<DetravPacket> {
+
         protected void channelRead0(ChannelHandlerContext ctx, DetravPacket aPacket) throws Exception {
             aPacket.process();
         }

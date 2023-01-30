@@ -1,7 +1,8 @@
 package com.detrav.events;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 /**
  * Created by wital_000 on 18.04.2016.

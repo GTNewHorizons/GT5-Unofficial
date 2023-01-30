@@ -1,13 +1,15 @@
 package com.detrav.utils;
 
-import com.detrav.items.DetravMetaGeneratedTool01;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
-import java.util.List;
+import com.detrav.items.DetravMetaGeneratedTool01;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -22,7 +24,6 @@ public class DetravCreativeTab extends CreativeTabs {
     public Item getTabIconItem() {
         return Items.stick;
     }
-
 
     @Override
     @SideOnly(Side.CLIENT)
