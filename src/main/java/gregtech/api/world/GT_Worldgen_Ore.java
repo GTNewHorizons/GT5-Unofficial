@@ -1,29 +1,22 @@
 package gregtech.api.world;
 
-import gregtech.api.GregTech_API;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import net.minecraft.block.Block;
 
+import gregtech.api.GregTech_API;
+
 public abstract class GT_Worldgen_Ore extends GT_Worldgen {
+
     public final int mBlockMeta, mAmount, mSize, mMinY, mMaxY, mProbability, mDimensionType;
     public final Block mBlock;
     public final Collection<String> mBiomeList;
     public final boolean mAllowToGenerateinVoid;
     private final String aTextWorldgen = "worldgen.";
 
-    public GT_Worldgen_Ore(
-            String aName,
-            boolean aDefault,
-            Block aBlock,
-            int aBlockMeta,
-            int aDimensionType,
-            int aAmount,
-            int aSize,
-            int aProbability,
-            int aMinY,
-            int aMaxY,
-            Collection<String> aBiomeList,
+    public GT_Worldgen_Ore(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType,
+            int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList,
             boolean aAllowToGenerateinVoid) {
         super(aName, GregTech_API.sWorldgenList, aDefault);
         mDimensionType = aDimensionType;

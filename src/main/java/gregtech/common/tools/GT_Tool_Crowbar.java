@@ -1,13 +1,7 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.behaviors.Behaviour_Crowbar;
 import java.util.Iterator;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +10,16 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.behaviors.Behaviour_Crowbar;
+
 public class GT_Tool_Crowbar extends GT_Tool {
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
@@ -94,12 +97,8 @@ public class GT_Tool_Crowbar extends GT_Tool {
         }
         String tTool = aBlock.getHarvestTool(aMetaData);
         if ((tTool == null) || (tTool.equals(""))) {
-            for (Iterator i$ = GT_MetaGenerated_Tool_01.INSTANCE
-                            .mToolStats
-                            .values()
-                            .iterator();
-                    i$.hasNext();
-                    i$.next()) {
+            for (Iterator i$ = GT_MetaGenerated_Tool_01.INSTANCE.mToolStats.values().iterator(); i$.hasNext(); i$
+                    .next()) {
                 if (((i$ instanceof GT_Tool_Crowbar)) && (!((IToolStats) i$).isMinableBlock(aBlock, aMetaData))) {
                     return false;
                 }
@@ -132,7 +131,11 @@ public class GT_Tool_Crowbar extends GT_Tool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was removed by "
-                        + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " was removed by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 }

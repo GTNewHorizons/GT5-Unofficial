@@ -2,8 +2,13 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -12,36 +17,39 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_AssemblyLineUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+
     private int timeout = 4;
 
     public GT_MetaTileEntity_Hatch_DataAccess(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 16, new String[] {
-            "Data Access for Multiblocks", "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks"
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                16,
+                new String[] { "Data Access for Multiblocks",
+                        "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks" });
     }
 
     public GT_MetaTileEntity_Hatch_DataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_DataAccess(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_DataAccess(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS) };
     }
 
     @Override

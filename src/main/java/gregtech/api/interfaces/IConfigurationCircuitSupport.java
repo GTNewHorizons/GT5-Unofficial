@@ -1,14 +1,17 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.GregTech_API;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.GregTech_API;
+
 /**
- *  Implement this interface if your tileentity (or metatileentity) supports configuration circuits
- *  to resolve recipe conflicts.
+ * Implement this interface if your tileentity (or metatileentity) supports configuration circuits to resolve recipe
+ * conflicts.
  */
 public interface IConfigurationCircuitSupport {
+
     /**
      *
      * @return Integrated circuit slot index in the machine inventory

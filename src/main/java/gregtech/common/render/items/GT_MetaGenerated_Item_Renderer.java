@@ -2,20 +2,22 @@ package gregtech.common.render.items;
 
 import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_Utility;
 import java.util.Objects;
+
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import org.lwjgl.opengl.GL11;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
-    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();
-    ;
+    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();;
     private final IItemRenderer mMaterialRenderer = new GT_GeneratedMaterial_Renderer();
 
     public GT_MetaGenerated_Item_Renderer() {

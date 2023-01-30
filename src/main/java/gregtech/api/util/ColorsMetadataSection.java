@@ -1,21 +1,24 @@
 package gregtech.api.util;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.client.resources.data.IMetadataSection;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSection implements IMetadataSection {
+
     private final Map<String, Integer> textColors;
     private final Map<String, String> hexTextColors;
     private final Map<String, Integer> guiTints;
     private final Map<String, String> hexGuiTints;
     private final boolean guiTintEnabled;
 
-    public ColorsMetadataSection(
-            Map<String, String> hexTextColorMap, Map<String, String> hexGuiTintMap, boolean guiTintEnabled) {
+    public ColorsMetadataSection(Map<String, String> hexTextColorMap, Map<String, String> hexGuiTintMap,
+            boolean guiTintEnabled) {
         this.hexTextColors = hexTextColorMap;
         this.textColors = convertHexMapToIntMap(hexTextColorMap);
 

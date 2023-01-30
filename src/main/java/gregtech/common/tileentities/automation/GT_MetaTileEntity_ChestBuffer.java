@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER_GLOW
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,52 +17,55 @@ import gregtech.api.render.TextureFactory;
 
 public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
 
-    private static final int[] tickRate = {400, 200, 100, 20, 4, 1, 1, 1, 1, 1, 1, 1, 1};
-    private static final int[] maxStacks = {1, 1, 1, 1, 1, 1, 2, 4, 8, 16, 32, 64, 128};
+    private static final int[] tickRate = { 400, 200, 100, 20, 4, 1, 1, 1, 1, 1, 1, 1, 1 };
+    private static final int[] maxStacks = { 1, 1, 1, 1, 1, 1, 2, 4, 8, 16, 32, 64, 128 };
 
     public GT_MetaTileEntity_ChestBuffer(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 28, new String[] {
-            "Buffers up to 27 Item Stacks",
-            "Use Screwdriver to regulate output stack size",
-            "Does not consume energy to move Item",
-            getTickRateDesc(aTier)
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                28,
+                new String[] { "Buffers up to 27 Item Stacks", "Use Screwdriver to regulate output stack size",
+                        "Does not consume energy to move Item", getTickRateDesc(aTier) });
     }
 
-    public GT_MetaTileEntity_ChestBuffer(
-            int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
+    public GT_MetaTileEntity_ChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GT_MetaTileEntity_ChestBuffer(
-            int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
+    public GT_MetaTileEntity_ChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GT_MetaTileEntity_ChestBuffer(
-            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_ChestBuffer(String aName, int aTier, int aInvSlotCount, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_ChestBuffer(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_ChestBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ChestBuffer(
-                this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_CHESTBUFFER),
-                TextureFactory.builder()
-                        .addIcon(AUTOMATION_CHESTBUFFER_GLOW)
-                        .glow()
-                        .build());
+                TextureFactory.builder().addIcon(AUTOMATION_CHESTBUFFER_GLOW).glow().build());
     }
 
     @Override
@@ -117,10 +121,9 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);
         addStockingModeButton(builder);
-        builder.widget(new DrawableWidget()
-                .setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
-                .setPos(80, 60)
-                .setSize(69, 22));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true)).setPos(80, 60)
+                        .setSize(69, 22));
         addMainUI(builder);
     }
 

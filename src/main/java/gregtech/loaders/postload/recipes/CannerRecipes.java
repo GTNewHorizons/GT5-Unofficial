@@ -8,6 +8,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class CannerRecipes implements Runnable {
+
     @Override
     public void run() {
         // fuel rod canner recipes

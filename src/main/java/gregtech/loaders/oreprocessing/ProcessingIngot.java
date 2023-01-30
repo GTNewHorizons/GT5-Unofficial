@@ -2,6 +2,8 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
@@ -9,9 +11,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingIngot() {
         OrePrefixes.ingot.add(this);
         OrePrefixes.ingotDouble.add(this);
@@ -22,20 +24,22 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
         long aMaterialMass = aMaterial.getMass();
-        boolean aSpecialRecipeReq = aMaterial.mUnificatable
-                && (aMaterial.mMaterialInto == aMaterial)
+        boolean aSpecialRecipeReq = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                 && !aMaterial.contains(SubTag.NO_SMASHING);
 
         switch (aPrefix) {
             case ingot:
                 if (aMaterial.mFuelPower > 0) {
                     GT_Values.RA.addFuel(
-                            GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower, aMaterial.mFuelType);
+                            GT_Utility.copyAmount(1L, aStack),
+                            null,
+                            aMaterial.mFuelPower,
+                            aMaterial.mFuelType);
                 }
                 if (aMaterial.mStandardMoltenFluid != null) {
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
@@ -48,11 +52,16 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
                 GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                GT_RecipeRegistrator.registerReverseMacerating(
-                        aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
+                GT_RecipeRegistrator
+                        .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
                 if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                     GT_RecipeRegistrator.registerReverseArcSmelting(
-                            GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
+                            GT_Utility.copyAmount(1L, aStack),
+                            aMaterial,
+                            aPrefix.mMaterialAmount,
+                            null,
+                            null,
+                            null);
                 }
                 ItemStack tStack;
                 if ((null != (tStack = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)))
@@ -60,16 +69,14 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_ModHandler.removeFurnaceSmelting(tStack);
                 }
 
-                if (aMaterial.mUnificatable
-                        && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                         && !aMaterial.contains(SubTag.NO_WORKING)) {
-                    if (!aMaterial.contains(SubTag.SMELTING_TO_GEM))
-                        if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE))
-                                && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true)))
-                            GT_ModHandler.addShapelessCraftingRecipe(
-                                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                                    GT_Proxy.tBits,
-                                    new Object[] {ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial)});
+                    if (!aMaterial.contains(SubTag.SMELTING_TO_GEM)) if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE))
+                            && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true)))
+                        GT_ModHandler.addShapelessCraftingRecipe(
+                                GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
                 }
 
                 if (!aNoSmashing) {
@@ -134,13 +141,12 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                     // Enable crafting with hammer if tier is < IV.
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq
-                                && GregTech_API.sRecipeFile.get(
-                                        ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
+                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotDouble, aMaterial, 1L),
                                     GT_Proxy.tBits,
-                                    new Object[] {"I", "I", "h", 'I', OrePrefixes.ingot.get(aMaterial)});
+                                    new Object[] { "I", "I", "h", 'I', OrePrefixes.ingot.get(aMaterial) });
                         }
                     }
                 }
@@ -158,21 +164,13 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             (int) Math.max(aMaterialMass * 3L, 1L),
                             calculateRecipeEU(aMaterial, 96));
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq
-                                && GregTech_API.sRecipeFile.get(
-                                        ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
+                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotTriple, aMaterial, 1L),
                                     GT_Proxy.tBits,
-                                    new Object[] {
-                                        "I",
-                                        "B",
-                                        "h",
-                                        'I',
-                                        OrePrefixes.ingotDouble.get(aMaterial),
-                                        'B',
-                                        OrePrefixes.ingot.get(aMaterial)
-                                    });
+                                    new Object[] { "I", "B", "h", 'I', OrePrefixes.ingotDouble.get(aMaterial), 'B',
+                                            OrePrefixes.ingot.get(aMaterial) });
                         }
                     }
                 }
@@ -187,21 +185,13 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                     // If tier < IV add manual crafting.
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq
-                                && GregTech_API.sRecipeFile.get(
-                                        ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
+                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotQuadruple, aMaterial, 1L),
                                     GT_Proxy.tBits,
-                                    new Object[] {
-                                        "I",
-                                        "B",
-                                        "h",
-                                        'I',
-                                        OrePrefixes.ingotTriple.get(aMaterial),
-                                        'B',
-                                        OrePrefixes.ingot.get(aMaterial)
-                                    });
+                                    new Object[] { "I", "B", "h", 'I', OrePrefixes.ingotTriple.get(aMaterial), 'B',
+                                            OrePrefixes.ingot.get(aMaterial) });
                         }
                     }
                 }
@@ -215,21 +205,13 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             calculateRecipeEU(aMaterial, 96));
 
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq
-                                && GregTech_API.sRecipeFile.get(
-                                        ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
+                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotQuintuple, aMaterial, 1L),
                                     GT_Proxy.tBits,
-                                    new Object[] {
-                                        "I",
-                                        "B",
-                                        "h",
-                                        'I',
-                                        OrePrefixes.ingotQuadruple.get(aMaterial),
-                                        'B',
-                                        OrePrefixes.ingot.get(aMaterial)
-                                    });
+                                    new Object[] { "I", "B", "h", 'I', OrePrefixes.ingotQuadruple.get(aMaterial), 'B',
+                                            OrePrefixes.ingot.get(aMaterial) });
                         }
                     }
                 }

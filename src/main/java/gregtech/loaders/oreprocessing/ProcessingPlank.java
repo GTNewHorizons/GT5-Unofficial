@@ -1,5 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -7,18 +11,16 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingPlank() {
         OrePrefixes.plank.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         if (aOreDictName.startsWith("plankWood")) {
             GT_Values.RA.addLatheRecipe(
                     GT_Utility.copyAmount(1L, aStack),
@@ -120,7 +122,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_ModHandler.addCraftingRecipe(
                                 GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput),
                                 GT_ModHandler.RecipeBits.BUFFERED,
-                                new Object[] {"sP", 'P', tStack});
+                                new Object[] { "sP", 'P', tStack });
                     }
                     if ((tStack == null) && (i >= 16)) break;
                 }
@@ -139,7 +141,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput),
                             GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] {"sP", 'P', aStack});
+                            new Object[] { "sP", 'P', aStack });
                 }
             }
         }

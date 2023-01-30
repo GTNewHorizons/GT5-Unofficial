@@ -8,10 +8,20 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -24,59 +34,44 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_ElectricBlastFurnace
         extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_ElectricBlastFurnace>
         implements ISurvivalConstructable {
+
     private int mHeatingCapacity = 0;
     private boolean isBussesSeparate = false;
     protected final ArrayList<GT_MetaTileEntity_Hatch_Output> mPollutionOutputHatches = new ArrayList<>();
-    protected final FluidStack[] pollutionFluidStacks = {
-        Materials.CarbonDioxide.getGas(1000),
-        Materials.CarbonMonoxide.getGas(1000),
-        Materials.SulfurDioxide.getGas(1000)
-    };
+    protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
+            Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
 
     protected static final int CASING_INDEX = 11;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_ElectricBlastFurnace> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_ElectricBlastFurnace>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-                        {"ttt", "tmt", "ttt"},
-                        {"CCC", "C-C", "CCC"},
-                        {"CCC", "C-C", "CCC"},
-                        {"b~b", "bbb", "bbb"}
-                    }))
-                    .addElement(
-                            't',
-                            buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class)
-                                    .atLeast(OutputHatch.withAdder(
-                                                    GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList)
-                                            .withCount(t -> t.mPollutionOutputHatches.size()))
-                                    .casingIndex(CASING_INDEX)
-                                    .dot(1)
-                                    .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-                    .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-                    .addElement(
-                            'C',
-                            ofCoil(
-                                    GT_MetaTileEntity_ElectricBlastFurnace::setCoilLevel,
-                                    GT_MetaTileEntity_ElectricBlastFurnace::getCoilLevel))
-                    .addElement(
-                            'b',
-                            buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class)
-                                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                                    .casingIndex(CASING_INDEX)
-                                    .dot(1)
-                                    .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_ElectricBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
+            .<GT_MetaTileEntity_ElectricBlastFurnace>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { "ttt", "tmt", "ttt" }, { "CCC", "C-C", "CCC" }, { "CCC", "C-C", "CCC" },
+                                    { "b~b", "bbb", "bbb" } }))
+            .addElement(
+                    't',
+                    buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class).atLeast(
+                            OutputHatch.withAdder(GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList)
+                                    .withCount(t -> t.mPollutionOutputHatches.size()))
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
+            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
+            .addElement(
+                    'C',
+                    ofCoil(
+                            GT_MetaTileEntity_ElectricBlastFurnace::setCoilLevel,
+                            GT_MetaTileEntity_ElectricBlastFurnace::getCoilLevel))
+            .addElement(
+                    'b',
+                    buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class)
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
+            .build();
 
     public GT_MetaTileEntity_ElectricBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -94,69 +89,39 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace")
-                .addInfo("Controller block for the Electric Blast Furnace")
+        tt.addMachineType("Blast Furnace").addInfo("Controller block for the Electric Blast Furnace")
                 .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
                 .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
                 .addInfo("Each 1800K over the min. Heat required grants one perfect overclock")
                 .addInfo(
                         "For each perfect overclock the EBF will reduce recipe time 4 times (instead of 2) (100% efficiency)")
                 .addInfo("Additionally gives +100K for every tier past MV")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 4, 3, true)
-                .addController("Front bottom")
-                .addCasingInfo("Heat Proof Machine Casing", 0)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 4, 3, true)
+                .addController("Front bottom").addCasingInfo("Heat Proof Machine Casing", 0)
                 .addOtherStructurePart("Heating Coils", "Two middle Layers")
-                .addEnergyHatch("Any bottom layer casing", 3)
-                .addMaintenanceHatch("Any bottom layer casing", 3)
-                .addMufflerHatch("Top middle", 2)
-                .addInputBus("Any bottom layer casing", 3)
-                .addInputHatch("Any bottom layer casing", 3)
-                .addOutputBus("Any bottom layer casing", 3)
+                .addEnergyHatch("Any bottom layer casing", 3).addMaintenanceHatch("Any bottom layer casing", 3)
+                .addMufflerHatch("Top middle", 2).addInputBus("Any bottom layer casing", 3)
+                .addInputHatch("Any bottom layer casing", 3).addOutputBus("Any bottom layer casing", 3)
                 .addOutputHatch("Liquid form of fluids, Any bottom layer casing")
                 .addOutputHatch("Gas form of fluids, Any top layer casing", 1)
-                .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
-                .toolTipFinisher("Gregtech");
+                .addStructureInfo("Recovery amount scales with Muffler Hatch tier").toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    casingTexturePages[0][CASING_INDEX],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                casingTexturePages[0][CASING_INDEX],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing()
+                            .glow().build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing().glow()
+                            .build() };
         }
-        return new ITexture[] {casingTexturePages[0][CASING_INDEX]};
+        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
 
     @Override
@@ -211,8 +176,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(
-                getBaseMetaTileEntity(), false, V[tTier], tFluids, tItems);
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes
+                .findRecipe(getBaseMetaTileEntity(), false, V[tTier], tFluids, tItems);
 
         if (tRecipe == null) return false;
         if (this.mHeatingCapacity < tRecipe.mSpecialValue) return false;
@@ -230,16 +195,17 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         }
         if (tHeatCapacityDivTiers > 0) {
             this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-            this.mMaxProgresstime >>=
-                    Math.min(tHeatCapacityDivTiers / 2, overclockCount); // extra free overclocking if possible
+            this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount); // extra free overclocking if
+                                                                                           // possible
             if (this.mMaxProgresstime < 1) this.mMaxProgresstime = 1; // no eu efficiency correction
         }
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-        this.mOutputItems = new ItemStack[] {tRecipe.getOutput(0), tRecipe.getOutput(1)};
-        this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+        this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0), tRecipe.getOutput(1) };
+        this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
         updateSlots();
         return true;
     }
+
     /**
      * Calcualtes overclocked ness using long integers
      *
@@ -272,9 +238,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 tempEUt <<= 2; // this actually controls overclocking
                 // xEUt *= 4;//this is effect of everclocking
                 mMaxProgresstime >>= 1; // this is effect of overclocking
-                xEUt = mMaxProgresstime == 0
-                        ? xEUt >> 1
-                        : xEUt << 2; // U know, if the time is less than 1 tick make the machine use less power
+                xEUt = mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2; // U know, if the time is less than 1 tick make
+                                                                      // the machine use less power
                 timesOverclocked++;
             }
             if (xEUt > Integer.MAX_VALUE - 1) {
@@ -362,31 +327,60 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         }
 
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) "
-                    + StatCollector.translateToLocal("GT5U.machines.tier")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
-                    + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
-                    + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-            StatCollector.translateToLocal("GT5U.EBF.heat") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(mHeatingCapacity) + EnumChatFormatting.RESET + " K",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
-                    + mPollutionReduction + EnumChatFormatting.RESET + " %"
-        };
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(-mEUt)
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(getMaxInputVoltage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*2A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GT_Utility.getTier(getMaxInputVoltage())]
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (getIdealStatus() - getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + mEfficiency / 100.0F
+                        + EnumChatFormatting.RESET
+                        + " %",
+                StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(mHeatingCapacity)
+                        + EnumChatFormatting.RESET
+                        + " K",
+                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                        + EnumChatFormatting.GREEN
+                        + mPollutionReduction
+                        + EnumChatFormatting.RESET
+                        + " %" };
     }
 
     @Override
@@ -404,7 +398,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         isBussesSeparate = !isBussesSeparate;
         GT_Utility.sendChatToPlayer(
-                aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
     }
 
     @Override

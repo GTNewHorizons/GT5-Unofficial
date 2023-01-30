@@ -2,6 +2,11 @@ package gregtech.common.blocks;
 
 import static gregtech.api.enums.HeatingCoilLevel.*;
 
+import java.util.function.Consumer;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -9,9 +14,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.util.GT_LanguageManager;
-import java.util.function.Consumer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHeatingCoil {
 

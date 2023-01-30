@@ -2,26 +2,28 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingStickLong() {
         OrePrefixes.stickLong.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L),
                     GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] {" s ", "fSx", " S ", 'S', OrePrefixes.stickLong.get(aMaterial)});
+                    new Object[] { " s ", "fSx", " S ", 'S', OrePrefixes.stickLong.get(aMaterial) });
         }
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
             GT_Values.RA.addCutterRecipe(
@@ -35,11 +37,11 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                             GT_Proxy.tBits,
-                            new Object[] {"sf", "G ", 'G', OrePrefixes.gemFlawless.get(aMaterial)});
+                            new Object[] { "sf", "G ", 'G', OrePrefixes.gemFlawless.get(aMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 2L),
                             GT_Proxy.tBits,
-                            new Object[] {"sf", "G ", 'G', OrePrefixes.gemExquisite.get(aMaterial)});
+                            new Object[] { "sf", "G ", 'G', OrePrefixes.gemExquisite.get(aMaterial) });
                 }
             }
         }
@@ -54,7 +56,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                             GT_Proxy.tBits,
-                            new Object[] {"ShS", 'S', OrePrefixes.stick.get(aMaterial)});
+                            new Object[] { "ShS", 'S', OrePrefixes.stick.get(aMaterial) });
                 }
         }
     }

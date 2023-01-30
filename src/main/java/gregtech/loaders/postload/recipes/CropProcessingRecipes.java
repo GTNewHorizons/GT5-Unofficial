@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -7,9 +9,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 
 public class CropProcessingRecipes implements Runnable {
+
     @Override
     public void run() {
         ItemStack tCrop;
@@ -117,9 +119,7 @@ public class CropProcessingRecipes implements Runnable {
                     GT_Utility.copyAmount(9, tCrop),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1),
                     Materials.Water.getFluid(1000),
-                    aMaterial.mOreByProducts.isEmpty()
-                            ? null
-                            : aMaterial.mOreByProducts.get(0).getMolten(144),
+                    aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144),
                     GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4),
                     96,
                     24);
@@ -131,12 +131,11 @@ public class CropProcessingRecipes implements Runnable {
                     (int) (aMaterial.getMass() * 128),
                     384);
         } else {
-            if (aMainOutput)
-                GT_Values.RA.addExtractorRecipe(
-                        GT_Utility.copyAmount(9, tCrop),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1),
-                        300,
-                        18);
+            if (aMainOutput) GT_Values.RA.addExtractorRecipe(
+                    GT_Utility.copyAmount(9, tCrop),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1),
+                    300,
+                    18);
         }
     }
 
@@ -148,9 +147,7 @@ public class CropProcessingRecipes implements Runnable {
                     GT_Utility.copyAmount(9, tCrop),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1),
                     Materials.Water.getFluid(1000),
-                    aMaterial.mOreByProducts.isEmpty()
-                            ? null
-                            : aMaterial.mOreByProducts.get(0).getMolten(144),
+                    aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144),
                     GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4),
                     96,
                     24);
@@ -170,8 +167,8 @@ public class CropProcessingRecipes implements Runnable {
         }
     }
 
-    public void addProcess(
-            ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance, boolean aMainOutput) {
+    public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance,
+            boolean aMainOutput) {
         if (tCrop == null || aMaterial == null || GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1) == null)
             return;
         if (GT_Mod.gregtechproxy.mNerfedCrops) {
@@ -179,9 +176,7 @@ public class CropProcessingRecipes implements Runnable {
                     GT_Utility.copyAmount(9, tCrop),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1),
                     Materials.Water.getFluid(1000),
-                    aMaterialOut.mOreByProducts.isEmpty()
-                            ? null
-                            : aMaterialOut.mOreByProducts.get(0).getMolten(144),
+                    aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144),
                     GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4),
                     96,
                     24);
@@ -193,12 +188,11 @@ public class CropProcessingRecipes implements Runnable {
                     (int) (aMaterial.getMass() * 128),
                     384);
         } else {
-            if (aMainOutput)
-                GT_Values.RA.addExtractorRecipe(
-                        GT_Utility.copyAmount(16, tCrop),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1),
-                        300,
-                        18);
+            if (aMainOutput) GT_Values.RA.addExtractorRecipe(
+                    GT_Utility.copyAmount(16, tCrop),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1),
+                    300,
+                    18);
         }
     }
 
@@ -210,9 +204,7 @@ public class CropProcessingRecipes implements Runnable {
                     GT_Utility.copyAmount(9, tCrop),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1),
                     Materials.Water.getFluid(1000),
-                    aMaterialOut.mOreByProducts.isEmpty()
-                            ? null
-                            : aMaterialOut.mOreByProducts.get(0).getMolten(144),
+                    aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144),
                     GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4),
                     96,
                     24);

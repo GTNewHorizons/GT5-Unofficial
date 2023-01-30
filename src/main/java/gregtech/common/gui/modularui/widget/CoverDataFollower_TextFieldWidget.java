@@ -1,15 +1,18 @@
 package gregtech.common.gui.modularui.widget;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import net.minecraft.client.gui.GuiScreen;
+
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import net.minecraft.client.gui.GuiScreen;
 
 public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> extends TextFieldWidget
         implements IDataFollowerWidget<T, String> {

@@ -7,16 +7,18 @@ import static gregtech.loaders.misc.GT_BeeDefinition.getFlowers;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.EXTRABEES;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.MAGICBEES;
 
+import java.util.Arrays;
+import java.util.function.Consumer;
+
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IClassification;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
-import java.util.Arrays;
-import java.util.function.Consumer;
 
 public enum GT_BranchDefinition {
+
     ORGANIC("Fuelis", alleles -> {
         AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.NONE);
         AlleleHelper.instance.set(alleles, HUMIDITY_TOLERANCE, Tolerance.BOTH_2);

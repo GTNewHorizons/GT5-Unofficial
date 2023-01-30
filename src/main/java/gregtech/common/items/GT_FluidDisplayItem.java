@@ -1,17 +1,11 @@
 package gregtech.common.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.util.GT_Utility;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,7 +20,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.util.GT_Utility;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     private static final Map<Fluid, String> sFluidTooltips = new HashMap<>();
@@ -39,8 +41,8 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
-            String tChemicalFormula =
-                    getChemicalFormula(new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
+            String tChemicalFormula = getChemicalFormula(
+                    new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
             if (!tChemicalFormula.isEmpty())
                 aList.add(EnumChatFormatting.YELLOW + tChemicalFormula + EnumChatFormatting.RESET);
         }
@@ -54,14 +56,21 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
         if (aNBT != null) {
             long tToolTipAmount = aNBT.getLong("mFluidDisplayAmount");
             if (tToolTipAmount > 0L) {
-                aList.add(EnumChatFormatting.BLUE + "Amount: " + GT_Utility.formatNumbers(tToolTipAmount) + " L"
-                        + EnumChatFormatting.GRAY);
+                aList.add(
+                        EnumChatFormatting.BLUE + "Amount: "
+                                + GT_Utility.formatNumbers(tToolTipAmount)
+                                + " L"
+                                + EnumChatFormatting.GRAY);
             }
-            aList.add(EnumChatFormatting.RED + "Temperature: "
-                    + GT_Utility.formatNumbers(aNBT.getLong("mFluidDisplayHeat")) + " K" + EnumChatFormatting.GRAY);
-            aList.add(EnumChatFormatting.GREEN
-                    + String.format(transItem("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid")
-                    + EnumChatFormatting.GRAY);
+            aList.add(
+                    EnumChatFormatting.RED + "Temperature: "
+                            + GT_Utility.formatNumbers(aNBT.getLong("mFluidDisplayHeat"))
+                            + " K"
+                            + EnumChatFormatting.GRAY);
+            aList.add(
+                    EnumChatFormatting.GREEN + String
+                            .format(transItem("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid")
+                            + EnumChatFormatting.GRAY);
         }
     }
 
@@ -71,12 +80,8 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     @Override
     public IIcon getIconFromDamage(int aMetaData) {
-        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER)
-                .filter(Objects::nonNull)
-                .map(Fluid::getStillIcon)
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElseThrow(IllegalStateException::new);
+        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER).filter(Objects::nonNull)
+                .map(Fluid::getStillIcon).filter(Objects::nonNull).findFirst().orElseThrow(IllegalStateException::new);
     }
 
     @Override
@@ -125,8 +130,7 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
                         // tooltip
                         List tTooltip = tContainer.getTooltip(null, true);
                         for (Object tInfo : tTooltip) {
-                            if (!((String) tInfo).contains(" ")
-                                    && !((String) tInfo).contains(":")
+                            if (!((String) tInfo).contains(" ") && !((String) tInfo).contains(":")
                                     && tTooltip.indexOf(tInfo) != 0) {
                                 return (String) tInfo;
                             }
@@ -164,8 +168,8 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
         for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
             String tOreDictName = OreDictionary.getOreName(tOreDict);
             if (tOreDictName.startsWith("cell")) {
-                return Materials.getRealMaterial(
-                        tOreDictName.replace("cell", "").replace("Molten", "").replace("Plasma", ""));
+                return Materials
+                        .getRealMaterial(tOreDictName.replace("cell", "").replace("Molten", "").replace("Plasma", ""));
             }
         }
         return Materials._NULL;

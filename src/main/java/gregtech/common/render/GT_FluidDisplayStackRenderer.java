@@ -1,11 +1,5 @@
 package gregtech.common.render;
 
-import appeng.util.ReadableNumberConverter;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.common.items.GT_FluidDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -14,7 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import org.lwjgl.opengl.GL11;
+
+import appeng.util.ReadableNumberConverter;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.common.items.GT_FluidDisplayItem;
 
 @SideOnly(Side.CLIENT)
 public class GT_FluidDisplayStackRenderer implements IItemRenderer {
@@ -85,7 +87,11 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
             GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
 
             fontRender.drawString(
-                    amountString, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
+                    amountString,
+                    0,
+                    (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1,
+                    0xFFFFFF,
+                    true);
             GL11.glPopMatrix();
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }

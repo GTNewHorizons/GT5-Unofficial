@@ -4,6 +4,15 @@ import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -20,13 +29,6 @@ import gregtech.common.render.items.*;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
 public class Materials implements IColorModulationContainer, ISubTagContainer {
@@ -38,12 +40,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static volatile int VERSION = 509;
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old materials enum
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * materials enum
      */
     @Deprecated
     public static Collection<Materials> VALUES = new LinkedHashSet<>();
     /**
-     * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a location where it shouldn't happen.
+     * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a
+     * location where it shouldn't happen.
      */
 
     // Spotless breaks the table below into many, many lines
@@ -927,14 +931,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     /**
      * Superconductor re-routed for mod compatibility. Circuits are re-routed into SuperconductorUHV as well.
-     * <p>Internal name is now Superconductor while translated name is SuperconductorUHV.</p>
+     * <p>
+     * Internal name is now Superconductor while translated name is SuperconductorUHV.
+     * </p>
+     * 
      * @deprecated Use {@link #SuperconductorUHV} instead
      */
     @Deprecated
-    public static Materials Superconductor = new Materials(
-            SuperconductorUHV, true); // new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0
-    //   , 255, 255, 255,   0,   "Superconductor"          ,   "Superconductor"                ,    0,
-    //    0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new
+    public static Materials Superconductor = new Materials(SuperconductorUHV, true); // new Materials( -1,
+                                                                                     // TextureSet.SET_NONE , 1.0F, 0,
+                                                                                     // 0, 0
+    // , 255, 255, 255, 0, "Superconductor" , "Superconductor" , 0,
+    // 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray , Arrays.asList(new
     // TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
 
     @Deprecated
@@ -962,7 +970,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         overrideChemicalFormulars();
     }
 
-    public final short[] mRGBa = new short[] {255, 255, 255, 0}, mMoltenRGBa = new short[] {255, 255, 255, 0};
+    public final short[] mRGBa = new short[] { 255, 255, 255, 0 }, mMoltenRGBa = new short[] { 255, 255, 255, 0 };
     public TextureSet mIconSet;
     public GT_GeneratedMaterial_Renderer renderer;
     public List<MaterialStack> mMaterialList = new ArrayList<>();
@@ -971,16 +979,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
     public Collection<SubTag> mSubTags = new LinkedHashSet<>();
     public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
-    public boolean mUnificatable,
-            mBlastFurnaceRequired = false,
-            mAutoGenerateBlastFurnaceRecipes = true,
-            mAutoGenerateVacuumFreezerRecipes = true,
-            mAutoGenerateRecycleRecipes = true,
-            mTransparent = false,
-            mHasParentMod = true,
-            mHasPlasma = false,
-            mHasGas = false,
-            mCustomOre = false;
+    public boolean mUnificatable, mBlastFurnaceRequired = false, mAutoGenerateBlastFurnaceRecipes = true,
+            mAutoGenerateVacuumFreezerRecipes = true, mAutoGenerateRecycleRecipes = true, mTransparent = false,
+            mHasParentMod = true, mHasPlasma = false, mHasGas = false, mCustomOre = false;
     public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0, mToolQuality = 0;
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
@@ -1009,44 +1010,26 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public int processingMaterialTierEU = 0;
     public long mDensity = M;
-    public float mToolSpeed = 1.0F,
-            mHeatDamage = 0.0F,
-            mSteamMultiplier = 1.0F,
-            mGasMultiplier = 1.0F,
+    public float mToolSpeed = 1.0F, mHeatDamage = 0.0F, mSteamMultiplier = 1.0F, mGasMultiplier = 1.0F,
             mPlasmaMultiplier = 1.0F;
-    public String mChemicalFormula = "?",
-            mName,
-            mDefaultLocalName,
-            mCustomID = "null",
-            mConfigSection = "null",
+    public String mChemicalFormula = "?", mName, mDefaultLocalName, mCustomID = "null", mConfigSection = "null",
             mLocalizedName = "null";
     public Dyes mColor = Dyes._NULL;
     public Element mElement = null;
-    public Materials mDirectSmelting = this,
-            mOreReplacement = this,
-            mMacerateInto = this,
-            mSmeltInto = this,
-            mArcSmeltInto = this,
-            mHandleMaterial = this,
-            mMaterialInto;
+    public Materials mDirectSmelting = this, mOreReplacement = this, mMacerateInto = this, mSmeltInto = this,
+            mArcSmeltInto = this, mHandleMaterial = this, mMaterialInto;
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
     /**
-     * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
+     * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material
+     * Unit worth of fluid.
      */
     public Fluid mStandardMoltenFluid = null;
 
     private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false, canBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3], steamCrackedFluids = new Fluid[3];
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            boolean aUnificatable,
-            String aName,
-            String aDefaultLocalName) {
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            boolean aUnificatable, String aName, String aDefaultLocalName) {
         this(
                 aMetaItemSubID,
                 aIconSet,
@@ -1061,17 +1044,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 "null");
     }
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            boolean aUnificatable,
-            String aName,
-            String aDefaultLocalName,
-            String aConfigSection,
-            boolean aCustomOre,
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            boolean aUnificatable, String aName, String aDefaultLocalName, String aConfigSection, boolean aCustomOre,
             String aCustomID) {
         mMetaItemSubID = aMetaItemSubID;
         mDefaultLocalName = aDefaultLocalName;
@@ -1099,29 +1073,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mIconSet = TextureSet.SET_NONE;
     }
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            int aTypes,
-            int aR,
-            int aG,
-            int aB,
-            int aA,
-            String aName,
-            String aDefaultLocalName,
-            int aFuelType,
-            int aFuelPower,
-            int aMeltingPoint,
-            int aBlastFurnaceTemp,
-            boolean aBlastFurnaceRequired,
-            boolean aTransparent,
-            int aOreValue,
-            int aDensityMultiplier,
-            int aDensityDivider,
-            Dyes aColor) {
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor) {
         this(
                 aMetaItemSubID,
                 aIconSet,
@@ -1150,29 +1105,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 "null");
     }
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            int aTypes,
-            int aR,
-            int aG,
-            int aB,
-            int aA,
-            String aName,
-            String aDefaultLocalName,
-            int aFuelType,
-            int aFuelPower,
-            int aMeltingPoint,
-            int aBlastFurnaceTemp,
-            boolean aBlastFurnaceRequired,
-            boolean aTransparent,
-            int aOreValue,
-            int aDensityMultiplier,
-            int aDensityDivider,
-            Dyes aColor,
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
             String aConfigSection) {
         this(
                 aMetaItemSubID,
@@ -1204,52 +1140,29 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     /**
      * @param aMetaItemSubID        the Sub-ID used in my own MetaItems. Range 0-1000. -1 for no Material
-     * @param aTypes                which kind of Items should be generated. Bitmask as follows:
-     *                              1 = Dusts of all kinds.
-     *                              2 = Dusts, Ingots, Plates, Rods/Sticks, Machine Components and other Metal specific things.
-     *                              4 = Dusts, Gems, Plates, Lenses (if transparent).
-     *                              8 = Dusts, Impure Dusts, crushed Ores, purified Ores, centrifuged Ores etc.
-     *                              16 = Cells
-     *                              32 = Plasma Cells
-     *                              64 = Tool Heads
-     *                              128 = Gears
-     *                              256 = Designates something as empty (only used for the Empty material)
+     * @param aTypes                which kind of Items should be generated. Bitmask as follows: 1 = Dusts of all kinds.
+     *                              2 = Dusts, Ingots, Plates, Rods/Sticks, Machine Components and other Metal specific
+     *                              things. 4 = Dusts, Gems, Plates, Lenses (if transparent). 8 = Dusts, Impure Dusts,
+     *                              crushed Ores, purified Ores, centrifuged Ores etc. 16 = Cells 32 = Plasma Cells 64 =
+     *                              Tool Heads 128 = Gears 256 = Designates something as empty (only used for the Empty
+     *                              material)
      * @param aR,                   aG, aB Color of the Material 0-255 each.
      * @param aA                    transparency of the Material Texture. 0 = fully visible, 255 = Invisible.
      * @param aName                 The Name used as Default for localization.
      * @param aFuelType             Type of Generator to get Energy from this Material.
-     * @param aFuelPower            EU generated. Will be multiplied by 1000, also additionally multiplied by 2 for Gems.
-     * @param aMeltingPoint         Used to determine the smelting Costs in furnace. >>>>**ADD 20000 to remove EBF recipes to add them MANUALLY ! :D**<<<<
+     * @param aFuelPower            EU generated. Will be multiplied by 1000, also additionally multiplied by 2 for
+     *                              Gems.
+     * @param aMeltingPoint         Used to determine the smelting Costs in furnace. >>>>**ADD 20000 to remove EBF
+     *                              recipes to add them MANUALLY ! :D**<<<<
      * @param aBlastFurnaceTemp     Used to determine the needed Heat capacity Costs in Blast Furnace.
      * @param aBlastFurnaceRequired If this requires a Blast Furnace.
      * @param aColor                Vanilla MC Wool Color which comes the closest to this.
      */
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            int aTypes,
-            int aR,
-            int aG,
-            int aB,
-            int aA,
-            String aName,
-            String aDefaultLocalName,
-            int aFuelType,
-            int aFuelPower,
-            int aMeltingPoint,
-            int aBlastFurnaceTemp,
-            boolean aBlastFurnaceRequired,
-            boolean aTransparent,
-            int aOreValue,
-            int aDensityMultiplier,
-            int aDensityDivider,
-            Dyes aColor,
-            String aConfigSection,
-            boolean aCustomOre,
-            String aCustomID) {
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
+            String aConfigSection, boolean aCustomOre, String aCustomID) {
         this(
                 aMetaItemSubID,
                 aIconSet,
@@ -1283,29 +1196,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if ((mTypes & 2) != 0) add(SubTag.SMELTING_TO_FLUID);
     }
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            int aTypes,
-            int aR,
-            int aG,
-            int aB,
-            int aA,
-            String aName,
-            String aDefaultLocalName,
-            int aFuelType,
-            int aFuelPower,
-            int aMeltingPoint,
-            int aBlastFurnaceTemp,
-            boolean aBlastFurnaceRequired,
-            boolean aTransparent,
-            int aOreValue,
-            int aDensityMultiplier,
-            int aDensityDivider,
-            Dyes aColor,
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
             List<TC_Aspects.TC_AspectStack> aAspects) {
         this(
                 aMetaItemSubID,
@@ -1333,31 +1227,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mAspects.addAll(aAspects);
     }
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            int aTypes,
-            int aR,
-            int aG,
-            int aB,
-            int aA,
-            String aName,
-            String aDefaultLocalName,
-            int aFuelType,
-            int aFuelPower,
-            int aMeltingPoint,
-            int aBlastFurnaceTemp,
-            boolean aBlastFurnaceRequired,
-            boolean aTransparent,
-            int aOreValue,
-            int aDensityMultiplier,
-            int aDensityDivider,
-            Dyes aColor,
-            Element aElement,
-            List<TC_Aspects.TC_AspectStack> aAspects) {
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
+            Element aElement, List<TC_Aspects.TC_AspectStack> aAspects) {
         this(
                 aMetaItemSubID,
                 aIconSet,
@@ -1392,31 +1266,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mAspects.addAll(aAspects);
     }
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            int aTypes,
-            int aR,
-            int aG,
-            int aB,
-            int aA,
-            String aName,
-            String aDefaultLocalName,
-            int aFuelType,
-            int aFuelPower,
-            int aMeltingPoint,
-            int aBlastFurnaceTemp,
-            boolean aBlastFurnaceRequired,
-            boolean aTransparent,
-            int aOreValue,
-            int aDensityMultiplier,
-            int aDensityDivider,
-            Dyes aColor,
-            int aExtraData,
-            List<MaterialStack> aMaterialList) {
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
+            int aExtraData, List<MaterialStack> aMaterialList) {
         this(
                 aMetaItemSubID,
                 aIconSet,
@@ -1445,32 +1299,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 null);
     }
 
-    public Materials(
-            int aMetaItemSubID,
-            TextureSet aIconSet,
-            float aToolSpeed,
-            int aDurability,
-            int aToolQuality,
-            int aTypes,
-            int aR,
-            int aG,
-            int aB,
-            int aA,
-            String aName,
-            String aDefaultLocalName,
-            int aFuelType,
-            int aFuelPower,
-            int aMeltingPoint,
-            int aBlastFurnaceTemp,
-            boolean aBlastFurnaceRequired,
-            boolean aTransparent,
-            int aOreValue,
-            int aDensityMultiplier,
-            int aDensityDivider,
-            Dyes aColor,
-            int aExtraData,
-            List<MaterialStack> aMaterialList,
-            List<TC_Aspects.TC_AspectStack> aAspects) {
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
+            int aExtraData, List<MaterialStack> aMaterialList, List<TC_Aspects.TC_AspectStack> aAspects) {
         this(
                 aMetaItemSubID,
                 aIconSet,
@@ -1497,37 +1330,30 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mExtraData = aExtraData;
         mMaterialList.addAll(aMaterialList);
         if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0).toString(true);
-        else
-            mChemicalFormula = mMaterialList.stream()
-                    .map(MaterialStack::toString)
-                    .collect(Collectors.joining())
-                    .replaceAll("_", "-");
+        else mChemicalFormula = mMaterialList.stream().map(MaterialStack::toString).collect(Collectors.joining())
+                .replaceAll("_", "-");
 
         int tAmountOfComponents = 0, tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmountOfComponents += tMaterial.mAmount;
             if (tMaterial.mMaterial.mMeltingPoint > 0)
                 tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
-            if (aAspects == null)
-                for (TC_Aspects.TC_AspectStack tAspect : tMaterial.mMaterial.mAspects)
-                    tAspect.addToAspectList(mAspects);
+            if (aAspects == null) for (TC_Aspects.TC_AspectStack tAspect : tMaterial.mMaterial.mAspects)
+                tAspect.addToAspectList(mAspects);
         }
 
         if (mMeltingPoint < 0) mMeltingPoint = (short) (tMeltingPoint / tAmountOfComponents);
 
         tAmountOfComponents *= aDensityMultiplier;
         tAmountOfComponents /= aDensityDivider;
-        if (aAspects == null)
-            for (TC_Aspects.TC_AspectStack tAspect : mAspects)
-                tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
+        if (aAspects == null) for (TC_Aspects.TC_AspectStack tAspect : mAspects)
+            tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
         else mAspects.addAll(aAspects);
     }
 
     private static void setSmeltingInto() {
         SamariumMagnetic.setSmeltingInto(Samarium).setMaceratingInto(Samarium).setArcSmeltingInto(Samarium);
-        NeodymiumMagnetic.setSmeltingInto(Neodymium)
-                .setMaceratingInto(Neodymium)
-                .setArcSmeltingInto(Neodymium);
+        NeodymiumMagnetic.setSmeltingInto(Neodymium).setMaceratingInto(Neodymium).setArcSmeltingInto(Neodymium);
         SteelMagnetic.setSmeltingInto(Steel).setMaceratingInto(Steel).setArcSmeltingInto(Steel);
         Iron.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
         AnyIron.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
@@ -1536,8 +1362,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         IronMagnetic.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
         Copper.setSmeltingInto(Copper).setMaceratingInto(Copper).setArcSmeltingInto(AnnealedCopper);
         AnyCopper.setSmeltingInto(Copper).setMaceratingInto(Copper).setArcSmeltingInto(AnnealedCopper);
-        AnnealedCopper.setSmeltingInto(AnnealedCopper)
-                .setMaceratingInto(AnnealedCopper)
+        AnnealedCopper.setSmeltingInto(AnnealedCopper).setMaceratingInto(AnnealedCopper)
                 .setArcSmeltingInto(AnnealedCopper);
         Netherrack.setSmeltingInto(NetherBrick);
         MeatRaw.setSmeltingInto(MeatCooked);
@@ -1553,14 +1378,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setDirectSmelting() {
-        Cinnabar.setDirectSmelting(Mercury)
-                .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
-                .add(SubTag.SMELTING_TO_GEM);
-        Tetrahedrite.setDirectSmelting(Copper)
-                .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
+        Cinnabar.setDirectSmelting(Mercury).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT).add(SubTag.SMELTING_TO_GEM);
+        Tetrahedrite.setDirectSmelting(Copper).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
                 .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
-        Chalcopyrite.setDirectSmelting(Copper)
-                .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
+        Chalcopyrite.setDirectSmelting(Copper).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
                 .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         Malachite.setDirectSmelting(Copper).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
         Pentlandite.setDirectSmelting(Nickel).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
@@ -1703,8 +1524,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * DO NOT ADD MORE THAN 1 TOOL AND ARMOR ENCHANTMENT PER MATERIAL!
-     * It will get overwritten!
+     * DO NOT ADD MORE THAN 1 TOOL AND ARMOR ENCHANTMENT PER MATERIAL! It will get overwritten!
      */
     private static void setEnchantments() {
         setToolEnchantments();
@@ -2001,10 +1821,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(✦◆✦)(⚷⚙⚷ Ni4Ti6)";
-        SuperconductorUIVBase.mChemicalFormula =
-                "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs⚶)\u2086(⌘☯☯⌘)\u2085";
-        SuperconductorUMVBase.mChemicalFormula =
-                "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
+        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs⚶)\u2086(⌘☯☯⌘)\u2085";
+        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
         EnrichedHolmium.mChemicalFormula = "Nq+\u2088Ho\u2082";
         Grade1PurifiedWater.mChemicalFormula = "H₂O";
@@ -2020,8 +1838,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void initSubTags() {
         SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM.addTo(Bastnasite, Monazite, Forcicium, Forcillium);
 
-        SubTag.ELECTROMAGNETIC_SEPERATION_GOLD.addTo(
-                Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
+        SubTag.ELECTROMAGNETIC_SEPERATION_GOLD
+                .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
         SubTag.NO_RECIPES.addTo(MagnetohydrodynamicallyConstrainedStarMatter);
 
@@ -2043,8 +1861,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 Chromite,
                 Andradite);
 
-        SubTag.BLASTFURNACE_CALCITE_DOUBLE.addTo(
-                Pyrite, BrownLimonite, YellowLimonite, BasalticMineralSand, GraniticMineralSand, Magnetite);
+        SubTag.BLASTFURNACE_CALCITE_DOUBLE
+                .addTo(Pyrite, BrownLimonite, YellowLimonite, BasalticMineralSand, GraniticMineralSand, Magnetite);
 
         SubTag.BLASTFURNACE_CALCITE_TRIPLE.addTo(Iron, PigIron, DeepIron, ShadowIron, WroughtIron, MeteoricIron);
 
@@ -2420,14 +2238,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Monazite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
         Quartzite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         Quartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-        SiliconDioxide.add(
-                SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+        SiliconDioxide
+                .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         Dilithium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         NetherQuartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         CertusQuartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         Fluix.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-        TricalciumPhosphate.add(
-                SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
+        TricalciumPhosphate
+                .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
         Phosphate.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
         InfusedAir.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
         InfusedFire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
@@ -2471,7 +2289,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorIV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorLuV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorZPM.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        // SuperconductorUV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        // SuperconductorUV .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorUHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
 
         Blaze.add(SubTag.MAGICAL, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
@@ -2490,21 +2308,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static void init() {
         new ProcessingConfig();
         if (!GT_Mod.gregtechproxy.mEnableAllMaterials) new ProcessingModSupport();
-        mMaterialHandlers.forEach(
-                IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate materials
+        mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate
+                                                                      // materials
         initMaterialProperties(); // No more material addition or manipulation should be done past this point!
-        MATERIALS_ARRAY = MATERIALS_MAP
-                .values()
-                .toArray(new Materials[0]); // Generate standard object array. This is a lot faster to loop over.
+        MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[0]); // Generate standard object array. This is a
+                                                                            // lot faster to loop over.
         VALUES = Arrays.asList(MATERIALS_ARRAY);
         if (!Loader.isModLoaded(MOD_ID_DC) && !GT_Mod.gregtechproxy.mEnableAllComponents)
             OrePrefixes.initMaterialComponents();
         else {
-            OrePrefixes.ingotHot.mDisabledItems.addAll(Arrays.stream(Materials.values())
-                    .parallel()
-                    .filter(OrePrefixes.ingotHot::doGenerateItem)
-                    .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
-                    .collect(Collectors.toSet()));
+            OrePrefixes.ingotHot.mDisabledItems.addAll(
+                    Arrays.stream(Materials.values()).parallel().filter(OrePrefixes.ingotHot::doGenerateItem)
+                            .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
+                            .collect(Collectors.toSet()));
             OrePrefixes.ingotHot.disableComponent(Materials.Reinforced);
             OrePrefixes.ingotHot.disableComponent(Materials.ConductiveIron);
             OrePrefixes.ingotHot.disableComponent(Materials.FierySteel);
@@ -2545,13 +2361,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                     if (aMaterial.mHasParentMod) {
                         if (GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
                             GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;
-                        } else
-                            throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID
-                                    + " for " + aMaterial.mName + " is already used!");
+                        } else throw new IllegalArgumentException(
+                                "The Material Index " + aMaterial.mMetaItemSubID
+                                        + " for "
+                                        + aMaterial.mName
+                                        + " is already used!");
                     }
-                } else
-                    throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " for "
-                            + aMaterial.mName + " is/over the maximum of 1000");
+                } else throw new IllegalArgumentException(
+                        "The Material Index " + aMaterial.mMetaItemSubID
+                                + " for "
+                                + aMaterial.mName
+                                + " is/over the maximum of 1000");
             }
         }
     }
@@ -2562,22 +2382,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addTemperatureValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mMeltingPoint =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "MeltingPoint", aMaterial.mMeltingPoint);
-        aMaterial.mBlastFurnaceRequired = GregTech_API.sMaterialProperties.get(
-                aConfigPath, "BlastFurnaceRequired", aMaterial.mBlastFurnaceRequired);
-        aMaterial.mBlastFurnaceTemp = (short)
-                GregTech_API.sMaterialProperties.get(aConfigPath, "BlastFurnaceTemp", aMaterial.mBlastFurnaceTemp);
+        aMaterial.mMeltingPoint = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "MeltingPoint", aMaterial.mMeltingPoint);
+        aMaterial.mBlastFurnaceRequired = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "BlastFurnaceRequired", aMaterial.mBlastFurnaceRequired);
+        aMaterial.mBlastFurnaceTemp = (short) GregTech_API.sMaterialProperties
+                .get(aConfigPath, "BlastFurnaceTemp", aMaterial.mBlastFurnaceTemp);
         aMaterial.mGasTemp = GregTech_API.sMaterialProperties.get(aConfigPath, "GasTemp", aMaterial.mGasTemp);
         aMaterial.setHeatDamage(
                 (float) GregTech_API.sMaterialProperties.get(aConfigPath, "HeatDamage", aMaterial.mHeatDamage));
     }
 
     private static void addDensityValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mDensityMultiplier =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "DensityMultiplier", aMaterial.mDensityMultiplier);
-        aMaterial.mDensityDivider =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "DensityDivider", aMaterial.mDensityDivider);
+        aMaterial.mDensityMultiplier = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "DensityMultiplier", aMaterial.mDensityMultiplier);
+        aMaterial.mDensityDivider = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "DensityDivider", aMaterial.mDensityDivider);
         aMaterial.mDensity = (long) GregTech_API.sMaterialProperties.get(
                 aConfigPath,
                 "Density",
@@ -2586,17 +2406,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addColorValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mTransparent =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "Transparent", aMaterial.mTransparent);
-        String aColor = GregTech_API.sMaterialProperties.get(
-                aConfigPath, "DyeColor", aMaterial.mColor == Dyes._NULL ? "None" : aMaterial.mColor.toString());
+        aMaterial.mTransparent = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "Transparent", aMaterial.mTransparent);
+        String aColor = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "DyeColor", aMaterial.mColor == Dyes._NULL ? "None" : aMaterial.mColor.toString());
         aMaterial.mColor = aColor.equals("None") ? Dyes._NULL : Dyes.get(aColor);
-        String[] aRGBA = GregTech_API.sMaterialProperties
-                .get(
-                        aConfigPath,
-                        "MatRGBA",
-                        aMaterial.mRGBa[0] + "," + aMaterial.mRGBa[1] + "," + aMaterial.mRGBa[2] + ","
-                                + aMaterial.mRGBa[3] + ",")
+        String[] aRGBA = GregTech_API.sMaterialProperties.get(
+                aConfigPath,
+                "MatRGBA",
+                aMaterial.mRGBa[0] + ","
+                        + aMaterial.mRGBa[1]
+                        + ","
+                        + aMaterial.mRGBa[2]
+                        + ","
+                        + aMaterial.mRGBa[3]
+                        + ",")
                 .split(",");
         aMaterial.mRGBa[0] = Short.parseShort(aRGBA[0]);
         aMaterial.mRGBa[1] = Short.parseShort(aRGBA[1]);
@@ -2605,26 +2429,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addToolValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mDurability =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "ToolDurability", aMaterial.mDurability);
-        aMaterial.mToolSpeed =
-                (float) GregTech_API.sMaterialProperties.get(aConfigPath, "ToolSpeed", aMaterial.mToolSpeed);
-        aMaterial.mToolQuality =
-                (byte) GregTech_API.sMaterialProperties.get(aConfigPath, "ToolQuality", aMaterial.mToolQuality);
+        aMaterial.mDurability = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ToolDurability", aMaterial.mDurability);
+        aMaterial.mToolSpeed = (float) GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ToolSpeed", aMaterial.mToolSpeed);
+        aMaterial.mToolQuality = (byte) GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ToolQuality", aMaterial.mToolQuality);
         // Moved from GT_Proxy? (Not sure)
-        aMaterial.mHandleMaterial = (aMaterial == Desh
-                ? aMaterial.mHandleMaterial
-                : aMaterial == Diamond || aMaterial == Thaumium
-                        ? Wood
-                        : aMaterial.contains(SubTag.BURNING)
-                                ? Blaze
-                                : aMaterial.contains(SubTag.MAGICAL)
-                                                && aMaterial.contains(SubTag.CRYSTAL)
-                                                && Loader.isModLoaded(GT_Values.MOD_ID_TC)
-                                        ? Thaumium
-                                        : aMaterial.getMass() > Element.Tc.getMass() * 2
-                                                ? TungstenSteel
-                                                : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
+        aMaterial.mHandleMaterial = (aMaterial == Desh ? aMaterial.mHandleMaterial
+                : aMaterial == Diamond || aMaterial == Thaumium ? Wood
+                        : aMaterial.contains(SubTag.BURNING) ? Blaze
+                                : aMaterial.contains(SubTag.MAGICAL) && aMaterial.contains(SubTag.CRYSTAL)
+                                        && Loader.isModLoaded(GT_Values.MOD_ID_TC) ? Thaumium
+                                                : aMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel
+                                                        : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
 
         if (aMaterial == Materials.SpaceTime) {
             aMaterial.mHandleMaterial = Materials.Infinity;
@@ -2636,8 +2454,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addEnchantmentValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mEnchantmentToolsLevel = (byte)
-                GregTech_API.sMaterialProperties.get(aConfigPath, "EnchantmentLevel", aMaterial.mEnchantmentToolsLevel);
+        aMaterial.mEnchantmentToolsLevel = (byte) GregTech_API.sMaterialProperties
+                .get(aConfigPath, "EnchantmentLevel", aMaterial.mEnchantmentToolsLevel);
         String aEnchantmentName = GregTech_API.sMaterialProperties.get(
                 aConfigPath,
                 "Enchantment",
@@ -2651,24 +2469,29 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void addProcessingIntoValues(Materials aMaterial, String aConfigPath) {
         aMaterial.mSmeltInto = MATERIALS_MAP.get(
                 GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialSmeltInto", aMaterial.mSmeltInto.mName));
-        aMaterial.mMacerateInto = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(
-                aConfigPath, "MaterialMacerateInto", aMaterial.mMacerateInto.mName));
-        aMaterial.mArcSmeltInto = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(
-                aConfigPath, "MaterialArcSmeltInto", aMaterial.mArcSmeltInto.mName));
-        aMaterial.mDirectSmelting = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(
-                aConfigPath, "MaterialDirectSmeltInto", aMaterial.mDirectSmelting.mName));
-        aMaterial.mAutoGenerateBlastFurnaceRecipes = GregTech_API.sMaterialProperties.get(
-                aConfigPath, "AutoGenerateBlastFurnaceRecipes", aMaterial.mAutoGenerateBlastFurnaceRecipes);
+        aMaterial.mMacerateInto = MATERIALS_MAP.get(
+                GregTech_API.sMaterialProperties
+                        .get(aConfigPath, "MaterialMacerateInto", aMaterial.mMacerateInto.mName));
+        aMaterial.mArcSmeltInto = MATERIALS_MAP.get(
+                GregTech_API.sMaterialProperties
+                        .get(aConfigPath, "MaterialArcSmeltInto", aMaterial.mArcSmeltInto.mName));
+        aMaterial.mDirectSmelting = MATERIALS_MAP.get(
+                GregTech_API.sMaterialProperties
+                        .get(aConfigPath, "MaterialDirectSmeltInto", aMaterial.mDirectSmelting.mName));
+        aMaterial.mAutoGenerateBlastFurnaceRecipes = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "AutoGenerateBlastFurnaceRecipes", aMaterial.mAutoGenerateBlastFurnaceRecipes);
     }
 
     private static void addMultiplierValues(Materials aMaterial, String aConfigPath) {
         aMaterial.mOreValue = GregTech_API.sMaterialProperties.get(aConfigPath, "OreValue", aMaterial.mOreValue);
         aMaterial.setOreMultiplier(
                 GregTech_API.sMaterialProperties.get(aConfigPath, "OreMultiplier", aMaterial.mOreMultiplier));
-        aMaterial.setSmeltingMultiplier(GregTech_API.sMaterialProperties.get(
-                aConfigPath, "OreSmeltingMultiplier", aMaterial.mSmeltingMultiplier));
-        aMaterial.setByProductMultiplier(GregTech_API.sMaterialProperties.get(
-                aConfigPath, "OreByProductMultiplier", aMaterial.mByProductMultiplier));
+        aMaterial.setSmeltingMultiplier(
+                GregTech_API.sMaterialProperties
+                        .get(aConfigPath, "OreSmeltingMultiplier", aMaterial.mSmeltingMultiplier));
+        aMaterial.setByProductMultiplier(
+                GregTech_API.sMaterialProperties
+                        .get(aConfigPath, "OreByProductMultiplier", aMaterial.mByProductMultiplier));
     }
 
     private static void addHasGasFluid(Materials aMaterial, String aConfigPath) {
@@ -2681,22 +2504,26 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aMaterial.mHasGas = GregTech_API.sMaterialProperties.get(aConfigPath, "AddGas", aMaterial.mHasGas);
             if (aMaterial.mHasGas) {
                 GT_FluidFactory.of(
-                        aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
+                        aMaterial.mName.toLowerCase(),
+                        aMaterial.mDefaultLocalName,
+                        aMaterial,
+                        GAS,
+                        aMaterial.mGasTemp);
             }
         }
     }
 
     private static void addInternalStuff(Materials aMaterial, String aConfigPath) {
-        aMaterial.mMetaItemSubID = GregTech_API.sMaterialProperties.get(
-                aConfigPath, "MaterialID", aMaterial.mCustomOre ? -1 : aMaterial.mMetaItemSubID);
+        aMaterial.mMetaItemSubID = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "MaterialID", aMaterial.mCustomOre ? -1 : aMaterial.mMetaItemSubID);
         aMaterial.mTypes = GregTech_API.sMaterialProperties.get(
                 aConfigPath,
                 "MaterialTypes",
                 aMaterial.mCustomOre ? 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 : aMaterial.mTypes);
-        aMaterial.mUnificatable =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "Unificatable", aMaterial.mUnificatable);
-        aMaterial.mHasParentMod =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "HasParentMod", aMaterial.mHasParentMod);
+        aMaterial.mUnificatable = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "Unificatable", aMaterial.mUnificatable);
+        aMaterial.mHasParentMod = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "HasParentMod", aMaterial.mHasParentMod);
     }
 
     private static void addLocalisation(Materials aMaterial, String aConfigPath) {
@@ -2704,8 +2531,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 aConfigPath,
                 "MaterialName",
                 aMaterial.mCustomOre ? "CustomOre" + aMaterial.mCustomID : aMaterial.mDefaultLocalName);
-        aMaterial.mChemicalFormula =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "ChemicalFormula", aMaterial.mChemicalFormula);
+        aMaterial.mChemicalFormula = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ChemicalFormula", aMaterial.mChemicalFormula);
     }
 
     private static String getConfigPath(Materials aMaterial) {
@@ -2715,22 +2542,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void addHarvestLevelNerfs(Materials aMaterial, String aConfigPath) {
         /* Moved the harvest level changes from GT_Mod to have fewer things iterating over MATERIALS_ARRAY */
-        if (GT_Mod.gregtechproxy.mChangeHarvestLevels
-                && aMaterial.mToolQuality > 0
+        if (GT_Mod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
                 && aMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length
                 && aMaterial.mMetaItemSubID >= 0) {
-            GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] =
-                    GregTech_API.sMaterialProperties.get(aConfigPath, "HarvestLevel", aMaterial.mToolQuality);
+            GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties
+                    .get(aConfigPath, "HarvestLevel", aMaterial.mToolQuality);
         }
     }
 
     private static void addHarvestLevels() {
-        GT_Mod.gregtechproxy.mChangeHarvestLevels =
-                GregTech_API.sMaterialProperties.get("harvestlevel", "ActivateHarvestLevelChange", false);
-        GT_Mod.gregtechproxy.mMaxHarvestLevel =
-                Math.min(15, GregTech_API.sMaterialProperties.get("harvestlevel", "MaxHarvestLevel", 7));
-        GT_Mod.gregtechproxy.mGraniteHavestLevel =
-                GregTech_API.sMaterialProperties.get("harvestlevel", "GraniteHarvestLevel", 3);
+        GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties
+                .get("harvestlevel", "ActivateHarvestLevelChange", false);
+        GT_Mod.gregtechproxy.mMaxHarvestLevel = Math
+                .min(15, GregTech_API.sMaterialProperties.get("harvestlevel", "MaxHarvestLevel", 7));
+        GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties
+                .get("harvestlevel", "GraniteHarvestLevel", 3);
     }
 
     public static void initMaterialProperties() {
@@ -2762,17 +2588,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void aspectCalculation(Materials aMaterial, String aConfigPath) {
 
-        String aDefaultAspectString = aMaterial.mAspects.stream()
-                .map(aAspectStack -> aAspectStack.mAspect.toString())
+        String aDefaultAspectString = aMaterial.mAspects.stream().map(aAspectStack -> aAspectStack.mAspect.toString())
                 .collect(Collectors.joining(",", ",", ""));
         String aDefaultAspectAmountString = aMaterial.mAspects.stream()
-                .map(aAspectStack -> String.valueOf(aAspectStack.mAmount))
-                .collect(Collectors.joining(",", ",", ""));
+                .map(aAspectStack -> String.valueOf(aAspectStack.mAmount)).collect(Collectors.joining(",", ",", ""));
 
-        String aConfigAspectString =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "ListTCAspects", aDefaultAspectString);
-        String aConfigAspectAmountString =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "ListTCAspectAmounts", aDefaultAspectAmountString);
+        String aConfigAspectString = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ListTCAspects", aDefaultAspectString);
+        String aConfigAspectAmountString = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ListTCAspectAmounts", aDefaultAspectAmountString);
 
         if (!aConfigAspectString.equals(aDefaultAspectString)
                 || !aConfigAspectAmountString.equals(aDefaultAspectAmountString)) {
@@ -2791,60 +2615,55 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void OreReRegistrationsCalculation(Materials aMaterial, String aConfigPath) {
-        String aDefaultMatReRegString = aMaterial.mOreReRegistrations.stream()
-                .map(aTag -> aTag.mName)
+        String aDefaultMatReRegString = aMaterial.mOreReRegistrations.stream().map(aTag -> aTag.mName)
                 .collect(Collectors.joining(",", ",", ""));
-        String aConfigMatMatReRegString = GregTech_API.sMaterialProperties.get(
-                aConfigPath, "ListMaterialReRegistrations", aDefaultMatReRegString);
+        String aConfigMatMatReRegString = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ListMaterialReRegistrations", aDefaultMatReRegString);
         if (!aConfigMatMatReRegString.equals(aDefaultMatReRegString)) {
             aMaterial.mOreReRegistrations.clear();
             if (aConfigMatMatReRegString.length() > 0) {
-                Arrays.stream(aConfigMatMatReRegString.split(","))
-                        .map(MATERIALS_MAP::get)
-                        .filter(Objects::nonNull)
+                Arrays.stream(aConfigMatMatReRegString.split(",")).map(MATERIALS_MAP::get).filter(Objects::nonNull)
                         .forEach(aMat -> aMaterial.mOreReRegistrations.add(aMat));
             }
         }
     }
 
     private static void OreByProductsCalculation(Materials aMaterial, String aConfigPath) {
-        String aDefaultMatByProString =
-                aMaterial.mOreByProducts.stream().map(aTag -> aTag.mName).collect(Collectors.joining(",", ",", ""));
-        String aConfigMatByProString =
-                GregTech_API.sMaterialProperties.get(aConfigPath, "ListMaterialByProducts", aDefaultMatByProString);
+        String aDefaultMatByProString = aMaterial.mOreByProducts.stream().map(aTag -> aTag.mName)
+                .collect(Collectors.joining(",", ",", ""));
+        String aConfigMatByProString = GregTech_API.sMaterialProperties
+                .get(aConfigPath, "ListMaterialByProducts", aDefaultMatByProString);
         if (!aConfigMatByProString.equals(aDefaultMatByProString)) {
             aMaterial.mOreByProducts.clear();
             if (aConfigMatByProString.length() > 0) {
-                Arrays.stream(aConfigMatByProString.split(","))
-                        .map(MATERIALS_MAP::get)
-                        .filter(Objects::nonNull)
+                Arrays.stream(aConfigMatByProString.split(",")).map(MATERIALS_MAP::get).filter(Objects::nonNull)
                         .forEach(aMat -> aMaterial.mOreByProducts.add(aMat));
             }
         }
     }
 
     /**
-     * Converts the pre-defined list of SubTags from a material into a list of SubTag names for setting/getting to/from the config.
-     * It is then converted to a String[] and finally to a singular String for insertion into the config
-     * If the config string is different from the default, we then want to clear the Materials SubTags and insert new ones from the config string.
+     * Converts the pre-defined list of SubTags from a material into a list of SubTag names for setting/getting to/from
+     * the config. It is then converted to a String[] and finally to a singular String for insertion into the config If
+     * the config string is different from the default, we then want to clear the Materials SubTags and insert new ones
+     * from the config string.
      */
     private static void SubTagCalculation(Materials aMaterial, String aConfigPath) {
-        String aDefaultTagString =
-                aMaterial.mSubTags.stream().map(aTag -> aTag.mName).collect(Collectors.joining(",", ",", ""));
+        String aDefaultTagString = aMaterial.mSubTags.stream().map(aTag -> aTag.mName)
+                .collect(Collectors.joining(",", ",", ""));
         String aConfigTagString = GregTech_API.sMaterialProperties.get(aConfigPath, "ListSubTags", aDefaultTagString);
         if (!aConfigTagString.equals(aDefaultTagString)) {
             aMaterial.mSubTags.clear();
             if (aConfigTagString.length() > 0) {
-                Arrays.stream(aConfigTagString.split(","))
-                        .map(SubTag.sSubTags::get)
-                        .filter(Objects::nonNull)
+                Arrays.stream(aConfigTagString.split(",")).map(SubTag.sSubTags::get).filter(Objects::nonNull)
                         .forEach(aTag -> aMaterial.mSubTags.add(aTag));
             }
         }
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old materials enum
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * materials enum
      */
     @Deprecated
     public static Materials valueOf(String aMaterialName) {
@@ -2852,7 +2671,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old materials enum
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * materials enum
      */
     public static Materials[] values() {
         return MATERIALS_ARRAY;
@@ -2918,7 +2738,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old materials enum
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * materials enum
      */
     @Deprecated
     public String name() {
@@ -2984,9 +2805,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if (!aShowQuestionMarks && mChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
             return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1))
-                            ? mChemicalFormula
-                            : "(" + mChemicalFormula + ")")
-                    + aMultiplier;
+                    ? mChemicalFormula
+                    : "(" + mChemicalFormula + ")") + aMultiplier;
         }
         return mChemicalFormula;
     }
@@ -3004,8 +2824,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public boolean contains(ItemStack... aStacks) {
         if (aStacks == null || aStacks.length == 0) return false;
-        return mMaterialItems.stream().anyMatch(tStack -> Arrays.stream(aStacks)
-                .anyMatch(aStack -> GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
+        return mMaterialItems.stream().anyMatch(
+                tStack -> Arrays.stream(aStacks)
+                        .anyMatch(aStack -> GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
     }
 
     /**
@@ -3015,11 +2836,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if (aStack == null) return false;
         boolean temp = false;
         int mMaterialItems_sS = mMaterialItems.size();
-        for (int i = 0; i < mMaterialItems_sS; i++)
-            if (GT_Utility.areStacksEqual(aStack, mMaterialItems.get(i))) {
-                mMaterialItems.remove(i--);
-                temp = true;
-            }
+        for (int i = 0; i < mMaterialItems_sS; i++) if (GT_Utility.areStacksEqual(aStack, mMaterialItems.get(i))) {
+            mMaterialItems.remove(i--);
+            temp = true;
+        }
         return temp;
     }
 
@@ -3028,12 +2848,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     @Override
     public ISubTagContainer add(SubTag... aTags) {
-        if (aTags != null)
-            for (SubTag aTag : aTags)
-                if (aTag != null && !contains(aTag)) {
-                    aTag.addContainerToList(this);
-                    mSubTags.add(aTag);
-                }
+        if (aTags != null) for (SubTag aTag : aTags) if (aTag != null && !contains(aTag)) {
+            aTag.addContainerToList(this);
+            mSubTags.add(aTag);
+        }
         return this;
     }
 
@@ -3063,8 +2881,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * Adds a Material to the List of Byproducts when grinding this Ore.
-     * Is used for more precise Ore grinding, so that it is possible to choose between certain kinds of Materials.
+     * Adds a Material to the List of Byproducts when grinding this Ore. Is used for more precise Ore grinding, so that
+     * it is possible to choose between certain kinds of Materials.
      */
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
     public Materials addOreByProduct(Materials aMaterial) {
@@ -3073,8 +2891,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * Adds multiple Materials to the List of Byproducts when grinding this Ore.
-     * Is used for more precise Ore grinding, so that it is possible to choose between certain kinds of Materials.
+     * Adds multiple Materials to the List of Byproducts when grinding this Ore. Is used for more precise Ore grinding,
+     * so that it is possible to choose between certain kinds of Materials.
      */
     public Materials addOreByProducts(Materials... aMaterials) {
         for (Materials tMaterial : aMaterials) if (tMaterial != null) addOreByProduct(tMaterial);
@@ -3082,8 +2900,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * If this Ore gives multiple drops of its Main Material.
-     * Lapis Ore for example gives about 6 drops.
+     * If this Ore gives multiple drops of its Main Material. Lapis Ore for example gives about 6 drops.
      */
     public Materials setOreMultiplier(int aOreMultiplier) {
         if (aOreMultiplier > 0) mOreMultiplier = aOreMultiplier;
@@ -3100,8 +2917,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * If this Ore gives multiple drops of its Main Material.
-     * Lapis Ore for example gives about 6 drops.
+     * If this Ore gives multiple drops of its Main Material. Lapis Ore for example gives about 6 drops.
      */
     public Materials setSmeltingMultiplier(int aSmeltingMultiplier) {
         if (aSmeltingMultiplier > 0) mSmeltingMultiplier = aSmeltingMultiplier;
@@ -3117,8 +2933,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * This Material should be the Main Material this Ore gets ground into.
-     * Example, Chromite giving Chrome or Tungstate giving Tungsten.
+     * This Material should be the Main Material this Ore gets ground into. Example, Chromite giving Chrome or Tungstate
+     * giving Tungsten.
      */
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
     public Materials setOreReplacement(Materials aMaterial) {
@@ -3306,12 +3122,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return new FluidStack(steamCrackedFluids[2], amount);
     }
 
-    /** Check that the material is a proper soldering fluid
-     ** @return true if Materials is a proper soldering fluid
+    /**
+     * Check that the material is a proper soldering fluid
+     ** 
+     * @return true if Materials is a proper soldering fluid
      */
     public boolean isProperSolderingFluid() {
-        return mStandardMoltenFluid != null
-                && contains(SubTag.SOLDERING_MATERIAL)
+        return mStandardMoltenFluid != null && contains(SubTag.SOLDERING_MATERIAL)
                 && !(GregTech_API.mUseOnlyGoodSolderingMaterials && !contains(SubTag.SOLDERING_MATERIAL_GOOD));
     }
 

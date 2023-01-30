@@ -1,9 +1,5 @@
 package gregtech.api.threads;
 
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.common.GT_Proxy;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,11 +8,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.common.GT_Proxy;
+
 public class GT_Runnable_MachineBlockUpdate implements Runnable {
+
     // used by runner thread
     protected final ChunkCoordinates mCoords;
     protected final World world;
@@ -73,8 +76,8 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
     }
 
     public static void initExecutorService() {
-        EXECUTOR_SERVICE = Executors.newFixedThreadPool(
-                Math.max(1, (Runtime.getRuntime().availableProcessors() * 2 / 3)), THREAD_FACTORY);
+        EXECUTOR_SERVICE = Executors
+                .newFixedThreadPool(Math.max(1, (Runtime.getRuntime().availableProcessors() * 2 / 3)), THREAD_FACTORY);
     }
 
     public static void shutdownExecutorService() {
@@ -116,7 +119,7 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                 // This might load a chunk... which might load a TileEntity... which might get added to
                 // `loadedTileEntityList`... which might be in the process
                 // of being iterated over during `UpdateEntities()`... which might cause a
-                // ConcurrentModificationException.  So, lock that shit.
+                // ConcurrentModificationException. So, lock that shit.
                 GT_Proxy.TICK_LOCK.lock();
                 try {
                     tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
@@ -157,8 +160,12 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId "
-                            + world.provider.dimensionId + "}",
+                    "Well this update was broken... " + mCoords
+                            + ", mWorld={"
+                            + world.getProviderName()
+                            + " @dimId "
+                            + world.provider.dimensionId
+                            + "}",
                     e);
         }
     }

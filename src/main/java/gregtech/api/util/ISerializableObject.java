@@ -1,10 +1,10 @@
 package gregtech.api.util;
 
-import com.google.common.io.ByteArrayDataInput;
-import io.netty.buffer.ByteBuf;
 import java.io.IOException;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +13,9 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
+
+import com.google.common.io.ByteArrayDataInput;
+import io.netty.buffer.ByteBuf;
 
 /**
  * We could well have used {@link java.io.Serializable}, but that's too slow and should generally be avoided
@@ -25,17 +28,16 @@ public interface ISerializableObject {
     ISerializableObject copy();
 
     /**
-     * If you are overriding this, you must <b>NOT</b> return {@link NBTTagInt} here! That return
-     * type is how we tell that we are loading legacy data, and only {@link LegacyCoverData} is
-     * allowed to return it. You probably want to return {@link NBTTagCompound} anyway.
+     * If you are overriding this, you must <b>NOT</b> return {@link NBTTagInt} here! That return type is how we tell
+     * that we are loading legacy data, and only {@link LegacyCoverData} is allowed to return it. You probably want to
+     * return {@link NBTTagCompound} anyway.
      */
     @Nonnull
     NBTBase saveDataToNBT();
 
     /**
-     * Write data to given ByteBuf
-     * The data saved this way is intended to be stored for short amount of time over network.
-     * DO NOT store it to disks.
+     * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over
+     * network. DO NOT store it to disks.
      */
     // the NBT is an unfortunate piece of tech. everything uses it but its API is not as efficient as could be
     void writeToByteBuf(ByteBuf aBuf);
@@ -43,8 +45,9 @@ public interface ISerializableObject {
     void loadDataFromNBT(NBTBase aNBT);
 
     /**
-     * Read data from given parameter and return this.
-     * The data read this way is intended to be stored for short amount of time over network.
+     * Read data from given parameter and return this. The data read this way is intended to be stored for short amount
+     * of time over network.
+     * 
      * @param aPlayer the player who is sending this packet to server. null if it's client reading data.
      */
     // the NBT is an unfortunate piece of tech. everything uses it but its API is not as efficient as could be
@@ -52,8 +55,8 @@ public interface ISerializableObject {
     ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer);
 
     /**
-     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readTag(ByteBuf)}
-     * Given buffer must contain a serialized NBTTagCompound in minecraft encoding
+     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readTag(ByteBuf)} Given buffer
+     * must contain a serialized NBTTagCompound in minecraft encoding
      */
     static NBTTagCompound readCompoundTagFromGreggyByteBuf(ByteArrayDataInput aBuf) {
         short size = aBuf.readShort();
@@ -70,8 +73,8 @@ public interface ISerializableObject {
     }
 
     /**
-     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readItemStack(ByteBuf)}
-     * Given buffer must contain a serialized ItemStack in minecraft encoding
+     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readItemStack(ByteBuf)} Given
+     * buffer must contain a serialized ItemStack in minecraft encoding
      */
     static ItemStack readItemStackFromGreggyByteBuf(ByteArrayDataInput aBuf) {
         ItemStack stack = null;
@@ -86,6 +89,7 @@ public interface ISerializableObject {
     }
 
     final class LegacyCoverData implements ISerializableObject {
+
         private int mData;
 
         public LegacyCoverData() {}

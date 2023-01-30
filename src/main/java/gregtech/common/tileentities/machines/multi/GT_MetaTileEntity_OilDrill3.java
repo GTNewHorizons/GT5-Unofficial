@@ -9,6 +9,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_OilDrill3 extends GT_MetaTileEntity_OilDrillBase {
+
     public GT_MetaTileEntity_OilDrill3(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }

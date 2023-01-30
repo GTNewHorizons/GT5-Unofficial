@@ -1,17 +1,20 @@
 package gregtech.api.util;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+
 /** Used by machines that are locked to a single recipe, for fast computation. */
 public class GT_Single_Recipe_Check {
+
     protected final GT_MetaTileEntity_MultiBlockBase multiBlockBase;
     protected final GT_Recipe recipe;
     protected final ImmutableMap<GT_Utility.ItemId, Integer> itemCost;
@@ -20,20 +23,15 @@ public class GT_Single_Recipe_Check {
     protected final int totalItemCost;
     protected final int totalFluidCost;
 
-    protected GT_Single_Recipe_Check(
-            GT_MetaTileEntity_MultiBlockBase multiBlockBase,
-            GT_Recipe recipe,
-            ImmutableMap<GT_Utility.ItemId, Integer> itemCost,
-            ImmutableMap<Fluid, Integer> fluidCost) {
+    protected GT_Single_Recipe_Check(GT_MetaTileEntity_MultiBlockBase multiBlockBase, GT_Recipe recipe,
+            ImmutableMap<GT_Utility.ItemId, Integer> itemCost, ImmutableMap<Fluid, Integer> fluidCost) {
         this.multiBlockBase = multiBlockBase;
         this.recipe = recipe;
         this.itemCost = itemCost;
         this.fluidCost = fluidCost;
 
-        this.totalItemCost =
-                itemCost.values().stream().mapToInt(Integer::intValue).sum();
-        this.totalFluidCost =
-                fluidCost.values().stream().mapToInt(Integer::intValue).sum();
+        this.totalItemCost = itemCost.values().stream().mapToInt(Integer::intValue).sum();
+        this.totalFluidCost = fluidCost.values().stream().mapToInt(Integer::intValue).sum();
     }
 
     public GT_Recipe getRecipe() {
@@ -41,10 +39,10 @@ public class GT_Single_Recipe_Check {
     }
 
     /**
-     * Use this method if recipes cannot require more than a single stack of any item or fluid.
-     * In particular, {@link GT_MetaTileEntity_MultiBlockBase#getCompactedInputs()} and
-     * {@link GT_MetaTileEntity_MultiBlockBase#getCompactedFluids()} both enforce this single-stack
-     * restriction, so any multi-block that calls those can use this method.
+     * Use this method if recipes cannot require more than a single stack of any item or fluid. In particular,
+     * {@link GT_MetaTileEntity_MultiBlockBase#getCompactedInputs()} and
+     * {@link GT_MetaTileEntity_MultiBlockBase#getCompactedFluids()} both enforce this single-stack restriction, so any
+     * multi-block that calls those can use this method.
      */
     public boolean checkRecipeInputsSingleStack(boolean consumeInputs) {
         Map<GT_Utility.ItemId, ItemStack> itemMap = null;
@@ -98,8 +96,8 @@ public class GT_Single_Recipe_Check {
     }
 
     /**
-     * Use this method if recipes can require more than a single stack of any item or fluid.
-     * It is less efficient, though.
+     * Use this method if recipes can require more than a single stack of any item or fluid. It is less efficient,
+     * though.
      */
     public boolean checkRecipeInputs(boolean consumeInputs) {
         List<ItemStack> items = null;
@@ -194,6 +192,7 @@ public class GT_Single_Recipe_Check {
     }
 
     public static final class Builder {
+
         private final GT_MetaTileEntity_MultiBlockBase multiBlockBase;
 
         // In order to compute which items and fluids are consumed by the recipe, we compare the
@@ -246,7 +245,10 @@ public class GT_Single_Recipe_Check {
             }
 
             return new GT_Single_Recipe_Check(
-                    multiBlockBase, recipe, itemCostBuilder.build(), fluidCostBuilder.build());
+                    multiBlockBase,
+                    recipe,
+                    itemCostBuilder.build(),
+                    fluidCostBuilder.build());
         }
     }
 }

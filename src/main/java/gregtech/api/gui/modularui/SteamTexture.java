@@ -5,8 +5,7 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.api.enums.SteamVariant;
 
 /**
- * Wrapper for {@link UITexture}s used to
- * ease in choosing between Bronze, Steel and Primitive textures.
+ * Wrapper for {@link UITexture}s used to ease in choosing between Bronze, Steel and Primitive textures.
  */
 public class SteamTexture {
 
@@ -27,13 +26,21 @@ public class SteamTexture {
                 UITexture.fullImage(mod, String.format(location, SteamVariant.PRIMITIVE)));
     }
 
-    public static SteamTexture adaptableTexture(
-            String mod, String location, int imageWidth, int imageHeight, int borderWidthPixel) {
+    public static SteamTexture adaptableTexture(String mod, String location, int imageWidth, int imageHeight,
+            int borderWidthPixel) {
         return new SteamTexture(
                 AdaptableUITexture.of(
-                        mod, String.format(location, SteamVariant.BRONZE), imageWidth, imageHeight, borderWidthPixel),
+                        mod,
+                        String.format(location, SteamVariant.BRONZE),
+                        imageWidth,
+                        imageHeight,
+                        borderWidthPixel),
                 AdaptableUITexture.of(
-                        mod, String.format(location, SteamVariant.STEEL), imageWidth, imageHeight, borderWidthPixel),
+                        mod,
+                        String.format(location, SteamVariant.STEEL),
+                        imageWidth,
+                        imageHeight,
+                        borderWidthPixel),
                 AdaptableUITexture.of(
                         mod,
                         String.format(location, SteamVariant.PRIMITIVE),

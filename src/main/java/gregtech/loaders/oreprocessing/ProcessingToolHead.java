@@ -2,16 +2,18 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import net.minecraft.item.ItemStack;
 
-public class ProcessingToolHead
-        implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL HEAD??? generator
+public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL
+                                                                                           // HEAD??? generator
+
     public ProcessingToolHead() {
         OrePrefixes.toolHeadArrow.add(this);
         OrePrefixes.toolHeadAxe.add(this);
@@ -33,13 +35,11 @@ public class ProcessingToolHead
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        boolean aSpecialRecipeReq1 = aMaterial.mUnificatable
-                && (aMaterial.mMaterialInto == aMaterial)
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
+        boolean aSpecialRecipeReq1 = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                 && !aMaterial.contains(SubTag.NO_SMASHING);
-        boolean aSpecialRecipeReq2 = aMaterial.mUnificatable
-                && (aMaterial.mMaterialInto == aMaterial)
+        boolean aSpecialRecipeReq2 = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                 && !aMaterial.contains(SubTag.NO_WORKING);
         boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         switch (aPrefix) {
@@ -57,858 +57,489 @@ public class ProcessingToolHead
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 1L),
                             GT_Proxy.tBits,
-                            new Object[] {"Xf", 'X', OrePrefixes.gemChipped.get(aMaterial)});
+                            new Object[] { "Xf", 'X', OrePrefixes.gemChipped.get(aMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 3L),
                             GT_Proxy.tBits,
-                            new Object[] {
-                                (aMaterial.contains(SubTag.WOOD) ? 115 : 'x') + "Pf",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial)
-                            });
+                            new Object[] { (aMaterial.contains(SubTag.WOOD) ? 115 : 'x') + "Pf", 'P',
+                                    OrePrefixes.plate.get(aMaterial) });
                 }
                 break;
             case toolHeadAxe:
                 GT_ModHandler.addShapelessCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                GT_MetaGenerated_Tool_01.AXE,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
+                        new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(2)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(2) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.AXE,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         120);
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "PIh",
-                                "P  ",
-                                "f  ",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial),
-                                'I',
-                                OrePrefixes.ingot.get(aMaterial)
-                            });
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"GG ", "G  ", "f  ", 'G', OrePrefixes.gem.get(aMaterial)});
+                if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "PIh", "P  ", "f  ", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                OrePrefixes.ingot.get(aMaterial) });
+                if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "GG ", "G  ", "f  ", 'G', OrePrefixes.gem.get(aMaterial) });
                 break;
             case toolHeadBuzzSaw:
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.BUZZSAW_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    100000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.BUZZSAW_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 100000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Lithium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.BUZZSAW_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    75000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.BUZZSAW_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 75000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Cadmium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.BUZZSAW_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    50000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.BUZZSAW_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 50000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Sodium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.BUZZSAW_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    400000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.BUZZSAW_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 400000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Lithium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.BUZZSAW_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    300000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.BUZZSAW_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 300000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Cadmium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.BUZZSAW_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    200000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.BUZZSAW_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 200000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Sodium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.BUZZSAW_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1600000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1600000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Lithium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.BUZZSAW_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1200000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1200000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Cadmium.get(1L)
-                        });
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.BUZZSAW_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {800000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 800000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PBM",
-                            "dXG",
-                            "SGP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Sodium.get(1L)
-                        });
-                if (aSpecialRecipeReq2)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadBuzzSaw, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"wXh", "X X", "fXx", 'X', OrePrefixes.plate.get(aMaterial)});
+                        new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Sodium.get(1L) });
+                if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadBuzzSaw, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "wXh", "X X", "fXx", 'X', OrePrefixes.plate.get(aMaterial) });
                 break;
             case toolHeadChainsaw:
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    100000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.CHAINSAW_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 100000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    75000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.CHAINSAW_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 75000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    50000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.CHAINSAW_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 50000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.CHAINSAW_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    400000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.CHAINSAW_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 400000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.CHAINSAW_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    300000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.CHAINSAW_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 300000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.CHAINSAW_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    200000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.CHAINSAW_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 200000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.CHAINSAW_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1600000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1600000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.CHAINSAW_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1200000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1200000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.CHAINSAW_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {800000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 800000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Sodium.get(1L)
-                        });
-                if (aSpecialRecipeReq2)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadChainsaw, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "SRS",
-                                "XhX",
-                                "SRS",
-                                'X',
-                                OrePrefixes.plate.get(aMaterial),
-                                'S',
-                                OrePrefixes.plate.get(Materials.Steel),
-                                'R',
-                                OrePrefixes.ring.get(Materials.Steel)
-                            });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Sodium.get(1L) });
+                if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadChainsaw, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "SRS", "XhX", "SRS", 'X', OrePrefixes.plate.get(aMaterial), 'S',
+                                OrePrefixes.plate.get(Materials.Steel), 'R', OrePrefixes.ring.get(Materials.Steel) });
                 break;
             case toolHeadDrill:
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    100_000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 100_000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    75_000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 75_000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    50_000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 50_000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    400_000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 400_000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    300_000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 300_000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    200_000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 200_000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    1_600_000L, 512L, 3L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_HV,
+                                1,
+                                aMaterial,
+                                Materials.StainlessSteel,
+                                new long[] { 1_600_000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    1_200_000L, 512L, 3L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_HV,
+                                1,
+                                aMaterial,
+                                Materials.StainlessSteel,
+                                new long[] { 1_200_000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.DRILL_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    800_000L, 512L, 3L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.DRILL_HV,
+                                1,
+                                aMaterial,
+                                Materials.StainlessSteel,
+                                new long[] { 800_000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.JACKHAMMER,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1_600_000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1_600_000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "PRP",
-                            "MPB",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Piston_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'R',
-                            OrePrefixes.spring.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Piston_HV.get(1L), 'S',
+                                OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'R',
+                                OrePrefixes.spring.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.JACKHAMMER,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1_200_000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1_200_000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "PRP",
-                            "MPB",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Piston_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'R',
-                            OrePrefixes.spring.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Piston_HV.get(1L), 'S',
+                                OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'R',
+                                OrePrefixes.spring.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.JACKHAMMER,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {800_000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 800_000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "PRP",
-                            "MPB",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Piston_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'R',
-                            OrePrefixes.spring.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Piston_HV.get(1L), 'S',
+                                OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'R',
+                                OrePrefixes.spring.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Sodium.get(1L) });
                 if (aSpecialRecipeReq2) {
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
                             GT_Proxy.tBits,
-                            new Object[] {
-                                "XSX",
-                                "XSX",
-                                "ShS",
-                                'X',
-                                OrePrefixes.plate.get(aMaterial),
-                                'S',
-                                OrePrefixes.plate.get(Materials.Steel)
-                            });
+                            new Object[] { "XSX", "XSX", "ShS", 'X', OrePrefixes.plate.get(aMaterial), 'S',
+                                    OrePrefixes.plate.get(Materials.Steel) });
                     if (aMaterial.getMolten(1) != null) {
                         GT_Values.RA.addFluidSolidifierRecipe(
                                 ItemList.Shape_Mold_ToolHeadDrill.get(0),
@@ -931,8 +562,12 @@ public class ProcessingToolHead
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.FILE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                    GT_MetaGenerated_Tool_01.FILE,
+                                    1,
+                                    aMaterial,
+                                    aMaterial.mHandleMaterial,
+                                    null),
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if ((!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.BOUNCY))) {
                         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -946,28 +581,23 @@ public class ProcessingToolHead
                                     GT_ModHandler.RecipeBits.MIRRORED
                                             | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                             | GT_ModHandler.RecipeBits.BUFFERED,
-                                    new Object[] {
-                                        "P",
-                                        "P",
-                                        "S",
-                                        'P',
-                                        OrePrefixes.plate.get(aMaterial),
-                                        'S',
-                                        OrePrefixes.stick.get(aMaterial.mHandleMaterial)
-                                    });
+                                    new Object[] { "P", "P", "S", 'P', OrePrefixes.plate.get(aMaterial), 'S',
+                                            OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                         }
                     }
                 }
 
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(15)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(15) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.FILE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.FILE,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         calculateRecipeEU(aMaterial, 120));
 
@@ -976,75 +606,71 @@ public class ProcessingToolHead
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.HOE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                    GT_MetaGenerated_Tool_01.HOE,
+                                    1,
+                                    aMaterial,
+                                    aMaterial.mHandleMaterial,
+                                    null),
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 }
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(16)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(16) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.HOE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.HOE,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         calculateRecipeEU(aMaterial, 120));
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "PIh",
-                                "f  ",
-                                'P',
-                                OrePrefixes.plate.get(aMaterial),
-                                'I',
-                                OrePrefixes.ingot.get(aMaterial)
-                            });
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"GG ", "f  ", "   ", 'G', OrePrefixes.gem.get(aMaterial)});
+                if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "PIh", "f  ", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                OrePrefixes.ingot.get(aMaterial) });
+                if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "GG ", "f  ", "   ", 'G', OrePrefixes.gem.get(aMaterial) });
                 break;
             case toolHeadPickaxe:
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.PICKAXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                    GT_MetaGenerated_Tool_01.PICKAXE,
+                                    1,
+                                    aMaterial,
+                                    aMaterial.mHandleMaterial,
+                                    null),
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
-                    if (aSpecialRecipeReq1)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {
-                                    "PII",
-                                    "f h",
-                                    'P',
-                                    OrePrefixes.plate.get(aMaterial),
-                                    'I',
-                                    OrePrefixes.ingot.get(aMaterial)
-                                });
+                    if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "PII", "f h", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                    OrePrefixes.ingot.get(aMaterial) });
 
-                    if (!aNoWorking)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {"GGG", "f  ", 'G', OrePrefixes.gem.get(aMaterial)});
+                    if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "GGG", "f  ", 'G', OrePrefixes.gem.get(aMaterial) });
                 }
 
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(5)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(5) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.PICKAXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.PICKAXE,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         120);
 
@@ -1054,31 +680,35 @@ public class ProcessingToolHead
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.PLOW, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                    GT_MetaGenerated_Tool_01.PLOW,
+                                    1,
+                                    aMaterial,
+                                    aMaterial.mHandleMaterial,
+                                    null),
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
-                    if (aSpecialRecipeReq1)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {"PP", "PP", "hf", 'P', OrePrefixes.plate.get(aMaterial)});
+                    if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "PP", "PP", "hf", 'P', OrePrefixes.plate.get(aMaterial) });
 
-                    if (!aNoWorking)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {"GG", "GG", " f", 'G', OrePrefixes.gem.get(aMaterial)});
+                    if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "GG", "GG", " f", 'G', OrePrefixes.gem.get(aMaterial) });
                 }
 
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(6)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadPlow, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(6) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.PLOW, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.PLOW,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         calculateRecipeEU(aMaterial, 120));
 
@@ -1088,38 +718,36 @@ public class ProcessingToolHead
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.SAW, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                    GT_MetaGenerated_Tool_01.SAW,
+                                    1,
+                                    aMaterial,
+                                    aMaterial.mHandleMaterial,
+                                    null),
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
-                    if (aSpecialRecipeReq1)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {
-                                    "PP ",
-                                    "fh ",
-                                    'P',
-                                    OrePrefixes.plate.get(aMaterial),
-                                    'I',
-                                    OrePrefixes.ingot.get(aMaterial)
-                                });
+                    if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "PP ", "fh ", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                    OrePrefixes.ingot.get(aMaterial) });
 
-                    if (!aNoWorking)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {"GGf", 'G', OrePrefixes.gem.get(aMaterial)});
+                    if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "GGf", 'G', OrePrefixes.gem.get(aMaterial) });
                 }
 
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(7)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(7) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SAW, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.SAW,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         calculateRecipeEU(aMaterial, 120));
 
@@ -1129,38 +757,36 @@ public class ProcessingToolHead
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.SENSE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                    GT_MetaGenerated_Tool_01.SENSE,
+                                    1,
+                                    aMaterial,
+                                    aMaterial.mHandleMaterial,
+                                    null),
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
-                    if (aSpecialRecipeReq1)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {
-                                    "PPI",
-                                    "hf ",
-                                    'P',
-                                    OrePrefixes.plate.get(aMaterial),
-                                    'I',
-                                    OrePrefixes.ingot.get(aMaterial)
-                                });
+                    if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "PPI", "hf ", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                    OrePrefixes.ingot.get(aMaterial) });
 
-                    if (!aNoWorking)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {"GGG", " f ", "   ", 'G', OrePrefixes.gem.get(aMaterial)});
+                    if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { "GGG", " f ", "   ", 'G', OrePrefixes.gem.get(aMaterial) });
                 }
 
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(8)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(8) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SENSE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.SENSE,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         calculateRecipeEU(aMaterial, 120));
 
@@ -1168,583 +794,371 @@ public class ProcessingToolHead
             case toolHeadShovel:
                 GT_ModHandler.addShapelessCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SHOVEL, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                GT_MetaGenerated_Tool_01.SHOVEL,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
+                        new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(9)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(9) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SHOVEL, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.SHOVEL,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         120);
-                if (aSpecialRecipeReq1)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "fPh", 'P', OrePrefixes.plate.get(aMaterial), 'I', OrePrefixes.ingot.get(aMaterial)
-                            });
-                if (!aNoWorking)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"fG", 'G', OrePrefixes.gem.get(aMaterial)});
+                if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "fPh", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                OrePrefixes.ingot.get(aMaterial) });
+                if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "fG", 'G', OrePrefixes.gem.get(aMaterial) });
                 break;
             case toolHeadSword:
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.SWORD, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                                    GT_MetaGenerated_Tool_01.SWORD,
+                                    1,
+                                    aMaterial,
+                                    aMaterial.mHandleMaterial,
+                                    null),
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
-                    if (aSpecialRecipeReq1)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {
-                                    " P ",
-                                    "fPh",
-                                    'P',
-                                    OrePrefixes.plate.get(aMaterial),
-                                    'I',
-                                    OrePrefixes.ingot.get(aMaterial)
-                                });
+                    if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { " P ", "fPh", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                    OrePrefixes.ingot.get(aMaterial) });
 
-                    if (!aNoWorking)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {" G", "fG", 'G', OrePrefixes.gem.get(aMaterial)});
+                    if (!aNoWorking) GT_ModHandler.addCraftingRecipe(
+                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] { " G", "fG", 'G', OrePrefixes.gem.get(aMaterial) });
                 }
 
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(10)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(10) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SWORD, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.SWORD,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         calculateRecipeEU(aMaterial, 120));
                 break;
             case toolHeadUniversalSpade:
                 GT_ModHandler.addShapelessCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, aMaterial, aMaterial, null),
-                        new Object[] {
-                            aOreDictName,
-                            OrePrefixes.stick.get(aMaterial),
-                            OrePrefixes.screw.get(aMaterial),
-                            ToolDictNames.craftingToolScrewdriver
-                        });
+                                GT_MetaGenerated_Tool_01.UNIVERSALSPADE,
+                                1,
+                                aMaterial,
+                                aMaterial,
+                                null),
+                        new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial), OrePrefixes.screw.get(aMaterial),
+                                ToolDictNames.craftingToolScrewdriver });
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(11)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(11) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                                GT_MetaGenerated_Tool_01.UNIVERSALSPADE,
+                                1,
+                                aMaterial,
+                                aMaterial.mHandleMaterial,
+                                null),
                         200,
                         120);
-                if (aSpecialRecipeReq2)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {"fX", 'X', OrePrefixes.toolHeadShovel.get(aMaterial)});
+                if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "fX", 'X', OrePrefixes.toolHeadShovel.get(aMaterial) });
                 break;
             case toolHeadWrench:
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    100000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 100000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    75000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 75000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    50000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 50000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    400000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 400000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    300000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 300000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    200000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 200000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
+                                OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    1600000L, 512L, 3L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_HV,
+                                1,
+                                aMaterial,
+                                Materials.StainlessSteel,
+                                new long[] { 1600000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Lithium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    1200000L, 512L, 3L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_HV,
+                                1,
+                                aMaterial,
+                                Materials.StainlessSteel,
+                                new long[] { 1200000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Cadmium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.WRENCH_HV, 1, aMaterial, Materials.StainlessSteel, new long[] {
-                                    800000L, 512L, 3L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.WRENCH_HV,
+                                1,
+                                aMaterial,
+                                Materials.StainlessSteel,
+                                new long[] { 800000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "SXd",
-                            "GMG",
-                            "PBP",
-                            'X',
-                            aOreDictName,
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Sodium.get(1L)
-                        });
+                        new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L),
+                                'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    100000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 100000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Lithium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    75000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 75000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Cadmium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV, 1, aMaterial, Materials.Steel, new long[] {
-                                    50000L, 32L, 1L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                                1,
+                                aMaterial,
+                                Materials.Steel,
+                                new long[] { 50000L, 32L, 1L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_LV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Steel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Steel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Steel),
-                            'B',
-                            ItemList.Battery_RE_LV_Sodium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                                OrePrefixes.plate.get(Materials.Steel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Steel), 'B',
+                                ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SCREWDRIVER_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    400000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.SCREWDRIVER_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 400000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Lithium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium),
+                                'P', OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SCREWDRIVER_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    300000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.SCREWDRIVER_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 300000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Cadmium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium),
+                                'P', OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SCREWDRIVER_MV, 1, aMaterial, Materials.Aluminium, new long[] {
-                                    200000L, 128L, 2L, -1L
-                                }),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                GT_MetaGenerated_Tool_01.SCREWDRIVER_MV,
+                                1,
+                                aMaterial,
+                                Materials.Aluminium,
+                                new long[] { 200000L, 128L, 2L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_MV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.Aluminium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Aluminium),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.Aluminium),
-                            'B',
-                            ItemList.Battery_RE_MV_Sodium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium),
+                                'P', OrePrefixes.plate.get(Materials.Aluminium), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B',
+                                ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.SCREWDRIVER_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1600000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1600000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Lithium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_HV.get(1L), 'S',
+                                OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.SCREWDRIVER_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {1200000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 1200000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Cadmium.get(1L)
-                        });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_HV.get(1L), 'S',
+                                OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 GT_MetaGenerated_Tool_01.SCREWDRIVER_HV,
                                 1,
                                 aMaterial,
                                 Materials.StainlessSteel,
-                                new long[] {800000L, 512L, 3L, -1L}),
-                        GT_ModHandler.RecipeBits.DISMANTLEABLE
-                                | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                new long[] { 800000L, 512L, 3L, -1L }),
+                        GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                 | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "PdX",
-                            "MGS",
-                            "GBP",
-                            'X',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'M',
-                            ItemList.Electric_Motor_HV.get(1L),
-                            'S',
-                            OrePrefixes.screw.get(Materials.StainlessSteel),
-                            'P',
-                            OrePrefixes.plate.get(Materials.StainlessSteel),
-                            'G',
-                            OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
-                            'B',
-                            ItemList.Battery_RE_HV_Sodium.get(1L)
-                        });
-                if (aSpecialRecipeReq2)
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadWrench, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[] {
-                                "hXW",
-                                "XRX",
-                                "WXd",
-                                'X',
-                                OrePrefixes.plate.get(aMaterial),
-                                'S',
-                                OrePrefixes.plate.get(Materials.Steel),
-                                'R',
-                                OrePrefixes.ring.get(Materials.Steel),
-                                'W',
-                                OrePrefixes.screw.get(Materials.Steel)
-                            });
+                        new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
+                                ItemList.Electric_Motor_HV.get(1L), 'S',
+                                OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
+                                OrePrefixes.plate.get(Materials.StainlessSteel), 'G',
+                                OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), 'B',
+                                ItemList.Battery_RE_HV_Sodium.get(1L) });
+                if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadWrench, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "hXW", "XRX", "WXd", 'X', OrePrefixes.plate.get(aMaterial), 'S',
+                                OrePrefixes.plate.get(Materials.Steel), 'R', OrePrefixes.ring.get(Materials.Steel), 'W',
+                                OrePrefixes.screw.get(Materials.Steel) });
                 break;
             case toolHeadHammer:
             case toolHeadMallet:
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L),
-                            GT_Utility.getIntegratedCircuit(14)
-                        },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L),
+                                GT_Utility.getIntegratedCircuit(14) },
                         GT_Values.NF,
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                 (aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD))
@@ -1767,7 +1181,7 @@ public class ProcessingToolHead
                                     aMaterial.mHandleMaterial,
                                     null),
                             GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                            new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                     (aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD))
@@ -1778,17 +1192,10 @@ public class ProcessingToolHead
                                     aMaterial.mHandleMaterial,
                                     null),
                             GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] {
-                                "XX ",
-                                "XXS",
-                                "XX ",
-                                'X',
-                                aMaterial == Materials.Wood
-                                        ? OrePrefixes.plank.get(Materials.Wood)
-                                        : OrePrefixes.ingot.get(aMaterial),
-                                'S',
-                                OrePrefixes.stick.get(aMaterial.mHandleMaterial)
-                            });
+                            new Object[] { "XX ", "XXS", "XX ", 'X',
+                                    aMaterial == Materials.Wood ? OrePrefixes.plank.get(Materials.Wood)
+                                            : OrePrefixes.ingot.get(aMaterial),
+                                    'S', OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                     (aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD))
@@ -1799,32 +1206,16 @@ public class ProcessingToolHead
                                     aMaterial.mHandleMaterial,
                                     null),
                             GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] {
-                                "XX ",
-                                "XXS",
-                                "XX ",
-                                'X',
-                                aMaterial == Materials.Wood
-                                        ? OrePrefixes.plank.get(Materials.Wood)
-                                        : OrePrefixes.gem.get(aMaterial),
-                                'S',
-                                OrePrefixes.stick.get(aMaterial.mHandleMaterial)
-                            });
+                            new Object[] { "XX ", "XXS", "XX ", 'X',
+                                    aMaterial == Materials.Wood ? OrePrefixes.plank.get(Materials.Wood)
+                                            : OrePrefixes.gem.get(aMaterial),
+                                    'S', OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 }
-                if (aPrefix == OrePrefixes.toolHeadHammer)
-                    if (aSpecialRecipeReq1)
-                        GT_ModHandler.addCraftingRecipe(
-                                GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L),
-                                GT_Proxy.tBits,
-                                new Object[] {
-                                    "II ",
-                                    "IIh",
-                                    "II ",
-                                    'P',
-                                    OrePrefixes.plate.get(aMaterial),
-                                    'I',
-                                    OrePrefixes.ingot.get(aMaterial)
-                                });
+                if (aPrefix == OrePrefixes.toolHeadHammer) if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L),
+                        GT_Proxy.tBits,
+                        new Object[] { "II ", "IIh", "II ", 'P', OrePrefixes.plate.get(aMaterial), 'I',
+                                OrePrefixes.ingot.get(aMaterial) });
                 break;
             case turbineBlade:
                 GT_Values.RA.addAssemblerRecipe(
@@ -1857,19 +1248,10 @@ public class ProcessingToolHead
                         GT_ModHandler.addCraftingRecipe(
                                 GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
                                 GT_Proxy.tBits,
-                                new Object[] {
-                                    "fPd",
-                                    "SPS",
-                                    " P ",
-                                    'P',
-                                    aMaterial == Materials.Wood
-                                            ? OrePrefixes.plank.get(aMaterial)
-                                            : OrePrefixes.plateDouble.get(aMaterial),
-                                    'R',
-                                    OrePrefixes.ring.get(aMaterial),
-                                    'S',
-                                    OrePrefixes.screw.get(aMaterial)
-                                });
+                                new Object[] { "fPd", "SPS", " P ", 'P',
+                                        aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
+                                                : OrePrefixes.plateDouble.get(aMaterial),
+                                        'R', OrePrefixes.ring.get(aMaterial), 'S', OrePrefixes.screw.get(aMaterial) });
                     }
 
                     GT_Values.RA.addFormingPressRecipe(

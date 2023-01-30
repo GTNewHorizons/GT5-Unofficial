@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -8,16 +10,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingLens() {
         OrePrefixes.lens.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         switch (aMaterial.mName) {
             case "Diamond":
             case "Glass":
@@ -54,8 +56,8 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L),
                         2400,
                         30);
-                final ITexture lensCoverTexture =
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false);
+                final ITexture lensCoverTexture = TextureFactory
+                        .of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false);
                 GregTech_API.registerCover(
                         aStack,
                         TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture),

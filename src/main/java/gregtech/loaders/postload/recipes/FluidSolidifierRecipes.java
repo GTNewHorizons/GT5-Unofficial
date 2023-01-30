@@ -5,47 +5,39 @@ import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
 public class FluidSolidifierRecipes implements Runnable {
+
     @Override
     public void run() {
-        Materials[] materialArray = new Materials[] {
-            Materials.Iron,
-            Materials.WroughtIron,
-            Materials.Gold,
-            Materials.Bronze,
-            Materials.Copper,
-            Materials.AnnealedCopper,
-            Materials.Tin,
-            Materials.Lead,
-            Materials.Steel
-        };
+        Materials[] materialArray = new Materials[] { Materials.Iron, Materials.WroughtIron, Materials.Gold,
+                Materials.Bronze, Materials.Copper, Materials.AnnealedCopper, Materials.Tin, Materials.Lead,
+                Materials.Steel };
 
-        ItemStack[] materialCasing = new ItemStack[] {
-            ItemList.IC2_Item_Casing_Iron.get(1L),
-            ItemList.IC2_Item_Casing_Iron.get(1L),
-            ItemList.IC2_Item_Casing_Gold.get(1L),
-            ItemList.IC2_Item_Casing_Bronze.get(1L),
-            ItemList.IC2_Item_Casing_Copper.get(1L),
-            ItemList.IC2_Item_Casing_Copper.get(1L),
-            ItemList.IC2_Item_Casing_Tin.get(1L),
-            ItemList.IC2_Item_Casing_Lead.get(1L),
-            ItemList.IC2_Item_Casing_Steel.get(1L)
-        };
+        ItemStack[] materialCasing = new ItemStack[] { ItemList.IC2_Item_Casing_Iron.get(1L),
+                ItemList.IC2_Item_Casing_Iron.get(1L), ItemList.IC2_Item_Casing_Gold.get(1L),
+                ItemList.IC2_Item_Casing_Bronze.get(1L), ItemList.IC2_Item_Casing_Copper.get(1L),
+                ItemList.IC2_Item_Casing_Copper.get(1L), ItemList.IC2_Item_Casing_Tin.get(1L),
+                ItemList.IC2_Item_Casing_Lead.get(1L), ItemList.IC2_Item_Casing_Steel.get(1L) };
 
         for (int i = 0; i < materialArray.length; i++) {
             if (materialArray[i].mStandardMoltenFluid != null) {
                 GT_Values.RA.addFluidSolidifierRecipe(
-                        ItemList.Shape_Mold_Casing.get(0L), materialArray[i].getMolten(72L), materialCasing[i], 16, 8);
+                        ItemList.Shape_Mold_Casing.get(0L),
+                        materialArray[i].getMolten(72L),
+                        materialCasing[i],
+                        16,
+                        8);
             }
         }
 

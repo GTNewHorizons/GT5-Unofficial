@@ -2,36 +2,42 @@ package gregtech.common;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.WeakHashMap;
+
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_UO_Dimension;
 import gregtech.api.objects.GT_UO_Fluid;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_ChunkAssociatedData;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.WeakHashMap;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Created by Tec on 29.04.2017.
  */
 public class GT_UndergroundOil {
+
     public static final short DIVIDER = 5000;
     private static final GT_UndergroundOilStore STORAGE = new GT_UndergroundOilStore();
     private static final ChunkData NIL_FLUID_STACK = new ChunkData(-1, null, null, false);
 
     /**
      * Effectively just call {@code undergroundOil(te, -1)} for you
+     * 
      * @see #undergroundOil(World, int, int, float)
      */
     public static FluidStack undergroundOilReadInformation(IGregTechTileEntity te) {
@@ -40,6 +46,7 @@ public class GT_UndergroundOil {
 
     /**
      * Effectively just call {@code undergroundOil(chunk, -1)} for you
+     * 
      * @see #undergroundOil(World, int, int, float)
      */
     public static FluidStack undergroundOilReadInformation(Chunk chunk) {
@@ -49,7 +56,8 @@ public class GT_UndergroundOil {
     /** @see #undergroundOil(World, int, int, float) */
     public static FluidStack undergroundOil(IGregTechTileEntity te, float readOrDrainCoefficient) {
         return undergroundOil(
-                te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()), readOrDrainCoefficient);
+                te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()),
+                readOrDrainCoefficient);
     }
 
     // Returns whole content for information purposes -> when drainSpeedCoefficient < 0
@@ -61,45 +69,47 @@ public class GT_UndergroundOil {
 
     /**
      * Pump fluid or read info.
-     * @param w a remote World. For a WorldClient it will always tell you null
-     * @param chunkX chunk coordinate X, i.e. blockX >> 4
-     * @param chunkZ chunk coordinate Z, i.e. blockZ >> 4
-     * @param readOrDrainCoefficient how fast to pump. The higher the faster. use negative to read expected current output
+     * 
+     * @param w                      a remote World. For a WorldClient it will always tell you null
+     * @param chunkX                 chunk coordinate X, i.e. blockX >> 4
+     * @param chunkZ                 chunk coordinate Z, i.e. blockZ >> 4
+     * @param readOrDrainCoefficient how fast to pump. The higher the faster. use negative to read expected current
+     *                               output
      * @return null if nothing here, or depleted already, or a client side world
      */
     public static FluidStack undergroundOil(World w, int chunkX, int chunkZ, float readOrDrainCoefficient) {
         if (w.isRemote) return null; // troublemakers go away
         ChunkData chunkData = STORAGE.get(w, chunkX, chunkZ);
         if (chunkData.getVein() == null || chunkData.getFluid() == null) // nothing here...
-        return null;
+            return null;
         // do stuff on it if needed
         FluidStack fluidInChunk = new FluidStack(chunkData.getFluid(), 0);
         if (readOrDrainCoefficient >= 0) {
             int fluidExtracted = (int) Math.floor(chunkData.getAmount() * (double) readOrDrainCoefficient / DIVIDER);
             double averageDecrease = chunkData.getVein().DecreasePerOperationAmount * (double) readOrDrainCoefficient;
             int decrease = (int) Math.ceil(averageDecrease);
-            if (fluidExtracted <= 0
-                    || chunkData.amount <= decrease) { // decrease - here it is max value of extraction for easy check
+            if (fluidExtracted <= 0 || chunkData.amount <= decrease) { // decrease - here it is max value of extraction
+                                                                       // for easy check
                 chunkData.setAmount(0);
             } else {
                 fluidInChunk.amount = fluidExtracted; // give appropriate amount
-                if (XSTR_INSTANCE.nextFloat() < (decrease - averageDecrease))
-                    decrease--; // use XSTR_INSTANCE to "subtract double from int"
+                if (XSTR_INSTANCE.nextFloat() < (decrease - averageDecrease)) decrease--; // use XSTR_INSTANCE to
+                                                                                          // "subtract double from int"
                 // ex.
                 // averageDecrease=3.9
                 // decrease= ceil from 3.9 = 4
                 // decrease-averageDecrease=0.1 -> chance to subtract 1
                 // if XSTR_INSTANCE is < chance then subtract 1
-                chunkData.changeAmount(
-                        -decrease); // diminish amount, "randomly" adjusted to double value (averageDecrease)
+                chunkData.changeAmount(-decrease); // diminish amount, "randomly" adjusted to double value
+                                                   // (averageDecrease)
             }
         } else { // just get info
             if (chunkData.amount <= DIVIDER) {
                 chunkData.setAmount(0);
             } else {
                 // get the expected current output
-                fluidInChunk.amount =
-                        (int) Math.floor(chunkData.getAmount() * (double) -readOrDrainCoefficient / DIVIDER);
+                fluidInChunk.amount = (int) Math
+                        .floor(chunkData.getAmount() * (double) -readOrDrainCoefficient / DIVIDER);
             }
         }
         return fluidInChunk;
@@ -107,6 +117,7 @@ public class GT_UndergroundOil {
 
     /**
      * Get the deposit as if it is never exploited
+     * 
      * @return UO fluid kind and amount, or null if nothing here.
      */
     public static Pair<GT_UO_Fluid, Integer> getPristineAmount(World world, int chunkX, int chunkZ) {
@@ -143,29 +154,31 @@ public class GT_UndergroundOil {
      * Primary functionality:
      *
      * <ul>
-     *     <li>Decouple data storage with chunk, making it possible to pump oil from unloaded chunks</li>
-     *     <li>Regen detection. If fluid generation config is changed, chunk fluid will be regenerated.</li>
+     * <li>Decouple data storage with chunk, making it possible to pump oil from unloaded chunks</li>
+     * <li>Regen detection. If fluid generation config is changed, chunk fluid will be regenerated.</li>
      * </ul>
      *
      * <h2>Serialized form</h2>
      * <p>
-     * Since the exact file layout is controlled by the super class, here we only concern how each chunk's data is written.
+     * Since the exact file layout is controlled by the super class, here we only concern how each chunk's data is
+     * written.
      * <h3>Form A: Empty Chunk</h3>
      * <ol>
-     *     <li>4 bytes of 0 </li>
+     * <li>4 bytes of 0</li>
      * </ol>
      *
      * <h3>Form B: Normal Chunk</h3>
      * <ol>
-     *     <li>4 bytes unsigned integer. Vein Hash.</li>
-     *     <li>UTF string. Vein Key.</li>
-     *     <li>4 bytes signed integer. Fluid amount.</li>
+     * <li>4 bytes unsigned integer. Vein Hash.</li>
+     * <li>UTF string. Vein Key.</li>
+     * <li>4 bytes signed integer. Fluid amount.</li>
      * </ol>
      *
      * @author glease
      */
     @ParametersAreNonnullByDefault
     private static class GT_UndergroundOilStore extends GT_ChunkAssociatedData<ChunkData> {
+
         private static final WeakHashMap<GT_UO_Fluid, Integer> hashes = new WeakHashMap<>();
 
         private GT_UndergroundOilStore() {
@@ -187,8 +200,8 @@ public class GT_UndergroundOil {
         }
 
         @Override
-        protected GT_UndergroundOil.ChunkData readElement(
-                DataInput input, int version, World world, int chunkX, int chunkZ) throws IOException {
+        protected GT_UndergroundOil.ChunkData readElement(DataInput input, int version, World world, int chunkX,
+                int chunkZ) throws IOException {
             /* see class javadoc for explanation */
             if (version != 0) throw new IOException("Region file corrupted");
             GT_UndergroundOil.ChunkData pristine = createElement(world, chunkX, chunkZ);
@@ -202,10 +215,7 @@ public class GT_UndergroundOil {
             if (hash == 0) return NIL_FLUID_STACK;
             return new GT_UndergroundOil.ChunkData(
                     amount,
-                    GT_Mod.gregtechproxy
-                            .mUndergroundOil
-                            .GetDimension(world.provider.dimensionId)
-                            .getUOFluid(veinKey),
+                    GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(world.provider.dimensionId).getUOFluid(veinKey),
                     veinKey);
         }
 
@@ -216,7 +226,10 @@ public class GT_UndergroundOil {
             int dimensionId = world.provider.dimensionId;
             GT_UO_Dimension dimension = GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(dimensionId);
             return new GT_UndergroundOil.ChunkData(
-                    pristine.getRight(), pristine.getLeft(), dimension.getUOFluidKey(pristine.getLeft()), false);
+                    pristine.getRight(),
+                    pristine.getLeft(),
+                    dimension.getUOFluidKey(pristine.getLeft()),
+                    false);
         }
 
         private static int hash(@Nullable GT_UO_Fluid fluid) {
@@ -234,6 +247,7 @@ public class GT_UndergroundOil {
      * Represent the amount of fluid in a given chunk.
      */
     private static final class ChunkData implements GT_ChunkAssociatedData.IData {
+
         private final Fluid fluid;
 
         @Nullable

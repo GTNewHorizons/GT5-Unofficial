@@ -3,6 +3,16 @@ package gregtech.common.items;
 import static gregtech.api.enums.GT_Values.MOD_ID;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -12,16 +22,9 @@ import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ItemDrop extends Item {
+
     @SideOnly(Side.CLIENT)
     private IIcon secondIcon;
 
@@ -104,7 +107,7 @@ public class ItemDrop extends Item {
                 8);
         RecipeManagers.squeezerManager.addRecipe(
                 40,
-                new ItemStack[] {tDrop},
+                new ItemStack[] { tDrop },
                 Materials.OilHeavy.getFluid(100L),
                 GT_ModHandler.getModItem("Forestry", "propolis", 1L, 0),
                 30);
@@ -117,7 +120,7 @@ public class ItemDrop extends Item {
                 8);
         RecipeManagers.squeezerManager.addRecipe(
                 40,
-                new ItemStack[] {tDrop},
+                new ItemStack[] { tDrop },
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
                 GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 0),
                 30);
@@ -130,7 +133,7 @@ public class ItemDrop extends Item {
                 8);
         RecipeManagers.squeezerManager.addRecipe(
                 40,
-                new ItemStack[] {tDrop},
+                new ItemStack[] { tDrop },
                 new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100),
                 GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 2),
                 30);
@@ -151,7 +154,7 @@ public class ItemDrop extends Item {
                 2);
         RecipeManagers.squeezerManager.addRecipe(
                 400,
-                new ItemStack[] {tDrop},
+                new ItemStack[] { tDrop },
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
                 GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 3),
                 30);
@@ -172,7 +175,7 @@ public class ItemDrop extends Item {
                 8);
         RecipeManagers.squeezerManager.addRecipe(
                 400,
-                new ItemStack[] {tDrop},
+                new ItemStack[] { tDrop },
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
                 GT_ModHandler.getModItem("ExtraBees", "propolis", 1L, 2),
                 30);
@@ -185,8 +188,8 @@ public class ItemDrop extends Item {
         GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, 32, aEUt);
     }
 
-    public void addProcessLV(
-            ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aDuration, int aEUt) {
+    public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aDuration,
+            int aEUt) {
         GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, aDuration, aEUt);
     }
 

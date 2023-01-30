@@ -2,14 +2,9 @@ package gregtech.api.items;
 
 import static gregtech.api.util.GT_Utility.formatNumbers;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
-import ic2.api.reactor.IReactor;
-import ic2.api.reactor.IReactorComponent;
-import ic2.core.IC2Potion;
 import java.util.List;
 import java.util.function.Supplier;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,12 +12,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
+import ic2.api.reactor.IReactor;
+import ic2.api.reactor.IReactorComponent;
+import ic2.core.IC2Potion;
+
 /**
  * A {@link ic2.core.item.reactor.ItemReactorLithiumCell}, but can be used to produce anything!
  *
  * @author glee8e
  */
 public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComponent {
+
     protected final int mHeatBonusStep;
     protected final int mHeatBonusMultiplier;
     protected ItemStack mProduct;
@@ -30,14 +33,8 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
     protected boolean hidden = false;
     protected boolean neiAdded = false;
 
-    public GT_BreederCell_Item(
-            String aUnlocalized,
-            String aEnglish,
-            String aEnglishTooltip,
-            int aHeatBonusStep,
-            int aHeatBonusMultiplier,
-            int aRequiredPulse,
-            Supplier<ItemStack> aProduct) {
+    public GT_BreederCell_Item(String aUnlocalized, String aEnglish, String aEnglishTooltip, int aHeatBonusStep,
+            int aHeatBonusMultiplier, int aRequiredPulse, Supplier<ItemStack> aProduct) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         this.mHeatBonusStep = aHeatBonusStep;
         this.mHeatBonusMultiplier = aHeatBonusMultiplier;
@@ -47,7 +44,12 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
             mProduct = aProduct.get();
             if (!hidden && !neiAdded) {
                 GT_Values.RA.addIC2ReactorBreederCell(
-                        new ItemStack(this), mProduct, deflector, mHeatBonusStep, mHeatBonusMultiplier, getMaxDamage());
+                        new ItemStack(this),
+                        mProduct,
+                        deflector,
+                        mHeatBonusStep,
+                        mHeatBonusMultiplier,
+                        getMaxDamage());
                 neiAdded = true;
             }
         });
@@ -90,10 +92,11 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
                 color2 = EnumChatFormatting.WHITE;
                 break;
         }
-        aList.add(String.format(
-                transItem("020", "Progress: %s/%s"),
-                "" + color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
-                "" + formatNumbers(getMaxDamage())));
+        aList.add(
+                String.format(
+                        transItem("020", "Progress: %s/%s"),
+                        "" + color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
+                        "" + formatNumbers(getMaxDamage())));
         if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + transItem("021", "Radiation Hazard"));
     }
 
@@ -106,15 +109,8 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
     public void processChamber(IReactor reactor, ItemStack yourStack, int x, int y, boolean heatrun) {}
 
     @Override
-    public boolean acceptUraniumPulse(
-            IReactor reactor,
-            ItemStack yourStack,
-            ItemStack pulsingStack,
-            int youX,
-            int youY,
-            int pulseX,
-            int pulseY,
-            boolean heatrun) {
+    public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
+            int pulseX, int pulseY, boolean heatrun) {
         if (heatrun) {
             int myLevel = getNewDamage(reactor, yourStack);
             if (myLevel >= getMaxDamage()) reactor.setItemAt(youX, youY, mProduct.copy());

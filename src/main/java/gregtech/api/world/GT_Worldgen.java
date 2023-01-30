@@ -1,12 +1,14 @@
 package gregtech.api.world;
 
-import gregtech.api.GregTech_API;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+
+import gregtech.api.GregTech_API;
 
 public abstract class GT_Worldgen {
 
@@ -29,29 +31,13 @@ public abstract class GT_Worldgen {
      * @param aChunkZ        zCoord of the Chunk
      * @return if the Worldgeneration has been successfully completed
      */
-    public boolean executeWorldgen(
-            World aWorld,
-            Random aRandom,
-            String aBiome,
-            int aDimensionType,
-            int aChunkX,
-            int aChunkZ,
-            IChunkProvider aChunkGenerator,
-            IChunkProvider aChunkProvider) {
+    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
+            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return false;
     }
 
-    public int executeWorldgenChunkified(
-            World aWorld,
-            Random aRandom,
-            String aBiome,
-            int aDimensionType,
-            int aChunkX,
-            int aChunkZ,
-            int seedX,
-            int seedZ,
-            IChunkProvider aChunkGenerator,
-            IChunkProvider aChunkProvider) {
+    public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
+            int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return 4; // This is for the empty Orevein
     }
 
@@ -64,24 +50,18 @@ public abstract class GT_Worldgen {
      * @param aChunkZ        zCoord of the Chunk
      * @return if the Worldgeneration has been successfully completed
      */
-    public boolean executeCavegen(
-            World aWorld,
-            Random aRandom,
-            String aBiome,
-            int aDimensionType,
-            int aChunkX,
-            int aChunkZ,
-            IChunkProvider aChunkGenerator,
-            IChunkProvider aChunkProvider) {
+    public boolean executeCavegen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
+            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return false;
     }
 
     /**
      *
-     * @param aWorld					The World Object
-     * @param aDimensionType			The Type of Worldgeneration to add. -1 = Nether, 0 = Overworld, +1 = End
-     * @param aAllowedDimensionType		The Type of allowed Worldgeneration
-     * @return if generation for this world is allowed for MoronTech (tm) OreGen (ATM (2.0.3.1Dev) only End, Nether, Overworld, Twilight Forest and Deep Dark)
+     * @param aWorld                The World Object
+     * @param aDimensionType        The Type of Worldgeneration to add. -1 = Nether, 0 = Overworld, +1 = End
+     * @param aAllowedDimensionType The Type of allowed Worldgeneration
+     * @return if generation for this world is allowed for MoronTech (tm) OreGen (ATM (2.0.3.1Dev) only End, Nether,
+     *         Overworld, Twilight Forest and Deep Dark)
      */
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
 
@@ -89,13 +69,14 @@ public abstract class GT_Worldgen {
                 || (aWorld.provider.getDimensionName().equalsIgnoreCase("Nether"))
                 || (aWorld.provider.getDimensionName().equalsIgnoreCase("The End"))
                 || (aWorld.provider.getDimensionName().equalsIgnoreCase("Twilight Forest"))
-                || (aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark")))) return false;
+                || (aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))))
+            return false;
 
         String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = GregTech_API.sWorldgenFile.get(
-                    "worldgen." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
+            boolean tValue = GregTech_API.sWorldgenFile
+                    .get("worldgen." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }

@@ -1,32 +1,30 @@
 package gregtech.api.util;
 
-import com.google.common.collect.ImmutableMap;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+
 /** Processing Array-specialized version of {@link gregtech.api.util.GT_Single_Recipe_Check}. */
 public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Check {
+
     protected final int recipeAmperage;
 
     /**
-     * The machine type that the locked recipe is for.
-     * We will not allow running with other machines.
+     * The machine type that the locked recipe is for. We will not allow running with other machines.
      */
     protected final ItemStack machineStack;
 
-    protected GT_Single_Recipe_Check_Processing_Array(
-            GT_MetaTileEntity_MultiBlockBase multiBlockBase,
-            GT_Recipe recipe,
-            ImmutableMap<GT_Utility.ItemId, Integer> itemCost,
-            ImmutableMap<Fluid, Integer> fluidCost,
-            int recipeAmperage,
-            ItemStack machineStack) {
+    protected GT_Single_Recipe_Check_Processing_Array(GT_MetaTileEntity_MultiBlockBase multiBlockBase, GT_Recipe recipe,
+            ImmutableMap<GT_Utility.ItemId, Integer> itemCost, ImmutableMap<Fluid, Integer> fluidCost,
+            int recipeAmperage, ItemStack machineStack) {
         super(multiBlockBase, recipe, itemCost, fluidCost);
 
         this.recipeAmperage = recipeAmperage;
@@ -138,6 +136,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
     }
 
     public static final class Builder {
+
         private final GT_MetaTileEntity_MultiBlockBase multiBlockBase;
 
         // In order to compute which items and fluids are consumed by the recipe, we compare the

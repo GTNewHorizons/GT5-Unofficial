@@ -1,15 +1,7 @@
 package gregtech.api.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Item_LongDistancePipe;
-import gregtech.common.blocks.GT_Material_Machines;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,7 +15,18 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Item_LongDistancePipe;
+import gregtech.common.blocks.GT_Material_Machines;
+
 public class GT_Block_LongDistancePipe extends GT_Generic_Block {
+
     public IIconContainer[] mIcons;
 
     public GT_Block_LongDistancePipe() {
@@ -38,9 +41,8 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
 
         ItemList.Long_Distance_Pipeline_Fluid_Pipe.set(new ItemStack(this, 1, 0));
         ItemList.Long_Distance_Pipeline_Item_Pipe.set(new ItemStack(this, 1, 1));
-        mIcons = new IIconContainer[] {
-            Textures.BlockIcons.LONG_DISTANCE_PIPE_FLUID, Textures.BlockIcons.LONG_DISTANCE_PIPE_ITEM
-        };
+        mIcons = new IIconContainer[] { Textures.BlockIcons.LONG_DISTANCE_PIPE_FLUID,
+                Textures.BlockIcons.LONG_DISTANCE_PIPE_ITEM };
     }
 
     @Override

@@ -1,12 +1,14 @@
 package gregtech.common.render;
 
-import gregtech.api.items.GT_MetaGenerated_Item;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
 import org.lwjgl.opengl.GL11;
+
+import gregtech.api.items.GT_MetaGenerated_Item;
 
 public class GT_RenderUtil {
 
@@ -21,8 +23,8 @@ public class GT_RenderUtil {
         }
     }
 
-    public static void renderBlockIcon(
-            RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ, IIcon aIcon, byte aSide) {
+    public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
+            IIcon aIcon, byte aSide) {
         switch (aSide) {
             case 0:
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
@@ -49,16 +51,8 @@ public class GT_RenderUtil {
         renderItemIcon(icon, 0.0D, 0.0D, size, size, z, nx, ny, nz);
     }
 
-    public static void renderItemIcon(
-            IIcon icon,
-            double xStart,
-            double yStart,
-            double xEnd,
-            double yEnd,
-            double z,
-            float nx,
-            float ny,
-            float nz) {
+    public static void renderItemIcon(IIcon icon, double xStart, double yStart, double xEnd, double yEnd, double z,
+            float nx, float ny, float nz) {
         if (icon == null) {
             return;
         }

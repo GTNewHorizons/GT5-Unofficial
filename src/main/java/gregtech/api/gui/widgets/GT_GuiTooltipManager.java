@@ -2,10 +2,13 @@ package gregtech.api.gui.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.gui.FontRenderer;
 
 public class GT_GuiTooltipManager {
+
     public interface GT_IToolTipRenderer {
+
         int getGuiLeft();
 
         int getGuiTop();
@@ -46,9 +49,7 @@ public class GT_GuiTooltipManager {
         for (GT_GuiTooltip tip : tips) {
             // Give the tooltip the opportunity to decide whether they should be enabled
             tip.onTick();
-            if (tip.enabled
-                    && (!tip.isDelayed() || mouseStopped > DELAY)
-                    && tip.getBounds().contains(mouseX, mouseY)) {
+            if (tip.enabled && (!tip.isDelayed() || mouseStopped > DELAY) && tip.getBounds().contains(mouseX, mouseY)) {
                 tip.updateText();
                 drawTooltip(tip, mouseX, mouseY, render);
                 break;

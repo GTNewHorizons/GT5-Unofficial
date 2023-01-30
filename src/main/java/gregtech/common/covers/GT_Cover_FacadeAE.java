@@ -1,11 +1,13 @@
 package gregtech.common.covers;
 
-import appeng.facade.IFacadeItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import appeng.facade.IFacadeItem;
+
 public class GT_Cover_FacadeAE extends GT_Cover_FacadeBase {
+
     @Override
     protected Block getTargetBlock(ItemStack aFacadeStack) {
         if (aFacadeStack == null) return null;

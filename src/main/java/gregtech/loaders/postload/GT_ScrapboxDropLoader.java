@@ -1,5 +1,9 @@
 package gregtech.loaders.postload;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -7,11 +11,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class GT_ScrapboxDropLoader implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: (re-)adding Scrapbox Drops.");

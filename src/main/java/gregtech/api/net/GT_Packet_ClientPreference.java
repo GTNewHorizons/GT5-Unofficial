@@ -1,15 +1,18 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.GT_Mod;
-import gregtech.api.util.GT_ClientPreference;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.GT_Mod;
+import gregtech.api.util.GT_ClientPreference;
+import io.netty.buffer.ByteBuf;
+
 public class GT_Packet_ClientPreference extends GT_Packet_New {
+
     private GT_ClientPreference mPreference;
     private EntityPlayerMP mPlayer;
 

@@ -23,7 +23,7 @@ public class TierEU {
     public static final long UXV = V[13];
     public static final long MAX = V[14];
 
-    // Use  me for recipes.
+    // Use me for recipes.
     public static final long RECIPE_ULV = GT_Values.VP[0];
     public static final long RECIPE_LV = GT_Values.VP[1];
     public static final long RECIPE_MV = GT_Values.VP[2];

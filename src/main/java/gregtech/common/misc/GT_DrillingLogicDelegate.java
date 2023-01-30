@@ -2,25 +2,28 @@ package gregtech.common.misc;
 
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.FakePlayer;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_TileEntity_Ores;
+
 /** @author Relvl on 27.01.2022 */
 @SuppressWarnings("ObjectEquality")
 public class GT_DrillingLogicDelegate {
+
     public static final ItemStack MINING_PIPE_STACK = GT_ModHandler.getIC2Item("miningPipe", 0);
     public static final Block MINING_PIPE_BLOCK = GT_Utility.getBlockFromStack(MINING_PIPE_STACK);
-    public static final Block MINING_PIPE_TIP_BLOCK =
-            GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 0));
+    public static final Block MINING_PIPE_TIP_BLOCK = GT_Utility
+            .getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 0));
 
     /** The owner machine pointer */
     private final GT_IDrillingLogicDelegateOwner owner;
@@ -140,9 +143,13 @@ public class GT_DrillingLogicDelegate {
             owner.getBaseMetaTileEntity().getWorld().setBlock(xCoord, actualDrillY + 1, zCoord, MINING_PIPE_TIP_BLOCK);
         }
         // Remove the old pipe tip
-        aBaseMetaTileEntity
-                .getWorld()
-                .setBlock(xCoord, actualDrillY, zCoord, Blocks.air, 0, /*send to client without neighbour updates*/ 2);
+        aBaseMetaTileEntity.getWorld().setBlock(
+                xCoord,
+                actualDrillY,
+                zCoord,
+                Blocks.air,
+                0,
+                /* send to client without neighbour updates */ 2);
 
         // Return the pipe back to the machine (inputs allowed for this case!)
         owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
@@ -176,17 +183,19 @@ public class GT_DrillingLogicDelegate {
         }
 
         ItemStack cobble = GT_Utility.getCobbleForOre(block, metaData);
-        te.getWorld()
-                .setBlock(
-                        x,
-                        y,
-                        z,
-                        Block.getBlockFromItem(cobble.getItem()),
-                        cobble.getItemDamage(), /*cause updates(1) + send to client(2)*/
-                        3);
+        te.getWorld().setBlock(
+                x,
+                y,
+                z,
+                Block.getBlockFromItem(cobble.getItem()),
+                cobble.getItemDamage(), /* cause updates(1) + send to client(2) */
+                3);
     }
 
-    /** Returns NEGATIVE (eg -5) depth of current drilling Y world level. RELATIVELY TO MINER ENTITY! This means '(miner world Y) + depth = (actual world Y)'. */
+    /**
+     * Returns NEGATIVE (eg -5) depth of current drilling Y world level. RELATIVELY TO MINER ENTITY! This means '(miner
+     * world Y) + depth = (actual world Y)'.
+     */
     public int getTipDepth() {
         return tipDepth;
     }
@@ -206,7 +215,10 @@ public class GT_DrillingLogicDelegate {
         }
     }
 
-    /** Creates and provides the Fake Player for owners. todo maybe will provide player owner uuid? im sure some servers not allow to fakers, in griefing reasons. */
+    /**
+     * Creates and provides the Fake Player for owners. todo maybe will provide player owner uuid? im sure some servers
+     * not allow to fakers, in griefing reasons.
+     */
     public FakePlayer getFakePlayer(IGregTechTileEntity te) {
         if (mFakePlayer == null) {
             mFakePlayer = GT_Utility.getFakePlayer(te);
@@ -219,8 +231,8 @@ public class GT_DrillingLogicDelegate {
     }
 
     public boolean canFakePlayerInteract(IGregTechTileEntity te, int xCoord, int yCoord, int zCoord) {
-        return GT_Utility.setBlockByFakePlayer(
-                getFakePlayer(te), xCoord, yCoord, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
+        return GT_Utility
+                .setBlockByFakePlayer(getFakePlayer(te), xCoord, yCoord, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
     }
 
     /** Get target block drops. We need to encapsulate everyting of mining in this class. */

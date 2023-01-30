@@ -6,6 +6,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
 public class FluidHeaterRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addFluidHeaterRecipe(
@@ -22,7 +23,11 @@ public class FluidHeaterRecipes implements Runnable {
                 30720);
 
         GT_Values.RA.addFluidHeaterRecipe(
-                GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(6L), Materials.Water.getGas(960L), 30, 30);
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Water.getFluid(6L),
+                Materials.Water.getGas(960L),
+                30,
+                30);
         GT_Values.RA.addFluidHeaterRecipe(
                 GT_Utility.getIntegratedCircuit(1),
                 GT_ModHandler.getDistilledWater(6L),

@@ -5,6 +5,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 
 public class FluidCannerRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addFluidCannerRecipe(

@@ -2,6 +2,12 @@ package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -12,12 +18,9 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntity_LargeTurbine {
+
     public GT_MetaTileEntity_LargeTurbine_GasAdvanced(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -27,49 +30,27 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return new ITexture[] {
-            MACHINE_CASINGS[1][aColorIndex + 1],
-            aFacing == aSide
-                    ? (aActive
-                            ? TextureFactory.builder()
-                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
-                                    .build()
-                            : hasTurbine()
-                                    ? TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_NEW5)
-                                            .build()
-                                    : TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_NEW_EMPTY5)
-                                            .build())
-                    : casingTexturePages[1][57]
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
+                aFacing == aSide
+                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
+                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
+                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
+                        : casingTexturePages[1][57] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Gas Turbine")
-                .addInfo("Warning: This is an experimental multiblock, subject to changes ")
+        tt.addMachineType("Gas Turbine").addInfo("Warning: This is an experimental multiblock, subject to changes ")
                 .addInfo("Controller block for the Large Advanced Gas Turbine")
-                .addInfo("Needs a Turbine, place inside controller")
-                .addInfo("Only accepts gases above 800k EU/bucket")
+                .addInfo("Needs a Turbine, place inside controller").addInfo("Only accepts gases above 800k EU/bucket")
                 .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 4, true)
-                .addController("Front center")
-                .addCasingInfo("Advanced Gas Turbine Casing", 24)
-                .addDynamoHatch("Back center", 1)
-                .addMaintenanceHatch("Side centered", 2)
-                .addMufflerHatch("Side centered", 2)
-                .addInputHatch("Gas Fuel, Side centered", 2)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, true)
+                .addController("Front center").addCasingInfo("Advanced Gas Turbine Casing", 24)
+                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
+                .addMufflerHatch("Side centered", 2).addInputHatch("Gas Fuel, Side centered", 2)
                 .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -112,19 +93,14 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     }
 
     @Override
-    int fluidIntoPower(
-            ArrayList<FluidStack> aFluids,
-            int aOptFlow,
-            int aBaseEff,
-            int overflowMultiplier,
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
             float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(
-                    aFluids.get(0),
-                    0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
+            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
+                                                                          // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
 
             if (fuelValue < 100) {
@@ -200,9 +176,8 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
         float efficiency = 0;
 
         if (totalFlow > actualOptimalFlow) {
-            efficiency = 1.0f
-                    - Math.abs((totalFlow - actualOptimalFlow))
-                            / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow))
+                    / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
         } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }

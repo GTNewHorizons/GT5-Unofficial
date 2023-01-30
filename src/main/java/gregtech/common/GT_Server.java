@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class GT_Server extends GT_Proxy {
+
     @Override
     public boolean isServerSide() {
         return true;

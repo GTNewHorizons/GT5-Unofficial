@@ -1,13 +1,15 @@
 package gregtech.common.tools.pocket;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.behaviors.Behaviour_Switch_Metadata;
 import gregtech.common.tools.GT_Tool_BranchCutter;
-import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Pocket_BranchCutter extends GT_Tool_BranchCutter {
+
     public final int mSwitchIndex;
 
     public GT_Tool_Pocket_BranchCutter(int aSwitchIndex) {

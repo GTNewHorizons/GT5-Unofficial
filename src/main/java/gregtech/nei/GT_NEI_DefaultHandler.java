@@ -2,6 +2,32 @@ package gregtech.nei;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
 
+import java.awt.*;
+import java.lang.ref.SoftReference;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.Range;
+import org.lwjgl.opengl.GL11;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
@@ -15,6 +41,7 @@ import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -23,6 +50,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -40,36 +68,13 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.Power;
-import java.awt.*;
-import java.lang.ref.SoftReference;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.Range;
-import org.lwjgl.opengl.GL11;
 
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
 
-    private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE =
-            new ConcurrentHashMap<>();
+    private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     protected Power mPower;
     private String mRecipeName; // Name of the handler displayed on top
@@ -77,8 +82,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private static final int RECIPE_NAME_WIDTH = 140;
 
     /**
-     * Static version of {@link TemplateRecipeHandler#cycleticks}.
-     * Can be referenced from cached recipes.
+     * Static version of {@link TemplateRecipeHandler#cycleticks}. Can be referenced from cached recipes.
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
     /**
@@ -119,8 +123,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             modularWindow = builder.build();
             UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, modularWindow);
         } else {
-            itemInputsInventory =
-                    itemOutputsInventory = specialSlotInventory = fluidInputsInventory = fluidOutputsInventory = null;
+            itemInputsInventory = itemOutputsInventory = specialSlotInventory = fluidInputsInventory = fluidOutputsInventory = null;
             modularWindow = null;
         }
     }
@@ -142,10 +145,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount()
                 || (cache = cacheHolder.getCachedRecipes()) == null) {
             cache = mRecipeMap.mRecipeList.stream() // do not use parallel stream. This is already parallelized by NEI
-                    .filter(r -> !r.mHidden)
-                    .sorted()
-                    .map(CachedDefaultRecipe::new)
-                    .collect(Collectors.toList());
+                    .filter(r -> !r.mHidden).sorted().map(CachedDefaultRecipe::new).collect(Collectors.toList());
             // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model,
             // so we do not need any synchronization here
             // even if it does break, at worst case it's just recreating the cache multiple times, which should be fine
@@ -181,8 +181,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         ArrayList<ItemStack> tResults = new ArrayList<>();
         tResults.add(aResult);
         tResults.add(GT_OreDictUnificator.get(true, aResult));
-        if ((tPrefixMaterial != null)
-                && (!tPrefixMaterial.mBlackListed)
+        if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed)
                 && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
@@ -361,8 +360,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     @Override
-    public List<String> handleItemTooltip(
-            GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip, int aRecipeIndex) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip,
+            int aRecipeIndex) {
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if (tObject instanceof CachedDefaultRecipe) {
             currentTip = mRecipeMap.handleNEIItemTooltip(aStack, currentTip, (CachedDefaultRecipe) tObject);
@@ -436,6 +435,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     public static class GT_RectHandler implements IContainerInputHandler, IContainerTooltipHandler {
+
         @Override
         public boolean mouseClicked(GuiContainer gui, int mouseX, int mouseY, int button) {
             if (canHandle(gui)) {
@@ -495,8 +495,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         @Override
-        public List<String> handleItemTooltip(
-                GuiContainer gui, ItemStack itemstack, int mouseX, int mouseY, List<String> currentTip) {
+        public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, int mouseX, int mouseY,
+                List<String> currentTip) {
             return currentTip;
         }
 
@@ -527,6 +527,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     public static class FixedPositionedStack extends PositionedStack {
+
         public static final DecimalFormat chanceFormat = new DecimalFormat("##0.##%");
         public final int mChance;
 
@@ -561,19 +562,14 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
+
         public final GT_Recipe mRecipe;
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
 
         // Draws a grid of items for NEI rendering.
-        private void drawNEIItemGrid(
-                ItemStack[] ItemArray,
-                int x_coord_origin,
-                int y_coord_origin,
-                int x_dir_max_items,
-                int y_max_dir_max_items,
-                GT_Recipe Recipe,
-                boolean is_input) {
+        private void drawNEIItemGrid(ItemStack[] ItemArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items,
+                int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
             if (ItemArray.length > x_dir_max_items * y_max_dir_max_items) {
                 GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items.");
             }
@@ -592,12 +588,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     if (is_input) {
                         mInputs.add(new FixedPositionedStack(item, x_coord, y_coord, true));
                     } else {
-                        mOutputs.add(new FixedPositionedStack(
-                                item,
-                                x_coord,
-                                y_coord,
-                                Recipe.getOutputChance(special_counter),
-                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                        mOutputs.add(
+                                new FixedPositionedStack(
+                                        item,
+                                        x_coord,
+                                        y_coord,
+                                        Recipe.getOutputChance(special_counter),
+                                        GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
                         special_counter++;
                     }
                     x_coord += 18;
@@ -671,88 +668,92 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                     ? ((GT_Recipe.GT_Recipe_WithAlt) aRecipe).getAltRepresentativeInput(i)
                                     : aRecipe.getRepresentativeInput(i);
                             if (input != null) {
-                                mInputs.add(new FixedPositionedStack(
-                                        input, widget.getPos().x + 1, widget.getPos().y + 1, true));
+                                mInputs.add(
+                                        new FixedPositionedStack(
+                                                input,
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1,
+                                                true));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == itemOutputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();
                             if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null) {
-                                mOutputs.add(new FixedPositionedStack(
-                                        aRecipe.mOutputs[i],
-                                        widget.getPos().x + 1,
-                                        widget.getPos().y + 1,
-                                        aRecipe.getOutputChance(i),
-                                        GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                                mOutputs.add(
+                                        new FixedPositionedStack(
+                                                aRecipe.mOutputs[i],
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1,
+                                                aRecipe.getOutputChance(i),
+                                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == specialSlotInventory) {
                             if (aRecipe.mSpecialItems != null) {
-                                mInputs.add(new FixedPositionedStack(
-                                        aRecipe.mSpecialItems, widget.getPos().x + 1, widget.getPos().y + 1));
+                                mInputs.add(
+                                        new FixedPositionedStack(
+                                                aRecipe.mSpecialItems,
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == fluidInputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();
-                            if (aRecipe.mFluidInputs.length > i
-                                    && aRecipe.mFluidInputs[i] != null
+                            if (aRecipe.mFluidInputs.length > i && aRecipe.mFluidInputs[i] != null
                                     && aRecipe.mFluidInputs[i].getFluid() != null) {
-                                mInputs.add(new FixedPositionedStack(
-                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true),
-                                        widget.getPos().x + 1,
-                                        widget.getPos().y + 1));
+                                mInputs.add(
+                                        new FixedPositionedStack(
+                                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true),
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == fluidOutputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();
-                            if (aRecipe.mFluidOutputs.length > i
-                                    && aRecipe.mFluidOutputs[i] != null
+                            if (aRecipe.mFluidOutputs.length > i && aRecipe.mFluidOutputs[i] != null
                                     && aRecipe.mFluidOutputs[i].getFluid() != null) {
-                                mOutputs.add(new FixedPositionedStack(
-                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true),
-                                        widget.getPos().x + 1,
-                                        widget.getPos().y + 1));
+                                mOutputs.add(
+                                        new FixedPositionedStack(
+                                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true),
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1));
                             }
                         }
                     }
                 }
 
                 // items and fluids that exceed usual count
-                UIHelper.forEachSlots(
-                        (i, backgrounds, pos) -> {
-                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount
-                                    && aRecipe.mInputs[i] != null) {
-                                mInputs.add(new FixedPositionedStack(aRecipe.mInputs[i], pos.x + 1, pos.y + 1, true));
-                            }
-                        },
-                        (i, backgrounds, pos) -> {
-                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount
-                                    && aRecipe.mOutputs[i] != null) {
-                                mOutputs.add(new FixedPositionedStack(
+                UIHelper.forEachSlots((i, backgrounds, pos) -> {
+                    if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount && aRecipe.mInputs[i] != null) {
+                        mInputs.add(new FixedPositionedStack(aRecipe.mInputs[i], pos.x + 1, pos.y + 1, true));
+                    }
+                }, (i, backgrounds, pos) -> {
+                    if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount && aRecipe.mOutputs[i] != null) {
+                        mOutputs.add(
+                                new FixedPositionedStack(
                                         aRecipe.mOutputs[i],
                                         pos.x + 1,
                                         pos.y + 1,
                                         aRecipe.getOutputChance(i),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
-                            }
-                        },
-                        (i, backgrounds, pos) -> {},
-                        (i, backgrounds, pos) -> {
-                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidInputCount()
-                                    && aRecipe.mFluidInputs[i] != null
-                                    && aRecipe.mFluidInputs[i].getFluid() != null) {
-                                mInputs.add(new FixedPositionedStack(
+                    }
+                }, (i, backgrounds, pos) -> {}, (i, backgrounds, pos) -> {
+                    if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidInputCount()
+                            && aRecipe.mFluidInputs[i] != null
+                            && aRecipe.mFluidInputs[i].getFluid() != null) {
+                        mInputs.add(
+                                new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true),
                                         pos.x + 1,
                                         pos.y + 1));
-                            }
-                        },
-                        (i, backgrounds, pos) -> {
-                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidOutputCount()
-                                    && aRecipe.mFluidOutputs[i] != null
-                                    && aRecipe.mFluidOutputs[i].getFluid() != null) {
-                                mOutputs.add(new FixedPositionedStack(
+                    }
+                }, (i, backgrounds, pos) -> {
+                    if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidOutputCount()
+                            && aRecipe.mFluidOutputs[i] != null
+                            && aRecipe.mFluidOutputs[i].getFluid() != null) {
+                        mOutputs.add(
+                                new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true),
                                         pos.x + 1,
                                         pos.y + 1));
-                            }
-                        },
+                    }
+                },
                         null,
                         null,
                         GT_NEI_DefaultHandler.this.mRecipeMap,
@@ -816,52 +817,70 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
                 }
 
-                if ((aRecipe.mFluidInputs.length > 0)
-                        && (aRecipe.mFluidInputs[0] != null)
+                if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null)
                         && (aRecipe.mFluidInputs[0].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
-                    if ((aRecipe.mFluidInputs.length > 1)
-                            && (aRecipe.mFluidInputs[1] != null)
+                    this.mInputs.add(
+                            new FixedPositionedStack(
+                                    GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true),
+                                    48,
+                                    52));
+                    if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null)
                             && (aRecipe.mFluidInputs[1].getFluid() != null)) {
-                        this.mInputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
+                        this.mInputs.add(
+                                new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true),
+                                        30,
+                                        52));
                     }
                 }
 
                 if (aRecipe.mFluidOutputs.length > 1) {
                     if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+                        this.mOutputs.add(
+                                new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true),
+                                        120,
+                                        5));
                     }
                     if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+                        this.mOutputs.add(
+                                new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true),
+                                        138,
+                                        5));
                     }
-                    if (aRecipe.mFluidOutputs.length > 2
-                            && aRecipe.mFluidOutputs[2] != null
+                    if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null
                             && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
+                        this.mOutputs.add(
+                                new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true),
+                                        102,
+                                        23));
                     }
-                    if (aRecipe.mFluidOutputs.length > 3
-                            && aRecipe.mFluidOutputs[3] != null
+                    if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null
                             && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
+                        this.mOutputs.add(
+                                new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true),
+                                        120,
+                                        23));
                     }
-                    if (aRecipe.mFluidOutputs.length > 4
-                            && aRecipe.mFluidOutputs[4] != null
+                    if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null
                             && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
+                        this.mOutputs.add(
+                                new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true),
+                                        138,
+                                        23));
                     }
-                } else if ((aRecipe.mFluidOutputs.length > 0)
-                        && (aRecipe.mFluidOutputs[0] != null)
+                } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null)
                         && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
-                }
+                            this.mOutputs.add(
+                                    new FixedPositionedStack(
+                                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true),
+                                            102,
+                                            52));
+                        }
             }
         }
 
@@ -887,6 +906,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private class SortedRecipeListCache {
+
         private int mCachedRecipesVersion = -1;
 
         @Nullable
@@ -923,8 +943,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             // Holds 16 elements without rehashing
             mTierIndexes = new HashMap<>(GT_Values.V.length + 1, 1f);
             assert mCachedRecipes != null;
-            Iterator<CachedDefaultRecipe> iterator =
-                    Objects.requireNonNull(mCachedRecipes.get()).iterator();
+            Iterator<CachedDefaultRecipe> iterator = Objects.requireNonNull(mCachedRecipes.get()).iterator();
 
             int index = 0;
             int minIndex = 0;
@@ -933,8 +952,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             byte lowestTier = 0;
             while (iterator.hasNext()) {
                 CachedDefaultRecipe recipe = iterator.next();
-                byte recipeTier =
-                        GT_Utility.getTier(recipe.mRecipe.mEUt / GT_NEI_DefaultHandler.this.mRecipeMap.mAmperage);
+                byte recipeTier = GT_Utility
+                        .getTier(recipe.mRecipe.mEUt / GT_NEI_DefaultHandler.this.mRecipeMap.mAmperage);
                 if (recipeTier != previousTier) {
                     if (maxIndex != -1) {
                         mTierIndexes.put(previousTier, Range.between(minIndex, maxIndex));

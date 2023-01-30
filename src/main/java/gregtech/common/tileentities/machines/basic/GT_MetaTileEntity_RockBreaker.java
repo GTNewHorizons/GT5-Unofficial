@@ -2,6 +2,9 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -12,10 +15,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachine {
+
     public GT_MetaTileEntity_RockBreaker(int aID, String aName, String aNameRegional, int aTier) {
         super(
                 aID,
@@ -30,73 +32,49 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
                 "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW)
-                                .glow()
-                                .build()));
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow().build()));
     }
 
-    public GT_MetaTileEntity_RockBreaker(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GT_MetaTileEntity_RockBreaker(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
-    public GT_MetaTileEntity_RockBreaker(
-            String aName,
-            int aTier,
-            String[] aDescription,
-            ITexture[][][] aTextures,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_RockBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_RockBreaker(
-                this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
     @Override
@@ -105,8 +83,8 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
     }
 
     @Override
-    protected boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
                 && getRecipeList().containsInput(aStack);
     }
@@ -130,12 +108,13 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
                     || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.lava)
                     || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.lava)
                     || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.lava)) {
-                tOutput = new ItemStack(Blocks.cobblestone, 1);
-            }
+                        tOutput = new ItemStack(Blocks.cobblestone, 1);
+                    }
             if (tOutput != null) {
                 if (GT_Utility.areStacksEqual(getStackInSlot(getCircuitSlot()), GT_Utility.getIntegratedCircuit(1))) {
                     if (GT_Utility.areStacksEqual(
-                            getInputAt(0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                            getInputAt(0),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                         tOutput = new ItemStack(Blocks.obsidian, 1);
                         if (canOutput(tOutput)) {
                             getInputAt(0).stackSize -= 1;

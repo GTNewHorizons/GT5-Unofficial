@@ -1,13 +1,15 @@
 package gregtech.common.tools.pocket;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.behaviors.Behaviour_Switch_Metadata;
 import gregtech.common.tools.GT_Tool_Knife;
-import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Pocket_Knife extends GT_Tool_Knife {
+
     public final int mSwitchIndex;
 
     public GT_Tool_Pocket_Knife(int aSwitchIndex) {

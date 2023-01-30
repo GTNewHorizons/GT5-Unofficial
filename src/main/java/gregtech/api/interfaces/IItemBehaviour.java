@@ -1,8 +1,7 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.enums.SubTag;
-import gregtech.api.items.GT_MetaBase_Item;
 import java.util.List;
+
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,34 +11,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.SubTag;
+import gregtech.api.items.GT_MetaBase_Item;
+
 public interface IItemBehaviour<E extends Item> {
+
     boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
-    boolean onItemUse(
-            E aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ);
+    boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide,
+            float hitX, float hitY, float hitZ);
 
-    boolean onItemUseFirst(
-            E aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ);
+    boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+            int aSide, float hitX, float hitY, float hitZ);
 
     ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
 
@@ -55,9 +38,9 @@ public interface IItemBehaviour<E extends Item> {
 
     boolean hasProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack);
 
-    EntityArrow getProjectile(
-            E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY, double aZ);
+    EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
+            double aZ);
 
-    EntityArrow getProjectile(
-            E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity, float aSpeed);
+    EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
+            float aSpeed);
 }

@@ -1,26 +1,28 @@
 package gregtech.common.gui.modularui.widget;
 
+import org.lwjgl.opengl.GL11;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.modularui.GT_UITextures;
-import org.lwjgl.opengl.GL11;
 
 /**
- * Fires click action on mouse release, not on press.
- * Draws different backgrounds depending on whether the mouse is being pressed or the widget is hovered.
+ * Fires click action on mouse release, not on press. Draws different backgrounds depending on whether the mouse is
+ * being pressed or the widget is hovered.
  */
 public class CoverCycleButtonWidget extends CycleButtonWidget {
 
-    private static final UITexture BUTTON_NORMAL_NOT_PRESSED =
-            GT_UITextures.BUTTON_COVER_NORMAL.getSubArea(0, 0, 1, 0.5f);
+    private static final UITexture BUTTON_NORMAL_NOT_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL
+            .getSubArea(0, 0, 1, 0.5f);
     private static final UITexture BUTTON_NORMAL_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL.getSubArea(0, 0.5f, 1, 1);
-    private static final UITexture BUTTON_HOVERED_NOT_PRESSED =
-            GT_UITextures.BUTTON_COVER_NORMAL_HOVERED.getSubArea(0, 0, 1, 0.5f);
-    private static final UITexture BUTTON_HOVERED_PRESSED =
-            GT_UITextures.BUTTON_COVER_NORMAL_HOVERED.getSubArea(0, 0.5f, 1, 1);
+    private static final UITexture BUTTON_HOVERED_NOT_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL_HOVERED
+            .getSubArea(0, 0, 1, 0.5f);
+    private static final UITexture BUTTON_HOVERED_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL_HOVERED
+            .getSubArea(0, 0.5f, 1, 1);
 
     private boolean clickPressed;
 
@@ -74,15 +76,15 @@ public class CoverCycleButtonWidget extends CycleButtonWidget {
     public IDrawable[] getBackground() {
         if (isHovering()) {
             if (clickPressed) {
-                return new IDrawable[] {BUTTON_HOVERED_PRESSED};
+                return new IDrawable[] { BUTTON_HOVERED_PRESSED };
             } else {
-                return new IDrawable[] {BUTTON_HOVERED_NOT_PRESSED};
+                return new IDrawable[] { BUTTON_HOVERED_NOT_PRESSED };
             }
         } else {
             if (clickPressed) {
-                return new IDrawable[] {BUTTON_NORMAL_PRESSED};
+                return new IDrawable[] { BUTTON_NORMAL_PRESSED };
             } else {
-                return new IDrawable[] {BUTTON_NORMAL_NOT_PRESSED};
+                return new IDrawable[] { BUTTON_NORMAL_NOT_PRESSED };
             }
         }
     }

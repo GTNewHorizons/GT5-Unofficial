@@ -2,18 +2,6 @@ package gregtech.common.render;
 
 import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
-import gregtech.GT_Mod;
-import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.LightingHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,20 +12,30 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+
+import gregtech.GT_Mod;
+import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.LightingHelper;
+
 public class GT_RenderedTexture extends GT_TextureBase implements ITexture, IColorModulationContainer {
+
     protected final IIconContainer mIconContainer;
     private final short[] mRGBa;
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
 
-    protected GT_RenderedTexture(
-            IIconContainer aIcon,
-            short[] aRGBa,
-            boolean allowAlpha,
-            boolean glow,
-            boolean stdOrient,
-            boolean extFacing) {
+    protected GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
+            boolean stdOrient, boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
@@ -214,8 +212,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
     /**
      * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYNeg(
-            RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceYNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
+            ExtendedFacing extendedFacing) {
 
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
             case COUNTER_CLOCKWISE:
@@ -240,7 +238,9 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
                 z,
                 useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped
                         ? new GT_IconFlipped(
-                                icon, aFlip.isHorizontallyFlipped() ^ !stdOrient, aFlip.isVerticallyFliped())
+                                icon,
+                                aFlip.isHorizontallyFlipped() ^ !stdOrient,
+                                aFlip.isVerticallyFliped())
                         : new GT_IconFlipped(icon, !stdOrient, false));
         aRenderer.uvRotateBottom = 0;
     }
@@ -248,8 +248,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
     /**
      * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYPos(
-            RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceYPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
+            ExtendedFacing extendedFacing) {
 
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
             case COUNTER_CLOCKWISE:
@@ -279,10 +279,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
     }
 
     /**
-     * Renders the given texture to the north (z-negative) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the north (z-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZNeg(
-            RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceZNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
+            ExtendedFacing extendedFacing) {
         aRenderer.field_152631_f = true;
         // **NOT A BUG**: aRenderer.uvRotateEast REALLY CONTROLS THE ROTATION OF THE NORTH SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
@@ -314,10 +314,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
     }
 
     /**
-     * Renders the given texture to the south (z-positive) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the south (z-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZPos(
-            RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceZPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
+            ExtendedFacing extendedFacing) {
         // **NOT A BUG**: aRenderer.uvRotateWest REALLY CONTROLS THE ROTATION OF THE SOUTH SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
             case COUNTER_CLOCKWISE:
@@ -347,10 +347,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
     }
 
     /**
-     * Renders the given texture to the west (x-negative) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the west (x-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXNeg(
-            RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceXNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
+            ExtendedFacing extendedFacing) {
         // **NOT A BUG**: aRenderer.uvRotateNorth REALLY CONTROLS THE ROTATION OF THE WEST SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
             case COUNTER_CLOCKWISE:
@@ -380,10 +380,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
     }
 
     /**
-     * Renders the given texture to the east (x-positive) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the east (x-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXPos(
-            RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceXPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
+            ExtendedFacing extendedFacing) {
         aRenderer.field_152631_f = true;
         // **NOT A BUG**: aRenderer.uvRotateSouth REALLY CONTROLS THE ROTATION OF THE EAST SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
@@ -427,8 +427,7 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             if (meta instanceof IAlignmentProvider) {
                 alignment = ((IAlignmentProvider) meta).getAlignment();
             } else if (meta != null) {
-                return ExtendedFacing.of(ForgeDirection.getOrientation(
-                        meta.getBaseMetaTileEntity().getFrontFacing()));
+                return ExtendedFacing.of(ForgeDirection.getOrientation(meta.getBaseMetaTileEntity().getFrontFacing()));
             }
         } else if (te instanceof IAlignmentProvider) {
             alignment = ((IAlignmentProvider) te).getAlignment();

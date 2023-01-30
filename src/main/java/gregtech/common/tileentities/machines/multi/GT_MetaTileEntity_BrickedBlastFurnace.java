@@ -1,5 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Keyboard;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SteamVariant;
@@ -11,23 +16,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
 
 public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace
         implements ISecondaryDescribable {
-    private static final ITexture[] FACING_SIDE = {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS)};
+
+    private static final ITexture[] FACING_SIDE = { TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS) };
     private static final ITexture[] FACING_FRONT = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE)
-    };
+            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE) };
     private static final ITexture[] FACING_ACTIVE = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE),
-        TextureFactory.builder()
-                .addIcon(BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW)
-                .glow()
-                .build()
-    };
+            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE), TextureFactory.builder()
+                    .addIcon(BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW).glow().build() };
     private GT_Multiblock_Tooltip_Builder tooltipBuilder;
 
     public GT_MetaTileEntity_BrickedBlastFurnace(int aID, String aName, String aNameRegional) {
@@ -59,32 +57,22 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     protected GT_Multiblock_Tooltip_Builder getTooltip() {
         if (tooltipBuilder == null) {
             tooltipBuilder = new GT_Multiblock_Tooltip_Builder();
-            tooltipBuilder
-                    .addMachineType("Blast Furnace")
-                    .addInfo("Controller Block for the Bricked Blast Furnace")
+            tooltipBuilder.addMachineType("Blast Furnace").addInfo("Controller Block for the Bricked Blast Furnace")
                     .addInfo("Usable for Steel and general Pyrometallurgy")
                     .addInfo("Has a useful interface, unlike other gregtech multis")
-                    .addPollutionAmount(GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
-                    .addSeparator()
-                    .beginStructureBlock(3, 4, 3, true)
-                    .addController("Front center")
+                    .addPollutionAmount(GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond).addSeparator()
+                    .beginStructureBlock(3, 4, 3, true).addController("Front center")
                     .addOtherStructurePart("Firebricks", "Everything except the controller")
                     .addStructureInfo("The top block is also empty")
                     .addStructureInfo("You can share the walls of GT multis, so")
-                    .addStructureInfo("each additional one costs less, up to 4")
-                    .toolTipFinisher("Gregtech");
+                    .addStructureInfo("each additional one costs less, up to 4").toolTipFinisher("Gregtech");
         }
         return tooltipBuilder;
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return aActive ? FACING_ACTIVE : FACING_FRONT;
         }

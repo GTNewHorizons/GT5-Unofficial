@@ -11,8 +11,8 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 public interface IControlsWorkCover {
 
     /**
-     * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity
-     * TODO this is a migration thing. Remove this after 2.3.0 is released.
+     * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity TODO this is a migration thing. Remove this
+     * after 2.3.0 is released.
      *
      * @return true if the cover is the first (side) one
      **/

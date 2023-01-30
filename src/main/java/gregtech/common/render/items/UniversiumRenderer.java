@@ -1,10 +1,5 @@
 package gregtech.common.render.items;
 
-import codechicken.lib.render.TextureUtils;
-import gregtech.api.enums.ItemList;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -17,9 +12,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
+import codechicken.lib.render.TextureUtils;
+import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.common.render.GT_RenderUtil;
 
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
@@ -38,7 +40,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
         magicRenderMethod(
-                type, ItemList.Emitter_UEV.get(1), aStack.getItem().getIconFromDamage(aStack.getItemDamage()), data);
+                type,
+                ItemList.Emitter_UEV.get(1),
+                aStack.getItem().getIconFromDamage(aStack.getItemDamage()),
+                data);
         return true;
     }
 
@@ -207,7 +212,14 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
             // RENDER ITEM IN HAND
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
+                    Tessellator.instance,
+                    f1,
+                    f2,
+                    f,
+                    f3,
+                    icon.getIconWidth(),
+                    icon.getIconHeight(),
+                    scale);
         }
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);

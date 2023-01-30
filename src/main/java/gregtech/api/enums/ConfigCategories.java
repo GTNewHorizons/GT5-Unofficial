@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 public enum ConfigCategories {
+
     news,
     general,
     machineconfig,
@@ -15,8 +16,7 @@ public enum ConfigCategories {
         heatdamage,
         oreprocessingoutputmultiplier,
         blastfurnacerequirements,
-        blastinductionsmelter,
-        ;
+        blastinductionsmelter,;
     }
 
     public enum Recipes {

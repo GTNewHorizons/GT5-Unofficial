@@ -4,6 +4,7 @@ package gregtech.api.enums;
  * Enumerates known EntityFX particles
  */
 public enum ParticleFX {
+
     HUGE_EXPLOSION("hugeexplosion"),
     LARGE_EXPLODE("largeexplode"),
     FIREWORKS_SPARK("fireworksSpark"),

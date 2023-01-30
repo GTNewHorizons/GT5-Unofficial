@@ -4,6 +4,32 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.NBT;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.input.Keyboard;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -27,6 +53,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TabButton;
 import com.gtnewhorizons.modularui.common.widget.TabContainer;
+
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -48,39 +75,11 @@ import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.input.Keyboard;
 
 public abstract class MultiBlockController<T extends MultiBlockController<T>> extends MultiTileBasicMachine
-        implements IAlignment,
-                IConstructable,
-                IMultiBlockController,
-                IDescribable,
-                IMachineProgress,
-                IMultiBlockFluidHandler,
-                IMultiBlockInventory,
-                IMTE_AddToolTips {
+        implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMachineProgress,
+        IMultiBlockFluidHandler, IMultiBlockInventory, IMTE_AddToolTips {
+
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
 
     protected BuildState buildState = new BuildState();
@@ -95,7 +94,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 
     // A list of sides
-    //   Each side has a list of parts that have a cover that need to be ticked
+    // Each side has a list of parts that have a cover that need to be ticked
     protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredCoveredParts = Arrays.asList(
             new LinkedList<>(),
             new LinkedList<>(),
@@ -106,6 +105,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     /** Registry ID of the required casing */
     public abstract short getCasingRegistryID();
+
     /** Meta ID of the required casing */
     public abstract short getCasingMeta();
 
@@ -120,9 +120,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public abstract Vec3Impl getStartingStructureOffset();
 
     /**
-     * Due to limitation of Java type system, you might need to do an unchecked cast.
-     * HOWEVER, the returned IStructureDefinition is expected to be evaluated against current instance only, and should
-     * not be used against other instances, even for those of the same class.
+     * Due to limitation of Java type system, you might need to do an unchecked cast. HOWEVER, the returned
+     * IStructureDefinition is expected to be evaluated against current instance only, and should not be used against
+     * other instances, even for those of the same class.
      */
     public abstract IStructureDefinition<T> getStructureDefinition();
 
@@ -151,7 +151,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
 
-        // Multiblock inventories are a collection of inventories.  The first inventory is the default internal
+        // Multiblock inventories are a collection of inventories. The first inventory is the default internal
         // inventory,
         // and the others are added by inventory extending blocks.
         if (mInputInventory != null) multiBlockInputInventory.put("controller", mInputInventory);
@@ -217,53 +217,47 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      * <p>
      * Imagine you stand in front of the controller, with controller facing towards you not rotated or flipped.
      * <p>
-     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller itself.
-     * The verticalOffset would be the number of blocks on the top side of the controller, not counting controller itself.
-     * The depthOffset would be the number of blocks between you and controller, not counting controller itself.
+     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller
+     * itself. The verticalOffset would be the number of blocks on the top side of the controller, not counting
+     * controller itself. The depthOffset would be the number of blocks between you and controller, not counting
+     * controller itself.
      * <p>
      * All these offsets can be negative.
      */
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
-        return getCastedStructureDefinition()
-                .check(
-                        this,
-                        piece,
-                        getWorld(),
-                        getExtendedFacing(),
-                        getXCoord(),
-                        getYCoord(),
-                        getZCoord(),
-                        horizontalOffset,
-                        verticalOffset,
-                        depthOffset,
-                        !mStructureOkay);
+        return getCastedStructureDefinition().check(
+                this,
+                piece,
+                getWorld(),
+                getExtendedFacing(),
+                getXCoord(),
+                getYCoord(),
+                getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                !mStructureOkay);
     }
 
     public final boolean buildPiece(String piece, ItemStack trigger, boolean hintsOnly, Vec3Impl offset) {
         return buildPiece(piece, trigger, hintsOnly, offset.get0(), offset.get1(), offset.get2());
     }
 
-    protected final boolean buildPiece(
-            String piece,
-            ItemStack trigger,
-            boolean hintOnly,
-            int horizontalOffset,
-            int verticalOffset,
-            int depthOffset) {
-        return getCastedStructureDefinition()
-                .buildOrHints(
-                        this,
-                        trigger,
-                        piece,
-                        getWorld(),
-                        getExtendedFacing(),
-                        getXCoord(),
-                        getYCoord(),
-                        getZCoord(),
-                        horizontalOffset,
-                        verticalOffset,
-                        depthOffset,
-                        hintOnly);
+    protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
+            int verticalOffset, int depthOffset) {
+        return getCastedStructureDefinition().buildOrHints(
+                this,
+                trigger,
+                piece,
+                getWorld(),
+                getExtendedFacing(),
+                getXCoord(),
+                getYCoord(),
+                getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                hintOnly);
     }
 
     @SuppressWarnings("unchecked")
@@ -287,7 +281,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 StructureLibAPI.sendAlignment(
                         this,
                         new NetworkRegistry.TargetPoint(
-                                getWorld().provider.dimensionId, getXCoord(), getYCoord(), getZCoord(), 512));
+                                getWorld().provider.dimensionId,
+                                getXCoord(),
+                                getYCoord(),
+                                getZCoord(),
+                                512));
             } else {
                 issueTextureUpdate();
             }
@@ -295,8 +293,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public boolean onWrenchRightClick(
-            EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX, float aY,
+            float aZ) {
         if (wrenchSide != getFrontFacing())
             return super.onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
@@ -486,6 +484,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     public static class BuildState {
+
         /**
          * Utility class to keep track of the build state of a multiblock
          */
@@ -535,7 +534,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     public <S> IStructureElement<S> addMultiTileCasing(int aRegistryID, int aBlockMeta, int aModes) {
         return new IStructureElement<S>() {
-            private final short[] DEFAULT = new short[] {255, 255, 255, 0};
+
+            private final short[] DEFAULT = new short[] { 255, 255, 255, 0 };
             private IIcon[] mIcons = null;
 
             @Override
@@ -559,22 +559,22 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 if (mIcons == null) {
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon());
-                    //                    Arrays.fill(mIcons, getTexture(aCasing);
-                    //                    for (byte i : ALL_VALID_SIDES) {
-                    //                        mIcons[i] = aCasing.getIcon(i, aMeta);
-                    //                    }
+                    // Arrays.fill(mIcons, getTexture(aCasing);
+                    // for (byte i : ALL_VALID_SIDES) {
+                    // mIcons[i] = aCasing.getIcon(i, aMeta);
+                    // }
                 }
                 final short[] RGBA = DEFAULT;
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, RGBA);
-                //                StructureLibAPI.hintParticle(world, x, y, z, aCasing, aMeta);
+                // StructureLibAPI.hintParticle(world, x, y, z, aCasing, aMeta);
                 return true;
             }
 
             @Override
             public boolean placeBlock(S t, World world, int x, int y, int z, ItemStack trigger) {
                 final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRegistryID);
-                final MultiTileEntityContainer tContainer =
-                        tRegistry.getNewTileEntityContainer(world, x, y, z, aBlockMeta, null);
+                final MultiTileEntityContainer tContainer = tRegistry
+                        .getNewTileEntityContainer(world, x, y, z, aBlockMeta, null);
                 if (tContainer == null) {
                     GT_FML_LOGGER.error("NULL CONTAINER");
                     return false;
@@ -627,10 +627,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public FluidStack drain(MultiBlockPart aPart, ForgeDirection aDirection, FluidStack aFluid, boolean aDoDrain) {
         if (aFluid == null || aFluid.amount <= 0) return null;
         final IFluidTank tTank = getFluidTankDrainable(aPart, (byte) aDirection.ordinal(), aFluid);
-        if (tTank == null
-                || tTank.getFluid() == null
+        if (tTank == null || tTank.getFluid() == null
                 || tTank.getFluidAmount() == 0
-                || !tTank.getFluid().isFluidEqual(aFluid)) return null;
+                || !tTank.getFluid().isFluidEqual(aFluid))
+            return null;
         final FluidStack rDrained = tTank.drain(aFluid.amount, aDoDrain);
         if (rDrained != null && aDoDrain) markInventoryBeenModified();
         return rDrained;
@@ -873,14 +873,14 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();
-        ;
+        final IItemHandlerModifiable inv = tInv.getLeft();;
 
-        return inv.getStackInSlot(tSlot) == null
-                || GT_Utility.areStacksEqual(
-                        aStack,
-                        inv.getStackInSlot(
-                                tSlot)); // && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack)
+        return inv.getStackInSlot(tSlot) == null || GT_Utility.areStacksEqual(aStack, inv.getStackInSlot(tSlot)); // &&
+                                                                                                                  // allowPutStack(getBaseMetaTileEntity(),
+                                                                                                                  // aIndex,
+                                                                                                                  // (byte)
+                                                                                                                  // aSide,
+                                                                                                                  // aStack)
     }
 
     @Override
@@ -889,11 +889,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();
-        ;
+        final IItemHandlerModifiable inv = tInv.getLeft();;
 
-        return inv.getStackInSlot(tSlot)
-                != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+        return inv.getStackInSlot(tSlot) != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide,
+                                                  // aStack);
     }
 
     @Override
@@ -1054,76 +1053,81 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(148, 60));
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(148, 60));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new TabContainer()
-                        .setButtonSize(20, 24)
-                        .addTabButton(new TabButton(0)
-                                .setBackground(
-                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                .setBackground(
-                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                .addTooltip(getLocalName())
-                                .setPos(0, -20))
-                        .addTabButton(new TabButton(1)
-                                .setBackground(
-                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                .setBackground(
-                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                .setPos(20, -20))
-                        .addTabButton(new TabButton(2)
-                                .setBackground(
-                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                .setBackground(
-                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                .setPos(40, -20))
-                        .addTabButton(new TabButton(3)
-                                .setBackground(
-                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                .setBackground(
-                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                .setPos(60, -20))
-                        .addTabButton(new TabButton(4)
-                                .setBackground(
-                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                .setBackground(
-                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                .setPos(80, -20))
-                        .addPage(new MultiChildWidget()
-                                .addChild(new DrawableWidget()
-                                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                                        .setPos(7, 4)
-                                        .setSize(160, 75)))
+        builder.widget(
+                new TabContainer()
+                        .setButtonSize(
+                                20,
+                                24)
+                        .addTabButton(
+                                new TabButton(0)
+                                        .setBackground(
+                                                false,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                        .setBackground(
+                                                true,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                        .addTooltip(getLocalName()).setPos(0, -20))
+                        .addTabButton(
+                                new TabButton(1)
+                                        .setBackground(
+                                                false,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                        .setBackground(
+                                                true,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                        .setPos(20, -20))
+                        .addTabButton(
+                                new TabButton(2)
+                                        .setBackground(
+                                                false,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                        .setBackground(
+                                                true,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                        .setPos(40, -20))
+                        .addTabButton(
+                                new TabButton(3)
+                                        .setBackground(
+                                                false,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                        .setBackground(
+                                                true,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                        .setPos(60, -20))
+                        .addTabButton(
+                                new TabButton(4)
+                                        .setBackground(
+                                                false,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                        .setBackground(
+                                                true,
+                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                        .setPos(80, -20))
+                        .addPage(
+                                new MultiChildWidget().addChild(
+                                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                                .setPos(7, 4).setSize(160, 75)))
                         .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
                         .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI()))
                         .addPage(new MultiChildWidget().addChild(getFluidInventoryInputGUI()))
                         .addPage(new MultiChildWidget().addChild(getFluidInventoryOutputGUI())))
-                .widget(new ItemDrawable(getStackForm(1))
-                        .asWidget()
-                        .setSize(16, 16)
-                        .setPos(2, -16))
-                .widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_ITEM_IN)
-                        .setSize(16, 16)
-                        .setPos(22, -16))
-                .widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_ITEM_OUT)
-                        .setSize(16, 16)
-                        .setPos(42, -16))
-                .widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_FLUID_IN)
-                        .setSize(16, 16)
-                        .setPos(62, -16))
-                .widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_FLUID_OUT)
-                        .setSize(16, 16)
-                        .setPos(82, -16));
+                .widget(new ItemDrawable(getStackForm(1)).asWidget().setSize(16, 16).setPos(2, -16))
+                .widget(new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_IN).setSize(16, 16).setPos(22, -16))
+                .widget(
+                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_OUT).setSize(16, 16)
+                                .setPos(42, -16))
+                .widget(
+                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_IN).setSize(16, 16)
+                                .setPos(62, -16))
+                .widget(
+                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_OUT).setSize(16, 16)
+                                .setPos(82, -16));
     }
 
     protected Widget getItemInventoryInputGUI() {
@@ -1132,9 +1136,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
             final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(new SlotWidget(inv, rows * 4 + column)
-                        .setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
+                scrollable
+                        .widget(new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18).setSize(18, 18));
             }
         }
         return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
@@ -1146,9 +1149,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
             final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(new SlotWidget(inv, rows * 4 + column)
-                        .setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
+                scrollable
+                        .widget(new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18).setSize(18, 18));
             }
         }
         return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);

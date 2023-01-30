@@ -1,13 +1,15 @@
 package gregtech.loaders.postload.recipes;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class BenderRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addBenderRecipe(
@@ -175,7 +177,10 @@ public class BenderRecipes implements Runnable {
 
         // cell, bucket, food can
         GT_Values.RA.addBenderRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 12L), ItemList.Cell_Empty.get(6L), 1200, 8);
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 12L),
+                ItemList.Cell_Empty.get(6L),
+                1200,
+                8);
         GT_Values.RA.addBenderRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 12L),
                 ItemList.Cell_Empty.get(12L),

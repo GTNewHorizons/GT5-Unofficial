@@ -1,5 +1,8 @@
 package gregtech.loaders.postload;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
@@ -7,8 +10,6 @@ import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.GT_Worldgen_Stone;
 import gregtech.common.GT_Worldgenerator;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 
 public class GT_Worldgenloader implements Runnable {
 
@@ -149,9 +150,31 @@ public class GT_Worldgenloader implements Runnable {
                 false);
 
         new GT_Worldgen_Stone(
-                "overworld.stone.marble.tiny", true, GregTech_API.sBlockStones, 0, 0, 1, 75, 5, 0, 180, null, false);
+                "overworld.stone.marble.tiny",
+                true,
+                GregTech_API.sBlockStones,
+                0,
+                0,
+                1,
+                75,
+                5,
+                0,
+                180,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "overworld.stone.marble.small", true, GregTech_API.sBlockStones, 0, 0, 1, 100, 10, 0, 180, null, false);
+                "overworld.stone.marble.small",
+                true,
+                GregTech_API.sBlockStones,
+                0,
+                0,
+                1,
+                100,
+                10,
+                0,
+                180,
+                null,
+                false);
         new GT_Worldgen_Stone(
                 "overworld.stone.marble.medium",
                 true,
@@ -166,14 +189,58 @@ public class GT_Worldgenloader implements Runnable {
                 null,
                 false);
         new GT_Worldgen_Stone(
-                "overworld.stone.marble.large", true, GregTech_API.sBlockStones, 0, 0, 1, 300, 70, 0, 120, null, false);
+                "overworld.stone.marble.large",
+                true,
+                GregTech_API.sBlockStones,
+                0,
+                0,
+                1,
+                300,
+                70,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "overworld.stone.marble.huge", true, GregTech_API.sBlockStones, 0, 0, 1, 400, 150, 0, 120, null, false);
+                "overworld.stone.marble.huge",
+                true,
+                GregTech_API.sBlockStones,
+                0,
+                0,
+                1,
+                400,
+                150,
+                0,
+                120,
+                null,
+                false);
 
         new GT_Worldgen_Stone(
-                "overworld.stone.basalt.tiny", true, GregTech_API.sBlockStones, 8, 0, 1, 75, 5, 0, 180, null, false);
+                "overworld.stone.basalt.tiny",
+                true,
+                GregTech_API.sBlockStones,
+                8,
+                0,
+                1,
+                75,
+                5,
+                0,
+                180,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "overworld.stone.basalt.small", true, GregTech_API.sBlockStones, 8, 0, 1, 100, 10, 0, 180, null, false);
+                "overworld.stone.basalt.small",
+                true,
+                GregTech_API.sBlockStones,
+                8,
+                0,
+                1,
+                100,
+                10,
+                0,
+                180,
+                null,
+                false);
         new GT_Worldgen_Stone(
                 "overworld.stone.basalt.medium",
                 true,
@@ -188,9 +255,31 @@ public class GT_Worldgenloader implements Runnable {
                 null,
                 false);
         new GT_Worldgen_Stone(
-                "overworld.stone.basalt.large", true, GregTech_API.sBlockStones, 8, 0, 1, 300, 70, 0, 120, null, false);
+                "overworld.stone.basalt.large",
+                true,
+                GregTech_API.sBlockStones,
+                8,
+                0,
+                1,
+                300,
+                70,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "overworld.stone.basalt.huge", true, GregTech_API.sBlockStones, 8, 0, 1, 400, 150, 0, 120, null, false);
+                "overworld.stone.basalt.huge",
+                true,
+                GregTech_API.sBlockStones,
+                8,
+                0,
+                1,
+                400,
+                150,
+                0,
+                120,
+                null,
+                false);
 
         new GT_Worldgen_Stone(
                 "nether.stone.blackgranite.tiny",
@@ -325,58 +414,333 @@ public class GT_Worldgenloader implements Runnable {
                 false);
 
         new GT_Worldgen_Stone(
-                "nether.stone.marble.tiny", false, GregTech_API.sBlockStones, 0, -1, 1, 50, 45, 0, 120, null, false);
+                "nether.stone.marble.tiny",
+                false,
+                GregTech_API.sBlockStones,
+                0,
+                -1,
+                1,
+                50,
+                45,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.marble.small", false, GregTech_API.sBlockStones, 0, -1, 1, 100, 60, 0, 120, null, false);
+                "nether.stone.marble.small",
+                false,
+                GregTech_API.sBlockStones,
+                0,
+                -1,
+                1,
+                100,
+                60,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.marble.medium", false, GregTech_API.sBlockStones, 0, -1, 1, 200, 80, 0, 120, null, false);
+                "nether.stone.marble.medium",
+                false,
+                GregTech_API.sBlockStones,
+                0,
+                -1,
+                1,
+                200,
+                80,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.marble.large", false, GregTech_API.sBlockStones, 0, -1, 1, 300, 70, 0, 120, null, false);
+                "nether.stone.marble.large",
+                false,
+                GregTech_API.sBlockStones,
+                0,
+                -1,
+                1,
+                300,
+                70,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.marble.huge", false, GregTech_API.sBlockStones, 0, -1, 1, 400, 150, 0, 120, null, false);
+                "nether.stone.marble.huge",
+                false,
+                GregTech_API.sBlockStones,
+                0,
+                -1,
+                1,
+                400,
+                150,
+                0,
+                120,
+                null,
+                false);
 
         new GT_Worldgen_Stone(
-                "nether.stone.basalt.tiny", false, GregTech_API.sBlockStones, 8, -1, 1, 50, 45, 0, 120, null, false);
+                "nether.stone.basalt.tiny",
+                false,
+                GregTech_API.sBlockStones,
+                8,
+                -1,
+                1,
+                50,
+                45,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.basalt.small", false, GregTech_API.sBlockStones, 8, -1, 1, 100, 60, 0, 120, null, false);
+                "nether.stone.basalt.small",
+                false,
+                GregTech_API.sBlockStones,
+                8,
+                -1,
+                1,
+                100,
+                60,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.basalt.medium", false, GregTech_API.sBlockStones, 8, -1, 1, 200, 80, 0, 120, null, false);
+                "nether.stone.basalt.medium",
+                false,
+                GregTech_API.sBlockStones,
+                8,
+                -1,
+                1,
+                200,
+                80,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.basalt.large", false, GregTech_API.sBlockStones, 8, -1, 1, 300, 70, 0, 120, null, false);
+                "nether.stone.basalt.large",
+                false,
+                GregTech_API.sBlockStones,
+                8,
+                -1,
+                1,
+                300,
+                70,
+                0,
+                120,
+                null,
+                false);
         new GT_Worldgen_Stone(
-                "nether.stone.basalt.huge", false, GregTech_API.sBlockStones, 8, -1, 1, 400, 150, 0, 120, null, false);
+                "nether.stone.basalt.huge",
+                false,
+                GregTech_API.sBlockStones,
+                8,
+                -1,
+                1,
+                400,
+                150,
+                0,
+                120,
+                null,
+                false);
 
         // GT Default Small Ores
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.copper", true, 60, 180, 32, true, true, true, true, true, false, Materials.Copper);
+                "ore.small.copper",
+                true,
+                60,
+                180,
+                32,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                Materials.Copper);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.tin", true, 80, 220, 32, true, true, true, true, true, true, Materials.Tin);
+                "ore.small.tin",
+                true,
+                80,
+                220,
+                32,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                Materials.Tin);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.bismuth", true, 80, 120, 8, false, true, false, true, true, false, Materials.Bismuth);
+                "ore.small.bismuth",
+                true,
+                80,
+                120,
+                8,
+                false,
+                true,
+                false,
+                true,
+                true,
+                false,
+                Materials.Bismuth);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.coal", true, 120, 250, 24, true, false, false, false, false, false, Materials.Coal);
+                "ore.small.coal",
+                true,
+                120,
+                250,
+                24,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                Materials.Coal);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.iron", true, 40, 100, 16, true, true, true, true, true, false, Materials.Iron);
+                "ore.small.iron",
+                true,
+                40,
+                100,
+                16,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                Materials.Iron);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.lead", true, 40, 180, 16, false, true, true, true, true, true, Materials.Lead);
+                "ore.small.lead",
+                true,
+                40,
+                180,
+                16,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                Materials.Lead);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.zinc", true, 80, 210, 24, true, true, true, true, true, false, Materials.Zinc);
+                "ore.small.zinc",
+                true,
+                80,
+                210,
+                24,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                Materials.Zinc);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.gold", true, 20, 60, 8, true, false, true, true, true, true, Materials.Gold);
+                "ore.small.gold",
+                true,
+                20,
+                60,
+                8,
+                true,
+                false,
+                true,
+                true,
+                true,
+                true,
+                Materials.Gold);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.silver", true, 20, 60, 20, true, true, true, true, true, true, Materials.Silver);
+                "ore.small.silver",
+                true,
+                20,
+                60,
+                20,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                Materials.Silver);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.nickel", true, 80, 150, 8, true, false, true, true, true, true, Materials.Nickel);
+                "ore.small.nickel",
+                true,
+                80,
+                150,
+                8,
+                true,
+                false,
+                true,
+                true,
+                true,
+                true,
+                Materials.Nickel);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.lapis", true, 10, 50, 4, true, false, false, true, false, true, Materials.Lapis);
+                "ore.small.lapis",
+                true,
+                10,
+                50,
+                4,
+                true,
+                false,
+                false,
+                true,
+                false,
+                true,
+                Materials.Lapis);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.diamond", true, 5, 15, 2, true, false, false, true, true, true, Materials.Diamond);
+                "ore.small.diamond",
+                true,
+                5,
+                15,
+                2,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                Materials.Diamond);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.emerald", true, 5, 35, 2, false, false, false, false, true, true, Materials.Emerald);
+                "ore.small.emerald",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Emerald);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.ruby", true, 5, 35, 2, false, false, false, false, true, true, Materials.Ruby);
+                "ore.small.ruby",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Ruby);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.sapphire", true, 5, 35, 2, false, false, false, false, true, true, Materials.Sapphire);
+                "ore.small.sapphire",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Sapphire);
         new GT_Worldgen_GT_Ore_SmallPieces(
                 "ore.small.greensapphire",
                 true,
@@ -391,25 +755,135 @@ public class GT_Worldgenloader implements Runnable {
                 true,
                 Materials.GreenSapphire);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.olivine", true, 5, 35, 2, false, false, false, false, true, true, Materials.Olivine);
+                "ore.small.olivine",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Olivine);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.topaz", true, 5, 35, 2, false, false, false, false, true, true, Materials.Topaz);
+                "ore.small.topaz",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Topaz);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.tanzanite", true, 5, 35, 2, false, false, false, false, true, true, Materials.Tanzanite);
+                "ore.small.tanzanite",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Tanzanite);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.amethyst", true, 5, 35, 2, false, false, false, false, true, true, Materials.Amethyst);
+                "ore.small.amethyst",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Amethyst);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.opal", true, 5, 35, 2, false, false, false, false, true, true, Materials.Opal);
+                "ore.small.opal",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Opal);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.jasper", true, 5, 35, 2, false, false, false, false, true, true, Materials.Jasper);
+                "ore.small.jasper",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Jasper);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.bluetopaz", true, 5, 35, 2, false, false, false, false, true, true, Materials.BlueTopaz);
+                "ore.small.bluetopaz",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.BlueTopaz);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.amber", true, 5, 35, 2, false, false, false, false, true, true, Materials.Amber);
+                "ore.small.amber",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.Amber);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.foolsruby", true, 5, 35, 2, false, false, false, false, true, true, Materials.FoolsRuby);
+                "ore.small.foolsruby",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.FoolsRuby);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.garnetred", true, 5, 35, 2, false, false, false, false, true, true, Materials.GarnetRed);
+                "ore.small.garnetred",
+                true,
+                5,
+                35,
+                2,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                Materials.GarnetRed);
         new GT_Worldgen_GT_Ore_SmallPieces(
                 "ore.small.garnetyellow",
                 true,
@@ -424,7 +898,18 @@ public class GT_Worldgenloader implements Runnable {
                 true,
                 Materials.GarnetYellow);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.redstone", true, 5, 25, 8, true, true, false, true, true, true, Materials.Redstone);
+                "ore.small.redstone",
+                true,
+                5,
+                25,
+                8,
+                true,
+                true,
+                false,
+                true,
+                true,
+                true,
+                Materials.Redstone);
         new GT_Worldgen_GT_Ore_SmallPieces(
                 "ore.small.netherquartz",
                 true,
@@ -439,53 +924,227 @@ public class GT_Worldgenloader implements Runnable {
                 false,
                 Materials.NetherQuartz);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.saltpeter", true, 10, 60, 8, false, true, false, false, false, false, Materials.Saltpeter);
+                "ore.small.saltpeter",
+                true,
+                10,
+                60,
+                8,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                Materials.Saltpeter);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.sulfur", true, 5, 60, 40, false, true, false, false, false, false, Materials.Sulfur);
+                "ore.small.sulfur",
+                true,
+                5,
+                60,
+                40,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                Materials.Sulfur);
 
         // TODO: GTNH Custom Small Ores
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.titanium", true, 10, 180, 32, false, false, false, Materials.Titanium);
+                "ore.small.titanium",
+                true,
+                10,
+                180,
+                32,
+                false,
+                false,
+                false,
+                Materials.Titanium);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.tungsten", true, 10, 120, 16, false, false, false, Materials.Tungsten);
+                "ore.small.tungsten",
+                true,
+                10,
+                120,
+                16,
+                false,
+                false,
+                false,
+                Materials.Tungsten);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.meteoriciron", true, 50, 70, 8, false, false, false, Materials.MeteoricIron);
+                "ore.small.meteoriciron",
+                true,
+                50,
+                70,
+                8,
+                false,
+                false,
+                false,
+                Materials.MeteoricIron);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.firestone", true, 5, 15, 2, false, false, false, Materials.Firestone);
+                "ore.small.firestone",
+                true,
+                5,
+                15,
+                2,
+                false,
+                false,
+                false,
+                Materials.Firestone);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.neutronium", true, 5, 15, 8, false, false, false, Materials.Neutronium);
+                "ore.small.neutronium",
+                true,
+                5,
+                15,
+                8,
+                false,
+                false,
+                false,
+                Materials.Neutronium);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.chromite", true, 20, 40, 8, false, false, false, Materials.Chromite);
+                "ore.small.chromite",
+                true,
+                20,
+                40,
+                8,
+                false,
+                false,
+                false,
+                Materials.Chromite);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.tungstate", true, 20, 40, 8, false, false, false, Materials.Tungstate);
+                "ore.small.tungstate",
+                true,
+                20,
+                40,
+                8,
+                false,
+                false,
+                false,
+                Materials.Tungstate);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.naquadah", true, 5, 25, 8, false, false, false, Materials.Naquadah);
+                "ore.small.naquadah",
+                true,
+                5,
+                25,
+                8,
+                false,
+                false,
+                false,
+                Materials.Naquadah);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.quantium", true, 5, 25, 6, false, false, false, Materials.Quantium);
+                "ore.small.quantium",
+                true,
+                5,
+                25,
+                6,
+                false,
+                false,
+                false,
+                Materials.Quantium);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.mythril", true, 5, 25, 6, false, false, false, Materials.Mytryl);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.ledox", true, 40, 60, 4, false, false, false, Materials.Ledox);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.oriharukon", true, 20, 40, 6, false, false, false, Materials.Oriharukon);
+                "ore.small.oriharukon",
+                true,
+                20,
+                40,
+                6,
+                false,
+                false,
+                false,
+                Materials.Oriharukon);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.draconium", true, 5, 15, 4, false, false, false, Materials.Draconium);
+                "ore.small.draconium",
+                true,
+                5,
+                15,
+                4,
+                false,
+                false,
+                false,
+                Materials.Draconium);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.awdraconium", true, 5, 15, 2, false, false, false, Materials.DraconiumAwakened);
+                "ore.small.awdraconium",
+                true,
+                5,
+                15,
+                2,
+                false,
+                false,
+                false,
+                Materials.DraconiumAwakened);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.desh", true, 10, 30, 6, false, false, false, Materials.Desh);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.blackplutonium", true, 25, 45, 6, false, false, false, Materials.BlackPlutonium);
+                "ore.small.blackplutonium",
+                true,
+                25,
+                45,
+                6,
+                false,
+                false,
+                false,
+                Materials.BlackPlutonium);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.infinitycatalyst", true, 40, 80, 6, false, false, false, Materials.InfinityCatalyst);
+                "ore.small.infinitycatalyst",
+                true,
+                40,
+                80,
+                6,
+                false,
+                false,
+                false,
+                Materials.InfinityCatalyst);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.infinity", true, 2, 40, 2, false, false, false, Materials.Infinity);
+                "ore.small.infinity",
+                true,
+                2,
+                40,
+                2,
+                false,
+                false,
+                false,
+                Materials.Infinity);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.bedrockium", true, 5, 25, 6, false, false, false, Materials.Bedrockium);
+                "ore.small.bedrockium",
+                true,
+                5,
+                25,
+                6,
+                false,
+                false,
+                false,
+                Materials.Bedrockium);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.realgar", true, 15, 85, 32, false, true, false, Materials.Realgar);
+                "ore.small.realgar",
+                true,
+                15,
+                85,
+                32,
+                false,
+                true,
+                false,
+                Materials.Realgar);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.certusquartz", true, 5, 115, 16, false, true, false, Materials.CertusQuartz);
+                "ore.small.certusquartz",
+                true,
+                5,
+                115,
+                16,
+                false,
+                true,
+                false,
+                Materials.CertusQuartz);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.jade", true, 5, 35, 2, false, false, false, Materials.Jade);
         new GT_Worldgen_GT_Ore_SmallPieces(
-                "ore.small.deepiron", true, 5, 40, 8, false, false, false, Materials.DeepIron);
+                "ore.small.deepiron",
+                true,
+                5,
+                40,
+                8,
+                false,
+                false,
+                false,
+                Materials.DeepIron);
 
         // GT Default Veins
 
@@ -971,9 +1630,8 @@ public class GT_Worldgenloader implements Runnable {
                 Materials.Oilsands);
 
         /*
-         * TODO: custom GTNH OreMixes
-         * WARNING: NO DUPLICATES IN aName OR DEPRECATED MATERIALS IN HERE.
-         * Materials can be used unlimited, since achievements for Ores are turned off.
+         * TODO: custom GTNH OreMixes WARNING: NO DUPLICATES IN aName OR DEPRECATED MATERIALS IN HERE. Materials can be
+         * used unlimited, since achievements for Ores are turned off.
          */
 
         // aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, aOverworld, aNether, aEnd, aPrimary, aSecondary,

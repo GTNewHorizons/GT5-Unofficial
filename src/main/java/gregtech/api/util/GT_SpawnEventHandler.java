@@ -1,17 +1,19 @@
 package gregtech.api.util;
 
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MonsterRepellent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
+
+import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MonsterRepellent;
 
 public class GT_SpawnEventHandler {
 
@@ -62,17 +64,15 @@ public class GT_SpawnEventHandler {
                     if (check > maxRangeCheck) continue;
 
                     final TileEntity tTile = event.entity.worldObj.getTileEntity(rep[0], rep[1], rep[2]);
-                    if (tTile instanceof BaseMetaTileEntity
-                            && ((BaseMetaTileEntity) tTile).getMetaTileEntity()
-                                    instanceof GT_MetaTileEntity_MonsterRepellent) {
-                        final int r = ((GT_MetaTileEntity_MonsterRepellent)
-                                        ((BaseMetaTileEntity) tTile).getMetaTileEntity())
-                                .mRange;
+                    if (tTile instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tTile)
+                            .getMetaTileEntity() instanceof GT_MetaTileEntity_MonsterRepellent) {
+                        final int r = ((GT_MetaTileEntity_MonsterRepellent) ((BaseMetaTileEntity) tTile)
+                                .getMetaTileEntity()).mRange;
                         if (check <= Math.pow(r, 2)) {
                             if (event.entityLiving instanceof EntitySlime)
                                 ((EntitySlime) event.entityLiving).setCustomNameTag("DoNotSpawnSlimes");
                             event.setResult(Event.Result.DENY);
-                            // We're already DENYing it.  No reason to keep checking
+                            // We're already DENYing it. No reason to keep checking
                             return;
                         }
                     }

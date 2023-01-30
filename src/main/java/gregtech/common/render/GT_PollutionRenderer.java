@@ -1,14 +1,5 @@
 package gregtech.common.render;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
-import gregtech.common.entities.GT_EntityFXPollution;
-import gregtech.common.misc.GT_ClientPollutionMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -21,10 +12,22 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.world.WorldEvent;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
+import gregtech.common.entities.GT_EntityFXPollution;
+import gregtech.common.misc.GT_ClientPollutionMap;
 
 @SideOnly(Side.CLIENT)
 public class GT_PollutionRenderer {
+
     private static GT_ClientPollutionMap pollutionMap;
     private static int playerPollution = 0;
 
@@ -40,11 +43,11 @@ public class GT_PollutionRenderer {
     // jump from linear to exponential fog. x*FOG_MAX_AT_POLLUTION+FOG_START_AT_POLLUTION
     private static final double FOG_START_EXP_RATIO = 0.02D;
 
-    private static final float[] fogColor = {0.3f, 0.25f, 0.1f};
-    private static final short[] grassColor = {230, 180, 40};
-    private static final short[] leavesColor = {160, 80, 15};
-    private static final short[] liquidColor = {160, 200, 10};
-    private static final short[] foliageColor = {160, 80, 15};
+    private static final float[] fogColor = { 0.3f, 0.25f, 0.1f };
+    private static final short[] grassColor = { 230, 180, 40 };
+    private static final short[] leavesColor = { 160, 80, 15 };
+    private static final short[] liquidColor = { 160, 200, 10 };
+    private static final short[] foliageColor = { 160, 80, 15 };
 
     // TODO need to soft update some blocks, grass and leaves does more often than liquid it looks like.
 
@@ -128,7 +131,8 @@ public class GT_PollutionRenderer {
         if (!GT_Mod.gregtechproxy.mRenderPollutionFog) return;
 
         if ((!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
-                || (fogIntensityLastTick <= 0 && fogIntensityLastTick >= FOG_START_EXP_RATIO)) return;
+                || (fogIntensityLastTick <= 0 && fogIntensityLastTick >= FOG_START_EXP_RATIO))
+            return;
 
         if (event.fogMode == 0) {
             double v = 1 - fogIntensityLastTick / FOG_START_EXP_RATIO;
@@ -146,10 +150,10 @@ public class GT_PollutionRenderer {
 
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) return;
 
-        if (event.entity.isPotionActive(Potion.blindness)
-                || (fogIntensityLastTick < FOG_START_EXP_RATIO)
+        if (event.entity.isPotionActive(Potion.blindness) || (fogIntensityLastTick < FOG_START_EXP_RATIO)
                 || event.block.getMaterial() == Material.water
-                || event.block.getMaterial() == Material.lava) return;
+                || event.block.getMaterial() == Material.lava)
+            return;
 
         GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP2);
         event.density = (float) Math.pow(fogIntensityLastTick - FOG_START_EXP_RATIO, .75F) / 5 + 0.01F;
@@ -185,15 +189,13 @@ public class GT_PollutionRenderer {
         } else if (DEBUG) {
             drawPollution("Intensity: " + (fogIntensityLastTick * 10000), 0);
             drawPollution(
-                    "Pollution: "
-                            + pollutionMap.getPollution(
-                                    Minecraft.getMinecraft().thePlayer.lastTickPosX,
-                                    Minecraft.getMinecraft().thePlayer.lastTickPosZ),
+                    "Pollution: " + pollutionMap.getPollution(
+                            Minecraft.getMinecraft().thePlayer.lastTickPosX,
+                            Minecraft.getMinecraft().thePlayer.lastTickPosZ),
                     20);
             drawPollution(
-                    "Density:   "
-                            + ((float) (Math.pow(fogIntensityLastTick - FOG_START_EXP_RATIO, .75F) / 5 + 0.01F)
-                                    * 10000),
+                    "Density:   " + ((float) (Math.pow(fogIntensityLastTick - FOG_START_EXP_RATIO, .75F) / 5 + 0.01F)
+                            * 10000),
                     40);
         }
     }

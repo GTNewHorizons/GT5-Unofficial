@@ -1,14 +1,17 @@
 package gregtech.api.util;
 
-import gregtech.api.enums.OrePrefixes;
-import gregtech.common.items.GT_MetaGenerated_Item_03;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+
 public enum GT_ApiaryUpgrade {
+
     speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, (mods, n) -> mods.maxSpeed = 1),
     speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, (mods, n) -> mods.maxSpeed = 2),
     speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, (mods, n) -> mods.maxSpeed = 3),
@@ -105,10 +108,10 @@ public enum GT_ApiaryUpgrade {
     sieve(UNIQUE_INDEX.SIEVE_UPGRADE, 32229, 1, (mods, n) -> {
         mods.isCollectingPollen = true;
         mods.energy *= 1.05f;
-    }),
-    ;
+    }),;
 
     private enum UNIQUE_INDEX {
+
         SPEED_UPGRADE,
         PRODUCTION_UPGRADE,
         PLAINS_UPGRADE,
@@ -130,16 +133,15 @@ public enum GT_ApiaryUpgrade {
         OCEAN_UPGRADE,
         SKY_UPGRADE,
         HEATER_UPGRADE,
-        SIEVE_UPGRADE,
-        ;
+        SIEVE_UPGRADE,;
 
         void apply(Consumer<GT_ApiaryUpgrade> fn) {
             UNIQUE_UPGRADE_LIST.get(this).forEach(fn);
         }
     }
 
-    private static final EnumMap<UNIQUE_INDEX, ArrayList<GT_ApiaryUpgrade>> UNIQUE_UPGRADE_LIST =
-            new EnumMap<>(UNIQUE_INDEX.class);
+    private static final EnumMap<UNIQUE_INDEX, ArrayList<GT_ApiaryUpgrade>> UNIQUE_UPGRADE_LIST = new EnumMap<>(
+            UNIQUE_INDEX.class);
 
     private int meta = 0;
     private int maxnumber = 1;
@@ -150,8 +152,8 @@ public enum GT_ApiaryUpgrade {
 
     private final HashSet<GT_Utility.ItemId> blacklistedUpgrades = new HashSet<>();
 
-    GT_ApiaryUpgrade(
-            UNIQUE_INDEX unique_index, int meta, int maxnumber, BiConsumer<GT_ApiaryModifier, Integer> applier) {
+    GT_ApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber,
+            BiConsumer<GT_ApiaryModifier, Integer> applier) {
         this.unique_index = unique_index;
         this.meta = meta;
         this.maxnumber = maxnumber;
@@ -162,11 +164,10 @@ public enum GT_ApiaryUpgrade {
     private void setup_static_variables() {
         quickLookup.put(this.meta, this);
         ArrayList<GT_ApiaryUpgrade> un = UNIQUE_UPGRADE_LIST.get(this.unique_index);
-        if (un != null)
-            un.forEach((u) -> {
-                u.blacklistedUpgrades.add(this.id);
-                this.blacklistedUpgrades.add(u.id);
-            });
+        if (un != null) un.forEach((u) -> {
+            u.blacklistedUpgrades.add(this.id);
+            this.blacklistedUpgrades.add(u.id);
+        });
         else {
             un = new ArrayList<>(1);
             UNIQUE_UPGRADE_LIST.put(this.unique_index, un);

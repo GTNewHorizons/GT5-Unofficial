@@ -4,6 +4,24 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.MOD_ID_AE;
 import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.minecraft.init.Blocks;
+import net.minecraftforge.common.config.Configuration;
+
+import org.apache.commons.lang3.StringUtils;
+
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -21,29 +39,15 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import net.minecraft.init.Blocks;
-import net.minecraftforge.common.config.Configuration;
-import org.apache.commons.lang3.StringUtils;
 
 public class GT_PreLoad {
+
     public static void sortToTheEnd() {
         if (GT_Mod.gregtechproxy.mSortToTheEnd) {
             try {
                 GT_FML_LOGGER.info("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
-                LoadController tLoadController =
-                        (LoadController) GT_Utility.getFieldContent(Loader.instance(), "modController", true, true);
+                LoadController tLoadController = (LoadController) GT_Utility
+                        .getFieldContent(Loader.instance(), "modController", true, true);
                 assert tLoadController != null;
                 List<ModContainer> tModList = tLoadController.getActiveModList();
                 List<ModContainer> tNewModsList = new ArrayList<>();
@@ -72,18 +76,16 @@ public class GT_PreLoad {
         GT_FML_LOGGER.info("GT_Mod: Generating Lang-File");
         GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
         GT_LanguageManager.sEnglishFile.load();
-        if (GT_LanguageManager.sEnglishFile
-                .get("EnableLangFile", "UseThisFileAsLanguageFile", false)
+        if (GT_LanguageManager.sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false)
                 .getBoolean(false)) {
-            GT_LanguageManager.sLanguage = GT_LanguageManager.sEnglishFile
-                    .get("EnableLangFile", "Language", "en_US")
+            GT_LanguageManager.sLanguage = GT_LanguageManager.sEnglishFile.get("EnableLangFile", "Language", "en_US")
                     .getString();
         }
 
-        Materials.getMaterialsMap().values().parallelStream()
-                .filter(Objects::nonNull)
-                .forEach(aMaterial -> aMaterial.mLocalizedName = GT_LanguageManager.addStringLocalization(
-                        "Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
+        Materials.getMaterialsMap().values().parallelStream().filter(Objects::nonNull).forEach(
+                aMaterial -> aMaterial.mLocalizedName = GT_LanguageManager.addStringLocalization(
+                        "Material." + aMaterial.mName.toLowerCase(),
+                        aMaterial.mDefaultLocalName));
     }
 
     public static Configuration getConfiguration(File configDir) {
@@ -94,25 +96,25 @@ public class GT_PreLoad {
         GT_Config.sConfigFileIDs = new Configuration(tFile);
         GT_Config.sConfigFileIDs.load();
         GT_Config.sConfigFileIDs.save();
-        GregTech_API.sRecipeFile =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "Recipes.cfg")));
-        GregTech_API.sMachineFile =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "MachineStats.cfg")));
-        GregTech_API.sWorldgenFile =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
-        GregTech_API.sMaterialProperties =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "MaterialProperties.cfg")));
-        GregTech_API.sMaterialComponents =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "MaterialComponents.cfg")));
-        GregTech_API.sUnification =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
-        GregTech_API.sSpecialFile =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "Other.cfg")));
-        GregTech_API.sOPStuff =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "OverpoweredStuff.cfg")));
+        GregTech_API.sRecipeFile = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "Recipes.cfg")));
+        GregTech_API.sMachineFile = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "MachineStats.cfg")));
+        GregTech_API.sWorldgenFile = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
+        GregTech_API.sMaterialProperties = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "MaterialProperties.cfg")));
+        GregTech_API.sMaterialComponents = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "MaterialComponents.cfg")));
+        GregTech_API.sUnification = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
+        GregTech_API.sSpecialFile = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "Other.cfg")));
+        GregTech_API.sOPStuff = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "OverpoweredStuff.cfg")));
 
-        GregTech_API.sClientDataFile =
-                new GT_Config(new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
+        GregTech_API.sClientDataFile = new GT_Config(
+                new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
         return tMainConfig;
     }
 
@@ -130,26 +132,22 @@ public class GT_PreLoad {
         if (!GT_Log.mLogFile.exists()) {
             try {
                 final boolean ignored = GT_Log.mLogFile.createNewFile();
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
         try {
             GT_Log.out = GT_Log.err = new PrintStream(GT_Log.mLogFile);
-        } catch (FileNotFoundException ignored) {
-        }
+        } catch (FileNotFoundException ignored) {}
 
         if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingOreDict", false).getBoolean(false)) {
             GT_Log.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
             if (!GT_Log.mOreDictLogFile.exists()) {
                 try {
                     final boolean ignored = GT_Log.mOreDictLogFile.createNewFile();
-                } catch (Throwable ignored) {
-                }
+                } catch (Throwable ignored) {}
             }
             try {
                 GT_Log.ore = new PrintStream(GT_Log.mOreDictLogFile);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
             try {
                 List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
                 GT_Log.ore.println("******************************************************************************");
@@ -159,21 +157,18 @@ public class GT_PreLoad {
                 GT_Log.ore.println("* issue at https://github.com/Blood-Asp/GT5-Unofficial.                      *");
                 GT_Log.ore.println("******************************************************************************");
                 tList.forEach(GT_Log.ore::println);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
         if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingExplosions", true).getBoolean(true)) {
             GT_Log.mExplosionLog = new File(parentFile, "logs/Explosion.log");
             if (!GT_Log.mExplosionLog.exists()) {
                 try {
                     final boolean ignored = GT_Log.mExplosionLog.createNewFile();
-                } catch (Throwable ignored) {
-                }
+                } catch (Throwable ignored) {}
             }
             try {
                 GT_Log.exp = new PrintStream(GT_Log.mExplosionLog);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
 
         if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingPlayerActivity", true).getBoolean(true)) {
@@ -181,13 +176,11 @@ public class GT_PreLoad {
             if (!GT_Log.mPlayerActivityLogFile.exists()) {
                 try {
                     final boolean ignored = GT_Log.mPlayerActivityLogFile.createNewFile();
-                } catch (Throwable ignored) {
-                }
+                } catch (Throwable ignored) {}
             }
             try {
                 GT_Log.pal = new PrintStream(GT_Log.mPlayerActivityLogFile);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
     }
 
@@ -238,86 +231,22 @@ public class GT_PreLoad {
                                 int material = meta % 1000;
                                 String tag = "";
                                 String[] tags = new String[] {};
-                                if (mIt == 1)
-                                    tags = new String[] {
-                                        "dustTiny",
-                                        "dustSmall",
-                                        "dust",
-                                        "dustImpure",
-                                        "dustPure",
-                                        "crushed",
-                                        "crushedPurified",
-                                        "crushedCentrifuged",
-                                        "gem",
-                                        "nugget",
-                                        null,
-                                        "ingot",
-                                        "ingotHot",
-                                        "ingotDouble",
-                                        "ingotTriple",
-                                        "ingotQuadruple",
-                                        "ingotQuintuple",
-                                        "plate",
-                                        "plateDouble",
-                                        "plateTriple",
-                                        "plateQuadruple",
-                                        "plateQuintuple",
-                                        "plateDense",
-                                        "stick",
-                                        "lens",
-                                        "round",
-                                        "bolt",
-                                        "screw",
-                                        "ring",
-                                        "foil",
-                                        "cell",
-                                        "cellPlasma",
-                                        "cellMolten"
-                                    };
-                                if (mIt == 2)
-                                    tags = new String[] {
-                                        "toolHeadSword",
-                                        "toolHeadPickaxe",
-                                        "toolHeadShovel",
-                                        "toolHeadAxe",
-                                        "toolHeadHoe",
-                                        "toolHeadHammer",
-                                        "toolHeadFile",
-                                        "toolHeadSaw",
-                                        "toolHeadDrill",
-                                        "toolHeadChainsaw",
-                                        "toolHeadWrench",
-                                        "toolHeadUniversalSpade",
-                                        "toolHeadSense",
-                                        "toolHeadPlow",
-                                        "toolHeadArrow",
-                                        "toolHeadBuzzSaw",
-                                        "turbineBlade",
-                                        null,
-                                        null,
-                                        "wireFine",
-                                        "gearGtSmall",
-                                        "rotor",
-                                        "stickLong",
-                                        "springSmall",
-                                        "spring",
-                                        "arrowGtWood",
-                                        "arrowGtPlastic",
-                                        "gemChipped",
-                                        "gemFlawed",
-                                        "gemFlawless",
-                                        "gemExquisite",
-                                        "gearGt"
-                                    };
-                                if (mIt == 3)
-                                    tags = new String[] {
-                                        "crateGtDust",
-                                        "crateGtIngot",
-                                        "crateGtGem",
-                                        "crateGtPlate",
-                                        "itemCasing",
-                                        "nanite"
-                                    };
+                                if (mIt == 1) tags = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure",
+                                        "dustPure", "crushed", "crushedPurified", "crushedCentrifuged", "gem", "nugget",
+                                        null, "ingot", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple",
+                                        "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
+                                        "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw",
+                                        "ring", "foil", "cell", "cellPlasma", "cellMolten" };
+                                if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
+                                        "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer",
+                                        "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
+                                        "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow",
+                                        "toolHeadArrow", "toolHeadBuzzSaw", "turbineBlade", null, null, "wireFine",
+                                        "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
+                                        "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite",
+                                        "gearGt" };
+                                if (mIt == 3) tags = new String[] { "crateGtDust", "crateGtIngot", "crateGtGem",
+                                        "crateGtPlate", "itemCasing", "nanite" };
                                 if (tags.length > prefix) tag = tags[prefix];
                                 if (GregTech_API.sGeneratedMaterials[material] != null) {
                                     tag += GregTech_API.sGeneratedMaterials[material].mName;
@@ -332,75 +261,16 @@ public class GT_PreLoad {
             }
         }
 
-        final String[] preS = new String[] {
-            "dustTiny",
-            "dustSmall",
-            "dust",
-            "dustImpure",
-            "dustPure",
-            "crushed",
-            "crushedPurified",
-            "crushedCentrifuged",
-            "gem",
-            "nugget",
-            "ingot",
-            "ingotHot",
-            "ingotDouble",
-            "ingotTriple",
-            "ingotQuadruple",
-            "ingotQuintuple",
-            "plate",
-            "plateDouble",
-            "plateTriple",
-            "plateQuadruple",
-            "plateQuintuple",
-            "plateDense",
-            "stick",
-            "lens",
-            "round",
-            "bolt",
-            "screw",
-            "ring",
-            "foil",
-            "cell",
-            "cellPlasma",
-            "toolHeadSword",
-            "toolHeadPickaxe",
-            "toolHeadShovel",
-            "toolHeadAxe",
-            "toolHeadHoe",
-            "toolHeadHammer",
-            "toolHeadFile",
-            "toolHeadSaw",
-            "toolHeadDrill",
-            "toolHeadChainsaw",
-            "toolHeadWrench",
-            "toolHeadUniversalSpade",
-            "toolHeadSense",
-            "toolHeadPlow",
-            "toolHeadArrow",
-            "toolHeadBuzzSaw",
-            "turbineBlade",
-            "wireFine",
-            "gearGtSmall",
-            "rotor",
-            "stickLong",
-            "springSmall",
-            "spring",
-            "arrowGtWood",
-            "arrowGtPlastic",
-            "gemChipped",
-            "gemFlawed",
-            "gemFlawless",
-            "gemExquisite",
-            "gearGt",
-            "crateGtDust",
-            "crateGtIngot",
-            "crateGtGem",
-            "crateGtPlate",
-            "nanite",
-            "cellMolten"
-        };
+        final String[] preS = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
+                "crushedPurified", "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "ingotDouble",
+                "ingotTriple", "ingotQuadruple", "ingotQuintuple", "plate", "plateDouble", "plateTriple",
+                "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
+                "foil", "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
+                "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
+                "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
+                "toolHeadBuzzSaw", "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall",
+                "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite",
+                "gearGt", "crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate", "nanite", "cellMolten" };
 
         List<String> mMTTags = new ArrayList<>();
         oreTags.stream().filter(test -> StringUtils.startsWithAny(test, preS)).forEach(test -> {
@@ -459,12 +329,12 @@ public class GT_PreLoad {
         try {
             Objects.requireNonNull(GT_Utility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true))
                     .set(null, 0);
-            ((List<?>) Objects.requireNonNull(GT_Utility.getFieldContent(
+            ((List<?>) Objects.requireNonNull(
+                    GT_Utility.getFieldContent(
                             GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
                             "drops",
                             true,
-                            true)))
-                    .clear();
+                            true))).clear();
         } catch (Throwable e) {
             if (GT_Values.D1) {
                 e.printStackTrace(GT_Log.err);
@@ -477,186 +347,133 @@ public class GT_PreLoad {
     public static void loadConfig(Configuration tMainConfig) {
         GT_Values.D1 = tMainConfig.get(GT_Mod.aTextGeneral, "Debug", false).getBoolean(false);
         GT_Values.D2 = tMainConfig.get(GT_Mod.aTextGeneral, "Debug2", false).getBoolean(false);
-        GT_Values.updateFluidDisplayItems = tMainConfig
-                .get(GT_Mod.aTextGeneral, "update fluid display items", true)
+        GT_Values.updateFluidDisplayItems = tMainConfig.get(GT_Mod.aTextGeneral, "update fluid display items", true)
                 .getBoolean(true);
-        GT_Values.allow_broken_recipemap = tMainConfig
-                .get(GT_Mod.aTextGeneral, "debug allow broken recipemap", false)
+        GT_Values.allow_broken_recipemap = tMainConfig.get(GT_Mod.aTextGeneral, "debug allow broken recipemap", false)
                 .getBoolean(false);
-        GT_Values.debugCleanroom =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugCleanroom", false).getBoolean(false);
-        GT_Values.debugDriller =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugDriller", false).getBoolean(false);
-        GT_Values.debugWorldGen =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugWorldGen", false).getBoolean(false);
-        GT_Values.debugOrevein =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugOrevein", false).getBoolean(false);
-        GT_Values.debugSmallOres =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugSmallOres", false).getBoolean(false);
-        GT_Values.debugStones =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugStones", false).getBoolean(false);
-        GT_Values.debugBlockMiner =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugBlockMiner", false).getBoolean(false);
-        GT_Values.debugBlockPump =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugBlockPump", false).getBoolean(false);
-        GT_Values.debugEntityCramming = tMainConfig
-                .get(GT_Mod.aTextGeneral, "debugEntityCramming", false)
+        GT_Values.debugCleanroom = tMainConfig.get(GT_Mod.aTextGeneral, "debugCleanroom", false).getBoolean(false);
+        GT_Values.debugDriller = tMainConfig.get(GT_Mod.aTextGeneral, "debugDriller", false).getBoolean(false);
+        GT_Values.debugWorldGen = tMainConfig.get(GT_Mod.aTextGeneral, "debugWorldGen", false).getBoolean(false);
+        GT_Values.debugOrevein = tMainConfig.get(GT_Mod.aTextGeneral, "debugOrevein", false).getBoolean(false);
+        GT_Values.debugSmallOres = tMainConfig.get(GT_Mod.aTextGeneral, "debugSmallOres", false).getBoolean(false);
+        GT_Values.debugStones = tMainConfig.get(GT_Mod.aTextGeneral, "debugStones", false).getBoolean(false);
+        GT_Values.debugBlockMiner = tMainConfig.get(GT_Mod.aTextGeneral, "debugBlockMiner", false).getBoolean(false);
+        GT_Values.debugBlockPump = tMainConfig.get(GT_Mod.aTextGeneral, "debugBlockPump", false).getBoolean(false);
+        GT_Values.debugEntityCramming = tMainConfig.get(GT_Mod.aTextGeneral, "debugEntityCramming", false)
                 .getBoolean(false);
-        GT_Values.debugWorldData =
-                tMainConfig.get(GT_Mod.aTextGeneral, "debugWorldData", false).getBoolean(false);
-        GT_Values.oreveinPercentage = tMainConfig
-                .get(GT_Mod.aTextGeneral, "oreveinPercentage_100", 100)
-                .getInt(100);
-        GT_Values.oreveinAttempts =
-                tMainConfig.get(GT_Mod.aTextGeneral, "oreveinAttempts_64", 64).getInt(64);
-        GT_Values.oreveinMaxPlacementAttempts = tMainConfig
-                .get(GT_Mod.aTextGeneral, "oreveinMaxPlacementAttempts_8", 8)
+        GT_Values.debugWorldData = tMainConfig.get(GT_Mod.aTextGeneral, "debugWorldData", false).getBoolean(false);
+        GT_Values.oreveinPercentage = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinPercentage_100", 100).getInt(100);
+        GT_Values.oreveinAttempts = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinAttempts_64", 64).getInt(64);
+        GT_Values.oreveinMaxPlacementAttempts = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinMaxPlacementAttempts_8", 8)
                 .getInt(8);
-        GT_Values.oreveinPlacerOres =
-                tMainConfig.get(GT_Mod.aTextGeneral, "oreveinPlacerOres", true).getBoolean(true);
-        GT_Values.oreveinPlacerOresMultiplier = tMainConfig
-                .get(GT_Mod.aTextGeneral, "oreveinPlacerOresMultiplier", 2)
+        GT_Values.oreveinPlacerOres = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinPlacerOres", true).getBoolean(true);
+        GT_Values.oreveinPlacerOresMultiplier = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinPlacerOresMultiplier", 2)
                 .getInt(2);
         // GT_Values.oreveinMaxSize = tMainConfig.get(aTextGeneral, "oreveinMaxSize_64",64).getInt(64);
-        GT_Values.ticksBetweenSounds =
-                tMainConfig.get("machines", "TicksBetweenSounds", 30).getInt(30);
-        GT_Values.cleanroomGlass = (float) tMainConfig
-                .get("machines", "ReinforcedGlassPercentageForCleanroom", 5D)
+        GT_Values.ticksBetweenSounds = tMainConfig.get("machines", "TicksBetweenSounds", 30).getInt(30);
+        GT_Values.cleanroomGlass = (float) tMainConfig.get("machines", "ReinforcedGlassPercentageForCleanroom", 5D)
                 .getDouble(5D);
-        GT_Values.enableChunkloaders =
-                tMainConfig.get("machines", "enableChunkloaders", true).getBoolean(true);
-        GT_Values.alwaysReloadChunkloaders =
-                tMainConfig.get("machines", "alwaysReloadChunkloaders", false).getBoolean(false);
-        GT_Values.debugChunkloaders =
-                tMainConfig.get("machines", "debugChunkloaders", false).getBoolean(false);
-        GT_Values.disableDigitalChestsExternalAccess = tMainConfig
-                .get("machines", "disableDigitalChestsExternalAccess", false)
+        GT_Values.enableChunkloaders = tMainConfig.get("machines", "enableChunkloaders", true).getBoolean(true);
+        GT_Values.alwaysReloadChunkloaders = tMainConfig.get("machines", "alwaysReloadChunkloaders", false)
                 .getBoolean(false);
+        GT_Values.debugChunkloaders = tMainConfig.get("machines", "debugChunkloaders", false).getBoolean(false);
+        GT_Values.disableDigitalChestsExternalAccess = tMainConfig
+                .get("machines", "disableDigitalChestsExternalAccess", false).getBoolean(false);
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig
-                .get(GT_Mod.aTextGeneral, "TicksForLagAveragingWithScanner", 25)
-                .getInt(25);
+                .get(GT_Mod.aTextGeneral, "TicksForLagAveragingWithScanner", 25).getInt(25);
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig
-                .get(GT_Mod.aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100)
-                .getInt(100);
+                .get(GT_Mod.aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
         if (tMainConfig.get(GT_Mod.aTextGeneral, "disable_STDOUT", false).getBoolean(false)) {
             GT_FML_LOGGER.info("Disableing Console Messages.");
             GT_FML_LOGGER.exit();
             System.out.close();
             System.err.close();
         }
-        GregTech_API.sMachineExplosions =
-                tMainConfig.get("machines", "machines_explosion_damage", true).getBoolean(false);
-        GregTech_API.sMachineFlammable =
-                tMainConfig.get("machines", "machines_flammable", true).getBoolean(false);
-        GregTech_API.sMachineNonWrenchExplosions =
-                tMainConfig.get("machines", "explosions_on_nonwrenching", true).getBoolean(false);
-        GregTech_API.sMachineWireFire =
-                tMainConfig.get("machines", "wirefire_on_explosion", true).getBoolean(false);
-        GregTech_API.sMachineFireExplosions =
-                tMainConfig.get("machines", "fire_causes_explosions", true).getBoolean(false);
-        GregTech_API.sMachineRainExplosions =
-                tMainConfig.get("machines", "rain_causes_explosions", true).getBoolean(false);
-        GregTech_API.sMachineThunderExplosions =
-                tMainConfig.get("machines", "lightning_causes_explosions", true).getBoolean(false);
-        GregTech_API.sConstantEnergy =
-                tMainConfig.get("machines", "constant_need_of_energy", true).getBoolean(false);
-        GregTech_API.sColoredGUI =
-                tMainConfig.get("machines", "colored_guis_when_painted", true).getBoolean(false);
-        GregTech_API.sMachineMetalGUI = tMainConfig
-                .get("machines", "guis_in_consistent_machine_metal_color", false)
+        GregTech_API.sMachineExplosions = tMainConfig.get("machines", "machines_explosion_damage", true)
+                .getBoolean(false);
+        GregTech_API.sMachineFlammable = tMainConfig.get("machines", "machines_flammable", true).getBoolean(false);
+        GregTech_API.sMachineNonWrenchExplosions = tMainConfig.get("machines", "explosions_on_nonwrenching", true)
+                .getBoolean(false);
+        GregTech_API.sMachineWireFire = tMainConfig.get("machines", "wirefire_on_explosion", true).getBoolean(false);
+        GregTech_API.sMachineFireExplosions = tMainConfig.get("machines", "fire_causes_explosions", true)
+                .getBoolean(false);
+        GregTech_API.sMachineRainExplosions = tMainConfig.get("machines", "rain_causes_explosions", true)
+                .getBoolean(false);
+        GregTech_API.sMachineThunderExplosions = tMainConfig.get("machines", "lightning_causes_explosions", true)
+                .getBoolean(false);
+        GregTech_API.sConstantEnergy = tMainConfig.get("machines", "constant_need_of_energy", true).getBoolean(false);
+        GregTech_API.sColoredGUI = tMainConfig.get("machines", "colored_guis_when_painted", true).getBoolean(false);
+        GregTech_API.sMachineMetalGUI = tMainConfig.get("machines", "guis_in_consistent_machine_metal_color", false)
                 .getBoolean(false);
 
         // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTech_API.sUseMachineMetal =
-                tMainConfig.get("machines", "use_machine_metal_tint", true).getBoolean(true);
+        GregTech_API.sUseMachineMetal = tMainConfig.get("machines", "use_machine_metal_tint", true).getBoolean(true);
 
-        GregTech_API.sTimber =
-                tMainConfig.get(GT_Mod.aTextGeneral, "timber_axe", true).getBoolean(true);
-        GregTech_API.sDrinksAlwaysDrinkable = tMainConfig
-                .get(GT_Mod.aTextGeneral, "drinks_always_drinkable", false)
+        GregTech_API.sTimber = tMainConfig.get(GT_Mod.aTextGeneral, "timber_axe", true).getBoolean(true);
+        GregTech_API.sDrinksAlwaysDrinkable = tMainConfig.get(GT_Mod.aTextGeneral, "drinks_always_drinkable", false)
                 .getBoolean(false);
         GregTech_API.sDoShowAllItemsInCreative = tMainConfig
-                .get(GT_Mod.aTextGeneral, "show_all_metaitems_in_creative_and_NEI", false)
-                .getBoolean(false);
-        GregTech_API.sMultiThreadedSounds = tMainConfig
-                .get(GT_Mod.aTextGeneral, "sound_multi_threading", false)
+                .get(GT_Mod.aTextGeneral, "show_all_metaitems_in_creative_and_NEI", false).getBoolean(false);
+        GregTech_API.sMultiThreadedSounds = tMainConfig.get(GT_Mod.aTextGeneral, "sound_multi_threading", false)
                 .getBoolean(false);
 
         loadClientConfig();
 
         GT_Mod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = tMainConfig
-                .get(GT_Mod.aTextGeneral, "MaxEqualEntitiesAtOneSpot", 3)
-                .getInt(3);
+                .get(GT_Mod.aTextGeneral, "MaxEqualEntitiesAtOneSpot", 3).getInt(3);
         GT_Mod.gregtechproxy.mSkeletonsShootGTArrows = tMainConfig
-                .get(GT_Mod.aTextGeneral, "SkeletonsShootGTArrows", 16)
-                .getInt(16);
-        GT_Mod.gregtechproxy.mFlintChance =
-                tMainConfig.get(GT_Mod.aTextGeneral, "FlintAndSteelChance", 30).getInt(30);
-        GT_Mod.gregtechproxy.mItemDespawnTime =
-                tMainConfig.get(GT_Mod.aTextGeneral, "ItemDespawnTime", 6000).getInt(6000);
+                .get(GT_Mod.aTextGeneral, "SkeletonsShootGTArrows", 16).getInt(16);
+        GT_Mod.gregtechproxy.mFlintChance = tMainConfig.get(GT_Mod.aTextGeneral, "FlintAndSteelChance", 30).getInt(30);
+        GT_Mod.gregtechproxy.mItemDespawnTime = tMainConfig.get(GT_Mod.aTextGeneral, "ItemDespawnTime", 6000)
+                .getInt(6000);
         GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = tMainConfig
-                .get(GT_Mod.aTextGeneral, "AllowSmallBoilerAutomation", false)
+                .get(GT_Mod.aTextGeneral, "AllowSmallBoilerAutomation", false).getBoolean(false);
+        GT_Mod.gregtechproxy.mHardMachineCasings = tMainConfig.get(GT_Mod.aTextGeneral, "HardMachineCasings", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.mDisableVanillaOres = tMainConfig.get(GT_Mod.aTextGeneral, "DisableVanillaOres", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.mNerfDustCrafting = tMainConfig.get(GT_Mod.aTextGeneral, "NerfDustCrafting", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.mIncreaseDungeonLoot = tMainConfig.get(GT_Mod.aTextGeneral, "IncreaseDungeonLoot", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.mHardcoreCables = tMainConfig.get(GT_Mod.aTextGeneral, "HardCoreCableLoss", false)
                 .getBoolean(false);
-        GT_Mod.gregtechproxy.mHardMachineCasings =
-                tMainConfig.get(GT_Mod.aTextGeneral, "HardMachineCasings", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mDisableVanillaOres =
-                tMainConfig.get(GT_Mod.aTextGeneral, "DisableVanillaOres", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfDustCrafting =
-                tMainConfig.get(GT_Mod.aTextGeneral, "NerfDustCrafting", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mIncreaseDungeonLoot = tMainConfig
-                .get(GT_Mod.aTextGeneral, "IncreaseDungeonLoot", true)
-                .getBoolean(true);
-        GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig
-                .get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true)
-                .getBoolean(true);
-        GT_Mod.gregtechproxy.mHardcoreCables =
-                tMainConfig.get(GT_Mod.aTextGeneral, "HardCoreCableLoss", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig
-                .get(GT_Mod.aTextGeneral, "forceAdventureMode", false)
+        GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "forceAdventureMode", false)
                 .getBoolean(false);
-        GT_Mod.gregtechproxy.mHungerEffect =
-                tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mHardRock =
-                tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig
-                .get(GT_Mod.aTextGeneral, "InventoryUnification", true)
+        GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false)
+                .getBoolean(false);
+        GT_Mod.gregtechproxy.mHardRock = tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false).getBoolean(false);
+        GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true)
                 .getBoolean(true);
-        GT_Mod.gregtechproxy.mGTBees =
-                tMainConfig.get(GT_Mod.aTextGeneral, "GTBees", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mCraftingUnification = tMainConfig
-                .get(GT_Mod.aTextGeneral, "CraftingUnification", true)
+        GT_Mod.gregtechproxy.mGTBees = tMainConfig.get(GT_Mod.aTextGeneral, "GTBees", true).getBoolean(true);
+        GT_Mod.gregtechproxy.mCraftingUnification = tMainConfig.get(GT_Mod.aTextGeneral, "CraftingUnification", true)
                 .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedWoodPlank = tMainConfig
-                .get(GT_Mod.aTextGeneral, "WoodNeedsSawForCrafting", true)
+        GT_Mod.gregtechproxy.mNerfedWoodPlank = tMainConfig.get(GT_Mod.aTextGeneral, "WoodNeedsSawForCrafting", true)
                 .getBoolean(true);
         GT_Mod.gregtechproxy.mNerfedVanillaTools = tMainConfig
-                .get(GT_Mod.aTextGeneral, "smallerVanillaToolDurability", true)
+                .get(GT_Mod.aTextGeneral, "smallerVanillaToolDurability", true).getBoolean(true);
+        GT_Mod.gregtechproxy.mSortToTheEnd = tMainConfig.get(GT_Mod.aTextGeneral, "EnsureToBeLoadedLast", true)
                 .getBoolean(true);
-        GT_Mod.gregtechproxy.mSortToTheEnd = tMainConfig
-                .get(GT_Mod.aTextGeneral, "EnsureToBeLoadedLast", true)
+        GT_Mod.gregtechproxy.mDisableIC2Cables = tMainConfig.get(GT_Mod.aTextGeneral, "DisableIC2Cables", true)
                 .getBoolean(true);
-        GT_Mod.gregtechproxy.mDisableIC2Cables =
-                tMainConfig.get(GT_Mod.aTextGeneral, "DisableIC2Cables", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mAchievements =
-                tMainConfig.get(GT_Mod.aTextGeneral, "EnableAchievements", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mAE2Integration =
-                GregTech_API.sSpecialFile.get(ConfigCategories.general, "EnableAE2Integration", GregTech_API.mAE2);
-        GT_Mod.gregtechproxy.mNerfedCombs =
-                tMainConfig.get(GT_Mod.aTextGeneral, "NerfCombs", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedCrops =
-                tMainConfig.get(GT_Mod.aTextGeneral, "NerfCrops", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mHideUnusedOres =
-                tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mHideRecyclingRecipes = tMainConfig
-                .get(GT_Mod.aTextGeneral, "HideRecyclingRecipes", true)
+        GT_Mod.gregtechproxy.mAchievements = tMainConfig.get(GT_Mod.aTextGeneral, "EnableAchievements", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.mAE2Integration = GregTech_API.sSpecialFile
+                .get(ConfigCategories.general, "EnableAE2Integration", GregTech_API.mAE2);
+        GT_Mod.gregtechproxy.mNerfedCombs = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCombs", true).getBoolean(true);
+        GT_Mod.gregtechproxy.mNerfedCrops = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCrops", true).getBoolean(true);
+        GT_Mod.gregtechproxy.mHideUnusedOres = tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.mHideRecyclingRecipes = tMainConfig.get(GT_Mod.aTextGeneral, "HideRecyclingRecipes", true)
                 .getBoolean(true);
         GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed = tMainConfig
-                .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true)
-                .getBoolean(true);
-        GT_Mod.gregtechproxy.mEnableAllMaterials =
-                tMainConfig.get("general", "EnableAllMaterials", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mEnableAllComponents =
-                tMainConfig.get("general", "EnableAllComponents", false).getBoolean(false);
+                .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true).getBoolean(true);
+        GT_Mod.gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false)
+                .getBoolean(false);
+        GT_Mod.gregtechproxy.mEnableAllComponents = tMainConfig.get("general", "EnableAllComponents", false)
+                .getBoolean(false);
 
         // Pollution: edit GT_Proxy.java to change default values
         GT_Mod.gregtechproxy.mPollution = tMainConfig
@@ -764,18 +581,16 @@ public class GT_PreLoad {
                         "PollutionBaseDieselGenerator",
                         GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond)
                 .getInt(GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond);
-        double[] mPollutionDieselGeneratorReleasedByTier = tMainConfig
-                .get(
-                        "Pollution",
-                        "PollutionReleasedByTierDieselGenerator",
-                        GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier)
-                .getDoubleList();
+        double[] mPollutionDieselGeneratorReleasedByTier = tMainConfig.get(
+                "Pollution",
+                "PollutionReleasedByTierDieselGenerator",
+                GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier).getDoubleList();
         if (mPollutionDieselGeneratorReleasedByTier.length
                 == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
         } else {
-            GT_FML_LOGGER.error(
-                    "The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
+            GT_FML_LOGGER
+                    .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
         }
         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = tMainConfig
                 .get(
@@ -783,12 +598,10 @@ public class GT_PreLoad {
                         "PollutionBaseGasTurbineGenerator",
                         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond)
                 .getInt(GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond);
-        double[] mPollutionGasTurbineReleasedByTier = tMainConfig
-                .get(
-                        "Pollution",
-                        "PollutionReleasedByTierGasTurbineGenerator",
-                        GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier)
-                .getDoubleList();
+        double[] mPollutionGasTurbineReleasedByTier = tMainConfig.get(
+                "Pollution",
+                "PollutionReleasedByTierGasTurbineGenerator",
+                GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier).getDoubleList();
         if (mPollutionGasTurbineReleasedByTier.length
                 == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
@@ -797,25 +610,21 @@ public class GT_PreLoad {
         }
 
         GT_Mod.gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
-        GT_Mod.gregtechproxy.mEnableCleanroom =
-                tMainConfig.get("general", "EnableCleanroom", true).getBoolean(true);
+        GT_Mod.gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true).getBoolean(true);
         if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
         GT_Mod.gregtechproxy.mLowGravProcessing = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE)
                 && tMainConfig.get("general", "LowGravProcessing", true).getBoolean(true);
         GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig
-                .get("general", "GTNH Optimised Material Loading", true)
-                .getBoolean(true);
+                .get("general", "GTNH Optimised Material Loading", true).getBoolean(true);
         Calendar now = Calendar.getInstance();
         GT_Mod.gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(
                 ConfigCategories.general,
                 "AprilFool",
                 now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
-        GT_Mod.gregtechproxy.mCropNeedBlock =
-                tMainConfig.get("general", "CropNeedBlockBelow", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mDisableOldChemicalRecipes =
-                tMainConfig.get("general", "DisableOldChemicalRecipes", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mAMHInteraction = tMainConfig
-                .get("general", "AllowAutoMaintenanceHatchInteraction", false)
+        GT_Mod.gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true).getBoolean(true);
+        GT_Mod.gregtechproxy.mDisableOldChemicalRecipes = tMainConfig.get("general", "DisableOldChemicalRecipes", false)
+                .getBoolean(false);
+        GT_Mod.gregtechproxy.mAMHInteraction = tMainConfig.get("general", "AllowAutoMaintenanceHatchInteraction", false)
                 .getBoolean(false);
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
         GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
@@ -823,159 +632,135 @@ public class GT_PreLoad {
         GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
         GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
         GregTech_API.meIOLoaded = Loader.isModLoaded("EnderIO");
-        GT_Mod.gregtechproxy.mForceFreeFace =
-                GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "forceFreeFace", true);
-        GT_Mod.gregtechproxy.mBrickedBlastFurnace =
-                tMainConfig.get("general", "BrickedBlastFurnace", true).getBoolean(true);
-        GT_Mod.gregtechproxy.mEasierIVPlusCables =
-                tMainConfig.get("general", "EasierEVPlusCables", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = tMainConfig
-                .get("general", "MixedOreOnlyYieldsTwoThirdsOfPureOre", false)
-                .getBoolean(false);
-        GT_Mod.gregtechproxy.enableBlackGraniteOres = GregTech_API.sWorldgenFile.get(
-                "general", "enableBlackGraniteOres", GT_Mod.gregtechproxy.enableBlackGraniteOres);
-        GT_Mod.gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile.get(
-                "general", "enableRedGraniteOres", GT_Mod.gregtechproxy.enableRedGraniteOres);
-        GT_Mod.gregtechproxy.enableMarbleOres =
-                GregTech_API.sWorldgenFile.get("general", "enableMarbleOres", GT_Mod.gregtechproxy.enableMarbleOres);
-        GT_Mod.gregtechproxy.enableBasaltOres =
-                GregTech_API.sWorldgenFile.get("general", "enableBasaltOres", GT_Mod.gregtechproxy.enableBasaltOres);
-        GT_Mod.gregtechproxy.gt6Pipe =
-                tMainConfig.get("general", "GT6StyledPipesConnection", true).getBoolean(true);
-        GT_Mod.gregtechproxy.gt6Cable =
-                tMainConfig.get("general", "GT6StyledWiresConnection", true).getBoolean(true);
-        GT_Mod.gregtechproxy.ic2EnergySourceCompat =
-                tMainConfig.get("general", "Ic2EnergySourceCompat", true).getBoolean(true);
-        GT_Mod.gregtechproxy.costlyCableConnection = tMainConfig
-                .get("general", "CableConnectionRequiresSolderingMaterial", false)
-                .getBoolean(false);
-        GT_LanguageManager.i18nPlaceholder = tMainConfig
-                .get("general", "EnablePlaceholderForMaterialNamesInLangFile", true)
+        GT_Mod.gregtechproxy.mForceFreeFace = GregTech_API.sMachineFile
+                .get(ConfigCategories.machineconfig, "forceFreeFace", true);
+        GT_Mod.gregtechproxy.mBrickedBlastFurnace = tMainConfig.get("general", "BrickedBlastFurnace", true)
                 .getBoolean(true);
+        GT_Mod.gregtechproxy.mEasierIVPlusCables = tMainConfig.get("general", "EasierEVPlusCables", false)
+                .getBoolean(false);
+        GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = tMainConfig
+                .get("general", "MixedOreOnlyYieldsTwoThirdsOfPureOre", false).getBoolean(false);
+        GT_Mod.gregtechproxy.enableBlackGraniteOres = GregTech_API.sWorldgenFile
+                .get("general", "enableBlackGraniteOres", GT_Mod.gregtechproxy.enableBlackGraniteOres);
+        GT_Mod.gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile
+                .get("general", "enableRedGraniteOres", GT_Mod.gregtechproxy.enableRedGraniteOres);
+        GT_Mod.gregtechproxy.enableMarbleOres = GregTech_API.sWorldgenFile
+                .get("general", "enableMarbleOres", GT_Mod.gregtechproxy.enableMarbleOres);
+        GT_Mod.gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile
+                .get("general", "enableBasaltOres", GT_Mod.gregtechproxy.enableBasaltOres);
+        GT_Mod.gregtechproxy.gt6Pipe = tMainConfig.get("general", "GT6StyledPipesConnection", true).getBoolean(true);
+        GT_Mod.gregtechproxy.gt6Cable = tMainConfig.get("general", "GT6StyledWiresConnection", true).getBoolean(true);
+        GT_Mod.gregtechproxy.ic2EnergySourceCompat = tMainConfig.get("general", "Ic2EnergySourceCompat", true)
+                .getBoolean(true);
+        GT_Mod.gregtechproxy.costlyCableConnection = tMainConfig
+                .get("general", "CableConnectionRequiresSolderingMaterial", false).getBoolean(false);
+        GT_LanguageManager.i18nPlaceholder = tMainConfig
+                .get("general", "EnablePlaceholderForMaterialNamesInLangFile", true).getBoolean(true);
         GT_MetaTileEntity_LongDistancePipelineBase.minimalDistancePoints = tMainConfig
-                .get("general", "LongDistancePipelineMinimalDistancePoints", 64)
-                .getInt(64);
+                .get("general", "LongDistancePipelineMinimalDistancePoints", 64).getInt(64);
 
         GregTech_API.mUseOnlyGoodSolderingMaterials = GregTech_API.sRecipeFile.get(
                 ConfigCategories.Recipes.harderrecipes,
                 "useonlygoodsolderingmaterials",
                 GregTech_API.mUseOnlyGoodSolderingMaterials);
-        GT_Mod.gregtechproxy.mChangeHarvestLevels =
-                GregTech_API.sMaterialProperties.get("havestLevel", "activateHarvestLevelChange", false); // TODO CHECK
+        GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties
+                .get("havestLevel", "activateHarvestLevelChange", false); // TODO CHECK
         if (GT_Mod.gregtechproxy.mChangeHarvestLevels) {
-            GT_Mod.gregtechproxy.mGraniteHavestLevel =
-                    GregTech_API.sMaterialProperties.get("havestLevel", "graniteHarvestLevel", 3);
-            GT_Mod.gregtechproxy.mMaxHarvestLevel =
-                    Math.min(15, GregTech_API.sMaterialProperties.get("havestLevel", "maxLevel", 7));
+            GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties
+                    .get("havestLevel", "graniteHarvestLevel", 3);
+            GT_Mod.gregtechproxy.mMaxHarvestLevel = Math
+                    .min(15, GregTech_API.sMaterialProperties.get("havestLevel", "maxLevel", 7));
             Materials.getMaterialsMap().values().parallelStream()
-                    .filter(tMaterial -> tMaterial != null
-                            && tMaterial.mToolQuality > 0
-                            && tMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length
-                            && tMaterial.mMetaItemSubID >= 0)
-                    .forEach(tMaterial -> GT_Mod.gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] =
-                            GregTech_API.sMaterialProperties.get(
-                                    "materialHavestLevel", tMaterial.mDefaultLocalName, tMaterial.mToolQuality));
+                    .filter(
+                            tMaterial -> tMaterial != null && tMaterial.mToolQuality > 0
+                                    && tMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length
+                                    && tMaterial.mMetaItemSubID >= 0)
+                    .forEach(
+                            tMaterial -> GT_Mod.gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties
+                                    .get("materialHavestLevel", tMaterial.mDefaultLocalName, tMaterial.mToolQuality));
         }
 
         if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
             Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
         }
-        GT_Mod.gregtechproxy.mOnline =
-                tMainConfig.get(GT_Mod.aTextGeneral, "online", true).getBoolean(false);
+        GT_Mod.gregtechproxy.mOnline = tMainConfig.get(GT_Mod.aTextGeneral, "online", true).getBoolean(false);
 
-        GT_Mod.gregtechproxy.mUpgradeCount = Math.min(
-                64,
-                Math.max(1, tMainConfig.get("features", "UpgradeStacksize", 4).getInt()));
+        GT_Mod.gregtechproxy.mUpgradeCount = Math
+                .min(64, Math.max(1, tMainConfig.get("features", "UpgradeStacksize", 4).getInt()));
         for (OrePrefixes tPrefix : OrePrefixes.values()) {
             if (tPrefix.mIsUsedForOreProcessing) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(
-                        64,
-                        Math.max(
-                                1,
-                                tMainConfig
-                                        .get("features", "MaxOreStackSize", 64)
-                                        .getInt())));
+                tPrefix.mDefaultStackSize = ((byte) Math
+                        .min(64, Math.max(1, tMainConfig.get("features", "MaxOreStackSize", 64).getInt())));
             } else if (tPrefix == OrePrefixes.plank) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(
-                        64,
-                        Math.max(
-                                16,
-                                tMainConfig
-                                        .get("features", "MaxPlankStackSize", 64)
-                                        .getInt())));
-            } else if ((tPrefix == OrePrefixes.wood)
-                    || (tPrefix == OrePrefixes.treeLeaves)
+                tPrefix.mDefaultStackSize = ((byte) Math
+                        .min(64, Math.max(16, tMainConfig.get("features", "MaxPlankStackSize", 64).getInt())));
+            } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves)
                     || (tPrefix == OrePrefixes.treeSapling)
                     || (tPrefix == OrePrefixes.log)) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(
-                        64,
-                        Math.max(
-                                16,
-                                tMainConfig
-                                        .get("features", "MaxLogStackSize", 64)
-                                        .getInt())));
-            } else if (tPrefix.mIsUsedForBlocks) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(
-                        64,
-                        Math.max(
-                                16,
-                                tMainConfig
-                                        .get("features", "MaxOtherBlockStackSize", 64)
-                                        .getInt())));
-            }
+                        tPrefix.mDefaultStackSize = ((byte) Math
+                                .min(64, Math.max(16, tMainConfig.get("features", "MaxLogStackSize", 64).getInt())));
+                    } else
+                if (tPrefix.mIsUsedForBlocks) {
+                    tPrefix.mDefaultStackSize = ((byte) Math
+                            .min(64, Math.max(16, tMainConfig.get("features", "MaxOtherBlockStackSize", 64).getInt())));
+                }
         }
 
-        GT_Values.mCTMEnabledBlock.addAll(Arrays.asList(tMainConfig
-                .get("general", "ctm_block_whitelist", new String[] {
-                    "team.chisel.block.BlockCarvable", "team.chisel.block.BlockCarvableGlass"
-                })
-                .getStringList()));
-        GT_Values.mCTMDisabledBlock.addAll(Arrays.asList(tMainConfig
-                .get("general", "ctm_block_blacklist", new String[] {"team.chisel.block.BlockRoadLine"})
-                .getStringList()));
+        GT_Values.mCTMEnabledBlock.addAll(
+                Arrays.asList(
+                        tMainConfig.get(
+                                "general",
+                                "ctm_block_whitelist",
+                                new String[] { "team.chisel.block.BlockCarvable",
+                                        "team.chisel.block.BlockCarvableGlass" })
+                                .getStringList()));
+        GT_Values.mCTMDisabledBlock.addAll(
+                Arrays.asList(
+                        tMainConfig.get(
+                                "general",
+                                "ctm_block_blacklist",
+                                new String[] { "team.chisel.block.BlockRoadLine" }).getStringList()));
     }
 
     public static void loadClientConfig() {
         final String sBDye0 = "ColorModulation.";
-        Arrays.stream(Dyes.values())
-                .filter(tDye -> (tDye != Dyes._NULL) && (tDye.mIndex < 0))
-                .forEach(tDye -> {
-                    String sBDye1 = sBDye0 + tDye;
-                    tDye.mRGBa[0] = ((short) Math.min(
-                            255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "R", tDye.mOriginalRGBa[0]))));
-                    tDye.mRGBa[1] = ((short) Math.min(
-                            255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "G", tDye.mOriginalRGBa[1]))));
-                    tDye.mRGBa[2] = ((short) Math.min(
-                            255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "B", tDye.mOriginalRGBa[2]))));
-                });
-        GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion =
-                GregTech_API.sClientDataFile.get("render", "TileAmbientOcclusion", true);
+        Arrays.stream(Dyes.values()).filter(tDye -> (tDye != Dyes._NULL) && (tDye.mIndex < 0)).forEach(tDye -> {
+            String sBDye1 = sBDye0 + tDye;
+            tDye.mRGBa[0] = ((short) Math
+                    .min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "R", tDye.mOriginalRGBa[0]))));
+            tDye.mRGBa[1] = ((short) Math
+                    .min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "G", tDye.mOriginalRGBa[1]))));
+            tDye.mRGBa[2] = ((short) Math
+                    .min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "B", tDye.mOriginalRGBa[2]))));
+        });
+        GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile
+                .get("render", "TileAmbientOcclusion", true);
         GT_Mod.gregtechproxy.mRenderGlowTextures = GregTech_API.sClientDataFile.get("render", "GlowTextures", true);
-        GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped =
-                GregTech_API.sClientDataFile.get("render", "RenderFlippedMachinesFlipped", true);
-        GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch =
-                GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
-        GT_Mod.gregtechproxy.mRenderDirtParticles =
-                GregTech_API.sClientDataFile.get("render", "RenderDirtParticles", true);
-        GT_Mod.gregtechproxy.mRenderPollutionFog =
-                GregTech_API.sClientDataFile.get("render", "RenderPollutionFog", true);
+        GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile
+                .get("render", "RenderFlippedMachinesFlipped", true);
+        GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile
+                .get("render", "RenderIndicatorsOnHatch", true);
+        GT_Mod.gregtechproxy.mRenderDirtParticles = GregTech_API.sClientDataFile
+                .get("render", "RenderDirtParticles", true);
+        GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile
+                .get("render", "RenderPollutionFog", true);
 
-        GT_Mod.gregtechproxy.mCoverTabsVisible =
-                GregTech_API.sClientDataFile.get("interface", "DisplayCoverTabs", true);
+        GT_Mod.gregtechproxy.mCoverTabsVisible = GregTech_API.sClientDataFile
+                .get("interface", "DisplayCoverTabs", true);
         GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
         GT_Mod.gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
-        GT_Mod.gregtechproxy.mTooltipShiftVerbosity =
-                GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
+        GT_Mod.gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile
+                .get("interface", "TooltipShiftVerbosity", 3);
         GT_Mod.gregtechproxy.mTitleTabStyle = GregTech_API.sClientDataFile.get("interface", "TitleTabStyle", 0);
 
         GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.sClientDataFile.get("nei", "RecipeSecondMode", true);
         GT_Mod.gregtechproxy.mNEIRecipeOwner = GregTech_API.sClientDataFile.get("nei", "RecipeOwner", false);
-        GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace =
-                GregTech_API.sClientDataFile.get("nei", "RecipeOwnerStackTrace", false);
+        GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace = GregTech_API.sClientDataFile
+                .get("nei", "RecipeOwnerStackTrace", false);
         GT_Mod.gregtechproxy.mNEIOriginalVoltage = GregTech_API.sClientDataFile.get("nei", "OriginalVoltage", false);
 
-        GT_Mod.gregtechproxy.mWailaTransformerVoltageTier =
-                GregTech_API.sClientDataFile.get("waila", "WailaTransformerVoltageTier", true);
+        GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = GregTech_API.sClientDataFile
+                .get("waila", "WailaTransformerVoltageTier", true);
 
         final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder");
         GT_Mod.gregtechproxy.mCircuitsOrder.clear();

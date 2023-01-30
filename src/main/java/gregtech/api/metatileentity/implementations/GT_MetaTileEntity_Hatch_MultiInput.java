@@ -2,11 +2,18 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.ITexture;
@@ -16,11 +23,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_Input implements IAddUIWidgets {
 
@@ -33,8 +35,8 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
     }
 
-    public GT_MetaTileEntity_Hatch_MultiInput(
-            String aName, int aSlot, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_MultiInput(String aName, int aSlot, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
         this.mStoredFluid = new FluidStack[aSlot];
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
@@ -79,12 +81,12 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2) };
     }
 
     public int getMaxType() {
@@ -169,11 +171,11 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null
-                || aFluid.getFluid().getID() <= 0
+        if (aFluid == null || aFluid.getFluid().getID() <= 0
                 || aFluid.amount <= 0
                 || !canTankBeFilled()
-                || !isFluidInputAllowed(aFluid)) return 0;
+                || !isFluidInputAllowed(aFluid))
+            return 0;
         if (!hasFluid(aFluid) && getFirstEmptySlot() != -1) {
             int tFilled = Math.min(aFluid.amount, mCapacityPer);
             if (doFill) {
@@ -295,34 +297,28 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int SLOT_NUMBER = 4;
-        final Pos2d[] positions = new Pos2d[] {
-            new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43), new Pos2d(88, 43),
-        };
+        final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),
+                new Pos2d(88, 43), };
 
         for (int i = 0; i < SLOT_NUMBER; i++) {
             final int slotId = i;
-            builder.widget(new FluidDisplaySlotWidget(inventoryHandler, slotId)
-                    .setFluidAccessConstructor(() -> constructFluidAccess(slotId))
-                    .setIHasFluidDisplay(this)
-                    .setCanDrain(true)
-                    .setCanFill(!isDrainableStackSeparate())
-                    .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
-                    .setBeforeRealClick((clickData, widget) -> {
-                        if (NetworkUtils.isClient()) {
-                            // propagate display item content to actual fluid stored in this tank
-                            setFluid(
-                                    GT_Utility.getFluidFromDisplayStack(
-                                            widget.getMcSlot().getStack()),
-                                    slotId);
-                        }
-                        ItemStack tStackHeld =
-                                widget.getContext().getPlayer().inventory.getItemStack();
-                        FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackHeld, true);
-                        return constructFluidAccess(slotId).isMatch(tFluidHeld, slotId);
-                    })
-                    .setUpdateFluidDisplayItem(() -> updateFluidDisplayItem(slotId))
-                    .setBackground(ModularUITextures.FLUID_SLOT)
-                    .setPos(positions[slotId]));
+            builder.widget(
+                    new FluidDisplaySlotWidget(inventoryHandler, slotId)
+                            .setFluidAccessConstructor(() -> constructFluidAccess(slotId)).setIHasFluidDisplay(this)
+                            .setCanDrain(true).setCanFill(!isDrainableStackSeparate())
+                            .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                            .setBeforeRealClick((clickData, widget) -> {
+                                if (NetworkUtils.isClient()) {
+                                    // propagate display item content to actual fluid stored in this tank
+                                    setFluid(
+                                            GT_Utility.getFluidFromDisplayStack(widget.getMcSlot().getStack()),
+                                            slotId);
+                                }
+                                ItemStack tStackHeld = widget.getContext().getPlayer().inventory.getItemStack();
+                                FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackHeld, true);
+                                return constructFluidAccess(slotId).isMatch(tFluidHeld, slotId);
+                            }).setUpdateFluidDisplayItem(() -> updateFluidDisplayItem(slotId))
+                            .setBackground(ModularUITextures.FLUID_SLOT).setPos(positions[slotId]));
         }
     }
 
@@ -331,6 +327,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     }
 
     protected static class MultiFluidAccess implements IFluidAccess {
+
         private final GT_MetaTileEntity_Hatch_MultiInput mTank;
         private final int mSlot;
 

@@ -1,28 +1,42 @@
 package gregtech.api.render;
 
+import net.minecraft.block.Block;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.common.render.GT_TextureBuilder;
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * <p>This class contains a collection of static factory methods to access the New Texture API.</p>
- * <p>The {@link #of} methods directly returns ready-to-use instances of {@link ITexture} implementations.</p>
- * <p>To get more specific implementations of {@link ITexture} instances, use the {@link #builder()} method.</p>
- * <p>Example of the {@link #builder()}:</p>
- * <pre>{@code
+ * <p>
+ * This class contains a collection of static factory methods to access the New Texture API.
+ * </p>
+ * <p>
+ * The {@link #of} methods directly returns ready-to-use instances of {@link ITexture} implementations.
+ * </p>
+ * <p>
+ * To get more specific implementations of {@link ITexture} instances, use the {@link #builder()} method.
+ * </p>
+ * <p>
+ * Example of the {@link #builder()}:
+ * </p>
+ * 
+ * <pre>
+ * {@code
  *     // Texture that glows in the dark
  *     TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).glow().build());
  *
  *     // Texture with same bottom flipped orientation as vanilla
  *     TextureFactory.builder().addIcon(GRANITE_RED_STONE).stdOrient().build();
- * }</pre>
+ * }
+ * </pre>
+ * 
  * See: the {@link ITextureBuilder} interface
  */
 @SuppressWarnings("unused")
 public final class TextureFactory {
+
     private TextureFactory() {
         throw new AssertionError("Non-instantiable class");
     }
@@ -49,19 +63,9 @@ public final class TextureFactory {
      * @param rgba   The {@code short[]} RGBA tint for all sides.
      * @return The instance of an {@link ITexture} implementation
      */
-    public static ITexture of(
-            final IIconContainer bottom,
-            final IIconContainer top,
-            final IIconContainer north,
-            final IIconContainer south,
-            final IIconContainer west,
-            final IIconContainer east,
-            final short[] rgba) {
-        return builder()
-                .addIcon(bottom, top, north, south, west, east)
-                .setRGBA(rgba)
-                .setAllowAlpha(true)
-                .build();
+    public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
+            final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
+        return builder().addIcon(bottom, top, north, south, west, east).setRGBA(rgba).setAllowAlpha(true).build();
     }
 
     /**
@@ -73,13 +77,9 @@ public final class TextureFactory {
      * @param rgba   The {@code short[]} RGBA tint for all sides.
      * @return The instance of an {@link ITexture} implementation
      */
-    public static ITexture of(
-            final IIconContainer bottom, final IIconContainer top, final IIconContainer sides, final short[] rgba) {
-        return builder()
-                .addIcon(bottom, top, sides, sides, sides, sides)
-                .setRGBA(rgba)
-                .setAllowAlpha(true)
-                .build();
+    public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
+            final short[] rgba) {
+        return builder().addIcon(bottom, top, sides, sides, sides, sides).setRGBA(rgba).setAllowAlpha(true).build();
     }
 
     /**
@@ -91,11 +91,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba, final boolean allowAlpha) {
-        return builder()
-                .addIcon(iconContainer)
-                .setRGBA(rgba)
-                .setAllowAlpha(allowAlpha)
-                .build();
+        return builder().addIcon(iconContainer).setRGBA(rgba).setAllowAlpha(allowAlpha).build();
     }
 
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {
@@ -107,8 +103,7 @@ public final class TextureFactory {
     }
 
     /**
-     * Copied-Block {@link ITexture} factory
-     * that will render a texture copied from the side of a {@link Block}.
+     * Copied-Block {@link ITexture} factory that will render a texture copied from the side of a {@link Block}.
      *
      * @param block The {@link Block} that will provide the texture
      * @param meta  The meta value for the Block
@@ -117,11 +112,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final Block block, final int meta, final ForgeDirection side, final short[] rgba) {
-        return builder()
-                .setFromBlock(block, meta)
-                .setFromSide(side)
-                .setRGBA(rgba)
-                .build();
+        return builder().setFromBlock(block, meta).setFromSide(side).setRGBA(rgba).build();
     }
 
     public static ITexture of(final Block block, final int meta, final ForgeDirection side) {

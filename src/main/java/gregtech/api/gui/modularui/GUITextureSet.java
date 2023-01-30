@@ -1,17 +1,19 @@
 package gregtech.api.gui.modularui;
 
+import java.util.function.Function;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.api.enums.SteamVariant;
-import java.util.function.Function;
 
 /**
- * Set of textures that is commonly used for GUI but can vary depending on "style" of machines,
- * e.g. bronze steam or steel steam.
- * <br> This has builder pattern; Textures you didn't specify will fall back to default ones.
+ * Set of textures that is commonly used for GUI but can vary depending on "style" of machines, e.g. bronze steam or
+ * steel steam. <br>
+ * This has builder pattern; Textures you didn't specify will fall back to default ones.
  */
 public class GUITextureSet {
+
     private UITexture mainBackground;
     private UITexture itemSlot;
     private UITexture fluidSlot;
@@ -27,11 +29,12 @@ public class GUITextureSet {
     private UITexture gregtechLogo;
 
     public static final GUITextureSet DEFAULT = new GUITextureSet()
-            .setMainBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
-            .setItemSlot(ModularUITextures.ITEM_SLOT)
+            .setMainBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT).setItemSlot(ModularUITextures.ITEM_SLOT)
             .setFluidSlot(ModularUITextures.FLUID_SLOT)
             .setCoverTab(
-                    GT_UITextures.TAB_COVER_NORMAL, GT_UITextures.TAB_COVER_HIGHLIGHT, GT_UITextures.TAB_COVER_DISABLED)
+                    GT_UITextures.TAB_COVER_NORMAL,
+                    GT_UITextures.TAB_COVER_HIGHLIGHT,
+                    GT_UITextures.TAB_COVER_DISABLED)
             .setTitleTab(GT_UITextures.TAB_TITLE, GT_UITextures.TAB_TITLE_DARK, GT_UITextures.TAB_TITLE_ANGULAR)
             .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
 
@@ -77,8 +80,8 @@ public class GUITextureSet {
         return this;
     }
 
-    public GUITextureSet setTitleTab(
-            AdaptableUITexture titleNormal, AdaptableUITexture titleDark, AdaptableUITexture titleTabAngular) {
+    public GUITextureSet setTitleTab(AdaptableUITexture titleNormal, AdaptableUITexture titleDark,
+            AdaptableUITexture titleTabAngular) {
         this.titleTabNormal = titleNormal;
         this.titleTabDark = titleDark;
         this.titleTabAngular = titleTabAngular;

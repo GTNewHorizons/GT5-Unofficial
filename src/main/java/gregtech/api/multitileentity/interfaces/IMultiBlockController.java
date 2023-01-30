@@ -5,6 +5,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public interface IMultiBlockController
         extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory, IMultiBlockEnergy {
+
     boolean checkStructure(boolean aForceReset);
 
     /** Set the structure as having changed, and trigger an update */

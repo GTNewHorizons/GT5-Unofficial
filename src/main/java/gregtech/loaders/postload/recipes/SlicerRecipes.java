@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 
 public class SlicerRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addSlicerRecipe(

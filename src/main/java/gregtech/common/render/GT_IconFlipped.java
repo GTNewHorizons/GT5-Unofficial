@@ -1,11 +1,13 @@
 package gregtech.common.render;
 
+import net.minecraft.util.IIcon;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.IIcon;
 
 @SideOnly(Side.CLIENT)
 public class GT_IconFlipped implements IIcon {
+
     private final IIcon baseIcon;
     private final boolean flipU;
     private final boolean flipV;

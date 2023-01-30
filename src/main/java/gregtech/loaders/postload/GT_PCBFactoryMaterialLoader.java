@@ -5,6 +5,7 @@ import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.util.GT_PCBFactoryManager;
 
 public class GT_PCBFactoryMaterialLoader {
+
     public static void load() {
         // add Plastics
         GT_PCBFactoryManager.addPlasticTier(Materials.Plastic, 1);

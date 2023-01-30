@@ -6,18 +6,16 @@
  *
  * This file is part of GregTech.
  *
- * GregTech is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * GregTech is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * GregTech is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
+ * GregTech is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with GregTech. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with GregTech. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package gregtech.common.tileentities.machines.long_distance;
 
@@ -27,24 +25,26 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_ITEM_FRONT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_ITEM_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_ITEM_SIDE_GLOW;
 
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntity_LongDistancePipelineBase {
+
     public GT_MetaTileEntity_LongDistancePipelineItem(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Sends Items over long distances");
     }
 
-    public GT_MetaTileEntity_LongDistancePipelineItem(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_LongDistancePipelineItem(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -145,7 +145,7 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
         return false;
     }
 
-    //    // Relay Sided Inventories
+    // // Relay Sided Inventories
     //
 
     @Override
@@ -188,29 +188,14 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        if (aSide == aFacing)
-            return new ITexture[] {
-                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT)
-            };
-        else if (aSide == GT_Utility.getOppositeSide(aFacing))
-            return new ITexture[] {
-                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK)
-            };
-        else
-            return new ITexture[] {
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
+                TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT) };
+        else if (aSide == GT_Utility.getOppositeSide(aFacing)) return new ITexture[] {
+                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK) };
+        else return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
                 TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_PIPELINE_ITEM_SIDE_GLOW)
-                        .glow()
-                        .build()
-            };
+                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_ITEM_SIDE_GLOW).glow().build() };
     }
 }

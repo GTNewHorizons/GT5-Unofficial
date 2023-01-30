@@ -1,11 +1,13 @@
 package gregtech.common.render;
 
-import fox.spiteful.avaritia.render.CosmicItemRenderer;
 import java.util.*;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.oredict.OreDictionary;
+
+import fox.spiteful.avaritia.render.CosmicItemRenderer;
 
 public class CosmicItemRendererGT extends CosmicItemRenderer {
 

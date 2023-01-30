@@ -1,34 +1,37 @@
 package gregtech.nei;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+
 import com.google.common.collect.ImmutableMap;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class NEI_GT_Config implements IConfigureNEI {
+
     /**
      * This map determines the order in which NEI handlers will be registered and displayed in tabs.
      *
-     * <p>Handlers will be displayed in ascending order of integer value. Any recipe map that is not
-     * present in this map will be assigned a value of 0. Negative values are fine.
+     * <p>
+     * Handlers will be displayed in ascending order of integer value. Any recipe map that is not present in this map
+     * will be assigned a value of 0. Negative values are fine.
      */
-    private static final ImmutableMap<GT_Recipe.GT_Recipe_Map, Integer> RECIPE_MAP_ORDERING =
-            ImmutableMap.<GT_Recipe.GT_Recipe_Map, Integer>builder()
-                    .put(GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes, 1)
-                    .put(GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes, 2)
-                    .build();
+    private static final ImmutableMap<GT_Recipe.GT_Recipe_Map, Integer> RECIPE_MAP_ORDERING = ImmutableMap.<GT_Recipe.GT_Recipe_Map, Integer>builder()
+            .put(GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes, 1)
+            .put(GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes, 2).build();
 
-    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR =
-            Comparator.comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
+    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
+            .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     public static boolean sIsAdded = true;
 

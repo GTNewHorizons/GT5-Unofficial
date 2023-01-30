@@ -1,15 +1,18 @@
 package gregtech.common.gui.modularui.widget;
 
+import java.io.IOException;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
-import java.io.IOException;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import net.minecraft.item.ItemStack;
 
 public class CoverDataFollower_SlotWidget<T extends ISerializableObject> extends SlotWidget
         implements IDataFollowerWidget<T, ItemStack> {

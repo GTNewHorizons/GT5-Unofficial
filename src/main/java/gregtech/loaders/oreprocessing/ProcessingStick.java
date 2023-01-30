@@ -2,31 +2,32 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingStick() {
         OrePrefixes.stick.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L),
                     GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] {" s ", "fPx", 'P', OrePrefixes.stick.get(aMaterial)});
+                    new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.get(aMaterial) });
         }
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_WORKING)) {
             GT_Values.RA.addLatheRecipe(
-                    aMaterial.contains(SubTag.CRYSTAL)
-                            ? GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
+                    aMaterial.contains(SubTag.CRYSTAL) ? GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
                             : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 2L),
@@ -43,11 +44,11 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L),
                             GT_Proxy.tBits,
-                            new Object[] {"s", "X", 'X', OrePrefixes.stickLong.get(aMaterial)});
+                            new Object[] { "s", "X", 'X', OrePrefixes.stickLong.get(aMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
                             GT_Proxy.tBits,
-                            new Object[] {"f ", " X", 'X', OrePrefixes.ingot.get(aMaterial)});
+                            new Object[] { "f ", " X", 'X', OrePrefixes.ingot.get(aMaterial) });
                 }
             }
         }

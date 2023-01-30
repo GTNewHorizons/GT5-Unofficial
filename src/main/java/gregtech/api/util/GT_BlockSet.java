@@ -3,6 +3,7 @@ package gregtech.api.util;
 import net.minecraft.block.Block;
 
 public class GT_BlockSet {
+
     private final GT_BlockMap<Object> backing = new GT_BlockMap<>();
 
     public boolean add(Block block, byte meta) {

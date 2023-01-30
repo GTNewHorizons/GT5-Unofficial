@@ -3,6 +3,7 @@ package gregtech.api.util;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
@@ -10,6 +11,7 @@ import net.minecraft.world.World;
 
 @SuppressWarnings("unused")
 public abstract class WorldSpawnedEventBuilder implements Runnable {
+
     private static final String ILLEGAL_STATE_STR1 = "Position, identifier and world must be set";
     /* Variables */
 
@@ -47,6 +49,7 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
     /* Interfaces */
 
     private interface IPositionedWorldSpawnedEvent {
+
         Vec3 getPosition();
 
         IPositionedWorldSpawnedEvent setPosition(Vec3 position);
@@ -55,18 +58,21 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
     }
 
     private interface IEntityWorldSpawnedEvent {
+
         Entity getEntity();
 
         IEntityWorldSpawnedEvent setEntity(Entity entity);
     }
 
     private interface IEntityPlayerWorldSpawnedEvent {
+
         EntityPlayer getEntityPlayer();
 
         IEntityPlayerWorldSpawnedEvent setEntityPlayer(EntityPlayer entity);
     }
 
     private interface IStringIdentifierWorldSpawnedEvent {
+
         String getIdentifier();
 
         IStringIdentifierWorldSpawnedEvent setIdentifier(String identifier);
@@ -75,6 +81,7 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
     }
 
     private interface ISoundWorldSpawnedEvent {
+
         float getPitch();
 
         float getVolume();
@@ -128,6 +135,7 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
 
     private abstract static class PositionedWorldSpawnedEventBuilder extends WorldSpawnedEventBuilder
             implements IPositionedWorldSpawnedEvent {
+
         private Vec3 position;
 
         @Override
@@ -150,6 +158,7 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
 
     private abstract static class StringIdentifierPositionedWorldSpawnedEventBuilder
             extends PositionedWorldSpawnedEventBuilder implements IStringIdentifierWorldSpawnedEvent {
+
         private String identifier;
 
         @Override
@@ -249,15 +258,14 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             if (getPosition() == null || getIdentifier() == null || getMotion() == null || getWorld() == null)
                 throw new IllegalStateException("Position, identifier, motion and world must be set");
 
-            getWorld()
-                    .spawnParticle(
-                            getIdentifier(),
-                            getPosition().xCoord,
-                            getPosition().yCoord,
-                            getPosition().zCoord,
-                            getMotion().xCoord,
-                            getMotion().yCoord,
-                            getMotion().zCoord);
+            getWorld().spawnParticle(
+                    getIdentifier(),
+                    getPosition().xCoord,
+                    getPosition().yCoord,
+                    getPosition().zCoord,
+                    getMotion().xCoord,
+                    getMotion().yCoord,
+                    getMotion().zCoord);
         }
     }
 
@@ -303,14 +311,13 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             if (getPosition() == null || getIdentifier() == null || getWorld() == null)
                 throw new IllegalStateException(ILLEGAL_STATE_STR1);
 
-            getWorld()
-                    .playSoundEffect(
-                            getPosition().xCoord,
-                            getPosition().yCoord,
-                            getPosition().zCoord,
-                            getIdentifier(),
-                            getPitch(),
-                            getVolume());
+            getWorld().playSoundEffect(
+                    getPosition().xCoord,
+                    getPosition().yCoord,
+                    getPosition().zCoord,
+                    getIdentifier(),
+                    getPitch(),
+                    getVolume());
         }
     }
 
@@ -362,15 +369,14 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             if (getPosition() == null || getIdentifier() == null || getWorld() == null)
                 throw new IllegalStateException(ILLEGAL_STATE_STR1);
 
-            getWorld()
-                    .playSound(
-                            getPosition().xCoord,
-                            getPosition().yCoord,
-                            getPosition().zCoord,
-                            getIdentifier(),
-                            getPitch(),
-                            getVolume(),
-                            isProximity());
+            getWorld().playSound(
+                    getPosition().xCoord,
+                    getPosition().yCoord,
+                    getPosition().zCoord,
+                    getIdentifier(),
+                    getPitch(),
+                    getVolume(),
+                    isProximity());
         }
     }
 
@@ -404,12 +410,16 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             if (getPosition() == null || getIdentifier() == null || getWorld() == null)
                 throw new IllegalStateException(ILLEGAL_STATE_STR1);
 
-            getWorld().playRecord(getIdentifier(), (int) getPosition().xCoord, (int) getPosition().yCoord, (int)
-                    getPosition().zCoord);
+            getWorld().playRecord(
+                    getIdentifier(),
+                    (int) getPosition().xCoord,
+                    (int) getPosition().yCoord,
+                    (int) getPosition().zCoord);
         }
     }
 
     public static final class ExplosionEffectEventBuilder extends PositionedEntityWorldSpawnedEventBuilder {
+
         private boolean isFlaming, isSmoking;
         private float strength;
 
@@ -460,15 +470,14 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             if (getPosition() == null || getWorld() == null)
                 throw new IllegalStateException("Position and world must be set");
 
-            getWorld()
-                    .newExplosion(
-                            getEntity(),
-                            getPosition().xCoord,
-                            getPosition().yCoord,
-                            getPosition().zCoord,
-                            strength,
-                            isFlaming,
-                            isSmoking);
+            getWorld().newExplosion(
+                    getEntity(),
+                    getPosition().xCoord,
+                    getPosition().yCoord,
+                    getPosition().zCoord,
+                    strength,
+                    isFlaming,
+                    isSmoking);
         }
     }
 
@@ -521,13 +530,12 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             if (getEntityPlayer() == null || getPosition() == null || getWorld() == null)
                 throw new IllegalStateException("EntityPlayer, position and world must be set");
 
-            getWorld()
-                    .extinguishFire(
-                            getEntityPlayer(),
-                            (int) getPosition().xCoord,
-                            (int) getPosition().yCoord,
-                            (int) getPosition().zCoord,
-                            side);
+            getWorld().extinguishFire(
+                    getEntityPlayer(),
+                    (int) getPosition().xCoord,
+                    (int) getPosition().yCoord,
+                    (int) getPosition().zCoord,
+                    side);
         }
     }
 

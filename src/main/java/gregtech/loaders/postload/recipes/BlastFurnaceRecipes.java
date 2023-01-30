@@ -4,15 +4,17 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isGTNHLanthanidLoaded;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isGTPPLoaded;
 
-import gregtech.GT_Mod;
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.GT_Mod;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
 public class BlastFurnaceRecipes implements Runnable {
+
     @Override
     public void run() {
 
@@ -536,12 +538,8 @@ public class BlastFurnaceRecipes implements Runnable {
                 (int) TierEU.RECIPE_HV,
                 1688);
 
-        ItemStack[] tSiliconDioxide = new ItemStack[] {
-            Materials.SiliconDioxide.getDust(3),
-            Materials.NetherQuartz.getDust(3),
-            Materials.CertusQuartz.getDust(3),
-            Materials.Quartzite.getDust(6)
-        };
+        ItemStack[] tSiliconDioxide = new ItemStack[] { Materials.SiliconDioxide.getDust(3),
+                Materials.NetherQuartz.getDust(3), Materials.CertusQuartz.getDust(3), Materials.Quartzite.getDust(6) };
 
         // Roasting
 
@@ -664,12 +662,32 @@ public class BlastFurnaceRecipes implements Runnable {
 
     public void primitiveBlastFurnaceRecipes() {
         GT_Values.RA.addPrimitiveBlastRecipe(
-                Materials.Iron.getIngots(1), GT_Values.NI, 4, Materials.Steel.getIngots(1), GT_Values.NI, 7200);
+                Materials.Iron.getIngots(1),
+                GT_Values.NI,
+                4,
+                Materials.Steel.getIngots(1),
+                GT_Values.NI,
+                7200);
         GT_Values.RA.addPrimitiveBlastRecipe(
-                Materials.Iron.getDust(1), GT_Values.NI, 4, Materials.Steel.getIngots(1), GT_Values.NI, 7200);
+                Materials.Iron.getDust(1),
+                GT_Values.NI,
+                4,
+                Materials.Steel.getIngots(1),
+                GT_Values.NI,
+                7200);
         GT_Values.RA.addPrimitiveBlastRecipe(
-                Materials.Iron.getBlocks(1), GT_Values.NI, 36, Materials.Steel.getIngots(9), GT_Values.NI, 64800);
+                Materials.Iron.getBlocks(1),
+                GT_Values.NI,
+                36,
+                Materials.Steel.getIngots(9),
+                GT_Values.NI,
+                64800);
         GT_Values.RA.addPrimitiveBlastRecipe(
-                Materials.Steel.getDust(1), GT_Values.NI, 2, Materials.Steel.getIngots(1), GT_Values.NI, 7200);
+                Materials.Steel.getDust(1),
+                GT_Values.NI,
+                2,
+                Materials.Steel.getIngots(1),
+                GT_Values.NI,
+                7200);
     }
 }

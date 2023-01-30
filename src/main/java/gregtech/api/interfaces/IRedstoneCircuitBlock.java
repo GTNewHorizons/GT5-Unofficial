@@ -1,14 +1,16 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GT_CoverBehavior;
 
 /**
  * Implemented by the MetaTileEntity of the Redstone Circuit Block
  */
 public interface IRedstoneCircuitBlock {
+
     /**
      * The Output Direction the Circuit Block is Facing
      */
@@ -20,8 +22,8 @@ public interface IRedstoneCircuitBlock {
     boolean setRedstone(byte aStrength, byte aSide);
 
     /**
-     * returns Output Redstone State at Side
-     * Note that setRedstone checks if there is a Difference between the old and the new Setting before consuming any Energy
+     * returns Output Redstone State at Side Note that setRedstone checks if there is a Difference between the old and
+     * the new Setting before consuming any Energy
      */
     byte getOutputRedstone(byte aSide);
 

@@ -3,17 +3,19 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.loaders.postload.GT_MachineRecipeLoader;
+
 public class BreweryRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addBrewingRecipe(
@@ -46,9 +48,7 @@ public class BreweryRecipes implements Runnable {
                 FluidRegistry.getFluid("seedoil"),
                 FluidRegistry.getFluid("lubricant"),
                 false);
-        for (Fluid tFluid : new Fluid[] {
-            FluidRegistry.WATER, GT_ModHandler.getDistilledWater(1L).getFluid()
-        }) {
+        for (Fluid tFluid : new Fluid[] { FluidRegistry.WATER, GT_ModHandler.getDistilledWater(1L).getFluid() }) {
             GT_Values.RA.addBrewingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L),
                     tFluid,
@@ -100,30 +100,60 @@ public class BreweryRecipes implements Runnable {
                     FluidRegistry.getFluid("potion.mundane"),
                     false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.magma_cream, 1, 0), tFluid, FluidRegistry.getFluid("potion.mundane"), false);
+                    new ItemStack(Items.magma_cream, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.mundane"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
                     new ItemStack(Items.fermented_spider_eye, 1, 0),
                     tFluid,
                     FluidRegistry.getFluid("potion.mundane"),
                     false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.spider_eye, 1, 0), tFluid, FluidRegistry.getFluid("potion.mundane"), false);
+                    new ItemStack(Items.spider_eye, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.mundane"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.speckled_melon, 1, 0), tFluid, FluidRegistry.getFluid("potion.mundane"), false);
+                    new ItemStack(Items.speckled_melon, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.mundane"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.ghast_tear, 1, 0), tFluid, FluidRegistry.getFluid("potion.mundane"), false);
+                    new ItemStack(Items.ghast_tear, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.mundane"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.nether_wart, 1, 0), tFluid, FluidRegistry.getFluid("potion.awkward"), false);
+                    new ItemStack(Items.nether_wart, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.awkward"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Blocks.red_mushroom, 1, 0), tFluid, FluidRegistry.getFluid("potion.poison"), false);
+                    new ItemStack(Blocks.red_mushroom, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.poison"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.fish, 1, 3), tFluid, FluidRegistry.getFluid("potion.poison.strong"), true);
+                    new ItemStack(Items.fish, 1, 3),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.poison.strong"),
+                    true);
             GT_Values.RA.addBrewingRecipe(
-                    ItemList.IC2_Grin_Powder.get(1L), tFluid, FluidRegistry.getFluid("potion.poison.strong"), false);
+                    ItemList.IC2_Grin_Powder.get(1L),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.poison.strong"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.reeds, 1, 0), tFluid, FluidRegistry.getFluid("potion.reedwater"), false);
+                    new ItemStack(Items.reeds, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.reedwater"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
-                    new ItemStack(Items.apple, 1, 0), tFluid, FluidRegistry.getFluid("potion.applejuice"), false);
+                    new ItemStack(Items.apple, 1, 0),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.applejuice"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
                     new ItemStack(Items.golden_apple, 1, 0),
                     tFluid,
@@ -135,7 +165,10 @@ public class BreweryRecipes implements Runnable {
                     FluidRegistry.getFluid("potion.idunsapplejuice"),
                     true);
             GT_Values.RA.addBrewingRecipe(
-                    ItemList.IC2_Hops.get(1L), tFluid, FluidRegistry.getFluid("potion.hopsjuice"), false);
+                    ItemList.IC2_Hops.get(1L),
+                    tFluid,
+                    FluidRegistry.getFluid("potion.hopsjuice"),
+                    false);
             GT_Values.RA.addBrewingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L),
                     tFluid,
@@ -367,7 +400,10 @@ public class BreweryRecipes implements Runnable {
     public void addPotionRecipes(String aName, ItemStack aItem) {
         // normal
         GT_Values.RA.addBrewingRecipe(
-                aItem, FluidRegistry.getFluid("potion.awkward"), FluidRegistry.getFluid("potion." + aName), false);
+                aItem,
+                FluidRegistry.getFluid("potion.awkward"),
+                FluidRegistry.getFluid("potion." + aName),
+                false);
         // strong
         GT_Values.RA.addBrewingRecipe(
                 aItem,

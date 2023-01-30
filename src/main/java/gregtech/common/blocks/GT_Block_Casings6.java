@@ -1,15 +1,17 @@
 package gregtech.common.blocks;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
+
     public GT_Block_Casings6() {
         super(GT_Item_Casings6.class, "gt.blockcasings6", GT_Material_Casings.INSTANCE, 16);
 

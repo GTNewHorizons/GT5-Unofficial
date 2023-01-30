@@ -2,19 +2,22 @@ package gregtech.api.net;
 
 import static gregtech.api.enums.GT_Values.B;
 
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.IBlockAccess;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.GT_Mod;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.IBlockAccess;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
+
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3];
 
     private int features = 0;
@@ -34,8 +37,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     }
 
     // For multi tiles
-    public GT_Packet_MultiTileEntity(
-            int aFeatures, int aX, short aY, int aZ, short aRID, short aID, byte aCommonData, byte aColor) {
+    public GT_Packet_MultiTileEntity(int aFeatures, int aX, short aY, int aZ, short aRID, short aID, byte aCommonData,
+            byte aColor) {
         super(false);
         features = aFeatures;
 
@@ -189,7 +192,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Exception setting tile entity data for tile entity {} at ({}, {}, {})", tTileEntity, mX, mY, mZ);
+                    "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
+                    tTileEntity,
+                    mX,
+                    mY,
+                    mZ);
         }
     }
 

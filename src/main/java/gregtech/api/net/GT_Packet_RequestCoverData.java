@@ -1,10 +1,5 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.common.covers.CoverInfo;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -13,10 +8,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.common.covers.CoverInfo;
+import io.netty.buffer.ByteBuf;
+
 /**
  * Client -> Server : ask for cover data
  */
 public class GT_Packet_RequestCoverData extends GT_Packet_New {
+
     protected int mX;
     protected short mY;
     protected int mZ;
@@ -78,7 +81,11 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_RequestCoverData(
-                aData.readInt(), aData.readShort(), aData.readInt(), aData.readByte(), aData.readInt());
+                aData.readInt(),
+                aData.readShort(),
+                aData.readInt(),
+                aData.readByte(),
+                aData.readInt());
     }
 
     @Override

@@ -2,15 +2,17 @@ package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.GT_Values.VN;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDrillBase {
+
     public GT_MetaTileEntity_OilDrillInfinite(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -24,20 +26,15 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
         String casings = getCasingBlockItem().get(0).getDisplayName();
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Pump")
-                .addInfo("Controller Block for the Infinite Oil/Gas/Fluid Drilling Rig ")
-                .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-                .addSeparator()
-                .beginStructureBlock(3, 7, 3, false)
-                .addController("Front bottom")
+        tt.addMachineType("Pump").addInfo("Controller Block for the Infinite Oil/Gas/Fluid Drilling Rig ")
+                .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks").addSeparator()
+                .beginStructureBlock(3, 7, 3, false).addController("Front bottom")
                 .addOtherStructurePart(casings, "form the 3x1x3 Base")
                 .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
                 .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
-                .addMaintenanceHatch("Any base casing", 1)
+                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1).addMaintenanceHatch("Any base casing", 1)
                 .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
-                .addOutputHatch("Any base casing", 1)
-                .toolTipFinisher("Gregtech");
+                .addOutputHatch("Any base casing", 1).toolTipFinisher("Gregtech");
         return tt;
     }
 

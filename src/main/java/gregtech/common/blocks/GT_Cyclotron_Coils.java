@@ -1,11 +1,12 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
+import gregtech.api.util.GT_LanguageManager;
 
 public class GT_Cyclotron_Coils extends GT_Block_Casings_Abstract {
 
@@ -108,8 +109,7 @@ public class GT_Cyclotron_Coils extends GT_Block_Casings_Abstract {
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) > 9
-                ? super.colorMultiplier(aWorld, aX, aY, aZ)
+        return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ)
                 : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16
                         | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
                         | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];

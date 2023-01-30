@@ -2,14 +2,16 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
-import net.minecraft.item.ItemStack;
 
 public class AutoclaveRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addAutoclaveRecipe(
@@ -168,8 +170,9 @@ public class AutoclaveRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1),
                 Materials.Water.getFluid(1000L),
                 GT_Values.NF,
-                new ItemStack[] {GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
-                new int[] {0, 7500},
+                new ItemStack[] { GT_Values.NI,
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3) },
+                new int[] { 0, 7500 },
                 1200,
                 (int) TierEU.RECIPE_LV,
                 false);
@@ -178,8 +181,9 @@ public class AutoclaveRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1),
                 GT_ModHandler.getDistilledWater(1000L),
                 GT_Values.NF,
-                new ItemStack[] {GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)},
-                new int[] {0, 9000},
+                new ItemStack[] { GT_Values.NI,
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3) },
+                new int[] { 0, 9000 },
                 1200,
                 (int) TierEU.RECIPE_LV,
                 false);

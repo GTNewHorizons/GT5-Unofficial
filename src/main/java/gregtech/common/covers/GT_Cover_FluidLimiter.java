@@ -1,9 +1,22 @@
 package gregtech.common.covers;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -13,16 +26,6 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import io.netty.buffer.ByteBuf;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 /***
  * @author TrainerSnow#5086
@@ -42,15 +45,8 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     @Override
-    protected FluidLimiterData onCoverScrewdriverClickImpl(
-            byte aSide,
-            int aCoverID,
-            FluidLimiterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected FluidLimiterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable,
+            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aTileEntity instanceof IFluidHandler) {
             adjustThreshold(aCoverVariable, !aPlayer.isSneaking());
             GT_Utility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", aCoverVariable.threshold));
@@ -59,19 +55,19 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     @Override
-    protected boolean letsFluidInImpl(
-            byte aSide, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return allowsFluidIn(aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(
-            byte aSide, int aCoverID, FluidLimiterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     /*
-    Helpers
+     * Helpers
      */
 
     private boolean allowsFluidIn(FluidLimiterData aCoverVariable, ICoverable c) {
@@ -114,7 +110,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     /*
-    Data
+     * Data
      */
 
     @Override
@@ -128,6 +124,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     public static class FluidLimiterData implements ISerializableObject {
+
         private float threshold;
 
         public FluidLimiterData(float threshold) {
@@ -199,8 +196,8 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder.widget(new CoverDataControllerWidget<>(
-                                    this::getCoverData, this::setCoverData, GT_Cover_FluidLimiter.this)
+            builder.widget(
+                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_FluidLimiter.this)
                             .addFollower(
                                     new CoverDataFollower_TextFieldWidget<>(),
                                     coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
@@ -208,13 +205,11 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
                                         coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
                                         return coverData;
                                     },
-                                    widget -> widget.setNumbers(0, 100)
-                                            .setFocusOnGuiOpen(true)
-                                            .setPos(startX, startY + spaceY * 2 - 24)
-                                            .setSize(spaceX * 4 - 3, 12)))
-                    .widget(new TextWidget("Percent threshold")
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX, startY + spaceY * 2 - 35));
+                                    widget -> widget.setNumbers(0, 100).setFocusOnGuiOpen(true)
+                                            .setPos(startX, startY + spaceY * 2 - 24).setSize(spaceX * 4 - 3, 12)))
+                    .widget(
+                            new TextWidget("Percent threshold").setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX, startY + spaceY * 2 - 35));
         }
     }
 }

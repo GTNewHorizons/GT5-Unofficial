@@ -3,6 +3,15 @@ package gregtech.common.items;
 import static gregtech.api.enums.GT_Values.MOD_ID;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,15 +21,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class ItemPropolis extends Item {
+
     @SideOnly(Side.CLIENT)
     private IIcon secondIcon;
 
@@ -100,16 +103,31 @@ public class ItemPropolis extends Item {
 
     public void addProcessHV(ItemStack tPropolis, ItemStack aOutput2) {
         GT_Values.RA.addFluidExtractionRecipe(
-                tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo", 100), 5000, 50, 480);
+                tPropolis,
+                aOutput2,
+                FluidRegistry.getFluidStack("endergoo", 100),
+                5000,
+                50,
+                480);
     }
 
     public void addProcessEV(ItemStack tPropolis, ItemStack aOutput2) {
         GT_Values.RA.addFluidExtractionRecipe(
-                tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo", 200), 2500, 100, 1920);
+                tPropolis,
+                aOutput2,
+                FluidRegistry.getFluidStack("endergoo", 200),
+                2500,
+                100,
+                1920);
     }
 
     public void addProcessIV(ItemStack tPropolis, ItemStack aOutput2) {
         GT_Values.RA.addFluidExtractionRecipe(
-                tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo", 300), 1500, 150, 7680);
+                tPropolis,
+                aOutput2,
+                FluidRegistry.getFluidStack("endergoo", 300),
+                1500,
+                150,
+                7680);
     }
 }

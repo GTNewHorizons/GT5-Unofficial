@@ -1,10 +1,5 @@
 package gregtech.common.render.items;
 
-import codechicken.lib.render.TextureUtils;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
@@ -12,14 +7,20 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.render.TextureUtils;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.render.GT_RenderUtil;
 
 public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return type == ItemRenderType.EQUIPPED
-                || type == ItemRenderType.EQUIPPED_FIRST_PERSON
+        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
                 || type == ItemRenderType.INVENTORY
                 || type == ItemRenderType.ENTITY;
     }
@@ -30,13 +31,12 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
     }
 
     /**
-     * Handle special fluid display rendering. Return false if does not need such kind of handling.
-     * Note: annotations should not be rendered here. Only render the fluid
-     * texture.
-     * Parameters are values passed from {@link IItemRenderer#renderItem(ItemRenderType, ItemStack, Object...)}
-     * verbatim. Do not modify the argument.
+     * Handle special fluid display rendering. Return false if does not need such kind of handling. Note: annotations
+     * should not be rendered here. Only render the fluid texture. Parameters are values passed from
+     * {@link IItemRenderer#renderItem(ItemRenderType, ItemStack, Object...)} verbatim. Do not modify the argument.
      *
      * While this is called, BLEND and ALPHA_TEST is on. It is expected that these remain enabled while exit.
+     * 
      * @return true if did special fluid display rendering. false otherwise.
      */
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {

@@ -7,6 +7,16 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
+import java.util.function.Consumer;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -14,6 +24,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
@@ -31,14 +42,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
-import java.util.function.Consumer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEntity_BasicTank
         implements IAddGregtechLogo, IAddUIWidgets {
@@ -60,21 +63,23 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     public TileEntity tTile = null;
 
     public GT_MetaTileEntity_MicrowaveEnergyTransmitter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3, new String[] {
-            "Transmits Energy Wirelessly",
-            "Use Nitrogen Plasma",
-            "for Inter-dimensional transmission",
-            "0.004EU Loss per 100 Blocks"
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                3,
+                new String[] { "Transmits Energy Wirelessly", "Use Nitrogen Plasma",
+                        "for Inter-dimensional transmission", "0.004EU Loss per 100 Blocks" });
     }
 
-    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
@@ -89,51 +94,36 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-                this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            "Coordinates:",
-            "X: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
-            "Y: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
-            "Z: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
-            "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
-            "Dimension Valid: "
-                    + (GT_Utility.isRealDimension(this.mTargetD)
-                            ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                            : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
-            "Dimension Registered: "
-                    + (DimensionManager.isDimensionRegistered(this.mTargetD)
-                            ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                            : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET)
-        };
+        return new String[] { "Coordinates:",
+                "X: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
+                "Y: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
+                "Z: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
+                "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
+                "Dimension Valid: " + (GT_Utility.isRealDimension(this.mTargetD)
+                        ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
+                        : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
+                "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD)
+                        ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
+                        : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET) };
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        if (aSide == 0) return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1]};
-        if (aActive)
-            return new ITexture[] {
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        if (aSide == 0) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
+        if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
                 TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
-                        .glow()
-                        .build()
-            };
-        return new ITexture[] {
-            MACHINE_CASINGS[mTier][aColorIndex + 1],
-            TextureFactory.of(OVERLAY_TELEPORTER),
-            TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build()
-        };
+                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW).glow().build() };
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
+                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build() };
     }
 
     @Override
@@ -158,8 +148,8 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
 
     @Override
     public void onConfigLoad(GT_Config aConfig) {
-        sInterDimensionalTeleportAllowed =
-                aConfig.get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
+        sInterDimensionalTeleportAllowed = aConfig
+                .get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
         mMaxLoss = Math.max(aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLoss", 50), 11);
         mMaxLossDistance = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLossDistance", 10000);
         mPassiveEnergyUse = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.PassiveEnergy", true);
@@ -193,19 +183,13 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     public boolean hasDimensionalTeleportCapability() {
-        return this.mDebug
-                || (sInterDimensionalTeleportAllowed
-                        && (this.hasBlock
-                                || mFluid != null
-                                        && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))
-                                        && mFluid.amount >= 1000));
+        return this.mDebug || (sInterDimensionalTeleportAllowed && (this.hasBlock
+                || mFluid != null && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && mFluid.amount >= 1000));
     }
 
     public boolean isDimensionalTeleportAvailable() {
-        return this.mDebug
-                || (hasDimensionalTeleportCapability()
-                        && GT_Utility.isRealDimension(this.mTargetD)
-                        && GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId));
+        return this.mDebug || (hasDimensionalTeleportCapability() && GT_Utility.isRealDimension(this.mTargetD)
+                && GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId));
     }
 
     @Override
@@ -218,8 +202,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
             if (getBaseMetaTileEntity().getTimer() % 100L == 50L) {
                 this.hasBlock = checkForBlock();
             }
-            if ((getBaseMetaTileEntity().isAllowedToWork())
-                    && (getBaseMetaTileEntity().getRedstone())) {
+            if ((getBaseMetaTileEntity().isAllowedToWork()) && (getBaseMetaTileEntity().getRedstone())) {
                 if (getBaseMetaTileEntity().getStoredEU() > (V[mTier] * 16)) {
                     if (mPassiveEnergyUse) {
                         getBaseMetaTileEntity().decreaseStoredEnergyUnits(2L << (mTier - 1), false);
@@ -258,8 +241,8 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                             }
                             long energyUse = 10;
                             if (mMaxLossDistance != 0) {
-                                energyUse = GT_Utility.safeInt(
-                                        10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
+                                energyUse = GT_Utility
+                                        .safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
                             }
                             energyUse = packetSize + ((V[mTier] * energyUse) / 100);
                             if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
@@ -278,13 +261,13 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     private int distanceCalculation() {
-        return Math.abs(((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                                && (isDimensionalTeleportAvailable())
-                        ? 100
-                        : 1)
-                * (int) Math.sqrt(Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
-                        + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
-                        + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
+        return Math.abs(
+                ((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
+                        && (isDimensionalTeleportAvailable()) ? 100 : 1)
+                        * (int) Math.sqrt(
+                                Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
+                                        + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
+                                        + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
     }
 
     @Override
@@ -424,27 +407,26 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setSize(90, 72)
-                        .setPos(43, 4))
-                .widget(TextWidget.dynamicString(() -> "X: " + GT_Utility.parseNumberToString(mTargetX))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 8))
-                .widget(TextWidget.dynamicString(() -> "Y: " + GT_Utility.parseNumberToString(mTargetY))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 16))
-                .widget(TextWidget.dynamicString(() -> "Z: " + GT_Utility.parseNumberToString(mTargetZ))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 24))
-                .widget(TextWidget.dynamicString(() -> "Dim: " + GT_Utility.parseNumberToString(mTargetD))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 32))
-                .widget(TextWidget.dynamicString(
-                                () -> "Dim Valid: " + (GT_Utility.isRealDimension(mTargetD) ? "Yes" : "No"))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> hasDimensionalTeleportCapability())
-                        .setPos(46, 40))
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
+                .widget(
+                        TextWidget.dynamicString(() -> "X: " + GT_Utility.parseNumberToString(mTargetX))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8))
+                .widget(
+                        TextWidget.dynamicString(() -> "Y: " + GT_Utility.parseNumberToString(mTargetY))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
+                .widget(
+                        TextWidget.dynamicString(() -> "Z: " + GT_Utility.parseNumberToString(mTargetZ))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 24))
+                .widget(
+                        TextWidget.dynamicString(() -> "Dim: " + GT_Utility.parseNumberToString(mTargetD))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "Dim Valid: " + (GT_Utility.isRealDimension(mTargetD) ? "Yes" : "No"))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setEnabled(widget -> hasDimensionalTeleportCapability()).setPos(46, 40))
                 .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
 
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
@@ -453,33 +435,38 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
 
         addChangeNumberButton(
-                builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mTargetD += val, -16, -8, 7, 58);
+                builder,
+                GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
+                val -> mTargetD += val,
+                -16,
+                -8,
+                7,
+                58);
         addChangeNumberButton(
-                builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mTargetD += val, -4, -1, 25, 58);
+                builder,
+                GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
+                val -> mTargetD += val,
+                -4,
+                -1,
+                25,
+                58);
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mTargetD += val, 4, 1, 133, 58);
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mTargetD += val, 16, 8, 151, 58);
     }
 
-    private void addChangeNumberButtons(
-            ModularWindow.Builder builder, IDrawable overlay, int addNumberShift, int addNumber, int xPos) {
+    private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
+            int addNumber, int xPos) {
         addChangeNumberButton(builder, overlay, val -> mTargetX += val, addNumberShift, addNumber, xPos, 4);
         addChangeNumberButton(builder, overlay, val -> mTargetY += val, addNumberShift, addNumber, xPos, 22);
         addChangeNumberButton(builder, overlay, val -> mTargetZ += val, addNumberShift, addNumber, xPos, 40);
     }
 
-    private void addChangeNumberButton(
-            ModularWindow.Builder builder,
-            IDrawable overlay,
-            Consumer<Integer> setter,
-            int addNumberShift,
-            int addNumber,
-            int xPos,
-            int yPos) {
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
-                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
-                .setSize(18, 18)
-                .setPos(xPos, yPos));
+    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
+            int addNumberShift, int addNumber, int xPos, int yPos) {
+        builder.widget(
+                new ButtonWidget()
+                        .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
+                        .setBackground(GT_UITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, yPos));
     }
 
     @Override
@@ -489,9 +476,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(113, 56));
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(113, 56));
     }
 }

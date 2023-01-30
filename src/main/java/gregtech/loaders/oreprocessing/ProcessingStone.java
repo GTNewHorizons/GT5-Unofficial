@@ -1,5 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -8,19 +13,16 @@ import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingStone implements IOreRecipeRegistrator {
+
     public ProcessingStone() {
         OrePrefixes.stone.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         Block aBlock = GT_Utility.getBlockFromStack(aStack);
         switch (aMaterial.mName) {
             case "NULL":
@@ -34,7 +36,11 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 break;
             case "Sand":
                 GT_ModHandler.addPulverisationRecipe(
-                        GT_Utility.copyAmount(1L, aStack), new ItemStack(Blocks.sand, 1, 0), null, 10, false);
+                        GT_Utility.copyAmount(1L, aStack),
+                        new ItemStack(Blocks.sand, 1, 0),
+                        null,
+                        10,
+                        false);
                 break;
             case "Endstone":
                 GT_ModHandler.addPulverisationRecipe(
@@ -87,7 +93,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                         100,
                         30);
                 GT_ModHandler.addPulverisationRecipe(
-                        GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L));
+                        GT_Utility.copyAmount(1L, aStack),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L));
                 break;
             case "Rhyolite":
                 GT_ModHandler.addPulverisationRecipe(

@@ -1,11 +1,13 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.items.GT_MetaBase_Item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.items.GT_MetaBase_Item;
+
 public interface IFoodStat {
+
     /**
      * Warning the "aPlayer" Parameter may be null!
      */

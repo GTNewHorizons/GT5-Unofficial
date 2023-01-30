@@ -1,12 +1,7 @@
 package gregtech.common.render.items;
 
-import codechicken.lib.render.TextureUtils;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_RenderUtil;
 import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -16,10 +11,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import codechicken.lib.render.TextureUtils;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.render.GT_RenderUtil;
+
 public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
+
     public Random rand = new Random();
 
     @Override

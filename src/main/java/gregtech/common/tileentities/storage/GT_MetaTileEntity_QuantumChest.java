@@ -1,14 +1,16 @@
 package gregtech.common.tileentities.storage;
 
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+
 public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChestBase {
+
     public int mItemCount = 0;
     public ItemStack mItemStack = null;
     NBTTagList mInvData = null;

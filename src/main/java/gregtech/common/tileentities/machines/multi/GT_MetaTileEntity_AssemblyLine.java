@@ -10,10 +10,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -34,84 +43,66 @@ import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_AssemblyLine
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_AssemblyLine>
-        implements ISurvivalConstructable {
+public class GT_MetaTileEntity_AssemblyLine extends
+        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_AssemblyLine> implements ISurvivalConstructable {
 
     public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
-    private static final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_AssemblyLine>builder()
-                    .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][] {
-                        {" ", "e", " "},
-                        {"~", "l", "G"},
-                        {"g", "m", "g"},
-                        {"b", "i", "b"},
-                    }))
-                    .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][] {
-                        {" ", "e", " "},
-                        {"d", "l", "d"},
-                        {"g", "m", "g"},
-                        {"b", "I", "b"},
-                    }))
-                    .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][] {
-                        {" ", "e", " "},
-                        {"d", "l", "d"},
-                        {"g", "m", "g"},
-                        {"o", "i", "b"},
-                    }))
-                    .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
-                    .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
-                    .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
-                    .addElement(
-                            'g',
-                            ofChain(
-                                    ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
-                                    // warded glass
-                                    ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
-                    .addElement(
-                            'e',
-                            ofChain(
-                                    Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
-                                    ofBlock(GregTech_API.sBlockCasings2, 0)))
-                    .addElement(
-                            'd',
-                            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
-                                    .atLeast(DataHatchElement.DataAccess)
-                                    .dot(2)
-                                    .casingIndex(42)
-                                    .allowOnly(ForgeDirection.NORTH)
-                                    .buildAndChain(GregTech_API.sBlockCasings3, 10))
-                    .addElement(
-                            'b',
-                            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
-                                    .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
-                                    .casingIndex(16)
-                                    .dot(3)
-                                    .allowOnly(ForgeDirection.DOWN)
-                                    .buildAndChain(
-                                            ofBlock(GregTech_API.sBlockCasings2, 0),
-                                            ofHatchAdder(
-                                                    GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
-                    .addElement(
-                            'I',
-                            ofChain(
-                                    // all blocks nearby use solid steel casing, so let's use the texture of that
-                                    InputBus.newAny(16, 5, ForgeDirection.DOWN),
+    private static final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
+            .<GT_MetaTileEntity_AssemblyLine>builder()
+            .addShape(
+                    STRUCTURE_PIECE_FIRST,
+                    transpose(
+                            new String[][] { { " ", "e", " " }, { "~", "l", "G" }, { "g", "m", "g" },
+                                    { "b", "i", "b" }, }))
+            .addShape(
+                    STRUCTURE_PIECE_LATER,
+                    transpose(
+                            new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" },
+                                    { "b", "I", "b" }, }))
+            .addShape(
+                    STRUCTURE_PIECE_LAST,
+                    transpose(
+                            new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" },
+                                    { "o", "i", "b" }, }))
+            .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
+            .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
+            .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
+            .addElement(
+                    'g',
+                    ofChain(
+                            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+                            // warded glass
+                            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
+            .addElement(
+                    'e',
+                    ofChain(
+                            Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                            ofBlock(GregTech_API.sBlockCasings2, 0)))
+            .addElement(
+                    'd',
+                    buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class).atLeast(DataHatchElement.DataAccess).dot(2)
+                            .casingIndex(42).allowOnly(ForgeDirection.NORTH)
+                            .buildAndChain(GregTech_API.sBlockCasings3, 10))
+            .addElement(
+                    'b',
+                    buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+                            .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance).casingIndex(16).dot(3)
+                            .allowOnly(ForgeDirection.DOWN).buildAndChain(
+                                    ofBlock(GregTech_API.sBlockCasings2, 0),
                                     ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
-                    .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
-                    .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
-                    .build();
+            .addElement(
+                    'I',
+                    ofChain(
+                            // all blocks nearby use solid steel casing, so let's use the texture of that
+                            InputBus.newAny(16, 5, ForgeDirection.DOWN),
+                            ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
+            .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
+            .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN)).build();
 
     public GT_MetaTileEntity_AssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -129,12 +120,9 @@ public class GT_MetaTileEntity_AssemblyLine
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Assembling Line")
-                .addInfo("Controller block for the Assembling Line")
-                .addInfo("Used to make complex machine parts (LuV+)")
-                .addInfo("Does not make Assembler items")
-                .addSeparator()
-                .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
+        tt.addMachineType("Assembling Line").addInfo("Controller block for the Assembling Line")
+                .addInfo("Used to make complex machine parts (LuV+)").addInfo("Does not make Assembler items")
+                .addSeparator().beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
                 .addStructureInfo("From Bottom to Top, Left to Right")
                 .addStructureInfo(
                         "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
@@ -143,10 +131,8 @@ public class GT_MetaTileEntity_AssemblyLine
                 .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
                 .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
                 .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-                .addController("Either Grate on layer 3 of the first slice")
-                .addEnergyHatch("Any layer 4 casing", 1)
-                .addMaintenanceHatch("Any layer 1 casing", 3)
-                .addInputBus("As specified on layer 1", 4, 5)
+                .addController("Either Grate on layer 3 of the first slice").addEnergyHatch("Any layer 4 casing", 1)
+                .addMaintenanceHatch("Any layer 1 casing", 3).addInputBus("As specified on layer 1", 4, 5)
                 .addInputHatch("Any layer 1 casing", 3)
                 .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
                 .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
@@ -155,41 +141,18 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    BlockIcons.casingTexturePages[0][16],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                BlockIcons.casingTexturePages[0][16],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][16],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { BlockIcons.casingTexturePages[0][16],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing().glow().build() };
         }
-        return new ITexture[] {Textures.BlockIcons.casingTexturePages[0][16]};
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
     }
 
     @Override
@@ -220,10 +183,9 @@ public class GT_MetaTileEntity_AssemblyLine
         int[] tFluidSlot = null;
         boolean foundRecipe = false;
 
-        nextDataStick:
-        for (ItemStack tDataStick : tDataStickList) {
-            GT_AssemblyLineUtils.LookupResult tLookupResult =
-                    GT_AssemblyLineUtils.findAssemblyLineRecipeFromDataStick(tDataStick, false);
+        nextDataStick: for (ItemStack tDataStick : tDataStickList) {
+            GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils
+                    .findAssemblyLineRecipeFromDataStick(tDataStick, false);
 
             if (tLookupResult.getType() == GT_AssemblyLineUtils.LookupResultType.INVALID_STICK) continue;
 
@@ -281,8 +243,8 @@ public class GT_MetaTileEntity_AssemblyLine
                     continue nextDataStick;
                 } else {
                     if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                        GT_MetaTileEntity_Hatch_MultiInput tMultiHatch =
-                                (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches.get(i);
+                        GT_MetaTileEntity_Hatch_MultiInput tMultiHatch = (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches
+                                .get(i);
                         if (!tMultiHatch.hasFluid(tRecipe.mFluidInputs[i])
                                 || tMultiHatch.getFluidAmount(tRecipe.mFluidInputs[i])
                                         < tRecipe.mFluidInputs[i].amount) {
@@ -318,7 +280,7 @@ public class GT_MetaTileEntity_AssemblyLine
             if (GT_Values.D1) {
                 GT_FML_LOGGER.info("Find available recipe");
             }
-            mOutputItems = new ItemStack[] {tRecipe.mOutput};
+            mOutputItems = new ItemStack[] { tRecipe.mOutput };
             foundRecipe = true;
             break;
         }
@@ -338,8 +300,8 @@ public class GT_MetaTileEntity_AssemblyLine
 
         for (int i = 0; i < tFluids.length; i++) {
             if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                GT_MetaTileEntity_Hatch_MultiInput tMultiHatch =
-                        (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches.get(i);
+                GT_MetaTileEntity_Hatch_MultiInput tMultiHatch = (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches
+                        .get(i);
                 tMultiHatch.getFluid(tFluidSlot[i]).amount -= tFluids[i];
                 if (tMultiHatch.getFluid(tFluidSlot[i]).amount <= 0) {
                     tMultiHatch.setFluid(null, tFluidSlot[i]);
@@ -494,6 +456,7 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {
+
         DataAccess;
 
         @Override

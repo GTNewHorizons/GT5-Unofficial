@@ -8,6 +8,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 
 public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHandler {
+
     public static boolean aTGregSupport = Loader.isModLoaded("TGregworks") || Loader.isModLoaded(MOD_ID_DC);
     public static boolean aEnableUBCMats = Loader.isModLoaded("UndergroundBiomes") || aTGregSupport;
     public static boolean aEnableThaumcraftMats = Loader.isModLoaded("Thaumcraft") || aTGregSupport;

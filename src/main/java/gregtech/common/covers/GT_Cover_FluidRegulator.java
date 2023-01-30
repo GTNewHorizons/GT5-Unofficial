@@ -1,11 +1,26 @@
 package gregtech.common.covers;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -18,33 +33,25 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 /**
  * Cover variable
+ * 
  * <pre>
  * 1111 1111 1111 1111 1111 1111 1111 1111
  *  |- interval-| |- flow rate 2 compl. -|
  * ^ export?
  * </pre>
- * Concat export and flow rate 2 compl. together to get actual flow rate.
- * A positive actual flow rate is export, and vice versa.
+ * 
+ * Concat export and flow rate 2 compl. together to get actual flow rate. A positive actual flow rate is export, and
+ * vice versa.
  * <p>
- * Interval is an unsigned 11 bit integer minus 1, so the range is 1~2048.
- * The stored bits will be flipped bitwise if speed is negative.
- * This way, `0` means 1tick interval, while `-1` means 1 tick interval as well, preserving the legacy behavior.
+ * Interval is an unsigned 11 bit integer minus 1, so the range is 1~2048. The stored bits will be flipped bitwise if
+ * speed is negative. This way, `0` means 1tick interval, while `-1` means 1 tick interval as well, preserving the
+ * legacy behavior.
  */
 public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_FluidRegulator.FluidRegulatorData> {
+
     private static final int SPEED_LENGTH = 20;
     private static final int TICK_RATE_LENGTH = Integer.SIZE - SPEED_LENGTH - 1;
     private static final int TICK_RATE_MIN = 1;
@@ -86,19 +93,14 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity, long aTimer) {
         return aCoverVariable.condition.isRedstoneSensitive();
     }
 
     @Override
-    protected FluidRegulatorData doCoverThingsImpl(
-            byte aSide,
-            byte aInputRedstone,
-            int aCoverID,
-            FluidRegulatorData aCoverVariable,
-            ICoverable aTileEntity,
-            long aTimer) {
+    protected FluidRegulatorData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+            FluidRegulatorData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aCoverVariable.speed == 0 || !aCoverVariable.condition.isAllowedToWork(aSide, aCoverID, aTileEntity)) {
             return aCoverVariable;
         }
@@ -145,8 +147,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         if (tTickRate == 1) {
             GT_Utility.sendChatToPlayer(
                     aPlayer,
-                    GT_Utility.trans("048", "Pump speed: ")
-                            + tSpeed
+                    GT_Utility.trans("048", "Pump speed: ") + tSpeed
                             + GT_Utility.trans("049", "L/tick ")
                             + tSpeed * 20
                             + GT_Utility.trans("050", "L/sec"));
@@ -162,15 +163,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    public FluidRegulatorData onCoverScrewdriverClickImpl(
-            byte aSide,
-            int aCoverID,
-            FluidRegulatorData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public FluidRegulatorData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
             adjustSpeed(aPlayer, aCoverVariable, aPlayer.isSneaking() ? 256 : 16);
         } else {
@@ -180,15 +174,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(
-            byte aSide,
-            int aCoverID,
-            FluidRegulatorData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
             adjustSpeed(aPlayer, aCoverVariable, 1);
         } else {
@@ -198,56 +185,56 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    public boolean letsRedstoneGoInImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyInImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyInImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOutImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOutImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsInImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsOutImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidInImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidInImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return allowFluid;
     }
 
     @Override
-    public boolean letsFluidOutImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return allowFluid;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(
-            byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
@@ -289,69 +276,72 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         protected void addUIWidgets(ModularWindow.Builder builder) {
             AtomicBoolean warn = new AtomicBoolean(false);
 
-            builder.widget(new CoverDataControllerWidget<>(
-                                    this::getCoverData, this::setCoverData, GT_Cover_FluidRegulator.this)
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    coverData -> coverData.speed >= 0,
-                                    (coverData, state) -> {
-                                        coverData.speed = Math.abs(coverData.speed);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                                            .addTooltip(GT_Utility.trans("006", "Export"))
-                                            .setPos(spaceX * 0, spaceY * 0))
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    coverData -> coverData.speed <= 0,
-                                    (coverData, state) -> {
-                                        coverData.speed = -Math.abs(coverData.speed);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
-                                            .addTooltip(GT_Utility.trans("007", "Import"))
-                                            .setPos(spaceX * 1, spaceY * 0))
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    coverData -> coverData.condition == Conditional.Always,
-                                    (coverData, state) -> {
-                                        coverData.condition = Conditional.Always;
-                                        return coverData;
-                                    },
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
-                                            .addTooltip(GT_Utility.trans("224", "Always On"))
-                                            .setPos(spaceX * 0, spaceY * 1))
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    coverData -> coverData.condition == Conditional.Conditional,
-                                    (coverData, state) -> {
-                                        coverData.condition = Conditional.Conditional;
-                                        return coverData;
-                                    },
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                            .addTooltip(GT_Utility.trans("225", "Active with Redstone Signal"))
-                                            .setPos(spaceX * 1, spaceY * 1))
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    coverData -> coverData.condition == Conditional.Inverted,
-                                    (coverData, state) -> {
-                                        coverData.condition = Conditional.Inverted;
-                                        return coverData;
-                                    },
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                            .addTooltip(GT_Utility.trans("226", "Inactive with Redstone Signal"))
-                                            .setPos(spaceX * 2, spaceY * 1))
-                            .addFollower(
-                                    new CoverDataFollower_TextFieldWidget<>(),
-                                    coverData -> String.valueOf(coverData.speed),
-                                    (coverData, state) -> {
-                                        coverData.speed = (int) MathExpression.parseMathExpression(state);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50)
-                                            .setNumbersLong(val -> {
-                                                final int tickRate =
-                                                        getCoverData() != null ? getCoverData().tickRate : 0;
+            builder.widget(
+                    new CoverDataControllerWidget<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_FluidRegulator.this)
+                                    .addFollower(
+                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                            coverData -> coverData.speed >= 0,
+                                            (coverData, state) -> {
+                                                coverData.speed = Math.abs(coverData.speed);
+                                                return coverData;
+                                            },
+                                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                                    .addTooltip(GT_Utility.trans("006", "Export"))
+                                                    .setPos(spaceX * 0, spaceY * 0))
+                                    .addFollower(
+                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                            coverData -> coverData.speed <= 0,
+                                            (coverData, state) -> {
+                                                coverData.speed = -Math.abs(coverData.speed);
+                                                return coverData;
+                                            },
+                                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                                    .addTooltip(GT_Utility.trans("007", "Import"))
+                                                    .setPos(spaceX * 1, spaceY * 0))
+                                    .addFollower(
+                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                            coverData -> coverData.condition == Conditional.Always,
+                                            (coverData, state) -> {
+                                                coverData.condition = Conditional.Always;
+                                                return coverData;
+                                            },
+                                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                                    .addTooltip(GT_Utility.trans("224", "Always On"))
+                                                    .setPos(spaceX * 0, spaceY * 1))
+                                    .addFollower(
+                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                            coverData -> coverData.condition == Conditional.Conditional,
+                                            (coverData, state) -> {
+                                                coverData.condition = Conditional.Conditional;
+                                                return coverData;
+                                            },
+                                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                                    .addTooltip(GT_Utility.trans("225", "Active with Redstone Signal"))
+                                                    .setPos(spaceX * 1, spaceY * 1))
+                                    .addFollower(
+                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                            coverData -> coverData.condition == Conditional.Inverted,
+                                            (coverData, state) -> {
+                                                coverData.condition = Conditional.Inverted;
+                                                return coverData;
+                                            },
+                                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                                    .addTooltip(
+                                                            GT_Utility.trans("226", "Inactive with Redstone Signal"))
+                                                    .setPos(spaceX * 2, spaceY * 1))
+                                    .addFollower(
+                                            new CoverDataFollower_TextFieldWidget<>(),
+                                            coverData -> String.valueOf(coverData.speed),
+                                            (coverData, state) -> {
+                                                coverData.speed = (int) MathExpression.parseMathExpression(state);
+                                                return coverData;
+                                            },
+                                            widget -> widget.setOnScrollNumbersLong(1, 5, 50).setNumbersLong(val -> {
+                                                final int tickRate = getCoverData() != null ? getCoverData().tickRate
+                                                        : 0;
                                                 final long maxFlow = (long) mTransferRate
                                                         * GT_Utility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
                                                 warn.set(false);
@@ -363,20 +353,16 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                                                     warn.set(true);
                                                 }
                                                 return val;
-                                            })
-                                            .setPattern(BaseTextFieldWidget.WHOLE_NUMS)
-                                            .setFocusOnGuiOpen(true)
-                                            .setPos(spaceX * 0, spaceY * 2 + 2)
-                                            .setSize(spaceX * 4 - 3, 12))
-                            .addFollower(
-                                    new CoverDataFollower_TextFieldWidget<>(),
-                                    coverData -> String.valueOf(coverData.tickRate),
-                                    (coverData, state) -> {
-                                        coverData.tickRate = (int) MathExpression.parseMathExpression(state);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50)
-                                            .setNumbersLong(val -> {
+                                            }).setPattern(BaseTextFieldWidget.WHOLE_NUMS).setFocusOnGuiOpen(true)
+                                                    .setPos(spaceX * 0, spaceY * 2 + 2).setSize(spaceX * 4 - 3, 12))
+                                    .addFollower(
+                                            new CoverDataFollower_TextFieldWidget<>(),
+                                            coverData -> String.valueOf(coverData.tickRate),
+                                            (coverData, state) -> {
+                                                coverData.tickRate = (int) MathExpression.parseMathExpression(state);
+                                                return coverData;
+                                            },
+                                            widget -> widget.setOnScrollNumbersLong(1, 5, 50).setNumbersLong(val -> {
                                                 final int speed = getCoverData() != null ? getCoverData().speed : 0;
                                                 warn.set(false);
                                                 if (val > TICK_RATE_MAX) {
@@ -391,52 +377,54 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                                                     val = 1L;
                                                 }
                                                 return val;
-                                            })
-                                            .setPattern(BaseTextFieldWidget.WHOLE_NUMS)
-                                            .setPos(spaceX * 5, spaceY * 2 + 2)
-                                            .setSize(spaceX * 2 - 3, 12))
-                            .setPos(startX, startY))
-                    .widget(new TextWidget(GT_Utility.trans("229", "Import/Export"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
-                    .widget(new TextWidget(GT_Utility.trans("230", "Conditional"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 1))
-                    .widget(new TextWidget(GT_Utility.trans("208", " L"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
-                    .widget(new TextWidget(GT_Utility.trans("209", " ticks"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
+                                            }).setPattern(BaseTextFieldWidget.WHOLE_NUMS)
+                                                    .setPos(spaceX * 5, spaceY * 2 + 2).setSize(spaceX * 2 - 3, 12))
+                                    .setPos(startX, startY))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("229", "Import/Export"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("230", "Conditional"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 1))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("208", " L")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("209", " ticks")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
                     .widget(TextWidget.dynamicText(() -> {
-                                FluidRegulatorData coverVariable = getCoverData();
-                                if (coverVariable == null) return new Text("");
-                                return new Text(String.format(
-                                                GT_Utility.trans("210", "Average: %.2f L/sec"),
-                                                coverVariable.tickRate == 0
-                                                        ? 0
-                                                        : coverVariable.speed * 20d / coverVariable.tickRate))
-                                        .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
-                            })
-                            .setSynced(false)
-                            .setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));
+                        FluidRegulatorData coverVariable = getCoverData();
+                        if (coverVariable == null) return new Text("");
+                        return new Text(
+                                String.format(
+                                        GT_Utility.trans("210", "Average: %.2f L/sec"),
+                                        coverVariable.tickRate == 0 ? 0
+                                                : coverVariable.speed * 20d / coverVariable.tickRate)).color(
+                                                        warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
+                    }).setSynced(false).setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));
         }
     }
 
     public enum Conditional {
+
         Always(false) {
+
             @Override
             boolean isAllowedToWork(byte aSide, int aCoverID, ICoverable aTileEntity) {
                 return true;
             }
         },
         Conditional(true) {
+
             @Override
             boolean isAllowedToWork(byte aSide, int aCoverID, ICoverable aTileEntity) {
                 return !(aTileEntity instanceof IMachineProgress) || ((IMachineProgress) aTileEntity).isAllowedToWork();
             }
         },
         Inverted(true) {
+
             @Override
             boolean isAllowedToWork(byte aSide, int aCoverID, ICoverable aTileEntity) {
                 return !(aTileEntity instanceof IMachineProgress)
@@ -459,6 +447,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     public static class FluidRegulatorData implements ISerializableObject {
+
         private int tickRate;
         private int speed;
         private Conditional condition;

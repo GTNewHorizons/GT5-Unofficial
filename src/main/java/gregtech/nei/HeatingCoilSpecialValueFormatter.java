@@ -1,9 +1,10 @@
 package gregtech.nei;
 
-import gregtech.api.enums.HeatingCoilLevel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import gregtech.api.enums.HeatingCoilLevel;
 
 public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatter {
 

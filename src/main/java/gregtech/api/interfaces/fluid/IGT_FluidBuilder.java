@@ -1,14 +1,17 @@
 package gregtech.api.interfaces.fluid;
 
-import gregtech.api.enums.FluidState;
 import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import gregtech.api.enums.FluidState;
+
 @SuppressWarnings("unused") // API might legitimately expose unused methods within this local project's scope
 public interface IGT_FluidBuilder {
+
     /**
      * @param colorRGBA The {@code short[]} RGBA color of the {@link Fluid} or {@code null} for no defined RGBA color
      * @return {@link IGT_FluidBuilder} self for call chaining
@@ -72,8 +75,8 @@ public interface IGT_FluidBuilder {
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
-    IGT_FluidBuilder withTextures(
-            final ResourceLocation stillIconResourceLocation, final ResourceLocation flowingIconResourceLocation);
+    IGT_FluidBuilder withTextures(final ResourceLocation stillIconResourceLocation,
+            final ResourceLocation flowingIconResourceLocation);
 
     /**
      * Builds the {@link IGT_Fluid}

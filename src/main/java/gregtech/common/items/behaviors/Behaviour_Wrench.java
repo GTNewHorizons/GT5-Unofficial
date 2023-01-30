@@ -1,14 +1,8 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import ic2.api.tile.IWrenchable;
 import java.util.Arrays;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,28 +12,27 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.SoundResource;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import ic2.api.tile.IWrenchable;
+
 public class Behaviour_Wrench extends Behaviour_None {
+
     private final int mCosts;
-    private final String mTooltip =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
+    private final String mTooltip = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
 
     public Behaviour_Wrench(int aCosts) {
         this.mCosts = aCosts;
     }
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -82,8 +75,7 @@ public class Behaviour_Wrench extends Behaviour_None {
                 }
                 return true;
             }
-        } catch (Throwable ignored) {
-        }
+        } catch (Throwable ignored) {}
         if ((aBlock == Blocks.log) || (aBlock == Blocks.log2) || (aBlock == Blocks.hay_block)) {
             if ((aPlayer.capabilities.isCreativeMode)
                     || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
@@ -119,8 +111,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             return true;
         }
         if (aMeta == aTargetSide) {
-            if ((aBlock == Blocks.pumpkin)
-                    || (aBlock == Blocks.lit_pumpkin)
+            if ((aBlock == Blocks.pumpkin) || (aBlock == Blocks.lit_pumpkin)
                     || (aBlock == Blocks.piston)
                     || (aBlock == Blocks.sticky_piston)
                     || (aBlock == Blocks.dispenser)
@@ -141,37 +132,32 @@ public class Behaviour_Wrench extends Behaviour_None {
                 return true;
             }
         } else {
-            if ((aBlock == Blocks.piston)
-                    || (aBlock == Blocks.sticky_piston)
+            if ((aBlock == Blocks.piston) || (aBlock == Blocks.sticky_piston)
                     || (aBlock == Blocks.dispenser)
                     || (aBlock == Blocks.dropper)) {
-                if ((aMeta < 6)
-                        && ((aPlayer.capabilities.isCreativeMode)
-                                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+                if ((aMeta < 6) && ((aPlayer.capabilities.isCreativeMode)
+                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
                     GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
                 return true;
             }
-            if ((aBlock == Blocks.pumpkin)
-                    || (aBlock == Blocks.lit_pumpkin)
+            if ((aBlock == Blocks.pumpkin) || (aBlock == Blocks.lit_pumpkin)
                     || (aBlock == Blocks.furnace)
                     || (aBlock == Blocks.lit_furnace)
                     || (aBlock == Blocks.chest)
                     || (aBlock == Blocks.ender_chest)
                     || (aBlock == Blocks.trapped_chest)) {
-                if ((aTargetSide > 1)
-                        && ((aPlayer.capabilities.isCreativeMode)
-                                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+                if ((aTargetSide > 1) && ((aPlayer.capabilities.isCreativeMode)
+                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
                     GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
                 return true;
             }
             if (aBlock == Blocks.hopper) {
-                if ((aTargetSide != 1)
-                        && ((aPlayer.capabilities.isCreativeMode)
-                                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+                if ((aTargetSide != 1) && ((aPlayer.capabilities.isCreativeMode)
+                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
                     GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
@@ -179,9 +165,8 @@ public class Behaviour_Wrench extends Behaviour_None {
             }
         }
         if ((Arrays.asList(aBlock.getValidRotations(aWorld, aX, aY, aZ))
-                        .contains(ForgeDirection.getOrientation(aTargetSide)))
-                && ((aPlayer.capabilities.isCreativeMode)
-                        || (!GT_ModHandler.isElectricItem(aStack))
+                .contains(ForgeDirection.getOrientation(aTargetSide)))
+                && ((aPlayer.capabilities.isCreativeMode) || (!GT_ModHandler.isElectricItem(aStack))
                         || (GT_ModHandler.canUseElectricItem(aStack, this.mCosts)))
                 && (aBlock.rotateBlock(aWorld, aX, aY, aZ, ForgeDirection.getOrientation(aTargetSide)))) {
             if (!aPlayer.capabilities.isCreativeMode) {
