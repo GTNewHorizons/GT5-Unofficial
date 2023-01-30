@@ -3,12 +3,22 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.pipe.IActivePipe;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
 import com.github.technus.tectech.util.CommonValues;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -22,19 +32,12 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Created by Tec on 26.02.2017.
  */
 public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe, IActivePipe {
+
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMbar, EMbarActive;
     public byte connectionCount = 0;
@@ -64,18 +67,12 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aConnections,
-            byte aColorIndex,
-            boolean aConnected,
-            boolean aRedstone) {
-        return new ITexture[] {
-            new GT_RenderedTexture(EMpipe),
-            new GT_RenderedTexture(
-                    getActive() ? EMbarActive : EMbar, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
+            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+        return new ITexture[] { new GT_RenderedTexture(EMpipe),
+                new GT_RenderedTexture(
+                        getActive() ? EMbarActive : EMbar,
+                        Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
@@ -110,16 +107,16 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.pipe.datastream.desc.0"), // Advanced data transmission
-            EnumChatFormatting.AQUA.toString()
-                    + EnumChatFormatting.BOLD
-                    + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
-            EnumChatFormatting.AQUA
-                    + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be painted to work
-            EnumChatFormatting.AQUA
-                    + translateToLocal("gt.blockmachines.pipe.datastream.desc.3") // Do not cross or split
+        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.datastream.desc.0"), // Advanced
+                                                                                                                     // data
+                                                                                                                     // transmission
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be
+                                                                                                       // painted to
+                                                                                                       // work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3") // Do not cross or
+                                                                                                      // split
         };
     }
 
@@ -276,8 +273,8 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
             tSide5 = 1f;
         }
 
-        return AxisAlignedBB.getBoundingBox(
-                aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return AxisAlignedBB
+                .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override

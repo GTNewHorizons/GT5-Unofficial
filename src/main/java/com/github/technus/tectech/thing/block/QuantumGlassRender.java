@@ -1,12 +1,14 @@
 package com.github.technus.tectech.thing.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Created by danie_000 on 19.12.2016.
@@ -49,8 +51,8 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
 
         renderer.renderStandardBlock(block, x, y, z);
         Tessellator tes = Tessellator.instance;
@@ -63,12 +65,8 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
 
         // South
         if (world.getBlock(x, y, z + 1).getClass() != QuantumGlassBlock.class) {
-            tes.addVertexWithUV(
-                    x,
-                    y,
-                    z + 0.999,
-                    side.getMinU(),
-                    side.getMaxV()); // 0.999 instead of 1 for fighting (textures overlapping)
+            tes.addVertexWithUV(x, y, z + 0.999, side.getMinU(), side.getMaxV()); // 0.999 instead of 1 for fighting
+                                                                                  // (textures overlapping)
             tes.addVertexWithUV(x, y + 1, z + 0.999, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 1, z + 0.999, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y, z + 0.999, side.getMaxU(), side.getMaxV());

@@ -1,14 +1,17 @@
 package com.github.technus.tectech.mechanics.anomaly;
 
-import com.github.technus.tectech.TecTech;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 
+import com.github.technus.tectech.TecTech;
+
 public class ChargeCommand implements ICommand {
+
     ArrayList<String> aliases = new ArrayList<>();
 
     public ChargeCommand() {

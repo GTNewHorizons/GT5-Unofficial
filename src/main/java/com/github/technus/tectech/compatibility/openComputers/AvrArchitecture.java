@@ -1,5 +1,26 @@
 package com.github.technus.tectech.compatibility.openComputers;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+import li.cil.oc.Settings;
+import li.cil.oc.api.Driver;
+import li.cil.oc.api.driver.Item;
+import li.cil.oc.api.driver.item.Memory;
+import li.cil.oc.api.machine.Architecture;
+import li.cil.oc.api.machine.ExecutionResult;
+import li.cil.oc.api.machine.Machine;
+import li.cil.oc.api.machine.Signal;
+import li.cil.oc.common.SaveHandler;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+import org.apache.commons.compress.utils.IOUtils;
+
 import com.github.technus.avrClone.AvrCore;
 import com.github.technus.avrClone.instructions.ExecutionEvent;
 import com.github.technus.avrClone.instructions.InstructionRegistry;
@@ -10,27 +31,11 @@ import com.github.technus.avrClone.memory.RemovableMemory;
 import com.github.technus.avrClone.memory.program.ProgramMemory;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Converter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import li.cil.oc.Settings;
-import li.cil.oc.api.Driver;
-import li.cil.oc.api.driver.Item;
-import li.cil.oc.api.driver.item.Memory;
-import li.cil.oc.api.machine.Architecture;
-import li.cil.oc.api.machine.ExecutionResult;
-import li.cil.oc.api.machine.Machine;
-import li.cil.oc.api.machine.Signal;
-import li.cil.oc.common.SaveHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import org.apache.commons.compress.utils.IOUtils;
 
 @Architecture.Name("AVR 32Bit Clone")
 @Architecture.NoMemoryRequirements
 public class AvrArchitecture implements Architecture {
+
     private final Machine machine;
     private AvrCore core;
     private boolean debugRun;
@@ -97,7 +102,7 @@ public class AvrArchitecture implements Architecture {
     public ExecutionResult runThreaded(boolean isSynchronizedReturn) {
         if (core.awoken) {
             delay = 0;
-            for (int load = 0; load < 512; ) {
+            for (int load = 0; load < 512;) {
                 load += core.getInstruction().getCost(core);
                 ExecutionEvent executionEvent = core.cpuCycleForce();
                 if (executionEvent != null) {
@@ -145,8 +150,7 @@ public class AvrArchitecture implements Architecture {
             byte[] instructions = SaveHandler.load(avr, this.machine.node().address() + "_instructionsMemory");
             byte[] param0 = SaveHandler.load(avr, this.machine.node().address() + "_param0Memory");
             byte[] param1 = SaveHandler.load(avr, this.machine.node().address() + "_param1Memory");
-            if (instructions != null
-                    && param0 != null
+            if (instructions != null && param0 != null
                     && param1 != null
                     && instructions.length > 0
                     && param0.length > 0
@@ -176,8 +180,7 @@ public class AvrArchitecture implements Architecture {
                     TecTech.LOGGER.error("Failed to decompress param1 memory from disk.");
                     e.printStackTrace();
                 }
-                if (instr != null
-                        && par0 != null
+                if (instr != null && par0 != null
                         && par1 != null
                         && instr.length == par0.length
                         && instr.length == par1.length) {
@@ -217,7 +220,10 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(programMemory.instructions));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(), avr, machine.node().address() + "_instructionsMemory", baos.toByteArray());
+                        machine.host(),
+                        avr,
+                        machine.node().address() + "_instructionsMemory",
+                        baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress instructions memory to disk");
                 e.printStackTrace();
@@ -228,7 +234,10 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(programMemory.param0));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(), avr, machine.node().address() + "_param0Memory", baos.toByteArray());
+                        machine.host(),
+                        avr,
+                        machine.node().address() + "_param0Memory",
+                        baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress param0 memory to disk");
                 e.printStackTrace();
@@ -239,7 +248,10 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(programMemory.param1));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(), avr, machine.node().address() + "_param1Memory", baos.toByteArray());
+                        machine.host(),
+                        avr,
+                        machine.node().address() + "_param1Memory",
+                        baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress param1 memory to disk");
                 e.printStackTrace();
@@ -258,7 +270,10 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(core.dataMemory));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(), avr, machine.node().address() + "_dataMemory", baos.toByteArray());
+                        machine.host(),
+                        avr,
+                        machine.node().address() + "_dataMemory",
+                        baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress data memory to disk");
                 e.printStackTrace();

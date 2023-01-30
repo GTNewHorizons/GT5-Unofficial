@@ -9,6 +9,7 @@ import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
 
 public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher {
+
     public static NetworkDispatcher INSTANCE;
 
     public NetworkDispatcher() {
@@ -32,7 +33,8 @@ public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher 
 
         registerMessage(EnderLinkCoverMessage.ServerHandler.class, EnderLinkCoverMessage.EnderLinkCoverQuery.class);
         registerMessage(
-                EnderLinkCoverMessage.ServerUpdateHandler.class, EnderLinkCoverMessage.EnderLinkCoverUpdate.class);
+                EnderLinkCoverMessage.ServerUpdateHandler.class,
+                EnderLinkCoverMessage.EnderLinkCoverUpdate.class);
         registerMessage(EnderLinkCoverMessage.ClientHandler.class, EnderLinkCoverMessage.EnderLinkCoverData.class);
     }
 }

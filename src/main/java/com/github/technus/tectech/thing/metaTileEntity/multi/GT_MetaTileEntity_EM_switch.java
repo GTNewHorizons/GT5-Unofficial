@@ -10,6 +10,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
@@ -23,6 +27,7 @@ import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -30,44 +35,41 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+
     // region structure
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        "1 - Classic/Data Hatches or Computer casing", // 1 - Classic/Data Hatches or Computer casing
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            "1 - Classic/Data Hatches or Computer casing", // 1 - Classic/Data Hatches or Computer casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_switch> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_switch>builder()
-                    .addShape("main", transpose(new String[][] {
-                        {"BBB", "BBB", "BBB"},
-                        {"B~B", "BAB", "BBB"},
-                        {"BBB", "BBB", "BBB"}
-                    }))
-                    .addElement('A', ofBlock(sBlockCasingsTT, 3))
-                    .addElement(
-                            'B',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_switch::addClassicToMachineList,
-                                    textureOffset + 1,
-                                    1,
-                                    sBlockCasingsTT,
-                                    1))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_switch> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_switch>builder()
+            .addShape(
+                    "main",
+                    transpose(
+                            new String[][] {
+                                    { "BBB", "BBB", "BBB" }, { "B~B", "BAB", "BBB" }, { "BBB", "BBB", "BBB" } }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 3))
+            .addElement(
+                    'B',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_switch::addClassicToMachineList,
+                            textureOffset + 1,
+                            1,
+                            sBlockCasingsTT,
+                            1))
+            .build();
     // endregion
 
     // region parameters
-    private static final INameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME = (base, p) -> (p.parameterId() == 0
-                    ? translateToLocal("tt.keyword.Destination") + " "
-                    : translateToLocal("tt.keyword.Weight") + " ")
-            + p.hatchId();
+    private static final INameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME = (base,
+            p) -> (p.parameterId() == 0 ? translateToLocal("tt.keyword.Destination") + " "
+                    : translateToLocal("tt.keyword.Weight") + " ") + p.hatchId();
     private static final IStatusFunction<GT_MetaTileEntity_EM_switch> WEI_STATUS = (base, p) -> {
         double v = p.get();
         if (Double.isNaN(v)) return STATUS_WRONG;
@@ -199,17 +201,16 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal(
-                        "gt.blockmachines.multimachine.em.switch.name")) // Machine Type: Network Switch With QoS
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.switch.desc.0")) // Controller block of the Network
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.name")) // Machine Type: Network
+                                                                                            // Switch With QoS
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0")) // Controller block of the
+                                                                                             // Network
                 // Switch With QoS
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.switch.desc.1")) // Used to route and distribute computation
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.switch.desc.2")) // Needs a Parametrizer to be configured
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, false)
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")) // Used to route and
+                                                                                             // distribute computation
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2")) // Needs a Parametrizer to
+                                                                                             // be configured
+                .addSeparator().beginStructureBlock(3, 3, 3, false)
                 .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
                 .addCasingInfo(translateToLocal("gt.blockcasingsTT.1.name"), 0) // 0x Computer Casing (minimum)
                 .addOtherStructurePart(
@@ -223,34 +224,25 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                         translateToLocal("gt.blockmachines.hatch.param.tier.05.name"),
                         translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
                         2) // Parametrizer: Any Computer Casing
-                .addEnergyHatch(
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                        1) // Energy Hatch: Any Computer Casing
-                .addMaintenanceHatch(
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                        1) // Maintenance Hatch: Any Computer Casing
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Energy Hatch: Any
+                                                                                               // Computer Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Maintenance
+                                                                                                    // Hatch: Any
+                                                                                                    // Computer Casing
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[] {
-                Textures.BlockIcons.casingTexturePages[texturePage][1],
-                new TT_RenderedExtendedFacingTexture(
-                        aActive
-                                ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)
-            };
+            return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][1],
+                    new TT_RenderedExtendedFacingTexture(
+                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
         }
-        return new ITexture[] {Textures.BlockIcons.casingTexturePages[texturePage][1]};
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][1] };
     }
 
     public static final ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_hi_freq");

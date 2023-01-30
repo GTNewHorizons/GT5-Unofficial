@@ -3,6 +3,7 @@ package com.github.technus.tectech.util;
 import java.io.*;
 
 public final class Converter {
+
     private Converter() {}
 
     public static void writeInts(int[] array, ByteArrayOutputStream byteArrayOutputStream) {

@@ -4,20 +4,25 @@ import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipe.processHelper
 import static com.github.technus.tectech.recipe.TT_recipe.GT_Recipe_MapTT.sEyeofHarmonyRecipes;
 import static java.lang.Math.pow;
 
-import com.github.technus.tectech.util.ItemStackLong;
-import com.google.common.math.LongMath;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import java.util.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+
 import org.apache.commons.lang3.tuple.Pair;
+
 import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+
+import com.github.technus.tectech.util.ItemStackLong;
+import com.google.common.math.LongMath;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 
 public class EyeOfHarmonyRecipeStorage {
 
@@ -25,31 +30,32 @@ public class EyeOfHarmonyRecipeStorage {
 
     // Map is unique so this is fine.
     HashMap<Block, String> blocksMapInverted = new HashMap<Block, String>() {
+
         {
-            ModBlocks.blocks.forEach((dimString, dimBlock) -> {
-                put(dimBlock, dimString);
-            });
+            ModBlocks.blocks.forEach((dimString, dimBlock) -> { put(dimBlock, dimString); });
         }
     };
 
     private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<String, EyeOfHarmonyRecipe>() {
+
         {
             for (String dimAbbreviation : DimensionHelper.DimNameDisplayed) {
-                BlockDimensionDisplay blockDimensionDisplay =
-                        (BlockDimensionDisplay) ModBlocks.blocks.get(dimAbbreviation);
+                BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks
+                        .get(dimAbbreviation);
 
                 if (dimAbbreviation.equals("DD")) {
                     specialDeepDarkRecipe(this, blockDimensionDisplay);
                 } else {
 
-                    GT5OreLayerHelper.NormalOreDimensionWrapper normalOre =
-                            GT5OreLayerHelper.dimToOreWrapper.getOrDefault(dimAbbreviation, null);
-                    GT5OreSmallHelper.SmallOreDimensionWrapper smallOre =
-                            GT5OreSmallHelper.dimToSmallOreWrapper.getOrDefault(dimAbbreviation, null);
+                    GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.dimToOreWrapper
+                            .getOrDefault(dimAbbreviation, null);
+                    GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
+                            .getOrDefault(dimAbbreviation, null);
 
                     if ((normalOre == null) || (smallOre == null)) {
-                        System.out.println(dimAbbreviation
-                                + " dimension not found in dimToOreWrapper. Report error to GTNH team.");
+                        System.out.println(
+                                dimAbbreviation
+                                        + " dimension not found in dimToOreWrapper. Report error to GTNH team.");
                         continue;
                     }
 
@@ -93,7 +99,7 @@ public class EyeOfHarmonyRecipeStorage {
 
             sEyeofHarmonyRecipes.addRecipe(
                     false,
-                    new ItemStack[] {planetItem},
+                    new ItemStack[] { planetItem },
                     outputItems.toArray(new ItemStack[0]),
                     recipe,
                     null,
@@ -105,8 +111,8 @@ public class EyeOfHarmonyRecipeStorage {
         }
     }
 
-    private void specialDeepDarkRecipe(
-            final HashMap<String, EyeOfHarmonyRecipe> hashMap, final BlockDimensionDisplay planetItem) {
+    private void specialDeepDarkRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
+            final BlockDimensionDisplay planetItem) {
 
         HashSet<Materials> validMaterialSet = new HashSet<>();
 
@@ -153,9 +159,7 @@ public class EyeOfHarmonyRecipeStorage {
         double mainMultiplier = (timeCalculator(10) * (6 * 64));
         double probability = 1.0 / validMaterialList.size();
 
-        validMaterialList.forEach((material) -> {
-            processHelper(outputMap, material, mainMultiplier, probability);
-        });
+        validMaterialList.forEach((material) -> { processHelper(outputMap, material, mainMultiplier, probability); });
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
 

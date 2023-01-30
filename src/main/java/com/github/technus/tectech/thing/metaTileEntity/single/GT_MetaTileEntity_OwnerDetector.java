@@ -5,9 +5,19 @@ import static com.github.technus.tectech.util.CommonValues.RECIPE_AT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -17,18 +27,12 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 /**
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMachineBlock {
+
     private static GT_RenderedTexture OWNER_ONLINE, OWNER_OFFLINE;
     private String uuid;
     private boolean interdimensional = true;
@@ -57,14 +61,9 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return new ITexture[] {MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? OWNER_ONLINE : OWNER_OFFLINE};
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? OWNER_ONLINE : OWNER_OFFLINE };
     }
 
     @Override
@@ -114,10 +113,8 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == RECIPE_AT) {
-            boolean detected = TecTech.proxy.isOnlineUUID(uuid)
-                    || (uuid != null
-                            && uuid.length() > 0
-                            && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
+            boolean detected = TecTech.proxy.isOnlineUUID(uuid) || (uuid != null && uuid.length() > 0
+                    && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
             aBaseMetaTileEntity.setActive(detected);
             aBaseMetaTileEntity.setGenericRedstoneOutput(detected);
             byte value = (byte) (detected ? 15 : 0);
@@ -139,8 +136,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
         interdimensional ^= true;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                interdimensional
-                        ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
+                interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
                         : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
     }
 
@@ -156,13 +152,16 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_GENERAL,
-            translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"), // Screwdrive to change mode
-            EnumChatFormatting.BLUE
-                    + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"), // Looks for his pa
-            EnumChatFormatting.BLUE
-                    + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") // Emits signal when happy
+        return new String[] { CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"), // Screwdrive to change mode
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"), // Looks
+                                                                                                                // for
+                                                                                                                // his
+                                                                                                                // pa
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") // Emits
+                                                                                                               // signal
+                                                                                                               // when
+                                                                                                               // happy
         };
     }
 

@@ -10,6 +10,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
  * Created by danie_000 on 24.12.2017.
  */
 public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehaviour {
+
     private final int tier;
     private final double coeff;
 
@@ -27,8 +28,8 @@ public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehavio
     }
 
     @Override
-    public MultiblockControl<EMInstanceStackMap[]> process(
-            EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te,
+            Parameters parameters) {
         double mass = 0;
         for (EMInstanceStackMap input : inputs) {
             if (input != null) {

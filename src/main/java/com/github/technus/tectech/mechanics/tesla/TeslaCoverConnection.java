@@ -7,6 +7,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class TeslaCoverConnection implements ITeslaConnectableSimple {
+
     private final IGregTechTileEntity IGT;
     private final Vec3Impl pos;
     private final byte teslaReceptionCapability;

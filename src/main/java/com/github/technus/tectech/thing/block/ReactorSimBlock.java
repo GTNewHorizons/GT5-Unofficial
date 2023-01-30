@@ -2,13 +2,6 @@ package com.github.technus.tectech.thing.block;
 
 import static com.github.technus.tectech.Reference.MODID;
 
-import com.github.technus.tectech.thing.tileEntity.ReactorSimTileEntity;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ic2.core.IC2;
-import ic2.core.IHasGui;
-import ic2.core.block.TileEntityBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -19,10 +12,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.github.technus.tectech.thing.tileEntity.ReactorSimTileEntity;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.core.IC2;
+import ic2.core.IHasGui;
+import ic2.core.block.TileEntityBlock;
+
 /**
  * Created by danie_000 on 30.09.2017.
  */
 public class ReactorSimBlock extends Block implements ITileEntityProvider {
+
     public static ReactorSimBlock INSTANCE;
     public static IIcon stuff;
 
@@ -72,8 +75,8 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float a, float b, float c) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float a,
+            float b, float c) {
         if (entityPlayer.isSneaking()) {
             return false;
         } else {

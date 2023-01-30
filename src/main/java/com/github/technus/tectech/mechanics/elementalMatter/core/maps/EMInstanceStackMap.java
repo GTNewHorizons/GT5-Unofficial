@@ -5,6 +5,14 @@ import static com.github.technus.tectech.util.DoubleCount.add;
 import static com.github.technus.tectech.util.TT_Utility.unpackNBT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
@@ -14,17 +22,12 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstan
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by danie_000 on 22.01.2017.
  */
 public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implements IEMMapWrite<EMInstanceStack> {
+
     // Constructors
     public EMInstanceStackMap() {}
 
@@ -94,21 +97,41 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
         int i = 0;
         for (Map.Entry<IEMDefinition, EMInstanceStack> entry : entrySet()) {
             EMInstanceStack instance = entry.getValue();
-            info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName() + " "
-                    + EnumChatFormatting.AQUA + instance.getDefinition().getSymbol() + EnumChatFormatting.RESET + " "
-                    + translateToLocal("tt.keyword.short.amount") + ": " + EnumChatFormatting.GREEN
-                    + TT_Utility.formatNumberExp(instance.getAmount() / AVOGADRO_CONSTANT) + " "
-                    + translateToLocal("tt.keyword.unit.mol") + EnumChatFormatting.RESET + " "
-                    + translateToLocal("tt.keyword.short.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(
-                            instance.getDefinition().getEnergyDiffBetweenStates(0, instance.getEnergy()))
-                    + " " + translateToLocal("tt.keyword.unit.energy") + EnumChatFormatting.RESET + " "
-                    + translateToLocal("tt.keyword.short.charge") + ": " + EnumChatFormatting.GREEN
-                    + TT_Utility.formatNumberExp(instance.getCharge()) + " "
-                    + translateToLocal("tt.keyword.unit.charge") + EnumChatFormatting.RESET + " "
-                    + translateToLocal("tt.keyword.short.time") + ": " + EnumChatFormatting.GREEN
-                    + (instance.getLifeTime() < 0
-                            ? translateToLocal("tt.keyword.stable")
+            info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName()
+                    + " "
+                    + EnumChatFormatting.AQUA
+                    + instance.getDefinition().getSymbol()
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + translateToLocal("tt.keyword.short.amount")
+                    + ": "
+                    + EnumChatFormatting.GREEN
+                    + TT_Utility.formatNumberExp(instance.getAmount() / AVOGADRO_CONSTANT)
+                    + " "
+                    + translateToLocal("tt.keyword.unit.mol")
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + translateToLocal("tt.keyword.short.energy")
+                    + ": "
+                    + EnumChatFormatting.GREEN
+                    + GT_Utility
+                            .formatNumbers(instance.getDefinition().getEnergyDiffBetweenStates(0, instance.getEnergy()))
+                    + " "
+                    + translateToLocal("tt.keyword.unit.energy")
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + translateToLocal("tt.keyword.short.charge")
+                    + ": "
+                    + EnumChatFormatting.GREEN
+                    + TT_Utility.formatNumberExp(instance.getCharge())
+                    + " "
+                    + translateToLocal("tt.keyword.unit.charge")
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + translateToLocal("tt.keyword.short.time")
+                    + ": "
+                    + EnumChatFormatting.GREEN
+                    + (instance.getLifeTime() < 0 ? translateToLocal("tt.keyword.stable")
                             : TT_Utility.formatNumberShortExp(instance.getLifeTime()) + " "
                                     + translateToLocal("tt.keyword.unit.time"))
                     + EnumChatFormatting.RESET;
@@ -143,7 +166,8 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
     // NBT
     public static EMInstanceStackMap fromNBT(EMDefinitionsRegistry registry, NBTTagCompound nbt) throws EMException {
         return new EMInstanceStackMap(
-                false, unpackNBT(EMInstanceStack.class, inner -> EMInstanceStack.fromNBT(registry, inner), nbt));
+                false,
+                unpackNBT(EMInstanceStack.class, inner -> EMInstanceStack.fromNBT(registry, inner), nbt));
     }
 
     @Override
@@ -162,8 +186,8 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
     }
 
     public EMInstanceStackMap takeAll() {
-        EMInstanceStackMap newStack =
-                new EMInstanceStackMap(false, new TreeMap<>(getBackingMap())); // just in case to uncouple The map
+        EMInstanceStackMap newStack = new EMInstanceStackMap(false, new TreeMap<>(getBackingMap())); // just in case to
+                                                                                                     // uncouple The map
         clear();
         return newStack;
     }

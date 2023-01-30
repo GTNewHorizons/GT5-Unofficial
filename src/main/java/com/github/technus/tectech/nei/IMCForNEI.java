@@ -2,9 +2,10 @@ package com.github.technus.tectech.nei;
 
 import static com.github.technus.tectech.Reference.MODID;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class IMCForNEI {
 

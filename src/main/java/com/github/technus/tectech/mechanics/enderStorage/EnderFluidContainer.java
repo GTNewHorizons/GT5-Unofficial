@@ -1,11 +1,11 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
-import com.github.technus.tectech.TecTech;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,7 +15,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.github.technus.tectech.TecTech;
+
 public class EnderFluidContainer implements IFluidHandler, Serializable {
+
     private static final long serialVersionUID = 2L;
     private static final int SERIALIZE_TYPE_WITH_NBT = 0;
     private static final int SERIALIZE_TYPE_WITHOUT_NBT = 1;
@@ -94,7 +97,7 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection forgeDirection) {
-        return new FluidTankInfo[] {new FluidTankInfo(getFluidStack(), CAPACITY)};
+        return new FluidTankInfo[] { new FluidTankInfo(getFluidStack(), CAPACITY) };
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {

@@ -1,9 +1,11 @@
 package com.github.technus.tectech.mechanics.dataTransport;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 public class QuantumDataPacket extends DataPacket<Long> {
+
     public QuantumDataPacket(Long content) {
         super(content);
     }

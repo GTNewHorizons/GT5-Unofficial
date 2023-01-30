@@ -3,10 +3,8 @@ package com.github.technus.tectech.thing.item.gui;
 import static com.github.technus.tectech.Reference.MODID;
 import static org.lwjgl.opengl.GL11.*;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import java.util.Objects;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -15,10 +13,15 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.font.TecTechFontRender;
+import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
+
 /**
  * Created by danie_000 on 17.12.2017.
  */
 public class ScanDisplayScreen extends GuiScreen {
+
     private static final int sizeX = 240, sizeY = 220, renderedLines = 10;
     private int baseX, baseY;
     private Button up, down, pgUp, pgDown;
@@ -26,15 +29,14 @@ public class ScanDisplayScreen extends GuiScreen {
     private int firstLine;
 
     private static final ResourceLocation[] BACKGROUNDS = new ResourceLocation[] {
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen1.png"),
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen2.png"),
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen3.png"),
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen4.png"),
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen5.png"),
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen6.png"),
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen7.png"),
-        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen8.png")
-    };
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen1.png"),
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen2.png"),
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen3.png"),
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen4.png"),
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen5.png"),
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen6.png"),
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen7.png"),
+            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen8.png") };
     private static final ResourceLocation ITEM = new ResourceLocation(MODID + ":textures/gui/scanDisplayItem.png");
 
     public ScanDisplayScreen(EntityPlayer player) {
@@ -62,10 +64,10 @@ public class ScanDisplayScreen extends GuiScreen {
         for (int i = firstLine - 1, j = 8; i >= 0 && j != 0; i--, j /= 2) {
             int equalPos = lines[i].indexOf('=');
             if (equalPos >= 0) {
-                TecTechFontRender.INSTANCE.drawSplitString(
-                        lines[i].substring(0, equalPos), textBaseX, textBaseY - 8 + j, 200, itick);
-                TecTechFontRender.INSTANCE.drawSplitString(
-                        lines[i].substring(equalPos), textBaseXX, textBaseY - 8 + j, 200, itick);
+                TecTechFontRender.INSTANCE
+                        .drawSplitString(lines[i].substring(0, equalPos), textBaseX, textBaseY - 8 + j, 200, itick);
+                TecTechFontRender.INSTANCE
+                        .drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY - 8 + j, 200, itick);
             } else {
                 TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY - 8 + j, 200, itick);
             }
@@ -74,10 +76,10 @@ public class ScanDisplayScreen extends GuiScreen {
             textBaseY += 9;
             int equalPos = lines[i].indexOf('=');
             if (equalPos >= 0) {
-                TecTechFontRender.INSTANCE.drawSplitString(
-                        lines[i].substring(0, equalPos), textBaseX, textBaseY, 200, itick);
-                TecTechFontRender.INSTANCE.drawSplitString(
-                        lines[i].substring(equalPos), textBaseXX, textBaseY, 200, itick);
+                TecTechFontRender.INSTANCE
+                        .drawSplitString(lines[i].substring(0, equalPos), textBaseX, textBaseY, 200, itick);
+                TecTechFontRender.INSTANCE
+                        .drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY, 200, itick);
             } else {
                 TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY, 200, itick);
             }
@@ -85,10 +87,10 @@ public class ScanDisplayScreen extends GuiScreen {
         for (int i = firstLine + renderedLines, j = 8; i < lines.length && j != 0; i++, j /= 2) {
             int equalPos = lines[i].indexOf('=');
             if (equalPos >= 0) {
-                TecTechFontRender.INSTANCE.drawSplitString(
-                        lines[i].substring(0, equalPos), textBaseX, textBaseY + 17 - j, 200, itick);
-                TecTechFontRender.INSTANCE.drawSplitString(
-                        lines[i].substring(equalPos), textBaseXX, textBaseY + 17 - j, 200, itick);
+                TecTechFontRender.INSTANCE
+                        .drawSplitString(lines[i].substring(0, equalPos), textBaseX, textBaseY + 17 - j, 200, itick);
+                TecTechFontRender.INSTANCE
+                        .drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY + 17 - j, 200, itick);
             } else {
                 TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY + 17 - j, 200, itick);
             }
@@ -136,6 +138,7 @@ public class ScanDisplayScreen extends GuiScreen {
     }
 
     private static class Button extends GuiButton {
+
         int u, v;
 
         Button(int id, int x, int y, int u, int v) {
@@ -147,8 +150,9 @@ public class ScanDisplayScreen extends GuiScreen {
         @Override
         public void drawButton(Minecraft mc, int xPos, int yPos) {
             if (visible) {
-                field_146123_n =
-                        xPos >= xPosition && yPos >= yPosition && xPos < xPosition + width && yPos < yPosition + height;
+                field_146123_n = xPos >= xPosition && yPos >= yPosition
+                        && xPos < xPosition + width
+                        && yPos < yPosition + height;
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 mc.getTextureManager().bindTexture(BACKGROUNDS[0]);
@@ -161,8 +165,8 @@ public class ScanDisplayScreen extends GuiScreen {
         // play cool sound fx
         @Override
         public void func_146113_a(SoundHandler soundHandler) {
-            soundHandler.playSound(
-                    PositionedSoundRecord.func_147674_a(new ResourceLocation(MODID + ":fx_click"), 1.0F));
+            soundHandler
+                    .playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(MODID + ":fx_click"), 1.0F));
         }
     }
 }

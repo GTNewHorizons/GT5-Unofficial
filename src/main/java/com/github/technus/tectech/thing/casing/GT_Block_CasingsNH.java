@@ -3,20 +3,23 @@ package com.github.technus.tectech.thing.casing;
 import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import com.github.technus.tectech.thing.CustomItemList;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
 public class GT_Block_CasingsNH extends GT_Block_Casings_Abstract {
+
     public static boolean mConnectedMachineTextures = true;
 
     public GT_Block_CasingsNH() {
@@ -25,7 +28,7 @@ public class GT_Block_CasingsNH extends GT_Block_Casings_Abstract {
 
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[8][b + 64] = new GT_CopiedBlockTexture(this, 6, b);
-            /*IMPORTANT for block recoloring*/
+            /* IMPORTANT for block recoloring */
         }
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "UEV Machine Casing"); // adding

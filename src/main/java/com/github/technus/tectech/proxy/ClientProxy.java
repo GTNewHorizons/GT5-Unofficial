@@ -2,18 +2,6 @@ package com.github.technus.tectech.proxy;
 
 import static com.github.technus.tectech.TecTech.RANDOM;
 
-import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.compatibility.openmodularturrets.TT_turret_loader;
-import com.github.technus.tectech.thing.block.*;
-import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
-import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
-import com.github.technus.tectech.thing.item.renderElemental.RenderElementalName;
-import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Loader;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiNewChat;
@@ -25,16 +13,31 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.compatibility.openmodularturrets.TT_turret_loader;
+import com.github.technus.tectech.thing.block.*;
+import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
+import com.github.technus.tectech.thing.item.renderElemental.RenderElementalName;
+import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Loader;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 public class ClientProxy extends CommonProxy {
+
     @Override
     public void registerRenderInfo() {
         QuantumGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumGlassBlock.renderID, new QuantumGlassRender());
 
-        MinecraftForgeClient.registerItemRenderer(
-                ElementalDefinitionContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
-        MinecraftForgeClient.registerItemRenderer(
-                DebugElementalInstanceContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
+        MinecraftForgeClient
+                .registerItemRenderer(ElementalDefinitionContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
+        MinecraftForgeClient
+                .registerItemRenderer(DebugElementalInstanceContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
 
         if (Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();
@@ -81,33 +84,30 @@ public class ClientProxy extends CommonProxy {
             xSpd = aDir.offsetX * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
             zSpd = aDir.offsetZ * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
         }
-        aMuffler.getWorld()
-                .spawnParticle(
-                        "largesmoke",
-                        xPos + RANDOM.nextFloat() * 0.5F,
-                        yPos + RANDOM.nextFloat() * 0.5F,
-                        zPos + RANDOM.nextFloat() * 0.5F,
-                        xSpd,
-                        ySpd,
-                        zSpd);
-        aMuffler.getWorld()
-                .spawnParticle(
-                        "largesmoke",
-                        xPos + RANDOM.nextFloat() * 0.5F,
-                        yPos + RANDOM.nextFloat() * 0.5F,
-                        zPos + RANDOM.nextFloat() * 0.5F,
-                        xSpd,
-                        ySpd,
-                        zSpd);
-        aMuffler.getWorld()
-                .spawnParticle(
-                        "largesmoke",
-                        xPos + RANDOM.nextFloat() * 0.5F,
-                        yPos + RANDOM.nextFloat() * 0.5F,
-                        zPos + RANDOM.nextFloat() * 0.5F,
-                        xSpd,
-                        ySpd,
-                        zSpd);
+        aMuffler.getWorld().spawnParticle(
+                "largesmoke",
+                xPos + RANDOM.nextFloat() * 0.5F,
+                yPos + RANDOM.nextFloat() * 0.5F,
+                zPos + RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
+        aMuffler.getWorld().spawnParticle(
+                "largesmoke",
+                xPos + RANDOM.nextFloat() * 0.5F,
+                yPos + RANDOM.nextFloat() * 0.5F,
+                zPos + RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
+        aMuffler.getWorld().spawnParticle(
+                "largesmoke",
+                xPos + RANDOM.nextFloat() * 0.5F,
+                yPos + RANDOM.nextFloat() * 0.5F,
+                zPos + RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
     }
 
     @Override
@@ -156,9 +156,13 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void playSound(IGregTechTileEntity base, String name) {
-        base.getWorld()
-                .playSoundEffect(
-                        base.getXCoord(), base.getYCoord(), base.getZCoord(), Reference.MODID + ':' + name, 1, 1);
+        base.getWorld().playSoundEffect(
+                base.getXCoord(),
+                base.getYCoord(),
+                base.getZCoord(),
+                Reference.MODID + ':' + name,
+                1,
+                1);
     }
 
     @Override

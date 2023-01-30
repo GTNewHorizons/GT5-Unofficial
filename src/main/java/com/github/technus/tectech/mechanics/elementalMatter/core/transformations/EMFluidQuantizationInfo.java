@@ -1,13 +1,15 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 
 /**
  * Created by Tec on 23.05.2017.
  */
 public class EMFluidQuantizationInfo {
+
     private final FluidStack in;
     private final IEMStack out;
 

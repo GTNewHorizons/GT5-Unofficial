@@ -10,6 +10,8 @@ import static gregtech.api.enums.OrePrefixes.dust;
 import static java.lang.Math.abs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.*;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
@@ -26,145 +28,36 @@ import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitiv
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition;
 import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.util.XSTR;
-import java.util.*;
 
 /**
  * Created by danie_000 on 18.11.2016.
  */
 public class EMAtomDefinition extends EMComplexTemplate {
-    private static final String[] SYMBOL = new String[] {
-        "Nt", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K",
-        "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr",
-        "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La",
-        "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os",
-        "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am",
-        "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh",
-        "Fl", "Mc", "Lv", "Ts", "Og"
-    };
-    private static final String[] NAME = new String[] {
-        "Neutronium",
-        "Hydrogen",
-        "Helium",
-        "Lithium",
-        "Beryllium",
-        "Boron",
-        "Carbon",
-        "Nitrogen",
-        "Oxygen",
-        "Fluorine",
-        "Neon",
-        "Sodium",
-        "Magnesium",
-        "Aluminium",
-        "Silicon",
-        "Phosphorus",
-        "Sulfur",
-        "Chlorine",
-        "Argon",
-        "Potassium",
-        "Calcium",
-        "Scandium",
-        "Titanium",
-        "Vanadium",
-        "Chromium",
-        "Manganese",
-        "Iron",
-        "Cobalt",
-        "Nickel",
-        "Copper",
-        "Zinc",
-        "Gallium",
-        "Germanium",
-        "Arsenic",
-        "Selenium",
-        "Bromine",
-        "Krypton",
-        "Rubidium",
-        "Strontium",
-        "Yttrium",
-        "Zirconium",
-        "Niobium",
-        "Molybdenum",
-        "Technetium",
-        "Ruthenium",
-        "Rhodium",
-        "Palladium",
-        "Silver",
-        "Cadmium",
-        "Indium",
-        "Tin",
-        "Antimony",
-        "Tellurium",
-        "Iodine",
-        "Xenon",
-        "Caesium",
-        "Barium",
-        "Lanthanum",
-        "Cerium",
-        "Praseodymium",
-        "Neodymium",
-        "Promethium",
-        "Samarium",
-        "Europium",
-        "Gadolinium",
-        "Terbium",
-        "Dysprosium",
-        "Holmium",
-        "Erbium",
-        "Thulium",
-        "Ytterbium",
-        "Lutetium",
-        "Hafnium",
-        "Tantalum",
-        "Tungsten",
-        "Rhenium",
-        "Osmium",
-        "Iridium",
-        "Platinum",
-        "Gold",
-        "Mercury",
-        "Thallium",
-        "Lead",
-        "Bismuth",
-        "Polonium",
-        "Astatine",
-        "Radon",
-        "Francium",
-        "Radium",
-        "Actinium",
-        "Thorium",
-        "Protactinium",
-        "Uranium",
-        "Neptunium",
-        "Plutonium",
-        "Americium",
-        "Curium",
-        "Berkelium",
-        "Californium",
-        "Einsteinium",
-        "Fermium",
-        "Mendelevium",
-        "Nobelium",
-        "Lawrencium",
-        "Rutherfordium",
-        "Dubnium",
-        "Seaborgium",
-        "Bohrium",
-        "Hassium",
-        "Meitnerium",
-        "Darmstadtium",
-        "Roentgenium",
-        "Copernicium",
-        "Nihonium",
-        "Flerovium",
-        "Moscovium",
-        "Livermorium",
-        "Tennessine",
-        "Oganesson"
-    };
-    private static final String[] SYMBOL_IUPAC = new String[] {
-        "n", "u", "b", "t", "q", "p", "h", "s", "o", "e", "N", "U", "B", "T", "Q", "P", "H", "S", "O", "E"
-    };
+
+    private static final String[] SYMBOL = new String[] { "Nt", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
+            "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni",
+            "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd",
+            "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd",
+            "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb",
+            "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm",
+            "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts",
+            "Og" };
+    private static final String[] NAME = new String[] { "Neutronium", "Hydrogen", "Helium", "Lithium", "Beryllium",
+            "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminium", "Silicon",
+            "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium",
+            "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic",
+            "Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum",
+            "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony",
+            "Tellurium", "Iodine", "Xenon", "Caesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium",
+            "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium",
+            "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum",
+            "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium",
+            "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium",
+            "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium",
+            "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium",
+            "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson" };
+    private static final String[] SYMBOL_IUPAC = new String[] { "n", "u", "b", "t", "q", "p", "h", "s", "o", "e", "N",
+            "U", "B", "T", "Q", "P", "H", "S", "O", "E" };
 
     public static final long ATOM_COMPLEXITY_LIMIT = 65536L;
     private static final byte BYTE_OFFSET = 32;
@@ -178,18 +71,8 @@ public class EMAtomDefinition extends EMComplexTemplate {
     private static final Map<Integer, EMAtomDefinition> stableAtoms = new HashMap<>();
     private static Map<Integer, TreeMap<Double, Integer>> mostStableUnstableIsotopes = new HashMap<>();
     private static final Map<Integer, EMAtomDefinition> unstableAtoms = new HashMap<>();
-    private static EMDefinitionStack alpha,
-            deuterium,
-            tritium,
-            helium_3,
-            beryllium_8,
-            carbon_14,
-            neon_24,
-            silicon_34,
-            uranium_238,
-            uranium_235,
-            plutonium_239,
-            plutonium_241;
+    private static EMDefinitionStack alpha, deuterium, tritium, helium_3, beryllium_8, carbon_14, neon_24, silicon_34,
+            uranium_238, uranium_235, plutonium_239, plutonium_241;
     private static final HashMap<EMAtomDefinition, Double> lifetimeOverrides = new HashMap<>();
 
     private final EMNuclideIAEA iaea;
@@ -310,8 +193,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 }
                 rawLifeTime = Math.min(rawLifeTimeTemp, STABLE_RAW_LIFE_TIME);
             } else {
-                rawLifeTime = containsAnti
-                        ? getIaea().getHalfTime() * 1.5514433E-21d * (1d + xstr.nextDouble() * 9d)
+                rawLifeTime = containsAnti ? getIaea().getHalfTime() * 1.5514433E-21d * (1d + xstr.nextDouble() * 9d)
                         : getIaea().getHalfTime();
             }
             iaeaDefinitionExistsAndHasEnergyLevels = getIaea().getEnergeticStatesArray().length > 1;
@@ -334,12 +216,11 @@ public class EMAtomDefinition extends EMComplexTemplate {
             if (izoDiff == 0) {
                 decayMode = 0;
             } else {
-                decayMode =
-                        izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
+                decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4)
+                        : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
             }
         } else {
-            decayMode = izoDiff > 0
-                    ? (byte) (Math.min(2, 1 + izoDiffAbs / 4) + BYTE_OFFSET)
+            decayMode = izoDiff > 0 ? (byte) (Math.min(2, 1 + izoDiffAbs / 4) + BYTE_OFFSET)
                     : (byte) (-Math.min(2, 1 + izoDiffAbs / 4) + BYTE_OFFSET);
         }
         // this.stable = this.rawLifeTime >= STABLE_RAW_LIFE_TIME;
@@ -347,20 +228,18 @@ public class EMAtomDefinition extends EMComplexTemplate {
     }
 
     private static int stableIzoCurve(int element) {
-        return (int) Math.round(-1.19561E-06D * Math.pow(element, 4D)
-                + 1.60885E-04D * Math.pow(element, 3D)
-                + 3.76604E-04D * Math.pow(element, 2D)
-                + 1.08418E+00D * (double) element);
+        return (int) Math.round(
+                -1.19561E-06D * Math.pow(element, 4D) + 1.60885E-04D * Math.pow(element, 3D)
+                        + 3.76604E-04D * Math.pow(element, 2D)
+                        + 1.08418E+00D * (double) element);
     }
 
-    private static double calculateLifeTime(
-            int izoDiff, int izoDiffAbs, int element, int isotope, boolean containsAnti) {
+    private static double calculateLifeTime(int izoDiff, int izoDiffAbs, int element, int isotope,
+            boolean containsAnti) {
         double rawLifeTime;
 
-        if (element <= 83
-                && isotope < 127
-                && (izoDiffAbs == 0
-                        || element == 1 && isotope == 0
+        if (element <= 83 && isotope < 127
+                && (izoDiffAbs == 0 || element == 1 && isotope == 0
                         || element == 2 && isotope == 1
                         || izoDiffAbs == 1 && element > 2 && element % 2 == 1
                         || izoDiffAbs == 3 && element > 30 && element % 2 == 0
@@ -537,8 +416,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
         } else if (ionization < 0) {
             ionName = ionization == -1 ? TT_Utility.toSuperscript("-") : TT_Utility.toSuperscript(-ionization + "-");
         }
-        return TT_Utility.toSuperscript(Long.toString(getNeutralCount() + (long) getElement()))
-                + getShortSymbol()
+        return TT_Utility.toSuperscript(Long.toString(getNeutralCount() + (long) getElement())) + getShortSymbol()
                 + ionName;
     }
 
@@ -642,662 +520,687 @@ public class EMAtomDefinition extends EMComplexTemplate {
     private boolean getDecayFromIaea(ArrayList<EMDecay> decaysList, EMNuclideIAEA.iaeaDecay decay, long energy) {
         EMDefinitionStackMap withThis = elementalStacks.toMutable(), newStuff = new EMDefinitionStackMap();
         switch (decay.decayName) {
-            case "D":
-                {
-                    if (withThis.removeAllAmountsExact(deuterium.getDefinition().getSubParticles())) {
-                        withThis.putReplace(deuterium);
-                        decaysList.add(new EMDecay(
-                                decay.chance, withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                        return true;
-                    }
+            case "D": {
+                if (withThis.removeAllAmountsExact(deuterium.getDefinition().getSubParticles())) {
+                    withThis.putReplace(deuterium);
+                    decaysList.add(
+                            new EMDecay(
+                                    decay.chance,
+                                    withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                    return true;
                 }
+            }
                 break;
-            case "3H":
-                {
-                    if (withThis.removeAllAmountsExact(tritium.getDefinition().getSubParticles())) {
-                        withThis.putReplace(tritium);
-                        decaysList.add(new EMDecay(
-                                decay.chance, withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                        return true;
-                    }
+            case "3H": {
+                if (withThis.removeAllAmountsExact(tritium.getDefinition().getSubParticles())) {
+                    withThis.putReplace(tritium);
+                    decaysList.add(
+                            new EMDecay(
+                                    decay.chance,
+                                    withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                    return true;
                 }
+            }
                 break;
-            case "3HE":
-                {
-                    if (withThis.removeAllAmountsExact(helium_3.getDefinition().getSubParticles())) {
-                        withThis.putReplace(helium_3);
-                        decaysList.add(new EMDecay(
-                                decay.chance, withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                        return true;
-                    }
+            case "3HE": {
+                if (withThis.removeAllAmountsExact(helium_3.getDefinition().getSubParticles())) {
+                    withThis.putReplace(helium_3);
+                    decaysList.add(
+                            new EMDecay(
+                                    decay.chance,
+                                    withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                    return true;
                 }
+            }
                 break;
-            case "8BE":
-                {
-                    if (withThis.removeAllAmountsExact(
-                            beryllium_8.getDefinition().getSubParticles())) {
-                        withThis.putReplace(beryllium_8);
-                        decaysList.add(new EMDecay(
-                                decay.chance, withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                        return true;
-                    }
+            case "8BE": {
+                if (withThis.removeAllAmountsExact(beryllium_8.getDefinition().getSubParticles())) {
+                    withThis.putReplace(beryllium_8);
+                    decaysList.add(
+                            new EMDecay(
+                                    decay.chance,
+                                    withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                    return true;
                 }
+            }
                 break;
-            case "14C":
-                {
-                    if (withThis.removeAllAmountsExact(carbon_14.getDefinition().getSubParticles())) {
-                        newStuff.putReplace(carbon_14);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "14C": {
+                if (withThis.removeAllAmountsExact(carbon_14.getDefinition().getSubParticles())) {
+                    newStuff.putReplace(carbon_14);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "24NE":
-                {
-                    if (withThis.removeAllAmountsExact(neon_24.getDefinition().getSubParticles())) {
-                        newStuff.putReplace(neon_24);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "24NE": {
+                if (withThis.removeAllAmountsExact(neon_24.getDefinition().getSubParticles())) {
+                    newStuff.putReplace(neon_24);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "34SI":
-                {
-                    if (withThis.removeAllAmountsExact(
-                            silicon_34.getDefinition().getSubParticles())) {
-                        newStuff.putReplace(silicon_34);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "34SI": {
+                if (withThis.removeAllAmountsExact(silicon_34.getDefinition().getSubParticles())) {
+                    newStuff.putReplace(silicon_34);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
             case "A":
-            case "A?":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2, EMHadronDefinition.hadron_p2)) {
-                        newStuff.putReplace(alpha);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "A?": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2, EMHadronDefinition.hadron_p2)) {
+                    newStuff.putReplace(alpha);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "B+":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "B+": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "2B+":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_2);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "2B+": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_2);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "B-":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "B-": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "2B-":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_p2);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e2);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "2B-": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_p2);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e2);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "EC":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1, EMLeptonDefinition.lepton_e1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "EC": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1, EMLeptonDefinition.lepton_e1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "2EC":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e2)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "2EC": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e2)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
             case "B++EC":
-            case "EC+B+":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "B+A":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p3, EMHadronDefinition.hadron_n1)) {
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        newStuff.putReplace(alpha);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "B+P":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        newStuff.putReplace(EMHadronDefinition.hadron_p1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "B+2P":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p3)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        newStuff.putReplace(EMHadronDefinition.hadron_p2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "B-A":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n3, EMHadronDefinition.hadron_p1)) {
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
-                        newStuff.putReplace(alpha);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "B-N":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
-                        newStuff.putReplace(EMHadronDefinition.hadron_n1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "B-2N":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n3)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
-                        newStuff.putReplace(EMHadronDefinition.hadron_n2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "B-P":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
-                        newStuff.putReplace(EMHadronDefinition.hadron_p1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "ECA":
-                {
-                    if (withThis.removeAllAmountsExact(
-                            EMHadronDefinition.hadron_n1, EMLeptonDefinition.lepton_e1, EMHadronDefinition.hadron_p3)) {
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        newStuff.putReplace(alpha);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "ECP":
-                {
-                    if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e1, EMHadronDefinition.hadron_p2)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        newStuff.putReplace(EMHadronDefinition.hadron_p1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "EC2P":
-                {
-                    if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e1, EMHadronDefinition.hadron_p3)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        newStuff.putReplace(EMHadronDefinition.hadron_p2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "ECP+EC2P":
-                { // todo look at branching ratios
-                    if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e2, EMHadronDefinition.hadron_p5)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
-                        newStuff.putReplace(EMHadronDefinition.hadron_p3);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "N":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
-                        newStuff.putReplace(EMHadronDefinition.hadron_n1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "2N":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2)) {
-                        newStuff.putReplace(EMHadronDefinition.hadron_n2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "P":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1)) {
-                        newStuff.putReplace(EMHadronDefinition.hadron_p1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "2P":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2)) {
-                        newStuff.putReplace(EMHadronDefinition.hadron_p2);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "SF":
-                {
-                    if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
+            case "EC+B+": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
-                    }
-                }
-                break;
-            case "B-F":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
-                        try {
-                            if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
-                                return true;
-                            }
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
+                break;
+            case "B+A": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p3, EMHadronDefinition.hadron_n1)) {
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(alpha);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "B+P": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(EMHadronDefinition.hadron_p1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "B+2P": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p3)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(EMHadronDefinition.hadron_p2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "B-A": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n3, EMHadronDefinition.hadron_p1)) {
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(alpha);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "B-N": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(EMHadronDefinition.hadron_n1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "B-2N": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n3)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(EMHadronDefinition.hadron_n2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "B-P": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(EMHadronDefinition.hadron_p1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "ECA": {
+                if (withThis.removeAllAmountsExact(
+                        EMHadronDefinition.hadron_n1,
+                        EMLeptonDefinition.lepton_e1,
+                        EMHadronDefinition.hadron_p3)) {
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(alpha);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "ECP": {
+                if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e1, EMHadronDefinition.hadron_p2)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(EMHadronDefinition.hadron_p1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "EC2P": {
+                if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e1, EMHadronDefinition.hadron_p3)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(EMHadronDefinition.hadron_p2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "ECP+EC2P": { // todo look at branching ratios
+                if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e2, EMHadronDefinition.hadron_p5)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
+                    newStuff.putReplace(EMHadronDefinition.hadron_p3);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "N": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
+                    newStuff.putReplace(EMHadronDefinition.hadron_n1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "2N": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n2)) {
+                    newStuff.putReplace(EMHadronDefinition.hadron_n2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "P": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1)) {
+                    newStuff.putReplace(EMHadronDefinition.hadron_p1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "2P": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2)) {
+                    newStuff.putReplace(EMHadronDefinition.hadron_p2);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+                break;
+            case "SF": {
+                if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
+                    return true;
+                }
+            }
+                break;
+            case "B-F": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_n1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_p1);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
+                    try {
+                        if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
                 break;
             case "ECF":
             case "ECSF":
-            case "EC(+SF)":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1, EMLeptonDefinition.lepton_e1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        try {
-                            if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
-                                return true;
-                            }
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "EC(+SF)": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p1, EMLeptonDefinition.lepton_e1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    try {
+                        if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
             case "SF(+EC+B+)":
-            case "SF+EC+B+":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
-                        try {
-                            if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
-                                return true;
-                            }
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "SF+EC+B+": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
+                    try {
+                        if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
-            case "SF+EC+B-":
-                {
-                    if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e1)) {
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
-                        try {
-                            if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
-                                return true;
-                            }
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "SF+EC+B-": {
+                if (withThis.removeAllAmountsExact(EMLeptonDefinition.lepton_e1)) {
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve_1);
+                    try {
+                        if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
             case "IT":
             case "IT?":
@@ -1312,27 +1215,28 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 }
                 return true;
             } // break;
-            case "IT+EC+B+":
-                {
-                    if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e1)) {
-                        withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
-                        newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
-                        newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
-                        newStuff.putReplace(EMGaugeBosonDefinition.boson_Y__1);
-                        try {
-                            newStuff.putReplace(new EMAtomDefinition(
-                                            withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
-                                    .getStackForm(1));
-                            decaysList.add(new EMDecay(
-                                    decay.chance, newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
-                            return true;
-                        } catch (Exception e) {
-                            if (DEBUG_MODE) {
-                                e.printStackTrace();
-                            }
+            case "IT+EC+B+": {
+                if (withThis.removeAllAmountsExact(EMHadronDefinition.hadron_p2, EMLeptonDefinition.lepton_e1)) {
+                    withThis.putUnifyExact(EMHadronDefinition.hadron_n2);
+                    newStuff.putReplace(EMLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(EMNeutrinoDefinition.lepton_Ve2);
+                    newStuff.putReplace(EMGaugeBosonDefinition.boson_Y__1);
+                    try {
+                        newStuff.putReplace(
+                                new EMAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree())
+                                        .getStackForm(1));
+                        decaysList.add(
+                                new EMDecay(
+                                        decay.chance,
+                                        newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+                        return true;
+                    } catch (Exception e) {
+                        if (DEBUG_MODE) {
+                            e.printStackTrace();
                         }
                     }
                 }
+            }
                 break;
             case "DEAD_END":
                 decaysList.add(deadEnd);
@@ -1351,12 +1255,14 @@ public class EMAtomDefinition extends EMComplexTemplate {
         EMDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmountExact(emit)) {
             try {
-                decaysList.add(new EMDecay(
-                        1,
-                        new EMDefinitionStack(
-                                new EMAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
-                                1),
-                        emit));
+                decaysList.add(
+                        new EMDecay(
+                                1,
+                                new EMDefinitionStack(
+                                        new EMAtomDefinition(
+                                                tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
+                                        1),
+                                emit));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1371,12 +1277,14 @@ public class EMAtomDefinition extends EMComplexTemplate {
         EMDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAllAmountsExact(alpha.getDefinition().getSubParticles())) {
             try {
-                decaysList.add(new EMDecay(
-                        1,
-                        new EMDefinitionStack(
-                                new EMAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
-                                1),
-                        alpha));
+                decaysList.add(
+                        new EMDecay(
+                                1,
+                                new EMDefinitionStack(
+                                        new EMAtomDefinition(
+                                                tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
+                                        1),
+                                alpha));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1392,13 +1300,15 @@ public class EMAtomDefinition extends EMComplexTemplate {
         if (tree.removeAmountExact(EMHadronDefinition.hadron_n1)) {
             try {
                 tree.putUnifyExact(EMHadronDefinition.hadron_p1);
-                decaysList.add(new EMDecay(
-                        1,
-                        new EMDefinitionStack(
-                                new EMAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
-                                1),
-                        EMLeptonDefinition.lepton_e1,
-                        EMNeutrinoDefinition.lepton_Ve_1));
+                decaysList.add(
+                        new EMDecay(
+                                1,
+                                new EMDefinitionStack(
+                                        new EMAtomDefinition(
+                                                tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
+                                        1),
+                                EMLeptonDefinition.lepton_e1,
+                                EMNeutrinoDefinition.lepton_Ve_1));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1414,13 +1324,15 @@ public class EMAtomDefinition extends EMComplexTemplate {
         if (tree.removeAmountExact(EMHadronDefinition.hadron_p1)) {
             try {
                 tree.putUnifyExact(EMHadronDefinition.hadron_n1);
-                decaysList.add(new EMDecay(
-                        1,
-                        new EMDefinitionStack(
-                                new EMAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
-                                1),
-                        EMLeptonDefinition.lepton_e_1,
-                        EMNeutrinoDefinition.lepton_Ve1));
+                decaysList.add(
+                        new EMDecay(
+                                1,
+                                new EMDefinitionStack(
+                                        new EMAtomDefinition(
+                                                tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
+                                        1),
+                                EMLeptonDefinition.lepton_e_1,
+                                EMNeutrinoDefinition.lepton_Ve1));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1436,12 +1348,14 @@ public class EMAtomDefinition extends EMComplexTemplate {
         if (tree.removeAllAmountsExact(EMHadronDefinition.hadron_p1, EMLeptonDefinition.lepton_e1)) {
             try {
                 tree.putUnifyExact(EMHadronDefinition.hadron_n1);
-                decaysList.add(new EMDecay(
-                        1,
-                        new EMDefinitionStack(
-                                new EMAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
-                                1),
-                        EMNeutrinoDefinition.lepton_Ve1));
+                decaysList.add(
+                        new EMDecay(
+                                1,
+                                new EMDefinitionStack(
+                                        new EMAtomDefinition(
+                                                tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
+                                        1),
+                                EMNeutrinoDefinition.lepton_Ve1));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1452,18 +1366,13 @@ public class EMAtomDefinition extends EMComplexTemplate {
         return false;
     }
 
-    private boolean Fission(
-            ArrayList<EMDecay> decaysList,
-            EMDefinitionStackMap fissile,
-            EMDefinitionStackMap particles,
-            double probability,
-            boolean spontaneousCheck) {
+    private boolean Fission(ArrayList<EMDecay> decaysList, EMDefinitionStackMap fissile, EMDefinitionStackMap particles,
+            double probability, boolean spontaneousCheck) {
         EMDefinitionStackMap heavy = new EMDefinitionStackMap();
         double[] liquidDrop = liquidDropFunction(abs(getElement()) <= 97);
 
         for (EMDefinitionStack stack : fissile.valuesToArray()) {
-            if (spontaneousCheck
-                    && stack.getDefinition() instanceof EMHadronDefinition
+            if (spontaneousCheck && stack.getDefinition() instanceof EMHadronDefinition
                     && (stack.getAmount() <= 80
                             || stack.getAmount() < 90 && XSTR_INSTANCE.nextInt(10) < stack.getAmount() - 80)) {
                 return false;
@@ -1482,8 +1391,8 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 fissile.removeAmountExact(new EMDefinitionStack(stack.getDefinition(), heavy_cnt + neutrals_cnt));
                 heavy.putReplace(new EMDefinitionStack(stack.getDefinition(), heavy_cnt));
                 // }else{
-                //    particles.add(stack);
-                //    light.remove(stack.definition);
+                // particles.add(stack);
+                // light.remove(stack.definition);
                 // }
             } else {
                 int heavy_cnt = (int) Math.ceil(stack.getAmount() * liquidDrop[0]);
@@ -1497,12 +1406,16 @@ public class EMAtomDefinition extends EMComplexTemplate {
         }
 
         try {
-            particles.putReplace(new EMDefinitionStack(
-                    new EMAtomDefinition(fissile.toImmutable_optimized_unsafe_LeavesExposedElementalTree()), 1));
-            particles.putReplace(new EMDefinitionStack(
-                    new EMAtomDefinition(heavy.toImmutable_optimized_unsafe_LeavesExposedElementalTree()), 1));
-            decaysList.add(
-                    new EMDecay(probability, particles.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
+            particles.putReplace(
+                    new EMDefinitionStack(
+                            new EMAtomDefinition(fissile.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
+                            1));
+            particles.putReplace(
+                    new EMDefinitionStack(
+                            new EMAtomDefinition(heavy.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),
+                            1));
+            decaysList
+                    .add(new EMDecay(probability, particles.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
             return true;
         } catch (Exception e) {
             if (DEBUG_MODE) {
@@ -1558,7 +1471,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
             }
         }
         if (energyLevel < abs(getCharge()) / 3 + getNeutralCount()) {
-            return new EMDecay[] {new EMDecay(1, this, boson_Y__)};
+            return new EMDecay[] { new EMDecay(1, this, boson_Y__) };
         }
         return getNaturalDecayInstant();
     }
@@ -1581,10 +1494,8 @@ public class EMAtomDefinition extends EMComplexTemplate {
                     result += IEMDefinition.DEFAULT_ENERGY_REQUIREMENT * -currentEnergyLevel;
                 }
             } else {
-                result -= getIaea()
-                        .getEnergeticStatesArray()[
-                        (int) Math.min(getIaea().getEnergeticStatesArray().length - 1, currentEnergyLevel)]
-                        .energy;
+                result -= getIaea().getEnergeticStatesArray()[(int) Math
+                        .min(getIaea().getEnergeticStatesArray().length - 1, currentEnergyLevel)].energy;
             }
             if (newEnergyLevel >= getIaea().getEnergeticStatesArray().length) {
                 if (currentEnergyLevel >= getIaea().getEnergeticStatesArray().length) {
@@ -1649,22 +1560,22 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 decaysInto.add(new EMDefinitionStack(boson_Y__, 2));
             }
         }
-        return new EMDecay[] {new EMDecay(0.75D, decaysInto.toArray(new EMDefinitionStack[0])), deadEnd};
+        return new EMDecay[] { new EMDecay(0.75D, decaysInto.toArray(new EMDefinitionStack[0])), deadEnd };
     }
 
     // @Override
     // public iElementalDefinition getAnti() {
-    //    EMDefinitionStack[] stacks = this.elementalStacks.values();
-    //    EMDefinitionStack[] antiElements = new EMDefinitionStack[stacks.length];
-    //    for (int i = 0; i < antiElements.length; i++) {
-    //        antiElements[i] = new EMDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
-    //    }
-    //    try {
-    //        return new dAtomDefinition(false, antiElements);
-    //    } catch (tElementalException e) {
-    //        if (DEBUG_MODE) e.printStackTrace();
-    //        return null;
-    //    }
+    // EMDefinitionStack[] stacks = this.elementalStacks.values();
+    // EMDefinitionStack[] antiElements = new EMDefinitionStack[stacks.length];
+    // for (int i = 0; i < antiElements.length; i++) {
+    // antiElements[i] = new EMDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
+    // }
+    // try {
+    // return new dAtomDefinition(false, antiElements);
+    // } catch (tElementalException e) {
+    // if (DEBUG_MODE) e.printStackTrace();
+    // return null;
+    // }
     // }
 
     @Override
@@ -1708,8 +1619,8 @@ public class EMAtomDefinition extends EMComplexTemplate {
         registry.registerDefinitionClass(
                 nbtType,
                 new EMIndirectType(
-                        (definitionsRegistry, nbt) ->
-                                new EMAtomDefinition(EMConstantStackMap.fromNBT(definitionsRegistry, nbt)),
+                        (definitionsRegistry,
+                                nbt) -> new EMAtomDefinition(EMConstantStackMap.fromNBT(definitionsRegistry, nbt)),
                         EMAtomDefinition.class,
                         "tt.keyword.Element"));
         EMNuclideIAEA.run();
@@ -1753,8 +1664,8 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 int izoDiff = isotope - Isotope;
                 int izoDiffAbs = abs(izoDiff);
                 double rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
-                TreeMap<Double, Integer> isotopes =
-                        mostStableUnstableIsotopes.computeIfAbsent(element, k -> new TreeMap<>());
+                TreeMap<Double, Integer> isotopes = mostStableUnstableIsotopes
+                        .computeIfAbsent(element, k -> new TreeMap<>());
                 isotopes.put(rawLifeTime, isotope); // todo dont add stable ones
             }
         }
@@ -1770,112 +1681,109 @@ public class EMAtomDefinition extends EMComplexTemplate {
                                         integerTreeSetEntry.getValue().first()),
                                 new EMDefinitionStack(EMLeptonDefinition.lepton_e, integerTreeSetEntry.getKey())));
                 if (DEBUG_MODE) {
-                    TecTech.LOGGER.info("Added Stable Atom:" + integerTreeSetEntry.getKey() + ' '
-                            + integerTreeSetEntry.getValue().first() + ' '
-                            + stableAtoms.get(integerTreeSetEntry.getKey()).getMass());
+                    TecTech.LOGGER.info(
+                            "Added Stable Atom:" + integerTreeSetEntry.getKey()
+                                    + ' '
+                                    + integerTreeSetEntry.getValue().first()
+                                    + ' '
+                                    + stableAtoms.get(integerTreeSetEntry.getKey()).getMass());
                 }
             }
-            for (Map.Entry<Integer, TreeMap<Double, Integer>> integerTreeMapEntry :
-                    mostStableUnstableIsotopes.entrySet()) {
+            for (Map.Entry<Integer, TreeMap<Double, Integer>> integerTreeMapEntry : mostStableUnstableIsotopes
+                    .entrySet()) {
                 unstableAtoms.put(
                         integerTreeMapEntry.getKey(),
                         new EMAtomDefinition(
                                 new EMDefinitionStack(EMHadronDefinition.hadron_p, integerTreeMapEntry.getKey()),
                                 new EMDefinitionStack(
                                         EMHadronDefinition.hadron_n,
-                                        integerTreeMapEntry
-                                                .getValue()
-                                                .lastEntry()
-                                                .getValue()),
+                                        integerTreeMapEntry.getValue().lastEntry().getValue()),
                                 new EMDefinitionStack(EMLeptonDefinition.lepton_e, integerTreeMapEntry.getKey())));
                 if (DEBUG_MODE) {
-                    TecTech.LOGGER.info("Added Unstable Atom:" + integerTreeMapEntry.getKey() + ' '
-                            + integerTreeMapEntry.getValue().lastEntry().getValue() + ' '
-                            + unstableAtoms.get(integerTreeMapEntry.getKey()).getMass());
+                    TecTech.LOGGER.info(
+                            "Added Unstable Atom:" + integerTreeMapEntry.getKey()
+                                    + ' '
+                                    + integerTreeMapEntry.getValue().lastEntry().getValue()
+                                    + ' '
+                                    + unstableAtoms.get(integerTreeMapEntry.getKey()).getMass());
                 }
             }
 
             deuterium = new EMAtomDefinition(
-                            EMHadronDefinition.hadron_p1, EMHadronDefinition.hadron_n1, EMLeptonDefinition.lepton_e1)
-                    .getStackForm(1);
+                    EMHadronDefinition.hadron_p1,
+                    EMHadronDefinition.hadron_n1,
+                    EMLeptonDefinition.lepton_e1).getStackForm(1);
             registry.registerForDisplay(deuterium.getDefinition());
 
             tritium = new EMAtomDefinition(
-                            EMHadronDefinition.hadron_p1, EMHadronDefinition.hadron_n2, EMLeptonDefinition.lepton_e1)
-                    .getStackForm(1);
+                    EMHadronDefinition.hadron_p1,
+                    EMHadronDefinition.hadron_n2,
+                    EMLeptonDefinition.lepton_e1).getStackForm(1);
             registry.registerForDisplay(tritium.getDefinition());
 
             helium_3 = new EMAtomDefinition(
-                            EMHadronDefinition.hadron_p2, EMHadronDefinition.hadron_n1, EMLeptonDefinition.lepton_e2)
-                    .getStackForm(1);
+                    EMHadronDefinition.hadron_p2,
+                    EMHadronDefinition.hadron_n1,
+                    EMLeptonDefinition.lepton_e2).getStackForm(1);
             registry.registerForDisplay(helium_3.getDefinition());
 
             alpha = new EMAtomDefinition(EMHadronDefinition.hadron_p2, EMHadronDefinition.hadron_n2).getStackForm(1);
             registry.registerForDisplay(alpha.getDefinition());
 
             beryllium_8 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 4),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 4),
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 4))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 4),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 4),
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 4)).getStackForm(1);
             registry.registerForDisplay(beryllium_8.getDefinition());
 
             carbon_14 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 6),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 8),
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 6))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 6),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 8),
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 6)).getStackForm(1);
             registry.registerForDisplay(carbon_14.getDefinition());
 
             neon_24 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 10),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 14),
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 10))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 10),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 14),
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 10)).getStackForm(1);
             registry.registerForDisplay(neon_24.getDefinition());
 
             silicon_34 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 14),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 20),
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 14))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 14),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 20),
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 14)).getStackForm(1);
             registry.registerForDisplay(silicon_34.getDefinition());
 
             uranium_238 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 92),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 92),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 146))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 92),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 92),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 146)).getStackForm(1);
             registry.registerForDisplay(uranium_238.getDefinition());
 
             uranium_235 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 92),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 92),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 143))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 92),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 92),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 143)).getStackForm(1);
             registry.registerForDisplay(uranium_235.getDefinition());
 
-            TecTech.LOGGER.info("Diff Mass U : "
-                    + (uranium_238.getDefinition().getMass()
-                            - uranium_235.getDefinition().getMass()));
+            TecTech.LOGGER.info(
+                    "Diff Mass U : " + (uranium_238.getDefinition().getMass() - uranium_235.getDefinition().getMass()));
 
             plutonium_239 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 94),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 94),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 145))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 94),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 94),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 145)).getStackForm(1);
             registry.registerForDisplay(plutonium_239.getDefinition());
 
             plutonium_241 = new EMAtomDefinition(
-                            new EMDefinitionStack(EMLeptonDefinition.lepton_e, 94),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_p, 94),
-                            new EMDefinitionStack(EMHadronDefinition.hadron_n, 147))
-                    .getStackForm(1);
+                    new EMDefinitionStack(EMLeptonDefinition.lepton_e, 94),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_p, 94),
+                    new EMDefinitionStack(EMHadronDefinition.hadron_n, 147)).getStackForm(1);
             registry.registerForDisplay(plutonium_241.getDefinition());
 
-            TecTech.LOGGER.info("Diff Mass Pu: "
-                    + (plutonium_241.getDefinition().getMass()
-                            - plutonium_239.getDefinition().getMass()));
+            TecTech.LOGGER.info(
+                    "Diff Mass Pu: "
+                            + (plutonium_241.getDefinition().getMass() - plutonium_239.getDefinition().getMass()));
 
             somethingHeavy = (EMAtomDefinition) plutonium_241.getDefinition();
 
@@ -2319,7 +2227,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
         transformationInfo.addOredict(
                 new EMDefinitionStack(uranium_238.getDefinition(), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
-                Uranium /*238*/,
+                Uranium /* 238 */,
                 1);
         transformationInfo.addOredict(
                 new EMDefinitionStack(uranium_235.getDefinition(), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
@@ -2330,7 +2238,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
         transformationInfo.addOredict(
                 new EMDefinitionStack(plutonium_239.getDefinition(), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
-                Plutonium /*239*/,
+                Plutonium /* 239 */,
                 1);
         transformationInfo.addOredict(
                 new EMDefinitionStack(plutonium_241.getDefinition(), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),

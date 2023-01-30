@@ -1,10 +1,12 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+
 public class EMDequantizationInfo {
+
     private final IEMStack definition;
     private Object stack;
 

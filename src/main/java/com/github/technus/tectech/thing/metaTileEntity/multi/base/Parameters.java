@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Instantiate parameters as field in parametersInstantiation_EM();
  */
 public class Parameters {
+
     private static final IStatusFunction LED_STATUS_FUNCTION_DEFAULT = (b, p) -> LedStatus.STATUS_UNDEFINED;
     private static final INameFunction NAME_FUNCTION_DEFAULT = (b, p) -> "Undefined";
 
@@ -121,6 +122,7 @@ public class Parameters {
     }
 
     public interface IParameter {
+
         double get();
 
         double getDefault();
@@ -142,6 +144,7 @@ public class Parameters {
      * most likely used locally in parametersInstantiation_EM()
      */
     public class Group {
+
         private final int hatchNo;
         final ParameterIn[] parameterIn = new ParameterIn[2];
         final ParameterOut[] parameterOut = new ParameterOut[2];
@@ -156,13 +159,13 @@ public class Parameters {
             groups[hatchNo] = this;
         }
 
-        public ParameterIn makeInParameter(
-                int paramID, double defaultValue, INameFunction name, IStatusFunction status) {
+        public ParameterIn makeInParameter(int paramID, double defaultValue, INameFunction name,
+                IStatusFunction status) {
             return new ParameterIn(paramID, defaultValue, name, status);
         }
 
-        public ParameterOut makeOutParameter(
-                int paramID, double defaultValue, INameFunction name, IStatusFunction status) {
+        public ParameterOut makeOutParameter(int paramID, double defaultValue, INameFunction name,
+                IStatusFunction status) {
             return new ParameterOut(paramID, defaultValue, name, status);
         }
 
@@ -197,6 +200,7 @@ public class Parameters {
          * Make a field out of this...
          */
         public class ParameterOut implements IParameter {
+
             public final int id;
             public final double defaultValue;
             IStatusFunction status;
@@ -274,6 +278,7 @@ public class Parameters {
          * Make a field out of this...
          */
         public class ParameterIn implements IParameter {
+
             public final int id;
             public final double defaultValue;
             IStatusFunction status;

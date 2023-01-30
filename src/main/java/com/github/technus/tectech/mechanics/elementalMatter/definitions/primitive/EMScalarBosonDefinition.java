@@ -14,8 +14,14 @@ import com.github.technus.tectech.util.TT_Utility;
  * Created by danie_000 on 22.10.2016.
  */
 public class EMScalarBosonDefinition extends EMBosonDefinition {
-    public static final EMScalarBosonDefinition boson_H__ =
-            new EMScalarBosonDefinition("tt.keyword.Higgs", "H0", 125.09e9D, -2, 32, "H0");
+
+    public static final EMScalarBosonDefinition boson_H__ = new EMScalarBosonDefinition(
+            "tt.keyword.Higgs",
+            "H0",
+            125.09e9D,
+            -2,
+            32,
+            "H0");
 
     private EMScalarBosonDefinition(String name, String symbol, double mass, int color, int ID, String bind) {
         super(name, TT_Utility.toSuperscript(symbol), 0, mass, 0, color, ID, bind);

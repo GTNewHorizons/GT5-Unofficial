@@ -5,6 +5,14 @@ import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.CommonValues;
@@ -13,6 +21,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -23,17 +32,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by Tec on 03.04.2017.
  */
 public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+
     private static Textures.BlockIcons.CustomIcon TM_H;
     private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
     private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
@@ -62,12 +66,12 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TM_H_ACTIVE)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TM_H_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TM_H)};
+        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TM_H) };
     }
 
     @Override
@@ -118,11 +122,11 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.THETA_MOVEMENT,
-            translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"), // For Tesla Tower
-            EnumChatFormatting.AQUA
-                    + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") // Stores 'nergy! (for a while)
+        return new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"), // For
+                                                                                                                        // Tesla
+                                                                                                                        // Tower
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") // Stores 'nergy!
+                                                                                                      // (for a while)
         };
     }
 
@@ -159,7 +163,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
                 }
             }
         }
-        return new long[] {tier, tCurrent, tEnergyMax};
+        return new long[] { tier, tCurrent, tEnergyMax };
     }
 
     @Override
@@ -169,43 +173,62 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15)
+                        .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                    @Override
-                    public boolean isEnabled() {
-                        return !getBaseMetaTileEntity().isActive();
-                    }
-                })
-                .background(getGUITextureSet().getItemSlot())
-                .build()
-                .setPos(52, 7));
+                            @Override
+                            public int getSlotStackLimit() {
+                                return 1;
+                            }
+
+                            @Override
+                            public boolean isEnabled() {
+                                return !getBaseMetaTileEntity().isActive();
+                            }
+                        }).background(getGUITextureSet().getItemSlot()).build().setPos(52, 7));
     }
 
     public static void run() {
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(
-                Reference.MODID + ":item.tm.teslaCoilCapacitor.0", 0, 1, V[1] * 512); // LV  Capacitor
+                Reference.MODID + ":item.tm.teslaCoilCapacitor.0",
+                0,
+                1,
+                V[1] * 512); // LV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(
-                Reference.MODID + ":item.tm.teslaCoilCapacitor.1", 1, 1, V[2] * 512); // MV  Capacitor
+                Reference.MODID + ":item.tm.teslaCoilCapacitor.1",
+                1,
+                1,
+                V[2] * 512); // MV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(
-                Reference.MODID + ":item.tm.teslaCoilCapacitor.2", 2, 1, V[3] * 512); // HV  Capacitor
+                Reference.MODID + ":item.tm.teslaCoilCapacitor.2",
+                2,
+                1,
+                V[3] * 512); // HV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(
-                Reference.MODID + ":item.tm.teslaCoilCapacitor.3", 3, 1, V[4] * 512); // EV  Capacitor
+                Reference.MODID + ":item.tm.teslaCoilCapacitor.3",
+                3,
+                1,
+                V[4] * 512); // EV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(
-                Reference.MODID + ":item.tm.teslaCoilCapacitor.4", 4, 1, V[5] * 512); // IV  Capacitor
+                Reference.MODID + ":item.tm.teslaCoilCapacitor.4",
+                4,
+                1,
+                V[5] * 512); // IV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(
-                Reference.MODID + ":item.tm.teslaCoilCapacitor.5", 5, 1, V[6] * 512); // LuV Capacitor
+                Reference.MODID + ":item.tm.teslaCoilCapacitor.5",
+                5,
+                1,
+                V[6] * 512); // LuV Capacitor
         new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(
-                Reference.MODID + ":item.tm.teslaCoilCapacitor.6", 6, 1, V[7] * 512); // ZPM Capacitor
+                Reference.MODID + ":item.tm.teslaCoilCapacitor.6",
+                6,
+                1,
+                V[7] * 512); // ZPM Capacitor
     }
 
     public static class CapacitorComponent implements Comparable<GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> {
+
         private final String unlocalizedName;
         private final long tier, current, energyMax;
 

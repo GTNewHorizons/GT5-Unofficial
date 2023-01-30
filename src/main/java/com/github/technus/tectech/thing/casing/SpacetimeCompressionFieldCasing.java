@@ -3,15 +3,8 @@ package com.github.technus.tectech.thing.casing;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static net.minecraft.util.EnumChatFormatting.*;
 
-import com.github.technus.tectech.thing.CustomItemList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -19,8 +12,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.github.technus.tectech.thing.CustomItemList;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
+import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.common.blocks.GT_Material_Casings;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
+
     private static IIcon textureTier0;
     private static IIcon textureTier1;
     private static IIcon textureTier2;

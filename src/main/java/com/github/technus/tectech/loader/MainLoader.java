@@ -11,6 +11,15 @@ import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTile
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.GT_Values.W;
 
+import java.util.Collection;
+import java.util.HashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
@@ -30,6 +39,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.Textures;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_collider.GT_MetaTileEntity_EM_collider;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -39,15 +49,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.Collection;
-import java.util.HashMap;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public final class MainLoader {
+
     public static DamageSource microwaving, elementalPollution, subspace;
 
     private MainLoader() {}
@@ -117,16 +121,15 @@ public final class MainLoader {
         ProgressManager.pop(progressBarLoad);
     }
 
-    public static void postLoad(
-            EMDefinitionsRegistry definitionsRegistry, EMTransformationRegistry transformationInfo) {
+    public static void postLoad(EMDefinitionsRegistry definitionsRegistry,
+            EMTransformationRegistry transformationInfo) {
         ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             try {
                 Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
-                TT_Container_Casings.sBlockCasingsNH =
-                        (Block) clazz.getField("sBlockCasingsNH").get(null);
+                TT_Container_Casings.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH").get(null);
 
                 if (TT_Container_Casings.sBlockCasingsNH == null) {
                     throw new NullPointerException("sBlockCasingsNH Is not set at this time");
@@ -254,11 +257,10 @@ public final class MainLoader {
                 if (DEBUG_MODE) {
                     LOGGER.info("Found Plasma of " + material.mName);
                 }
-                if (material.mElement != null
-                        && (material.mElement.mProtons >= Materials.Iron.mElement.mProtons
-                                || -material.mElement.mProtons >= Materials.Iron.mElement.mProtons
-                                || material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons
-                                || -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
+                if (material.mElement != null && (material.mElement.mProtons >= Materials.Iron.mElement.mProtons
+                        || -material.mElement.mProtons >= Materials.Iron.mElement.mProtons
+                        || material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons
+                        || -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
                     if (DEBUG_MODE) {
                         LOGGER.info("Attempting to bind " + material.mName);
                     }
@@ -303,10 +305,9 @@ public final class MainLoader {
         if (aLiquid == null || GT_Recipe.GT_Recipe_Map.sTurbineFuels == null) return 0;
         FluidStack tLiquid;
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.mRecipeList;
-        if (tRecipeList != null)
-            for (GT_Recipe tFuel : tRecipeList)
-                if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
-                    if (aLiquid.isFluidEqual(tLiquid)) return tFuel.mSpecialValue;
+        if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
+            if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
+                if (aLiquid.isFluidEqual(tLiquid)) return tFuel.mSpecialValue;
         return 0;
     }
 

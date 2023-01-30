@@ -1,23 +1,27 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles;
 
-import com.github.technus.tectech.Reference;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import com.github.technus.tectech.Reference;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Created by Tec on 29.07.2017.
  */
 @SideOnly(Side.CLIENT)
 public class projectileRenderEM extends Render {
-    private static final ResourceLocation textures =
-            new ResourceLocation(Reference.MODID + ":textures/entity/projectileEM.png");
+
+    private static final ResourceLocation textures = new ResourceLocation(
+            Reference.MODID + ":textures/entity/projectileEM.png");
 
     private void render(projectileEM entity, double par2, double par4, double par6, float par9) {
         bindEntityTexture(entity);
@@ -29,7 +33,10 @@ public class projectileRenderEM extends Render {
                 1.0F,
                 0.0F);
         GL11.glRotatef(
-                entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
+                entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9,
+                0.0F,
+                0.0F,
+                1.0F);
         Tessellator var18 = Tessellator.instance;
         byte b0 = 0;
         float f2 = 0.0F;

@@ -1,12 +1,15 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
-import com.google.common.base.Objects;
 import java.io.Serializable;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.google.common.base.Objects;
+
 public class EnderLinkTank implements Serializable {
+
     private final int X;
     private final int Y;
     private final int Z;

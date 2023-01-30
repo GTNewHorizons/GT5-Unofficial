@@ -8,8 +8,16 @@ import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.*;
+import java.util.function.Supplier;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
 import appeng.util.ReadableNumberConverter;
 import codechicken.nei.PositionedStack;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
@@ -20,6 +28,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_LanguageManager;
@@ -27,34 +36,19 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.NEIRecipeInfo;
-import java.util.*;
-import java.util.function.Supplier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class TT_recipe extends GT_Recipe {
+
     public static final String E_RECIPE_ID = "eRecipeID";
     public final EMConstantStackMap[] input;
     public final IEMMapRead<? extends IEMStack>[] output;
     public final EMConstantStackMap[] eCatalyst;
     public final IAdditionalCheck additionalCheck;
 
-    public TT_recipe(
-            boolean aOptimize,
-            ItemStack[] aInputs,
-            ItemStack[] aOutputs,
-            Object aSpecialItems,
-            int[] aChances,
-            FluidStack[] aFluidInputs,
-            FluidStack[] aFluidOutputs,
-            int aDuration,
-            int aEUt,
-            int aSpecialValue,
-            EMConstantStackMap[] in,
-            IEMMapRead<? extends IEMStack>[] out,
-            EMConstantStackMap[] catalyst,
+    public TT_recipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
+            FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
+            EMConstantStackMap[] in, IEMMapRead<? extends IEMStack>[] out, EMConstantStackMap[] catalyst,
             IAdditionalCheck check) {
         super(
                 aOptimize,
@@ -73,27 +67,18 @@ public class TT_recipe extends GT_Recipe {
         additionalCheck = check;
     }
 
-    public boolean EMisRecipeInputEqual(
-            boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks, FluidStack[] fluidStacks) {
+    public boolean EMisRecipeInputEqual(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
+            FluidStack[] fluidStacks) {
         return EMisRecipeInputEqual(consume, doNotCheckStackSizes, itemStacks, fluidStacks, null, null);
     }
 
-    public boolean EMisRecipeInputEqual(
-            boolean consume,
-            boolean doNotCheckStackSizes,
-            ItemStack[] itemStacks,
-            FluidStack[] fluidStacks,
-            EMInstanceStackMap[] in) {
+    public boolean EMisRecipeInputEqual(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
+            FluidStack[] fluidStacks, EMInstanceStackMap[] in) {
         return EMisRecipeInputEqual(consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, null);
     }
 
-    public boolean EMisRecipeInputEqual(
-            boolean consume,
-            boolean doNotCheckStackSizes,
-            ItemStack[] itemStacks,
-            FluidStack[] fluidStacks,
-            EMInstanceStackMap[] in,
-            EMInstanceStackMap[] catalyst) {
+    public boolean EMisRecipeInputEqual(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
+            FluidStack[] fluidStacks, EMInstanceStackMap[] in, EMInstanceStackMap[] catalyst) {
         if (additionalCheck != null
                 && !additionalCheck.check(this, consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, catalyst)) {
             return false;
@@ -142,23 +127,14 @@ public class TT_recipe extends GT_Recipe {
     }
 
     @Deprecated
-    public boolean EMisRecipeInputEqualConsumeFromOne(
-            boolean consume,
-            boolean doNotCheckStackSizes,
-            ItemStack[] itemStacks,
-            FluidStack[] fluidStacks,
-            EMInstanceStackMap in) {
+    public boolean EMisRecipeInputEqualConsumeFromOne(boolean consume, boolean doNotCheckStackSizes,
+            ItemStack[] itemStacks, FluidStack[] fluidStacks, EMInstanceStackMap in) {
         return EMisRecipeInputEqualConsumeFromOne(consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, null);
     }
 
     @Deprecated
-    public boolean EMisRecipeInputEqualConsumeFromOne(
-            boolean consume,
-            boolean doNotCheckStackSizes,
-            ItemStack[] itemStacks,
-            FluidStack[] fluidStacks,
-            EMInstanceStackMap in,
-            EMInstanceStackMap[] catalyst) {
+    public boolean EMisRecipeInputEqualConsumeFromOne(boolean consume, boolean doNotCheckStackSizes,
+            ItemStack[] itemStacks, FluidStack[] fluidStacks, EMInstanceStackMap in, EMInstanceStackMap[] catalyst) {
         if (additionalCheck != null
                 && !additionalCheck.check(this, consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, catalyst)) {
             return false;
@@ -207,26 +183,16 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public interface IAdditionalCheck {
-        boolean check(
-                TT_recipe thisRecipe,
-                boolean consume,
-                boolean doNotCheckStackSizes,
-                ItemStack[] itemStacks,
-                FluidStack[] fluidStacks,
-                EMInstanceStackMap[] in,
-                EMInstanceStackMap[] e);
 
-        boolean check(
-                TT_recipe thisRecipe,
-                boolean consume,
-                boolean doNotCheckStackSizes,
-                ItemStack[] itemStacks,
-                FluidStack[] fluidStacks,
-                EMInstanceStackMap in,
-                EMInstanceStackMap[] e);
+        boolean check(TT_recipe thisRecipe, boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
+                FluidStack[] fluidStacks, EMInstanceStackMap[] in, EMInstanceStackMap[] e);
+
+        boolean check(TT_recipe thisRecipe, boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
+                FluidStack[] fluidStacks, EMInstanceStackMap in, EMInstanceStackMap[] e);
     }
 
     public static class TT_Recipe_Map<T extends TT_recipe> {
+
         public static TT_Recipe_Map<TT_assLineRecipe> sCrafterRecipes = new TT_Recipe_Map<>();
         public static TT_Recipe_Map<TT_assLineRecipe> sMachineRecipes = new TT_Recipe_Map<>();
 
@@ -260,25 +226,23 @@ public class TT_recipe extends GT_Recipe {
     public static class GT_Recipe_MapTT extends GT_Recipe.GT_Recipe_Map {
 
         public static final GT_Recipe_Map sEyeofHarmonyRecipes = new Eye_Of_Harmony_Recipe_Map(
-                        new HashSet<>(250),
-                        "gt.recipe.eyeofharmony",
-                        "Eye of Harmony",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Extractor",
-                        1,
-                        9 * 9,
-                        1,
-                        0,
-                        1,
-                        "",
-                        1,
-                        "",
-                        true,
-                        false) // Custom NEI handler means this must be false.
-                .setProgressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-                .setProgressBarPos(78, 24 + 2)
-                .setUsualFluidOutputCount(18)
-                .setLogoPos(10, 10);
+                new HashSet<>(250),
+                "gt.recipe.eyeofharmony",
+                "Eye of Harmony",
+                null,
+                RES_PATH_GUI + "basicmachines/Extractor",
+                1,
+                9 * 9,
+                1,
+                0,
+                1,
+                "",
+                1,
+                "",
+                true,
+                false) // Custom NEI handler means this must be false.
+                        .setProgressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
+                        .setProgressBarPos(78, 24 + 2).setUsualFluidOutputCount(18).setLogoPos(10, 10);
 
         public static GT_Recipe_MapTT sResearchableFakeRecipes = new GT_Recipe_MapTT(
                 new HashSet<>(32),
@@ -314,21 +278,10 @@ public class TT_recipe extends GT_Recipe {
                 false);
         public static ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<>();
 
-        public GT_Recipe_MapTT(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+        public GT_Recipe_MapTT(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -350,21 +303,12 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class TT_assLineRecipe extends TT_recipe {
+
         public final ItemStack mResearchItem;
 
-        public TT_assLineRecipe(
-                boolean aOptimize,
-                ItemStack researchItem,
-                ItemStack[] aInputs,
-                ItemStack[] aOutputs,
-                Object aSpecialItems,
-                FluidStack[] aFluidInputs,
-                int aDuration,
-                int aEUt,
-                int aSpecialValue,
-                EMConstantStackMap[] in,
-                EMConstantStackMap[] out,
-                EMConstantStackMap[] catalyst,
+        public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem, ItemStack[] aInputs, ItemStack[] aOutputs,
+                Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
+                EMConstantStackMap[] in, EMConstantStackMap[] out, EMConstantStackMap[] catalyst,
                 IAdditionalCheck check) {
             super(
                     aOptimize,
@@ -384,16 +328,8 @@ public class TT_recipe extends GT_Recipe {
             mResearchItem = researchItem;
         }
 
-        public TT_assLineRecipe(
-                boolean aOptimize,
-                ItemStack researchItem,
-                ItemStack[] aInputs,
-                ItemStack[] aOutputs,
-                Object aSpecialItems,
-                FluidStack[] aFluidInputs,
-                int aDuration,
-                int aEUt,
-                int aSpecialValue,
+        public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem, ItemStack[] aInputs, ItemStack[] aOutputs,
+                Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                 EMConstantStackMap[] in) {
             this(
                     aOptimize,
@@ -413,23 +349,13 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class TT_EMRecipe extends TT_recipe {
+
         public final IEMDefinition mResearchEM;
         public final GT_Recipe scannerRecipe;
 
-        public TT_EMRecipe(
-                boolean aOptimize,
-                GT_Recipe scannerRecipe,
-                IEMDefinition researchEM,
-                ItemStack[] aInputs,
-                ItemStack[] aOutputs,
-                Object aSpecialItems,
-                FluidStack[] aFluidInputs,
-                int aDuration,
-                int aEUt,
-                int aSpecialValue,
-                EMConstantStackMap[] in,
-                EMConstantStackMap[] out,
-                EMConstantStackMap[] catalyst,
+        public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, IEMDefinition researchEM, ItemStack[] aInputs,
+                ItemStack[] aOutputs, Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt,
+                int aSpecialValue, EMConstantStackMap[] in, EMConstantStackMap[] out, EMConstantStackMap[] catalyst,
                 IAdditionalCheck check) {
             super(
                     aOptimize,
@@ -450,18 +376,9 @@ public class TT_recipe extends GT_Recipe {
             this.scannerRecipe = scannerRecipe;
         }
 
-        public TT_EMRecipe(
-                boolean aOptimize,
-                GT_Recipe scannerRecipe,
-                IEMDefinition researchEM,
-                ItemStack[] aInputs,
-                ItemStack[] aOutputs,
-                Object aSpecialItems,
-                FluidStack[] aFluidInputs,
-                int aDuration,
-                int aEUt,
-                int aSpecialValue,
-                EMConstantStackMap[] in) {
+        public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, IEMDefinition researchEM, ItemStack[] aInputs,
+                ItemStack[] aOutputs, Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt,
+                int aSpecialValue, EMConstantStackMap[] in) {
             this(
                     aOptimize,
                     scannerRecipe,
@@ -481,10 +398,15 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class TT_Recipe_Map_EM<T extends TT_EMRecipe> {
-        public static TT_Recipe_Map_EM<TT_EMRecipe> sCrafterRecipesEM =
-                new TT_Recipe_Map_EM<>("EM Crafter Recipes", "gt.recipe.em_crafter", null);
-        public static TT_Recipe_Map_EM<TT_EMRecipe> sMachineRecipesEM =
-                new TT_Recipe_Map_EM<>("EM Machinert Recipe", "gt.recipe.em_machinery", null);
+
+        public static TT_Recipe_Map_EM<TT_EMRecipe> sCrafterRecipesEM = new TT_Recipe_Map_EM<>(
+                "EM Crafter Recipes",
+                "gt.recipe.em_crafter",
+                null);
+        public static TT_Recipe_Map_EM<TT_EMRecipe> sMachineRecipesEM = new TT_Recipe_Map_EM<>(
+                "EM Machinert Recipe",
+                "gt.recipe.em_machinery",
+                null);
 
         private final HashMap<IEMDefinition, T> mRecipeMap;
         public final String mNEIName, mUnlocalizedName, mNEIGUIPath;
@@ -515,21 +437,10 @@ public class TT_recipe extends GT_Recipe {
         private static final int yOrigin = 8;
         private static final long TRILLION = pow(10, 12);
 
-        public Eye_Of_Harmony_Recipe_Map(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+        public Eye_Of_Harmony_Recipe_Map(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -553,40 +464,63 @@ public class TT_recipe extends GT_Recipe {
                 EyeOfHarmonyRecipe recipe = (EyeOfHarmonyRecipe) recipeInfo.recipe.mSpecialItems;
                 List<String> result = new ArrayList<>();
 
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In", "Hydrogen") + ": "
-                        + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": "
-                        + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
-                        + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
+                result.add(
+                        GT_LanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In", "Hydrogen") + ": "
+                                + formatNumbers(recipe.getHydrogenRequirement())
+                                + " L");
+                result.add(
+                        GT_LanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": "
+                                + formatNumbers(recipe.getHydrogenRequirement())
+                                + " L");
+                result.add(
+                        GT_LanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
+                                + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
 
                 if (recipe.getEUOutput() < TRILLION) {
-                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
-                            + formatNumbers(recipe.getEUOutput()) + " EU");
+                    result.add(
+                            GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
+                                    + formatNumbers(recipe.getEUOutput())
+                                    + " EU");
                 } else {
-                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
-                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput()) + " EU");
+                    result.add(
+                            GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
+                                    + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
+                                    + " EU");
                 }
 
                 if (recipe.getEUOutput() < TRILLION) {
-                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
-                            + formatNumbers(recipe.getEUStartCost()) + " EU");
+                    result.add(
+                            GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
+                                    + formatNumbers(recipe.getEUStartCost())
+                                    + " EU");
                 } else {
-                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
-                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + " EU");
+                    result.add(
+                            GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
+                                    + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost())
+                                    + " EU");
                 }
 
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.BaseRecipeChance", "Base Recipe Chance")
-                        + ": " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
-                result.add(GT_LanguageManager.addStringLocalization(
-                                "EOH.Recipe.RecipeEnergyEfficiency", "Recipe Energy Efficiency")
-                        + ": " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+                result.add(
+                        GT_LanguageManager.addStringLocalization("EOH.Recipe.BaseRecipeChance", "Base Recipe Chance")
+                                + ": "
+                                + formatNumbers(100 * recipe.getBaseRecipeSuccessChance())
+                                + "%");
+                result.add(
+                        GT_LanguageManager
+                                .addStringLocalization("EOH.Recipe.RecipeEnergyEfficiency", "Recipe Energy Efficiency")
+                                + ": "
+                                + formatNumbers(100 * recipe.getRecipeEnergyEfficiency())
+                                + "%");
 
                 if (recipe.getOutputItems().size() > maxItemsToRender) {
-                    result.add("" + DARK_RED + BOLD
-                            + GT_LanguageManager.addStringLocalization("EOH.Recipe.Warning.0", "Warning") + RESET + ": "
-                            + GT_LanguageManager.addStringLocalization(
-                                    "EOH.Recipe.Warning.1", "Not all items displayed."));
+                    result.add(
+                            "" + DARK_RED
+                                    + BOLD
+                                    + GT_LanguageManager.addStringLocalization("EOH.Recipe.Warning.0", "Warning")
+                                    + RESET
+                                    + ": "
+                                    + GT_LanguageManager
+                                            .addStringLocalization("EOH.Recipe.Warning.1", "Not all items displayed."));
                 }
 
                 return result;
@@ -607,8 +541,8 @@ public class TT_recipe extends GT_Recipe {
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getGridPositions(
-                    min(itemOutputCount, maxItemsToRender + 1), 7, yOrigin + 36, xDirMaxCount, 12);
+            return UIHelper
+                    .getGridPositions(min(itemOutputCount, maxItemsToRender + 1), 7, yOrigin + 36, xDirMaxCount, 12);
         }
 
         @Override
@@ -622,14 +556,10 @@ public class TT_recipe extends GT_Recipe {
         }
 
         @Override
-        public ModularWindow.Builder createNEITemplate(
-                IItemHandlerModifiable itemInputsInventory,
-                IItemHandlerModifiable itemOutputsInventory,
-                IItemHandlerModifiable specialSlotInventory,
-                IItemHandlerModifiable fluidInputsInventory,
-                IItemHandlerModifiable fluidOutputsInventory,
-                Supplier<Float> progressSupplier,
-                Pos2d windowOffset) {
+        public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
+                IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
+                IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
+                Supplier<Float> progressSupplier, Pos2d windowOffset) {
             // Delay setter so that calls to #setUsualFluidInputCount and #setUsualFluidOutputCount are considered
             setNEIBackgroundSize(172, 117 + (Math.max(getItemRowCount() + getFluidRowCount() - 4, 0)) * 18);
             return super.createNEITemplate(
@@ -656,8 +586,8 @@ public class TT_recipe extends GT_Recipe {
         }
 
         @Override
-        public List<String> handleNEIItemTooltip(
-                ItemStack stack, List<String> currentTip, GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
+                GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
             super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
             if (stack == null) return currentTip;
 
@@ -665,9 +595,9 @@ public class TT_recipe extends GT_Recipe {
 
             // Draw tooltip on planet item.
             if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
-                currentTip.add(EnumChatFormatting.GRAY
-                        + translateToLocal("Total Items: ")
-                        + formatNumbers(currentRecipe.getSumOfItems()));
+                currentTip.add(
+                        EnumChatFormatting.GRAY + translateToLocal("Total Items: ")
+                                + formatNumbers(currentRecipe.getSumOfItems()));
                 return currentTip;
             }
 
@@ -677,10 +607,9 @@ public class TT_recipe extends GT_Recipe {
             if (percentage != -1.0) {
                 currentTip.add(
                         EnumChatFormatting.GRAY + translateToLocal("Percentage of Solid Mass: ") + percentage + "%");
-                currentTip.add(EnumChatFormatting.GRAY
-                        + translateToLocal("Item Count: ")
-                        + formatNumbers(
-                                currentRecipe.getItemStackToTrueStackSizeMap().get(stack)));
+                currentTip.add(
+                        EnumChatFormatting.GRAY + translateToLocal("Item Count: ")
+                                + formatNumbers(currentRecipe.getItemStackToTrueStackSizeMap().get(stack)));
             }
 
             return currentTip;
@@ -699,8 +628,7 @@ public class TT_recipe extends GT_Recipe {
             for (PositionedStack stack : neiCachedRecipe.mOutputs) {
                 if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
                     if (EOHRecipe.getItemStackToTrueStackSizeMap().containsKey(stack.item)) {
-                        long stackSize =
-                                EOHRecipe.getItemStackToTrueStackSizeMap().get(stack.item);
+                        long stackSize = EOHRecipe.getItemStackToTrueStackSizeMap().get(stack.item);
                         String displayString;
                         if (stackSize > 9999) {
                             displayString = ReadableNumberConverter.INSTANCE.toWideReadableForm(stackSize);

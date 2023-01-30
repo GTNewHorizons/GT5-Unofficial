@@ -1,5 +1,11 @@
 package com.github.technus.tectech.mechanics.pipe;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -8,13 +14,9 @@ import eu.usrv.yamcore.network.server.AbstractServerMessageHandler;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 public class PipeActivityMessage implements IMessage {
+
     int mPosX;
     int mPosY;
     int mPosZ;
@@ -63,6 +65,7 @@ public class PipeActivityMessage implements IMessage {
     }
 
     public static class PipeActivityQuery extends PipeActivityMessage {
+
         public PipeActivityQuery() {}
 
         public PipeActivityQuery(IActivePipe metaTile) {
@@ -75,6 +78,7 @@ public class PipeActivityMessage implements IMessage {
     }
 
     public static class PipeActivityData extends PipeActivityMessage {
+
         public PipeActivityData() {}
 
         private PipeActivityData(PipeActivityQuery query) {
@@ -95,6 +99,7 @@ public class PipeActivityMessage implements IMessage {
     }
 
     public static class ClientHandler extends AbstractClientMessageHandler<PipeActivityData> {
+
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, PipeActivityData pMessage, MessageContext pCtx) {
             if (pPlayer.worldObj.provider.dimensionId == pMessage.mPosD) {
@@ -111,6 +116,7 @@ public class PipeActivityMessage implements IMessage {
     }
 
     public static class ServerHandler extends AbstractServerMessageHandler<PipeActivityQuery> {
+
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, PipeActivityQuery pMessage, MessageContext pCtx) {
             World world = DimensionManager.getWorld(pMessage.mPosD);

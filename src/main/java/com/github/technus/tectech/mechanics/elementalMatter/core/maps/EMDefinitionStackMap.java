@@ -2,13 +2,15 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import static com.github.technus.tectech.util.TT_Utility.unpackNBT;
 
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import java.util.NavigableMap;
-import java.util.TreeMap;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by danie_000 on 22.01.2017.
@@ -16,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public final class EMDefinitionStackMap extends EMStackMap<EMDefinitionStack>
         implements IEMMapWriteExact<EMDefinitionStack> { // Transient class for construction of definitions/recipes
     // Constructors + Clone, all make a whole new OBJ.
+
     public EMDefinitionStackMap() {}
 
     public EMDefinitionStackMap(EMDefinitionStack... in) {

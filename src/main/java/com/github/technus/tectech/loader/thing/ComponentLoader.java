@@ -4,6 +4,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IMaterialHandler;
 
 public class ComponentLoader implements IMaterialHandler {
+
     public ComponentLoader() {
         Materials.add(this);
     }

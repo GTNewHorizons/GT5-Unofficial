@@ -1,10 +1,13 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
-import com.github.technus.tectech.TecTech;
 import java.util.function.Supplier;
+
 import net.minecraft.util.EnumChatFormatting;
 
+import com.github.technus.tectech.TecTech;
+
 public enum LedStatus {
+
     STATUS_UNUSED(() -> EnumChatFormatting.DARK_GRAY + "Unused", true), //
     STATUS_TOO_LOW(() -> EnumChatFormatting.BLUE + "Too Low", false), //
     STATUS_LOW(() -> EnumChatFormatting.AQUA + "Low", true), //
@@ -14,11 +17,7 @@ public enum LedStatus {
     STATUS_HIGH(() -> EnumChatFormatting.GOLD + "High", true), //
     STATUS_UNDEFINED(() -> EnumChatFormatting.GRAY + "Unknown", false),
     STATUS_NEUTRAL(() -> EnumChatFormatting.WHITE + "Neutral", true), //
-    STATUS_WTF(
-            () -> {
-                return LedStatus.values()[TecTech.RANDOM.nextInt(9)].name.get();
-            },
-            false); //
+    STATUS_WTF(() -> { return LedStatus.values()[TecTech.RANDOM.nextInt(9)].name.get(); }, false); //
 
     public final Supplier<String> name;
     public final boolean isOk;
@@ -48,8 +47,8 @@ public enum LedStatus {
         return statuses;
     }
 
-    public static LedStatus fromLimitsInclusiveOuterBoundary(
-            double value, double min, double low, double high, double max, double... excludedNumbers) {
+    public static LedStatus fromLimitsInclusiveOuterBoundary(double value, double min, double low, double high,
+            double max, double... excludedNumbers) {
         if (value < min) return STATUS_TOO_LOW;
         if (value > max) return STATUS_TOO_HIGH;
 
@@ -62,8 +61,8 @@ public enum LedStatus {
         return STATUS_OK;
     }
 
-    public static LedStatus fromLimitsExclusiveOuterBoundary(
-            double value, double min, double low, double high, double max, double... excludedNumbers) {
+    public static LedStatus fromLimitsExclusiveOuterBoundary(double value, double min, double low, double high,
+            double max, double... excludedNumbers) {
         if (value <= min) return STATUS_TOO_LOW;
         if (value >= max) return STATUS_TOO_HIGH;
 
@@ -76,8 +75,8 @@ public enum LedStatus {
         return STATUS_OK;
     }
 
-    public static LedStatus fromLimitsInclusiveBoundary(
-            double value, double min, double max, double... excludedNumbers) {
+    public static LedStatus fromLimitsInclusiveBoundary(double value, double min, double max,
+            double... excludedNumbers) {
         if (value < min) return STATUS_TOO_LOW;
         if (value > max) return STATUS_TOO_HIGH;
 
@@ -88,8 +87,8 @@ public enum LedStatus {
         return STATUS_OK;
     }
 
-    public static LedStatus fromLimitsExclusiveBoundary(
-            double value, double min, double max, double... excludedNumbers) {
+    public static LedStatus fromLimitsExclusiveBoundary(double value, double min, double max,
+            double... excludedNumbers) {
         if (value <= min) return STATUS_TOO_LOW;
         if (value >= max) return STATUS_TOO_HIGH;
 

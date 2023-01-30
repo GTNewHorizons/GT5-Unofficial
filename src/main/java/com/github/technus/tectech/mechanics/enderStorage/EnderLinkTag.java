@@ -1,10 +1,12 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
-import com.google.common.base.Objects;
 import java.io.Serializable;
 import java.util.UUID;
 
+import com.google.common.base.Objects;
+
 public class EnderLinkTag implements Serializable {
+
     private final String frequency;
     private final UUID player;
 

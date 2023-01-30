@@ -5,6 +5,15 @@ import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.function.Consumer;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
@@ -16,6 +25,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -30,19 +40,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import java.util.function.Consumer;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 /**
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_TieredMachineBlock
         implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
+
     private static GT_RenderedTexture GENNY;
     private boolean LASER = false;
     public int EUT = 0, AMP = 0;
@@ -53,8 +57,8 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_DebugPowerGenerator(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DebugPowerGenerator(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         TT_Utility.setTier(aTier, this);
     }
@@ -80,21 +84,13 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return new ITexture[] {
-            MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
-            aSide != aFacing
-                    ? LASER
-                            ? (aActive ? OVERLAYS_ENERGY_OUT_LASER_TT[mTier] : OVERLAYS_ENERGY_IN_LASER_TT[mTier])
-                            : (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier])
-                    : GENNY
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+                aSide != aFacing
+                        ? LASER ? (aActive ? OVERLAYS_ENERGY_OUT_LASER_TT[mTier] : OVERLAYS_ENERGY_IN_LASER_TT[mTier])
+                                : (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier])
+                        : GENNY };
     }
 
     @Override
@@ -173,14 +169,14 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_GENERAL,
-            translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"), // Power from nothing
-            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"), //
-            EnumChatFormatting.BLUE
-                    + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"), // Infinite Producer/Consumer
-            EnumChatFormatting.BLUE
-                    + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") // Since i wanted one...
+        return new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"), // Power
+                                                                                                                         // from
+                                                                                                                         // nothing
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"), //
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"), // Infinite
+                                                                                                      // Producer/Consumer
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") // Since i wanted
+                                                                                                     // one...
         };
     }
 
@@ -259,8 +255,8 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
             if (face == aBaseMetaTileEntity.getFrontFacing()) continue;
             byte opposite = GT_Utility.getOppositeSide(face);
             for (short dist = 1; dist < 1000; dist++) {
-                IGregTechTileEntity tGTTileEntity =
-                        aBaseMetaTileEntity.getIGregTechTileEntityAtSideAndDistance(face, dist);
+                IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
+                        .getIGregTechTileEntityAtSideAndDistance(face, dist);
                 if (tGTTileEntity != null) {
                     IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                     if (aMetaTileEntity != null) {
@@ -273,19 +269,13 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
                                         AMP * 20L * maxEUOutput(),
                                         Math.min(
                                                 ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUStore()
-                                                        - aMetaTileEntity
-                                                                .getBaseMetaTileEntity()
-                                                                .getStoredEU(),
+                                                        - aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
                                                 aBaseMetaTileEntity.getStoredEU()));
                                 ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity)
-                                        .setEUVar(aMetaTileEntity
-                                                        .getBaseMetaTileEntity()
-                                                        .getStoredEU()
-                                                + diff);
+                                        .setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
                             }
                         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy) {
-                            if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount < 2) {
-                            } else {
+                            if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount < 2) {} else {
                                 ((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).markUsed();
                             }
                         }
@@ -302,30 +292,27 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(113, 56));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY).setSize(17, 17)
+                        .setPos(113, 56));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setSize(90, 72)
-                        .setPos(43, 4))
-                .widget(TextWidget.dynamicString(() -> "EUT: " + EUT)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 8))
-                .widget(TextWidget.dynamicString(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 16))
-                .widget(TextWidget.dynamicString(() -> "AMP: " + AMP)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 24))
-                .widget(TextWidget.dynamicString(() -> "SUM: " + (long) AMP * EUT)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 32));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
+                .widget(
+                        TextWidget.dynamicString(() -> "EUT: " + EUT).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setPos(46, 8))
+                .widget(
+                        TextWidget.dynamicString(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
+                .widget(
+                        TextWidget.dynamicString(() -> "AMP: " + AMP).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setPos(46, 24))
+                .widget(
+                        TextWidget.dynamicString(() -> "SUM: " + (long) AMP * EUT)
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32));
 
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
@@ -348,21 +335,11 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP *= val, 512, 64, 151, 58);
     }
 
-    private void addChangeNumberButton(
-            ModularWindow.Builder builder,
-            IDrawable overlay,
-            Consumer<Integer> setter,
-            int changeNumberShift,
-            int changeNumber,
-            int xPos,
-            int yPos) {
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    setter.accept(clickData.shift ? changeNumberShift : changeNumber);
-                    producing = (long) AMP * EUT >= 0;
-                })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
-                .setSize(18, 18)
-                .setPos(xPos, yPos));
+    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
+            int changeNumberShift, int changeNumber, int xPos, int yPos) {
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            setter.accept(clickData.shift ? changeNumberShift : changeNumber);
+            producing = (long) AMP * EUT >= 0;
+        }).setBackground(GT_UITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, yPos));
     }
 }

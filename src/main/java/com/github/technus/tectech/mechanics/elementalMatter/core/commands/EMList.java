@@ -1,19 +1,22 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.commands;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
-import com.github.technus.tectech.util.TT_Utility;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
+import com.github.technus.tectech.util.TT_Utility;
 
 /**
  * Created by danie_000 on 30.12.2017.
  */
 public class EMList implements ICommand {
+
     ArrayList<String> aliases = new ArrayList<>();
 
     public EMList() {
@@ -36,28 +39,25 @@ public class EMList implements ICommand {
     private void listDefinitions(ICommandSender sender, String raw, String unlocalized, String localized) {
         sender.addChatMessage(new ChatComponentText("    Available Direct: tag - name symbol"));
         for (EMType directType : TecTech.definitionsRegistry.getDirectTypes().values()) {
-            if ("*".equals(raw)
-                    || localized.equalsIgnoreCase(directType.getLocalizedName())
+            if ("*".equals(raw) || localized.equalsIgnoreCase(directType.getLocalizedName())
                     || unlocalized.equalsIgnoreCase(directType.getUnlocalizedName())) {
-                directType
-                        .getDefinitions()
-                        .forEach((bind, definition) -> sender.addChatMessage(new ChatComponentText(
-                                bind + " - " + definition.getLocalizedName() + " " + definition.getSymbol())));
+                directType.getDefinitions().forEach(
+                        (bind, definition) -> sender.addChatMessage(
+                                new ChatComponentText(
+                                        bind + " - " + definition.getLocalizedName() + " " + definition.getSymbol())));
             }
         }
     }
 
     private void listClasses(ICommandSender sender) {
         sender.addChatMessage(new ChatComponentText("    Available Direct: name (use as parameter to learn more"));
-        TecTech.definitionsRegistry
-                .getDirectTypes()
-                .forEach((aClass, emDirectType) ->
-                        sender.addChatMessage(new ChatComponentText(emDirectType.getLocalizedName())));
+        TecTech.definitionsRegistry.getDirectTypes().forEach(
+                (aClass, emDirectType) -> sender
+                        .addChatMessage(new ChatComponentText(emDirectType.getLocalizedName())));
         sender.addChatMessage(new ChatComponentText("    Available Indirect: tag - name"));
-        TecTech.definitionsRegistry
-                .getIndirectBinds()
-                .forEach((bind, emIndirectType) ->
-                        sender.addChatMessage(new ChatComponentText(bind + " - " + emIndirectType.getLocalizedName())));
+        TecTech.definitionsRegistry.getIndirectBinds().forEach(
+                (bind, emIndirectType) -> sender
+                        .addChatMessage(new ChatComponentText(bind + " - " + emIndirectType.getLocalizedName())));
     }
 
     @Override
@@ -78,10 +78,8 @@ public class EMList implements ICommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 1) {
-            return TecTech.definitionsRegistry.getDirectTypes().values().stream()
-                    .map(EMType::getLocalizedName)
-                    .map(s -> s.replaceAll(" ", "_"))
-                    .collect(Collectors.toList());
+            return TecTech.definitionsRegistry.getDirectTypes().values().stream().map(EMType::getLocalizedName)
+                    .map(s -> s.replaceAll(" ", "_")).collect(Collectors.toList());
         }
         return null;
     }

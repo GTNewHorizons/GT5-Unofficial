@@ -1,17 +1,20 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by Tec on 23.05.2017.
  */
 public class EMItemQuantizationInfo {
+
     private final ItemStack in;
     private final boolean skipNBT;
     private final IEMStack out;
@@ -38,9 +41,10 @@ public class EMItemQuantizationInfo {
 
     @Override
     public int hashCode() {
-        return (GameRegistry.findUniqueIdentifierFor(in.getItem()) + ":" + in.getUnlocalizedName() + ':'
-                        + in.getItemDamage())
-                .hashCode();
+        return (GameRegistry.findUniqueIdentifierFor(in.getItem()) + ":"
+                + in.getUnlocalizedName()
+                + ':'
+                + in.getItemDamage()).hashCode();
     }
 
     @Override

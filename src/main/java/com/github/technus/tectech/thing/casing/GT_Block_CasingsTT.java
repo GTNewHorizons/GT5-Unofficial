@@ -3,15 +3,8 @@ package com.github.technus.tectech.thing.casing;
 import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 
-import com.github.technus.tectech.thing.CustomItemList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -19,31 +12,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.github.technus.tectech.thing.CustomItemList;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
+import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.common.blocks.GT_Material_Casings;
+
 /**
  * Created by danie_000 on 03.10.2016.
  */
 public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
+
     public static final byte texturePage = tectechTexturePage1;
-    public static final short textureOffset = texturePage << 7; // Start of PAGE 8 (which is the 9th page)  (8*128)
-    private static IIcon eM0,
-            eM1,
-            eM1s,
-            eM2,
-            eM2s,
-            eM3,
-            eM3s,
-            eM4,
-            eM5,
-            eM6,
-            eM7,
-            eM7s,
-            eM8,
-            eM9,
-            eM10,
-            eM11,
-            eM12,
-            eM13,
-            eM14;
+    public static final short textureOffset = texturePage << 7; // Start of PAGE 8 (which is the 9th page) (8*128)
+    private static IIcon eM0, eM1, eM1s, eM2, eM2s, eM3, eM3s, eM4, eM5, eM6, eM7, eM7s, eM8, eM9, eM10, eM11, eM12,
+            eM13, eM14;
     private static IIcon[] debug = new IIcon[6];
 
     public GT_Block_CasingsTT() {
@@ -52,7 +39,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[texturePage][b] = new GT_CopiedBlockTexture(this, 6, b);
-            /*IMPORTANT for block recoloring**/
+            /* IMPORTANT for block recoloring **/
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "High Power Casing");
 
@@ -72,13 +59,14 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Dimensional Bridge Generator");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Ultimate Molecular Casing");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
+        GT_LanguageManager
+                .addStringLocalization(getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
+        GT_LanguageManager
+                .addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
 
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".15.name", "Debug Sides"); // NOT REGISTER AS TEXTURE FOR HATCHES!
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides"); // NOT REGISTER AS
+                                                                                                    // TEXTURE FOR
+                                                                                                    // HATCHES!
 
         CustomItemList.eM_Power.set(new ItemStack(this, 1, 0));
 

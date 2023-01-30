@@ -3,7 +3,14 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static com.github.technus.tectech.util.CommonValues.V;
 
+import java.util.*;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.util.TT_Utility;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -12,15 +19,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import java.util.*;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine {
+
     public static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
@@ -47,30 +51,23 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aBaseMetaTileEntity.getWorld() == null) {
             if (aSide == aFacing) {
-                return new ITexture[] {
-                    MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE
-                };
+                return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+                        aActive ? READER_ONLINE : READER_OFFLINE };
             }
-            return new ITexture[] {MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1] };
         }
         if (aSide == mMainFacing) {
-            return new ITexture[] {MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE
-            };
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+                    aActive ? READER_ONLINE : READER_OFFLINE };
         } else if (aSide == aFacing) {
-            return new ITexture[] {
-                MACHINE_CASINGS_TT[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
-            };
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
         }
-        return new ITexture[] {MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1] };
     }
 
     @Override
@@ -106,7 +103,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
 
     @Override
     public String[] getDescription() {
-        return new String[] {EnumChatFormatting.DARK_RED + "Deprecated"};
+        return new String[] { EnumChatFormatting.DARK_RED + "Deprecated" };
     }
 
     @Override

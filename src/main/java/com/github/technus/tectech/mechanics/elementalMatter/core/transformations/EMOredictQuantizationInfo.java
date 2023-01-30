@@ -1,14 +1,17 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by Tec on 23.05.2017.
  */
 public class EMOredictQuantizationInfo {
+
     private final int id;
     private final int amount;
     private final IEMStack out;

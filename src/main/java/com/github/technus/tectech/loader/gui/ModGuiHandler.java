@@ -1,15 +1,17 @@
 package com.github.technus.tectech.loader.gui;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+
 import com.github.technus.tectech.thing.item.gui.ProgrammerScreen;
 import com.github.technus.tectech.thing.item.gui.ScanDisplayScreen;
 import cpw.mods.fml.common.network.IGuiHandler;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 /**
  * Created by danie_000 on 17.12.2017.
  */
 public class ModGuiHandler implements IGuiHandler {
+
     public static final int SCAN_DISPLAY_SCREEN_ID = 0;
     public static final int PROGRAMMER_DISPLAY_SCREEN_ID = 1;
 

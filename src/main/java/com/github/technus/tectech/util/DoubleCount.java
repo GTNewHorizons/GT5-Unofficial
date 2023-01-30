@@ -6,6 +6,7 @@ import static java.lang.Math.ulp;
 import java.util.Arrays;
 
 public class DoubleCount {
+
     /**
      * Distributes count across probabilities
      *
@@ -55,7 +56,7 @@ public class DoubleCount {
                     return output;
                 }
                 case 1:
-                    return new double[] {count};
+                    return new double[] { count };
                 case 0:
                     return probabilities; // empty array at hand...
             }

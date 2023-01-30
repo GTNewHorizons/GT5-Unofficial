@@ -3,17 +3,20 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_EPSILON;
 import static com.github.technus.tectech.util.DoubleCount.*;
 
+import java.util.Map;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
-import java.util.Map;
 
 public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
+
     IEMMapWrite<T> clone();
 
     /**
      * Consumes amount from map
-     * @param def def to consume
+     * 
+     * @param def             def to consume
      * @param amountToConsume should be comparable to {@link EMTransformationRegistry#EM_COUNT_PER_MATERIAL_AMOUNT}
      * @return consumed successfully
      */

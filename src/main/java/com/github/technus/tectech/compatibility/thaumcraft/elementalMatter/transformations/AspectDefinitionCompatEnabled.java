@@ -2,17 +2,20 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.tran
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.*;
 
+import java.util.ArrayList;
+
+import thaumcraft.api.aspects.Aspect;
+
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
-import java.util.ArrayList;
-import thaumcraft.api.aspects.Aspect;
 
 /**
  * Created by Tec on 21.05.2017.
  */
 public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat {
+
     @Override
     public void run(EMDefinitionsRegistry registry) {
         getDefToAspect().put(magic_air, "aer");
@@ -39,30 +42,25 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
                         list.remove(aspect);
                     } else if (getAspectToDef().containsKey(content[0].getTag())
                             && getAspectToDef().containsKey(content[1].getTag())) {
-                        try {
-                            EMComplexAspectDefinition newAspect;
-                            if (content[0].getTag().equals(content[1].getTag())) {
-                                newAspect = new EMComplexAspectDefinition(getAspectToDef()
-                                        .get(content[0].getTag())
-                                        .getStackForm(2));
-                            } else {
-                                newAspect = new EMComplexAspectDefinition(
-                                        getAspectToDef()
-                                                .get(content[0].getTag())
-                                                .getStackForm(1),
-                                        getAspectToDef()
-                                                .get(content[1].getTag())
-                                                .getStackForm(1));
+                                try {
+                                    EMComplexAspectDefinition newAspect;
+                                    if (content[0].getTag().equals(content[1].getTag())) {
+                                        newAspect = new EMComplexAspectDefinition(
+                                                getAspectToDef().get(content[0].getTag()).getStackForm(2));
+                                    } else {
+                                        newAspect = new EMComplexAspectDefinition(
+                                                getAspectToDef().get(content[0].getTag()).getStackForm(1),
+                                                getAspectToDef().get(content[1].getTag()).getStackForm(1));
+                                    }
+                                    getAspectToDef().put(aspect.getTag(), newAspect);
+                                    getDefToAspect().put(newAspect, aspect.getTag());
+                                    registry.registerForDisplay(newAspect);
+                                } catch (EMException e) {
+                                    /**/
+                                } finally {
+                                    list.remove(aspect);
+                                }
                             }
-                            getAspectToDef().put(aspect.getTag(), newAspect);
-                            getDefToAspect().put(newAspect, aspect.getTag());
-                            registry.registerForDisplay(newAspect);
-                        } catch (EMException e) {
-                            /**/
-                        } finally {
-                            list.remove(aspect);
-                        }
-                    }
                 }
             }
         }

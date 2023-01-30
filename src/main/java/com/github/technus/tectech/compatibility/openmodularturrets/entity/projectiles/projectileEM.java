@@ -1,14 +1,10 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import openmodularturrets.entity.projectiles.LaserProjectile;
 import openmodularturrets.entity.projectiles.damagesources.NormalDamageSource;
 import openmodularturrets.handler.ConfigHandler;
@@ -16,10 +12,18 @@ import openmodularturrets.tileentity.turretbase.TurretBase;
 import openmodularturrets.util.PlayerUtil;
 import openmodularturrets.util.TurretHeadUtil;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Utility;
+
 /**
  * Created by Bass on 27/07/2017.
  */
 public class projectileEM extends LaserProjectile {
+
     public float gravity = 0;
     private TurretBase turretBase;
 
@@ -62,8 +66,8 @@ public class projectileEM extends LaserProjectile {
             if (projectileContent.getDefinition().getCharge() == 0) {
                 gravity = massFactor / 100f;
             } else {
-                gravity = Math.min(
-                        0.0025F / Math.abs(projectileContent.getDefinition().getCharge()), massFactor / 100f);
+                gravity = Math
+                        .min(0.0025F / Math.abs(projectileContent.getDefinition().getCharge()), massFactor / 100f);
             }
         }
     }
@@ -82,10 +86,11 @@ public class projectileEM extends LaserProjectile {
                 switch (movingobjectposition.typeOfHit) {
                     case BLOCK:
                         Block hitBlock = worldObj.getBlock(
-                                movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
+                                movingobjectposition.blockX,
+                                movingobjectposition.blockY,
+                                movingobjectposition.blockZ);
                         if (hitBlock != null) {
-                            if (TecTech.configTecTech.ENABLE_TURRET_EXPLOSIONS
-                                    && antiMatter
+                            if (TecTech.configTecTech.ENABLE_TURRET_EXPLOSIONS && antiMatter
                                     && hitBlock.getMaterial().isSolid()) {
                                 GT_Utility.sendSoundToPlayers(
                                         worldObj,
@@ -100,8 +105,7 @@ public class projectileEM extends LaserProjectile {
                                         movingobjectposition.blockX + 0.5D,
                                         movingobjectposition.blockY + 0.5D,
                                         movingobjectposition.blockZ + 0.5D,
-                                        TecTech.configTecTech.TURRET_EXPLOSION_FACTOR
-                                                * (strange ? 10 : 1)
+                                        TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * (strange ? 10 : 1)
                                                 * massFactor
                                                 * (isAmped ? ampLevel * .1f + 1 : 1)
                                                 * (ticksExisted / 250f),
@@ -112,8 +116,7 @@ public class projectileEM extends LaserProjectile {
                         }
                         break;
                     case ENTITY:
-                        float damage = (strange ? 10 : 1)
-                                * TecTech.configTecTech.TURRET_DAMAGE_FACTOR
+                        float damage = (strange ? 10 : 1) * TecTech.configTecTech.TURRET_DAMAGE_FACTOR
                                 * massFactor
                                 * (isAmped ? ampLevel * .1f + 1 : 1);
 
@@ -121,8 +124,8 @@ public class projectileEM extends LaserProjectile {
                             EntityPlayer player = (EntityPlayer) movingobjectposition.entityHit;
                             if (canDamagePlayer(player)) {
                                 movingobjectposition.entityHit.setFire((strange ? 10 : 1) * 2);
-                                movingobjectposition.entityHit.attackEntityFrom(
-                                        new NormalDamageSource("laser"), damage);
+                                movingobjectposition.entityHit
+                                        .attackEntityFrom(new NormalDamageSource("laser"), damage);
                                 if (antiMatter) {
                                     movingobjectposition.entityHit.hurtResistantTime = 0;
                                 }
@@ -155,8 +158,7 @@ public class projectileEM extends LaserProjectile {
                                     movingobjectposition.entityHit.posX,
                                     movingobjectposition.entityHit.posY,
                                     movingobjectposition.entityHit.posZ,
-                                    (strange ? 10 : 1)
-                                            * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR
+                                    (strange ? 10 : 1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR
                                             * massFactor
                                             * (isAmped ? ampLevel * .1f + 1 : 1)
                                             * (ticksExisted / 250f),
@@ -170,10 +172,9 @@ public class projectileEM extends LaserProjectile {
     }
 
     public boolean canDamagePlayer(EntityPlayer entityPlayer) {
-        return ConfigHandler.turretDamageTrustedPlayers
-                || this.turretBase.getTrustedPlayer(entityPlayer.getUniqueID()) == null
-                        && !PlayerUtil.getPlayerUIDUnstable(this.turretBase.getOwner())
-                                .equals(entityPlayer.getUniqueID());
+        return ConfigHandler.turretDamageTrustedPlayers || this.turretBase.getTrustedPlayer(entityPlayer.getUniqueID())
+                == null
+                && !PlayerUtil.getPlayerUIDUnstable(this.turretBase.getOwner()).equals(entityPlayer.getUniqueID());
     }
 
     @Override

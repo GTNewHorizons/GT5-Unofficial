@@ -1,15 +1,18 @@
 package com.github.technus.tectech.mechanics.dataTransport;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 /**
  * Created by Tec on 05.04.2017.
  */
 public abstract class DataPacket<T> {
+
     private static final byte MAX_HISTORY = 64;
     private Set<Vec3Impl> trace = new LinkedHashSet<>();
 

@@ -2,6 +2,16 @@ package com.github.technus.tectech;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Iterator;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
+
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
 import com.github.technus.tectech.loader.gui.CreativeTabEM;
@@ -23,6 +33,7 @@ import com.github.technus.tectech.nei.IMCForNEI;
 import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.util.XSTR;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -32,24 +43,22 @@ import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.GT_Mod;
 import gregtech.common.GT_Proxy;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Iterator;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 @Mod(
         modid = Reference.MODID,
         name = Reference.NAME,
         version = Reference.VERSION,
         dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
-                + "required-after:structurelib;" + "after:ComputerCraft;"
-                + "after:OpenComputers;" + "required-after:gregtech;"
-                + "after:dreamcraft;" + "after:appliedenergistics2;"
-                + "after:CoFHCore;" + "after:Thaumcraft;")
+                + "required-after:structurelib;"
+                + "after:ComputerCraft;"
+                + "after:OpenComputers;"
+                + "required-after:gregtech;"
+                + "after:dreamcraft;"
+                + "after:appliedenergistics2;"
+                + "after:CoFHCore;"
+                + "after:Thaumcraft;")
 public class TecTech {
+
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
 
@@ -93,8 +102,10 @@ public class TecTech {
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         LOGGER.setDebugOutput(true);
 
-        configTecTech =
-                new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME, Reference.MODID);
+        configTecTech = new TecTechConfig(
+                PreEvent.getModConfigurationDirectory(),
+                Reference.COLLECTIONNAME,
+                Reference.MODID);
 
         if (!configTecTech.LoadConfig()) {
             LOGGER.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
@@ -133,6 +144,7 @@ public class TecTech {
                 field.setAccessible(true);
                 modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
                 field.set(GT_Mod.gregtechproxy, new Collection<Object>() {
+
                     @Override
                     public int size() {
                         return 0;
@@ -151,6 +163,7 @@ public class TecTech {
                     @Override
                     public Iterator<Object> iterator() {
                         return new Iterator<Object>() {
+
                             @Override
                             public boolean hasNext() {
                                 return false;

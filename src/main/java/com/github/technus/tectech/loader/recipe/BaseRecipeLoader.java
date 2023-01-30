@@ -2,6 +2,10 @@ package com.github.technus.tectech.loader.recipe;
 
 import static gregtech.api.enums.GT_Values.RA;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
@@ -12,6 +16,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.EuMeterGT;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -20,14 +25,12 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Created by danie_000 on 16.11.2016.
  */
 public class BaseRecipeLoader {
+
     public static Materials getOrDefault(String name, Materials def) {
         Materials mat = Materials.get(name);
         return mat == Materials._NULL || mat == null ? def : mat;
@@ -46,10 +49,8 @@ public class BaseRecipeLoader {
 
         for (int i = 0; i <= 15; i++) {
             RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(i + 1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(i + 1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1) },
                     Materials.Aluminium.getMolten(864),
                     new ItemStack(StructureLibAPI.getBlockHint(), 1, i),
                     32,
@@ -60,79 +61,40 @@ public class BaseRecipeLoader {
         GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getModItem(StructureLibAPI.MOD_ID, "item.structurelib.frontRotationTool", 1L, 0),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "fPR",
-                    " RP",
-                    "S h",
-                    'P',
-                    OrePrefixes.plate.get(Materials.Cobalt),
-                    'R',
-                    OrePrefixes.stick.get(Materials.Cobalt),
-                    'S',
-                    OrePrefixes.stick.get(Materials.Wood),
-                });
+                new Object[] { "fPR", " RP", "S h", 'P', OrePrefixes.plate.get(Materials.Cobalt), 'R',
+                        OrePrefixes.stick.get(Materials.Cobalt), 'S', OrePrefixes.stick.get(Materials.Wood), });
 
         // BLUEprint
-        //        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
-        //                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-        //                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue,
+        // GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
+        // GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+        // new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue,
         // Dyes.dyeWhite});
 
         // GT EU reader
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(EuMeterGT.INSTANCE, 1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "PGW",
-                    "SCW",
-                    "BRN",
-                    'P',
-                    OrePrefixes.plateDouble.get(Materials.Steel),
-                    'G',
-                    OrePrefixes.plate.get(Materials.Glass),
-                    'W',
-                    OrePrefixes.cableGt01.get(Materials.Copper),
-                    'S',
-                    OrePrefixes.stick.get(Materials.Brass),
-                    'C',
-                    ItemList.Casing_Coil_Cupronickel.get(1),
-                    'B',
-                    Dyes.dyeBlue,
-                    'R',
-                    Dyes.dyeRed,
-                    'N',
-                    Dyes.dyeBlack,
-                });
+                new Object[] { "PGW", "SCW", "BRN", 'P', OrePrefixes.plateDouble.get(Materials.Steel), 'G',
+                        OrePrefixes.plate.get(Materials.Glass), 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'S',
+                        OrePrefixes.stick.get(Materials.Brass), 'C', ItemList.Casing_Coil_Cupronickel.get(1), 'B',
+                        Dyes.dyeBlue, 'R', Dyes.dyeRed, 'N', Dyes.dyeBlack, });
 
         // Owner detector
         GT_ModHandler.addCraftingRecipe(
                 CustomItemList.Machine_OwnerDetector.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "PPP",
-                    "GEG",
-                    "PPP",
-                    'P',
-                    OrePrefixes.plate.get(Materials.IronMagnetic),
-                    'G',
-                    OrePrefixes.plate.get(Materials.Glass),
-                    'E',
-                    OrePrefixes.gem.get(Materials.EnderPearl)
-                });
+                new Object[] { "PPP", "GEG", "PPP", 'P', OrePrefixes.plate.get(Materials.IronMagnetic), 'G',
+                        OrePrefixes.plate.get(Materials.Glass), 'E', OrePrefixes.gem.get(Materials.EnderPearl) });
 
         // Data Bank
         RA.addAssemblylineRecipe(
                 ItemList.Hatch_DataAccess_EV.get(1),
                 20000,
-                new Object[] {
-                    CustomItemList.Machine_Multi_Switch.get(1),
-                    new Object[] {OrePrefixes.circuit.get(Materials.Master), 2},
-                    ItemList.Tool_DataOrb.get(1),
-                    ItemList.Cover_Screen.get(1),
-                },
-                new FluidStack[] {
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Hydrogen.getGas(1000),
-                },
+                new Object[] { CustomItemList.Machine_Multi_Switch.get(1),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 }, ItemList.Tool_DataOrb.get(1),
+                        ItemList.Cover_Screen.get(1), },
+                new FluidStack[] { new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                        Materials.Hydrogen.getGas(1000), },
                 CustomItemList.Machine_Multi_DataBank.get(1),
                 12000,
                 14000);

@@ -2,6 +2,15 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.util.CommonValues;
@@ -16,23 +25,18 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 /**
  * Created by danie_000 on 15.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_Param {
+
     public String value0s = "";
     public String value1s = "";
 
@@ -48,16 +52,16 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
 
     // @Override
     // public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-    //    if (aBaseMetaTileEntity.isClientSide() && (aTick % 20L == 0L)) {
-    //        //refresh casing on state change
-    //        int Xpos = aBaseMetaTileEntity.getXCoord();
-    //        int Ypos = aBaseMetaTileEntity.getYCoord();
-    //        int Zpos = aBaseMetaTileEntity.getZCoord();
-    //        try {
-    //            aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(Xpos , Ypos, Zpos , Xpos , Ypos, Zpos );
-    //        } catch (Exception e) {}
-    //    }
-    //    super.onPostTick(aBaseMetaTileEntity, aTick);
+    // if (aBaseMetaTileEntity.isClientSide() && (aTick % 20L == 0L)) {
+    // //refresh casing on state change
+    // int Xpos = aBaseMetaTileEntity.getXCoord();
+    // int Ypos = aBaseMetaTileEntity.getYCoord();
+    // int Zpos = aBaseMetaTileEntity.getZCoord();
+    // try {
+    // aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(Xpos , Ypos, Zpos , Xpos , Ypos, Zpos );
+    // } catch (Exception e) {}
+    // }
+    // super.onPostTick(aBaseMetaTileEntity, aTick);
     // }
 
     @Override
@@ -73,18 +77,29 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted("tt.keyword.Parametrizer", clientLocale) + " "
-                    + translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.GREEN
-                    + param,
-            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0S: " + EnumChatFormatting.DARK_AQUA
-                    + value0s,
-            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1S: " + EnumChatFormatting.DARK_BLUE
-                    + value1s,
-            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0D: " + EnumChatFormatting.AQUA + value0D,
-            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1D: " + EnumChatFormatting.BLUE + value1D,
-            translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 0D: " + EnumChatFormatting.GOLD + input0D,
-            translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 1D: " + EnumChatFormatting.YELLOW + input1D,
-        };
+                translateToLocalFormatted("tt.keyword.Parametrizer", clientLocale) + " "
+                        + translateToLocalFormatted("tt.keyword.ID", clientLocale)
+                        + ": "
+                        + EnumChatFormatting.GREEN
+                        + param,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0S: "
+                        + EnumChatFormatting.DARK_AQUA
+                        + value0s,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1S: "
+                        + EnumChatFormatting.DARK_BLUE
+                        + value1s,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0D: "
+                        + EnumChatFormatting.AQUA
+                        + value0D,
+                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1D: "
+                        + EnumChatFormatting.BLUE
+                        + value1D,
+                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 0D: "
+                        + EnumChatFormatting.GOLD
+                        + input0D,
+                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 1D: "
+                        + EnumChatFormatting.YELLOW
+                        + input1D, };
     }
 
     @Override
@@ -159,27 +174,25 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_GENERAL,
-            EnumChatFormatting.DARK_RED + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
-            EnumChatFormatting.DARK_RED + "If it doesn't work, try removing Parametrizer from multiblock structure.",
-        };
+        return new String[] { CommonValues.TEC_MARK_GENERAL,
+                EnumChatFormatting.DARK_RED
+                        + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
+                EnumChatFormatting.DARK_RED
+                        + "If it doesn't work, try removing Parametrizer from multiblock structure.", };
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
-                .setSize(18, 18)
-                .setPos(148, 55));
+        builder.widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK).setSize(18, 18)
+                        .setPos(148, 55));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_PARAMETRIZER_TXT)
-                .setPos(7, 4)
-                .setSize(162, 72));
+        builder.widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_PARAMETRIZER_TXT).setPos(7, 4)
+                        .setSize(162, 72));
 
         addChangeNumberButton(builder, -16, -4, 7, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE);
         addChangeNumberButton(builder, -2, -1, 25, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL);
@@ -191,89 +204,74 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
                 .widget(new FakeSyncWidget.DoubleSyncer(() -> value1D, val -> value1D = val))
                 .widget(new FakeSyncWidget.DoubleSyncer(() -> input0D, val -> input0D = val))
                 .widget(new FakeSyncWidget.DoubleSyncer(() -> input1D, val -> input1D = val));
-        //                .widget(new FakeSyncWidget.StringSyncer(() -> value0s, val -> value0s = val))
-        //                .widget(new FakeSyncWidget.StringSyncer(() -> value1s, val -> value1s = val));
+        // .widget(new FakeSyncWidget.StringSyncer(() -> value0s, val -> value0s = val))
+        // .widget(new FakeSyncWidget.StringSyncer(() -> value1s, val -> value1s = val));
 
         final String CIRCLED_0 = "\u24EA";
         final String CIRCLED_1 = "\u2460";
         final String ARROW_DOWN = "\u2b07";
         final String ARROW_UP = "\u2b06";
-        builder.widget(TextWidget.dynamicString(() -> "Parameters: " + param)
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(46, 7))
-                .widget(new TextWidget(CIRCLED_0 + ARROW_UP)
-                        .setDefaultColor(0x00bbff)
-                        .setPos(10, 29))
-                .widget(new TextWidget(CIRCLED_1 + ARROW_UP)
-                        .setDefaultColor(0x0077ff)
-                        .setPos(10, 44))
-                .widget(TextWidget.dynamicString(() -> CIRCLED_0 + ARROW_DOWN + TT_Utility.formatNumberExp(input0D))
-                        .setSynced(false)
-                        .setDefaultColor(0x22ddff)
-                        .setPos(10, 56))
-                .widget(TextWidget.dynamicString(() -> CIRCLED_1 + ARROW_DOWN + TT_Utility.formatNumberExp(input1D))
-                        .setSynced(false)
-                        .setDefaultColor(0x00ffff)
-                        .setPos(10, 65));
+        builder.widget(
+                TextWidget.dynamicString(() -> "Parameters: " + param).setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 7))
+                .widget(new TextWidget(CIRCLED_0 + ARROW_UP).setDefaultColor(0x00bbff).setPos(10, 29))
+                .widget(new TextWidget(CIRCLED_1 + ARROW_UP).setDefaultColor(0x0077ff).setPos(10, 44))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> CIRCLED_0 + ARROW_DOWN + TT_Utility.formatNumberExp(input0D))
+                                .setSynced(false).setDefaultColor(0x22ddff).setPos(10, 56))
+                .widget(
+                        TextWidget.dynamicString(() -> CIRCLED_1 + ARROW_DOWN + TT_Utility.formatNumberExp(input1D))
+                                .setSynced(false).setDefaultColor(0x00ffff).setPos(10, 65));
 
         addTextField(builder, true);
         addTextField(builder, false);
     }
 
-    private void addChangeNumberButton(
-            ModularWindow.Builder builder, int changeNumberShift, int changeNumber, int xPos, IDrawable overlay) {
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    param += clickData.shift ? changeNumberShift : changeNumber;
-                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                    if (param > 9) {
-                        param = 9;
-                    } else if (param < -1) {
-                        param = -1;
-                    }
-                })
-                .setPlayClickSound(false)
+    private void addChangeNumberButton(ModularWindow.Builder builder, int changeNumberShift, int changeNumber, int xPos,
+            IDrawable overlay) {
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            param += clickData.shift ? changeNumberShift : changeNumber;
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            if (param > 9) {
+                param = 9;
+            } else if (param < -1) {
+                param = -1;
+            }
+        }).setPlayClickSound(false)
                 .setBackground(GT_UITextures.BUTTON_STANDARD, overlay, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID)
-                .setSize(18, 18)
-                .setPos(xPos, 4));
+                .setSize(18, 18).setPos(xPos, 4));
     }
 
     private void addTextField(ModularWindow.Builder builder, boolean isIndex0) {
         TextFieldWidget widget = new TextFieldWidget();
-        builder.widget(widget.setGetter(() -> isIndex0 ? value0s : value1s)
-                .setSetter(str -> {
-                    double val;
-                    try {
-                        val = parse(str);
-                    } catch (Exception e) {
-                        // This shouldn't happen as long as validator works
-                        str = "";
-                        val = 0;
-                    }
-                    if (isIndex0) {
-                        value0s = str;
-                        value0D = val;
-                    } else {
-                        value1s = str;
-                        value1D = val;
-                    }
-                })
-                .setValidator(str -> {
-                    try {
-                        parse(str);
-                        return str;
-                    } catch (Exception e) {
-                        return widget.getLastText().size() > 0
-                                ? widget.getLastText().get(0)
-                                : "";
-                    }
-                })
-                .setTextColor(Color.WHITE.dark(1))
-                .setTextAlignment(Alignment.CenterLeft)
+        builder.widget(widget.setGetter(() -> isIndex0 ? value0s : value1s).setSetter(str -> {
+            double val;
+            try {
+                val = parse(str);
+            } catch (Exception e) {
+                // This shouldn't happen as long as validator works
+                str = "";
+                val = 0;
+            }
+            if (isIndex0) {
+                value0s = str;
+                value0D = val;
+            } else {
+                value1s = str;
+                value1D = val;
+            }
+        }).setValidator(str -> {
+            try {
+                parse(str);
+                return str;
+            } catch (Exception e) {
+                return widget.getLastText().size() > 0 ? widget.getLastText().get(0) : "";
+            }
+        }).setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft)
                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                .setPos(26, isIndex0 ? 26 : 41)
-                .setSize(138, 12));
+                .setPos(26, isIndex0 ? 26 : 41).setSize(138, 12));
     }
 
     private double parse(String str) {

@@ -1,15 +1,17 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.recipes;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Created by Tec on 02.03.2017.
  */
 public class EMRecipe<T> implements Comparable<EMRecipe<T>> {
+
     private final int ID;
     private final EMConstantStackMap inEM;
     private final IEMMapRead<? extends IEMStack> outEM;
@@ -17,12 +19,8 @@ public class EMRecipe<T> implements Comparable<EMRecipe<T>> {
     private final FluidStack[] outFluids;
     private T extension;
 
-    public EMRecipe(
-            EMConstantStackMap inEM, // not null plz
-            int id,
-            IEMMapRead<? extends IEMStack> outEM,
-            ItemStack[] outItems,
-            FluidStack[] outFluids) {
+    public EMRecipe(EMConstantStackMap inEM, // not null plz
+            int id, IEMMapRead<? extends IEMStack> outEM, ItemStack[] outItems, FluidStack[] outFluids) {
         this.inEM = inEM;
         this.outEM = outEM;
         this.outItems = outItems;

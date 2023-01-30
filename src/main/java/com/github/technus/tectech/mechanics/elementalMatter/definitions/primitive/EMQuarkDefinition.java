@@ -13,9 +13,15 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.reg
  * Created by danie_000 on 22.10.2016.
  */
 public class EMQuarkDefinition extends EMFermionDefinition {
-    public static final EMQuarkDefinition
-            quark_u = new EMQuarkDefinition("tt.keyword.QuarkUp", "u", 1, 2.3e6D, 2, 3, "u"),
-            quark_c = new EMQuarkDefinition("tt.keyword.QuarkCharm", "c", 2, 1.29e9D, 2, 9, "c"),
+
+    public static final EMQuarkDefinition quark_u = new EMQuarkDefinition(
+            "tt.keyword.QuarkUp",
+            "u",
+            1,
+            2.3e6D,
+            2,
+            3,
+            "u"), quark_c = new EMQuarkDefinition("tt.keyword.QuarkCharm", "c", 2, 1.29e9D, 2, 9, "c"),
             quark_t = new EMQuarkDefinition("tt.keyword.QuarkTop", "t", 3, 172.44e9D, 2, 13, "t"),
             quark_d = new EMQuarkDefinition("tt.keyword.QuarkDown", "d", 1, 4.8e6D, -1, 5, "d"),
             quark_s = new EMQuarkDefinition("tt.keyword.QuarkStrange", "s", 2, 95e6D, -1, 7, "s"),
@@ -39,8 +45,8 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 STABLE_RAW_LIFE_TIME,
                 3,
                 -1,
-                new EMDecay(1.23201e-5D, quark_b /*,lepton_t_,lepton_Vt*/),
-                new EMDecay(0.050778116D, quark_s /*,lepton_m_,lepton_Vm*/),
+                new EMDecay(1.23201e-5D, quark_b /* ,lepton_t_,lepton_Vt */),
+                new EMDecay(0.050778116D, quark_s /* ,lepton_m_,lepton_Vm */),
                 new EMDecay(0.9D, quark_d, lepton_e_, lepton_Ve),
                 deadEnd); // makes photons and don't care
         quark_c.init(
@@ -49,7 +55,7 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 0.5e-13D,
                 1,
                 -1,
-                new EMDecay(0.00169744D, quark_b /*,lepton_t_,lepton_Vt*/),
+                new EMDecay(0.00169744D, quark_b /* ,lepton_t_,lepton_Vt */),
                 new EMDecay(0.05071504D, quark_d, lepton_m_, lepton_Vm),
                 new EMDecay(0.9D, quark_s, lepton_e_, lepton_Ve),
                 deadEnd); // makes photons and don't care
@@ -70,8 +76,8 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 STABLE_RAW_LIFE_TIME,
                 3,
                 -1,
-                new EMDecay(7.51689e-5D, quark_t /*,lepton_t,lepton_Vt_*/),
-                new EMDecay(0.05071504D, quark_c /*,lepton_m,lepton_Vm_*/),
+                new EMDecay(7.51689e-5D, quark_t /* ,lepton_t,lepton_Vt_ */),
+                new EMDecay(0.05071504D, quark_c /* ,lepton_m,lepton_Vm_ */),
                 new EMDecay(0.9D, quark_u, lepton_e, lepton_Ve_),
                 deadEnd); // makes photons and don't care
         quark_s.init(
@@ -80,7 +86,7 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 0.6e-9D,
                 1,
                 -1,
-                new EMDecay(0.00163216D, quark_t /*,lepton_t,lepton_Vt_*/),
+                new EMDecay(0.00163216D, quark_t /* ,lepton_t,lepton_Vt_ */),
                 new EMDecay(0.050778116D, quark_u, lepton_m, lepton_Vm_),
                 new EMDecay(0.9D, quark_c, lepton_e, lepton_Ve_),
                 deadEnd); // makes photons and don't care
@@ -101,8 +107,8 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 STABLE_RAW_LIFE_TIME,
                 3,
                 -1,
-                new EMDecay(1.23201e-5D, quark_b_ /*,lepton_t,lepton_Vt_*/),
-                new EMDecay(0.050778116D, quark_s_ /*,lepton_m,lepton_Vm_*/),
+                new EMDecay(1.23201e-5D, quark_b_ /* ,lepton_t,lepton_Vt_ */),
+                new EMDecay(0.050778116D, quark_s_ /* ,lepton_m,lepton_Vm_ */),
                 new EMDecay(0.9D, quark_d_, lepton_e, lepton_Ve_),
                 deadEnd); // makes photons and don't care
         quark_c_.init(
@@ -111,7 +117,7 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 0.5e-13D,
                 1,
                 -1,
-                new EMDecay(0.00169744F, quark_b_ /*,lepton_t,lepton_Vt_*/),
+                new EMDecay(0.00169744F, quark_b_ /* ,lepton_t,lepton_Vt_ */),
                 new EMDecay(0.05071504F, quark_d_, lepton_m, lepton_Vm_),
                 new EMDecay(0.9F, quark_s_, lepton_e, lepton_Ve_),
                 deadEnd); // makes photons and don't care
@@ -132,8 +138,8 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 STABLE_RAW_LIFE_TIME,
                 3,
                 -1,
-                new EMDecay(7.51689e-5F, quark_t_ /*,lepton_t_,lepton_Vt*/),
-                new EMDecay(0.05071504F, quark_c_ /*,lepton_m_,lepton_Vm*/),
+                new EMDecay(7.51689e-5F, quark_t_ /* ,lepton_t_,lepton_Vt */),
+                new EMDecay(0.05071504F, quark_c_ /* ,lepton_m_,lepton_Vm */),
                 new EMDecay(0.9F, quark_u_, lepton_e_, lepton_Ve),
                 deadEnd); // makes photons and don't care
         quark_s_.init(
@@ -142,7 +148,7 @@ public class EMQuarkDefinition extends EMFermionDefinition {
                 0.6e-9F,
                 1,
                 -1,
-                new EMDecay(0.00163216F, quark_t_ /*,lepton_t_,lepton_Vt*/),
+                new EMDecay(0.00163216F, quark_t_ /* ,lepton_t_,lepton_Vt */),
                 new EMDecay(0.050778116F, quark_u_, lepton_m_, lepton_Vm),
                 new EMDecay(0.9F, quark_c_, lepton_e_, lepton_Ve),
                 deadEnd); // makes photons and don't care

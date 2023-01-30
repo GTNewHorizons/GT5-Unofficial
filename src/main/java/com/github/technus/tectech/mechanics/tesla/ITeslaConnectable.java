@@ -2,12 +2,14 @@ package com.github.technus.tectech.mechanics.tesla;
 
 import static java.lang.Math.sqrt;
 
-import com.github.technus.tectech.mechanics.spark.ThaumSpark;
-import com.google.common.collect.Multimap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.github.technus.tectech.mechanics.spark.ThaumSpark;
+import com.google.common.collect.Multimap;
+
 public interface ITeslaConnectable extends ITeslaConnectableSimple {
+
     // Map with all Teslas in the same dimension and the distance to them //TODO Range
     Multimap<Integer, ITeslaConnectableSimple> getTeslaNodeMap();
 
@@ -35,8 +37,9 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
     boolean teslaDrainEnergy(long teslaVoltageDrained);
 
     class TeslaUtil {
-        private static final HashSet<ITeslaConnectableSimple> teslaSimpleNodeSet =
-                new HashSet<>(); // Targets for power transmission
+
+        private static final HashSet<ITeslaConnectableSimple> teslaSimpleNodeSet = new HashSet<>(); // Targets for power
+                                                                                                    // transmission
         private static final HashSet<ITeslaConnectable> teslaNodeSet = new HashSet<>(); // Sources of power transmission
 
         public static void teslaSimpleNodeSetAdd(ITeslaConnectableSimple target) {
@@ -57,12 +60,11 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                 // Skip if looking at myself and skip if not in the same dimension
                 // TODO, INTERDIM?
                 return;
-            } else if (origin.getTeslaTransmissionCapability() != 0
-                    && origin.getTeslaReceptionCapability() != 0
+            } else if (origin.getTeslaTransmissionCapability() != 0 && origin.getTeslaReceptionCapability() != 0
                     && origin.getTeslaTransmissionCapability() != origin.getTeslaReceptionCapability()) {
-                // Skip if incompatible
-                return;
-            }
+                        // Skip if incompatible
+                        return;
+                    }
             // Range calc
             int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
             if (distance > origin.getTeslaTransmissionRange() * target.getTeslaReceptionCoefficient()) {
@@ -97,13 +99,12 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
             boolean canSendPower = !origin.isTeslaReadyToReceive() && remainingAmperes > 0;
 
             if (canSendPower) {
-                for (Map.Entry<Integer, ITeslaConnectableSimple> Rx :
-                        origin.getTeslaNodeMap().entries()) {
+                for (Map.Entry<Integer, ITeslaConnectableSimple> Rx : origin.getTeslaNodeMap().entries()) {
                     // Do we still have power left to send kind of check
                     if (origin.getTeslaStoredEnergy()
-                            < (origin.isOverdriveEnabled()
-                                    ? origin.getTeslaOutputVoltage() * 2
-                                    : origin.getTeslaOutputVoltage())) break;
+                            < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() * 2
+                                    : origin.getTeslaOutputVoltage()))
+                        break;
                     // Explicit words for the important fields
                     ITeslaConnectableSimple target = Rx.getValue();
                     int distance = Rx.getKey();
@@ -120,8 +121,8 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                                 + (long) Math.round(
                                         origin.getTeslaOutputVoltage() * origin.getTeslaOverdriveLossCoefficient());
                     } else {
-                        outputVoltageInjectable =
-                                origin.getTeslaOutputVoltage() - (distance * origin.getTeslaEnergyLossPerBlock());
+                        outputVoltageInjectable = origin.getTeslaOutputVoltage()
+                                - (distance * origin.getTeslaEnergyLossPerBlock());
                         outputVoltageConsumption = origin.getTeslaOutputVoltage();
                     }
 
@@ -133,15 +134,15 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     while (canSendPower) {
                         if (target.teslaInjectEnergy(outputVoltageInjectable)) {
                             origin.teslaDrainEnergy(outputVoltageConsumption);
-                            origin.getSparkList()
-                                    .add(new ThaumSpark(
+                            origin.getSparkList().add(
+                                    new ThaumSpark(
                                             origin.getTeslaPosition(),
                                             target.getTeslaPosition(),
                                             origin.getTeslaDimension()));
                             remainingAmperes--;
                             // Update the can send power flag each time we send power
-                            canSendPower =
-                                    (origin.getTeslaStoredEnergy() < outputVoltageConsumption || remainingAmperes > 0);
+                            canSendPower = (origin.getTeslaStoredEnergy() < outputVoltageConsumption
+                                    || remainingAmperes > 0);
                         } else {
                             // Breaks out when I can't send anymore power
                             break;

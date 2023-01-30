@@ -5,4 +5,5 @@ import openmodularturrets.client.render.renderers.blockitem.LaserTurretRenderer;
 /**
  * Created by Tec on 28/07/2017.
  */
-public class TurretHeadRenderEM extends LaserTurretRenderer {}
+public class TurretHeadRenderEM extends LaserTurretRenderer {
+}

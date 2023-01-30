@@ -1,9 +1,11 @@
 package com.github.technus.tectech.thing.cover;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
 import net.minecraftforge.fluids.Fluid;
 
+import gregtech.api.interfaces.tileentity.ICoverable;
+
 public class GT_Cover_TM_TeslaCoil_Ultimate extends GT_Cover_TM_TeslaCoil {
+
     public GT_Cover_TM_TeslaCoil_Ultimate() {}
 
     @Override

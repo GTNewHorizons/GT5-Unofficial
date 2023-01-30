@@ -6,6 +6,8 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.DoubleCount.*;
 
+import java.util.Arrays;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
@@ -14,12 +16,12 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import java.util.Arrays;
 
 /**
  * Created by danie_000 on 24.12.2017.
  */
 public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehaviour {
+
     private final byte tier;
     private double maxRPM;
     private final double radius;
@@ -27,66 +29,44 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
     private final double maxForce;
     private final double maxCapacity;
     private Parameters.Group.ParameterIn settingRPM, settingFraction;
-    private static final INameFunction<GT_MetaTileEntity_EM_machine> rpmName =
-            (gt_metaTileEntity_em_machine, iParameter) -> "RPM Setting";
-    private final IStatusFunction<GT_MetaTileEntity_EM_machine> rpmStatus =
-            (gt_metaTileEntity_em_machine, iParameter) -> {
-                double v = iParameter.get();
-                if (Double.isNaN(v)) {
-                    return STATUS_WRONG;
-                }
-                if (v <= 0) {
-                    return STATUS_TOO_LOW;
-                } else if (v > maxRPM) {
-                    return STATUS_TOO_HIGH;
-                }
-                return STATUS_OK;
-            };
-    private static final INameFunction<GT_MetaTileEntity_EM_machine> fractionName =
-            (gt_metaTileEntity_em_machine, iParameter) -> "Fraction Count";
-    private static final IStatusFunction<GT_MetaTileEntity_EM_machine> fractionStatus =
-            (gt_metaTileEntity_em_machine, iParameter) -> {
-                double v = iParameter.get();
-                if (Double.isNaN(v)) {
-                    return STATUS_WRONG;
-                }
-                v = (int) v;
-                if (v <= 1) {
-                    return STATUS_TOO_LOW;
-                } else if (v > 6) {
-                    return STATUS_TOO_HIGH;
-                }
-                return STATUS_OK;
-            };
+    private static final INameFunction<GT_MetaTileEntity_EM_machine> rpmName = (gt_metaTileEntity_em_machine,
+            iParameter) -> "RPM Setting";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> rpmStatus = (gt_metaTileEntity_em_machine,
+            iParameter) -> {
+        double v = iParameter.get();
+        if (Double.isNaN(v)) {
+            return STATUS_WRONG;
+        }
+        if (v <= 0) {
+            return STATUS_TOO_LOW;
+        } else if (v > maxRPM) {
+            return STATUS_TOO_HIGH;
+        }
+        return STATUS_OK;
+    };
+    private static final INameFunction<GT_MetaTileEntity_EM_machine> fractionName = (gt_metaTileEntity_em_machine,
+            iParameter) -> "Fraction Count";
+    private static final IStatusFunction<GT_MetaTileEntity_EM_machine> fractionStatus = (gt_metaTileEntity_em_machine,
+            iParameter) -> {
+        double v = iParameter.get();
+        if (Double.isNaN(v)) {
+            return STATUS_WRONG;
+        }
+        v = (int) v;
+        if (v <= 1) {
+            return STATUS_TOO_LOW;
+        } else if (v > 6) {
+            return STATUS_TOO_HIGH;
+        }
+        return STATUS_OK;
+    };
     // private final static String[] DESCRIPTION_O =new String[]{"RPM Setting","RCF Setting","Radius [mm]","Max
     // RPM","Max Force [eV/c^2 * m/s]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
 
-    private static final double[ /*tier+5*/][ /*outputHatches+2*/] MIXING_FACTORS = new double[][] {
-        {
-            .45, .85, .95, 1, 1,
-        },
-        {
-            .4, .75, .9, .95, 1,
-        },
-        {
-            .35, .45, .75, .9, .95,
-        },
-        {
-            .25, .3, .45, .75, .9,
-        },
-        {
-            .2, .25, .3, .45, .75,
-        },
-        {
-            .1, .15, .2, .3, .45,
-        },
-        {
-            .05, .1, .15, .2, .25,
-        },
-        {
-            .01, .05, .1, .15, .2,
-        },
-    };
+    private static final double[ /* tier+5 */][ /* outputHatches+2 */] MIXING_FACTORS = new double[][] {
+            { .45, .85, .95, 1, 1, }, { .4, .75, .9, .95, 1, }, { .35, .45, .75, .9, .95, }, { .25, .3, .45, .75, .9, },
+            { .2, .25, .3, .45, .75, }, { .1, .15, .2, .3, .45, }, { .05, .1, .15, .2, .25, },
+            { .01, .05, .1, .15, .2, }, };
 
     // 6 to 12 recommended
     public Behaviour_Centrifuge(int desiredTier) {
@@ -113,9 +93,9 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
         }
         // int remainingAmount = (int) (me.amount % fractionCount);
         // while (remainingAmount > 0) {
-        //    int amountToAdd = TecTech.RANDOM.nextInt(remainingAmount) + 1;
-        //    stacks[TecTech.RANDOM.nextInt(fractionCount)].amount += amountToAdd;
-        //    remainingAmount -= amountToAdd;
+        // int amountToAdd = TecTech.RANDOM.nextInt(remainingAmount) + 1;
+        // stacks[TecTech.RANDOM.nextInt(fractionCount)].amount += amountToAdd;
+        // remainingAmount -= amountToAdd;
         // }
     }
 
@@ -132,8 +112,8 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
     }
 
     @Override
-    public MultiblockControl<EMInstanceStackMap[]> process(
-            EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te,
+            Parameters parameters) {
         EMInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null; // nothing in only valid input
 
@@ -204,27 +184,24 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
                 }
             }
             // if(DEBUG_MODE){
-            //    TecTech.LOGGER.info("absMass "+absMassPerOutput);
+            // TecTech.LOGGER.info("absMass "+absMassPerOutput);
             // }
             absMassPerOutput = div(absMassPerOutput, fractionCount);
             if (DEBUG_MODE) {
                 TecTech.LOGGER.info("absMassPerOutput " + absMassPerOutput);
             }
 
-            nextFraction:
-            for (int fraction = 0; fraction < fractionCount - 1; fraction++) {
+            nextFraction: for (int fraction = 0; fraction < fractionCount - 1; fraction++) {
                 double remaining = absMassPerOutput;
                 for (int stackNo = 0; stackNo < stacks.length; stackNo++) {
                     if (stacks[stackNo] != null) {
                         double stackMass = Math.abs(stacks[stackNo].getMass());
-                        double amount = div(
-                                remaining,
-                                Math.abs(stacks[stackNo].getDefinition().getMass()));
+                        double amount = div(remaining, Math.abs(stacks[stackNo].getDefinition().getMass()));
                         // if(DEBUG_MODE){
-                        //    TecTech.LOGGER.info("stackMass "+stackMass);
-                        //    TecTech.LOGGER.info("defMass "+stacks[stackNo].definition.getMass());
-                        //    TecTech.LOGGER.info("remaining "+remaining);
-                        //    TecTech.LOGGER.info("amountToMoveAvailable "+amount+"/"+stacks[stackNo].amount);
+                        // TecTech.LOGGER.info("stackMass "+stackMass);
+                        // TecTech.LOGGER.info("defMass "+stacks[stackNo].definition.getMass());
+                        // TecTech.LOGGER.info("remaining "+remaining);
+                        // TecTech.LOGGER.info("amountToMoveAvailable "+amount+"/"+stacks[stackNo].amount);
                         // }
                         if (stackMass == 0) {
                             addRandomly(stacks[stackNo], outputs, fractionCount);
@@ -234,16 +211,14 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
                             outputs[fraction].putUnify(stacks[stackNo]);
                             stacks[stackNo] = null;
                         } else if (amount > 0) {
-                            remaining = sub(
-                                    remaining,
-                                    mul(amount, stacks[stackNo].getDefinition().getMass()));
+                            remaining = sub(remaining, mul(amount, stacks[stackNo].getDefinition().getMass()));
                             EMInstanceStack clone = stacks[stackNo].clone();
                             clone.setAmount(amount);
                             outputs[fraction].putUnify(clone);
                             stacks[stackNo].setAmount(sub(stacks[stackNo].getAmount(), amount));
                             // if(DEBUG_MODE){
-                            //    TecTech.LOGGER.info("remainingAfter "+remaining);
-                            //    TecTech.LOGGER.info("amountCloneAfter "+clone.amount+"/"+stacks[stackNo].amount);
+                            // TecTech.LOGGER.info("remainingAfter "+remaining);
+                            // TecTech.LOGGER.info("amountCloneAfter "+clone.amount+"/"+stacks[stackNo].amount);
                             // }
                         } else {
                             continue nextFraction;

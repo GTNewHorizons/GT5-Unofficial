@@ -12,6 +12,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstan
  * Created by danie_000 on 22.10.2016.
  */
 public final class EMDecay {
+
     public static final EMDecay[] NO_DECAY = null;
     // DECAY IMPOSSIBLE!!!
     // Do not use regular NULL java will not make it work with varargs!!!
@@ -71,12 +72,14 @@ public final class EMDecay {
         // newEnergyLevel /= qtty;
         // lifeMult /= (float) qtty;
         for (EMDefinitionStack stack : getOutputStacks().valuesToArray()) {
-            decayResult.putUnify(new EMInstanceStack(
-                    stack.getDefinition(),
-                    mul(amountDecaying, stack.getAmount()),
-                    lifeMult,
-                    age /*new products*/,
-                    (long) (newEnergyLevel / Math.max(1D, Math.abs(stack.getAmount()))))); // get instances from stack
+            decayResult.putUnify(
+                    new EMInstanceStack(
+                            stack.getDefinition(),
+                            mul(amountDecaying, stack.getAmount()),
+                            lifeMult,
+                            age /* new products */,
+                            (long) (newEnergyLevel / Math.max(1D, Math.abs(stack.getAmount()))))); // get instances from
+                                                                                                   // stack
         }
         return decayResult;
     }

@@ -1,9 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GT_MetaTileEntity_PipeBlock_Data extends GT_MetaTileEntity_Pipe_Data {
 

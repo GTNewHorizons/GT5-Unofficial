@@ -2,24 +2,27 @@ package com.github.technus.tectech.compatibility.openmodularturrets.tileentity.t
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 
-import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
-import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import openmodularturrets.entity.projectiles.TurretProjectile;
 import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turrets.TurretHead;
 import openmodularturrets.util.TurretHeadUtil;
 
+import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+
 /**
  * Created by Bass on 27/07/2017.
  */
 public class TileTurretHeadEM extends TurretHead {
+
     private EMInstanceStackMap hatchContentPointer;
 
     @Override
@@ -62,8 +65,8 @@ public class TileTurretHeadEM extends TurretHead {
 
     @Override
     public Item getAmmo() {
-        return DebugElementalInstanceContainer_EM
-                .INSTANCE; // Placeholder item that cannot be achieved, yet still usable for debug
+        return DebugElementalInstanceContainer_EM.INSTANCE; // Placeholder item that cannot be achieved, yet still
+                                                            // usable for debug
     }
 
     @Override

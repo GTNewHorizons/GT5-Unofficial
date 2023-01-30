@@ -11,6 +11,10 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
@@ -22,71 +26,65 @@ import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable {
+
     // region structure
     // use multi A energy inputs, use less power the longer it runs
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.essentiatoem.hint.0"), // 1 - Classic Hatches or High Power Casing
-        translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.1"), // 2 - Elemental Output Hatch
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.essentiatoem.hint.2"), // 3 - Elemental Overflow Hatches or Elemental
-        // Casing
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.essentiatoem.hint.3"), // General - Some sort of Essentia Storage
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.0"), // 1 - Classic Hatches or High
+                                                                                      // Power Casing
+            translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.1"), // 2 - Elemental Output Hatch
+            translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.2"), // 3 - Elemental Overflow Hatches
+                                                                                      // or Elemental
+            // Casing
+            translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.hint.3"), // General - Some sort of Essentia
+                                                                                      // Storage
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_essentiaQuantizer> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_essentiaQuantizer>builder()
-                    .addShape("main", new String[][] {
-                        {"FFF", "F~F", "FFF"},
-                        {"E E", " * ", "E E"},
-                        {"BAB", "ACA", "BAB"},
-                        {"DDD", "DBD", "DDD"},
-                        {"EBE", "BGB", "EBE"}
-                    })
-                    .addElement('A', ofBlock(sBlockCasingsTT, 0))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('C', ofBlock(sBlockCasingsTT, 8))
-                    .addElement(
-                            'D',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_essentiaQuantizer::addElementalMufflerToMachineList,
-                                    textureOffset + 4,
-                                    3,
-                                    sBlockCasingsTT,
-                                    4))
-                    .addElement('E', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-                    .addElement(
-                            'F',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_essentiaQuantizer::addClassicToMachineList,
-                                    textureOffset,
-                                    1,
-                                    sBlockCasingsTT,
-                                    0))
-                    .addElement(
-                            'G',
-                            ofHatchAdder(
-                                    GT_MetaTileEntity_EM_essentiaQuantizer::addElementalOutputToMachineList,
-                                    textureOffset + 4,
-                                    2))
-                    .addElement('*', ofTileAdder(essentiaContainerCompat::check, StructureLibAPI.getBlockHint(), 12))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_essentiaQuantizer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_essentiaQuantizer>builder()
+            .addShape(
+                    "main",
+                    new String[][] { { "FFF", "F~F", "FFF" }, { "E E", " * ", "E E" }, { "BAB", "ACA", "BAB" },
+                            { "DDD", "DBD", "DDD" }, { "EBE", "BGB", "EBE" } })
+            .addElement('A', ofBlock(sBlockCasingsTT, 0)).addElement('B', ofBlock(sBlockCasingsTT, 4))
+            .addElement('C', ofBlock(sBlockCasingsTT, 8))
+            .addElement(
+                    'D',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_essentiaQuantizer::addElementalMufflerToMachineList,
+                            textureOffset + 4,
+                            3,
+                            sBlockCasingsTT,
+                            4))
+            .addElement('E', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement(
+                    'F',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_essentiaQuantizer::addClassicToMachineList,
+                            textureOffset,
+                            1,
+                            sBlockCasingsTT,
+                            0))
+            .addElement(
+                    'G',
+                    ofHatchAdder(
+                            GT_MetaTileEntity_EM_essentiaQuantizer::addElementalOutputToMachineList,
+                            textureOffset + 4,
+                            2))
+            .addElement('*', ofTileAdder(essentiaContainerCompat::check, StructureLibAPI.getBlockHint(), 12)).build();
     // endregion
 
     public GT_MetaTileEntity_EM_essentiaQuantizer(int aID, String aName, String aNameRegional) {
@@ -115,8 +113,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             mEfficiencyIncrease = 10000;
             eAmpereFlow = 1;
             outputEM = new EMInstanceStackMap[] {
-                new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_MATERIAL_AMOUNT))
-            };
+                    new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_MATERIAL_AMOUNT)) };
             if (definition instanceof EMPrimalAspectDefinition) {
                 mEUt = (int) -V[8];
             } else {
@@ -140,17 +137,16 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal(
-                        "gt.blockmachines.multimachine.em.essentiatoem.name")) // Machine Type: Essentia Quantizer
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.essentiatoem.desc.0")) // Controller block of the
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.name")) // Machine Type:
+                                                                                                  // Essentia Quantizer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.desc.0")) // Controller block
+                                                                                                   // of the
                 // Essentia Quantizer
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.essentiatoem.desc.1")) // Transforms essentia into
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.essentiatoem.desc.1")) // Transforms
+                                                                                                   // essentia into
                 // their elemental form
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator()
-                .beginStructureBlock(3, 3, 5, false)
+                .addSeparator().beginStructureBlock(3, 3, 5, false)
                 .addOtherStructurePart(
                         translateToLocal("tt.keyword.Structure.ElementalOutput"),
                         translateToLocal("tt.keyword.Structure.BackCenter"),
@@ -163,12 +159,16 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
                         translateToLocal("tt.keyword.Structure.EssentiaStorage"),
                         translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
                         1) // Essentia Storage: Any High Power Casing on the front side
-                .addEnergyHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
-                        1) // Energy Hatch: Any High Power Casing on the front side
-                .addMaintenanceHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
-                        1) // Maintenance Hatch: Any High Power Casing on the front side
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Energy Hatch:
+                                                                                                     // Any High Power
+                                                                                                     // Casing on the
+                                                                                                     // front side
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Maintenance
+                                                                                                          // Hatch: Any
+                                                                                                          // High Power
+                                                                                                          // Casing on
+                                                                                                          // the front
+                                                                                                          // side
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }

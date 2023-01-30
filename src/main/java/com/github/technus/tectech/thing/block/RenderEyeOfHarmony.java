@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.block;
 import static com.github.technus.tectech.Reference.MODID;
 import static java.lang.Math.*;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -13,7 +12,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
@@ -91,9 +93,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
 
         // Bind animation to layer of star.
-        FMLClientHandler.instance()
-                .getClient()
-                .getTextureManager()
+        FMLClientHandler.instance().getClient().getTextureManager()
                 .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
 
         final float scale = 0.01f * 17.5f;
@@ -191,9 +191,9 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         double y = 0;
         double z = 0;
 
-        double[] X = {x - 0.5, x - 0.5, x + 0.5, x + 0.5, x + 0.5, x + 0.5, x - 0.5, x - 0.5};
-        double[] Y = {y + 0.5, y - 0.5, y - 0.5, y + 0.5, y + 0.5, y - 0.5, y - 0.5, y + 0.5};
-        double[] Z = {z + 0.5, z + 0.5, z + 0.5, z + 0.5, z - 0.5, z - 0.5, z - 0.5, z - 0.5};
+        double[] X = { x - 0.5, x - 0.5, x + 0.5, x + 0.5, x + 0.5, x + 0.5, x - 0.5, x - 0.5 };
+        double[] Y = { y + 0.5, y - 0.5, y - 0.5, y + 0.5, y + 0.5, y - 0.5, y - 0.5, y + 0.5 };
+        double[] Z = { z + 0.5, z + 0.5, z + 0.5, z + 0.5, z - 0.5, z - 0.5, z - 0.5, z - 0.5 };
 
         tes.startDrawingQuads();
 

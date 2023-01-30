@@ -20,6 +20,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefini
  * Created by Tec on 06.05.2017.
  */
 public final class EMComplexAspectDefinition extends EMComplexTemplate {
+
     private final int hash;
     private final double mass;
 
@@ -158,7 +159,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
 
     @Override
     public EMDecay[] getEnergyInducedDecay(long energyLevel) {
-        return new EMDecay[] {new EMDecay(0.75F, aspectStacks), deadEnd};
+        return new EMDecay[] { new EMDecay(0.75F, aspectStacks), deadEnd };
     }
 
     @Override
@@ -210,13 +211,13 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
         registry.registerDefinitionClass(
                 nbtType,
                 new EMIndirectType(
-                        (definitionsRegistry, nbt) ->
-                                new EMComplexAspectDefinition(EMConstantStackMap.fromNBT(definitionsRegistry, nbt)),
+                        (definitionsRegistry, nbt) -> new EMComplexAspectDefinition(
+                                EMConstantStackMap.fromNBT(definitionsRegistry, nbt)),
                         EMComplexAspectDefinition.class,
                         "tt.keyword.Aspect"));
         if (DEBUG_MODE) {
-            TecTech.LOGGER.info(
-                    "Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + getClassTypeStatic());
+            TecTech.LOGGER
+                    .info("Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + getClassTypeStatic());
         }
     }
 

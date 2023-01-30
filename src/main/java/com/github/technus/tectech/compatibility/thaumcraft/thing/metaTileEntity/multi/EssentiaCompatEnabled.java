@@ -2,19 +2,22 @@ package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import net.minecraft.tileentity.TileEntity;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
 import thaumcraft.common.tiles.TileJarFillable;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+
 /**
  * Created by Tec on 21.05.2017.
  */
 public class EssentiaCompatEnabled extends EssentiaCompat {
+
     @Override
     public <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean check(T meta, TileEntity te) {
         return te instanceof TileEssentiaReservoir || te instanceof TileJarFillable;
@@ -25,9 +28,7 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
         TileEntity tile = meta.getBaseMetaTileEntity()
                 .getTileEntityAtSide(meta.getBaseMetaTileEntity().getBackFacing());
         return tile != null && !tile.isInvalid() && tile instanceof TileEssentiaReservoir
-                        || tile instanceof TileJarFillable
-                ? tile
-                : null;
+                || tile instanceof TileJarFillable ? tile : null;
     }
 
     @Override

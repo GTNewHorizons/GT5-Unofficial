@@ -1,16 +1,19 @@
 package com.github.technus.tectech.mechanics.data;
 
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.ChunkEvent;
 
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public interface IChunkMetaDataHandler {
+
     String getTagName();
 
     void mergeData(NBTTagCompound target, NBTTagCompound loadedData);

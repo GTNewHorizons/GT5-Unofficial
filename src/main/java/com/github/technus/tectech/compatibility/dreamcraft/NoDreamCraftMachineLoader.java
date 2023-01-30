@@ -3,44 +3,63 @@ package com.github.technus.tectech.compatibility.dreamcraft;
 import static gregtech.api.GregTech_API.METATILEENTITIES;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TT_Transformer;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;
 import com.github.technus.tectech.util.TT_Utility;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import net.minecraft.util.EnumChatFormatting;
 
 public class NoDreamCraftMachineLoader implements Runnable {
+
     public static final String imagination = EnumChatFormatting.RESET + "You just need "
-            + EnumChatFormatting.DARK_PURPLE + "I"
-            + EnumChatFormatting.LIGHT_PURPLE + "m"
-            + EnumChatFormatting.DARK_RED + "a"
-            + EnumChatFormatting.RED + "g"
-            + EnumChatFormatting.YELLOW + "i"
-            + EnumChatFormatting.GREEN + "n"
-            + EnumChatFormatting.AQUA + "a"
-            + EnumChatFormatting.DARK_AQUA + "t"
-            + EnumChatFormatting.BLUE + "i"
-            + EnumChatFormatting.DARK_BLUE + "o"
-            + EnumChatFormatting.DARK_PURPLE + "n"
-            + EnumChatFormatting.RESET + " to use this.";
+            + EnumChatFormatting.DARK_PURPLE
+            + "I"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "m"
+            + EnumChatFormatting.DARK_RED
+            + "a"
+            + EnumChatFormatting.RED
+            + "g"
+            + EnumChatFormatting.YELLOW
+            + "i"
+            + EnumChatFormatting.GREEN
+            + "n"
+            + EnumChatFormatting.AQUA
+            + "a"
+            + EnumChatFormatting.DARK_AQUA
+            + "t"
+            + EnumChatFormatting.BLUE
+            + "i"
+            + EnumChatFormatting.DARK_BLUE
+            + "o"
+            + EnumChatFormatting.DARK_PURPLE
+            + "n"
+            + EnumChatFormatting.RESET
+            + " to use this.";
 
     @Override
     public void run() {
         try {
-            CustomItemList.WetTransformer_LV_ULV.set(new GT_MetaTileEntity_WetTransformer(
-                            12000, "wettransformer.tier.00", "Ultra Low Voltage Power Transformer", 0)
-                    .getStackForm(1L)); // LV -> ULV (Use Soft Mallet to invert)
+            CustomItemList.WetTransformer_LV_ULV.set(
+                    new GT_MetaTileEntity_WetTransformer(
+                            12000,
+                            "wettransformer.tier.00",
+                            "Ultra Low Voltage Power Transformer",
+                            0).getStackForm(1L)); // LV -> ULV (Use Soft Mallet to invert)
         } catch (IllegalArgumentException e) {
             System.out.println(METATILEENTITIES[12000].getClass().getCanonicalName());
             TecTech.LOGGER.error(e);
@@ -52,13 +71,19 @@ public class NoDreamCraftMachineLoader implements Runnable {
                 new GT_MetaTileEntity_WetTransformer(12001, "wetransformer.tier.01", "Low Voltage Power Transformer", 1)
                         .getStackForm(1L)); // MV -> LV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_HV_MV.set(new GT_MetaTileEntity_WetTransformer(
-                        12002, "wettransformer.tier.02", "Medium Voltage Power Transformer", 2)
-                .getStackForm(1L)); // HV -> MV (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_HV_MV.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12002,
+                        "wettransformer.tier.02",
+                        "Medium Voltage Power Transformer",
+                        2).getStackForm(1L)); // HV -> MV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_EV_HV.set(new GT_MetaTileEntity_WetTransformer(
-                        12003, "wettransformer.tier.03", "High Voltage Power Transformer", 3)
-                .getStackForm(1L)); // EV -> HV (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_EV_HV.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12003,
+                        "wettransformer.tier.03",
+                        "High Voltage Power Transformer",
+                        3).getStackForm(1L)); // EV -> HV (Use Soft Mallet to invert)
 
         CustomItemList.WetTransformer_IV_EV.set(
                 new GT_MetaTileEntity_WetTransformer(12004, "wettransformer.tier.04", "Extreme Power Transformer", 4)
@@ -72,33 +97,51 @@ public class NoDreamCraftMachineLoader implements Runnable {
                 new GT_MetaTileEntity_WetTransformer(12006, "wettransformer.tier.06", "Ludicrous Power Transformer", 6)
                         .getStackForm(1L)); // ZPM -> LuV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_UV_ZPM.set(new GT_MetaTileEntity_WetTransformer(
-                        12007, "wettransformer.tier.07", "ZPM Voltage Power Transformer", 7)
-                .getStackForm(1L)); // UV -> ZPM (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_UV_ZPM.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12007,
+                        "wettransformer.tier.07",
+                        "ZPM Voltage Power Transformer",
+                        7).getStackForm(1L)); // UV -> ZPM (Use Soft Mallet to invert)
 
         CustomItemList.WetTransformer_UHV_UV.set(
                 new GT_MetaTileEntity_WetTransformer(12008, "wettransformer.tier.08", "Ultimate Power Transformer", 8)
                         .getStackForm(1L)); // UHV -> UV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_UEV_UHV.set(new GT_MetaTileEntity_WetTransformer(
-                        12009, "wettransformer.tier.09", "Highly Ultimate Power Transformer", 9)
-                .getStackForm(1L)); // UEV -> UHV (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_UEV_UHV.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12009,
+                        "wettransformer.tier.09",
+                        "Highly Ultimate Power Transformer",
+                        9).getStackForm(1L)); // UEV -> UHV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_UIV_UEV.set(new GT_MetaTileEntity_WetTransformer(
-                        12010, "wettransformer.tier.10", "Extremely Ultimate Power Transformer", 10)
-                .getStackForm(1L)); // UIV -> UEV (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_UIV_UEV.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12010,
+                        "wettransformer.tier.10",
+                        "Extremely Ultimate Power Transformer",
+                        10).getStackForm(1L)); // UIV -> UEV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_UMV_UIV.set(new GT_MetaTileEntity_WetTransformer(
-                        12011, "wettransformer.tier.11", "Insanely Ultimate Power Transformer", 11)
-                .getStackForm(1L)); // UMV -> UIV (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_UMV_UIV.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12011,
+                        "wettransformer.tier.11",
+                        "Insanely Ultimate Power Transformer",
+                        11).getStackForm(1L)); // UMV -> UIV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_UXV_UMV.set(new GT_MetaTileEntity_WetTransformer(
-                        12012, "wettransformer.tier.12", "Mega Ultimate Power Transformer", 12)
-                .getStackForm(1L)); // UXV -> UMV (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_UXV_UMV.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12012,
+                        "wettransformer.tier.12",
+                        "Mega Ultimate Power Transformer",
+                        12).getStackForm(1L)); // UXV -> UMV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_MAXV_UXV.set(new GT_MetaTileEntity_WetTransformer(
-                        12013, "wettransformer.tier.13", "Extended Mega Ultimate Power Transformer", 13)
-                .getStackForm(1L)); // MAX -> UXV (Use Soft Mallet to invert)
+        CustomItemList.WetTransformer_MAXV_UXV.set(
+                new GT_MetaTileEntity_WetTransformer(
+                        12013,
+                        "wettransformer.tier.13",
+                        "Extended Mega Ultimate Power Transformer",
+                        13).getStackForm(1L)); // MAX -> UXV (Use Soft Mallet to invert)
 
         try {
             MetaTileEntity temp;
@@ -200,8 +243,8 @@ public class NoDreamCraftMachineLoader implements Runnable {
             if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
                 Class clazz = Class.forName(
                         "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp");
-                Constructor<MetaTileEntity> constructor =
-                        clazz.getConstructor(int.class, String.class, String.class, int.class, String.class);
+                Constructor<MetaTileEntity> constructor = clazz
+                        .getConstructor(int.class, String.class, String.class, int.class, String.class);
 
                 temp = constructor.newInstance(
                         11989,

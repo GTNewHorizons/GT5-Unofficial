@@ -1,26 +1,28 @@
 package com.github.technus.tectech.thing.item.renderElemental;
 
-import com.github.technus.tectech.font.TecTechFontRender;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.github.technus.tectech.font.TecTechFontRender;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderElementalName implements IItemRenderer {
+
     public static final RenderElementalName INSTANCE = new RenderElementalName();
 
     public boolean handleRenderType(final ItemStack itemStack, final IItemRenderer.ItemRenderType type) {
         return type == ItemRenderType.INVENTORY;
     }
 
-    public boolean shouldUseRenderHelper(
-            final IItemRenderer.ItemRenderType type,
-            final ItemStack itemStack,
+    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack itemStack,
             final IItemRenderer.ItemRendererHelper helper) {
         return false;
     }

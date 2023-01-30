@@ -1,14 +1,17 @@
 package com.github.technus.tectech.mechanics.commands;
 
-import com.github.technus.tectech.util.TT_Utility;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.github.technus.tectech.util.TT_Utility;
+
 public class ConvertFloat implements ICommand {
+
     ArrayList<String> aliases = new ArrayList<>();
 
     public ConvertFloat() {
@@ -22,10 +25,14 @@ public class ConvertFloat implements ICommand {
             if (args.length == 1) {
                 try {
                     float value = Float.parseFloat(args[0]);
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA.toString()
-                            + EnumChatFormatting.BOLD + TT_Utility.intBitsToShortString(Float.floatToIntBits(value))
-                            + " " + EnumChatFormatting.RESET
-                            + EnumChatFormatting.BLUE + value));
+                    sender.addChatMessage(
+                            new ChatComponentText(
+                                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                                            + TT_Utility.intBitsToShortString(Float.floatToIntBits(value))
+                                            + " "
+                                            + EnumChatFormatting.RESET
+                                            + EnumChatFormatting.BLUE
+                                            + value));
                 } catch (Exception e) {
                     sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Invalid Float " + args[0]));
                 }

@@ -1,15 +1,17 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 
 /**
  * Created by Tec on 12.05.2017.
  */
 abstract class EMStackMap<T extends IEMStack> implements IEMMapRead<T> {
+
     private final NavigableMap<IEMDefinition, T> backingMap;
 
     protected EMStackMap() {

@@ -1,14 +1,16 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by danie_000 on 23.01.2017.
  */
 public abstract class EMComplexTemplate implements IEMDefinition {
+
     /**
      * Just empty array?
      */
@@ -49,8 +51,7 @@ public abstract class EMComplexTemplate implements IEMDefinition {
         int hash = -(getSubParticles().size() << 16);
         for (EMDefinitionStack stack : getSubParticles().valuesToArray()) {
             int amount = (int) stack.getAmount();
-            hash += ((amount & 0x1) == 0 ? -amount : amount)
-                    * (stack.getDefinition().hashCode() << 4);
+            hash += ((amount & 0x1) == 0 ? -amount : amount) * (stack.getDefinition().hashCode() << 4);
         }
         return hash;
     }

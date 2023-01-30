@@ -12,9 +12,13 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.reg
  * Created by Tec on 06.05.2017.
  */
 public final class EMPrimalAspectDefinition extends EMPrimitiveTemplate {
-    public static final EMPrimalAspectDefinition
-            magic_air = new EMPrimalAspectDefinition("tt.keyword.Air", "a`", 1e1D, 45, "a`"),
-            magic_earth = new EMPrimalAspectDefinition("tt.keyword.Earth", "e`", 1e9D, 44, "e`"),
+
+    public static final EMPrimalAspectDefinition magic_air = new EMPrimalAspectDefinition(
+            "tt.keyword.Air",
+            "a`",
+            1e1D,
+            45,
+            "a`"), magic_earth = new EMPrimalAspectDefinition("tt.keyword.Earth", "e`", 1e9D, 44, "e`"),
             magic_fire = new EMPrimalAspectDefinition("tt.keyword.Fire", "f`", 1e3D, 43, "f`"),
             magic_water = new EMPrimalAspectDefinition("tt.keyword.Water", "w`", 1e7D, 42, "w`"),
             magic_order = new EMPrimalAspectDefinition("tt.keyword.Order", "o`", 1e5D, 40, "o`"),

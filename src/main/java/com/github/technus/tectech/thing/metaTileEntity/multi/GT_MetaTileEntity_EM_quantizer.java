@@ -17,6 +17,14 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
@@ -30,67 +38,59 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+
     // region structure
     // use multi A energy inputs, use less power the longer it runs
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_quantizer> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_quantizer>builder()
-                    .addShape("main", transpose(new String[][] {
-                        {"CCC", "BAB", "EEE", "DBD"},
-                        {"C~C", "ABA", "EBE", "BFB"},
-                        {"CCC", "BAB", "EEE", "DBD"}
-                    }))
-                    .addElement('A', ofBlock(sBlockCasingsTT, 0))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('D', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-                    .addElement(
-                            'C',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_quantizer::addClassicToMachineList,
-                                    textureOffset,
-                                    1,
-                                    sBlockCasingsTT,
-                                    0))
-                    .addElement(
-                            'F',
-                            ofHatchAdder(
-                                    GT_MetaTileEntity_EM_quantizer::addElementalOutputToMachineList,
-                                    textureOffset + 4,
-                                    2))
-                    .addElement(
-                            'E',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_quantizer::addElementalMufflerToMachineList,
-                                    textureOffset + 4,
-                                    3,
-                                    sBlockCasingsTT,
-                                    4))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_quantizer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_quantizer>builder()
+            .addShape(
+                    "main",
+                    transpose(
+                            new String[][] { { "CCC", "BAB", "EEE", "DBD" }, { "C~C", "ABA", "EBE", "BFB" },
+                                    { "CCC", "BAB", "EEE", "DBD" } }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 0)).addElement('B', ofBlock(sBlockCasingsTT, 4))
+            .addElement('D', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement(
+                    'C',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_quantizer::addClassicToMachineList,
+                            textureOffset,
+                            1,
+                            sBlockCasingsTT,
+                            0))
+            .addElement(
+                    'F',
+                    ofHatchAdder(GT_MetaTileEntity_EM_quantizer::addElementalOutputToMachineList, textureOffset + 4, 2))
+            .addElement(
+                    'E',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_quantizer::addElementalMufflerToMachineList,
+                            textureOffset + 4,
+                            3,
+                            sBlockCasingsTT,
+                            4))
+            .build();
 
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.mattertoem.hint.0"), // 1 - Classic Hatches or High Power Casing
-        translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.1"), // 2 - Elemental Output Hatch
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.mattertoem.hint.2"), // 3 - Elemental Overflow Hatches or Molecular
-        // Casing
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.0"), // 1 - Classic Hatches or High Power
+                                                                                    // Casing
+            translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.1"), // 2 - Elemental Output Hatch
+            translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.2"), // 3 - Elemental Overflow Hatches or
+                                                                                    // Molecular
+            // Casing
     };
     // endregion
 
@@ -120,12 +120,10 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     // ITEM STACK quantization
-                    EMItemQuantizationInfo aIQI = TecTech.transformationInfo
-                            .getItemQuantization()
+                    EMItemQuantizationInfo aIQI = TecTech.transformationInfo.getItemQuantization()
                             .get(new EMItemQuantizationInfo(is, false, null));
                     if (aIQI == null) {
-                        aIQI = TecTech.transformationInfo
-                                .getItemQuantization()
+                        aIQI = TecTech.transformationInfo.getItemQuantization()
                                 .get(new EMItemQuantizationInfo(is, true, null)); // todo check if works?
                     }
                     if (aIQI == null) {
@@ -134,26 +132,26 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         for (int ID : oreIDs) {
                             if (DEBUG_MODE) {
                                 TecTech.LOGGER.info(
-                                        "Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.'
-                                                + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
+                                        "Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName()
+                                                + '.'
+                                                + is.getItemDamage()
+                                                + ' '
+                                                + OreDictionary.getOreName(ID));
                             }
-                            EMOredictQuantizationInfo aOQI = TecTech.transformationInfo
-                                    .getOredictQuantization()
+                            EMOredictQuantizationInfo aOQI = TecTech.transformationInfo.getOredictQuantization()
                                     .get(ID);
                             if (aOQI == null) {
                                 continue;
                             }
                             IEMStack into = aOQI.getOut();
-                            if (into != null
-                                    && isInputEqual(
-                                            true,
-                                            false,
-                                            nullFluid,
-                                            new ItemStack[] {
-                                                new ItemStack(is.getItem(), aOQI.getAmount(), is.getItemDamage())
-                                            },
-                                            null,
-                                            inI)) {
+                            if (into != null && isInputEqual(
+                                    true,
+                                    false,
+                                    nullFluid,
+                                    new ItemStack[] {
+                                            new ItemStack(is.getItem(), aOQI.getAmount(), is.getItemDamage()) },
+                                    null,
+                                    inI)) {
                                 startRecipe(into);
                                 return true;
                             }
@@ -161,20 +159,20 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                     } else {
                         // Do ITEM STACK quantization
                         if (DEBUG_MODE) {
-                            TecTech.LOGGER.info("Quantifier-Item-recipe "
-                                    + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage());
+                            TecTech.LOGGER.info(
+                                    "Quantifier-Item-recipe " + is.getItem().getUnlocalizedName()
+                                            + '.'
+                                            + is.getItemDamage());
                         }
                         IEMStack into = aIQI.output();
-                        if (into != null
-                                && isInputEqual(
-                                        true,
-                                        false,
-                                        nullFluid,
-                                        new ItemStack[] {
-                                            new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())
-                                        },
-                                        null,
-                                        inI)) {
+                        if (into != null && isInputEqual(
+                                true,
+                                false,
+                                nullFluid,
+                                new ItemStack[] {
+                                        new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage()) },
+                                null,
+                                inI)) {
                             startRecipe(into);
                             return true;
                         }
@@ -185,17 +183,20 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             FluidStack[] inF = storedFluids.toArray(nullFluid);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
-                    EMFluidQuantizationInfo aFQI = TecTech.transformationInfo
-                            .getFluidQuantization()
+                    EMFluidQuantizationInfo aFQI = TecTech.transformationInfo.getFluidQuantization()
                             .get(fs.getFluid().getID());
                     if (aFQI == null) {
                         continue;
                     }
                     IEMStack into = aFQI.output();
-                    if (into != null
-                            && fs.amount >= aFQI.input().amount
+                    if (into != null && fs.amount >= aFQI.input().amount
                             && isInputEqual(
-                                    true, false, new FluidStack[] {aFQI.input()}, nullItem, inF, (ItemStack[]) null)) {
+                                    true,
+                                    false,
+                                    new FluidStack[] { aFQI.input() },
+                                    nullItem,
+                                    inF,
+                                    (ItemStack[]) null)) {
                         startRecipe(into);
                         return true;
                     }
@@ -218,10 +219,8 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             mEUt = (int) -V[6];
         }
         outputEM = new EMInstanceStackMap[] {
-            into instanceof EMInstanceStack
-                    ? new EMInstanceStackMap((EMInstanceStack) into)
-                    : new EMInstanceStackMap(new EMInstanceStack(into.getDefinition(), into.getAmount()))
-        };
+                into instanceof EMInstanceStack ? new EMInstanceStackMap((EMInstanceStack) into)
+                        : new EMInstanceStackMap(new EMInstanceStack(into.getDefinition(), into.getAmount())) };
     }
 
     @Override
@@ -237,17 +236,16 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal(
-                        "gt.blockmachines.multimachine.em.mattertoem.name")) // Machine Type: Matter Quantizer
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.mattertoem.desc.0")) // Controller block of the Matter
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.mattertoem.name")) // Machine Type: Matter
+                                                                                                // Quantizer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.mattertoem.desc.0")) // Controller block of
+                                                                                                 // the Matter
                 // Quantizer
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.mattertoem.desc.1")) // Transforms items into their
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.mattertoem.desc.1")) // Transforms items
+                                                                                                 // into their
                 // elemental form
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator()
-                .beginStructureBlock(3, 3, 4, false)
+                .addSeparator().beginStructureBlock(3, 3, 4, false)
                 .addOtherStructurePart(
                         translateToLocal("tt.keyword.Structure.ElementalOutput"),
                         translateToLocal("tt.keyword.Structure.BackCenter"),
@@ -256,15 +254,19 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         translateToLocal("tt.keyword.Structure.ElementalOverflow"),
                         translateToLocal("tt.keyword.Structure.AnyOuterMolecularCasing3rd"),
                         3) // Elemental Overflow Hatch: Any outer Molecular Casing on the 3rd slice
-                .addInputBus(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
-                        1) // Input Bus: Any High Power Casing on the front side
-                .addEnergyHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
-                        1) // Energy Hatch: Any High Power Casing on the front side
-                .addMaintenanceHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
-                        1) // Maintenance Hatch: Any High Power Casing on the front side
+                .addInputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Input Bus: Any High
+                                                                                                  // Power Casing on the
+                                                                                                  // front side
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Energy Hatch:
+                                                                                                     // Any High Power
+                                                                                                     // Casing on the
+                                                                                                     // front side
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Maintenance
+                                                                                                          // Hatch: Any
+                                                                                                          // High Power
+                                                                                                          // Casing on
+                                                                                                          // the front
+                                                                                                          // side
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }

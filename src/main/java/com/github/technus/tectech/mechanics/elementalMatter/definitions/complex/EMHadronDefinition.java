@@ -6,6 +6,12 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
@@ -21,17 +27,15 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.OreDictionaryStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by danie_000 on 17.11.2016.
  */
 public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map i/o
+
     private final int hash;
 
     private static final String nbtType = "h";
@@ -210,18 +214,14 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
     @Override
     public EMDecay[] getNaturalDecayInstant() {
         EMDefinitionStack[] quarkStacks = this.quarkStacks.valuesToArray();
-        if (getAmount() == 2
-                && quarkStacks.length == 2
-                && quarkStacks[0].getDefinition().getMass()
-                        == quarkStacks[1].getDefinition().getMass()
-                && quarkStacks[0].getDefinition().getGeneration()
-                        == -quarkStacks[1].getDefinition().getGeneration()) {
+        if (getAmount() == 2 && quarkStacks.length == 2
+                && quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass()
+                && quarkStacks[0].getDefinition().getGeneration() == -quarkStacks[1].getDefinition().getGeneration()) {
             return EMDecay.NO_PRODUCT;
         }
         ArrayList<EMDefinitionStack> decaysInto = new ArrayList<>();
         for (EMDefinitionStack quarks : quarkStacks) {
-            if (quarks.getDefinition().getGeneration() == 1
-                    || quarks.getDefinition().getGeneration() == -1) {
+            if (quarks.getDefinition().getGeneration() == 1 || quarks.getDefinition().getGeneration() == -1) {
                 // covers both quarks and antiquarks
                 decaysInto.add(quarks);
             } else {
@@ -229,21 +229,18 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
                 decaysInto.add(new EMDefinitionStack(boson_Y__, 2));
             }
         }
-        return new EMDecay[] {new EMDecay(0.75D, decaysInto.toArray(new EMDefinitionStack[0])), deadEnd};
+        return new EMDecay[] { new EMDecay(0.75D, decaysInto.toArray(new EMDefinitionStack[0])), deadEnd };
     }
 
     @Override
     public EMDecay[] getEnergyInducedDecay(long energyLevel) {
         EMDefinitionStack[] quarkStacks = this.quarkStacks.valuesToArray();
-        if (getAmount() == 2
-                && quarkStacks.length == 2
-                && quarkStacks[0].getDefinition().getMass()
-                        == quarkStacks[1].getDefinition().getMass()
-                && quarkStacks[0].getDefinition().getGeneration()
-                        == -quarkStacks[1].getDefinition().getGeneration()) {
+        if (getAmount() == 2 && quarkStacks.length == 2
+                && quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass()
+                && quarkStacks[0].getDefinition().getGeneration() == -quarkStacks[1].getDefinition().getGeneration()) {
             return EMDecay.NO_PRODUCT;
         }
-        return new EMDecay[] {new EMDecay(0.75D, quarkStacks), deadEnd}; // decay into quarks
+        return new EMDecay[] { new EMDecay(0.75D, quarkStacks), deadEnd }; // decay into quarks
     }
 
     @Override
@@ -274,15 +271,12 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
     @Override
     public EMDecay[] getDecayArray() {
         EMDefinitionStack[] quarkStacks = this.quarkStacks.valuesToArray();
-        if (getAmount() == 2
-                && quarkStacks.length == 2
-                && quarkStacks[0].getDefinition().getMass()
-                        == quarkStacks[1].getDefinition().getMass()
-                && quarkStacks[0].getDefinition().getGeneration()
-                        == -quarkStacks[1].getDefinition().getGeneration()) {
+        if (getAmount() == 2 && quarkStacks.length == 2
+                && quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass()
+                && quarkStacks[0].getDefinition().getGeneration() == -quarkStacks[1].getDefinition().getGeneration()) {
             return EMDecay.NO_PRODUCT;
         } else if (getAmount() != 3) {
-            return new EMDecay[] {new EMDecay(0.95D, quarkStacks), deadEnd}; // decay into quarks
+            return new EMDecay[] { new EMDecay(0.95D, quarkStacks), deadEnd }; // decay into quarks
         } else {
             ArrayList<EMQuarkDefinition> newBaryon = new ArrayList<>();
             IEMDefinition[] Particles = new IEMDefinition[2];
@@ -310,20 +304,19 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
 
             try {
                 return new EMDecay[] {
-                    new EMDecay(
-                            0.001D,
-                            new EMHadronDefinition(false, contentOfBaryon),
-                            Particles[0],
-                            Particles[1],
-                            boson_Y__),
-                    new EMDecay(0.99D, new EMHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
-                    deadEnd
-                };
+                        new EMDecay(
+                                0.001D,
+                                new EMHadronDefinition(false, contentOfBaryon),
+                                Particles[0],
+                                Particles[1],
+                                boson_Y__),
+                        new EMDecay(0.99D, new EMHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
+                        deadEnd };
             } catch (EMException e) {
                 if (DEBUG_MODE) {
                     e.printStackTrace();
                 }
-                return new EMDecay[] {deadEnd};
+                return new EMDecay[] { deadEnd };
             }
         }
     }
@@ -355,17 +348,17 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
 
     // @Override
     // public iElementalDefinition getAnti() {
-    //    cElementalDefinitionStack[] stacks = this.quarkStacks.values();
-    //    cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
-    //    for (int i = 0; i < antiElements.length; i++) {
-    //        antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
-    //    }
-    //    try {
-    //        return new dHadronDefinition(false, antiElements);
-    //    } catch (tElementalException e) {
-    //        if (DEBUG_MODE) e.printStackTrace();
-    //        return null;
-    //    }
+    // cElementalDefinitionStack[] stacks = this.quarkStacks.values();
+    // cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
+    // for (int i = 0; i < antiElements.length; i++) {
+    // antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
+    // }
+    // try {
+    // return new dHadronDefinition(false, antiElements);
+    // } catch (tElementalException e) {
+    // if (DEBUG_MODE) e.printStackTrace();
+    // return null;
+    // }
     // }
 
     @Override
@@ -393,17 +386,21 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
         registry.registerDefinitionClass(
                 nbtType,
                 new EMIndirectType(
-                        (definitionsRegistry, nbt) ->
-                                new EMHadronDefinition(EMConstantStackMap.fromNBT(definitionsRegistry, nbt)),
+                        (definitionsRegistry,
+                                nbt) -> new EMHadronDefinition(EMConstantStackMap.fromNBT(definitionsRegistry, nbt)),
                         EMHadronDefinition.class,
                         "tt.keyword.Hadron"));
         try {
-            hadron_p = new EMHadronDefinition(new EMConstantStackMap(
-                    EMQuarkDefinition.quark_u.getStackForm(2), EMQuarkDefinition.quark_d.getStackForm(1)));
+            hadron_p = new EMHadronDefinition(
+                    new EMConstantStackMap(
+                            EMQuarkDefinition.quark_u.getStackForm(2),
+                            EMQuarkDefinition.quark_d.getStackForm(1)));
             protonMass = hadron_p.getMass();
             // redefine the proton with proper lifetime (the lifetime is based on mass comparison)
-            hadron_p = new EMHadronDefinition(new EMConstantStackMap(
-                    EMQuarkDefinition.quark_u.getStackForm(2), EMQuarkDefinition.quark_d.getStackForm(1)));
+            hadron_p = new EMHadronDefinition(
+                    new EMConstantStackMap(
+                            EMQuarkDefinition.quark_u.getStackForm(2),
+                            EMQuarkDefinition.quark_d.getStackForm(1)));
             SYMBOL_MAP.put(hadron_p, "p");
             UNLOCALIZED_NAME_MAP.put(hadron_p, "tt.keyword.Proton");
             registry.registerForDisplay(hadron_p);
@@ -415,12 +412,16 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
             registry.registerForDisplay(hadron_p_);
             registry.registerDirectDefinition("~p", hadron_p_);
 
-            hadron_n = new EMHadronDefinition(new EMConstantStackMap(
-                    EMQuarkDefinition.quark_u.getStackForm(1), EMQuarkDefinition.quark_d.getStackForm(2)));
+            hadron_n = new EMHadronDefinition(
+                    new EMConstantStackMap(
+                            EMQuarkDefinition.quark_u.getStackForm(1),
+                            EMQuarkDefinition.quark_d.getStackForm(2)));
             neutronMass = hadron_n.getMass();
             // redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
-            hadron_n = new EMHadronDefinition(new EMConstantStackMap(
-                    EMQuarkDefinition.quark_u.getStackForm(1), EMQuarkDefinition.quark_d.getStackForm(2)));
+            hadron_n = new EMHadronDefinition(
+                    new EMConstantStackMap(
+                            EMQuarkDefinition.quark_u.getStackForm(1),
+                            EMQuarkDefinition.quark_d.getStackForm(2)));
             SYMBOL_MAP.put(hadron_n, "n");
             UNLOCALIZED_NAME_MAP.put(hadron_n, "tt.keyword.Neutron");
             registry.registerForDisplay(hadron_n);
@@ -460,16 +461,16 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
         // Added to atom map, but should be in its own
         EMDefinitionStack neutrons = new EMDefinitionStack(hadron_n, 1000 * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED);
         EMDequantizationInfo emDequantizationInfo = new EMDequantizationInfo(neutrons);
-        emDequantizationInfo.setOre(new OreDictionaryStack(
-                1,
-                OreDictionary.getOreID(
-                        OrePrefixes.dust.name() + Materials.Neutronium.mName))); // todo shitty looking, but works...
+        emDequantizationInfo.setOre(
+                new OreDictionaryStack(
+                        1,
+                        OreDictionary.getOreID(OrePrefixes.dust.name() + Materials.Neutronium.mName))); // todo shitty
+                                                                                                        // looking, but
+                                                                                                        // works...
         transformationInfo.getInfoMap().put(neutrons.getDefinition(), emDequantizationInfo);
-        transformationInfo
-                .getOredictQuantization()
-                .put(
-                        OreDictionary.getOreID(OrePrefixes.ingotHot.name() + Materials.Neutronium.mName),
-                        new EMOredictQuantizationInfo(OrePrefixes.ingotHot, Materials.Neutronium, 1, neutrons));
+        transformationInfo.getOredictQuantization().put(
+                OreDictionary.getOreID(OrePrefixes.ingotHot.name() + Materials.Neutronium.mName),
+                new EMOredictQuantizationInfo(OrePrefixes.ingotHot, Materials.Neutronium, 1, neutrons));
     }
 
     @Override

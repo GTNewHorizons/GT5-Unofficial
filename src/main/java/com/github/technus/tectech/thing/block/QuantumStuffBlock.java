@@ -2,12 +2,9 @@ package com.github.technus.tectech.thing.block;
 
 import static com.github.technus.tectech.Reference.MODID;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.blocks.BlockBase;
 import java.util.ArrayList;
 import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -16,10 +13,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import eu.usrv.yamcore.blocks.BlockBase;
+
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public final class QuantumStuffBlock extends BlockBase {
+
     public static IIcon stuff;
     public static int renderID;
     public static QuantumStuffBlock INSTANCE;
@@ -59,7 +62,7 @@ public final class QuantumStuffBlock extends BlockBase {
 
     // @Override
     // public boolean canRenderInPass(int pass) {
-    //    return true;
+    // return true;
     // }
 
     @Override
@@ -80,8 +83,8 @@ public final class QuantumStuffBlock extends BlockBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(
-            IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_,
+            int p_149646_5_) {
         return false;
     }
 

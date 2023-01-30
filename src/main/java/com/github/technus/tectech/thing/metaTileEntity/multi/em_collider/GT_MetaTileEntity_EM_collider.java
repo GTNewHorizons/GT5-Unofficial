@@ -12,6 +12,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.HashMap;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
@@ -34,6 +42,7 @@ import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -41,17 +50,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import java.util.HashMap;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+
     // region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -77,6 +81,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         FUSE_HANDLERS.put(
                 ((long) EMAtomDefinition.getClassTypeStatic() << 16) | EMAtomDefinition.getClassTypeStatic(),
                 new IColliderHandler() {
+
                     @Override
                     public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                         try {
@@ -109,6 +114,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         FUSE_HANDLERS.put(
                 ((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMHadronDefinition.getClassTypeStatic(),
                 new IColliderHandler() {
+
                     @Override
                     public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                         try {
@@ -137,6 +143,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         FUSE_HANDLERS.put(
                 ((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(),
                 new IColliderHandler() {
+
                     @Override
                     public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                         try {
@@ -169,11 +176,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         FUSE_HANDLERS.put(
                 ((long) EMPrimitiveTemplate.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(),
                 new IColliderHandler() {
+
                     @Override
                     public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                         IPrimitiveColliderHandler collisionHandler = PRIMITIVE_FUSE_HANDLERS.get(
-                                in1.getDefinition().getClass().getName()
-                                        + '\0'
+                                in1.getDefinition().getClass().getName() + '\0'
                                         + in2.getDefinition().getClass().getName());
                         if (collisionHandler != null) {
                             collisionHandler.collide(in2, in1, out);
@@ -188,14 +195,14 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     }
                 });
 
-        PRIMITIVE_FUSE_HANDLERS.put(
-                EMQuarkDefinition.class.getName() + '\0' + EMQuarkDefinition.class.getName(), (in1, in2, out) -> {
+        PRIMITIVE_FUSE_HANDLERS
+                .put(EMQuarkDefinition.class.getName() + '\0' + EMQuarkDefinition.class.getName(), (in1, in2, out) -> {
                     try {
                         EMDefinitionStackMap defs = new EMDefinitionStackMap();
                         defs.putUnifyExact(in1.getDefinition().getStackForm(1));
                         defs.putUnifyExact(in2.getDefinition().getStackForm(1));
-                        EMHadronDefinition hadron =
-                                new EMHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+                        EMHadronDefinition hadron = new EMHadronDefinition(
+                                defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
                         out.putUnify(new EMInstanceStack(hadron, Math.min(in1.getAmount(), in2.getAmount())));
                     } catch (Exception e) {
                         out.putUnifyAll(in1, in2);
@@ -224,8 +231,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             EMDefinitionStackMap defs = new EMDefinitionStackMap();
             defs.putUnifyExact(in1.getDefinition().getStackForm(1));
             defs.putUnifyExact(in2.getDefinition().getStackForm(1));
-            EMComplexAspectDefinition aspect =
-                    new EMComplexAspectDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+            EMComplexAspectDefinition aspect = new EMComplexAspectDefinition(
+                    defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
             out.putUnify(new EMInstanceStack(aspect, Math.min(in1.getAmount(), in2.getAmount())));
         } catch (Exception e) {
             out.putUnifyAll(in1, in2);
@@ -238,6 +245,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         FUSE_HANDLERS.put(
                 ((long) EMComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic,
                 new IColliderHandler() {
+
                     @Override
                     public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                         if (fuseAspects(in1, in2, out)) return;
@@ -256,8 +264,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     private static void registerSimpleAtomFuse(int classTypeStatic) {
-        FUSE_HANDLERS.put(
-                ((long) EMAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
+        FUSE_HANDLERS
+                .put(((long) EMAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
+
                     @Override
                     public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                         try {
@@ -319,207 +328,123 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     // region structure
     // use multi A energy inputs, use less power the longer it runs
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.collider.hint.0"), // 1 - Classic Hatches or High Power Casing
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.collider.hint.1"), // 2 - Elemental Input Hatches or Molecular Casing
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.collider.hint.2"), // 3 - Elemental Output Hatches or Molecular Casing
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.collider.hint.3"), // 4 - Elemental Overflow Hatches or Molecular
-        // Casing
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.collider.hint.4"), // General - Another Controller facing opposite
-        // direction
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.0"), // 1 - Classic Hatches or High Power
+                                                                                  // Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.1"), // 2 - Elemental Input Hatches or
+                                                                                  // Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.2"), // 3 - Elemental Output Hatches or
+                                                                                  // Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.3"), // 4 - Elemental Overflow Hatches or
+                                                                                  // Molecular
+            // Casing
+            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.4"), // General - Another Controller facing
+                                                                                  // opposite
+            // direction
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_collider>builder()
-                    .addShape("tier1", transpose(new String[][] {
-                        {
-                            "         A A A         ",
-                            "        AAAAAAA        ",
-                            "      bbbbIIIbbbb      ",
-                            "     bAAAAAAAAAAAb     ",
-                            "    bAAAA     AAAAb    ",
-                            "   bAAA         AAAb   ",
-                            "  bAAA           AAAb  ",
-                            "  bAA             AAb  ",
-                            " AbAA             AAbA ",
-                            "AAbA               AbAA",
-                            " AIA               AIA ",
-                            "AAIA               AIAA",
-                            " AIA               AIA ",
-                            "AAbA               AbAA",
-                            " AbAA             AAbA ",
-                            "  bAA             AAb  ",
-                            "  bAAA           AAAb  ",
-                            "   bAAA         AAAb   ",
-                            "    bAAAAbJJJbAAAAb    ",
-                            "     bAHHbbbbbHHAb     ",
-                            "      bbbbGFGbbbb      "
-                        },
-                        {
-                            "         AAAAA         ",
-                            "       AADDDDDAA       ",
-                            "      cDDeeeeeDDc      ",
-                            "     cDeeDDDDDeeDc     ",
-                            "    cDeDD     DDeDc    ",
-                            "   cDeD         DeDc   ",
-                            "  cDeD           DeDc  ",
-                            " ADeD             DeDA ",
-                            " ADeD             DeDA ",
-                            "ADeD               DeDA",
-                            "ADeD               DeDA",
-                            "ADeD               DeDA",
-                            "ADeD               DeDA",
-                            "ADeD               DeDA",
-                            " ADeD             DeDA ",
-                            " ADeD             DeDA ",
-                            "  cDeD           DeDc  ",
-                            "   cDeD         DeDc   ",
-                            "    cDeDDbJ~JbDDeDc    ",
-                            "     cDeeDDDDDeeDc     ",
-                            "      cDDeeeeeDDc      "
-                        },
-                        {
-                            "         A A A         ",
-                            "        AAAAAAA        ",
-                            "      bbbbIIIbbbb      ",
-                            "     bAAAAAAAAAAAb     ",
-                            "    bAAAA     AAAAb    ",
-                            "   bAAA         AAAb   ",
-                            "  bAAA           AAAb  ",
-                            "  bAA             AAb  ",
-                            " AbAA             AAbA ",
-                            "AAbA               AbAA",
-                            " AIA               AIA ",
-                            "AAIA               AIAA",
-                            " AIA               AIA ",
-                            "AAbA               AbAA",
-                            " AbAA             AAbA ",
-                            "  bAA             AAb  ",
-                            "  bAAA           AAAb  ",
-                            "   bAAA         AAAb   ",
-                            "    bAAAAbJJJbAAAAb    ",
-                            "     bAHHbbbbbHHAb     ",
-                            "      bbbbGFGbbbb      "
-                        }
-                    }))
-                    .addShape("tier2", transpose(new String[][] {
-                        {
-                            "         A A A         ",
-                            "        AAAAAAA        ",
-                            "      BBBBIIIBBBB      ",
-                            "     BAAAAAAAAAAAB     ",
-                            "    BAAAA     AAAAB    ",
-                            "   BAAA         AAAB   ",
-                            "  BAAA           AAAB  ",
-                            "  BAA             AAB  ",
-                            " ABAA             AABA ",
-                            "AABA               ABAA",
-                            " AIA               AIA ",
-                            "AAIA               AIAA",
-                            " AIA               AIA ",
-                            "AABA               ABAA",
-                            " ABAA             AABA ",
-                            "  BAA             AAB  ",
-                            "  BAAA           AAAB  ",
-                            "   BAAA         AAAB   ",
-                            "    BAAAABJJJBAAAAB    ",
-                            "     BAHHBBBBBHHAB     ",
-                            "      BBBBGFGBBBB      "
-                        },
-                        {
-                            "         AAAAA         ",
-                            "       AADDDDDAA       ",
-                            "      CDDEEEEEDDC      ",
-                            "     CDEEDDDDDEEDC     ",
-                            "    CDEDD     DDEDC    ",
-                            "   CDED         DEDC   ",
-                            "  CDED           DEDC  ",
-                            " ADED             DEDA ",
-                            " ADED             DEDA ",
-                            "ADED               DEDA",
-                            "ADED               DEDA",
-                            "ADED               DEDA",
-                            "ADED               DEDA",
-                            "ADED               DEDA",
-                            " ADED             DEDA ",
-                            " ADED             DEDA ",
-                            "  CDED           DEDC  ",
-                            "   CDED         DEDC   ",
-                            "    CDEDDBJ~JBDDEDC    ",
-                            "     CDEEDDDDDEEDC     ",
-                            "      CDDEEEEEDDC      "
-                        },
-                        {
-                            "         A A A         ",
-                            "        AAAAAAA        ",
-                            "      BBBBIIIBBBB      ",
-                            "     BAAAAAAAAAAAB     ",
-                            "    BAAAA     AAAAB    ",
-                            "   BAAA         AAAB   ",
-                            "  BAAA           AAAB  ",
-                            "  BAA             AAB  ",
-                            " ABAA             AABA ",
-                            "AABA               ABAA",
-                            " AIA               AIA ",
-                            "AAIA               AIAA",
-                            " AIA               AIA ",
-                            "AABA               ABAA",
-                            " ABAA             AABA ",
-                            "  BAA             AAB  ",
-                            "  BAAA           AAAB  ",
-                            "   BAAA         AAAB   ",
-                            "    BAAAABJJJBAAAAB    ",
-                            "     BAHHBBBBBHHAB     ",
-                            "      BBBBGFGBBBB      "
-                        }
-                    }))
-                    .addElement('A', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('b', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 5))
-                    .addElement('c', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('C', ofBlock(sBlockCasingsTT, 6))
-                    .addElement('D', ofBlock(sBlockCasingsTT, 7))
-                    .addElement('e', ofBlock(sBlockCasingsTT, 8))
-                    .addElement('E', ofBlock(sBlockCasingsTT, 9))
-                    .addElement('I', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-                    .addElement(
-                            'J',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_collider::addClassicToMachineList,
-                                    textureOffset,
-                                    1,
-                                    sBlockCasingsTT,
-                                    0))
-                    .addElement(
-                            'H',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
-                                    textureOffset + 4,
-                                    2,
-                                    sBlockCasingsTT,
-                                    4))
-                    .addElement(
-                            'F',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
-                                    textureOffset + 4,
-                                    3,
-                                    sBlockCasingsTT,
-                                    4))
-                    .addElement(
-                            'G',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList,
-                                    textureOffset + 4,
-                                    4,
-                                    sBlockCasingsTT,
-                                    4))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_collider>builder()
+            .addShape(
+                    "tier1",
+                    transpose(
+                            new String[][] { { "         A A A         ", "        AAAAAAA        ",
+                                    "      bbbbIIIbbbb      ", "     bAAAAAAAAAAAb     ", "    bAAAA     AAAAb    ",
+                                    "   bAAA         AAAb   ", "  bAAA           AAAb  ", "  bAA             AAb  ",
+                                    " AbAA             AAbA ", "AAbA               AbAA", " AIA               AIA ",
+                                    "AAIA               AIAA", " AIA               AIA ", "AAbA               AbAA",
+                                    " AbAA             AAbA ", "  bAA             AAb  ", "  bAAA           AAAb  ",
+                                    "   bAAA         AAAb   ", "    bAAAAbJJJbAAAAb    ", "     bAHHbbbbbHHAb     ",
+                                    "      bbbbGFGbbbb      " },
+                                    { "         AAAAA         ", "       AADDDDDAA       ", "      cDDeeeeeDDc      ",
+                                            "     cDeeDDDDDeeDc     ", "    cDeDD     DDeDc    ",
+                                            "   cDeD         DeDc   ", "  cDeD           DeDc  ",
+                                            " ADeD             DeDA ", " ADeD             DeDA ",
+                                            "ADeD               DeDA", "ADeD               DeDA",
+                                            "ADeD               DeDA", "ADeD               DeDA",
+                                            "ADeD               DeDA", " ADeD             DeDA ",
+                                            " ADeD             DeDA ", "  cDeD           DeDc  ",
+                                            "   cDeD         DeDc   ", "    cDeDDbJ~JbDDeDc    ",
+                                            "     cDeeDDDDDeeDc     ", "      cDDeeeeeDDc      " },
+                                    { "         A A A         ", "        AAAAAAA        ", "      bbbbIIIbbbb      ",
+                                            "     bAAAAAAAAAAAb     ", "    bAAAA     AAAAb    ",
+                                            "   bAAA         AAAb   ", "  bAAA           AAAb  ",
+                                            "  bAA             AAb  ", " AbAA             AAbA ",
+                                            "AAbA               AbAA", " AIA               AIA ",
+                                            "AAIA               AIAA", " AIA               AIA ",
+                                            "AAbA               AbAA", " AbAA             AAbA ",
+                                            "  bAA             AAb  ", "  bAAA           AAAb  ",
+                                            "   bAAA         AAAb   ", "    bAAAAbJJJbAAAAb    ",
+                                            "     bAHHbbbbbHHAb     ", "      bbbbGFGbbbb      " } }))
+            .addShape(
+                    "tier2",
+                    transpose(
+                            new String[][] { { "         A A A         ", "        AAAAAAA        ",
+                                    "      BBBBIIIBBBB      ", "     BAAAAAAAAAAAB     ", "    BAAAA     AAAAB    ",
+                                    "   BAAA         AAAB   ", "  BAAA           AAAB  ", "  BAA             AAB  ",
+                                    " ABAA             AABA ", "AABA               ABAA", " AIA               AIA ",
+                                    "AAIA               AIAA", " AIA               AIA ", "AABA               ABAA",
+                                    " ABAA             AABA ", "  BAA             AAB  ", "  BAAA           AAAB  ",
+                                    "   BAAA         AAAB   ", "    BAAAABJJJBAAAAB    ", "     BAHHBBBBBHHAB     ",
+                                    "      BBBBGFGBBBB      " },
+                                    { "         AAAAA         ", "       AADDDDDAA       ", "      CDDEEEEEDDC      ",
+                                            "     CDEEDDDDDEEDC     ", "    CDEDD     DDEDC    ",
+                                            "   CDED         DEDC   ", "  CDED           DEDC  ",
+                                            " ADED             DEDA ", " ADED             DEDA ",
+                                            "ADED               DEDA", "ADED               DEDA",
+                                            "ADED               DEDA", "ADED               DEDA",
+                                            "ADED               DEDA", " ADED             DEDA ",
+                                            " ADED             DEDA ", "  CDED           DEDC  ",
+                                            "   CDED         DEDC   ", "    CDEDDBJ~JBDDEDC    ",
+                                            "     CDEEDDDDDEEDC     ", "      CDDEEEEEDDC      " },
+                                    { "         A A A         ", "        AAAAAAA        ", "      BBBBIIIBBBB      ",
+                                            "     BAAAAAAAAAAAB     ", "    BAAAA     AAAAB    ",
+                                            "   BAAA         AAAB   ", "  BAAA           AAAB  ",
+                                            "  BAA             AAB  ", " ABAA             AABA ",
+                                            "AABA               ABAA", " AIA               AIA ",
+                                            "AAIA               AIAA", " AIA               AIA ",
+                                            "AABA               ABAA", " ABAA             AABA ",
+                                            "  BAA             AAB  ", "  BAAA           AAAB  ",
+                                            "   BAAA         AAAB   ", "    BAAAABJJJBAAAAB    ",
+                                            "     BAHHBBBBBHHAB     ", "      BBBBGFGBBBB      " } }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 4)).addElement('b', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 5)).addElement('c', ofBlock(sBlockCasingsTT, 4))
+            .addElement('C', ofBlock(sBlockCasingsTT, 6)).addElement('D', ofBlock(sBlockCasingsTT, 7))
+            .addElement('e', ofBlock(sBlockCasingsTT, 8)).addElement('E', ofBlock(sBlockCasingsTT, 9))
+            .addElement('I', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement(
+                    'J',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_collider::addClassicToMachineList,
+                            textureOffset,
+                            1,
+                            sBlockCasingsTT,
+                            0))
+            .addElement(
+                    'H',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
+                            textureOffset + 4,
+                            2,
+                            sBlockCasingsTT,
+                            4))
+            .addElement(
+                    'F',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
+                            textureOffset + 4,
+                            3,
+                            sBlockCasingsTT,
+                            4))
+            .addElement(
+                    'G',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList,
+                            textureOffset + 4,
+                            4,
+                            sBlockCasingsTT,
+                            4))
+            .build();
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_collider> getStructure_EM() {
@@ -537,8 +462,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     public static void setValues(int heliumPlasmaValue) {
-        double MASS_TO_EU_PARTIAL =
-                heliumPlasmaValue / (1.75893000478707E07 * EM_COUNT_PER_MATERIAL_AMOUNT); // mass diff
+        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07 * EM_COUNT_PER_MATERIAL_AMOUNT); // mass
+                                                                                                              // diff
         MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
         STARTUP_COST = -heliumPlasmaValue * 10000;
         KEEPUP_COST = -heliumPlasmaValue;
@@ -555,21 +480,22 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
             EMInstanceStackMap map = new EMInstanceStackMap();
             IColliderHandler colliderHandler;
-            if (stack2.getDefinition().getMatterMassType()
-                    > stack.getDefinition().getMatterMassType()) { // always bigger first
-                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16)
-                        | stack.getDefinition().getMatterMassType());
+            if (stack2.getDefinition().getMatterMassType() > stack.getDefinition().getMatterMassType()) { // always
+                                                                                                          // bigger
+                                                                                                          // first
+                colliderHandler = FUSE_HANDLERS.get(
+                        (stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
-                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16)
-                        | stack2.getDefinition().getMatterMassType());
+                colliderHandler = FUSE_HANDLERS.get(
+                        (stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             for (EMInstanceStack newStack : map.valuesToArray()) {
                 check &= newStack.getDefinition().fusionMakesEnergy(newStack.getEnergy());
             }
             // System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
-            outputEM = new EMInstanceStackMap[] {map};
+            outputEM = new EMInstanceStackMap[] { map };
 
             partner.stack = stack = null;
             // System.out.println("check = " + check);
@@ -587,18 +513,19 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
             EMInstanceStackMap map = new EMInstanceStackMap();
             IColliderHandler colliderHandler;
-            if (stack2.getDefinition().getMatterMassType()
-                    > stack.getDefinition().getMatterMassType()) { // always bigger first
-                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16)
-                        | stack.getDefinition().getMatterMassType());
+            if (stack2.getDefinition().getMatterMassType() > stack.getDefinition().getMatterMassType()) { // always
+                                                                                                          // bigger
+                                                                                                          // first
+                colliderHandler = FUSE_HANDLERS.get(
+                        (stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
-                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16)
-                        | stack2.getDefinition().getMatterMassType());
+                colliderHandler = FUSE_HANDLERS.get(
+                        (stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             // System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
-            outputEM = new EMInstanceStackMap[] {map};
+            outputEM = new EMInstanceStackMap[] { map };
 
             partner.stack = stack = null;
             // System.out.println("check = " + check);
@@ -613,7 +540,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             colliderHandler.collide(stack2, stack, map);
         } else {
             map.putUnifyAll(stack, stack2);
-            outputEM = new EMInstanceStackMap[] {map};
+            outputEM = new EMInstanceStackMap[] { map };
             return true;
         }
         return false;
@@ -628,10 +555,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if (gregTechBaseTileEntity != null) {
             IMetaTileEntity gregTechMetaTileEntity = gregTechBaseTileEntity.getMetaTileEntity();
             return gregTechMetaTileEntity instanceof GT_MetaTileEntity_EM_collider
-                            && ((GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity).mMachine
-                            && gregTechBaseTileEntity.getBackFacing() == iGregTechTileEntity.getFrontFacing()
-                    ? (GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity
-                    : null;
+                    && ((GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity).mMachine
+                    && gregTechBaseTileEntity.getBackFacing() == iGregTechTileEntity.getFrontFacing()
+                            ? (GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity
+                            : null;
         }
         return null;
     }
@@ -657,9 +584,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             stack.nextColor();
             return null;
         } else {
-            stack = newInstances
-                    .getOutput()
-                    .removeKey(newInstances.getOutput().getLast().getDefinition());
+            stack = newInstances.getOutput().removeKey(newInstances.getOutput().getLast().getDefinition());
             return newInstances.getOutput();
         }
     }
@@ -708,12 +633,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                         continue;
                     }
                     stack = container.removeKey(container.getFirst().getDefinition());
-                    long eut = KEEPUP_COST
-                            + (long) (KEEPUP_COST
-                                            * Math.abs(stack.getMass()
-                                                    / EMAtomDefinition.getSomethingHeavy()
-                                                            .getMass()))
-                                    / 2;
+                    long eut = KEEPUP_COST + (long) (KEEPUP_COST
+                            * Math.abs(stack.getMass() / EMAtomDefinition.getSomethingHeavy().getMass())) / 2;
                     if (eut < Integer.MIN_VALUE + 7) {
                         return false;
                     }
@@ -784,23 +705,22 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal(
-                        "gt.blockmachines.multimachine.em.collider.name")) // Machine Type: Matter Collider
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.collider.desc.0")) // Controller block of the Matter Collider
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.collider.desc.1")) // This machine needs a mirrored
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.collider.name")) // Machine Type: Matter
+                                                                                              // Collider
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.0")) // Controller block of
+                                                                                               // the Matter Collider
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.1")) // This machine needs a
+                                                                                               // mirrored
                 // copy of it to work
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.collider.desc.2")) // One needs to be set to 'Fuse
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.2")) // One needs to be set to
+                                                                                               // 'Fuse
                 // Mode' and the other to 'Collide
                 // Mode'
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.collider.desc.3")) // Fuses two elemental matter to
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.3")) // Fuses two elemental
+                                                                                               // matter to
                 // create another (and power)
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator()
-                .beginStructureBlock(21, 3, 23, false)
+                .addSeparator().beginStructureBlock(21, 3, 23, false)
                 .addOtherStructurePart(
                         translateToLocal("gt.blockmachines.multimachine.em.collider.name"),
                         translateToLocal("gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider"),
@@ -817,12 +737,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                         translateToLocal("tt.keyword.Structure.ElementalOverflow"),
                         translateToLocal("tt.keyword.Structure.AnyMolecularCasing4D"),
                         2) // Elemental Overflow Hatch: Any Molecular Casing with 4 dots
-                .addEnergyHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"),
-                        1) // Energy Hatch: Any High Power Casing
-                .addMaintenanceHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"),
-                        1) // Maintenance Hatch: Any High Power Casing
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
+                                                                                                // High Power Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
+                                                                                                     // Hatch: Any High
+                                                                                                     // Power Casing
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
@@ -838,27 +757,18 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aFacing % 2 == 0) {
-                return new ITexture[] {
-                    Textures.BlockIcons.casingTexturePages[texturePage][4],
-                    new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF)
-                };
+                return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4],
+                        new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
             } else {
-                return new ITexture[] {
-                    Textures.BlockIcons.casingTexturePages[texturePage][4],
-                    new TT_RenderedExtendedFacingTexture(aActive ? ScreenON_Slave : ScreenOFF_Slave)
-                };
+                return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4],
+                        new TT_RenderedExtendedFacingTexture(aActive ? ScreenON_Slave : ScreenOFF_Slave) };
             }
         }
-        return new ITexture[] {Textures.BlockIcons.casingTexturePages[texturePage][4]};
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4] };
     }
 
     @Override

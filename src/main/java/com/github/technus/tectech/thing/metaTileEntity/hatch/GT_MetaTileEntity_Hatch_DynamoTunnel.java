@@ -5,24 +5,27 @@ import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti
         implements IConnectsToEnergyTunnel {
+
     public GT_MetaTileEntity_Hatch_DynamoTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
                 aID,
@@ -35,19 +38,19 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_DynamoTunnel(
-            String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_DynamoTunnel(String aName, int aTier, int aAmp, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier]};
+        return new ITexture[] { aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier]};
+        return new ITexture[] { aBaseTexture, OVERLAYS_ENERGY_OUT_LASER_TT[mTier] };
     }
 
     @Override
@@ -122,12 +125,12 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_GENERAL,
-            mDescription, // TODO NOT PASS DESCRIPTION
-            translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(Amperes * maxEUOutput()) + EnumChatFormatting.RESET
-                    + " EU/t" // Throughput
+        return new String[] { CommonValues.TEC_MARK_GENERAL, mDescription, // TODO NOT PASS DESCRIPTION
+                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(Amperes * maxEUOutput())
+                        + EnumChatFormatting.RESET
+                        + " EU/t" // Throughput
         };
     }
 
@@ -157,8 +160,8 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
         byte front = aBaseMetaTileEntity.getFrontFacing();
         byte opposite = GT_Utility.getOppositeSide(front);
         for (short dist = 1; dist < 1000; dist++) {
-            IGregTechTileEntity tGTTileEntity =
-                    aBaseMetaTileEntity.getIGregTechTileEntityAtSideAndDistance(front, dist);
+            IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
+                    .getIGregTechTileEntityAtSideAndDistance(front, dist);
             if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
                 IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                 if (aMetaTileEntity != null) {
@@ -170,23 +173,19 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
                             return;
                         } else if (maxEUOutput()
                                 == ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()) {
-                            long diff = Math.min(
-                                    Amperes * 20L * maxEUOutput(),
-                                    Math.min(
-                                            ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUStore()
-                                                    - aMetaTileEntity
-                                                            .getBaseMetaTileEntity()
-                                                            .getStoredEU(),
-                                            aBaseMetaTileEntity.getStoredEU()));
+                                    long diff = Math.min(
+                                            Amperes * 20L * maxEUOutput(),
+                                            Math.min(
+                                                    ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity)
+                                                            .maxEUStore()
+                                                            - aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
+                                                    aBaseMetaTileEntity.getStoredEU()));
 
-                            setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
+                                    setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
 
-                            ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity)
-                                    .setEUVar(aMetaTileEntity
-                                                    .getBaseMetaTileEntity()
-                                                    .getStoredEU()
-                                            + diff);
-                        }
+                                    ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity)
+                                            .setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
+                                }
                         return;
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy) {
                         if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount < 2) {

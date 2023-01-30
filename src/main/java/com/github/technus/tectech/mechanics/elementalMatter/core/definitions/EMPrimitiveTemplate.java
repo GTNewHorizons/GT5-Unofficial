@@ -2,16 +2,17 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * Created by danie_000 on 22.10.2016.
- * EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!
+ * Created by danie_000 on 22.10.2016. EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!
  */
 public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
+
     private final String name;
     private final String symbol;
     // float-mass in eV/c^2
@@ -33,11 +34,11 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     private final String bind;
 
     // no _ at end - normal particle
-    //   _ at end - anti particle
-    //  __ at end - self is antiparticle
+    // _ at end - anti particle
+    // __ at end - self is antiparticle
 
-    protected EMPrimitiveTemplate(
-            String name, String symbol, int generation, double mass, int charge, int color, int ID, String bind) {
+    protected EMPrimitiveTemplate(String name, String symbol, int generation, double mass, int charge, int color,
+            int ID, String bind) {
         this.name = name;
         this.symbol = symbol;
         this.generation = generation;
@@ -49,13 +50,8 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     }
 
     //
-    protected void init(
-            EMDefinitionsRegistry registry,
-            IEMDefinition antiParticle,
-            double rawLifeTime,
-            int naturalInstant,
-            int energeticInstant,
-            EMDecay... elementalDecaysArray) {
+    protected void init(EMDefinitionsRegistry registry, IEMDefinition antiParticle, double rawLifeTime,
+            int naturalInstant, int energeticInstant, EMDecay... elementalDecaysArray) {
         anti = antiParticle;
         this.rawLifeTime = rawLifeTime;
         naturalDecayInstant = (byte) naturalInstant;
@@ -107,7 +103,7 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
         } else if (naturalDecayInstant >= elementalDecays.length) {
             return EMDecay.NO_PRODUCT;
         }
-        return new EMDecay[] {elementalDecays[naturalDecayInstant]};
+        return new EMDecay[] { elementalDecays[naturalDecayInstant] };
     }
 
     @Override
@@ -117,7 +113,7 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
         } else if (energeticDecayInstant >= elementalDecays.length) {
             return EMDecay.NO_PRODUCT;
         }
-        return new EMDecay[] {elementalDecays[energeticDecayInstant]};
+        return new EMDecay[] { elementalDecays[energeticDecayInstant] };
     }
 
     @Override

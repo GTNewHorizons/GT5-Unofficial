@@ -2,14 +2,16 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.null__;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by danie_000 on 20.11.2016.
  */
 public final class EMDefinitionStack implements IEMStack {
+
     private final IEMDefinition definition;
     private final double amount;
 

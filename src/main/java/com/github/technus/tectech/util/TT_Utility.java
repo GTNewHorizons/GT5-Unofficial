@@ -1,13 +1,5 @@
 package com.github.technus.tectech.util;
 
-import com.github.technus.tectech.TecTech;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,6 +8,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -32,12 +25,24 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.commons.lang3.StringUtils;
+
+import com.github.technus.tectech.TecTech;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 /**
  * Created by Tec on 21.03.2017.
  */
 public final class TT_Utility {
+
     private TT_Utility() {}
 
     private static final StringBuilder STRING_BUILDER = new StringBuilder();
@@ -46,7 +51,8 @@ public final class TT_Utility {
     private static Formatter getFormatter() {
         STRING_BUILDER.setLength(0);
         return FORMATTER_MAP.computeIfAbsent(
-                Locale.getDefault(Locale.Category.FORMAT), locale -> new Formatter(STRING_BUILDER, locale));
+                Locale.getDefault(Locale.Category.FORMAT),
+                locale -> new Formatter(STRING_BUILDER, locale));
     }
 
     public static String formatNumberShortExp(double value) {
@@ -98,10 +104,8 @@ public final class TT_Utility {
         return Double.parseDouble(str);
     }
 
-    private static final String SUPER_SCRIPT =
-            "\u207D\u207E*\u207A,\u207B./\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079:;<\u207C";
-    private static final String SUB_SCRIPT =
-            "\u208D\u208E*\u208A,\u208B./\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089:;<\u208C";
+    private static final String SUPER_SCRIPT = "\u207D\u207E*\u207A,\u207B./\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079:;<\u207C";
+    private static final String SUB_SCRIPT = "\u208D\u208E*\u208A,\u208B./\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089:;<\u208C";
 
     public static String toSubscript(String s) {
         STRING_BUILDER.setLength(0);
@@ -200,12 +204,8 @@ public final class TT_Utility {
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
-    public static boolean isInputEqual(
-            boolean aDecreaseStacksizeBySuccess,
-            boolean aDontCheckStackSizes,
-            FluidStack[] requiredFluidInputs,
-            ItemStack[] requiredInputs,
-            FluidStack[] givenFluidInputs,
+    public static boolean isInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes,
+            FluidStack[] requiredFluidInputs, ItemStack[] requiredInputs, FluidStack[] givenFluidInputs,
             ItemStack... givenInputs) {
         if (!GregTech_API.sPostloadFinished) {
             return false;
@@ -293,9 +293,8 @@ public final class TT_Utility {
                     if (tStack != null) {
                         amt = tStack.stackSize;
                         for (ItemStack aStack : givenInputs) {
-                            if (GT_Utility.areUnificationsEqual(aStack, tStack, true)
-                                    || GT_Utility.areUnificationsEqual(
-                                            GT_OreDictUnificator.get(false, aStack), tStack, true)) {
+                            if (GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility
+                                    .areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) {
                                 if (aDontCheckStackSizes) {
                                     aStack.stackSize -= amt;
                                     break;
@@ -390,6 +389,7 @@ public final class TT_Utility {
     }
 
     public static class ItemStack_NoNBT implements Comparable<ItemStack_NoNBT> {
+
         public final Item mItem;
         public final int mStackSize;
         public final int mMetaData;
@@ -426,15 +426,11 @@ public final class TT_Utility {
 
         @Override
         public boolean equals(Object aStack) {
-            return aStack == this
-                    || (aStack instanceof ItemStack_NoNBT
-                            && ((mItem == ((ItemStack_NoNBT) aStack).mItem)
-                                    || ((ItemStack_NoNBT) aStack)
-                                            .mItem
-                                            .getUnlocalizedName()
-                                            .equals(this.mItem.getUnlocalizedName()))
-                            && ((ItemStack_NoNBT) aStack).mStackSize == this.mStackSize
-                            && ((ItemStack_NoNBT) aStack).mMetaData == this.mMetaData);
+            return aStack == this || (aStack instanceof ItemStack_NoNBT
+                    && ((mItem == ((ItemStack_NoNBT) aStack).mItem) || ((ItemStack_NoNBT) aStack).mItem
+                            .getUnlocalizedName().equals(this.mItem.getUnlocalizedName()))
+                    && ((ItemStack_NoNBT) aStack).mStackSize == this.mStackSize
+                    && ((ItemStack_NoNBT) aStack).mMetaData == this.mMetaData);
         }
 
         @Override
@@ -444,8 +440,7 @@ public final class TT_Utility {
 
         @Override
         public String toString() {
-            return Integer.toString(hashCode())
-                    + ' '
+            return Integer.toString(hashCode()) + ' '
                     + (mItem == null ? "null" : mItem.getUnlocalizedName())
                     + ' '
                     + mMetaData
@@ -567,13 +562,13 @@ public final class TT_Utility {
         try {
             if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
                 if (uuid1 != null && uuid2 != null) {
-                    IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer()
-                            .worldServerForDimension(0)
-                            .getSaveHandler()
-                            .getSaveHandler();
+                    IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0)
+                            .getSaveHandler().getSaveHandler();
                     SaveHandler sh = (SaveHandler) playerNBTManagerObj;
                     File dir = ObfuscationReflectionHelper.getPrivateValue(
-                            SaveHandler.class, sh, new String[] {"playersDirectory", "field_75771_c"});
+                            SaveHandler.class,
+                            sh,
+                            new String[] { "playersDirectory", "field_75771_c" });
                     String id1 = uuid1.toString();
                     NBTTagCompound tagCompound = read(new File(dir, id1 + "." + extension));
                     if (tagCompound != null) {
@@ -594,8 +589,7 @@ public final class TT_Utility {
                     }
                 }
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
         return new NBTTagCompound();
     }
 
@@ -603,25 +597,23 @@ public final class TT_Utility {
         try {
             if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
                 if (player != null) {
-                    IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer()
-                            .worldServerForDimension(0)
-                            .getSaveHandler()
-                            .getSaveHandler();
+                    IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0)
+                            .getSaveHandler().getSaveHandler();
                     SaveHandler sh = (SaveHandler) playerNBTManagerObj;
                     File dir = ObfuscationReflectionHelper.getPrivateValue(
-                            SaveHandler.class, sh, new String[] {"playersDirectory", "field_75771_c"});
+                            SaveHandler.class,
+                            sh,
+                            new String[] { "playersDirectory", "field_75771_c" });
                     String id1 = player.getUniqueID().toString();
                     write(new File(dir, id1 + "." + extension), data);
                     write(new File(dir, id1 + "." + extension + "_bak"), data);
-                    String id2 = UUID.nameUUIDFromBytes(
-                                    player.getCommandSenderName().getBytes(StandardCharsets.UTF_8))
+                    String id2 = UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes(StandardCharsets.UTF_8))
                             .toString();
                     write(new File(dir, id2 + "." + extension), data);
                     write(new File(dir, id2 + "." + extension + "_bak"), data);
                 }
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     private static NBTTagCompound read(File file) {

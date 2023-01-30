@@ -1,9 +1,11 @@
 package com.github.technus.tectech.loader;
 
-import eu.usrv.yamcore.config.ConfigManager;
 import java.io.File;
 
+import eu.usrv.yamcore.config.ConfigManager;
+
 public class TecTechConfig extends ConfigManager {
+
     public TecTechConfig(File pConfigBaseDirectory, String pModCollectionDirectory, String pModID) {
         super(pConfigBaseDirectory, pModCollectionDirectory, pModID);
     }
@@ -83,10 +85,10 @@ public class TecTechConfig extends ConfigManager {
      */
     @Override
     protected void Init() {
-        DEBUG_MODE = _mainConfig.getBoolean(
-                "DebugMode", "debug", DEBUG_MODE, "Enables logging and other purely debug features");
-        POWERLESS_MODE =
-                _mainConfig.getBoolean("PowerlessMode", "debug", POWERLESS_MODE, "Enables 0EU/t multi block machinery");
+        DEBUG_MODE = _mainConfig
+                .getBoolean("DebugMode", "debug", DEBUG_MODE, "Enables logging and other purely debug features");
+        POWERLESS_MODE = _mainConfig
+                .getBoolean("PowerlessMode", "debug", POWERLESS_MODE, "Enables 0EU/t multi block machinery");
         DISABLE_MATERIAL_LOADING_FFS = _mainConfig.getBoolean(
                 "DisableMaterialLoading",
                 "debug",
@@ -104,7 +106,10 @@ public class TecTechConfig extends ConfigManager {
                 DISABLE_BLOCK_HARDNESS_NERF,
                 "Set to true to disable the block hardness nerf");
         EASY_SCAN = _mainConfig.getBoolean(
-                "EasyScan", "features", EASY_SCAN, "Enables tricorder to scan EM i/o hatches directly, too CHEEKY");
+                "EasyScan",
+                "features",
+                EASY_SCAN,
+                "Enables tricorder to scan EM i/o hatches directly, too CHEEKY");
         NERF_FUSION = _mainConfig.getBoolean(
                 "NerfFusion",
                 "features",

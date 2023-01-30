@@ -1,11 +1,7 @@
 package com.github.technus.tectech.mechanics.data;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -14,7 +10,14 @@ import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class ChunkDataHandler {
+
     private final String BASE_TAG_NAME = "TecTechData";
     private final HashMap<Integer, HashMap<ChunkCoordIntPair, NBTChunk>> dimensionWiseChunkData = new HashMap<>();
     private final HashMap<String, HashMap<Integer, ChunkHashMap>> dimensionWiseMetaChunkData = new HashMap<>();
@@ -41,10 +44,9 @@ public class ChunkDataHandler {
 
     @SubscribeEvent
     public void handleChunkSaveEvent(ChunkDataEvent.Save event) {
-        HashMap<ChunkCoordIntPair, NBTChunk> dimensionData =
-                dimensionWiseChunkData.get(event.world.provider.dimensionId);
-        NBTChunk chunkData =
-                dimensionData != null ? dimensionData.get(event.getChunk().getChunkCoordIntPair()) : null;
+        HashMap<ChunkCoordIntPair, NBTChunk> dimensionData = dimensionWiseChunkData
+                .get(event.world.provider.dimensionId);
+        NBTChunk chunkData = dimensionData != null ? dimensionData.get(event.getChunk().getChunkCoordIntPair()) : null;
         if (chunkData == null) {
             event.getData().removeTag(BASE_TAG_NAME);
         } else {
@@ -107,33 +109,35 @@ public class ChunkDataHandler {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onUnloadChunk(ChunkEvent.Unload aEvent) {
-        if (aEvent.world.isRemote
-                && !Minecraft.getMinecraft().isSingleplayer()) { // we need all data if running local server!
-            pullSyncHandlers.forEach(chunkMetaDataHandler -> dimensionWiseMetaChunkData
-                    .get(chunkMetaDataHandler.getTagName())
-                    .get(aEvent.world.provider.dimensionId)
-                    .remove(aEvent.getChunk().getChunkCoordIntPair()));
+        if (aEvent.world.isRemote && !Minecraft.getMinecraft().isSingleplayer()) { // we need all data if running local
+                                                                                   // server!
+            pullSyncHandlers.forEach(
+                    chunkMetaDataHandler -> dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName())
+                            .get(aEvent.world.provider.dimensionId).remove(aEvent.getChunk().getChunkCoordIntPair()));
         }
     }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onClientTickEvent(TickEvent.ClientTickEvent aEvent) {
-        clientHandlers.forEach(chunkMetaDataHandler -> chunkMetaDataHandler.tickClient(
-                dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
+        clientHandlers.forEach(
+                chunkMetaDataHandler -> chunkMetaDataHandler
+                        .tickClient(dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
     }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onRenderTickEvent(TickEvent.RenderTickEvent aEvent) {
-        renderHandlers.forEach(chunkMetaDataHandler -> chunkMetaDataHandler.tickRender(
-                dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
+        renderHandlers.forEach(
+                chunkMetaDataHandler -> chunkMetaDataHandler
+                        .tickRender(dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
     }
 
     @SubscribeEvent
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
-        serverHandlers.forEach(chunkMetaDataHandler -> chunkMetaDataHandler.tickServer(
-                dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
+        serverHandlers.forEach(
+                chunkMetaDataHandler -> chunkMetaDataHandler
+                        .tickServer(dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
     }
 
     // Ticks only on server side (but must be present for client server)
@@ -141,9 +145,7 @@ public class ChunkDataHandler {
     public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
         int dim = aEvent.world.provider.dimensionId;
         pushSyncHandlers.forEach(chunkMetaDataHandler -> {
-            ChunkHashMap data = dimensionWiseMetaChunkData
-                    .get(chunkMetaDataHandler.getTagName())
-                    .get(dim);
+            ChunkHashMap data = dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()).get(dim);
             int cycle = chunkMetaDataHandler.pushPayloadSpreadPeriod();
             int epoch = (int) (aEvent.world.getTotalWorldTime() % cycle);
             ArrayList<ChunkCoordIntPair> work;
@@ -166,14 +168,16 @@ public class ChunkDataHandler {
             chunkMetaDataHandler.pushPayload(aEvent.world, work);
             work.clear();
         });
-        worldHandlers.forEach(chunkMetaDataHandler -> chunkMetaDataHandler.tickWorld(
-                dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
+        worldHandlers.forEach(
+                chunkMetaDataHandler -> chunkMetaDataHandler
+                        .tickWorld(dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
     }
 
     @SubscribeEvent
     public void onPlayerTickEvent(TickEvent.PlayerTickEvent aEvent) {
-        playerHandlers.forEach(chunkMetaDataHandler -> chunkMetaDataHandler.tickPlayer(
-                dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
+        playerHandlers.forEach(
+                chunkMetaDataHandler -> chunkMetaDataHandler
+                        .tickPlayer(dimensionWiseMetaChunkData.get(chunkMetaDataHandler.getTagName()), aEvent));
     }
 
     public void clearData() {
@@ -190,23 +194,19 @@ public class ChunkDataHandler {
         dimensionWiseMetaChunkData.put(handler.getTagName(), new HashMap<>());
         Class clazz = handler.getClass();
         try {
-            if (clazz.getMethod("tickServer", HashMap.class, TickEvent.ServerTickEvent.class)
-                            .getDeclaringClass()
+            if (clazz.getMethod("tickServer", HashMap.class, TickEvent.ServerTickEvent.class).getDeclaringClass()
                     != IChunkMetaDataHandler.class) {
                 serverHandlers.add(handler);
             }
-            if (clazz.getMethod("tickPlayer", HashMap.class, TickEvent.PlayerTickEvent.class)
-                            .getDeclaringClass()
+            if (clazz.getMethod("tickPlayer", HashMap.class, TickEvent.PlayerTickEvent.class).getDeclaringClass()
                     != IChunkMetaDataHandler.class) {
                 playerHandlers.add(handler);
             }
-            if (clazz.getMethod("pushData", World.class, ChunkCoordIntPair.class)
-                            .getDeclaringClass()
+            if (clazz.getMethod("pushData", World.class, ChunkCoordIntPair.class).getDeclaringClass()
                     != IChunkMetaDataHandler.class) {
                 pushSyncHandlers.add(handler);
             }
-            if (clazz.getMethod("tickWorld", HashMap.class, TickEvent.WorldTickEvent.class)
-                            .getDeclaringClass()
+            if (clazz.getMethod("tickWorld", HashMap.class, TickEvent.WorldTickEvent.class).getDeclaringClass()
                     != IChunkMetaDataHandler.class) {
                 worldHandlers.add(handler);
             }
@@ -219,13 +219,11 @@ public class ChunkDataHandler {
                         != IChunkMetaDataHandler.class) {
                     pullSyncHandlers.add(handler);
                 }
-                if (clazz.getMethod("tickClient", HashMap.class, TickEvent.ClientTickEvent.class)
-                                .getDeclaringClass()
+                if (clazz.getMethod("tickClient", HashMap.class, TickEvent.ClientTickEvent.class).getDeclaringClass()
                         != IChunkMetaDataHandler.class) {
                     clientHandlers.add(handler);
                 }
-                if (clazz.getMethod("tickRender", HashMap.class, TickEvent.RenderTickEvent.class)
-                                .getDeclaringClass()
+                if (clazz.getMethod("tickRender", HashMap.class, TickEvent.RenderTickEvent.class).getDeclaringClass()
                         != IChunkMetaDataHandler.class) {
                     renderHandlers.add(handler);
                 }
@@ -243,15 +241,13 @@ public class ChunkDataHandler {
         return dimensionWiseMetaChunkData.get(handler.getTagName()).get(world).get(chunk);
     }
 
-    public NBTTagCompound putChunkData(
-            IChunkMetaDataHandler handler, int world, ChunkCoordIntPair chunk, NBTTagCompound data) {
+    public NBTTagCompound putChunkData(IChunkMetaDataHandler handler, int world, ChunkCoordIntPair chunk,
+            NBTTagCompound data) {
         return dimensionWiseMetaChunkData.get(handler.getTagName()).get(world).put(chunk, data);
     }
 
     public NBTTagCompound createIfAbsentChunkData(IChunkMetaDataHandler handler, int world, ChunkCoordIntPair chunk) {
-        return dimensionWiseMetaChunkData
-                .get(handler.getTagName())
-                .get(world)
+        return dimensionWiseMetaChunkData.get(handler.getTagName()).get(world)
                 .computeIfAbsent(chunk, chunkCoordIntPair -> handler.createData());
     }
 
@@ -264,6 +260,7 @@ public class ChunkDataHandler {
     }
 
     public static final class ChunkHashMap implements Map<ChunkCoordIntPair, NBTTagCompound> {
+
         private final HashMap<ChunkCoordIntPair, NBTChunk> storage;
         private final HashMap<ChunkCoordIntPair, NBTTagCompound> storageMeta = new HashMap<>(1024);
         private final HashSet<ChunkCoordIntPair> dirtyBoys = new HashSet<>(1024);
@@ -367,6 +364,7 @@ public class ChunkDataHandler {
     }
 
     private static final class NBTChunk {
+
         private final NBTTagCompound data;
         private boolean isLoaded;
 

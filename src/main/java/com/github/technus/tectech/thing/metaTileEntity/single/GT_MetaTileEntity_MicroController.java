@@ -4,6 +4,9 @@ import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_C
 import static com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader.READER_OFFLINE;
 import static com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader.READER_ONLINE;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.github.technus.avrClone.AvrCore;
 import com.github.technus.avrClone.instructions.ExecutionEvent;
 import com.github.technus.avrClone.instructions.Instruction;
@@ -16,16 +19,16 @@ import com.github.technus.avrClone.memory.program.ProgramMemory;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.avr.SidedRedstone;
 import com.github.technus.tectech.util.TT_Utility;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredMachineBlock {
+
     public static final int OPS_PER_TICK_MAX = 512;
 
     static {
@@ -73,12 +76,13 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
         if (avr.hasKey("instructions")) {
             InstructionRegistry registry = InstructionRegistry.REGISTRIES.get(avr.getString("instructionRegistry"));
             if (registry != null) {
-                core.setProgramMemory(new ProgramMemory(
-                        registry,
-                        avr.getBoolean("immersive"),
-                        avr.getIntArray("instructions"),
-                        avr.getIntArray("param0"),
-                        avr.getIntArray("param1")));
+                core.setProgramMemory(
+                        new ProgramMemory(
+                                registry,
+                                avr.getBoolean("immersive"),
+                                avr.getIntArray("instructions"),
+                                avr.getIntArray("param0"),
+                                avr.getIntArray("param1")));
             }
         }
         if (avr.hasKey("eepromSize")) {
@@ -128,7 +132,7 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
             core.interruptsHandle();
             if (core.awoken) {
                 delay = 0;
-                for (int load = 0; load < maxLoad; ) {
+                for (int load = 0; load < maxLoad;) {
                     load += core.getInstruction().getCost(core);
                     ExecutionEvent executionEvent = core.cpuCycleForce();
                     if (executionEvent != null) {
@@ -165,30 +169,23 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aBaseMetaTileEntity.getWorld() == null) {
             if (aSide == aFacing) {
-                return new ITexture[] {
-                    MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE
-                };
+                return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+                        aActive ? READER_ONLINE : READER_OFFLINE };
             }
-            return new ITexture[] {MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1] };
         }
         if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
-            return new ITexture[] {MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE
-            };
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+                    aActive ? READER_ONLINE : READER_OFFLINE };
         } else if (aSide == aFacing) {
-            return new ITexture[] {
-                MACHINE_CASINGS_TT[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
-            };
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
         }
-        return new ITexture[] {MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1] };
     }
 
     @Override

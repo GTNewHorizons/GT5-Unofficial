@@ -2,23 +2,27 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.transformation
 
 import static java.lang.Math.pow;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
+
 /**
  * Created by Tec on 26.05.2017.
  */
 public class EMTransformationRegistry {
+
     /**
      * Atom count per Mol
      */
@@ -38,8 +42,8 @@ public class EMTransformationRegistry {
      */
     public static final double EM_COUNT_EPSILON = EM_COUNT_PER_CUBE / pow(2, 40);
 
-    public static final double EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED =
-            EM_COUNT_PER_MATERIAL_AMOUNT - EM_COUNT_EPSILON;
+    public static final double EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED = EM_COUNT_PER_MATERIAL_AMOUNT
+            - EM_COUNT_EPSILON;
     public static final double EM_COUNT_PER_CUBE_DIMINISHED = EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED * 144 * 9;
     public static final double EM_COUNT_PER_ITEM_DIMINISHED = EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED * 144;
     public static final double EM_COUNT_PER_1k_DIMINISHED = EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED * 1000;
@@ -59,8 +63,7 @@ public class EMTransformationRegistry {
         this(creator, new HashMap<>(16), new HashMap<>(16), new HashMap<>(64), new HashMap<>(256));
     }
 
-    public EMTransformationRegistry(
-            Function<IEMStack, EMDequantizationInfo> creator,
+    public EMTransformationRegistry(Function<IEMStack, EMDequantizationInfo> creator,
             Map<Integer, EMFluidQuantizationInfo> fluidQuantization,
             Map<EMItemQuantizationInfo, EMItemQuantizationInfo> itemQuantization,
             Map<Integer, EMOredictQuantizationInfo> oredictQuantization,

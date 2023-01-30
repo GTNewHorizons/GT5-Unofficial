@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.block;
 
 import java.util.*;
 import java.util.stream.IntStream;
+
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,6 +10,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 public class TileEyeOfHarmony extends TileEntity {
@@ -80,14 +82,9 @@ public class TileEyeOfHarmony extends TileEntity {
     }
 
     public static class OrbitingObject {
-        public OrbitingObject(
-                Block block,
-                float distance,
-                float rotationSpeed,
-                float orbitSpeed,
-                float xAngle,
-                float zAngle,
-                float scale) {
+
+        public OrbitingObject(Block block, float distance, float rotationSpeed, float orbitSpeed, float xAngle,
+                float zAngle, float scale) {
             this.block = block;
             this.distance = distance;
             this.rotationSpeed = rotationSpeed;
@@ -111,8 +108,8 @@ public class TileEyeOfHarmony extends TileEntity {
     }
 
     private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
-    private static final Set<String> BLACKLISTED_BLOCKS =
-            Collections.unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
+    private static final Set<String> BLACKLISTED_BLOCKS = Collections
+            .unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
     // Map of strings to blocks
     private static final Map<String, Block> BLOCKS;
 

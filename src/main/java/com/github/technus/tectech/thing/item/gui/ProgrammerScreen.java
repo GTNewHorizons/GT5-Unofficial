@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ProgrammerScreen extends GuiScreen {
+
     private NBTTagCompound tag;
 
     public ProgrammerScreen(EntityPlayer player) {

@@ -1,11 +1,13 @@
 package com.github.technus.tectech.mechanics.data;
 
 import java.util.Objects;
+
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public final class WorldData {
+
     private final World world;
     private final Chunk chunk;
     private final ChunkCoordIntPair coordIntPair;

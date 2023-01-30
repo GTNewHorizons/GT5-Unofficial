@@ -1,19 +1,22 @@
 package com.github.technus.tectech.mechanics.data;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.event.world.ChunkEvent;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.TT_Utility;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import eu.usrv.yamcore.network.server.AbstractServerMessageHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.event.world.ChunkEvent;
 
 public class ChunkDataMessage implements IMessage {
+
     int worldId;
     ChunkCoordIntPair chunk;
     NBTTagCompound data;
@@ -46,6 +49,7 @@ public class ChunkDataMessage implements IMessage {
     }
 
     public static class ChunkDataQuery extends ChunkDataMessage {
+
         public ChunkDataQuery() {}
 
         public ChunkDataQuery(ChunkEvent.Load aEvent, IChunkMetaDataHandler handler) {
@@ -56,6 +60,7 @@ public class ChunkDataMessage implements IMessage {
     }
 
     public static class ChunkDataData extends ChunkDataMessage {
+
         public ChunkDataData() {}
 
         public ChunkDataData(int worldId, ChunkCoordIntPair chunk, IChunkMetaDataHandler handler) {
@@ -74,17 +79,19 @@ public class ChunkDataMessage implements IMessage {
     }
 
     public static class ClientHandler extends AbstractClientMessageHandler<ChunkDataData> {
+
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, ChunkDataData pMessage, MessageContext pCtx) {
             if (TT_Utility.checkChunkExist(pPlayer.worldObj, pMessage.chunk)) {
-                TecTech.chunkDataHandler.putChunkData(
-                        pMessage.handler, pMessage.worldId, pMessage.chunk, pMessage.data);
+                TecTech.chunkDataHandler
+                        .putChunkData(pMessage.handler, pMessage.worldId, pMessage.chunk, pMessage.data);
             }
             return null;
         }
     }
 
     public static class ServerHandler extends AbstractServerMessageHandler<ChunkDataQuery> {
+
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, ChunkDataQuery pMessage, MessageContext pCtx) {
             return new ChunkDataData(pMessage);

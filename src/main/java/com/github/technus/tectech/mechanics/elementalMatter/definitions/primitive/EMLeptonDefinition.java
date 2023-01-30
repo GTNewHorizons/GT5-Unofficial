@@ -16,9 +16,15 @@ import com.github.technus.tectech.util.TT_Utility;
  * Created by danie_000 on 22.10.2016.
  */
 public class EMLeptonDefinition extends EMFermionDefinition {
-    public static final EMLeptonDefinition
-            lepton_e = new EMLeptonDefinition("tt.keyword.Electron", "\u03b2-", 1, 0.511e6D, -3, 15, "e-"),
-            lepton_m = new EMLeptonDefinition("tt.keyword.Muon", "\u03bc-", 2, 105.658e6D, -3, 17, "m-"),
+
+    public static final EMLeptonDefinition lepton_e = new EMLeptonDefinition(
+            "tt.keyword.Electron",
+            "\u03b2-",
+            1,
+            0.511e6D,
+            -3,
+            15,
+            "e-"), lepton_m = new EMLeptonDefinition("tt.keyword.Muon", "\u03bc-", 2, 105.658e6D, -3, 17, "m-"),
             lepton_t = new EMLeptonDefinition("tt.keyword.Tauon", "\u03c4-", 3, 1776.83e6D, -3, 19, "t-"),
             lepton_e_ = new EMLeptonDefinition("tt.keyword.Positron", "\u03b2+", -1, 0.511e6D, 3, 16, "e+"),
             lepton_m_ = new EMLeptonDefinition("tt.keyword.Antimuon", "\u03bc+", -2, 105.658e6D, 3, 18, "m+"),

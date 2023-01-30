@@ -3,10 +3,12 @@ package com.github.technus.tectech.mechanics.dataTransport;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 
 import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class InventoryDataPacket extends DataPacket<ItemStack[]> {
+
     public InventoryDataPacket(ItemStack[] content) {
         super(content);
     }

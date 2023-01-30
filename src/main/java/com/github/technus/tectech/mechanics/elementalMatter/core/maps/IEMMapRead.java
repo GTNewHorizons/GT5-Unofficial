@@ -6,17 +6,20 @@ import static com.github.technus.tectech.util.DoubleCount.ulpSigned;
 import static com.github.technus.tectech.util.TT_Utility.packNBT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.lang.reflect.Array;
+import java.util.*;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.util.TT_Utility;
-import java.lang.reflect.Array;
-import java.util.*;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 
 public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? extends IEMStack>>, Cloneable {
+
     NavigableMap<IEMDefinition, T> getBackingMap();
 
     IEMMapRead<T> clone();
@@ -100,14 +103,27 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
         int i = 0;
         for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
             T instance = entry.getValue();
-            info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName() + " "
-                    + EnumChatFormatting.AQUA + instance.getDefinition().getSymbol() + EnumChatFormatting.RESET + " "
-                    + translateToLocal("tt.keyword.short.amount") + ": " + EnumChatFormatting.GREEN
-                    + TT_Utility.formatNumberExp(instance.getAmount() / AVOGADRO_CONSTANT) + " "
-                    + translateToLocal("tt.keyword.unit.mol") + EnumChatFormatting.RESET + " "
-                    + translateToLocal("tt.keyword.short.charge") + ": " + EnumChatFormatting.GREEN
-                    + TT_Utility.formatNumberExp(instance.getCharge()) + " "
-                    + translateToLocal("tt.keyword.unit.charge") + EnumChatFormatting.RESET;
+            info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName()
+                    + " "
+                    + EnumChatFormatting.AQUA
+                    + instance.getDefinition().getSymbol()
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + translateToLocal("tt.keyword.short.amount")
+                    + ": "
+                    + EnumChatFormatting.GREEN
+                    + TT_Utility.formatNumberExp(instance.getAmount() / AVOGADRO_CONSTANT)
+                    + " "
+                    + translateToLocal("tt.keyword.unit.mol")
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + translateToLocal("tt.keyword.short.charge")
+                    + ": "
+                    + EnumChatFormatting.GREEN
+                    + TT_Utility.formatNumberExp(instance.getCharge())
+                    + " "
+                    + translateToLocal("tt.keyword.unit.charge")
+                    + EnumChatFormatting.RESET;
         }
         return info;
     }
@@ -125,8 +141,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
         }
 
         Iterator<Map.Entry<IEMDefinition, T>> iterator = entrySet().iterator();
-        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO =
-                o.entrySet().iterator();
+        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO = o.entrySet().iterator();
 
         while (iterator.hasNext()) {
             int result = iterator.next().getValue().compareTo(iteratorO.next().getValue());
@@ -139,6 +154,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
 
     /**
      * use only for nested operations!
+     * 
      * @param o
      * @return
      */
@@ -153,8 +169,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
         }
 
         Iterator<Map.Entry<IEMDefinition, T>> iterator = entrySet().iterator();
-        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO =
-                o.entrySet().iterator();
+        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO = o.entrySet().iterator();
 
         while (iterator.hasNext()) {
             T first = iterator.next().getValue();

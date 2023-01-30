@@ -2,19 +2,23 @@ package com.github.technus.tectech.mechanics.data;
 
 import static java.nio.charset.Charset.forName;
 
-import com.github.technus.tectech.loader.NetworkDispatcher;
-import com.github.technus.tectech.util.TT_Utility;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import java.util.HashMap;
 import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.util.TT_Utility;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
+
 public class PlayerPersistence {
+
     private final HashMap<UUID, NBTTagCompound> map = new HashMap<>();
     private final String extension;
 

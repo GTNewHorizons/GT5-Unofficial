@@ -1,14 +1,17 @@
 package com.github.technus.tectech.mechanics.commands;
 
-import com.github.technus.tectech.util.TT_Utility;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.github.technus.tectech.util.TT_Utility;
+
 public class ConvertInteger implements ICommand {
+
     ArrayList<String> aliases = new ArrayList<>();
 
     public ConvertInteger() {
@@ -22,10 +25,14 @@ public class ConvertInteger implements ICommand {
             if (args.length == 1) {
                 try {
                     int value = Integer.parseInt(args[0]);
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA.toString()
-                            + EnumChatFormatting.BOLD + TT_Utility.intBitsToShortString(value)
-                            + " " + EnumChatFormatting.RESET
-                            + EnumChatFormatting.BLUE + value));
+                    sender.addChatMessage(
+                            new ChatComponentText(
+                                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                                            + TT_Utility.intBitsToShortString(value)
+                                            + " "
+                                            + EnumChatFormatting.RESET
+                                            + EnumChatFormatting.BLUE
+                                            + value));
                 } catch (Exception e) {
                     sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Invalid Integer " + args[0]));
                 }

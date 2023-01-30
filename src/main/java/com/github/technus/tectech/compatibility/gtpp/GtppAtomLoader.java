@@ -4,13 +4,16 @@ import static com.github.technus.tectech.mechanics.elementalMatter.core.transfor
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.getBestUnstableIsotope;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.getFirstStableIsotope;
 
+import java.lang.reflect.Method;
+
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import gregtech.api.enums.OrePrefixes;
-import java.lang.reflect.Method;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GtppAtomLoader {
+
     // region reflect a bit
     private Class<?> ELEMENT;
     private Object ELEMENT_INSTANCE;
@@ -18,8 +21,7 @@ public class GtppAtomLoader {
 
     private String getUnlocalizedName(String elementName) {
         try {
-            return (String)
-                    getUnlocalizedName.invoke(ELEMENT.getField(elementName).get(ELEMENT_INSTANCE));
+            return (String) getUnlocalizedName.invoke(ELEMENT.getField(elementName).get(ELEMENT_INSTANCE));
         } catch (Exception e) {
             throw new Error(e);
         }
@@ -36,7 +38,10 @@ public class GtppAtomLoader {
     private void generate(String elementName, boolean generateAll, boolean generateBlastRecipes) {
         try {
             generate.invoke(
-                    null, ELEMENT.getField(elementName).get(ELEMENT_INSTANCE), generateAll, generateBlastRecipes);
+                    null,
+                    ELEMENT.getField(elementName).get(ELEMENT_INSTANCE),
+                    generateAll,
+                    generateBlastRecipes);
         } catch (Exception e) {
             throw new Error(e);
         }
@@ -59,7 +64,10 @@ public class GtppAtomLoader {
 
             clazz = Class.forName("gtPlusPlus.core.material.MaterialGenerator");
             generate = clazz.getMethod(
-                    "generate", Class.forName("gtPlusPlus.core.material.Material"), boolean.class, boolean.class);
+                    "generate",
+                    Class.forName("gtPlusPlus.core.material.Material"),
+                    boolean.class,
+                    boolean.class);
         } catch (Exception e) {
             throw new Error(e);
         }

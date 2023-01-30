@@ -8,6 +8,7 @@ import com.github.technus.avrClone.registerPackages.RegisterPackageSync;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, SidedRedstone> {
+
     public static final RSINT RSINT = new RSINT();
 
     public SidedRedstone(int offset) {
@@ -70,13 +71,14 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     public void postSync(AvrCore core, IGregTechTileEntity iGregTechTileEntity) {
         int addr = this.getOffset();
         for (byte i = 0; i < 6; i++) {
-            iGregTechTileEntity.setOutputRedstoneSignal(
-                    i, (byte) core.getDataValue(addr)); // allows edge detection hack?
+            iGregTechTileEntity.setOutputRedstoneSignal(i, (byte) core.getDataValue(addr)); // allows edge detection
+                                                                                            // hack?
             addr += 3;
         }
     }
 
     public enum Register implements IRegister<SidedRedstone> {
+
         PIN0,
         PINT0,
         PORT0,
@@ -114,12 +116,14 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     }
 
     public enum RegisterBitsPCMSK implements IRegisterBit<SidedRedstone> {
+
         PCINT0,
         PCINT1,
         PCINT2,
         PCINT3,
         PCINT4,
         PCINT5;
+
         private final int bit, mask;
 
         RegisterBitsPCMSK() {
@@ -144,12 +148,14 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     }
 
     public enum RegisterBitsPCFR implements IRegisterBit<SidedRedstone> {
+
         PCF0,
         PCF1,
         PCF2,
         PCF3,
         PCF4,
         PCF5;
+
         private final int bit, mask;
 
         RegisterBitsPCFR() {
@@ -174,10 +180,12 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     }
 
     public enum RegisterBitsPCINT implements IRegisterBit<SidedRedstone> {
+
         PCIF,
         PCEN,
         PCISC0,
         PCISC1;
+
         private final int bit, mask;
 
         RegisterBitsPCINT() {
@@ -202,12 +210,14 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     }
 
     public enum RegisterBitsPNEW implements IRegisterBit<SidedRedstone> {
+
         PNEW0,
         PNEW1,
         PNEW2,
         PNEW3,
         PNEW4,
         PNEW5;
+
         private final int bit, mask;
 
         RegisterBitsPNEW() {
@@ -232,12 +242,14 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     }
 
     public enum RegisterBitsPOLD implements IRegisterBit<SidedRedstone> {
+
         POLD0,
         POLD1,
         POLD2,
         POLD3,
         POLD4,
         POLD5;
+
         private final int bit, mask;
 
         RegisterBitsPOLD() {
@@ -262,6 +274,7 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     }
 
     public static class RSINT implements IInterrupt<SidedRedstone> {
+
         @Override
         public int getVector() {
             return 1;

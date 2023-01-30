@@ -5,12 +5,22 @@ import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEn
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.pipe.IActivePipe;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
 import com.github.technus.tectech.util.CommonValues;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -25,16 +35,9 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
+
     private static Textures.BlockIcons.CustomIcon EMpipe;
     public byte connectionCount = 0;
 
@@ -61,18 +64,12 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aConnections,
-            byte aColorIndex,
-            boolean aConnected,
-            boolean aRedstone) {
-        return new ITexture[] {
-            new GT_RenderedTexture(EMpipe),
-            new GT_RenderedTexture(
-                    getActive() ? EMCandyActive : EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
+            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+        return new ITexture[] { new GT_RenderedTexture(EMpipe),
+                new GT_RenderedTexture(
+                        getActive() ? EMCandyActive : EMcandy,
+                        Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
@@ -107,16 +104,16 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.pipe.energystream.desc.0"), // Laser tunneling device.
-            EnumChatFormatting.AQUA.toString()
-                    + EnumChatFormatting.BOLD
-                    + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"), // Bright Vacuum!!!
-            EnumChatFormatting.AQUA
-                    + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"), // Must be painted to work
-            EnumChatFormatting.AQUA
-                    + translateToLocal("gt.blockmachines.pipe.energystream.desc.3") // Do not split or turn
+        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energystream.desc.0"), // Laser
+                                                                                                                       // tunneling
+                                                                                                                       // device.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"), // Bright Vacuum!!!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"), // Must be
+                                                                                                         // painted to
+                                                                                                         // work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3") // Do not split
+                                                                                                        // or turn
         };
     }
 
@@ -167,25 +164,25 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
                             && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(b1)) {
                         mConnections |= 1 << b0;
                         connectionCount++;
-                    } else if (tTileEntity instanceof IGregTechTileEntity
-                            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                                    instanceof IConnectsToEnergyTunnel) {
-                        if ( // ((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(b1).alwaysLookConnected(b1,
-                        // ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(b1), ((IGregTechTileEntity)
-                        // tTileEntity).getCoverDataAtSide(b1), ((IGregTechTileEntity) tTileEntity)) ||
-                        ((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-                                .canConnect(b1)) {
-                            mConnections |= 1 << b0;
-                            connectionCount++;
-                        }
-                    }
+                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
+                            .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
+                                if ( // ((IGregTechTileEntity)
+                                     // tTileEntity).getCoverBehaviorAtSide(b1).alwaysLookConnected(b1,
+                                // ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(b1), ((IGregTechTileEntity)
+                                // tTileEntity).getCoverDataAtSide(b1), ((IGregTechTileEntity) tTileEntity)) ||
+                                ((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                                        .canConnect(b1)) {
+                                    mConnections |= 1 << b0;
+                                    connectionCount++;
+                                }
+                            }
                     // }
                     // else {
-                    //    mConnections |= (1 << b0);
-                    //    if (mOld != mConnections) {
-                    //        connectionCount++;
-                    //        mOld = mConnections;
-                    //    }
+                    // mConnections |= (1 << b0);
+                    // if (mOld != mConnections) {
+                    // connectionCount++;
+                    // mOld = mConnections;
+                    // }
                     // }
                 }
             }
@@ -273,8 +270,8 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
             tSide5 = 1f;
         }
 
-        return AxisAlignedBB.getBoundingBox(
-                aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return AxisAlignedBB
+                .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override

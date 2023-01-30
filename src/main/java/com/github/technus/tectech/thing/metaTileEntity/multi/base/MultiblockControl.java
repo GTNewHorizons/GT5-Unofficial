@@ -4,6 +4,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
  * Created by danie_000 on 23.12.2017.
  */
 public class MultiblockControl<T> {
+
     private final boolean shouldExplode;
     private final T value;
     private final int eUt;
@@ -14,16 +15,8 @@ public class MultiblockControl<T> {
     private final int pollutionToAdd;
     private final double excessMass;
 
-    public MultiblockControl(
-            T value,
-            int eUt,
-            int amperes,
-            int requiredData,
-            int effIncrease,
-            int maxProgressTime,
-            int pollutionToAdd,
-            double excessMass,
-            boolean shouldExplode) {
+    public MultiblockControl(T value, int eUt, int amperes, int requiredData, int effIncrease, int maxProgressTime,
+            int pollutionToAdd, double excessMass, boolean shouldExplode) {
         this.value = value;
         this.eUt = eUt;
         this.amperes = amperes;
@@ -35,15 +28,8 @@ public class MultiblockControl<T> {
         this.shouldExplode = shouldExplode;
     }
 
-    public MultiblockControl(
-            T value,
-            int eUt,
-            int amperes,
-            int requiredData,
-            int effIncrease,
-            int maxProgressTime,
-            int pollutionToAdd,
-            double excessMass) {
+    public MultiblockControl(T value, int eUt, int amperes, int requiredData, int effIncrease, int maxProgressTime,
+            int pollutionToAdd, double excessMass) {
         this(value, eUt, amperes, requiredData, effIncrease, maxProgressTime, pollutionToAdd, excessMass, false);
     }
 

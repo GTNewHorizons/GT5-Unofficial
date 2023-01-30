@@ -1,18 +1,21 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.TT_Utility;
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.gui.GT_Slot_Holo;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.util.TT_Utility;
+
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.GT_Slot_Holo;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 @Deprecated
 public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
+
     public LedStatus[] eParamsInStatus = LedStatus.makeArray(20, LedStatus.STATUS_UNDEFINED);
     public LedStatus[] eParamsOutStatus = LedStatus.makeArray(20, LedStatus.STATUS_UNDEFINED);
     public double[] eParamsIn = new double[20]; // number I from parametrizers
@@ -24,12 +27,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public final boolean eSafeVoidButton, allowedToWorkButton, ePowerPassButton;
     public boolean ePowerPassCover;
 
-    public GT_Container_MultiMachineEM(
-            InventoryPlayer aInventoryPlayer,
-            IGregTechTileEntity aTileEntity,
-            boolean enablePowerPassButton,
-            boolean enableSafeVoid,
-            boolean enablePowerButton) {
+    public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
+            boolean enablePowerPassButton, boolean enableSafeVoid, boolean enablePowerButton) {
         super(aInventoryPlayer, aTileEntity);
         ePowerPassButton = enablePowerPassButton;
         eSafeVoidButton = enableSafeVoid;
@@ -40,8 +39,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         this(aInventoryPlayer, aTileEntity, true, true, true);
     }
 
-    public GT_Container_MultiMachineEM(
-            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
+    public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
+            boolean bindInventory) {
         super(aInventoryPlayer, aTileEntity, bindInventory);
         ePowerPassButton = eSafeVoidButton = allowedToWorkButton = true;
     }
@@ -75,8 +74,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
-            GT_MetaTileEntity_MultiblockBase_EM mte =
-                    (GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity();
+            GT_MetaTileEntity_MultiblockBase_EM mte = (GT_MetaTileEntity_MultiblockBase_EM) mTileEntity
+                    .getMetaTileEntity();
             IGregTechTileEntity base = mte.getBaseMetaTileEntity();
             switch (aSlotIndex) {
                 case 0:
@@ -123,11 +122,10 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null || eParamsInStatus == null) {
             return;
         }
-        eParamsInStatus =
-                ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.eParamsInStatus;
-        eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity())
-                .parametrization
-                .eParamsOutStatus;
+        eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity
+                .getMetaTileEntity()).parametrization.eParamsInStatus;
+        eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity
+                .getMetaTileEntity()).parametrization.eParamsOutStatus;
         eParamsIn = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsIn;
         eParamsOut = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsOut;
         eCertainMode = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainMode;
@@ -141,7 +139,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             ICrafting var1 = (ICrafting) crafter;
             for (int i = 100, j = 0; j < eParamsInStatus.length; j++) {
                 var1.sendProgressBarUpdate(
-                        this, i++, (eParamsInStatus[j].getOrdinalByte() | (eParamsOutStatus[j].getOrdinalByte() << 8)));
+                        this,
+                        i++,
+                        (eParamsInStatus[j].getOrdinalByte() | (eParamsOutStatus[j].getOrdinalByte() << 8)));
             }
             var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
             var1.sendProgressBarUpdate(

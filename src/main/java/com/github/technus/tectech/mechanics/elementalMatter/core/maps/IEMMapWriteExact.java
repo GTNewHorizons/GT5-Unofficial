@@ -1,10 +1,12 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import java.util.Map;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+
 public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
+
     default void cleanUp() {
         entrySet().removeIf(entry -> entry.getValue().isInvalidAmount());
     }
@@ -72,6 +74,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
 
     /**
      * Should only be used when modifying definitions to alter the integer count correctly
+     * 
      * @param def
      * @return
      */
@@ -81,6 +84,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
 
     /**
      * Should only be used when modifying definitions to alter the integer count correctly
+     * 
      * @param def
      * @param amountToConsume
      * @return

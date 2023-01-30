@@ -4,5 +4,6 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 
 public interface IPrimitiveColliderHandler {
+
     void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out);
 }

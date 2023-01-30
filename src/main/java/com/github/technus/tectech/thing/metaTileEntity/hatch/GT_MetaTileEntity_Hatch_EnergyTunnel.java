@@ -5,22 +5,25 @@ import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch_EnergyMulti
         implements IConnectsToEnergyTunnel {
+
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
                 aID,
@@ -33,19 +36,19 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_EnergyTunnel(
-            String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
+        return new ITexture[] { aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
+        return new ITexture[] { aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier] };
     }
 
     @Override
@@ -120,12 +123,12 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_GENERAL,
-            mDescription,
-            translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(Amperes * maxEUInput()) + EnumChatFormatting.RESET
-                    + " EU/t" // Throughput
+        return new String[] { CommonValues.TEC_MARK_GENERAL, mDescription,
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(Amperes * maxEUInput())
+                        + EnumChatFormatting.RESET
+                        + " EU/t" // Throughput
         };
     }
 

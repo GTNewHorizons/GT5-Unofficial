@@ -5,17 +5,9 @@ import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.thing.CustomItemList;
-import com.github.technus.tectech.util.CommonValues;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,10 +19,22 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.font.TecTechFontRender;
+import com.github.technus.tectech.loader.gui.ModGuiHandler;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.thing.CustomItemList;
+import com.github.technus.tectech.util.CommonValues;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * Created by Tec on 15.03.2017.
  */
 public final class ElementalDefinitionScanStorage_EM extends Item {
+
     public static ElementalDefinitionScanStorage_EM INSTANCE;
     public static IIcon offline, online;
 
@@ -63,8 +67,8 @@ public final class ElementalDefinitionScanStorage_EM extends Item {
 
     public static ArrayList<String> getLines(ItemStack containerItem) {
         if (containerItem.stackTagCompound != null && containerItem.stackTagCompound.hasKey("content")) {
-            EMInstanceStackMap content = EMInstanceStackMap.fromNBT(
-                    TecTech.definitionsRegistry, containerItem.stackTagCompound.getCompoundTag("content"));
+            EMInstanceStackMap content = EMInstanceStackMap
+                    .fromNBT(TecTech.definitionsRegistry, containerItem.stackTagCompound.getCompoundTag("content"));
             return content.getScanInfo(containerItem.stackTagCompound.getIntArray("scanConfiguration"));
         }
         return null;
@@ -74,8 +78,9 @@ public final class ElementalDefinitionScanStorage_EM extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_EM);
         if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("content")) {
-            aList.add(EnumChatFormatting.BLUE
-                    + translateToLocal("item.em.definitionScanStorage.desc.0")); // Contains scan result
+            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.definitionScanStorage.desc.0")); // Contains
+                                                                                                           // scan
+                                                                                                           // result
             aList.add(translateToLocal("item.em.definitionScanStorage.desc.1")); // Use to read
         } else {
             aList.add(translateToLocal("item.em.definitionScanStorage.desc.2")); // Storage for matter scan data

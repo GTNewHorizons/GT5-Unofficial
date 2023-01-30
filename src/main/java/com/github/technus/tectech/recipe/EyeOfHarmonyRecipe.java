@@ -6,27 +6,33 @@ import static gregtech.api.GregTech_API.getUnificatedOreDictStack;
 import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
 import static java.lang.Math.min;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+
 import com.github.technus.tectech.util.ItemStackLong;
+
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.Pair;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class EyeOfHarmonyRecipe {
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
+
         @Override
         public int computeHashCode(ItemStack stack) {
             // Not really sure how this works or if it is "unique enough".
@@ -89,15 +95,9 @@ public class EyeOfHarmonyRecipe {
         return rocketTier;
     }
 
-    public EyeOfHarmonyRecipe(
-            ArrayList<Pair<Materials, Long>> materialList,
-            Block block,
-            final double recipeEnergyEfficiency,
-            final long hydrogenRequirement,
-            final long heliumRequirement,
-            final long miningTimeSeconds,
-            final long rocketTierOfRecipe,
-            final double baseSuccessChance) {
+    public EyeOfHarmonyRecipe(ArrayList<Pair<Materials, Long>> materialList, Block block,
+            final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
+            final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
 
         this.rocketTier = rocketTierOfRecipe;
         this.spacetimeCasingTierRequired = min(8, rocketTierOfRecipe);
@@ -106,8 +106,7 @@ public class EyeOfHarmonyRecipe {
 
         this.outputItems = validDustGenerator(materialList);
 
-        this.sumOfItems =
-                this.outputItems.stream().map(ItemStackLong::getStackSize).reduce(0L, Long::sum);
+        this.sumOfItems = this.outputItems.stream().map(ItemStackLong::getStackSize).reduce(0L, Long::sum);
 
         this.outputItems.add(
                 new ItemStackLong(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), this.sumOfItems * 3));
@@ -133,18 +132,18 @@ public class EyeOfHarmonyRecipe {
         // Add a bonus fluid of compressed star matter.
         fluidStackArrayList.add(Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000));
 
-        // Tier 0 - 576   White
-        // Tier 1 - 2304  White
-        // Tier 2 - 9216  White
+        // Tier 0 - 576 White
+        // Tier 1 - 2304 White
+        // Tier 2 - 9216 White
         // Tier 3 - 36864 White
 
-        // Tier 4 - 576   Black
-        // Tier 5 - 2304  Black
-        // Tier 6 - 9216  Black
+        // Tier 4 - 576 Black
+        // Tier 5 - 2304 Black
+        // Tier 6 - 9216 Black
         // Tier 7 - 36864 Black
 
-        // Tier 8 - 576   Universium
-        // Tier 9 - 2304  Universium
+        // Tier 8 - 576 Universium
+        // Tier 9 - 2304 Universium
 
         if (rocketTierOfRecipe <= 3) {
             fluidStackArrayList.add(Materials.WhiteDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe)));
@@ -175,16 +174,10 @@ public class EyeOfHarmonyRecipe {
         this.euOutput = (long) (euStartCost * recipeEnergyEfficiency);
     }
 
-    public EyeOfHarmonyRecipe(
-            final GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
-            final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper,
-            final Block block,
-            final double recipeEnergyEfficiency,
-            final long hydrogenRequirement,
-            final long heliumRequirement,
-            final long miningTimeSeconds,
-            final long spacetimeCasingTierRequired,
-            final double baseSuccessChance) {
+    public EyeOfHarmonyRecipe(final GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
+            final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper, final Block block,
+            final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
+            final long miningTimeSeconds, final long spacetimeCasingTierRequired, final double baseSuccessChance) {
 
         // Process recipes output items.
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
@@ -257,9 +250,8 @@ public class EyeOfHarmonyRecipe {
     private static final double TERTIARY_MULTIPLIER = (0.1); // Macerating thermal centrifuged byproduct chance.
     private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
 
-    private static final double[] ORE_MULTIPLIER = {
-        PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
-    };
+    private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER,
+            QUATERNARY_MULTIPLIER };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
 
@@ -276,21 +268,21 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    public static void processHelper(
-            HashMapHelper outputMap, Materials material, double mainMultiplier, double probability) {
+    public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
+            double probability) {
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
             outputMap.add(
-                    byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
+                    byProductMaterial.mDirectSmelting,
+                    mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
         }
     }
 
     private static ArrayList<Pair<Materials, Long>> processDimension(
             GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
-            GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper,
-            long timeInSeconds) {
+            GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper, long timeInSeconds) {
         HashMapHelper outputMap = new HashMapHelper();
 
         double mainMultiplier = timeInSeconds * 384.0;
@@ -304,8 +296,12 @@ public class EyeOfHarmonyRecipe {
         });
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
-        smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) ->
-                processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
+        smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach(
+                (veinInfo, probability) -> processHelper(
+                        outputMap,
+                        veinInfo.getOreMaterial(),
+                        mainMultiplier,
+                        probability));
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
 
@@ -361,29 +357,31 @@ public class EyeOfHarmonyRecipe {
     }
 
     private static final List<Materials> VALID_PLASMAS = Stream.of(
-                    Materials.Helium,
-                    Materials.Iron,
-                    Materials.Calcium,
-                    Materials.Niobium,
-                    Materials.Nitrogen,
-                    Materials.Zinc,
-                    Materials.Silver,
-                    Materials.Titanium,
-                    Materials.Radon,
-                    Materials.Nickel,
-                    Materials.Boron,
-                    Materials.Sulfur,
-                    Materials.Americium,
-                    Materials.Bismuth,
-                    Materials.Oxygen,
-                    Materials.Tin)
-            .collect(Collectors.toList());
+            Materials.Helium,
+            Materials.Iron,
+            Materials.Calcium,
+            Materials.Niobium,
+            Materials.Nitrogen,
+            Materials.Zinc,
+            Materials.Silver,
+            Materials.Titanium,
+            Materials.Radon,
+            Materials.Nickel,
+            Materials.Boron,
+            Materials.Sulfur,
+            Materials.Americium,
+            Materials.Bismuth,
+            Materials.Oxygen,
+            Materials.Tin).collect(Collectors.toList());
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<String, Long>() {
+
         {
             VALID_PLASMAS.forEach(
-                    (material -> put(material.getPlasma(1).getFluid().getUnlocalizedName(), (long)
-                            (getPlasmaFuelValueInEUPerLiterFromMaterial(material) * getMaxPlasmaTurbineEfficiency()))));
+                    (material -> put(
+                            material.getPlasma(1).getFluid().getUnlocalizedName(),
+                            (long) (getPlasmaFuelValueInEUPerLiterFromMaterial(material)
+                                    * getMaxPlasmaTurbineEfficiency()))));
         }
     };
 }

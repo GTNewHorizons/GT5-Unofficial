@@ -11,6 +11,17 @@ import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
@@ -22,6 +33,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -34,21 +46,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.IGT_HatchAdder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM
         implements ISurvivalConstructable {
+
     // region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
 
@@ -58,59 +62,54 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     // region structure
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.computer.hint.0"), // 1 - Classic/Data Hatches or Computer casing
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.computer.hint.1"), // 2 - Rack Hatches or Advanced computer casing
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"), // 1 - Classic/Data Hatches or
+                                                                                  // Computer casing
+            translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"), // 2 - Rack Hatches or Advanced
+                                                                                  // computer casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_computer> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_computer>builder()
-                    .addShape("front", transpose(new String[][] {{" AA"}, {" AA"}, {" ~A"}, {" AA"}}))
-                    .addShape("cap", transpose(new String[][] {{"-CB"}, {" DD"}, {" DD"}, {"-CB"}}))
-                    .addShape("slice", transpose(new String[][] {{"-CB"}, {" ED"}, {" ED"}, {"-CB"}}))
-                    .addShape("back", transpose(new String[][] {{" AA"}, {" AA"}, {" AA"}, {" AA"}}))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 1))
-                    .addElement('C', ofBlock(sBlockCasingsTT, 2))
-                    .addElement('D', ofBlock(sBlockCasingsTT, 3))
-                    .addElement(
-                            'A',
-                            buildHatchAdder(GT_MetaTileEntity_EM_computer.class)
-                                    .atLeast(
-                                            Energy.or(HatchElement.EnergyMulti),
-                                            Maintenance,
-                                            HatchElement.Uncertainty,
-                                            HatchElement.OutputData)
-                                    .casingIndex(textureOffset + 1)
-                                    .dot(1)
-                                    .buildAndChain(ofBlock(sBlockCasingsTT, 1)))
-                    .addElement(
-                            'E',
-                            ofChain(
-                                    RackHatchElement.INSTANCE.newAny(textureOffset + 3, 2),
-                                    ofBlock(sBlockCasingsTT, 3)))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_computer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_computer>builder()
+            .addShape("front", transpose(new String[][] { { " AA" }, { " AA" }, { " ~A" }, { " AA" } }))
+            .addShape("cap", transpose(new String[][] { { "-CB" }, { " DD" }, { " DD" }, { "-CB" } }))
+            .addShape("slice", transpose(new String[][] { { "-CB" }, { " ED" }, { " ED" }, { "-CB" } }))
+            .addShape("back", transpose(new String[][] { { " AA" }, { " AA" }, { " AA" }, { " AA" } }))
+            .addElement('B', ofBlock(sBlockCasingsTT, 1)).addElement('C', ofBlock(sBlockCasingsTT, 2))
+            .addElement('D', ofBlock(sBlockCasingsTT, 3))
+            .addElement(
+                    'A',
+                    buildHatchAdder(GT_MetaTileEntity_EM_computer.class)
+                            .atLeast(
+                                    Energy.or(HatchElement.EnergyMulti),
+                                    Maintenance,
+                                    HatchElement.Uncertainty,
+                                    HatchElement.OutputData)
+                            .casingIndex(textureOffset + 1).dot(1).buildAndChain(ofBlock(sBlockCasingsTT, 1)))
+            .addElement(
+                    'E',
+                    ofChain(RackHatchElement.INSTANCE.newAny(textureOffset + 3, 2), ofBlock(sBlockCasingsTT, 3)))
+            .build();
     // endregion
 
     // region parameters
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
 
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME =
-            (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME =
-            (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1"); // Overvoltage ratio
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME =
-            (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0"); // Current max. heat
-    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME =
-            (base, p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1"); // Produced computation
-    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS =
-            (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1, 3);
-    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS =
-            (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), .7, .8, 1.2, 2);
-    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS =
-            (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), -10000, 0, 0, 5000);
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base,
+            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base,
+            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1"); // Overvoltage ratio
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base,
+            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0"); // Current max. heat
+    private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base,
+            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1"); // Produced computation
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS = (base, p) -> LedStatus
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1, 3);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS = (base, p) -> LedStatus
+            .fromLimitsInclusiveOuterBoundary(p.get(), .7, .8, 1.2, 2);
+    private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS = (base, p) -> LedStatus
+            .fromLimitsInclusiveOuterBoundary(p.get(), -10000, 0, 0, 5000);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS = (base, p) -> {
         if (base.eAvailableData < 0) {
             return STATUS_TOO_LOW;
@@ -206,8 +205,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()
-                && mMachine
+        if (aBaseMetaTileEntity.isServerSide() && mMachine
                 && !aBaseMetaTileEntity.isActive()
                 && aTick % 20 == MULTI_CHECK_AT) {
             double maxTemp = 0;
@@ -319,15 +317,14 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal(
-                        "gt.blockmachines.multimachine.em.computer.name")) // Machine Type: Quantum Computer
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of the Quantum Computer
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate computation (and heat)
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.name")) // Machine Type: Quantum
+                                                                                              // Computer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
+                                                                                               // the Quantum Computer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate
+                                                                                               // computation (and heat)
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator()
-                .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
+                .addSeparator().beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
                 .addOtherStructurePart(
                         translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
                         translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
@@ -345,12 +342,26 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                         translateToLocal("tt.keyword.Structure.Optional") + " "
                                 + translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
                         2) // Parametrizer: (optional) Any Computer Casing on first or last slice
-                .addEnergyHatch(
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                        1) // Energy Hatch: Any Computer Casing on first or last slice
-                .addMaintenanceHatch(
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                        1) // Maintenance Hatch: Any Computer Casing on first or last slice
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy
+                                                                                                               // Hatch:
+                                                                                                               // Any
+                                                                                                               // Computer
+                                                                                                               // Casing
+                                                                                                               // on
+                                                                                                               // first
+                                                                                                               // or
+                                                                                                               // last
+                                                                                                               // slice
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
+                                                                                                                    // Hatch:
+                                                                                                                    // Any
+                                                                                                                    // Computer
+                                                                                                                    // Casing
+                                                                                                                    // on
+                                                                                                                    // first
+                                                                                                                    // or
+                                                                                                                    // last
+                                                                                                                    // slice
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
@@ -364,20 +375,13 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[] {
-                Textures.BlockIcons.casingTexturePages[texturePage][3],
-                new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF)
-            };
+            return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][3],
+                    new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         }
-        return new ITexture[] {Textures.BlockIcons.casingTexturePages[texturePage][3]};
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][3] };
     }
 
     @Override
@@ -489,6 +493,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     private enum RackHatchElement implements IHatchElement<GT_MetaTileEntity_EM_computer> {
+
         INSTANCE;
 
         @Override

@@ -5,11 +5,8 @@ import static com.github.technus.tectech.thing.CustomItemList.teslaCapacitor;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.tectech.util.CommonValues;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +15,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
+import com.github.technus.tectech.util.CommonValues;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public final class TeslaCoilCapacitor extends Item {
+
     public static TeslaCoilCapacitor INSTANCE;
     private static IIcon LVicon, MVicon, HVicon, EVicon, IVicon, LuVicon, ZPMicon;
 
@@ -32,19 +36,24 @@ public final class TeslaCoilCapacitor extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.THETA_MOVEMENT);
         if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 6) {
-            aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " " + V[aStack.getItemDamage() + 1] * 512
-                    + " " + translateToLocal("item.tm.teslaCoilCapacitor.desc.1") + " " + V[aStack.getItemDamage() + 1]
-                    + " EU/t"); // Stores 16384 EU in a tesla tower at 32 EU/t
+            aList.add(
+                    translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " "
+                            + V[aStack.getItemDamage() + 1] * 512
+                            + " "
+                            + translateToLocal("item.tm.teslaCoilCapacitor.desc.1")
+                            + " "
+                            + V[aStack.getItemDamage() + 1]
+                            + " EU/t"); // Stores 16384 EU in a tesla tower at 32 EU/t
         } else {
-            aList.add(translateToLocal(
-                    "item.tm.teslaCoilCapacitor.desc.2")); // Yeet this broken item into some spicy water!
+            aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.2")); // Yeet this broken item into some spicy
+                                                                              // water!
         }
-        aList.add(EnumChatFormatting.BLUE
-                + translateToLocal(
-                        "item.tm.teslaCoilCapacitor.desc.3")); // Insert into a Capacitor hatch of a Tesla Tower
-        aList.add(EnumChatFormatting.BLUE
-                + translateToLocal(
-                        "item.tm.teslaCoilCapacitor.desc.4")); // Capacitors are the same thing as batteries, right?
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCoilCapacitor.desc.3")); // Insert into a
+                                                                                                    // Capacitor hatch
+                                                                                                    // of a Tesla Tower
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCoilCapacitor.desc.4")); // Capacitors are
+                                                                                                    // the same thing as
+                                                                                                    // batteries, right?
     }
 
     @Override

@@ -3,6 +3,14 @@ package com.github.technus.tectech.thing.cover;
 import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderFluidContainer;
 import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderLinkTag;
 
+import java.util.UUID;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkCoverMessage;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkTag;
@@ -11,6 +19,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -20,14 +29,9 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
-import java.util.UUID;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
+
     private static final int L_PER_TICK = 8000;
     private static final int IMPORT_EXPORT_MASK = 0b0001;
     private static final int PUBLIC_PRIVATE_MASK = 0b0010;
@@ -61,8 +65,8 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public int doCoverThings(
-            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         if ((aTileEntity instanceof IFluidHandler)) {
             IFluidHandler fluidHandlerSelf = (IFluidHandler) aTileEntity;
             IFluidHandler fluidHandlerEnder = getEnderFluidContainer(getEnderLinkTag((IFluidHandler) aTileEntity));
@@ -92,15 +96,8 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int newCoverVariable = toggleBit(aCoverVariable, IMPORT_EXPORT_MASK);
 
         if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
@@ -160,71 +157,86 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverQuery(
-                    tag, (IFluidHandler) getUIBuildContext().getTile()));
+            NetworkDispatcher.INSTANCE.sendToServer(
+                    new EnderLinkCoverMessage.EnderLinkCoverQuery(tag, (IFluidHandler) getUIBuildContext().getTile()));
             GUI_INSTANCE = this;
             frequencyField = new TextFieldWidget() {
+
                 @Override
                 public void onRemoveFocus() {
                     super.onRemoveFocus();
                     try {
                         String string = getText();
                         tag = new EnderLinkTag(string, tag.getUUID());
-                        NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverUpdate(
-                                tag, (IFluidHandler) getUIBuildContext().getTile()));
-                    } catch (NumberFormatException ignored) {
-                    }
+                        NetworkDispatcher.INSTANCE.sendToServer(
+                                new EnderLinkCoverMessage.EnderLinkCoverUpdate(
+                                        tag,
+                                        (IFluidHandler) getUIBuildContext().getTile()));
+                    } catch (NumberFormatException ignored) {}
                     resetTextField();
                 }
             };
 
-            builder.widget(frequencyField
-                            .setTextColor(Color.WHITE.dark(1))
-                            .setTextAlignment(Alignment.CenterLeft)
+            builder.widget(
+                    frequencyField.setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft)
                             .setFocusOnGuiOpen(true)
                             .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0)
-                            .setSize(SPACE_X * 5 - 8, 12))
-                    .widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0).setSize(SPACE_X * 5 - 8, 12))
+                    .widget(
+                            new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                                     this::getCoverData,
                                     this::setCoverData,
                                     GT_Cover_TM_EnderFluidLink.this,
                                     (id, coverData) -> !getClickable(id, convert(coverData)),
                                     (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                                            getNewCoverVariable(id, convert(coverData))))
-                            .addToggleButton(
-                                    PUBLIC_BUTTON_ID,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
-                                            .addTooltip(GT_Utility.trans("326", "Public"))
-                                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
-                            .addToggleButton(
-                                    PRIVATE_BUTTON_ID,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
-                                            .addTooltip(GT_Utility.trans("327", "Private"))
-                                            .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
-                            .addToggleButton(
-                                    IMPORT_BUTTON_ID,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
-                                            .addTooltip(GT_Utility.trans("007", "Import"))
-                                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
-                            .addToggleButton(
-                                    EXPORT_BUTTON_ID,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                                            .addTooltip(GT_Utility.trans("006", "Export"))
-                                            .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
-                    .widget(new TextWidget(GT_Utility.trans("328", "Channel"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
-                    .widget(new TextWidget(GT_Utility.trans("329", "Public/Private"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
-                    .widget(new TextWidget(GT_Utility.trans("229", "Import/Export"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
+                                            getNewCoverVariable(id, convert(coverData)))).addToggleButton(
+                                                    PUBLIC_BUTTON_ID,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                                                            .addTooltip(GT_Utility.trans("326", "Public"))
+                                                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
+                                                    .addToggleButton(
+                                                            PRIVATE_BUTTON_ID,
+                                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                            widget -> widget
+                                                                    .setStaticTexture(
+                                                                            GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                                                    .addTooltip(GT_Utility.trans("327", "Private"))
+                                                                    .setPos(
+                                                                            START_X + SPACE_X * 1,
+                                                                            START_Y + SPACE_Y * 2))
+                                                    .addToggleButton(
+                                                            IMPORT_BUTTON_ID,
+                                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                            widget -> widget
+                                                                    .setStaticTexture(
+                                                                            GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                                                    .addTooltip(GT_Utility.trans("007", "Import"))
+                                                                    .setPos(
+                                                                            START_X + SPACE_X * 0,
+                                                                            START_Y + SPACE_Y * 3))
+                                                    .addToggleButton(
+                                                            EXPORT_BUTTON_ID,
+                                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                            widget -> widget
+                                                                    .setStaticTexture(
+                                                                            GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                                                    .addTooltip(GT_Utility.trans("006", "Export"))
+                                                                    .setPos(
+                                                                            START_X + SPACE_X * 1,
+                                                                            START_Y + SPACE_Y * 3)))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("328", "Channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("329", "Public/Private"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("229", "Import/Export"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
 
             resetTextField();
         }
@@ -274,8 +286,10 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
                 ownerUUID = null;
             }
             EnderLinkTag newTag = new EnderLinkTag(tag.getFrequency(), ownerUUID);
-            NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverUpdate(
-                    newTag, (IFluidHandler) getUIBuildContext().getTile()));
+            NetworkDispatcher.INSTANCE.sendToServer(
+                    new EnderLinkCoverMessage.EnderLinkCoverUpdate(
+                            newTag,
+                            (IFluidHandler) getUIBuildContext().getTile()));
         }
     }
 }

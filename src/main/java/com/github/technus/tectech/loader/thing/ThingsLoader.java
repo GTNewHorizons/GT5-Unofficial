@@ -12,6 +12,7 @@ import com.github.technus.tectech.thing.block.ReactorSimBlock;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import com.github.technus.tectech.thing.casing.*;
 import com.github.technus.tectech.thing.item.*;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
@@ -21,6 +22,7 @@ import gregtech.api.interfaces.ITexture;
  * Created by danie_000 on 16.11.2016.
  */
 public class ThingsLoader implements Runnable {
+
     @Override
     public void run() {
 

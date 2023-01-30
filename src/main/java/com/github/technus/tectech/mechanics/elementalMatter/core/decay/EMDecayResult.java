@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.decay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 
 public class EMDecayResult {
+
     private final EMInstanceStackMap output;
     private double massAffected;
     private double massDiff;

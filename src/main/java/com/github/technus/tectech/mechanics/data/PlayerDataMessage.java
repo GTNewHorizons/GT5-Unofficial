@@ -2,18 +2,22 @@ package com.github.technus.tectech.mechanics.data;
 
 import static java.nio.charset.Charset.forName;
 
+import java.util.UUID;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.github.technus.tectech.TecTech;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import eu.usrv.yamcore.network.server.AbstractServerMessageHandler;
 import io.netty.buffer.ByteBuf;
-import java.util.UUID;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class PlayerDataMessage implements IMessage {
+
     NBTTagCompound data;
     UUID uuid1, uuid2;
 
@@ -41,6 +45,7 @@ public class PlayerDataMessage implements IMessage {
     }
 
     public static class PlayerDataQuery extends PlayerDataMessage {
+
         public PlayerDataQuery() {}
 
         public PlayerDataQuery(EntityPlayer player) {
@@ -50,6 +55,7 @@ public class PlayerDataMessage implements IMessage {
     }
 
     public static class PlayerDataData extends PlayerDataMessage {
+
         public PlayerDataData() {}
 
         public PlayerDataData(EntityPlayer player) {
@@ -66,6 +72,7 @@ public class PlayerDataMessage implements IMessage {
     }
 
     public static class ClientHandler extends AbstractClientMessageHandler<PlayerDataData> {
+
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, PlayerDataData pMessage, MessageContext pCtx) {
             TecTech.playerPersistence.putDataOrSetToNewTag(pMessage.uuid1, pMessage.uuid2, pMessage.data);
@@ -74,6 +81,7 @@ public class PlayerDataMessage implements IMessage {
     }
 
     public static class ServerHandler extends AbstractServerMessageHandler<PlayerDataQuery> {
+
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, PlayerDataQuery pMessage, MessageContext pCtx) {
             return new PlayerDataData(pMessage);

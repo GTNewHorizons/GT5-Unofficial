@@ -4,22 +4,11 @@ import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.avrClone.AvrCore;
-import com.github.technus.avrClone.instructions.InstructionRegistry;
-import com.github.technus.avrClone.memory.program.ProgramMemory;
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_MicroController;
-import cpw.mods.fml.common.Optional;
-import dan200.computercraft.api.filesystem.IMount;
-import dan200.computercraft.api.filesystem.IWritableMount;
-import dan200.computercraft.api.media.IMedia;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,11 +19,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-@Optional.InterfaceList({
-    @Optional.Interface(iface = "dan200.computercraft.api.media.IMedia", modid = "ComputerCraft"),
-    @Optional.Interface(iface = "li.cil.oc.api.fs.FileSystem", modid = "OpenComputers")
-})
+import com.github.technus.avrClone.AvrCore;
+import com.github.technus.avrClone.instructions.InstructionRegistry;
+import com.github.technus.avrClone.memory.program.ProgramMemory;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.loader.gui.ModGuiHandler;
+import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_MicroController;
+
+import cpw.mods.fml.common.Optional;
+import dan200.computercraft.api.filesystem.IMount;
+import dan200.computercraft.api.filesystem.IWritableMount;
+import dan200.computercraft.api.media.IMedia;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+@Optional.InterfaceList({ @Optional.Interface(iface = "dan200.computercraft.api.media.IMedia", modid = "ComputerCraft"),
+        @Optional.Interface(iface = "li.cil.oc.api.fs.FileSystem", modid = "OpenComputers") })
 public class AvrProgrammer extends Item implements IMedia {
+
     public static AvrProgrammer INSTANCE = new AvrProgrammer();
 
     private AvrProgrammer() {
@@ -46,17 +48,8 @@ public class AvrProgrammer extends Item implements IMedia {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            ItemStack stack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
+            float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity == null || aPlayer instanceof FakePlayer) {
             return aPlayer instanceof EntityPlayerMP;
@@ -70,15 +63,16 @@ public class AvrProgrammer extends Item implements IMedia {
                             NBTTagCompound pgm = stack.stackTagCompound.getCompoundTag("pgm");
                             if (pgm.hasKey("instructions")) {
                                 AvrCore core = ((GT_MetaTileEntity_MicroController) metaTE).core;
-                                InstructionRegistry registry =
-                                        InstructionRegistry.REGISTRIES.get(pgm.getString("instructionRegistry"));
+                                InstructionRegistry registry = InstructionRegistry.REGISTRIES
+                                        .get(pgm.getString("instructionRegistry"));
                                 if (registry != null) {
-                                    core.setProgramMemory(new ProgramMemory(
-                                            registry,
-                                            pgm.getBoolean("immersive"),
-                                            pgm.getIntArray("instructions"),
-                                            pgm.getIntArray("param0"),
-                                            pgm.getIntArray("param1")));
+                                    core.setProgramMemory(
+                                            new ProgramMemory(
+                                                    registry,
+                                                    pgm.getBoolean("immersive"),
+                                                    pgm.getIntArray("instructions"),
+                                                    pgm.getIntArray("param0"),
+                                                    pgm.getIntArray("param1")));
                                 }
                             }
                         }
@@ -94,8 +88,8 @@ public class AvrProgrammer extends Item implements IMedia {
         return false;
     }
 
-    public void writeToProgrammer(
-            ItemStack stack, InstructionRegistry registry, boolean immersive, List<String> strings) throws Exception {
+    public void writeToProgrammer(ItemStack stack, InstructionRegistry registry, boolean immersive,
+            List<String> strings) throws Exception {
         writeToProgrammer(stack, new ProgramMemory(registry, immersive, strings));
     }
 
@@ -126,8 +120,8 @@ public class AvrProgrammer extends Item implements IMedia {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         if (aStack.stackTagCompound.hasKey("avr")) {
             NBTTagCompound avr = aStack.stackTagCompound.getCompoundTag("avr");
-            aList.add(translateToLocal("item.em.programmer.desc.0") + ": "
-                    + avr.getInteger("programCounter")); // Current PC
+            aList.add(translateToLocal("item.em.programmer.desc.0") + ": " + avr.getInteger("programCounter")); // Current
+                                                                                                                // PC
             aList.add(translateToLocal("item.em.programmer.desc.1") + ": " + avr.getBoolean("awoken")); // Awoken
             aList.add(translateToLocal("item.em.programmer.desc.2") + ": " + avr.getBoolean("active")); // Active
             aList.add(translateToLocal("item.em.programmer.desc.3") + ": " + avr.getBoolean("debugRun")); // Debug
@@ -164,6 +158,7 @@ public class AvrProgrammer extends Item implements IMedia {
     @Optional.Method(modid = "ComputerCraft")
     public IMount createDataMount(ItemStack itemStack, World world) {
         return new IWritableMount() {
+
             @Override
             public void makeDirectory(String s) throws IOException {
                 throw new IOException("Cannot make dir!");

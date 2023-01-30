@@ -3,13 +3,15 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.definitions.re
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+
 public class EMType {
+
     private final Map<String, IEMDefinition> definitions = new HashMap<>();
     private final Map<String, IEMDefinition> definitionsR = Collections.unmodifiableMap(definitions);
     private final Class<? extends IEMDefinition> clazz;

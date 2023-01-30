@@ -8,6 +8,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -17,68 +20,64 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+
     // region structure
     // use multi A energy inputs, use less power the longer it runs
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.junction.hint.0"), // 1 - Classic Hatches or High Power Casing
-        translateToLocal(
-                "gt.blockmachines.multimachine.em.junction.hint.1"), // 2 - Elemental Hatches or Molecular Casing
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.junction.hint.0"), // 1 - Classic Hatches or High Power
+                                                                                  // Casing
+            translateToLocal("gt.blockmachines.multimachine.em.junction.hint.1"), // 2 - Elemental Hatches or Molecular
+                                                                                  // Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_junction> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_junction>builder()
-                    .addShape("main", new String[][] {
-                        {"CCC", "C~C", "CCC"},
-                        {"AAA", "AAA", "AAA"},
-                        {"DDD", "DAD", "DDD"},
-                        {"DDD", "DDD", "DDD"}
-                    })
-                    .addShape("mainBig", new String[][] {
-                        {"  A  ", " CCC ", "AC~CA", " CCC ", "  A  "},
-                        {" DDD ", "DAAAD", "DAAAD", "DAAAD", " DDD "},
-                        {"ADDDA", "DAAAD", "DABAD", "DAAAD", "ADDDA"},
-                        {" DDD ", "DAAAD", "DAAAD", "DAAAD", " DDD "},
-                        {"  A  ", "DDDDD", "ADDDA", "DDDDD", "  A  "}
-                    })
-                    .addElement('A', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 5))
-                    .addElement(
-                            'C',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_junction::addClassicToMachineList,
-                                    textureOffset,
-                                    1,
-                                    sBlockCasingsTT,
-                                    0))
-                    .addElement(
-                            'D',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_EM_junction::addElementalToMachineList,
-                                    textureOffset + 4,
-                                    2,
-                                    sBlockCasingsTT,
-                                    4))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_junction> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_junction>builder()
+            .addShape(
+                    "main",
+                    new String[][] { { "CCC", "C~C", "CCC" }, { "AAA", "AAA", "AAA" }, { "DDD", "DAD", "DDD" },
+                            { "DDD", "DDD", "DDD" } })
+            .addShape(
+                    "mainBig",
+                    new String[][] { { "  A  ", " CCC ", "AC~CA", " CCC ", "  A  " },
+                            { " DDD ", "DAAAD", "DAAAD", "DAAAD", " DDD " },
+                            { "ADDDA", "DAAAD", "DABAD", "DAAAD", "ADDDA" },
+                            { " DDD ", "DAAAD", "DAAAD", "DAAAD", " DDD " },
+                            { "  A  ", "DDDDD", "ADDDA", "DDDDD", "  A  " } })
+            .addElement('A', ofBlock(sBlockCasingsTT, 4)).addElement('B', ofBlock(sBlockCasingsTT, 5))
+            .addElement(
+                    'C',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_junction::addClassicToMachineList,
+                            textureOffset,
+                            1,
+                            sBlockCasingsTT,
+                            0))
+            .addElement(
+                    'D',
+                    ofHatchAdderOptional(
+                            GT_MetaTileEntity_EM_junction::addElementalToMachineList,
+                            textureOffset + 4,
+                            2,
+                            sBlockCasingsTT,
+                            4))
+            .build();
     // endregion
 
     // region parameters
-    private static final INameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME = (base, p) -> (p.parameterId() == 0
-                    ? translateToLocal("tt.keyword.Source") + " "
-                    : translateToLocal("tt.keyword.Destination") + " ")
-            + p.hatchId();
+    private static final INameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME = (base,
+            p) -> (p.parameterId() == 0 ? translateToLocal("tt.keyword.Source") + " "
+                    : translateToLocal("tt.keyword.Destination") + " ") + p.hatchId();
     private static final IStatusFunction<GT_MetaTileEntity_EM_junction> SRC_STATUS = (base, p) -> {
         double v = p.get();
         if (Double.isNaN(v)) return STATUS_WRONG;
@@ -119,8 +118,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int meta = iGregTechTileEntity.getMetaIDAtSideAndDistance(
-                GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()), 2);
+        int meta = iGregTechTileEntity
+                .getMetaIDAtSideAndDistance(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()), 2);
         if (meta == 4) {
             return structureCheck_EM("main", 1, 1, 0);
         } else if (meta == 5) {
@@ -174,18 +173,17 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal(
-                        "gt.blockmachines.multimachine.em.junction.name")) // Machine Type: Matter Junction
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.junction.desc.0")) // Controller block of the Matter Junction
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.junction.desc.1")) // Used to route and distribute
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.junction.name")) // Machine Type: Matter
+                                                                                              // Junction
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.junction.desc.0")) // Controller block of
+                                                                                               // the Matter Junction
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.junction.desc.1")) // Used to route and
+                                                                                               // distribute
                 // elemental matter
-                .addInfo(translateToLocal(
-                        "gt.blockmachines.multimachine.em.junction.desc.2")) // Needs a Parametrizer to be configured
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.junction.desc.2")) // Needs a Parametrizer
+                                                                                               // to be configured
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator()
-                .beginStructureBlock(3, 3, 4, false)
+                .addSeparator().beginStructureBlock(3, 3, 4, false)
                 .addOtherStructurePart(
                         translateToLocal("tt.keyword.Structure.ElementalOutput"),
                         translateToLocal("tt.keyword.Structure.AnyOuterMolecularCasing3rd4th"),
@@ -199,12 +197,16 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                         translateToLocal("tt.keyword.Structure.Optional") + " "
                                 + translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
                         2) // Parametrizer: (optional) Any High Power Casing on the front side
-                .addEnergyHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
-                        1) // Energy Hatch: Any High Power Casing on the front side
-                .addMaintenanceHatch(
-                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"),
-                        1) // Maintenance Hatch: Any High Power Casing on the front side
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Energy Hatch:
+                                                                                                     // Any High Power
+                                                                                                     // Casing on the
+                                                                                                     // front side
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Maintenance
+                                                                                                          // Hatch: Any
+                                                                                                          // High Power
+                                                                                                          // Casing on
+                                                                                                          // the front
+                                                                                                          // side
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }

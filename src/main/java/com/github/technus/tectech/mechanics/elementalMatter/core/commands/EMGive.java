@@ -1,5 +1,15 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
@@ -9,19 +19,12 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 
 /**
  * Created by danie_000 on 30.12.2017.
  */
 public class EMGive implements ICommand {
+
     ArrayList<String> aliases = new ArrayList<>();
 
     public EMGive() {
@@ -36,8 +39,10 @@ public class EMGive implements ICommand {
             if (args.length < 3) {
                 sender.addChatMessage(new ChatComponentText(getCommandUsage(sender)));
             } else {
-                TecTech.LOGGER.info("Spawninig EM for " + ((EntityPlayerMP) sender).getDisplayName() + " - "
-                        + Arrays.toString(args));
+                TecTech.LOGGER.info(
+                        "Spawninig EM for " + ((EntityPlayerMP) sender).getDisplayName()
+                                + " - "
+                                + Arrays.toString(args));
 
                 ArrayList<String> list = new ArrayList<>(Arrays.asList(args));
                 String energy = list.remove(0);
@@ -47,8 +52,9 @@ public class EMGive implements ICommand {
                     EMInstanceStack instanceStack = new EMInstanceStack(def, 1, 0, Long.parseLong(energy));
 
                     sender.addChatMessage(
-                            new ChatComponentText(instanceStack.getDefinition().getSymbol() + " - "
-                                    + instanceStack.getDefinition().getLocalizedName()));
+                            new ChatComponentText(
+                                    instanceStack.getDefinition().getSymbol() + " - "
+                                            + instanceStack.getDefinition().getLocalizedName()));
 
                     EMInstanceStackMap instanceMap = new EMInstanceStackMap(instanceStack);
 

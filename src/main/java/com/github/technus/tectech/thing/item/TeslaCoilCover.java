@@ -4,11 +4,8 @@ import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.thing.CustomItemList.teslaCover;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.tectech.util.CommonValues;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
+import com.github.technus.tectech.util.CommonValues;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public final class TeslaCoilCover extends Item {
+
     public static TeslaCoilCover INSTANCE;
     private static IIcon ultItemIcon;
 
@@ -38,15 +42,15 @@ public final class TeslaCoilCover extends Item {
                 aList.add(translateToLocal("item.tm.teslaCover.desc.1")); // Tesla-Enables Machines! (BUT LOUDER!!)
                 break;
             default:
-                aList.add(
-                        translateToLocal("item.tm.teslaCover.desc.2")); // Yeet this broken item into some spicy water!
+                aList.add(translateToLocal("item.tm.teslaCover.desc.2")); // Yeet this broken item into some spicy
+                                                                          // water!
                 break;
         }
-        aList.add(EnumChatFormatting.BLUE
-                + translateToLocal(
-                        "item.tm.teslaCover.desc.3")); // Use on top of a machine to enable Tesla capabilities
-        aList.add(EnumChatFormatting.BLUE
-                + translateToLocal("item.tm.teslaCover.desc.4")); // Who the hell uses cables anyway?
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCover.desc.3")); // Use on top of a machine
+                                                                                            // to enable Tesla
+                                                                                            // capabilities
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.teslaCover.desc.4")); // Who the hell uses cables
+                                                                                            // anyway?
     }
 
     @Override

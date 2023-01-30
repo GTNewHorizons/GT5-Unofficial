@@ -19,6 +19,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
  * Created by danie_000 on 24.12.2017.
  */
 public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_machine.IBehaviour {
+
     private final byte tier;
     private int ticks;
     private byte precisionFull, precisionMinimal;
@@ -26,69 +27,69 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     private double maxCharge;
     private int offsetMax;
     private Parameters.Group.ParameterIn fullSetting, minimalSetting, offsetSetting;
-    private static final INameFunction<GT_MetaTileEntity_EM_machine> fullName =
-            (gt_metaTileEntity_em_machine, iParameter) -> "Full Precision Input [e/3]";
-    private final IStatusFunction<GT_MetaTileEntity_EM_machine> fullStatus =
-            (gt_metaTileEntity_em_machine, iParameter) -> {
-                double v = iParameter.get();
-                if (Double.isNaN(v)) {
-                    return STATUS_WRONG;
-                }
-                v = (int) v;
-                if (Double.isInfinite(v) && v > 0) {
-                    return STATUS_TOO_HIGH;
-                } else if (v > precisionFull) {
-                    return STATUS_HIGH;
-                } else if (v < precisionFull) {
-                    return STATUS_TOO_LOW;
-                }
+    private static final INameFunction<GT_MetaTileEntity_EM_machine> fullName = (gt_metaTileEntity_em_machine,
+            iParameter) -> "Full Precision Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> fullStatus = (gt_metaTileEntity_em_machine,
+            iParameter) -> {
+        double v = iParameter.get();
+        if (Double.isNaN(v)) {
+            return STATUS_WRONG;
+        }
+        v = (int) v;
+        if (Double.isInfinite(v) && v > 0) {
+            return STATUS_TOO_HIGH;
+        } else if (v > precisionFull) {
+            return STATUS_HIGH;
+        } else if (v < precisionFull) {
+            return STATUS_TOO_LOW;
+        }
+        return STATUS_OK;
+    };
+    private static final INameFunction<GT_MetaTileEntity_EM_machine> minimalName = (gt_metaTileEntity_em_machine,
+            iParameter) -> "Minimal Precision Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> minimalStatus = (gt_metaTileEntity_em_machine,
+            iParameter) -> {
+        double minimal = iParameter.get();
+        double full = fullSetting.get();
+        if (Double.isInfinite(minimal) && minimal > 0) {
+            return STATUS_TOO_HIGH;
+        } else if (minimal > precisionMinimal) {
+            if (minimal > full) {
+                return STATUS_TOO_HIGH;
+            } else {
+                return STATUS_HIGH;
+            }
+        } else if (minimal == precisionMinimal) {
+            if (minimal > full) {
+                return STATUS_TOO_HIGH;
+            } else {
                 return STATUS_OK;
-            };
-    private static final INameFunction<GT_MetaTileEntity_EM_machine> minimalName =
-            (gt_metaTileEntity_em_machine, iParameter) -> "Minimal Precision Input [e/3]";
-    private final IStatusFunction<GT_MetaTileEntity_EM_machine> minimalStatus =
-            (gt_metaTileEntity_em_machine, iParameter) -> {
-                double minimal = iParameter.get();
-                double full = fullSetting.get();
-                if (Double.isInfinite(minimal) && minimal > 0) {
-                    return STATUS_TOO_HIGH;
-                } else if (minimal > precisionMinimal) {
-                    if (minimal > full) {
-                        return STATUS_TOO_HIGH;
-                    } else {
-                        return STATUS_HIGH;
-                    }
-                } else if (minimal == precisionMinimal) {
-                    if (minimal > full) {
-                        return STATUS_TOO_HIGH;
-                    } else {
-                        return STATUS_OK;
-                    }
-                } else if (minimal < precisionMinimal) {
-                    return STATUS_TOO_LOW;
-                } else {
-                    return STATUS_WRONG;
-                }
-            };
-    private static final INameFunction<GT_MetaTileEntity_EM_machine> offsetName =
-            (gt_metaTileEntity_em_machine, iParameter) -> "Offset Input [e/3]";
-    private final IStatusFunction<GT_MetaTileEntity_EM_machine> offsetStatus =
-            (gt_metaTileEntity_em_machine, iParameter) -> {
-                double offset = iParameter.get();
-                if (offset > offsetMax) {
-                    return STATUS_TOO_HIGH;
-                } else if (offset > 0) {
-                    return STATUS_HIGH;
-                } else if (offset == 0) {
-                    return STATUS_OK;
-                } else if (offset >= -offsetMax) {
-                    return STATUS_LOW;
-                } else if (offset < -offsetMax) {
-                    return STATUS_TOO_LOW;
-                } else {
-                    return STATUS_WRONG;
-                }
-            };
+            }
+        } else if (minimal < precisionMinimal) {
+            return STATUS_TOO_LOW;
+        } else {
+            return STATUS_WRONG;
+        }
+    };
+    private static final INameFunction<GT_MetaTileEntity_EM_machine> offsetName = (gt_metaTileEntity_em_machine,
+            iParameter) -> "Offset Input [e/3]";
+    private final IStatusFunction<GT_MetaTileEntity_EM_machine> offsetStatus = (gt_metaTileEntity_em_machine,
+            iParameter) -> {
+        double offset = iParameter.get();
+        if (offset > offsetMax) {
+            return STATUS_TOO_HIGH;
+        } else if (offset > 0) {
+            return STATUS_HIGH;
+        } else if (offset == 0) {
+            return STATUS_OK;
+        } else if (offset >= -offsetMax) {
+            return STATUS_LOW;
+        } else if (offset < -offsetMax) {
+            return STATUS_TOO_LOW;
+        } else {
+            return STATUS_WRONG;
+        }
+    };
     // private final static String[] DESCRIPTION_O =new String[]{"Full Precision Limit [e/3]","Minimal Precision Limit
     // [e/3]","Offset Limit [e/3]",null,"Max Charge [e/3]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe
     // Rime [tick]"};
@@ -96,8 +97,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     public Behaviour_ElectromagneticSeparator(int desiredTier) {
         tier = (byte) desiredTier;
         ticks = Math.max(20, (1 << (12 - desiredTier)) * 20);
-        maxCapacity =
-                EMAtomDefinition.getSomethingHeavy().getMass() * (2 << tier) * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
+        maxCapacity = EMAtomDefinition.getSomethingHeavy().getMass() * (2 << tier)
+                * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
         maxCharge = 144D * (1 << (tier - 5));
         switch (tier) {
             case 12:
@@ -149,14 +150,13 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
 
     @Override
     public boolean checkParametersInAndSetStatuses(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
-        return fullSetting.getStatus(true).isOk
-                && minimalSetting.getStatus(true).isOk
+        return fullSetting.getStatus(true).isOk && minimalSetting.getStatus(true).isOk
                 && offsetSetting.getStatus(true).isOk;
     }
 
     @Override
-    public MultiblockControl<EMInstanceStackMap[]> process(
-            EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te,
+            Parameters parameters) {
         EMInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null; // nothing in only valid input
 
@@ -208,9 +208,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             } else if (charge <= -precisionFullIn) {
                 outputs[0].putReplace(stack);
             } else {
-                double amount = mul(
-                        stack.getAmount(),
-                        (Math.abs(charge) - precisionMinimalIn + 1D) / levelsCountPlus1); // todo check
+                double amount = mul(stack.getAmount(), (Math.abs(charge) - precisionMinimalIn + 1D) / levelsCountPlus1); // todo
+                                                                                                                         // check
                 if (amount < stack.getAmount()) {
                     EMInstanceStack clone = stack.clone();
                     clone.setAmount(sub(clone.getAmount(), amount));
@@ -227,6 +226,13 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         }
 
         return new MultiblockControl<>(
-                outputs, mEut, 1 + ((int) Math.abs(offsetIn)) / 3, 0, 10000, mTicks, 0, excessMass);
+                outputs,
+                mEut,
+                1 + ((int) Math.abs(offsetIn)) / 3,
+                0,
+                10000,
+                mTicks,
+                0,
+                excessMass);
     }
 }

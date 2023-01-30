@@ -2,33 +2,33 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
+import java.util.List;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import com.github.technus.tectech.TecTech;
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import java.util.List;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 /**
  * Created by Tec on 21.02.2017.
  */
 @Deprecated
 public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Machine {
+
     protected final String mName;
     protected static byte counter = 0;
     protected final boolean eSafeVoidButton, allowedToWorkButton, ePowerPassButton;
     protected final GT_Container_MultiMachineEM mContainer;
 
-    protected GT_GUIContainer_MultiMachineEM(
-            GT_Container_MultiMachineEM container,
-            String aName,
-            String aTextureFile,
-            boolean enablePowerPass,
-            boolean enableSafeVoid,
-            boolean enablePowerButton) {
+    protected GT_GUIContainer_MultiMachineEM(GT_Container_MultiMachineEM container, String aName, String aTextureFile,
+            boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
         super(container, RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
         mContainer = (GT_Container_MultiMachineEM) super.mContainer;
         mName = aName;
@@ -39,13 +39,8 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         xSize = 198;
     }
 
-    public GT_GUIContainer_MultiMachineEM(
-            InventoryPlayer aInventoryPlayer,
-            IGregTechTileEntity aTileEntity,
-            String aName,
-            String aTextureFile,
-            boolean enablePowerPass,
-            boolean enableSafeVoid,
+    public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
+            String aName, String aTextureFile, boolean enablePowerPass, boolean enableSafeVoid,
             boolean enablePowerButton) {
         this(
                 new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity),
@@ -60,8 +55,8 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         this(container, aName, aTextureFile, true, true, true);
     }
 
-    public GT_GUIContainer_MultiMachineEM(
-            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
+    public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
+            String aName, String aTextureFile) {
         this(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), aName, aTextureFile);
     }
 
@@ -152,7 +147,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             }
             x -= 162;
             y += 96;
-            for (int i = 0; i < 20; ) {
+            for (int i = 0; i < 20;) {
                 byte hatch = (byte) (i >>> 1);
                 LEDdrawP(x, y, i, 0, mContainer.eParamsInStatus[hatch]);
                 LEDdrawP(x, y, i++, 1, mContainer.eParamsOutStatus[hatch]);
@@ -213,8 +208,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                         drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv); // green
                         break;
                     case 3:
-                        drawTexturedModalRect(
-                                x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv); // orangeyello
+                        drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv); // orangeyello
                         break;
                     case 4:
                         drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv); // redd
@@ -272,12 +266,12 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             case STATUS_UNUSED:
             default:
                 // if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
-                //    int tColor = this.mContainer.mTileEntity.getColorization() & 15;
-                //    if (tColor < ItemDye.field_150922_c.length) {
-                //        tColor = ItemDye.field_150922_c[tColor];
-                //        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F,
+                // int tColor = this.mContainer.mTileEntity.getColorization() & 15;
+                // if (tColor < ItemDye.field_150922_c.length) {
+                // tColor = ItemDye.field_150922_c[tColor];
+                // GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F,
                 // (float)(tColor & 255) / 255.0F, 1F);
-                //    }
+                // }
                 // }
                 // drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
                 // GL11.glColor4f(1f, 1f, 1f, 1f);
@@ -307,7 +301,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                         if (x < (u += su)) {
                             if (y < v) {
                                 // if(mContainer.eParamsInStatus[hatch + (10*param)]==STATUS_UNUSED){
-                                //    return;
+                                // return;
                                 // }
                                 hoveringText(
                                         ((GT_MetaTileEntity_MultiblockBase_EM) mte)
@@ -318,7 +312,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                                 return;
                             } else if (y >= v && y < v + sv) {
                                 // if(mContainer.eParamsOutStatus[hatch + (10*param)]==STATUS_UNUSED){
-                                //    return;
+                                // return;
                                 // }
                                 hoveringText(
                                         ((GT_MetaTileEntity_MultiblockBase_EM) mte)

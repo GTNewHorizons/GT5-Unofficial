@@ -1,6 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
 public class OreDictionaryStack {
+
     private final int amount;
     private final int id;
 
