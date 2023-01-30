@@ -30,7 +30,7 @@ public final class TeslaCoilCapacitor extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        aList.add(CommonValues.BASS_MARK);
+        aList.add(CommonValues.THETA_MOVEMENT);
         if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 6) {
             aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " " + V[aStack.getItemDamage() + 1] * 512
                     + " " + translateToLocal("item.tm.teslaCoilCapacitor.desc.1") + " " + V[aStack.getItemDamage() + 1]

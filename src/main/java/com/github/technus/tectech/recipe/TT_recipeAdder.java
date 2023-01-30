@@ -237,13 +237,6 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         return true;
     }
 
-    /*
-    (boolean aOptimize,
-     ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
-     FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-     cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check)
-     */
-
     public static boolean addResearchableEMmachineRecipe(
             ItemStack aResearchItem,
             int totalComputationRequired,

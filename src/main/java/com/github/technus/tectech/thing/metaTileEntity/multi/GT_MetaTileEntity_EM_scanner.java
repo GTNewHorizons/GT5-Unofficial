@@ -23,7 +23,6 @@ import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitiv
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
@@ -39,11 +38,8 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -163,25 +159,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         eDismantleBoom = true;
     }
 
-    private void quantumStuff(boolean shouldExist) {
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base != null && base.getWorld() != null) {
-            int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 4 + base.getXCoord();
-            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 4 + base.getYCoord();
-            int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 4 + base.getZCoord();
-            Block block = base.getWorld().getBlock(xDir, yDir, zDir);
-            if (shouldExist) {
-                if (block != null && block.getMaterial() == Material.air) {
-                    base.getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
-                }
-            } else {
-                if (block instanceof QuantumStuffBlock) {
-                    base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air, 0, 2);
-                }
-            }
-        }
-    }
-
     private void addComputationRequirements(int depthPlus, int capabilities) {
         if (areBitsSet(SCAN_GET_NOMENCLATURE, capabilities)) {
             computationRequired += depthPlus * 3L;
@@ -296,7 +273,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     eRequiredData = (short) (scannerRecipe.mSpecialValue >>> 16);
                     eAmpereFlow = (short) (scannerRecipe.mSpecialValue & 0xFFFF);
                     mEUt = scannerRecipe.mEUt;
-                    quantumStuff(true);
                     return true;
                 }
             } else if (CustomItemList.scanContainer.isStackEqual(itemStack, false, true)) {
@@ -331,12 +307,10 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     computationRemaining = computationRequired *= 20;
                     mMaxProgresstime = 20; // const
                     mEfficiencyIncrease = 10000;
-                    quantumStuff(true);
                     return true;
                 }
             }
         }
-        quantumStuff(false);
         objectResearched = null;
         computationRemaining = 0;
         return false;
@@ -359,7 +333,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         }
         objectResearched = null;
         computationRemaining = 0;
-        quantumStuff(false);
     }
 
     @Override
@@ -449,7 +422,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void onRemoval() {
-        quantumStuff(false);
         super.onRemoval();
     }
 
@@ -515,7 +487,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void stopMachine() {
-        quantumStuff(false);
         super.stopMachine();
         computationRequired = computationRemaining = 0;
         objectResearched = null;
@@ -539,14 +510,11 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     }
                 }
                 if (eRecipe == null) {
-                    quantumStuff(false);
                     objectResearched = null;
                     eRequiredData = 0;
                     computationRequired = computationRemaining = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
-                } else {
-                    quantumStuff(true);
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.casing;
 
 import static com.github.technus.tectech.util.CommonValues.*;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import gregtech.common.blocks.GT_Item_Casings_Abstract;
@@ -18,7 +19,7 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         if (aStack.getItemDamage() < 15) {
-            aList.add(BASS_MARK);
+            aList.add(THETA_MOVEMENT);
         } else {
             aList.add(COSMIC_MARK);
         }
@@ -29,8 +30,8 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
             case 3: // "EV Superconductor Primary Tesla Windings"
             case 4: // "IV Superconductor Primary Tesla Windings"
             case 5: // "LuV Superconductor Primary Tesla Windings"
-                aList.add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + V[aStack.getItemDamage() + 1]
-                        + " EU/t"); // Handles up to
+                aList.add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " "
+                        + formatNumbers(V[aStack.getItemDamage() + 1]) + " EU/t"); // Handles up to
                 aList.add(EnumChatFormatting.AQUA.toString()
                         + EnumChatFormatting.BOLD
                         + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What one man calls God, another calls the
@@ -55,7 +56,8 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
                         + translateToLocal("gt.blockcasingsBA0.8.desc.1")); // Who wouldn't want a 32k epoxy multi?
                 break;
             case 9: // "ZPM Superconductor Primary Tesla Windings"
-                aList.add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + V[7] + " EU/t"); // Handles up to
+                aList.add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + formatNumbers(V[7])
+                        + " EU/t"); // Handles up to
                 aList.add(EnumChatFormatting.AQUA.toString()
                         + EnumChatFormatting.BOLD
                         + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What one man calls God, another calls the

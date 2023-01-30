@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader.thing;
 
+import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 
 import com.github.technus.tectech.Reference;
@@ -7,14 +8,12 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases.TurretBaseEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadEM;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.block.ReactorSimBlock;
-import com.github.technus.tectech.thing.casing.GT_Block_CasingsBA0;
-import com.github.technus.tectech.thing.casing.GT_Block_CasingsNH;
-import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
+import com.github.technus.tectech.thing.casing.*;
 import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 
@@ -24,9 +23,17 @@ import gregtech.api.interfaces.ITexture;
 public class ThingsLoader implements Runnable {
     @Override
     public void run() {
+
+        GameRegistry.registerTileEntity(TileEyeOfHarmony.class, MODID + ":EyeOfHarmonyRenderBlock");
+
         if (Textures.BlockIcons.casingTexturePages[tectechTexturePage1] == null) {
             Textures.BlockIcons.casingTexturePages[tectechTexturePage1] = new ITexture[128];
         }
+
+        if (Textures.BlockIcons.casingTexturePages[7] == null) {
+            Textures.BlockIcons.casingTexturePages[7] = new ITexture[128];
+        }
+
         TecTech.LOGGER.info("Added texture page if was null");
         if (!Loader.isModLoaded(Reference.DREAMCRAFT)) {
             TT_Container_Casings.sBlockCasingsNH = new GT_Block_CasingsNH();
@@ -37,11 +44,16 @@ public class ThingsLoader implements Runnable {
         TT_Container_Casings.sBlockCasingsBA0 = new GT_Block_CasingsBA0();
         TecTech.LOGGER.info("Nikolai's Casing registered");
 
+        TT_Container_Casings.SpacetimeCompressionFieldGenerators = new SpacetimeCompressionFieldCasing();
+        TecTech.LOGGER.info("Spacetime Compression Field Casings registered.");
+
+        TT_Container_Casings.TimeAccelerationFieldGenerator = new TimeAccelerationFieldCasing();
+        TecTech.LOGGER.info("Time Acceleration Field Casings registered.");
+
+        TT_Container_Casings.StabilisationFieldGenerators = new StabilisationFieldCasing();
+
         QuantumGlassBlock.run();
         TecTech.LOGGER.info("Quantum Glass registered");
-
-        QuantumStuffBlock.run();
-        TecTech.LOGGER.info("Quantum Stuff registered");
 
         if (Loader.isModLoaded("openmodularturrets")) {
             TurretHeadEM.run();

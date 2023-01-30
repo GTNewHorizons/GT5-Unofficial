@@ -46,6 +46,7 @@ public class TecTechConfig extends ConfigManager {
      */
     @Override
     protected void PreInit() {
+
         DISABLE_MATERIAL_LOADING_FFS = false;
 
         BOOM_ENABLE = true;

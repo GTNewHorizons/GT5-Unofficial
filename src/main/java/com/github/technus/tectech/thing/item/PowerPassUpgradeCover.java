@@ -26,7 +26,7 @@ public final class PowerPassUpgradeCover extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        aList.add(CommonValues.BASS_MARK);
+        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal(
                 "item.tm.powerpassupgradecover.desc.0")); // Add power pass functionality to TecTech Multiblocks
         aList.add(EnumChatFormatting.BLUE

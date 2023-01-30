@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends GT_MetaTileEnti
     @Override
     public String[] getDescription() {
         return new String[] {
-            CommonValues.BASS_MARK,
+            CommonValues.THETA_MOVEMENT,
             translateToLocal(
                     "gt.blockmachines.debug.tt.maintenance.desc.0"), // For automatically maintaining Multiblocks
             translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.1"), // Does fix everything but itself.

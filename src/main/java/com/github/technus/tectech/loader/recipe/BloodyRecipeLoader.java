@@ -2449,16 +2449,6 @@ public class BloodyRecipeLoader {
                 300,
                 2);
 
-        // endregion
-
-        // ha trafos
-        // if(Loader.isModLoaded(Reference.GTPLUSPLUS)){
-        //    GT_Values.RA.addAssemblerRecipe(CustomItemList.HA)
-        // }
-
-        // power trafos
-        // GT_Values.RA.addAssemblerRecipe()
-
         register_machine_EM_behaviours();
     }
 

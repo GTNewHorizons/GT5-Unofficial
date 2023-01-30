@@ -21,6 +21,7 @@ import net.minecraft.world.IBlockAccess;
 /**
  * Created by danie_000 on 03.10.2016.
  */
+// Mostly tesla coils, also 2 eye of harmony casings.
 public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     private static IIcon[] tM0 = new IIcon[2];
     private static IIcon[] tM1 = new IIcon[2];
@@ -32,6 +33,10 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     private static IIcon tM7;
     private static IIcon[] tM8 = new IIcon[2];
     private static IIcon[] tM9 = new IIcon[2];
+
+    private static IIcon EOH_INNER;
+    private static IIcon EOH_OUTER;
+    private static IIcon EOH_INFINITE;
 
     private static final byte START_INDEX = 16;
 
@@ -62,6 +67,13 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Tesla Secondary Windings");
 
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".10.name", "Ultimate Temporal Boundary Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".11.name", "Reinforced Spacetime Structure Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".12.name", "Infinite Spacetime Energy Boundary Casing");
+
         CustomItemList.tM_TeslaPrimary_0.set(new ItemStack(this, 1, 0));
         CustomItemList.tM_TeslaPrimary_1.set(new ItemStack(this, 1, 1));
         CustomItemList.tM_TeslaPrimary_2.set(new ItemStack(this, 1, 2));
@@ -73,6 +85,10 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         CustomItemList.tM_TeslaBase.set(new ItemStack(this, 1, 6));
         CustomItemList.tM_TeslaToroid.set(new ItemStack(this, 1, 7));
         CustomItemList.tM_TeslaSecondary.set(new ItemStack(this, 1, 8));
+
+        CustomItemList.EOH_Temporal_Boundary_Casing.set(new ItemStack(this, 1, 10));
+        CustomItemList.EOH_Reinforced_Spacetime_Casing.set(new ItemStack(this, 1, 11));
+        CustomItemList.EOH_INFINITE.set(new ItemStack(this, 1, 12));
     }
 
     @Override
@@ -97,6 +113,10 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         tM7 = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_TOROID");
         tM8[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_SECONDARY_TOP_BOTTOM");
         tM8[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_SECONDARY_SIDES");
+
+        EOH_INNER = aIconRegister.registerIcon("gregtech:iconsets/EM_INNER_SPACETIME_REINFORCED_EOH_CASING");
+        EOH_OUTER = aIconRegister.registerIcon("gregtech:iconsets/EM_OUTER_SPACETIME_REINFORCED_EOH_CASING");
+        EOH_INFINITE = aIconRegister.registerIcon("gregtech:iconsets/EM_POWER_INFINITE");
     }
 
     @Override
@@ -176,6 +196,12 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                     default:
                         return tM9[1];
                 }
+            case 10:
+                return EOH_INNER;
+            case 11:
+                return EOH_OUTER;
+            case 12:
+                return EOH_INFINITE;
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
@@ -190,7 +216,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i <= 9; i++) {
+        for (int i = 0; i <= 12; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }

@@ -19,7 +19,9 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.commands.EMList
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData;
+import com.github.technus.tectech.nei.IMCForNEI;
 import com.github.technus.tectech.proxy.CommonProxy;
+import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.util.XSTR;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -34,7 +36,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 @Mod(
         modid = Reference.MODID,
@@ -209,6 +213,7 @@ public class TecTech {
 
         MainLoader.load(definitionsRegistry);
         MainLoader.addAfterGregTechPostLoadRunner();
+        IMCForNEI.IMCSender();
     }
 
     @Mod.EventHandler
@@ -229,7 +234,15 @@ public class TecTech {
             pEvent.registerServerCommand(new ChargeCommand());
             pEvent.registerServerCommand(new MassCommand());
         }
+
+        // This must be done after game load otherwise it fails.
+        eyeOfHarmonyRecipeStorage = new EyeOfHarmonyRecipeStorage();
+        // The reason we do this is to force the fields inside the class to instantiate at world load so NEI
+        // displays properly.
+        eyeOfHarmonyRecipeStorage.recipeLookUp(new ItemStack(ModBlocks.blocks.get("Ow")));
     }
+
+    public static EyeOfHarmonyRecipeStorage eyeOfHarmonyRecipeStorage = null;
 
     @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {

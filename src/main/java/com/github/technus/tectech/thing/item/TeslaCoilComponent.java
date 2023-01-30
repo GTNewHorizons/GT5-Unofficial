@@ -29,7 +29,7 @@ public final class TeslaCoilComponent extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        aList.add(CommonValues.BASS_MARK);
+        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(EnumChatFormatting.BLUE
                 + translateToLocal("item.tm.itemTeslaComponent.desc")); // Tesla bois need these!
     }

@@ -307,6 +307,9 @@ public enum CustomItemList implements IItemContainer {
 
     tM_TeslaBase,
     tM_TeslaToroid,
+    EOH_Temporal_Boundary_Casing,
+    EOH_Reinforced_Spacetime_Casing,
+    EOH_INFINITE,
     tM_TeslaSecondary,
     tM_TeslaPrimary_0,
     tM_TeslaPrimary_1,
@@ -337,7 +340,7 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_EMCrafter,
     Machine_Multi_Wormhole,
     Machine_Multi_Annihilation,
-    Machine_Multi_BHG,
+    Machine_Multi_EyeOfHarmony,
     hint_0,
     hint_1,
     hint_2,
@@ -397,7 +400,37 @@ public enum CustomItemList implements IItemContainer {
     Machine_TeslaCoil_4by4_IV,
     DATApipeBlock,
     EMpipeBlock,
-    LASERpipeBlock;
+    LASERpipeBlock,
+
+    SpacetimeCompressionFieldGeneratorTier0,
+    SpacetimeCompressionFieldGeneratorTier1,
+    SpacetimeCompressionFieldGeneratorTier2,
+    SpacetimeCompressionFieldGeneratorTier3,
+    SpacetimeCompressionFieldGeneratorTier4,
+    SpacetimeCompressionFieldGeneratorTier5,
+    SpacetimeCompressionFieldGeneratorTier6,
+    SpacetimeCompressionFieldGeneratorTier7,
+    SpacetimeCompressionFieldGeneratorTier8,
+
+    TimeAccelerationFieldGeneratorTier0,
+    TimeAccelerationFieldGeneratorTier1,
+    TimeAccelerationFieldGeneratorTier2,
+    TimeAccelerationFieldGeneratorTier3,
+    TimeAccelerationFieldGeneratorTier4,
+    TimeAccelerationFieldGeneratorTier5,
+    TimeAccelerationFieldGeneratorTier6,
+    TimeAccelerationFieldGeneratorTier7,
+    TimeAccelerationFieldGeneratorTier8,
+
+    StabilisationFieldGeneratorTier0,
+    StabilisationFieldGeneratorTier1,
+    StabilisationFieldGeneratorTier2,
+    StabilisationFieldGeneratorTier3,
+    StabilisationFieldGeneratorTier4,
+    StabilisationFieldGeneratorTier5,
+    StabilisationFieldGeneratorTier6,
+    StabilisationFieldGeneratorTier7,
+    StabilisationFieldGeneratorTier8;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
