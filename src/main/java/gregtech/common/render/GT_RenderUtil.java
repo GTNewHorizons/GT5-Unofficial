@@ -1,6 +1,5 @@
 package gregtech.common.render;
 
-
 import gregtech.api.items.GT_MetaGenerated_Item;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -10,7 +9,6 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 public class GT_RenderUtil {
-
 
     public static void colorGTItem(ItemStack aStack) {
         if (aStack.getItem() instanceof GT_MetaGenerated_Item) {
@@ -22,8 +20,9 @@ public class GT_RenderUtil {
             System.out.println("WARNING: " + aStack.getDisplayName() + " does not have an associated GT colour.");
         }
     }
+
     public static void renderBlockIcon(
-        RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ, IIcon aIcon, byte aSide) {
+            RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ, IIcon aIcon, byte aSide) {
         switch (aSide) {
             case 0:
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
@@ -43,7 +42,6 @@ public class GT_RenderUtil {
             case 5:
                 aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
                 return;
-
         }
     }
 
