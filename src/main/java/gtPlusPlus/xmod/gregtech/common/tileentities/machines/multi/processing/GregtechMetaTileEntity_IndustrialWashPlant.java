@@ -98,7 +98,11 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
                                                     ofBlock(getCasingBlock(), getCasingMeta()))))
                     .addElement(
                             'w',
-                            ofChain(isAir(), ofBlockAnyMeta(Blocks.water), ofBlockAnyMeta(Blocks.flowing_water)))
+                            ofChain(
+                                    isAir(),
+                                    ofBlockAnyMeta(Blocks.water),
+                                    ofBlockAnyMeta(Blocks.flowing_water),
+                                    ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
                     .build();
         }
         return STRUCTURE_DEFINITION;
