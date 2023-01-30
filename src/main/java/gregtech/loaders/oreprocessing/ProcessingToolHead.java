@@ -928,14 +928,14 @@ public class ProcessingToolHead
                 }
                 break;
             case toolHeadFile:
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                     GT_MetaGenerated_Tool_01.FILE, 1, aMaterial, aMaterial.mHandleMaterial, null),
                             new Object[] {aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
 
                     if ((!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.BOUNCY))) {
-                        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                             GT_MetaGenerated_Tool_01.FILE,
@@ -973,7 +973,7 @@ public class ProcessingToolHead
 
                 break;
             case toolHeadHoe:
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                     GT_MetaGenerated_Tool_01.HOE, 1, aMaterial, aMaterial.mHandleMaterial, null),
@@ -1009,7 +1009,7 @@ public class ProcessingToolHead
                             new Object[] {"GG ", "f  ", "   ", 'G', OrePrefixes.gem.get(aMaterial)});
                 break;
             case toolHeadPickaxe:
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
@@ -1050,7 +1050,7 @@ public class ProcessingToolHead
 
                 break;
             case toolHeadPlow:
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
@@ -1084,7 +1084,7 @@ public class ProcessingToolHead
 
                 break;
             case toolHeadSaw:
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
@@ -1125,7 +1125,7 @@ public class ProcessingToolHead
 
                 break;
             case toolHeadSense:
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
@@ -1195,7 +1195,7 @@ public class ProcessingToolHead
                             new Object[] {"fG", 'G', OrePrefixes.gem.get(aMaterial)});
                 break;
             case toolHeadSword:
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
@@ -1853,7 +1853,7 @@ public class ProcessingToolHead
                         calculateRecipeEU(aMaterial, 6400));
 
                 if (aSpecialRecipeReq2) {
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_ModHandler.addCraftingRecipe(
                                 GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
                                 GT_Proxy.tBits,

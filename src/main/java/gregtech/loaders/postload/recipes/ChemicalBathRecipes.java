@@ -582,7 +582,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L),
                 Materials.TungstenSteel.getMolten(144L),
@@ -600,7 +600,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 400,
-                (int) Tier.RECIPE_MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1L),
                 Materials.Osmium.getMolten(144L),
@@ -618,7 +618,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 500,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
 
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L),
@@ -740,7 +740,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 1200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         // Na + H2O = NaOH + H
         GT_Values.RA.addChemicalBathRecipe(

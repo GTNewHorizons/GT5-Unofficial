@@ -2,6 +2,7 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -574,6 +575,102 @@ public class GT_PCBFactoryRecipes {
                     (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))),
                     (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier3BitMap | mBioUpgradeBitMap);
+        }
+
+        if (Loader.isModLoaded("miscutils")) {
+            // Optical Circuit Board
+            for (int tier = 7; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
+                int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 7))));
+                List<ItemStack> aBoards = new ArrayList<ItemStack>();
+                for (int i = amountOfBoards; i > 64; i -= 64) {
+                    aBoards.add(ItemList.Circuit_Board_Optical.get(i));
+                    amountOfBoards -= 64;
+                }
+                aBoards.add(ItemList.Circuit_Board_Optical.get(amountOfBoards));
+                GT_Values.RA.addPCBFactoryRecipe(
+                        new ItemStack[] {
+                            GT_Utility.getIntegratedCircuit(1),
+                            GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
+                                    .getPlates(1),
+                            GT_ModHandler.getModItem(
+                                    "bartworks", "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                            GT_OreDictUnificator.get(
+                                    OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
+                            GT_ModHandler.getModItem(
+                                    "miscutils", "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6))))
+                        },
+                        new FluidStack[] {
+                            Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
+                            Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
+                            Materials.MysteriousCrystal.getMolten((long) (2880 * (Math.sqrt(tier - 6))))
+                        },
+                        aBoards.toArray(new ItemStack[0]),
+                        (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))),
+                        (int) GT_Values.VP[tier] * 3 / 4,
+                        mTier1BitMap | mTier2BitMap | mTier3BitMap);
+            }
+            for (int tier = 7; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
+                int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 6.5))));
+                List<ItemStack> aBoards = new ArrayList<ItemStack>();
+                for (int i = amountOfBoards; i > 64; i -= 64) {
+                    aBoards.add(ItemList.Circuit_Board_Optical.get(i));
+                    amountOfBoards -= 64;
+                }
+                aBoards.add(ItemList.Circuit_Board_Optical.get(amountOfBoards));
+                GT_Values.RA.addPCBFactoryRecipe(
+                        new ItemStack[] {
+                            GT_Utility.getIntegratedCircuit(2),
+                            GT_Utility.getNaniteAsCatalyst(Materials.Silver),
+                            GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
+                                    .getPlates(1),
+                            GT_ModHandler.getModItem(
+                                    "bartworks", "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                            GT_OreDictUnificator.get(
+                                    OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
+                            GT_ModHandler.getModItem(
+                                    "miscutils", "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6))))
+                        },
+                        new FluidStack[] {
+                            Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
+                            Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
+                            Materials.MysteriousCrystal.getMolten((long) (2880 * (Math.sqrt(tier - 6))))
+                        },
+                        aBoards.toArray(new ItemStack[0]),
+                        (int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))),
+                        (int) GT_Values.VP[tier + 1] * 3 / 4,
+                        mTier2BitMap | mTier3BitMap);
+            }
+            for (int tier = 7; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
+                int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 6))));
+                List<ItemStack> aBoards = new ArrayList<ItemStack>();
+                for (int i = amountOfBoards; i > 64; i -= 64) {
+                    aBoards.add(ItemList.Circuit_Board_Optical.get(i));
+                    amountOfBoards -= 64;
+                }
+                aBoards.add(ItemList.Circuit_Board_Optical.get(amountOfBoards));
+                GT_Values.RA.addPCBFactoryRecipe(
+                        new ItemStack[] {
+                            GT_Utility.getIntegratedCircuit(3),
+                            GT_Utility.getNaniteAsCatalyst(Materials.Gold),
+                            GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
+                                    .getPlates(1),
+                            GT_ModHandler.getModItem(
+                                    "bartworks", "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                            GT_OreDictUnificator.get(
+                                    OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
+                            GT_ModHandler.getModItem(
+                                    "miscutils", "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6))))
+                        },
+                        new FluidStack[] {
+                            Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
+                            Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
+                            Materials.MysteriousCrystal.getMolten((long) (2880 * (Math.sqrt(tier - 6))))
+                        },
+                        aBoards.toArray(new ItemStack[0]),
+                        (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))),
+                        (int) GT_Values.VP[tier + 1] * 3 / 4,
+                        mTier3BitMap);
+            }
         }
     }
 }

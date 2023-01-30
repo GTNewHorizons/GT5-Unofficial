@@ -158,6 +158,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         }
     }
 
+    @Deprecated
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
         switch (meta) {
             case 10:
@@ -192,8 +193,10 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
         IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
         if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide) {
+            GT_MetaTileEntity_LargeTurbine turbine = (GT_MetaTileEntity_LargeTurbine) tTile.getMetaTileEntity();
+            if (turbine.isNewStyleRendering()) return 0;
             if (tTile.isActive()) return 1;
-            return ((GT_MetaTileEntity_LargeTurbine) tTile.getMetaTileEntity()).hasTurbine() ? 2 : 3;
+            return turbine.hasTurbine() ? 2 : 3;
         }
         return 0;
     }

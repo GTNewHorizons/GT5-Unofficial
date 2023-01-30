@@ -64,7 +64,7 @@ public class ForgeHammerRecipes implements Runnable {
                 null,
                 new FluidStack[] {Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L)},
                 10 * 20,
-                (int) Tier.RECIPE_UXV);
+                (int) TierEU.RECIPE_UXV);
 
         if (isHardcoreEnderExpansionLoaded) {
             GT_Values.RA.addForgeHammerRecipe(

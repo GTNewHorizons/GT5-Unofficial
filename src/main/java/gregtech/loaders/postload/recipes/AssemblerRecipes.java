@@ -80,7 +80,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Component_Filter.get(1L),
                 1600,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 64),
@@ -101,7 +101,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.AdvancedGlue.getFluid(500L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64),
                 3200,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64),
@@ -122,7 +122,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.FluidRegulator_LV.get(1L),
                 400,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_MV.get(1L),
@@ -132,7 +132,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.FluidRegulator_MV.get(1L),
                 350,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_HV.get(1L),
@@ -142,7 +142,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.FluidRegulator_HV.get(1L),
                 300,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_EV.get(1L),
@@ -152,7 +152,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.FluidRegulator_EV.get(1L),
                 250,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_IV.get(1L),
@@ -162,7 +162,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.FluidRegulator_IV.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_LuV.get(1L),
@@ -172,7 +172,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.FluidRegulator_LuV.get(1L),
                 150,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_ZPM.get(1L),
@@ -182,7 +182,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.FluidRegulator_ZPM.get(1L),
                 100,
-                (int) Tier.RECIPE_ZPM);
+                (int) TierEU.RECIPE_ZPM);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_UV.get(1L),
@@ -204,7 +204,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Steam_Valve_LV.get(1L),
                 400,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_MV.get(1L),
@@ -215,7 +215,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Steam_Valve_MV.get(1L),
                 350,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_HV.get(1L),
@@ -226,7 +226,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Steam_Valve_HV.get(1L),
                 300,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_EV.get(1L),
@@ -237,7 +237,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Steam_Valve_EV.get(1L),
                 250,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Electric_Pump_IV.get(1L),
@@ -248,7 +248,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Steam_Valve_IV.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -269,7 +269,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Schematic.get(1L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
@@ -293,7 +293,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Energy_HV.get(1L),
                 200,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_EV.get(1L),
@@ -306,7 +306,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Energy_EV.get(1L),
                 200,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_IV.get(1L),
@@ -319,7 +319,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Energy_IV.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_HV.get(1L),
@@ -332,7 +332,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Energy_HV.get(1L),
                 200,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_EV.get(1L),
@@ -345,7 +345,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Energy_EV.get(1L),
                 200,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_IV.get(1L),
@@ -358,7 +358,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Energy_IV.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -372,7 +372,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Dynamo_HV.get(1L),
                 200,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_EV.get(1L),
@@ -385,7 +385,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Dynamo_EV.get(1L),
                 200,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_IV.get(1L),
@@ -398,7 +398,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Dynamo_IV.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_HV.get(1L),
@@ -411,7 +411,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Dynamo_HV.get(1L),
                 200,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_EV.get(1L),
@@ -424,7 +424,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Dynamo_EV.get(1L),
                 200,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_IV.get(1L),
@@ -437,7 +437,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Dynamo_IV.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -553,67 +553,67 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Casing_Gearbox_TungstenSteel.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
-        { // limiting life time of the variables
+        { // limiting lifetime of the variables
             ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
             NBTTagCompound nbtFlask = new NBTTagCompound();
             nbtFlask.setInteger("Capacity", 144);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(1), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 288);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(2), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 576);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(3), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 720);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(4), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 864);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(5), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 72);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(6), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 648);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(7), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 936);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(8), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 250);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(10), flask, 10, (int)
-                            Tier.RECIPE_LV);
+                            TierEU.RECIPE_LV);
             nbtFlask.setInteger("Capacity", 500);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.VOLUMETRIC_FLASK.get(1), GT_Utility.getIntegratedCircuit(11), flask, 10, (int)
-                            Tier.RECIPE_LV);
-            // make the 1000L recipe actualy in
+                            TierEU.RECIPE_LV);
+            // make the 1000L recipe actually in
             ItemStack flask500 = flask.copy();
             nbtFlask.setInteger("Capacity", 1000);
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.addAssemblerRecipe(
-                    flask500, GT_Utility.getIntegratedCircuit(24), flask, 10, (int) Tier.RECIPE_LV);
+                    flask500, GT_Utility.getIntegratedCircuit(24), flask, 10, (int) TierEU.RECIPE_LV);
         }
 
         GT_Values.RA.addAssemblerRecipe(
@@ -627,7 +627,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Muffler_LV.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_MV.get(1L),
@@ -639,7 +639,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Muffler_MV.get(1L),
                 200,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_HV.get(1L),
@@ -651,7 +651,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Muffler_HV.get(1L),
                 200,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_EV.get(1L),
@@ -663,7 +663,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Muffler_EV.get(1L),
                 200,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_IV.get(1L),
@@ -675,7 +675,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Muffler_IV.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_LuV.get(1L),
@@ -687,7 +687,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Muffler_LuV.get(1L),
                 200,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_ZPM.get(1L),
@@ -699,7 +699,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Hatch_Muffler_ZPM.get(1L),
                 200,
-                (int) Tier.RECIPE_ZPM);
+                (int) TierEU.RECIPE_ZPM);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Hull_UV.get(1L),
@@ -808,21 +808,21 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Redstone.getMolten(144L),
                 getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 23),
                 64,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 17),
                 getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 20),
                 Materials.Redstone.getMolten(144L),
                 getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 24),
                 64,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 18),
                 getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 20),
                 Materials.Redstone.getMolten(144L),
                 getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 22),
                 64,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1L),
                 new ItemStack(Blocks.sand, 1, 32767),
@@ -930,7 +930,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Glue.getFluid(300L),
                 ItemList.Duct_Tape.get(1L),
                 100,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StyreneButadieneRubber, 2L),
@@ -940,7 +940,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Glue.getFluid(200L),
                 ItemList.Duct_Tape.get(1L),
                 100,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicone, 1L),
@@ -950,7 +950,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Glue.getFluid(100L),
                 ItemList.Duct_Tape.get(1L),
                 100,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         // Maintenance Hatch Recipes Using BrainTech + Refined Glue. Info: One BrainTech Recipe Is In GT+ü Originally.
         // The Maintenance Hatch Recipe using SuperGlue is there.
         GT_Values.RA.addAssemblerRecipe(
@@ -959,7 +959,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Glue.getFluid(1000L),
                 ItemList.Hatch_Maintenance.get(1L),
                 100,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L),
                 new ItemStack(Items.leather, 1, 32767),
@@ -1118,7 +1118,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(2000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3L),
                 400,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6L),
@@ -1129,7 +1129,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(4000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6L),
                 400,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Uraniumtriplatinid, 9L),
@@ -1140,7 +1140,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(6000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9L),
                 400,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12L),
@@ -1151,7 +1151,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(8000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12L),
                 800,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(
@@ -1165,7 +1165,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(12000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15L),
                 800,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(
@@ -1177,7 +1177,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(16000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18L),
                 1600,
-                (int) Tier.RECIPE_ZPM);
+                (int) TierEU.RECIPE_ZPM);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuvwire, 21L),
@@ -1188,7 +1188,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(20000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21L),
                 1600,
-                (int) Tier.RECIPE_UV);
+                (int) TierEU.RECIPE_UV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuhvwire, 24L),
@@ -1199,7 +1199,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Helium.getGas(24000L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 24L),
                 3200,
-                (int) Tier.RECIPE_UHV);
+                (int) TierEU.RECIPE_UHV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -1220,7 +1220,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.LV_Coil.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SteelMagnetic, 1L),
@@ -1230,7 +1230,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.MV_Coil.get(1L),
                 200,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SteelMagnetic, 1L),
@@ -1240,7 +1240,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.HV_Coil.get(1L),
                 200,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NeodymiumMagnetic, 1L),
@@ -1250,7 +1250,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.EV_Coil.get(1L),
                 200,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NeodymiumMagnetic, 1L),
@@ -1260,7 +1260,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.IV_Coil.get(1L),
                 200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
@@ -1270,7 +1270,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.LuV_Coil.get(1L),
                 200,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
@@ -1280,7 +1280,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.ZPM_Coil.get(1L),
                 200,
-                (int) Tier.RECIPE_ZPM);
+                (int) TierEU.RECIPE_ZPM);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
@@ -1309,7 +1309,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Glue.getFluid(10),
                 GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 2L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 3L), GT_Utility.getIntegratedCircuit(4)
@@ -1317,7 +1317,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Glue.getFluid(20),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Wood, 4L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1L), GT_Utility.getIntegratedCircuit(12)
@@ -1325,7 +1325,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.Glue.getFluid(60),
                 GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Wood, 6L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -1337,7 +1337,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.Ingot_IridiumAlloy.get(1L),
                 1200,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -1350,7 +1350,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.Casing_Vent_T2.get(1L),
                 30 * 20,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
 
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
             GT_Values.RA.addAssemblerRecipe(
@@ -1396,8 +1396,6 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack(Blocks.iron_bars, 4),
                 300,
                 4);
-        // GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L),
-        // GT_Utility.getIntegratedCircuit(2), new ItemStack(Blocks.heavy_weighted_pressure_plate, 1), 200, 4);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 6L),
                 GT_Utility.getIntegratedCircuit(6),
@@ -1668,14 +1666,14 @@ public class AssemblerRecipes implements Runnable {
                 Materials.HSSG.getMolten(288),
                 ItemList.Casing_Fusion.get(1L),
                 100,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 4L),
                 ItemList.Casing_Fusion.get(1L),
                 Materials.NaquadahAlloy.getMolten(288),
                 ItemList.Casing_Fusion2.get(1L),
                 200,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Magnalium, 6L),
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueSteel, 1L),
@@ -2047,79 +2045,79 @@ public class AssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemInventoryScannerCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemEnergySensorLocationCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "RFSensorCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 1L),
                     200,
-                    (int) Tier.RECIPE_LV); // counter
+                    (int) TierEU.RECIPE_LV); // counter
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 1),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 1L),
                     200,
-                    (int) Tier.RECIPE_LV); // liquid
+                    (int) TierEU.RECIPE_LV); // liquid
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 2),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV); // generator
+                    (int) TierEU.RECIPE_LV); // generator
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemLiquidArrayLocationCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV); // 2-6 liquid
+                    (int) TierEU.RECIPE_LV); // 2-6 liquid
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemEnergyArrayLocationCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV); // 2-6 energy
+                    (int) TierEU.RECIPE_LV); // 2-6 energy
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
                     200,
-                    (int) Tier.RECIPE_LV); // non-fluid nuke
+                    (int) TierEU.RECIPE_LV); // non-fluid nuke
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "Item55ReactorCard", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     getModItem("IC2NuclearControl", "CardAppeng", 1L, 0),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 2L),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     ItemList.NC_SensorCard.get(1L),
                     GT_Utility.getIntegratedCircuit(1),
                     GT_ModHandler.getIC2Item("electronicCircuit", 3L),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
         }
 
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
@@ -2373,7 +2371,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.ThoriumCell_2.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.ThoriumCell_1.get(4L),
@@ -2383,7 +2381,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.ThoriumCell_4.get(1L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.ThoriumCell_2.get(2L),
@@ -2393,7 +2391,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.ThoriumCell_4.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Uraniumcell_1.get(2L),
@@ -2403,7 +2401,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.Uraniumcell_2.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Uraniumcell_1.get(4L),
@@ -2413,7 +2411,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.Uraniumcell_4.get(1L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Uraniumcell_2.get(2L),
@@ -2423,7 +2421,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.Uraniumcell_4.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Moxcell_1.get(2L),
@@ -2433,7 +2431,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.Moxcell_2.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Moxcell_1.get(4L),
@@ -2443,7 +2441,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.Moxcell_4.get(1L),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Moxcell_2.get(2L),
@@ -2453,7 +2451,7 @@ public class AssemblerRecipes implements Runnable {
                 null,
                 ItemList.Moxcell_4.get(1L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.NaquadahCell_1.get(2L),
@@ -2536,7 +2534,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.WovenKevlar.get(1L),
                 300,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
 
         for (Materials tMat : Materials.values()) {
             if (tMat.isProperSolderingFluid()) {
@@ -2614,7 +2612,7 @@ public class AssemblerRecipes implements Runnable {
                     Materials.SolderingAlloy.getGas(144L),
                     ItemList.Spinneret.get(1L),
                     2400,
-                    (int) Tier.RECIPE_EV);
+                    (int) TierEU.RECIPE_EV);
         }
     }
 
@@ -2862,7 +2860,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.VibrantAlloy.getMolten(216L),
                 ItemList.RC_Rail_HS.get(32L),
                 100,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 3L),
@@ -2902,7 +2900,7 @@ public class AssemblerRecipes implements Runnable {
                 Materials.ConductiveIron.getMolten(216L),
                 ItemList.RC_Rail_Adv.get(32L),
                 100,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.RC_Rail_Standard.get(3L),
@@ -2962,7 +2960,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.RC_Rail_Electric.get(8L),
                 50,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.RC_Rail_Standard.get(1L),
@@ -3032,7 +3030,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 ItemList.RC_Rail_Wooden.get(32L),
                 133,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.RC_Tie_Wood.get(1L),
@@ -3048,7 +3046,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(20),
                 ItemList.RC_Bed_Wood.get(24L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.RC_Tie_Wood.get(64L),
                 GT_Utility.getIntegratedCircuit(24),
@@ -3060,7 +3058,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(20),
                 ItemList.RC_Bed_Stone.get(24L),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.RC_Tie_Stone.get(64L),
                 GT_Utility.getIntegratedCircuit(24),
@@ -3087,7 +3085,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     tRailWood,
                     100,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailWood),
@@ -3097,7 +3095,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     tRailWoodB,
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
         }
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -3109,7 +3107,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 new ItemStack(Blocks.golden_rail, 16, 0),
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -3118,7 +3116,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 new ItemStack(Blocks.rail, 64, 0),
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         ItemStack tRailRe = getModItem(MOD_ID_RC, "track", 64);
         NBTTagCompound tTagRe = new NBTTagCompound();
@@ -3134,7 +3132,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 tRailRe,
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         ItemStack tRailReB = getModItem(MOD_ID_RC, "track.reinforced", 16);
         NBTTagCompound tTagReB = new NBTTagCompound();
@@ -3150,7 +3148,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 tRailReB,
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         ItemStack tRailEl = getModItem(MOD_ID_RC, "track", 64);
         NBTTagCompound tTagEl = new NBTTagCompound();
@@ -3166,7 +3164,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 tRailEl,
                 200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         ItemStack tRailHs = getModItem(MOD_ID_RC, "track", 64, 816);
         if (tRailHs != null) {
@@ -3181,7 +3179,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     tRailHs,
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
         }
         ItemStack tRailHsB = getModItem(MOD_ID_RC, "track.speed", 16);
         NBTTagCompound tTagHsB = new NBTTagCompound();
@@ -3197,7 +3195,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 tRailHsB,
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         // --- Wooden Switch Track ---
         ItemStack tRailSS = getModItem(MOD_ID_RC, "track.slow", 1, 19986);
@@ -3235,7 +3233,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(4, tRailSS),
                     100,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailWood),
@@ -3265,7 +3263,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(32, tRailSS),
                     100,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailWood),
@@ -3313,7 +3311,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(4, tRailSW),
                     100,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailWood),
@@ -3343,7 +3341,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(32, tRailSW),
                     100,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailWood),
@@ -3391,7 +3389,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(4, tRailSJ),
                     100,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailWood),
@@ -3421,7 +3419,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(32, tRailSJ),
                     100,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailWood),
@@ -3459,7 +3457,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailNS),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         new ItemStack(Blocks.rail, 2, 0),
@@ -3489,7 +3487,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailNS),
                     200,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         new ItemStack(Blocks.rail, 2, 0),
@@ -3509,7 +3507,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailNS),
                     200,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Wye Tack ---
         ItemStack tRailNW = getModItem(MOD_ID_RC, "track", 1, 2144);
@@ -3537,7 +3535,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailNW),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         new ItemStack(Blocks.rail, 2, 0),
@@ -3567,7 +3565,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailNW),
                     200,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         new ItemStack(Blocks.rail, 2, 0),
@@ -3587,7 +3585,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailNW),
                     200,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Junction Tack ---
         ItemStack tRailNJ = getModItem(MOD_ID_RC, "track", 1);
@@ -3615,7 +3613,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailNJ),
                     200,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         new ItemStack(Blocks.rail, 2, 0),
@@ -3645,7 +3643,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailNJ),
                     200,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         new ItemStack(Blocks.rail, 2, 0),
@@ -3665,7 +3663,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailNJ),
                     200,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Reinforced Switch Track ---
         ItemStack tRailRS = getModItem(MOD_ID_RC, "track.reinforced", 1);
@@ -3693,7 +3691,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailRS),
                     300,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailRe),
@@ -3723,7 +3721,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailRS),
                     300,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailRe),
@@ -3743,7 +3741,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailRS),
                     300,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Reinforced Wye Track ---
         ItemStack tRailRW = getModItem(MOD_ID_RC, "track.reinforced", 1);
@@ -3771,7 +3769,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailRW),
                     300,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailRe),
@@ -3801,7 +3799,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailRW),
                     300,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailRe),
@@ -3821,7 +3819,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailRW),
                     300,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Reinforced Junction Track ---
         ItemStack tRailRJ = getModItem(MOD_ID_RC, "track.reinforced", 1, 764);
@@ -3849,7 +3847,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailRJ),
                     300,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailRe),
@@ -3879,7 +3877,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailRJ),
                     300,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailRe),
@@ -3899,7 +3897,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailRJ),
                     300,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- H.S. Switch Track ---
         ItemStack tRailSSw = getModItem(MOD_ID_RC, "track.speed", 1, 7916);
@@ -3927,7 +3925,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailSSw),
                     400,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailHs),
@@ -3957,7 +3955,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailSSw),
                     400,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailHs),
@@ -3977,7 +3975,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailSSw),
                     400,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- H.S. Wye Track ---
         ItemStack tRailSWy = getModItem(MOD_ID_RC, "track.speed", 1);
@@ -4005,7 +4003,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailSWy),
                     400,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailHs),
@@ -4035,7 +4033,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailSWy),
                     400,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailHs),
@@ -4055,7 +4053,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailSWy),
                     400,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- H.S. Transition Track ---
         ItemStack tRailSTt = getModItem(MOD_ID_RC, "track.speed", 1, 26865);
@@ -4074,7 +4072,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(4, tRailSTt),
                     400,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailHs),
@@ -4096,7 +4094,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailSTt),
                     400,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailHs),
@@ -4118,7 +4116,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailSTt),
                     400,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Electric Switch Track ---
         ItemStack tRailES = getModItem(MOD_ID_RC, "track.electric", 1, 10488);
@@ -4146,7 +4144,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailES),
                     400,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailEl),
@@ -4176,7 +4174,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailES),
                     400,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailEl),
@@ -4196,7 +4194,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailES),
                     400,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Electric Wye Track ---
         ItemStack tRailEw = getModItem(MOD_ID_RC, "track.electric", 1);
@@ -4224,7 +4222,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailEw),
                     400,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailEl),
@@ -4254,7 +4252,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailEw),
                     400,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailEl),
@@ -4274,7 +4272,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailEw),
                     400,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // --- Electric Junction Track ---
         ItemStack tRailEJ = getModItem(MOD_ID_RC, "track.electric", 1);
@@ -4302,7 +4300,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(2, tRailEJ),
                     400,
-                    (int) Tier.RECIPE_LV);
+                    (int) TierEU.RECIPE_LV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailEl),
@@ -4332,7 +4330,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(16, tRailEJ),
                     400,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_Utility.copyAmount(2, tRailEl),
@@ -4352,7 +4350,7 @@ public class AssemblerRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Utility.copyAmount(64, tRailEJ),
                     400,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
         }
         // Shunting Wire
         for (Materials tMat : Materials.values()) {
@@ -4399,7 +4397,7 @@ public class AssemblerRecipes implements Runnable {
                         tMat.getMolten(16L * tMultiplier / 2L),
                         ItemList.RC_ShuntingWire.get(8L),
                         200,
-                        (int) Tier.RECIPE_LV);
+                        (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titanium, 1L),
@@ -4429,7 +4427,7 @@ public class AssemblerRecipes implements Runnable {
                         tMat.getMolten(16L * tMultiplier / 2L),
                         ItemList.RC_ShuntingWire.get(64L),
                         200,
-                        (int) Tier.MV);
+                        (int) TierEU.RECIPE_MV);
                 // chunkloader upgrade OC
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] {
@@ -4520,14 +4518,14 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.alpha", 1, 0),
                 600,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
 
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2L),
                 GT_Utility.getIntegratedCircuit(20),
                 getModItem(MOD_ID_RC, "machine.beta", 1L, 0),
                 600,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2L),
@@ -4537,7 +4535,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.beta", 2L, 1),
                 800,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2L),
@@ -4547,7 +4545,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.beta", 2L, 1),
                 800,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 2L),
@@ -4557,7 +4555,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.beta", 1L, 2),
                 800,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L),
@@ -4602,7 +4600,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(20),
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 0),
                 600,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
@@ -4612,7 +4610,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 2L, 1),
                 800,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
@@ -4622,7 +4620,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 2L, 1),
                 800,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Plastic, 2L),
@@ -4632,7 +4630,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 2),
                 800,
-                (int) Tier.MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
@@ -4677,7 +4675,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(20),
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 6),
                 600,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2L),
@@ -4687,7 +4685,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 2L, 7),
                 800,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2L),
@@ -4697,7 +4695,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 2L, 7),
                 800,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 2L),
@@ -4707,7 +4705,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 8),
                 800,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L),
@@ -4752,7 +4750,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(20),
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 12),
                 600,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2L),
@@ -4762,7 +4760,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 2L, 13),
                 800,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2L),
@@ -4772,7 +4770,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 2L, 13),
                 800,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NiobiumTitanium, 2L),
@@ -4782,7 +4780,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.zeta", 1L, 14),
                 800,
-                (int) Tier.RECIPE_EV);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2L),
@@ -4827,7 +4825,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(20),
                 getModItem(MOD_ID_RC, "machine.eta", 1L, 3),
                 600,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2L),
@@ -4837,7 +4835,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.eta", 2L, 4),
                 800,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2L),
@@ -4847,7 +4845,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.eta", 2L, 4),
                 800,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2L),
@@ -4857,7 +4855,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.eta", 1L, 5),
                 800,
-                (int) Tier.IV);
+                (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
@@ -4866,7 +4864,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.eta", 1L, 6),
                 200,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
@@ -4876,7 +4874,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.eta", 2L, 7),
                 400,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
@@ -4886,7 +4884,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.eta", 2L, 7),
                 400,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Neutronium, 2L),
@@ -4896,7 +4894,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.NF,
                 getModItem(MOD_ID_RC, "machine.eta", 1L, 8),
                 400,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
         // Water Tank
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -4964,7 +4962,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(6),
                 getModItem(MOD_ID_RC, "machine.beta", 1L, 3),
                 400,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.IC2_Item_Casing_Steel.get(6L),
                 GT_Utility.getIntegratedCircuit(6),
@@ -4996,7 +4994,7 @@ public class AssemblerRecipes implements Runnable {
                     Materials.StainlessSteel.getMolten(72L),
                     ItemList.Ingot_Heavy1.get(1L),
                     300,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         getModItem("GalacticraftCore", "item.heavyPlating", 1L),
@@ -5006,7 +5004,7 @@ public class AssemblerRecipes implements Runnable {
                     Materials.TungstenSteel.getMolten(72L),
                     ItemList.Ingot_Heavy2.get(1L),
                     300,
-                    (int) Tier.RECIPE_EV);
+                    (int) TierEU.RECIPE_EV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         getModItem("GalacticraftMars", "item.null", 1L, 3),
@@ -5016,7 +5014,7 @@ public class AssemblerRecipes implements Runnable {
                     Materials.Platinum.getMolten(72L),
                     ItemList.Ingot_Heavy3.get(1L),
                     300,
-                    (int) Tier.IV);
+                    (int) TierEU.RECIPE_IV);
         }
     }
 
@@ -5032,7 +5030,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 2000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3L),
                     320,
-                    (int) Tier.MV);
+                    (int) TierEU.RECIPE_MV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(
@@ -5044,7 +5042,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 4000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6L),
                     320,
-                    (int) Tier.RECIPE_HV);
+                    (int) TierEU.RECIPE_HV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Uraniumtriplatinid, 9L),
@@ -5055,7 +5053,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 6000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9L),
                     320,
-                    (int) Tier.RECIPE_EV);
+                    (int) TierEU.RECIPE_EV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12L),
@@ -5066,7 +5064,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 8000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12L),
                     640,
-                    (int) Tier.IV);
+                    (int) TierEU.RECIPE_IV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(
@@ -5080,7 +5078,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 12000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15L),
                     640,
-                    (int) Tier.RECIPE_LuV);
+                    (int) TierEU.RECIPE_LuV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(
@@ -5092,7 +5090,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 16000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18L),
                     1280,
-                    (int) Tier.RECIPE_ZPM);
+                    (int) TierEU.RECIPE_ZPM);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(
@@ -5104,7 +5102,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 20000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21L),
                     1280,
-                    (int) Tier.RECIPE_UV);
+                    (int) TierEU.RECIPE_UV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(
@@ -5116,7 +5114,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 24000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 24L),
                     2560,
-                    (int) Tier.RECIPE_UHV);
+                    (int) TierEU.RECIPE_UHV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEVBase, 27L),
@@ -5127,7 +5125,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 28000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 27L),
                     3200,
-                    (int) Tier.RECIPE_UEV);
+                    (int) TierEU.RECIPE_UEV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMVBase, 33L),
@@ -5138,7 +5136,7 @@ public class AssemblerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("liquid helium"), 36000),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33L),
                     3200,
-                    (int) Tier.RECIPE_UMV);
+                    (int) TierEU.RECIPE_UMV);
         }
     }
 
@@ -5153,7 +5151,7 @@ public class AssemblerRecipes implements Runnable {
                     Materials.AdvancedGlue.getFluid(500L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64),
                     400,
-                    (int) Tier.RECIPE_LuV);
+                    (int) TierEU.RECIPE_LuV);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] {
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64),
@@ -5163,7 +5161,7 @@ public class AssemblerRecipes implements Runnable {
                     Materials.AdvancedGlue.getFluid(250L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64),
                     80,
-                    (int) Tier.RECIPE_ZPM);
+                    (int) TierEU.RECIPE_ZPM);
         }
     }
 }

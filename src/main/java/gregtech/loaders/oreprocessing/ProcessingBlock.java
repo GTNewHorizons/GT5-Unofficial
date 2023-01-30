@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
@@ -16,7 +18,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
-            if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GT_Values.RA.addCutterRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         aMaterial == MaterialsBotania.Livingrock
@@ -50,7 +52,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (aMaterial.mStandardMoltenFluid != null) {
             if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Block.get(0L),
                             aMaterial.getMolten(1296L),
@@ -96,11 +98,11 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (!OrePrefixes.block.isIgnored(aMaterial)) {
-            if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
-                GT_ModHandler.addCompressionRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L),
-                        GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
-            }
+            GT_ModHandler.addCompressionRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L),
+                    GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L),
+                    300,
+                    calculateRecipeEU(aMaterial, 2));
         }
 
         switch (aMaterial.mName) {

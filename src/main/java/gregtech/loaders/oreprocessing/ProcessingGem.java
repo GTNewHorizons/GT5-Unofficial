@@ -90,7 +90,7 @@ public class ProcessingGem
                 }
 
                 if (aNoWorking) {
-                    if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_Values.RA.addLatheRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),

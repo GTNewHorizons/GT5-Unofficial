@@ -21,7 +21,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 4L)
                 },
                 400,
-                (int) Tier.RECIPE_LV,
+                (int) TierEU.RECIPE_LV,
                 false);
 
         GT_Values.RA.addCutterRecipe(
@@ -31,7 +31,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 8L)
                 },
                 800,
-                (int) Tier.RECIPE_MV,
+                (int) TierEU.RECIPE_MV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
@@ -41,7 +41,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16L)
                 },
                 1600,
-                (int) Tier.RECIPE_HV,
+                (int) TierEU.RECIPE_HV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
@@ -52,7 +52,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32L)
                 },
                 2400,
-                (int) Tier.RECIPE_EV,
+                (int) TierEU.RECIPE_EV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
@@ -63,7 +63,7 @@ public class CuttingRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64L)
                 },
                 3200,
-                (int) Tier.RECIPE_IV,
+                (int) TierEU.RECIPE_IV,
                 true);
 
         GT_Values.RA.addCutterRecipe(
