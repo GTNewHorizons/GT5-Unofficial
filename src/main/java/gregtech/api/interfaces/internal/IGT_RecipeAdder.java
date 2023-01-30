@@ -1187,12 +1187,13 @@ public interface IGT_RecipeAdder {
      */
     boolean addSifterRecipe(ItemStack aItemToSift, ItemStack[] aSiftedItems, int[] aChances, int aDuration, int aEUt);
     /**
-     * Adds a Generalised Laser Engraver Recipe.
+     * Adds a Generalised Sifter Recipe.
      *
      * @param ItemInputArray    Array of input items.
      * @param FluidInputArray   Array of output items.
      * @param OutputItemArray   Array of input fluids.
      * @param FluidOutputArray  Array of output items.
+     * @param aChances          Array of output chances.
      * @param aDuration         Must be > 0. Duration in ticks.
      * @param aEUt              Should be > 0. EU/t.
      * @param aCleanroom        Boolean for usage of cleanroom in recipe.
@@ -1202,6 +1203,7 @@ public interface IGT_RecipeAdder {
             FluidStack[] FluidInputArray,
             ItemStack[] OutputItemArray,
             FluidStack[] FluidOutputArray,
+            int[] aChances,
             int aDuration,
             int aEUt,
             boolean aCleanroom);
