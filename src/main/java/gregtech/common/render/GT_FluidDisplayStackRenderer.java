@@ -1,7 +1,10 @@
 package gregtech.common.render;
 
+import appeng.util.ReadableNumberConverter;
+import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.common.items.GT_FluidDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -13,7 +16,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+@SideOnly(Side.CLIENT)
 public class GT_FluidDisplayStackRenderer implements IItemRenderer {
 
     public GT_FluidDisplayStackRenderer() {
@@ -40,20 +43,23 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        IIcon icon = item.getItem().getIconFromDamage(item.getItemDamage());
-
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        // draw a simple rectangle for the inventory icon
-        final float x_min = icon.getMinU();
-        final float x_max = icon.getMaxU();
-        final float y_min = icon.getMinV();
-        final float y_max = icon.getMaxV();
-        tess.addVertexWithUV(0, 16, 0, x_min, y_max);
-        tess.addVertexWithUV(16, 16, 0, x_max, y_max);
-        tess.addVertexWithUV(16, 0, 0, x_max, y_min);
-        tess.addVertexWithUV(0, 0, 0, x_min, y_min);
-        tess.draw();
+        Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
+        if (associatedFluidMaterial.renderer == null
+                || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
+            IIcon icon = item.getItem().getIconFromDamage(item.getItemDamage());
+            Tessellator tess = Tessellator.instance;
+            tess.startDrawingQuads();
+            // draw a simple rectangle for the inventory icon
+            final float x_min = icon.getMinU();
+            final float x_max = icon.getMaxU();
+            final float y_min = icon.getMinV();
+            final float y_max = icon.getMaxV();
+            tess.addVertexWithUV(0, 16, 0, x_min, y_max);
+            tess.addVertexWithUV(16, 16, 0, x_max, y_max);
+            tess.addVertexWithUV(16, 0, 0, x_max, y_min);
+            tess.addVertexWithUV(0, 0, 0, x_min, y_min);
+            tess.draw();
+        }
 
         if (item.getTagCompound() == null) {
             GL11.glDisable(GL11.GL_BLEND);
@@ -66,29 +72,21 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         if (fluidAmount > 0L && !item.getTagCompound().getBoolean("mHideStackSize")) {
             String amountString;
 
-            if (fluidAmount < 10000) {
+            if (fluidAmount < 10_000) {
                 amountString = "" + fluidAmount + "L";
             } else {
-                int exp = (int) (Math.log(fluidAmount) / Math.log(1000));
-                double shortAmount = fluidAmount / Math.pow(1000, exp);
-                if (shortAmount >= 100) {
-                    amountString = String.format(
-                            "%.0f%cL", shortAmount, "kMGTPE".charAt(exp - 1)); // heard it here first, PetaLiters
-                } else if (shortAmount >= 10) {
-                    amountString = String.format("%.1f%cL", shortAmount, "kMGTPE".charAt(exp - 1));
-                } else {
-                    amountString = String.format("%.2f%cL", shortAmount, "kMGTPE".charAt(exp - 1));
-                }
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount);
             }
 
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
             float smallTextScale = fontRender.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
             GL11.glDisable(GL11.GL_BLEND);
+            GL11.glPushMatrix();
             GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
 
             fontRender.drawString(
                     amountString, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
-            GL11.glScalef(1f, 1f, 1f);
+            GL11.glPopMatrix();
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
     }

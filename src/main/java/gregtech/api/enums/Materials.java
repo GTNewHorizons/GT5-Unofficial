@@ -16,9 +16,8 @@ import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
-import gregtech.common.render.items.GaiaSpiritRenderer;
-import gregtech.common.render.items.TranscendentMetalRenderer;
+import gregtech.common.render.items.*;
+import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import java.util.*;
@@ -910,6 +909,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Time = new Materials(587, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 100, 1, 255, 255, "Time", "Molten Time", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple);
     public static Materials Space = new Materials(106, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 100, 1, 255, 255, "Space", "Molten Space", -1, -1, 0, 0, false, false, 200, 1, 1, Dyes.dyePurple);
 
+    public static Materials Universium = new Materials(139, new TextureSet("universium", true),   1.0F,4*2621440,  25, 1|2|64|128,   38, 49, 69,  255,   "Universium"                ,   "Universium",    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setProcessingMaterialTierEU(Tier.UMV);
 
     // spotless:on
 
@@ -1997,6 +1997,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
         SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
+        Universium.mChemicalFormula = "A tear into the space beyond space";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(✦◆✦)(⚷⚙⚷ Ni4Ti6)";
@@ -2532,6 +2533,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static void initClient() {
         TranscendentMetal.renderer = new TranscendentMetalRenderer();
         MaterialsBotania.GaiaSpirit.renderer = new GaiaSpiritRenderer();
+        Infinity.renderer = new InfinityRenderer();
+        CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
+        Universium.renderer = new UniversiumRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {

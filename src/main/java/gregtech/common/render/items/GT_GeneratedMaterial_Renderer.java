@@ -29,6 +29,20 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         return type == ItemRenderType.ENTITY;
     }
 
+    /**
+     * Handle special fluid display rendering. Return false if does not need such kind of handling.
+     * Note: annotations should not be rendered here. Only render the fluid
+     * texture.
+     * Parameters are values passed from {@link IItemRenderer#renderItem(ItemRenderType, ItemStack, Object...)}
+     * verbatim. Do not modify the argument.
+     *
+     * While this is called, BLEND and ALPHA_TEST is on. It is expected that these remain enabled while exit.
+     * @return true if did special fluid display rendering. false otherwise.
+     */
+    public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
+        return false;
+    }
+
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
@@ -55,6 +69,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
             IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
             if (fluidIcon != null) {
+                // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
                 renderContainedFluid(type, aFluid, fluidIcon);
             }
         }

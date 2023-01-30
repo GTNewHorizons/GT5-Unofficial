@@ -2269,7 +2269,9 @@ public class Textures {
         POCKET_MULTITOOL_KNIFE,
         POCKET_MULTITOOL_SAW,
         POCKET_MULTITOOL_SCREWDRIVER,
-        POCKET_MULTITOOL_WIRECUTTER;
+        POCKET_MULTITOOL_WIRECUTTER,
+        HALO,
+        HALO_FUZZY;
         public static final IIconContainer[]
                 DURABILITY_BAR =
                         {

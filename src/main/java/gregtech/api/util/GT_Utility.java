@@ -9,6 +9,7 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
 import cofh.api.transport.IItemDuct;
@@ -1954,6 +1955,10 @@ public class GT_Utility {
         tNBT.setLong("mFluidDisplayHeat", aFluid.getFluid().getTemperature(aFluid));
         tNBT.setBoolean("mFluidState", aFluid.getFluid().isGaseous(aFluid));
         tNBT.setBoolean("mHideStackSize", aHideStackSize);
+        try {
+            tNBT.setString("mFluidMaterialName", FLUID_MAP.get(aFluid.getFluid()).mName);
+        } catch (Exception ignored) {
+        }
         rStack.setTagCompound(tNBT);
         return rStack;
     }

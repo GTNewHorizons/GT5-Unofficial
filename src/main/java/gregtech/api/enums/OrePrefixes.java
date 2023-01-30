@@ -3262,6 +3262,9 @@ public enum OrePrefixes {
         ingot.mNotGeneratedItems.add(Materials.WoodSealed);
         ingot.mNotGeneratedItems.add(Materials.Wood);
 
+        frame.mNotGeneratedItems.add(Materials.Universium);
+        frameGt.mNotGeneratedItems.add(Materials.Universium);
+
         plateDouble.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         plateTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         plateQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -3353,6 +3356,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Silver);
         nanite.mGeneratedItems.add(Materials.TranscendentMetal);
         nanite.mGeneratedItems.add(Materials.Neutronium);
+        nanite.mGeneratedItems.add(Materials.Universium);
         nanite.mGeneratedItems.add(Materials.WhiteDwarfMatter);
         nanite.mGeneratedItems.add(Materials.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
