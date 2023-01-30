@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.items;
@@ -25,15 +16,8 @@ package com.github.bartimaeusnek.bartworks.common.items;
 import static ic2.api.item.IKineticRotor.GearboxType.WATER;
 import static ic2.api.item.IKineticRotor.GearboxType.WIND;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.item.IKineticRotor;
-import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
-import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
-import ic2.core.util.StackUtil;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +26,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.item.IKineticRotor;
+import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
+import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
+import ic2.core.util.StackUtil;
 
 public class BW_Stonage_Rotors extends Item implements IKineticRotor {
 
@@ -55,18 +49,8 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
     private final int maxDamageEx;
     private int dura;
 
-    public BW_Stonage_Rotors(
-            int diameter,
-            float eff,
-            int speed,
-            float mRotor,
-            int min,
-            int max,
-            int durability,
-            IKineticRotor.GearboxType type,
-            ResourceLocation tex,
-            String Name,
-            String itemTex) {
+    public BW_Stonage_Rotors(int diameter, float eff, int speed, float mRotor, int min, int max, int durability,
+            IKineticRotor.GearboxType type, ResourceLocation tex, String Name, String itemTex) {
         this.DiaMinMax[0] = diameter;
         this.DiaMinMax[1] = min;
         this.DiaMinMax[2] = max;
@@ -89,8 +73,9 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
 
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-        info.add(StatCollector.translateToLocalFormatted(
-                "ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
+        info.add(
+                StatCollector
+                        .translateToLocalFormatted("ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
         IKineticRotor.GearboxType type = null;
         if (Minecraft.getMinecraft().currentScreen instanceof GuiWaterKineticGenerator) {
             type = WATER;
@@ -98,9 +83,11 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
             type = WIND;
         }
         info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
-                + ((this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100) + "/"
-                + (this.getMaxDamageEx() / 100));
+        info.add(
+                StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
+                        + ((this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100)
+                        + "/"
+                        + (this.getMaxDamageEx() / 100));
         info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
         info.add(StatCollector.translateToLocal("tooltip.rotor.3.name") + " " + this.speed);
         info.add(StatCollector.translateToLocal("tooltip.rotor.4.name") + " " + this.mRotor);

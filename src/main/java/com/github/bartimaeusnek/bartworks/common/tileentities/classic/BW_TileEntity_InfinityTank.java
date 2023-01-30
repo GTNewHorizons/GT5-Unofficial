@@ -1,34 +1,27 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 
-import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
+import gregtech.api.util.GT_Utility;
 
 public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank, IFluidHandler {
 
@@ -123,11 +116,10 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
         int id = 0;
 
         if (this.canDrain(null, resource.getFluid())) {
-            for (FluidStack stack : this.INTERNALTANKS)
-                if (GT_Utility.areFluidsEqual(stack, resource)) {
-                    this.INTERNALTANKS.get(id = this.INTERNALTANKS.indexOf(stack)).amount += resource.amount;
-                    this.selectedTank = id;
-                }
+            for (FluidStack stack : this.INTERNALTANKS) if (GT_Utility.areFluidsEqual(stack, resource)) {
+                this.INTERNALTANKS.get(id = this.INTERNALTANKS.indexOf(stack)).amount += resource.amount;
+                this.selectedTank = id;
+            }
         } else {
             this.INTERNALTANKS.add(resource);
             id = this.INTERNALTANKS.size() - 1;
@@ -148,8 +140,15 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
         if (ret.amount == 0) ret = null;
         if (doDrain) {
             outputstack.amount -= actualdrain;
-            FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(
-                    outputstack, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this, actualdrain));
+            FluidEvent.fireEvent(
+                    new FluidEvent.FluidDrainingEvent(
+                            outputstack,
+                            this.getWorldObj(),
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            this,
+                            actualdrain));
         }
         return ret;
     }

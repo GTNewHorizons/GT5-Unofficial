@@ -1,39 +1,18 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
-import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
-import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
-import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
-import com.gtnewhorizons.modularui.api.UIInfos;
-import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.tile.IWrenchable;
-import ic2.core.IC2;
-import ic2.core.IHasGui;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -52,6 +31,20 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
+import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
+import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
+import com.gtnewhorizons.modularui.api.UIInfos;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.tile.IWrenchable;
+import ic2.core.IC2;
+import ic2.core.IHasGui;
+
 public class BW_TileEntityContainer extends BlockContainer implements ITileAddsInformation {
 
     protected Class<? extends TileEntity> tileEntity;
@@ -67,16 +60,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     }
 
     @Override
-    public boolean onBlockActivated(
-            World worldObj,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            int p_149727_6_,
-            float p_149727_7_,
-            float p_149727_8_,
-            float p_149727_9_) {
+    public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int p_149727_6_,
+            float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (worldObj.isRemote) {
             return false;
         }
@@ -88,13 +73,13 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
                     && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
                 if (player.getHeldItem().getItem().equals(Items.bucket)
                         && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false).amount == 1000) {
-                    ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, true);
-                    player.getHeldItem().stackSize--;
-                    if (player.getHeldItem().stackSize <= 0)
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                    player.inventory.addItemStackToInventory(new ItemStack(Items.water_bucket));
-                    return true;
-                }
+                            ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, true);
+                            player.getHeldItem().stackSize--;
+                            if (player.getHeldItem().stackSize <= 0)
+                                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                            player.inventory.addItemStackToInventory(new ItemStack(Items.water_bucket));
+                            return true;
+                        }
         }
         if (!player.isSneaking()) {
             if (tile instanceof IHasGui) {
@@ -141,9 +126,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         if (t instanceof ITileDropsContent) {
             int[] dropSlots = ((ITileDropsContent) t).getDropSlots();
             for (int dropSlot : dropSlots) {
-                if (((ITileDropsContent) t).getStackInSlot(dropSlot) != null)
-                    world.spawnEntityInWorld(new EntityItem(
-                            world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
+                if (((ITileDropsContent) t).getStackInSlot(dropSlot) != null) world.spawnEntityInWorld(
+                        new EntityItem(world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
             }
         }
         super.breakBlock(world, x, y, z, block, meta);

@@ -2,22 +2,26 @@ package com.github.bartimaeusnek.bartworks.API;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Table;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.LoaderState;
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import net.minecraft.block.Block;
+
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Table;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * API for bartworks borosilicate glass.
@@ -25,8 +29,8 @@ import org.apache.commons.lang3.tuple.Pair;
  * You might have noticed this API does not expose any Block instance, but only IStructureElements. This is in case we
  * add more glass blocks later, and we run out of meta id for only one block.
  * <p>
- * IStructureElements returned from this class <b>SHOULD NOT</b> have its methods called before post init, or else
- * you might end up with wrong autoplace hints.
+ * IStructureElements returned from this class <b>SHOULD NOT</b> have its methods called before post init, or else you
+ * might end up with wrong autoplace hints.
  */
 public class BorosilicateGlass {
 
@@ -49,8 +53,8 @@ public class BorosilicateGlass {
         return block2;
     }
 
-    private static void doRegister(
-            byte level, Block block, int meta, SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
+    private static void doRegister(byte level, Block block, int meta,
+            SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
         allLevels.put(level, Pair.of(block, meta));
         allLevelsReverse.put(block, meta, level);
     }
@@ -119,8 +123,9 @@ public class BorosilicateGlass {
     }
 
     /**
-     * Get a structure element for a certain tier of <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced glass, magic mirror, vanilla glass, etc.
-     * unless these glass are explicitly registered as a borosilicate glass.
+     * Get a structure element for a certain tier of <b>borosilicate</b> glass. DOES NOT accept other glass like
+     * reinforced glass, magic mirror, vanilla glass, etc. unless these glass are explicitly registered as a
+     * borosilicate glass.
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
@@ -133,8 +138,8 @@ public class BorosilicateGlass {
     }
 
     /**
-     * Get a structure element for any kind of <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced glass, magic mirror, vanilla glass, etc.
-     * unless these glass are explicitly registered as a borosilicate glass.
+     * Get a structure element for any kind of <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced
+     * glass, magic mirror, vanilla glass, etc. unless these glass are explicitly registered as a borosilicate glass.
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
@@ -143,46 +148,46 @@ public class BorosilicateGlass {
     }
 
     /**
-     * Get a structure element for <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced glass, magic mirror, vanilla glass, etc.
-     * unless these glass are explicitly registered as a borosilicate glass.
+     * Get a structure element for <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced glass, magic
+     * mirror, vanilla glass, etc. unless these glass are explicitly registered as a borosilicate glass.
      * <p>
      * This assumes you want all glass used to be of the same tier.
      * <p>
-     * NOTE: This will accept the basic boron glass (HV tier) as well. You might not want this. Use the other overload to filter this out.
+     * NOTE: This will accept the basic boron glass (HV tier) as well. You might not want this. Use the other overload
+     * to filter this out.
      *
      * @param initialValue the value set before structure check started
      */
-    public static <T> IStructureElement<T> ofBoroGlass(
-            byte initialValue, BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
+    public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, BiConsumer<T, Byte> setter,
+            Function<T, Byte> getter) {
         return lazy(
                 t -> ofBlocksTiered(BorosilicateGlass::getTier, getRepresentatives(), initialValue, setter, getter));
     }
 
     /**
-     * Get a structure element for <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced glass, magic mirror, vanilla glass, etc.
-     * unless these glass are explicitly registered as a borosilicate glass.
+     * Get a structure element for <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced glass, magic
+     * mirror, vanilla glass, etc. unless these glass are explicitly registered as a borosilicate glass.
      *
      * @param initialValue the value set before structure check started
      * @param minTier      minimal accepted tier. inclusive. must be greater than 0.
      * @param maxTier      maximal accepted tier. inclusive.
      */
-    public static <T> IStructureElement<T> ofBoroGlass(
-            byte initialValue, byte minTier, byte maxTier, BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
+    public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, byte minTier, byte maxTier,
+            BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
         if (minTier > maxTier || minTier < 0) throw new IllegalArgumentException();
-        return lazy(t -> ofBlocksTiered(
-                (block1, meta) -> checkWithinBound(getTier(block1, meta), minTier, maxTier),
-                getRepresentatives().stream()
-                        .skip(Math.max(minTier - 3, 0))
-                        .limit(maxTier - minTier + 1)
-                        .collect(Collectors.toList()),
-                initialValue,
-                setter,
-                getter));
+        return lazy(
+                t -> ofBlocksTiered(
+                        (block1, meta) -> checkWithinBound(getTier(block1, meta), minTier, maxTier),
+                        getRepresentatives().stream().skip(Math.max(minTier - 3, 0)).limit(maxTier - minTier + 1)
+                                .collect(Collectors.toList()),
+                        initialValue,
+                        setter,
+                        getter));
     }
 
     /**
-     * Get the tier of this <b>borosilicate</b> glass. DOES NOT consider other glass like reinforced glass, magic mirror, vanilla glass, etc.
-     * unless these glass are explicitly registered as a borosilicate glass.
+     * Get the tier of this <b>borosilicate</b> glass. DOES NOT consider other glass like reinforced glass, magic
+     * mirror, vanilla glass, etc. unless these glass are explicitly registered as a borosilicate glass.
      *
      * @return glass tier, or -1 if is not a borosilicate glass
      */

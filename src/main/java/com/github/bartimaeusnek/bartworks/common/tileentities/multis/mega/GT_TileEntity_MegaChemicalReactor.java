@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
@@ -31,6 +22,16 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -41,6 +42,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -53,14 +55,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.Collection;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 @Optional.Interface(
         iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti",
@@ -82,26 +76,17 @@ public class GT_TileEntity_MegaChemicalReactor
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Chemical Reactor")
-                .addInfo("Controller block for the Chemical Reactor")
+        tt.addMachineType("Chemical Reactor").addInfo("Controller block for the Chemical Reactor")
                 .addInfo("What molecule do you want to synthesize")
-                .addInfo("Or you want to replace something in this molecule")
-                .addInfo("The structure is too complex!")
-                .addInfo("Follow the Structure Lib hologram projector to build the main structure.")
-                .addSeparator()
-                .beginStructureBlock(5, 5, 9, false)
-                .addController("Front center")
+                .addInfo("Or you want to replace something in this molecule").addInfo("The structure is too complex!")
+                .addInfo("Follow the Structure Lib hologram projector to build the main structure.").addSeparator()
+                .beginStructureBlock(5, 5, 9, false).addController("Front center")
                 .addStructureInfo("46x Chemically Inert Machine Casing (minimum)")
-                .addStructureInfo("7x Fusion Coil Block")
-                .addStructureInfo("28x PTFE Pipe Casing")
+                .addStructureInfo("7x Fusion Coil Block").addStructureInfo("28x PTFE Pipe Casing")
                 .addStructureInfo("64x Borosilicate Glass Block (any tier)")
-                .addStructureInfo("The glass tier limits the Energy Input tier")
-                .addEnergyHatch("Hint block ", 3)
-                .addMaintenanceHatch("Hint block ", 2)
-                .addInputHatch("Hint block ", 1)
-                .addInputBus("Hint block ", 1)
-                .addOutputBus("Hint block ", 1)
-                .addOutputHatch("Hint block ", 1)
+                .addStructureInfo("The glass tier limits the Energy Input tier").addEnergyHatch("Hint block ", 3)
+                .addMaintenanceHatch("Hint block ", 2).addInputHatch("Hint block ", 1).addInputBus("Hint block ", 1)
+                .addOutputBus("Hint block ", 1).addOutputHatch("Hint block ", 1)
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
@@ -112,41 +97,19 @@ public class GT_TileEntity_MegaChemicalReactor
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    casingTexturePages[1][48],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                casingTexturePages[1][48],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { casingTexturePages[1][48],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing()
+                            .glow().build() };
+            return new ITexture[] { casingTexturePages[1][48],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow()
+                            .build() };
         }
-        return new ITexture[] {casingTexturePages[1][48]};
+        return new ITexture[] { casingTexturePages[1][48] };
     }
 
     @Override
@@ -169,8 +132,8 @@ public class GT_TileEntity_MegaChemicalReactor
     }
 
     @Override
-    public boolean onWireCutterRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (aPlayer.isSneaking()) {
             mUseMultiparallelMode = !mUseMultiparallelMode;
             if (mUseMultiparallelMode) {
@@ -190,13 +153,13 @@ public class GT_TileEntity_MegaChemicalReactor
         ArrayList<ItemStack> outputItems = new ArrayList<>();
         ArrayList<FluidStack> outputFluids = new ArrayList<>();
 
-        long nominalV =
-                LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this)
+                : BW_Util.getnominalVoltage(this);
 
         byte tTier = (byte) Math.max(1, Math.min(GT_Utility.getTier(nominalV), V.length - 1));
 
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(
-                this.getBaseMetaTileEntity(), false, V[tTier], tInputFluids, tInputs);
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes
+                .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tInputFluids, tInputs);
         boolean found_Recipe = false;
         int processed = 0;
         float tBatchMultiplier = 1.0f;
@@ -209,8 +172,9 @@ public class GT_TileEntity_MegaChemicalReactor
             }
 
             int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
-            tBatchMultiplier =
-                    mUseMultiparallelMode ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f) : 1.0f;
+            tBatchMultiplier = mUseMultiparallelMode
+                    ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f)
+                    : 1.0f;
 
             this.updateSlots();
             if (tCurrentPara <= 0) {
@@ -226,12 +190,8 @@ public class GT_TileEntity_MegaChemicalReactor
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                    .setRecipeEUt(tRecipe.mEUt)
-                    .setParallel(processed)
-                    .setDuration(tRecipe.mDuration)
-                    .setEUt(nominalV)
-                    .enablePerfectOC()
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+                    .setParallel(processed).setDuration(tRecipe.mDuration).setEUt(nominalV).enablePerfectOC()
                     .calculate();
 
             this.mMaxProgresstime = calculator.getDuration();
@@ -285,9 +245,9 @@ public class GT_TileEntity_MegaChemicalReactor
         if (mMaintenanceHatches.size() != 1) return false;
 
         if (LoaderReference.tectech && this.glasTier < 8)
-            if (!areLazorsLowPowa()
-                    || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels())
-                    || areThingsNotProperlyTiered(this.getTecTechEnergyMultis())) return false;
+            if (!areLazorsLowPowa() || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels())
+                    || areThingsNotProperlyTiered(this.getTecTechEnergyMultis()))
+                return false;
 
         if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty())
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
@@ -298,38 +258,41 @@ public class GT_TileEntity_MegaChemicalReactor
 
     private static final int CASING_INDEX = 176;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_TileEntity_MegaChemicalReactor> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_TileEntity_MegaChemicalReactor>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-                        {"ttttt", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "ttttt"},
-                        {"tgggt", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", "teeet"},
-                        {"tg~gt", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", "teret"},
-                        {"tgggt", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", "teeet"},
-                        {"ttttt", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "ttttt"},
-                    }))
-                    .addElement('p', ofBlock(GregTech_API.sBlockCasings8, 1))
-                    .addElement('t', ofBlock(GregTech_API.sBlockCasings8, 0))
-                    .addElement(
-                            'd',
-                            buildHatchAdder(GT_TileEntity_MegaChemicalReactor.class)
-                                    .atLeast(InputBus, InputHatch, OutputBus, OutputHatch)
-                                    .casingIndex(CASING_INDEX)
-                                    .dot(1)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 0))
-                    .addElement('r', Maintenance.newAny(CASING_INDEX, 2))
-                    .addElement(
-                            'e',
-                            ofChain(
-                                    TTEnabledEnergyHatchElement.INSTANCE.newAny(CASING_INDEX, 3),
-                                    ofBlock(GregTech_API.sBlockCasings8, 0)))
-                    .addElement(
-                            'c',
-                            ofChain(ofBlock(GregTech_API.sBlockCasings4, 7), ofBlock(GregTech_API.sBlockCasings5, 13)))
-                    .addElement(
-                            'g',
-                            BorosilicateGlass.ofBoroGlass(
-                                    (byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
-                    .build();
+    private static final IStructureDefinition<GT_TileEntity_MegaChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
+            .<GT_TileEntity_MegaChemicalReactor>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] {
+                                    { "ttttt", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "ttttt" },
+                                    { "tgggt", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", "teeet" },
+                                    { "tg~gt", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", "teret" },
+                                    { "tgggt", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", "teeet" },
+                                    { "ttttt", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd",
+                                            "ttttt" }, }))
+            .addElement('p', ofBlock(GregTech_API.sBlockCasings8, 1))
+            .addElement('t', ofBlock(GregTech_API.sBlockCasings8, 0))
+            .addElement(
+                    'd',
+                    buildHatchAdder(GT_TileEntity_MegaChemicalReactor.class)
+                            .atLeast(InputBus, InputHatch, OutputBus, OutputHatch).casingIndex(CASING_INDEX).dot(1)
+                            .buildAndChain(GregTech_API.sBlockCasings8, 0))
+            .addElement('r', Maintenance.newAny(CASING_INDEX, 2))
+            .addElement(
+                    'e',
+                    ofChain(
+                            TTEnabledEnergyHatchElement.INSTANCE.newAny(CASING_INDEX, 3),
+                            ofBlock(GregTech_API.sBlockCasings8, 0)))
+            .addElement('c', ofChain(ofBlock(GregTech_API.sBlockCasings4, 7), ofBlock(GregTech_API.sBlockCasings5, 13)))
+            .addElement(
+                    'g',
+                    BorosilicateGlass.ofBoroGlass(
+                            (byte) 0,
+                            (byte) 1,
+                            Byte.MAX_VALUE,
+                            (te, t) -> te.glasTier = t,
+                            te -> te.glasTier))
+            .build();
 
     @Override
     public IStructureDefinition<GT_TileEntity_MegaChemicalReactor> getStructureDefinition() {
@@ -339,9 +302,8 @@ public class GT_TileEntity_MegaChemicalReactor
     @SuppressWarnings("rawtypes")
     @Optional.Method(modid = "tectech")
     private boolean areThingsNotProperlyTiered(Collection collection) {
-        if (!collection.isEmpty())
-            for (Object tecTechEnergyMulti : collection)
-                if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier) return true;
+        if (!collection.isEmpty()) for (Object tecTechEnergyMulti : collection)
+            if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier) return true;
         return false;
     }
 }

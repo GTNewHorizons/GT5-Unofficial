@@ -1,8 +1,12 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -10,8 +14,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ArtificialMicaLine {
 
@@ -151,7 +153,12 @@ public class ArtificialMicaLine {
                 120);
         // MgO(s) = MgO(l)
         GT_Values.RA.addFluidExtractionRecipe(
-                Materials.Magnesia.getDust(1), null, Materials.Magnesia.getMolten(144), 0, 20, 120);
+                Materials.Magnesia.getDust(1),
+                null,
+                Materials.Magnesia.getMolten(144),
+                0,
+                20,
+                120);
         // 27Raw Fluorophlogopite Dust + 720MgO(l) = 4608Fluorophlogopite(l)
         GT_Values.RA.addBlastRecipe(
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27),
@@ -164,24 +171,24 @@ public class ArtificialMicaLine {
                 480,
                 1700);
         // 144Fluorophlogopite(l) = Fluorophlogopite
-        GT_Recipe.GT_Recipe_Map.sVacuumRecipes.addRecipe(new GT_Recipe(
-                false,
-                new ItemStack[] {ItemList.Shape_Mold_Plate.get(0)},
-                new ItemStack[] {WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1)},
-                null,
-                null,
-                new FluidStack[] {WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144)},
-                null,
-                10,
-                120,
-                0));
+        GT_Recipe.GT_Recipe_Map.sVacuumRecipes.addRecipe(
+                new GT_Recipe(
+                        false,
+                        new ItemStack[] { ItemList.Shape_Mold_Plate.get(0) },
+                        new ItemStack[] { WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1) },
+                        null,
+                        null,
+                        new FluidStack[] { WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144) },
+                        null,
+                        10,
+                        120,
+                        0));
         // Fluorophlogopite = 4Insulator Foil
-        if (LoaderReference.dreamcraft)
-            GT_Values.RA.addBenderRecipe(
-                    WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 4),
-                    10,
-                    600);
+        if (LoaderReference.dreamcraft) GT_Values.RA.addBenderRecipe(
+                WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1),
+                GT_Utility.getIntegratedCircuit(1),
+                GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 4),
+                10,
+                600);
     }
 }

@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
@@ -31,6 +22,17 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -41,6 +43,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -55,15 +58,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 @Optional.Interface(
         iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti",
@@ -71,6 +65,7 @@ import net.minecraftforge.fluids.FluidStack;
         striprefs = true)
 public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaDistillTower>
         implements ISurvivalConstructable {
+
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
@@ -78,203 +73,70 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     private static final IStructureDefinition<GT_TileEntity_MegaDistillTower> STRUCTURE_DEFINITION;
 
     static {
-        IHatchElement<GT_TileEntity_MegaDistillTower> layeredOutputHatch = OutputHatch.withCount(
-                        GT_TileEntity_MegaDistillTower::getCurrentLayerOutputHatchCount)
+        IHatchElement<GT_TileEntity_MegaDistillTower> layeredOutputHatch = OutputHatch
+                .withCount(GT_TileEntity_MegaDistillTower::getCurrentLayerOutputHatchCount)
                 .withAdder(GT_TileEntity_MegaDistillTower::addLayerOutputHatch);
-        STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_MegaDistillTower>builder()
-                .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] {
-                    {
-                        "bbbbbbb~bbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb"
-                    },
-                }))
-                .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] {
-                    {
-                        "lllllllllllllll",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lcccccccccccccl",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                }))
-                .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] {
-                    {
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                    {
-                        "lllllllllllllll",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "l=============l",
-                        "lllllllllllllll"
-                    },
-                }))
+        STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_MegaDistillTower>builder().addShape(
+                STRUCTURE_PIECE_BASE,
+                transpose(
+                        new String[][] { { "bbbbbbb~bbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb",
+                                "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb",
+                                "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb",
+                                "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb" }, }))
+                .addShape(
+                        STRUCTURE_PIECE_LAYER,
+                        transpose(
+                                new String[][] { { "lllllllllllllll", "lcccccccccccccl", "lcccccccccccccl",
+                                        "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl",
+                                        "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl",
+                                        "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" }, }))
+                .addShape(
+                        STRUCTURE_PIECE_TOP_HINT,
+                        transpose(
+                                new String[][] { { "lllllllllllllll", "lllllllllllllll", "lllllllllllllll",
+                                        "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll",
+                                        "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll",
+                                        "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" },
+                                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "l=============l", "l=============l",
+                                                "l=============l", "lllllllllllllll" }, }))
                 .addElement('=', StructureElementAirNoHint.getInstance())
                 .addElement(
                         'b',
@@ -286,20 +148,18 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                                         OutputBus,
                                         Maintenance,
                                         TTEnabledEnergyHatchElement.INSTANCE)
-                                .casingIndex(CASING_INDEX)
-                                .dot(1)
-                                .buildAndChain(onElementPass(
-                                        GT_TileEntity_MegaDistillTower::onCasingFound,
-                                        ofBlock(GregTech_API.sBlockCasings4, 1))))
+                                .casingIndex(CASING_INDEX).dot(1).buildAndChain(
+                                        onElementPass(
+                                                GT_TileEntity_MegaDistillTower::onCasingFound,
+                                                ofBlock(GregTech_API.sBlockCasings4, 1))))
                 .addElement(
                         'l',
                         buildHatchAdder(GT_TileEntity_MegaDistillTower.class)
                                 .atLeast(layeredOutputHatch, Maintenance, TTEnabledEnergyHatchElement.INSTANCE)
-                                .casingIndex(CASING_INDEX)
-                                .dot(1)
-                                .buildAndChain(onElementPass(
-                                        GT_TileEntity_MegaDistillTower::onCasingFound,
-                                        ofBlock(GregTech_API.sBlockCasings4, 1))))
+                                .casingIndex(CASING_INDEX).dot(1).buildAndChain(
+                                        onElementPass(
+                                                GT_TileEntity_MegaDistillTower::onCasingFound,
+                                                ofBlock(GregTech_API.sBlockCasings4, 1))))
                 .addElement('c', (IStructureElementCheckOnly<GT_TileEntity_MegaDistillTower>) (t, world, x, y, z) -> {
                     if (world.isAirBlock(x, y, z)) {
                         if (t.mTopState < 1) {
@@ -331,8 +191,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                     } else {
                         return false;
                     }
-                })
-                .build();
+                }).build();
     }
 
     protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
@@ -361,15 +220,14 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     }
 
     protected int getCurrentLayerOutputHatchCount() {
-        return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0
-                ? 0
+        return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
                 : mOutputHatchesByLayer.get(mHeight - 1).size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null
-                || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output)) return false;
+        if (aTileEntity == null || aTileEntity.isDead()
+                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output))
+            return false;
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
         GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
@@ -382,41 +240,19 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow()
+                            .build() };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     @Override
@@ -427,17 +263,12 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Distillery")
-                .addInfo("Controller block for the Distillation Tower")
+        tt.addMachineType("Distillery").addInfo("Controller block for the Distillation Tower")
                 .addInfo("Fluids are only put out at the correct height")
-                .addInfo("The correct height equals the slot number in the NEI recipe")
-                .addSeparator()
-                .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
-                .addController("Front bottom")
+                .addInfo("The correct height equals the slot number in the NEI recipe").addSeparator()
+                .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true).addController("Front bottom")
                 .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
-                .addEnergyHatch("Any casing")
-                .addMaintenanceHatch("Any casing")
-                .addInputHatch("Any bottom layer casing")
+                .addEnergyHatch("Any casing").addMaintenanceHatch("Any casing").addInputHatch("Any bottom layer casing")
                 .addOutputBus("Any bottom layer casing")
                 .addOutputHatch("2-11x Output Hatches (One per Output Layer except bottom layer)")
                 .addStructureInfo("An \"Output Layer\" consists of 5 layers!")
@@ -468,8 +299,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
 
         // check each layer
         while (mHeight < 12 && checkPiece(STRUCTURE_PIECE_LAYER, 7, mHeight * 5, 0) && !mTopLayerFound) {
-            if (mOutputHatchesByLayer.size() < mHeight
-                    || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
+            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
                 // layer without output hatch
                 return false;
             mTopState = -1;
@@ -496,19 +326,46 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         mHeight = 0;
-        int built =
-                survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 7, 0, 0, realBudget, source, actor, false, true);
+        int built = survivialBuildPiece(
+                STRUCTURE_PIECE_BASE,
+                stackSize,
+                7,
+                0,
+                0,
+                realBudget,
+                source,
+                actor,
+                false,
+                true);
         if (built >= 0) return built;
         int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_LAYER, stackSize, 7, 5 * mHeight, 0, realBudget, source, actor, false, true);
+                    STRUCTURE_PIECE_LAYER,
+                    stackSize,
+                    7,
+                    5 * mHeight,
+                    0,
+                    realBudget,
+                    source,
+                    actor,
+                    false,
+                    true);
             if (built >= 0) return built;
         }
         mHeight = tTotalHeight - 1;
         return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT, stackSize, 7, 5 * mHeight, 0, realBudget, source, actor, false, true);
+                STRUCTURE_PIECE_TOP_HINT,
+                stackSize,
+                7,
+                5 * mHeight,
+                0,
+                realBudget,
+                source,
+                actor,
+                false,
+                true);
     }
 
     private boolean mUseMultiparallelMode = false;
@@ -526,8 +383,8 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     }
 
     @Override
-    public boolean onWireCutterRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (aPlayer.isSneaking()) {
             mUseMultiparallelMode = !mUseMultiparallelMode;
             if (mUseMultiparallelMode) {
@@ -559,8 +416,8 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
             }
         }
 
-        long nominalV =
-                LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this)
+                : BW_Util.getnominalVoltage(this);
         byte tTier = (byte) Math.max(0, Math.min(GT_Utility.getTier(nominalV), V.length - 1));
 
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
@@ -572,7 +429,11 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                 int processed = 0;
                 boolean found_Recipe = false;
                 GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(
-                        this.getBaseMetaTileEntity(), false, GT_Values.V[tTier], new FluidStack[] {tFluid}, tItems);
+                        this.getBaseMetaTileEntity(),
+                        false,
+                        GT_Values.V[tTier],
+                        new FluidStack[] { tFluid },
+                        tItems);
                 float tBatchMultiplier = 1.0f;
                 if (tRecipe != null) {
                     found_Recipe = true;
@@ -580,7 +441,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                     if (mUseMultiparallelMode && tMaxPara == ConfigHandler.megaMachinesMax) {
                         tMaxPara *= 128;
                     }
-                    int tCurrentPara = handleParallelRecipe(tRecipe, new FluidStack[] {tFluid}, null, (int) tMaxPara);
+                    int tCurrentPara = handleParallelRecipe(tRecipe, new FluidStack[] { tFluid }, null, (int) tMaxPara);
                     tBatchMultiplier = mUseMultiparallelMode
                             ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f)
                             : 1.0f;
@@ -595,12 +456,8 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                 this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
 
-                GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                        .setRecipeEUt(tRecipe.mEUt)
-                        .setParallel(processed)
-                        .setDuration(tRecipe.mDuration)
-                        .setEUt(nominalV)
-                        .calculate();
+                GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+                        .setParallel(processed).setDuration(tRecipe.mDuration).setEUt(nominalV).calculate();
 
                 this.mMaxProgresstime = calculator.getDuration();
                 this.lEUt = calculator.getConsumption();

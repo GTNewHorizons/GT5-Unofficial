@@ -1,37 +1,30 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
-import com.github.bartimaeusnek.bartworks.API.SideReference;
-import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.github.bartimaeusnek.bartworks.API.SideReference;
+import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BW_GlasBlocks extends BW_Blocks {
 
@@ -47,8 +40,8 @@ public class BW_GlasBlocks extends BW_Blocks {
         this.connectedTex = false;
     }
 
-    public BW_GlasBlocks(
-            String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex, boolean fake) {
+    public BW_GlasBlocks(String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex,
+            boolean fake) {
         super(name, texture, tabs, Material.glass);
         this.connectedTex = connectedTex;
         this.color = color;
@@ -93,8 +86,8 @@ public class BW_GlasBlocks extends BW_Blocks {
             this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
             String[] splitname = this.textureNames[0].split(":");
             for (int j = 0; j < 16; j++) {
-                this.connectedTexture[j] = par1IconRegister.registerIcon(
-                        splitname[0] + ":connectedTex/" + splitname[1] + '/' + splitname[1] + '_' + j);
+                this.connectedTexture[j] = par1IconRegister
+                        .registerIcon(splitname[0] + ":connectedTex/" + splitname[1] + '/' + splitname[1] + '_' + j);
             }
         }
     }

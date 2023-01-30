@@ -1,10 +1,12 @@
 package com.github.bartimaeusnek.bartworks.neiHandler;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
+import cpw.mods.fml.common.event.FMLInterModComms;
+
 public class IMCForNEI {
+
     public static void IMCSender() {
         sendCatalyst("gt.recipe.largechemicalreactor", "gregtech:gt.blockmachines:13366", -10);
         sendCatalyst("gt.recipe.craker", "gregtech:gt.blockmachines:13367", -10);

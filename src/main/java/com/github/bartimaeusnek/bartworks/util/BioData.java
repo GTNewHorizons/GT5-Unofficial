@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2019 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.util;
@@ -25,10 +16,12 @@ package com.github.bartimaeusnek.bartworks.util;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
+
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class BioData {
+
     public static final ArrayList<BioData> BIO_DATA_ARRAY_LIST = new ArrayList<>();
 
     protected String name;
@@ -107,8 +100,7 @@ public class BioData {
         if (o == null || this.getClass() != o.getClass()) return false;
         BioData bioData = (BioData) o;
         return this.getID() == bioData.getID()
-                || (this.getChance() == bioData.getChance()
-                        && this.getTier() == bioData.getTier()
+                || (this.getChance() == bioData.getChance() && this.getTier() == bioData.getTier()
                         && Objects.equals(this.getName(), bioData.getName())
                         && this.getRarity() == bioData.getRarity());
     }
@@ -117,12 +109,9 @@ public class BioData {
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(
                 ByteBuffer.allocate(13)
-                        .putInt(MurmurHash3.murmurhash3_x86_32(
-                                this.getName(), 0, this.getName().length(), 31))
-                        .put(BW_Util.getByteFromRarity(this.getRarity()))
-                        .putInt(this.getChance())
-                        .putInt(this.getTier())
-                        .array(),
+                        .putInt(MurmurHash3.murmurhash3_x86_32(this.getName(), 0, this.getName().length(), 31))
+                        .put(BW_Util.getByteFromRarity(this.getRarity())).putInt(this.getChance())
+                        .putInt(this.getTier()).array(),
                 0,
                 13,
                 31);

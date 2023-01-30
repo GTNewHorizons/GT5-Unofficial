@@ -3,6 +3,17 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_Values.V;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -15,6 +26,7 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -22,15 +34,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 @Optional.Interface(
         iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti",
@@ -75,9 +78,8 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     @Optional.Method(modid = "tectech")
     boolean areLazorsLowPowa() {
         Collection collection = this.getTecTechEnergyTunnels();
-        if (!collection.isEmpty())
-            for (Object tecTechEnergyMulti : collection)
-                if (!(tecTechEnergyMulti instanceof LowPowerLaser)) return false;
+        if (!collection.isEmpty()) for (Object tecTechEnergyMulti : collection)
+            if (!(tecTechEnergyMulti instanceof LowPowerLaser)) return false;
         return true;
     }
 
@@ -88,14 +90,14 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Optional.Method(modid = "tectech")
     public List getTecTechEnergyTunnels() {
         return TTTunnels;
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Optional.Method(modid = "tectech")
     public List getTecTechEnergyMultis() {
         return TTMultiAmp;
@@ -151,54 +153,82 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             }
         }
 
-        long nominalV =
-                LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this)
+                : BW_Util.getnominalVoltage(this);
         String tName = BW_Util.getTierNameFromVoltage(nominalV);
         if (tName.equals("MAX+")) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
 
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(this.mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-this.lEUt) + EnumChatFormatting.RESET + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(this.getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*"
-                    + GT_Utility.formatNumbers(TecTechUtils.getMaxInputAmperage(this)) + "A) = "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(nominalV) + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": " + EnumChatFormatting.YELLOW + tName
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
-                    + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " "
-                    + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + (float) this.mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
-                    + mPollutionReduction + EnumChatFormatting.RESET + " %",
-            BW_Tooltip_Reference.BW
-        };
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(this.mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(this.mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(-this.lEUt)
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(this.getMaxInputVoltage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*"
+                        + GT_Utility.formatNumbers(TecTechUtils.getMaxInputAmperage(this))
+                        + "A) = "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(nominalV)
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + tName
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (this.getIdealStatus() - this.getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + (float) this.mEfficiency / 100.0F
+                        + EnumChatFormatting.RESET
+                        + " %",
+                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                        + EnumChatFormatting.GREEN
+                        + mPollutionReduction
+                        + EnumChatFormatting.RESET
+                        + " %",
+                BW_Tooltip_Reference.BW };
     }
 
     /**
      * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
-     * @deprecated
-     * Use GT_OverclockCalculator instead
+     * 
+     * @deprecated Use GT_OverclockCalculator instead
      *
-     * @param aEUt EUt of the recipe
-     * @param aDuration Duration of the recipe
+     * @param aEUt            EUt of the recipe
+     * @param aDuration       Duration of the recipe
      * @param maxInputVoltage Max input voltage of the mega (nominal, so 1A)
-     * @param perfectOC Flag if the multi has perfect OC
+     * @param perfectOC       Flag if the multi has perfect OC
      * @return Number of performed overclocks
      */
     @Deprecated
-    protected byte calculateOverclockedNessMultiInternal(
-            long aEUt, int aDuration, long maxInputVoltage, boolean perfectOC) {
+    protected byte calculateOverclockedNessMultiInternal(long aEUt, int aDuration, long maxInputVoltage,
+            boolean perfectOC) {
         byte mTier = (byte) Math.max(0, BW_Util.getTier(maxInputVoltage)), overclockCount = 0;
         if (mTier == 0) {
             // Long time calculation
@@ -223,9 +253,8 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
                 tempEUt <<= 2; // this actually controls overclocking
                 // xEUt *= 4;//this is effect of everclocking
                 this.mMaxProgresstime >>= perfectOC ? 2 : 1; // this is effect of overclocking
-                xEUt = this.mMaxProgresstime <= 0
-                        ? xEUt >> 1
-                        : xEUt << 2; // U know, if the time is less than 1 tick make the machine use less power
+                xEUt = this.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2; // U know, if the time is less than 1 tick
+                                                                           // make the machine use less power
                 overclockCount++;
             }
 
@@ -251,11 +280,11 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     /**
      * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
-     * @deprecated
-     * Use GT_OverclockCalculator instead
+     * 
+     * @deprecated Use GT_OverclockCalculator instead
      *
-     * @param aEUt EUt of the recipe
-     * @param aDuration Duration of the recipe
+     * @param aEUt            EUt of the recipe
+     * @param aDuration       Duration of the recipe
      * @param maxInputVoltage Max input voltage of the mega (nominal, so 1A)
      */
     protected void calculateOverclockedNessMulti(long aEUt, int aDuration, long maxInputVoltage) {
@@ -264,11 +293,11 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     /**
      * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
-     * @deprecated
-     * Use GT_OverclockCalculator instead
+     * 
+     * @deprecated Use GT_OverclockCalculator instead
      *
-     * @param aEUt EUt of the recipe
-     * @param aDuration Duration of the recipe
+     * @param aEUt            EUt of the recipe
+     * @param aDuration       Duration of the recipe
      * @param maxInputVoltage Max input voltage of the mega (nominal, so 1A)
      */
     @Deprecated
@@ -314,11 +343,11 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             return true;
         } else if (this.lEUt < 0
                 && !this.drainEnergyInput((-this.lEUt) * 10000L / (long) Math.max(1000, this.mEfficiency))) {
-            this.stopMachine();
-            return false;
-        } else {
-            return true;
-        }
+                    this.stopMachine();
+                    return false;
+                } else {
+                    return true;
+                }
     }
 
     @Override
@@ -342,13 +371,14 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     }
 
     protected enum TTEnabledEnergyHatchElement implements IHatchElement<GT_TileEntity_MegaMultiBlockBase<?>> {
+
         INSTANCE;
 
         private static final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         static {
-            ImmutableList.Builder<Class<? extends IMetaTileEntity>> builder =
-                    ImmutableList.<Class<? extends IMetaTileEntity>>builder().addAll(Energy.mteClasses());
+            ImmutableList.Builder<Class<? extends IMetaTileEntity>> builder = ImmutableList
+                    .<Class<? extends IMetaTileEntity>>builder().addAll(Energy.mteClasses());
             if (LoaderReference.tectech) builder.add(GT_MetaTileEntity_Hatch_EnergyMulti.class);
             mteClasses = builder.build();
         }
@@ -370,6 +400,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     }
 
     protected static class StructureElementAirNoHint<T> implements IStructureElement<T> {
+
         private static final StructureElementAirNoHint<?> INSTANCE = new StructureElementAirNoHint<>();
 
         @SuppressWarnings("unchecked")
@@ -389,7 +420,12 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             if (world.blockExists(x, y, z) && !world.isAirBlock(x, y, z))
                 // hint if this is obstructed. in case *someone* ever finish the transparent rendering
                 StructureLibAPI.hintParticle(
-                        world, x, y, z, StructureLibAPI.getBlockHint(), StructureLibAPI.HINT_BLOCK_META_AIR);
+                        world,
+                        x,
+                        y,
+                        z,
+                        StructureLibAPI.getBlockHint(),
+                        StructureLibAPI.HINT_BLOCK_META_AIR);
             return true;
         }
 
@@ -400,14 +436,14 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         }
 
         @Override
-        public BlocksToPlace getBlocksToPlace(
-                T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+        public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
             return BlocksToPlace.createEmpty();
         }
 
         @Override
-        public PlaceResult survivalPlaceBlock(
-                T o, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+        public PlaceResult survivalPlaceBlock(T o, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
             if (check(o, world, x, y, z)) return PlaceResult.SKIP;
             if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
             world.setBlock(x, y, z, Blocks.air, 0, 2);

@@ -1,9 +1,5 @@
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
-import com.github.bartimaeusnek.bartworks.API.SideReference;
-import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,7 +7,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.github.bartimaeusnek.bartworks.API.SideReference;
+import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class BW_GlasBlocks2 extends BW_Blocks {
+
     @SideOnly(Side.CLIENT)
     private IIcon[] connectedTexture;
 
@@ -24,8 +27,8 @@ public class BW_GlasBlocks2 extends BW_Blocks {
         this.connectedTex = false;
     }
 
-    public BW_GlasBlocks2(
-            String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex, boolean fake) {
+    public BW_GlasBlocks2(String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex,
+            boolean fake) {
         super(name, texture, tabs, Material.glass);
         this.connectedTex = connectedTex;
         this.color = color;
@@ -70,8 +73,13 @@ public class BW_GlasBlocks2 extends BW_Blocks {
             this.texture[i] = par1IconRegister.registerIcon(this.textureNames[i]);
             String[] splitname = this.textureNames[0].split(":");
             for (int j = 0; j < 16; j++) {
-                this.connectedTexture[j] = par1IconRegister.registerIcon(splitname[0] + ":connectedTex/"
-                        + "BoronSilicateGlassBlock" + '/' + "BoronSilicateGlassBlock" + '_' + j);
+                this.connectedTexture[j] = par1IconRegister.registerIcon(
+                        splitname[0] + ":connectedTex/"
+                                + "BoronSilicateGlassBlock"
+                                + '/'
+                                + "BoronSilicateGlassBlock"
+                                + '_'
+                                + j);
             }
         }
     }

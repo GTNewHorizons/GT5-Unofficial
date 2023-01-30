@@ -1,26 +1,31 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.*;
 
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
@@ -36,28 +41,12 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
-import java.util.Arrays;
-import java.util.Optional;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
 
-public class BW_TileEntity_HeatedWaterPump extends TileEntity
-        implements ITileDropsContent,
-                IFluidHandler,
-                IFluidTank,
-                ITileWithModularUI,
-                ITileAddsInformation,
-                ITileHasDifferentTextureSides {
+public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDropsContent, IFluidHandler, IFluidTank,
+        ITileWithModularUI, ITileAddsInformation, ITileHasDifferentTextureSides {
 
     public static final int FUELSLOT = 0;
     public static final Fluid WATER = FluidRegistry.WATER;
@@ -139,29 +128,32 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
 
     private void pushWaterToAdjacentTiles() {
         Arrays.stream(ForgeDirection.values(), 0, 6) // All but Unknown
-                .forEach(direction -> Optional.ofNullable(this.worldObj.getTileEntity(
-                                this.xCoord + direction.offsetX,
-                                this.yCoord + direction.offsetY,
-                                this.zCoord + direction.offsetZ))
-                        .ifPresent(te -> {
-                            if (te instanceof IFluidHandler) {
-                                IFluidHandler tank = (IFluidHandler) te;
-                                if (tank.canFill(direction.getOpposite(), this.outputstack.getFluid())) {
-                                    int drainage;
-                                    if ((drainage = tank.fill(direction.getOpposite(), this.outputstack, false)) > 0) {
-                                        tank.fill(direction.getOpposite(), this.outputstack, true);
-                                        this.drain(drainage, true);
+                .forEach(
+                        direction -> Optional.ofNullable(
+                                this.worldObj.getTileEntity(
+                                        this.xCoord + direction.offsetX,
+                                        this.yCoord + direction.offsetY,
+                                        this.zCoord + direction.offsetZ))
+                                .ifPresent(te -> {
+                                    if (te instanceof IFluidHandler) {
+                                        IFluidHandler tank = (IFluidHandler) te;
+                                        if (tank.canFill(direction.getOpposite(), this.outputstack.getFluid())) {
+                                            int drainage;
+                                            if ((drainage = tank.fill(direction.getOpposite(), this.outputstack, false))
+                                                    > 0) {
+                                                tank.fill(direction.getOpposite(), this.outputstack, true);
+                                                this.drain(drainage, true);
+                                            }
+                                        }
+                                    } else if (te instanceof IFluidTank) {
+                                        IFluidTank tank = (IFluidTank) te;
+                                        int drainage;
+                                        if ((drainage = tank.fill(this.outputstack, false)) > 0) {
+                                            tank.fill(this.outputstack, true);
+                                            this.drain(drainage, true);
+                                        }
                                     }
-                                }
-                            } else if (te instanceof IFluidTank) {
-                                IFluidTank tank = (IFluidTank) te;
-                                int drainage;
-                                if ((drainage = tank.fill(this.outputstack, false)) > 0) {
-                                    tank.fill(this.outputstack, true);
-                                    this.drain(drainage, true);
-                                }
-                            }
-                        }));
+                                }));
     }
 
     private void causePollution() {
@@ -175,7 +167,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[] {0};
+        return new int[] { 0 };
     }
 
     @Override
@@ -201,9 +193,9 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
 
     @Override
     public ItemStack decrStackSize(int slot, int ammount) {
-        if (slot != BW_TileEntity_HeatedWaterPump.FUELSLOT
-                || this.fuelstack == null
-                || ammount > this.fuelstack.stackSize) return null;
+        if (slot != BW_TileEntity_HeatedWaterPump.FUELSLOT || this.fuelstack == null
+                || ammount > this.fuelstack.stackSize)
+            return null;
 
         return this.fuelstack.splitStack(ammount);
     }
@@ -284,8 +276,15 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
         if (ret.amount == 0) ret = null;
         if (doDrain) {
             this.outputstack.amount -= actualdrain;
-            FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(
-                    this.outputstack, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this, actualdrain));
+            FluidEvent.fireEvent(
+                    new FluidEvent.FluidDrainingEvent(
+                            this.outputstack,
+                            this.getWorldObj(),
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            this,
+                            actualdrain));
         }
         return ret;
     }
@@ -297,9 +296,9 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (resource != null
-                && resource.getFluid() == BW_TileEntity_HeatedWaterPump.WATER
-                && this.drain(resource.amount, false) != null) return this.drain(resource.amount, doDrain);
+        if (resource != null && resource.getFluid() == BW_TileEntity_HeatedWaterPump.WATER
+                && this.drain(resource.amount, false) != null)
+            return this.drain(resource.amount, doDrain);
         return null;
     }
 
@@ -320,30 +319,29 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {this.getInfo()};
+        return new FluidTankInfo[] { this.getInfo() };
     }
 
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                    + GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec)
-                    + String.format(
-                            StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
-                            ConfigHandler.pollutionHeatedWaterPumpSecond),
-            StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")
-        };
+                StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
+                        + GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec)
+                        + String.format(
+                                StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
+                                ConfigHandler.pollutionHeatedWaterPumpSecond),
+                StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
     }
 
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        ITileHasDifferentTextureSides.texture[ForgeDirection.UP.ordinal()] =
-                par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpTop");
-        ITileHasDifferentTextureSides.texture[ForgeDirection.DOWN.ordinal()] =
-                par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpDown");
+        ITileHasDifferentTextureSides.texture[ForgeDirection.UP.ordinal()] = par1IconRegister
+                .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpTop");
+        ITileHasDifferentTextureSides.texture[ForgeDirection.DOWN.ordinal()] = par1IconRegister
+                .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpDown");
         for (int i = 2; i < 7; i++) {
-            ITileHasDifferentTextureSides.texture[i] =
-                    par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpSide");
+            ITileHasDifferentTextureSides.texture[i] = par1IconRegister
+                    .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpSide");
         }
     }
 
@@ -354,16 +352,13 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
         builder.bindPlayerInventory(buildContext.getPlayer());
         final IItemHandlerModifiable invWrapper = new InvWrapper(this);
 
-        builder.widget(new SlotWidget(invWrapper, 0)
-                        .setFilter(stack -> TileEntityFurnace.getItemBurnTime(stack) > 0)
+        builder.widget(
+                new SlotWidget(invWrapper, 0).setFilter(stack -> TileEntityFurnace.getItemBurnTime(stack) > 0)
                         .setPos(55, 52))
-                .widget(SlotWidget.phantom(invWrapper, 1).disableInteraction().setPos(85, 32))
-                .widget(new ProgressBar()
-                        .setProgress(() -> (float) fuel / maxfuel)
-                        .setTexture(BW_UITextures.PROGRESSBAR_FUEL, 14)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(56, 36)
-                        .setSize(14, 14));
+                .widget(SlotWidget.phantom(invWrapper, 1).disableInteraction().setPos(85, 32)).widget(
+                        new ProgressBar().setProgress(() -> (float) fuel / maxfuel)
+                                .setTexture(BW_UITextures.PROGRESSBAR_FUEL, 14).setDirection(ProgressBar.Direction.UP)
+                                .setPos(56, 36).setSize(14, 14));
 
         return builder.build();
     }

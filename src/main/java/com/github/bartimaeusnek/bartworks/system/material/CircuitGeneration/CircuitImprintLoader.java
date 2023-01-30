@@ -1,26 +1,32 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.github.bartimaeusnek.bartworks.ASM.BWCoreStaticReplacementMethodes;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -31,6 +37,7 @@ import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -39,19 +46,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CircuitImprintLoader {
 
@@ -66,7 +60,7 @@ public class CircuitImprintLoader {
     private static final HashSet<GT_Recipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
     private static final HashSet<GT_Recipe> MODIFIED_CAL_RECIPES = new HashSet<>();
 
-    @SuppressWarnings({"unused", "RedundantSuppression"})
+    @SuppressWarnings({ "unused", "RedundantSuppression" })
     public static void run() {
         HashSet<GT_Recipe> toRem = new HashSet<>();
         HashSet<GT_Recipe> toAdd = new HashSet<>();
@@ -89,19 +83,19 @@ public class CircuitImprintLoader {
 
     private static void rebuildCircuitAssemblerMap(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
         reAddOriginalRecipes();
-        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList.forEach(
-                e -> CircuitImprintLoader.handleCircuitRecipeRebuilding(e, toRem, toAdd));
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.mRecipeList
+                .forEach(e -> CircuitImprintLoader.handleCircuitRecipeRebuilding(e, toRem, toAdd));
     }
 
-    private static void handleCircuitRecipeRebuilding(
-            GT_Recipe circuitRecipe, HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
+    private static void handleCircuitRecipeRebuilding(GT_Recipe circuitRecipe, HashSet<GT_Recipe> toRem,
+            HashSet<GT_Recipe> toAdd) {
         ItemStack[] outputs = circuitRecipe.mOutputs;
         boolean isOrePass = isCircuitOreDict(outputs[0]);
         String unlocalizedName = outputs[0].getUnlocalizedName();
         if (isOrePass || unlocalizedName.contains("Circuit") || unlocalizedName.contains("circuit")) {
 
-            CircuitImprintLoader.recipeTagMap.put(
-                    CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
+            CircuitImprintLoader.recipeTagMap
+                    .put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
             Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
                     ? FluidRegistry.getFluid("molten.indalloy140")
@@ -116,9 +110,7 @@ public class CircuitImprintLoader {
                     || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderUEV, 0))) {
                 GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null)
-                    BWRecipes.instance
-                            .getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE)
-                            .addRecipe(newRecipe);
+                    BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
             } else {
                 if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier)) toRem.add(circuitRecipe);
@@ -147,8 +139,8 @@ public class CircuitImprintLoader {
         MODIFIED_CAL_RECIPES.addAll(toAdd);
     }
 
-    private static void addCutoffRecipeToSets(
-            HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd, GT_Recipe circuitRecipe) {
+    private static void addCutoffRecipeToSets(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd,
+            GT_Recipe circuitRecipe) {
         if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier)) {
             toRem.add(circuitRecipe);
             toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
@@ -192,7 +184,7 @@ public class CircuitImprintLoader {
         return new BWRecipes.DynamicGTRecipe(
                 false,
                 in,
-                new ItemStack[] {getOutputMultiplied(original)},
+                new ItemStack[] { getOutputMultiplied(original) },
                 BW_Meta_Items.getNEWCIRCUITS()
                         .getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]), 0, 0),
                 null,
@@ -209,18 +201,18 @@ public class CircuitImprintLoader {
         return out;
     }
 
-    private static void replaceCircuits(
-            BiMap<ItemList, Short> inversed, GT_Recipe original, ItemStack[] in, int index) {
+    private static void replaceCircuits(BiMap<ItemList, Short> inversed, GT_Recipe original, ItemStack[] in,
+            int index) {
         for (ItemList il : inversed.keySet()) {
             if (GT_Utility.areStacksEqual(il.get(1), replaceCircuitParts(original.mInputs[index]))) {
-                in[index] =
-                        BW_Meta_Items.getNEWCIRCUITS().getStack(inversed.get(il), original.mInputs[index].stackSize);
+                in[index] = BW_Meta_Items.getNEWCIRCUITS()
+                        .getStack(inversed.get(il), original.mInputs[index].stackSize);
             }
         }
     }
 
-    private static final List<Pair<ItemStack, ItemStack>> circuitPartsToReplace =
-            Collections.unmodifiableList(Arrays.asList(
+    private static final List<Pair<ItemStack, ItemStack>> circuitPartsToReplace = Collections.unmodifiableList(
+            Arrays.asList(
                     new Pair<>(ItemList.Circuit_Parts_Resistor.get(1), ItemList.Circuit_Parts_ResistorSMD.get(1)),
                     new Pair<>(ItemList.Circuit_Parts_Diode.get(1), ItemList.Circuit_Parts_DiodeSMD.get(1)),
                     new Pair<>(ItemList.Circuit_Parts_Transistor.get(1), ItemList.Circuit_Parts_TransistorSMD.get(1)),
@@ -252,24 +244,24 @@ public class CircuitImprintLoader {
                 // fine wires
             } else if (BW_Util.checkStackAndPrefix(original.mInputs[index])
                     && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireFine) {
-                in[index] = GT_OreDictUnificator.get(
-                        OrePrefixes.wireGt04,
-                        GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
-                        original.mInputs[index].stackSize);
-                if (in[index] == null) {
-                    in[index] = GT_OreDictUnificator.get(
-                            OrePrefixes.wireFine,
-                            GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
-                            original.mInputs[index].stackSize * 16);
-                }
-                // other components
-            } else {
-                in[index] = original.mInputs[index].copy();
-                in[index].stackSize *= 16;
-                if (in[index].stackSize > in[index].getItem().getItemStackLimit()
-                        || in[index].stackSize > in[index].getMaxStackSize())
-                    in[index].stackSize = in[index].getMaxStackSize();
-            }
+                        in[index] = GT_OreDictUnificator.get(
+                                OrePrefixes.wireGt04,
+                                GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                                original.mInputs[index].stackSize);
+                        if (in[index] == null) {
+                            in[index] = GT_OreDictUnificator.get(
+                                    OrePrefixes.wireFine,
+                                    GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                                    original.mInputs[index].stackSize * 16);
+                        }
+                        // other components
+                    } else {
+                        in[index] = original.mInputs[index].copy();
+                        in[index].stackSize *= 16;
+                        if (in[index].stackSize > in[index].getItem().getItemStackLimit()
+                                || in[index].stackSize > in[index].getMaxStackSize())
+                            in[index].stackSize = in[index].getMaxStackSize();
+                    }
         }
     }
 
@@ -315,14 +307,17 @@ public class CircuitImprintLoader {
 
         eut = Math.min(
                 eut,
-                BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(
-                        (OreDictionary.getOreIDs(stack) != null && OreDictionary.getOreIDs(stack).length > 0)
-                                ? OreDictionary.getOreIDs(stack)[0]
-                                : -1))));
+                BW_Util.getMachineVoltageFromTier(
+                        BW_Util.getCircuitTierFromOreDictName(
+                                OreDictionary.getOreName(
+                                        (OreDictionary.getOreIDs(stack) != null
+                                                && OreDictionary.getOreIDs(stack).length > 0)
+                                                        ? OreDictionary.getOreIDs(stack)[0]
+                                                        : -1))));
         GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(
                 true,
-                new ItemStack[] {stack, ItemList.Shape_Slicer_Flat.get(0)},
-                new ItemStack[] {BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag, 1, 1)},
+                new ItemStack[] { stack, ItemList.Shape_Slicer_Flat.get(0) },
+                new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag, 1, 1) },
                 null,
                 null,
                 null,
@@ -336,23 +331,14 @@ public class CircuitImprintLoader {
 
     private static void makeAndAddCraftingRecipes(NBTTagCompound tag) {
         ItemStack circuit = BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag, 0, 1);
-        Object[] imprintRecipe = {
-            " X ",
-            "GPG",
-            " X ",
-            'P',
-            BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag, 1, 1),
-            'G',
-            WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite, 1),
-            'X',
-            BW_Meta_Items.getNEWCIRCUITS().getStack(3)
-        };
+        Object[] imprintRecipe = { " X ", "GPG", " X ", 'P', BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag, 1, 1),
+                'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite, 1), 'X',
+                BW_Meta_Items.getNEWCIRCUITS().getStack(3) };
 
         IRecipe bwrecipe = new BWRecipes.BWNBTDependantCraftingRecipe(circuit, imprintRecipe);
         ShapedOreRecipe gtrecipe = BW_Util.createGTCraftingRecipe(
                 circuit,
-                GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                        | GT_ModHandler.RecipeBits.KEEPNBT
+                GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.KEEPNBT
                         | GT_ModHandler.RecipeBits.BUFFERED,
                 imprintRecipe);
 
@@ -375,10 +361,7 @@ public class CircuitImprintLoader {
     }
 
     private static void deleteCALRecipesAndTags() {
-        BWRecipes.instance
-                .getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE)
-                .mRecipeList
-                .clear();
+        BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).mRecipeList.clear();
         recipeTagMap.clear();
     }
 }

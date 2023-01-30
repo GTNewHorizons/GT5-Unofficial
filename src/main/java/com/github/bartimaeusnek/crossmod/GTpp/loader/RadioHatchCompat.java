@@ -1,44 +1,38 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.crossmod.GTpp.loader;
 
-import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
-import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
-import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.oredict.OreDictionary;
 
-@SuppressWarnings({"unchecked", "rawtypes", "unused"})
+import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
+import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
+import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
+
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.GameRegistry;
+
+@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
 public class RadioHatchCompat {
 
     private static Class intf;
@@ -114,8 +108,8 @@ public class RadioHatchCompat {
             map.setAccessible(true);
             Map<Item, String> UniqueIdentifierMap = (Map<Item, String>) map.get(GameData.getItemRegistry());
 
-            Map<GameRegistry.UniqueIdentifier, ModContainer> ownerItems =
-                    (Map<GameRegistry.UniqueIdentifier, ModContainer>) cOwners.get(null);
+            Map<GameRegistry.UniqueIdentifier, ModContainer> ownerItems = (Map<GameRegistry.UniqueIdentifier, ModContainer>) cOwners
+                    .get(null);
             ModContainer gtpp = null;
             ModContainer bartworks = null;
 
@@ -125,26 +119,24 @@ public class RadioHatchCompat {
                 else if (container.getModId().equalsIgnoreCase("miscutils")) gtpp = container;
             }
 
-            for (Object mats : (Set)
-                    RadioHatchCompat.materialClass.getField("mMaterialMap").get(null)) {
+            for (Object mats : (Set) RadioHatchCompat.materialClass.getField("mMaterialMap").get(null)) {
                 if (RadioHatchCompat.isRadioactive.getBoolean(mats)) {
 
-                    if (OreDictionary.getOres("stick" + RadioHatchCompat.unlocalizedName.get(mats))
-                            .isEmpty()) {
+                    if (OreDictionary.getOres("stick" + RadioHatchCompat.unlocalizedName.get(mats)).isEmpty()) {
                         Item it = c1.newInstance(mats);
                         UniqueIdentifierMap.replace(it, "miscutils:" + it.getUnlocalizedName());
                         GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(it);
                         ownerItems.replace(ui, bartworks, gtpp);
 
-                        String tanslate =
-                                it.getUnlocalizedName() + ".name=" + RadioHatchCompat.localizedName.get(mats) + " Rod";
+                        String tanslate = it.getUnlocalizedName() + ".name="
+                                + RadioHatchCompat.localizedName.get(mats)
+                                + " Rod";
                         RadioHatchCompat.TranslateSet.add(tanslate);
 
                         DebugLog.log(tanslate);
                         DebugLog.log("Generate: " + RadioHatchCompat.rod + RadioHatchCompat.unlocalizedName.get(mats));
                     }
-                    if (OreDictionary.getOres("stickLong" + RadioHatchCompat.unlocalizedName.get(mats))
-                            .isEmpty()) {
+                    if (OreDictionary.getOres("stickLong" + RadioHatchCompat.unlocalizedName.get(mats)).isEmpty()) {
                         Item it2 = c2.newInstance(mats);
                         UniqueIdentifierMap.replace(it2, "miscutils:" + it2.getUnlocalizedName());
                         GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(it2);
@@ -155,12 +147,8 @@ public class RadioHatchCompat {
                     }
                 }
             }
-        } catch (NoSuchFieldException
-                | IllegalAccessException
-                | NoSuchMethodException
-                | InvocationTargetException
-                | InstantiationException
-                | ClassNotFoundException e) {
+        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException
+                | InstantiationException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -169,10 +157,7 @@ public class RadioHatchCompat {
         try {
             if (RadioHatchCompat.intf.isAssignableFrom(lStack.getItem().getClass())) {
                 if (!RadioHatchCompat.isRadioactive.getBoolean(RadioHatchCompat.f.get(lStack.getItem()))) return null;
-                int amount = RadioHatchCompat.componentType
-                                .get(lStack.getItem())
-                                .equals(RadioHatchCompat.rod)
-                        ? 1
+                int amount = RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.rod) ? 1
                         : RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.longRod) ? 2 : 0;
                 if (amount == 0) return null;
                 return new RadioHatchCompat.GTPPRadAdapter(amount, RadioHatchCompat.f.get(lStack.getItem()));
@@ -205,8 +190,7 @@ public class RadioHatchCompat {
         }
 
         private static boolean isElement(Object GTPPMaterial) throws IllegalAccessException {
-            return RadioHatchCompat.GTPPRadAdapter.getMaterialInput(GTPPMaterial)
-                    .isEmpty();
+            return RadioHatchCompat.GTPPRadAdapter.getMaterialInput(GTPPMaterial).isEmpty();
         }
 
         private static List getElemets(Object GTPPMaterial) throws IllegalAccessException {
@@ -229,12 +213,10 @@ public class RadioHatchCompat {
             int ret = 0;
             try {
                 List pureElements = RadioHatchCompat.GTPPRadAdapter.getElemets(m);
-                for (Object materialObj : pureElements)
-                    if (RadioHatchCompat.isRadioactive.getBoolean(materialObj))
-                        ret += ((int) RadioHatchCompat.radlevel.getByte(m)
-                                + RadioHatchCompat.GTPPRadAdapter.clampToZero(
-                                        RadioHatchCompat.protons.getLong(materialObj)));
-                    else ret += RadioHatchCompat.radlevel.getByte(m);
+                for (Object materialObj : pureElements) if (RadioHatchCompat.isRadioactive.getBoolean(materialObj))
+                    ret += ((int) RadioHatchCompat.radlevel.getByte(m) + RadioHatchCompat.GTPPRadAdapter
+                            .clampToZero(RadioHatchCompat.protons.getLong(materialObj)));
+                else ret += RadioHatchCompat.radlevel.getByte(m);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -243,8 +225,8 @@ public class RadioHatchCompat {
 
         @Override
         public int getRadiationLevel(ItemStack aStack) {
-            return RadioHatchCompat.GTPPRadAdapter.BUFFER.computeIfAbsent(
-                    this.m, radlvl -> RadioHatchCompat.GTPPRadAdapter.calulateRad(this.m));
+            return RadioHatchCompat.GTPPRadAdapter.BUFFER
+                    .computeIfAbsent(this.m, radlvl -> RadioHatchCompat.GTPPRadAdapter.calulateRad(this.m));
         }
 
         private static long clampToZero(long number) {
@@ -258,7 +240,7 @@ public class RadioHatchCompat {
 
         @Override
         public short[] getColorForGUI(ItemStack aStack) {
-            short[] rgba = {0, 0, 0, 0};
+            short[] rgba = { 0, 0, 0, 0 };
             try {
                 rgba = (short[]) RadioHatchCompat.RGBA.get(this.m);
             } catch (IllegalAccessException e) {

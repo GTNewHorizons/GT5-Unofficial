@@ -1,26 +1,30 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -39,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,17 +57,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -76,6 +70,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public ConnectedBlocksChecker connectedcells;
     public final ItemStack[] circuits = new ItemStack[5];
     private final ItemStackHandler circuitsInventoryHandler = new ItemStackHandler(circuits) {
+
         @Override
         public int getSlotLimit(int slot) {
             return 1;
@@ -110,12 +105,9 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public long maxAmperesIn() {
         int ret = 0;
-        for (int i = 0; i < 5; ++i)
-            if (this.circuits[i] != null
-                    && this.circuits[i]
-                            .getItem()
-                            .equals(GT_Utility.getIntegratedCircuit(0).getItem()))
-                ret += this.circuits[i].getItemDamage();
+        for (int i = 0; i < 5; ++i) if (this.circuits[i] != null
+                && this.circuits[i].getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem()))
+            ret += this.circuits[i].getItemDamage();
         return ret > 0 ? ret : 1;
     }
 
@@ -173,11 +165,12 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public String[] getDescription() {
         ArrayList<String> e = new ArrayList<>();
-        String[] dsc =
-                StatCollector.translateToLocal("tooltip.tile.lesu.0.name").split(";");
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.lesu.0.name").split(";");
         Collections.addAll(e, dsc);
-        e.add(StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
-                + GT_Utility.formatNumbers(ConfigHandler.energyPerCell) + "EU");
+        e.add(
+                StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
+                        + GT_Utility.formatNumbers(ConfigHandler.energyPerCell)
+                        + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name").split(";");
         Collections.addAll(e, dsc);
         e.add(ChatColorHelper.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
@@ -192,6 +185,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
             GT_TileEntity_LESU.iIcons[i] = aBlockIconRegister.registerIcon(MainMod.MOD_ID + ":LESU_CASING_" + i);
             int finalI = i;
             GT_TileEntity_LESU.iIconContainers[i] = new IIconContainer() {
+
                 @Override
                 public IIcon getIcon() {
                     return GT_TileEntity_LESU.iIcons[finalI];
@@ -212,29 +206,23 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     public boolean isClientSide() {
         if (this.getWorld() != null)
-            return this.getWorld().isRemote
-                    ? FMLCommonHandler.instance().getSide() == Side.CLIENT
+            return this.getWorld().isRemote ? FMLCommonHandler.instance().getSide() == Side.CLIENT
                     : FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
     }
 
     @Override
     @SuppressWarnings("ALL")
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
 
         ITexture[] ret = new ITexture[0];
 
         if (this.isClientSide()) {
 
             for (int i = 0; i < GT_TileEntity_LESU.iTextures.length; i++) {
-                GT_TileEntity_LESU.iTextures[i][0] = TextureFactory.of(
-                        GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
+                GT_TileEntity_LESU.iTextures[i][0] = TextureFactory
+                        .of(GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
             }
 
             if (aSide == aFacing && this.getBaseMetaTileEntity().getUniversalEnergyStored() <= 0)
@@ -302,10 +290,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
             case 1:
                 return true;
             default:
-                return p_94041_2_ != null
-                        && p_94041_2_
-                                .getItem()
-                                .equals(GT_Utility.getIntegratedCircuit(0).getItem());
+                return p_94041_2_ != null && p_94041_2_.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
         }
     }
 
@@ -389,9 +374,8 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         if (this.connectedcells.get_meta_of_sideblocks(
                 aBaseMetaTileEntity.getWorld(),
                 this.getBaseMetaTileEntity().getMetaTileID(),
-                new int[] {
-                    aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord()
-                },
+                new int[] { aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord() },
                 true)) {
             this.getBaseMetaTileEntity().disableWorking();
             this.getBaseMetaTileEntity().setActive(false);
@@ -403,9 +387,8 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
         this.mEfficiency = this.getMaxEfficiency(null);
         this.mStorage = (ConfigHandler.energyPerCell * this.connectedcells.hashset.size() >= Long.MAX_VALUE - 1
-                        || ConfigHandler.energyPerCell * this.connectedcells.hashset.size() < 0)
-                ? Long.MAX_VALUE - 1
-                : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
+                || ConfigHandler.energyPerCell * this.connectedcells.hashset.size() < 0) ? Long.MAX_VALUE - 1
+                        : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
 
@@ -421,14 +404,20 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
         long finishedTime = System.nanoTime();
         // System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
-        if (finishedTime - startingTime > 5000000)
-            MainMod.LOGGER.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / "
-                    + ((finishedTime - startingTime) / 1000000) + "ms) Owner:"
-                    + this.getBaseMetaTileEntity().getOwnerName() + " Check at x:"
-                    + this.getBaseMetaTileEntity().getXCoord() + " y:"
-                    + this.getBaseMetaTileEntity().getYCoord() + " z:"
-                    + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: "
-                    + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+        if (finishedTime - startingTime > 5000000) MainMod.LOGGER.warn(
+                "LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime)
+                        + "ns / "
+                        + ((finishedTime - startingTime) / 1000000)
+                        + "ms) Owner:"
+                        + this.getBaseMetaTileEntity().getOwnerName()
+                        + " Check at x:"
+                        + this.getBaseMetaTileEntity().getXCoord()
+                        + " y:"
+                        + this.getBaseMetaTileEntity().getYCoord()
+                        + " z:"
+                        + this.getBaseMetaTileEntity().getZCoord()
+                        + " DIM-ID: "
+                        + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
         return true;
     }
 
@@ -458,90 +447,91 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(105, 51));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY).setSize(17, 17)
+                        .setPos(105, 51));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(7, 4)
-                        .setSize(118, 67))
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 4).setSize(118, 67))
                 .widget(new SlotWidget(new BaseSlot(inventoryHandler, 1) {
-                            @Override
-                            public int getSlotStackLimit() {
-                                return 1;
-                            }
-                        })
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                        .setPos(127, 13))
+
+                    @Override
+                    public int getSlotStackLimit() {
+                        return 1;
+                    }
+                }).setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN).setPos(127, 13))
                 .widget(new SlotWidget(new BaseSlot(inventoryHandler, 0) {
-                            @Override
-                            public int getSlotStackLimit() {
-                                return 1;
-                            }
-                        })
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
-                        .setPos(127, 49));
+
+                    @Override
+                    public int getSlotStackLimit() {
+                        return 1;
+                    }
+                }).setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER).setPos(127, 49));
         for (int i = 0; i < 4; i++) {
-            builder.widget(new SlotWidget(circuitsInventoryHandler, i)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
-                    .setPos(151, 4 + i * 18));
+            builder.widget(
+                    new SlotWidget(circuitsInventoryHandler, i)
+                            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                            .setPos(151, 4 + i * 18));
         }
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements);
         builder.widget(screenElements);
 
-        builder.widget(new DrawableWidget()
-                        .setDrawable(BW_UITextures.PICTURE_STORED_EU_FRAME)
-                        .setPos(7, 72)
-                        .setSize(118, 7))
-                .widget(new ProgressBar()
-                        .setProgress(() -> (float) getBaseMetaTileEntity().getStoredEU()
-                                / getBaseMetaTileEntity().getEUCapacity())
-                        .setDirection(ProgressBar.Direction.RIGHT)
-                        .setTexture(BW_UITextures.PROGRESSBAR_STORED_EU_116, 116)
-                        .setPos(8, 73)
-                        .setSize(116, 5));
+        builder.widget(
+                new DrawableWidget().setDrawable(BW_UITextures.PICTURE_STORED_EU_FRAME).setPos(7, 72).setSize(118, 7))
+                .widget(
+                        new ProgressBar()
+                                .setProgress(
+                                        () -> (float) getBaseMetaTileEntity().getStoredEU()
+                                                / getBaseMetaTileEntity().getEUCapacity())
+                                .setDirection(ProgressBar.Direction.RIGHT)
+                                .setTexture(BW_UITextures.PROGRESSBAR_STORED_EU_116, 116).setPos(8, 73)
+                                .setSize(116, 5));
     }
 
     private void drawTexts(DynamicPositionedColumn screenElements) {
         screenElements.setSpace(0).setPos(11, 8);
 
         screenElements
-                .widget(TextWidget.dynamicString(() -> "EU: "
-                                + GT_Utility.formatNumbers(
-                                        getBaseMetaTileEntity().getStoredEU()))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()))
-                .widget(TextWidget.dynamicString(() -> "MAX: "
-                                + (getBaseMetaTileEntity().isActive()
-                                        ? GT_Utility.formatNumbers(
-                                                        getBaseMetaTileEntity().getOutputVoltage())
-                                                + String.valueOf(ConfigHandler.energyPerCell)
-                                                        .substring(1)
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "EU: " + GT_Utility.formatNumbers(getBaseMetaTileEntity().getStoredEU()))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(
+                        TextWidget.dynamicString(
+                                () -> "MAX: " + (getBaseMetaTileEntity().isActive()
+                                        ? GT_Utility.formatNumbers(getBaseMetaTileEntity().getOutputVoltage())
+                                                + String.valueOf(ConfigHandler.energyPerCell).substring(1)
                                         : Integer.toString(0)))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()))
-                .widget(TextWidget.dynamicString(() -> "MAX EU/t IN: "
-                                + GT_Utility.formatNumbers(
-                                        getBaseMetaTileEntity().getInputVoltage()))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()))
-                .widget(TextWidget.dynamicString(() -> "EU/t OUT: "
-                                + GT_Utility.formatNumbers(
-                                        getBaseMetaTileEntity().getOutputVoltage()))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()))
-                .widget(TextWidget.dynamicString(() -> "AMP/t IN/OUT: "
-                                + GT_Utility.formatNumbers(
-                                        getBaseMetaTileEntity().getInputAmperage()))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()))
-                .widget(new TextWidget(Text.localised("tooltip.LESU.0.name"))
-                        .setDefaultColor(Color.YELLOW.getRGB())
-                        .setEnabled(widget -> maxEUStore() >= Long.MAX_VALUE - 1))
-                .widget(new TextWidget(Text.localised("tooltip.LESU.1.name"))
-                        .setDefaultColor(Color.RED.getRGB())
-                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()));
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "MAX EU/t IN: "
+                                                + GT_Utility.formatNumbers(getBaseMetaTileEntity().getInputVoltage()))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "EU/t OUT: "
+                                                + GT_Utility.formatNumbers(getBaseMetaTileEntity().getOutputVoltage()))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        () -> "AMP/t IN/OUT: "
+                                                + GT_Utility.formatNumbers(getBaseMetaTileEntity().getInputAmperage()))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(
+                        new TextWidget(Text.localised("tooltip.LESU.0.name")).setDefaultColor(Color.YELLOW.getRGB())
+                                .setEnabled(widget -> maxEUStore() >= Long.MAX_VALUE - 1))
+                .widget(
+                        new TextWidget(Text.localised("tooltip.LESU.1.name")).setDefaultColor(Color.RED.getRGB())
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()));
     }
 }

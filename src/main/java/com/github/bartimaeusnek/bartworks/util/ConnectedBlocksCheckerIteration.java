@@ -1,38 +1,31 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2019 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.util;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 /**
- * This implementation is for some reason slower than the Recursive Check....
- * For ~3400 blocks this takes 8ms, the Recursive Check 5ms.
+ * This implementation is for some reason slower than the Recursive Check.... For ~3400 blocks this takes 8ms, the
+ * Recursive Check 5ms.
  */
 public class ConnectedBlocksCheckerIteration {
 
@@ -122,17 +115,23 @@ public class ConnectedBlocksCheckerIteration {
                 }
             } else {
                 if (n == w.getBlockMetadata(C.x, C.y + 1, C.z)
-                        && !new Coords(C.x, C.y + 1, C.z, wID).equals(Controller)) return true;
+                        && !new Coords(C.x, C.y + 1, C.z, wID).equals(Controller))
+                    return true;
                 if (n == w.getBlockMetadata(C.x, C.y - 1, C.z)
-                        && !new Coords(C.x, C.y - 1, C.z, wID).equals(Controller)) return true;
+                        && !new Coords(C.x, C.y - 1, C.z, wID).equals(Controller))
+                    return true;
                 if (n == w.getBlockMetadata(C.x + 1, C.y, C.z)
-                        && !new Coords(C.x + 1, C.y, C.z, wID).equals(Controller)) return true;
+                        && !new Coords(C.x + 1, C.y, C.z, wID).equals(Controller))
+                    return true;
                 if (n == w.getBlockMetadata(C.x - 1, C.y, C.z)
-                        && !new Coords(C.x - 1, C.y, C.z, wID).equals(Controller)) return true;
+                        && !new Coords(C.x - 1, C.y, C.z, wID).equals(Controller))
+                    return true;
                 if (n == w.getBlockMetadata(C.x, C.y, C.z + 1)
-                        && !new Coords(C.x, C.y, C.z + 1, wID).equals(Controller)) return true;
+                        && !new Coords(C.x, C.y, C.z + 1, wID).equals(Controller))
+                    return true;
                 if (n == w.getBlockMetadata(C.x, C.y, C.z - 1)
-                        && !new Coords(C.x, C.y, C.z - 1, wID).equals(Controller)) return true;
+                        && !new Coords(C.x, C.y, C.z - 1, wID).equals(Controller))
+                    return true;
             }
         }
         return false;

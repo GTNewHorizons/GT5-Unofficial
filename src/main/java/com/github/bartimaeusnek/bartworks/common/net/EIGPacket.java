@@ -1,17 +1,20 @@
 package com.github.bartimaeusnek.bartworks.common.net;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ExtremeIndustrialGreenhouse;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_New;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 
 public class EIGPacket extends GT_Packet_New {
+
     private Coords coords;
     private int mMaxSlots;
 

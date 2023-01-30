@@ -1,38 +1,22 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import com.google.common.collect.Sets;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -49,9 +33,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+import com.google.common.collect.Sets;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
+
 public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
-    private static Set<Block> mineableBlocks =
-            Sets.newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
+
+    private static Set<Block> mineableBlocks = Sets
+            .newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
     private final int mCharge;
     private final int mTransfer;
     public int mTier;
@@ -92,23 +87,14 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         }
     }
 
-    public boolean onItemUse(
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World p_77648_3_,
-            int p_77648_4_,
-            int p_77648_5_,
-            int p_77648_6_,
-            int p_77648_7_,
-            float p_77648_8_,
-            float p_77648_9_,
-            float p_77648_10_) {
+    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World p_77648_3_, int p_77648_4_, int p_77648_5_,
+            int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         ElectricItem.manager.use(aStack, 0, aPlayer);
         return false;
     }
 
-    public boolean onBlockDestroyed(
-            ItemStack var1, World var2, Block var3, int var4, int var5, int var6, EntityLivingBase var7) {
+    public boolean onBlockDestroyed(ItemStack var1, World var2, Block var3, int var4, int var5, int var6,
+            EntityLivingBase var7) {
         ElectricItem.manager.use(var1, 0, var7);
         if (ElectricItem.manager.canUse(var1, 500 * this.multi)) {
             ElectricItem.manager.use(var1, 500 * this.multi, var7);
@@ -120,8 +106,7 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
 
     @Override
     public boolean canHarvestBlock(Block par1Block, ItemStack itemStack) {
-        return par1Block.getMaterial().equals(Material.glass)
-                || par1Block.getMaterial().equals(Material.clay)
+        return par1Block.getMaterial().equals(Material.glass) || par1Block.getMaterial().equals(Material.clay)
                 || par1Block.getMaterial().equals(Material.packedIce)
                 || par1Block.getMaterial().equals(Material.ice)
                 || par1Block.getMaterial().equals(Material.sand)

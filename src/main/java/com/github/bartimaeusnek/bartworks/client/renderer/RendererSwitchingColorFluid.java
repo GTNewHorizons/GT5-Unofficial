@@ -1,34 +1,18 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
-import com.github.bartimaeusnek.bartworks.common.blocks.BioFluidBlock;
-import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
-import com.github.bartimaeusnek.bartworks.util.Coords;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -40,8 +24,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import com.github.bartimaeusnek.bartworks.common.blocks.BioFluidBlock;
+import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
+import com.github.bartimaeusnek.bartworks.util.Coords;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
 public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler {
+
     private static final float LIGHT_Y_NEG = 0.5f;
     private static final float LIGHT_Y_POS = 1f;
     private static final float LIGHT_XZ_NEG = 0.8f;
@@ -90,8 +84,8 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {}
 
     @SideOnly(Side.CLIENT)
-    public boolean renderWorldBlock(
-            IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         if ((!(block instanceof BioFluidBlock))) return false;
         Tessellator tessellator = Tessellator.instance;
         Coords blockat = new Coords(x, y, z, iBlockAccess.getTileEntity(x, y, z).getWorldObj().provider.dimensionId);
@@ -114,12 +108,10 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
         boolean renderTop = iBlockAccess.getBlock(x, y + 1, z) != blockFluidBase;
         boolean renderBottom = block.shouldSideBeRendered(iBlockAccess, x, y - 1, z, 0)
                 && iBlockAccess.getBlock(x, y - 1, z) != blockFluidBase;
-        boolean[] renderSides = {
-            block.shouldSideBeRendered(iBlockAccess, x, y, z - 1, 2),
-            block.shouldSideBeRendered(iBlockAccess, x, y, z + 1, 3),
-            block.shouldSideBeRendered(iBlockAccess, x - 1, y, z, 4),
-            block.shouldSideBeRendered(iBlockAccess, x + 1, y, z, 5)
-        };
+        boolean[] renderSides = { block.shouldSideBeRendered(iBlockAccess, x, y, z - 1, 2),
+                block.shouldSideBeRendered(iBlockAccess, x, y, z + 1, 3),
+                block.shouldSideBeRendered(iBlockAccess, x - 1, y, z, 4),
+                block.shouldSideBeRendered(iBlockAccess, x + 1, y, z, 5) };
         if (!renderTop && !renderBottom && !renderSides[0] && !renderSides[1] && !renderSides[2] && !renderSides[3]) {
             return false;
         }
@@ -136,18 +128,18 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
             float fluidHeightForRender6 = this.getFluidHeightForRender(iBlockAccess, x + 1, y, z - 1, blockFluidBase);
             float fluidHeightForRender7 = this.getFluidHeightForRender(iBlockAccess, x + 1, y, z, blockFluidBase);
             float fluidHeightForRender8 = this.getFluidHeightForRender(iBlockAccess, x + 1, y, z + 1, blockFluidBase);
-            heightNW = this.getFluidHeightAverage(new float[] {
-                fluidHeightForRender1, fluidHeightForRender2, fluidHeightForRender4, fluidHeightForRender
-            });
-            heightSW = this.getFluidHeightAverage(new float[] {
-                fluidHeightForRender2, fluidHeightForRender3, fluidHeightForRender5, fluidHeightForRender
-            });
-            heightSE = this.getFluidHeightAverage(new float[] {
-                fluidHeightForRender5, fluidHeightForRender7, fluidHeightForRender8, fluidHeightForRender
-            });
-            heightNE = this.getFluidHeightAverage(new float[] {
-                fluidHeightForRender4, fluidHeightForRender6, fluidHeightForRender7, fluidHeightForRender
-            });
+            heightNW = this.getFluidHeightAverage(
+                    new float[] { fluidHeightForRender1, fluidHeightForRender2, fluidHeightForRender4,
+                            fluidHeightForRender });
+            heightSW = this.getFluidHeightAverage(
+                    new float[] { fluidHeightForRender2, fluidHeightForRender3, fluidHeightForRender5,
+                            fluidHeightForRender });
+            heightSE = this.getFluidHeightAverage(
+                    new float[] { fluidHeightForRender5, fluidHeightForRender7, fluidHeightForRender8,
+                            fluidHeightForRender });
+            heightNE = this.getFluidHeightAverage(
+                    new float[] { fluidHeightForRender4, fluidHeightForRender6, fluidHeightForRender7,
+                            fluidHeightForRender });
         } else {
             heightNW = fluidHeightForRender;
             heightSW = fluidHeightForRender;
@@ -165,14 +157,8 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
             heightSE -= RendererSwitchingColorFluid.RENDER_OFFSET;
             heightNE -= RendererSwitchingColorFluid.RENDER_OFFSET;
 
-            double dInterpolatedU,
-                    dInterpolatedV,
-                    dInterpolatedU2,
-                    dInterpolatedV2,
-                    dInterpolatedU3,
-                    dInterpolatedV3,
-                    dInterpolatedU4,
-                    dInterpolatedV4;
+            double dInterpolatedU, dInterpolatedV, dInterpolatedU2, dInterpolatedV2, dInterpolatedU3, dInterpolatedV3,
+                    dInterpolatedU4, dInterpolatedV4;
 
             if (flowDir < -999.0f) {
                 dInterpolatedU = iconStill.getInterpolatedU(0.0);
@@ -321,11 +307,8 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
     }
 
     private IIcon getNullCheckedIiconOrFallbackTexture() {
-        return FluidLoader.autogenIIcon != null
-                ? FluidLoader.autogenIIcon
-                : ((TextureMap) Minecraft.getMinecraft()
-                                .getTextureManager()
-                                .getTexture(TextureMap.locationBlocksTexture))
-                        .getAtlasSprite("missingno");
+        return FluidLoader.autogenIIcon != null ? FluidLoader.autogenIIcon
+                : ((TextureMap) Minecraft.getMinecraft().getTextureManager()
+                        .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
     }
 }

@@ -1,36 +1,29 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
-import cpw.mods.fml.common.IWorldGenerator;
-import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Log;
 import java.util.HashSet;
 import java.util.Random;
+
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+
+import cpw.mods.fml.common.IWorldGenerator;
+import gregtech.api.objects.XSTR;
+import gregtech.api.util.GT_Log;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -42,19 +35,19 @@ public class BW_WordGenerator implements IWorldGenerator {
         // GameRegistry.registerWorldGenerator(this, 1073741823);
     }
 
-    public synchronized void generate(
-            Random aRandom,
-            int aX,
-            int aZ,
-            World aWorld,
-            IChunkProvider aChunkGenerator,
+    public synchronized void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
             IChunkProvider aChunkProvider) {
         new BW_WordGenerator.WorldGenContainer(
-                        aX * 16, aZ * 16, aWorld.provider.dimensionId, aWorld, aChunkGenerator, aChunkProvider)
-                .run();
+                aX * 16,
+                aZ * 16,
+                aWorld.provider.dimensionId,
+                aWorld,
+                aChunkGenerator,
+                aChunkProvider).run();
     }
 
     public static class WorldGenContainer implements Runnable {
+
         public static HashSet<ChunkCoordIntPair> mGenerated = new HashSet<>(2000);
         public final int mDimensionType;
         public final World mWorld;
@@ -63,12 +56,7 @@ public class BW_WordGenerator implements IWorldGenerator {
         public int mX;
         public int mZ;
 
-        public WorldGenContainer(
-                int aX,
-                int aZ,
-                int aDimensionType,
-                World aWorld,
-                IChunkProvider aChunkGenerator,
+        public WorldGenContainer(int aX, int aZ, int aDimensionType, World aWorld, IChunkProvider aChunkGenerator,
                 IChunkProvider aChunkProvider) {
             this.mX = aX;
             this.mZ = aZ;

@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.system.material;
@@ -25,21 +16,8 @@ package com.github.bartimaeusnek.bartworks.system.material;
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashSet;
 
-import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
-import com.github.bartimaeusnek.bartworks.API.SideReference;
-import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import ic2.core.IC2Potion;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -54,6 +32,22 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
+import com.github.bartimaeusnek.bartworks.API.SideReference;
+import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import ic2.core.IC2Potion;
 
 public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRadMaterial {
 
@@ -91,8 +85,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
-        if (this.orePrefixes == OrePrefixes.dustImpure
-                || this.orePrefixes == OrePrefixes.dustPure
+        if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure
                 || this.orePrefixes == OrePrefixes.crushed) {
             int aDamage = aItemEntity.getEntityItem().getItemDamage();
             if ((aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
@@ -105,15 +98,21 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
                     byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((this.orePrefixes == OrePrefixes.dustImpure) || (this.orePrefixes == OrePrefixes.dustPure)) {
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(
-                                    OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            aItemEntity.setEntityItemStack(
+                                    WerkstoffLoader.getCorrespondingItemStack(
+                                            OrePrefixes.dust,
+                                            aMaterial,
+                                            aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         }
                     } else {
                         if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorrespondingItemStack(
-                                    OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            aItemEntity.setEntityItemStack(
+                                    WerkstoffLoader.getCorrespondingItemStack(
+                                            OrePrefixes.crushedPurified,
+                                            aMaterial,
+                                            aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         }
@@ -127,17 +126,16 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     @SuppressWarnings("unchecked")
     protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
-        //        String tooltip = GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".tooltip");
-        //        if (!tooltip.isEmpty())
-        //            aList.add(tooltip);
+        // String tooltip = GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".tooltip");
+        // if (!tooltip.isEmpty())
+        // aList.add(tooltip);
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify"));
         }
         if (this.orePrefixes == OrePrefixes.crushed)
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
 
-        if (aStack != null
-                && aStack.getItem() instanceof BW_MetaGenerated_Items
+        if (aStack != null && aStack.getItem() instanceof BW_MetaGenerated_Items
                 && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
 
@@ -175,10 +173,8 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
-        if (SideReference.Side.Client)
-            return PrefixTextureLinker.texMap
-                    .get(this.orePrefixes)
-                    .get(werkstoffHashMap.get((short) aMetaData).getTexSet());
+        if (SideReference.Side.Client) return PrefixTextureLinker.texMap.get(this.orePrefixes)
+                .get(werkstoffHashMap.get((short) aMetaData).getTexSet());
         return null;
     }
 
@@ -259,21 +255,15 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     public int getCapacity(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.capsule
-                        || this.orePrefixes == OrePrefixes.cell
-                        || this.orePrefixes == OrePrefixes.cellPlasma
-                ? 1000
-                : this.orePrefixes == WerkstoffLoader.cellMolten || this.orePrefixes == WerkstoffLoader.capsuleMolten
-                        ? 144
-                        : 0;
+        return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
+                || this.orePrefixes == OrePrefixes.cellPlasma ? 1000
+                        : this.orePrefixes == WerkstoffLoader.cellMolten
+                                || this.orePrefixes == WerkstoffLoader.capsuleMolten ? 144 : 0;
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.cell
-                        || this.orePrefixes == OrePrefixes.cellPlasma
-                        || this.orePrefixes == WerkstoffLoader.cellMolten
-                ? Materials.Empty.getCells(1)
-                : null;
+        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
+                || this.orePrefixes == WerkstoffLoader.cellMolten ? Materials.Empty.getCells(1) : null;
     }
 }

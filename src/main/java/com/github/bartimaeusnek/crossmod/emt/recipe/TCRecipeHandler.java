@@ -1,33 +1,37 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.crossmod.emt.recipe;
 
 import static com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler.AspectAdder;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import com.google.common.collect.ArrayListMultimap;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -35,19 +39,10 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 @SuppressWarnings("ALL")
 public class TCRecipeHandler {
+
     public static final GT_Recipe.GT_Recipe_Map alchemicalConstructHandler = new TCRecipeHandler.TCRecipeMap(
             new HashSet<>(15000),
             "bwcm.recipe.alchemicalConstruct",
@@ -140,18 +135,18 @@ public class TCRecipeHandler {
         }
         for (ItemStack o : itemToAspectsMap.keySet()) {
             if (o.getItemDamage() == Short.MAX_VALUE) itemToCircuitConfigMap.put(o, 24);
-            else
-                for (int j = 1; j <= itemToAspectsMap.get(o).size(); j++) {
-                    itemToCircuitConfigMap.put(o, j % 24);
-                }
+            else for (int j = 1; j <= itemToAspectsMap.get(o).size(); j++) {
+                itemToCircuitConfigMap.put(o, j % 24);
+            }
 
             for (int j = 0; j < itemToAspectsMap.get(o).size(); j++) {
-                ret.add(addRecipes(
-                        itemToResearchMap.get(o).get(j),
-                        itemToOutputMap.get(o).get(j),
-                        itemToAspectsMap.get(o).get(j),
-                        o,
-                        itemToCircuitConfigMap.get(o).get(j)));
+                ret.add(
+                        addRecipes(
+                                itemToResearchMap.get(o).get(j),
+                                itemToOutputMap.get(o).get(j),
+                                itemToAspectsMap.get(o).get(j),
+                                o,
+                                itemToCircuitConfigMap.get(o).get(j)));
             }
         }
 
@@ -170,8 +165,8 @@ public class TCRecipeHandler {
         fake.setStackDisplayName(key);
         GT_Recipe recipe = new BWRecipes.DynamicGTRecipe(
                 false,
-                new ItemStack[] {cat, GT_Utility.getIntegratedCircuit(config)},
-                new ItemStack[] {out},
+                new ItemStack[] { cat, GT_Utility.getIntegratedCircuit(config) },
+                new ItemStack[] { out },
                 fake,
                 null,
                 null,
@@ -183,21 +178,11 @@ public class TCRecipeHandler {
     }
 
     static class TCRecipeMap extends GT_Recipe.GT_Recipe_Map {
-        public TCRecipeMap(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
+
+        public TCRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
                 boolean aNEIAllowed) {
             super(
                     aRecipeList,
@@ -218,14 +203,8 @@ public class TCRecipeHandler {
         }
 
         @Override
-        public GT_Recipe findRecipe(
-                IHasWorldObjectAndCoords aTileEntity,
-                GT_Recipe aRecipe,
-                boolean aNotUnificated,
-                boolean aDontCheckStackSizes,
-                long aVoltage,
-                FluidStack[] aFluids,
-                ItemStack aSpecialSlot,
+        public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
+                boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
                 ItemStack... aInputs) {
             // No Recipes? Well, nothing to be found then.
             if (mRecipeList.isEmpty()) return null;
@@ -246,86 +225,75 @@ public class TCRecipeHandler {
             // Unification happens here in case the Input isn't already unificated.
             if (aNotUnificated) aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
 
-            //            // Check the Recipe which has been used last time in order to not have to search for it again,
+            // // Check the Recipe which has been used last time in order to not have to search for it again,
             // if possible.
-            //            if (aRecipe != null)
-            //                if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false,
+            // if (aRecipe != null)
+            // if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false,
             // aDontCheckStackSizes, aFluids, aInputs)) {
-            //                    NBTTagCompound toCheckNBT = aSpecialSlot.getTagCompound();
-            //                    NBTTagCompound givenNBT = ((ItemStack)aRecipe.mSpecialItems).getTagCompound();
-            //                    Object aAspectListToCheck = null;
-            //                    Object aGivenAspectList = null;
-            //                    try {
-            //                        aAspectListToCheck = AspectAdder.mAspectListClass.newInstance();
-            //                        aGivenAspectList = AspectAdder.mAspectListClass.newInstance();
-            //                        AspectAdder.readAspectListFromNBT.invoke(aAspectListToCheck,toCheckNBT);
-            //                        AspectAdder.readAspectListFromNBT.invoke(aGivenAspectList,givenNBT);
-            //                        if
+            // NBTTagCompound toCheckNBT = aSpecialSlot.getTagCompound();
+            // NBTTagCompound givenNBT = ((ItemStack)aRecipe.mSpecialItems).getTagCompound();
+            // Object aAspectListToCheck = null;
+            // Object aGivenAspectList = null;
+            // try {
+            // aAspectListToCheck = AspectAdder.mAspectListClass.newInstance();
+            // aGivenAspectList = AspectAdder.mAspectListClass.newInstance();
+            // AspectAdder.readAspectListFromNBT.invoke(aAspectListToCheck,toCheckNBT);
+            // AspectAdder.readAspectListFromNBT.invoke(aGivenAspectList,givenNBT);
+            // if
             // (!TCRecipeHandler.TCRecipeMap.containsAspects(aAspectListToCheck,aGivenAspectList))
-            //                            return null;
-            //                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException
+            // return null;
+            // } catch (InstantiationException | IllegalAccessException | InvocationTargetException
             // e) {
-            //                        e.printStackTrace();
-            //                        return null;
-            //                    }
-            //                    return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? aRecipe : null;
-            //                }
+            // e.printStackTrace();
+            // return null;
+            // }
+            // return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? aRecipe : null;
+            // }
 
             // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
-            if (this.mUsualInputCount > 0 && aInputs != null)
-                for (ItemStack tStack : aInputs)
-                    if (tStack != null) {
-                        Collection<GT_Recipe> tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
-                        if (tRecipes != null)
-                            for (GT_Recipe tRecipe : tRecipes)
-                                if (!tRecipe.mFakeRecipe
-                                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                                    NBTTagCompound toCheckNBT = aSpecialSlot.getTagCompound();
-                                    NBTTagCompound givenNBT = ((ItemStack) aRecipe.mSpecialItems).getTagCompound();
-                                    Object aAspectListToCheck = null;
-                                    Object aGivenAspectList = null;
-                                    try {
-                                        aAspectListToCheck = AspectAdder.mAspectListClass.newInstance();
-                                        aGivenAspectList = AspectAdder.mAspectListClass.newInstance();
-                                        AspectAdder.readAspectListFromNBT.invoke(aAspectListToCheck, toCheckNBT);
-                                        AspectAdder.readAspectListFromNBT.invoke(aGivenAspectList, givenNBT);
-                                        if (!TCRecipeHandler.TCRecipeMap.containsAspects(
-                                                aAspectListToCheck, aGivenAspectList)) continue;
-                                    } catch (InstantiationException
-                                            | IllegalAccessException
-                                            | InvocationTargetException e) {
-                                        e.printStackTrace();
-                                        return null;
-                                    }
-                                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                                }
-                        tRecipes = mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(GT_Values.W, tStack)));
-                        if (tRecipes != null)
-                            for (GT_Recipe tRecipe : tRecipes)
-                                if (!tRecipe.mFakeRecipe
-                                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
-                                        && BW_Util.areStacksEqualOrNull(
-                                                (ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
-                                    NBTTagCompound toCheckNBT = aSpecialSlot.getTagCompound();
-                                    NBTTagCompound givenNBT = ((ItemStack) aRecipe.mSpecialItems).getTagCompound();
-                                    Object aAspectListToCheck = null;
-                                    Object aGivenAspectList = null;
-                                    try {
-                                        aAspectListToCheck = AspectAdder.mAspectListClass.newInstance();
-                                        aGivenAspectList = AspectAdder.mAspectListClass.newInstance();
-                                        AspectAdder.readAspectListFromNBT.invoke(aAspectListToCheck, toCheckNBT);
-                                        AspectAdder.readAspectListFromNBT.invoke(aGivenAspectList, givenNBT);
-                                        if (!TCRecipeHandler.TCRecipeMap.containsAspects(
-                                                aAspectListToCheck, aGivenAspectList)) continue;
-                                    } catch (InstantiationException
-                                            | IllegalAccessException
-                                            | InvocationTargetException e) {
-                                        e.printStackTrace();
-                                        return null;
-                                    }
-                                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                                }
-                    }
+            if (this.mUsualInputCount > 0 && aInputs != null) for (ItemStack tStack : aInputs) if (tStack != null) {
+                Collection<GT_Recipe> tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
+                if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
+                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                            NBTTagCompound toCheckNBT = aSpecialSlot.getTagCompound();
+                            NBTTagCompound givenNBT = ((ItemStack) aRecipe.mSpecialItems).getTagCompound();
+                            Object aAspectListToCheck = null;
+                            Object aGivenAspectList = null;
+                            try {
+                                aAspectListToCheck = AspectAdder.mAspectListClass.newInstance();
+                                aGivenAspectList = AspectAdder.mAspectListClass.newInstance();
+                                AspectAdder.readAspectListFromNBT.invoke(aAspectListToCheck, toCheckNBT);
+                                AspectAdder.readAspectListFromNBT.invoke(aGivenAspectList, givenNBT);
+                                if (!TCRecipeHandler.TCRecipeMap.containsAspects(aAspectListToCheck, aGivenAspectList))
+                                    continue;
+                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                            return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
+                        }
+                tRecipes = mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(GT_Values.W, tStack)));
+                if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
+                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
+                        && BW_Util.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
+                            NBTTagCompound toCheckNBT = aSpecialSlot.getTagCompound();
+                            NBTTagCompound givenNBT = ((ItemStack) aRecipe.mSpecialItems).getTagCompound();
+                            Object aAspectListToCheck = null;
+                            Object aGivenAspectList = null;
+                            try {
+                                aAspectListToCheck = AspectAdder.mAspectListClass.newInstance();
+                                aGivenAspectList = AspectAdder.mAspectListClass.newInstance();
+                                AspectAdder.readAspectListFromNBT.invoke(aAspectListToCheck, toCheckNBT);
+                                AspectAdder.readAspectListFromNBT.invoke(aGivenAspectList, givenNBT);
+                                if (!TCRecipeHandler.TCRecipeMap.containsAspects(aAspectListToCheck, aGivenAspectList))
+                                    continue;
+                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                            return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
+                        }
+            }
             // And nothing has been found.
             return null;
         }

@@ -1,36 +1,20 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.gtnewhorizons.modularui.api.UIInfos;
-import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.tile.IWrenchable;
-import ic2.core.IC2;
-import ic2.core.IHasGui;
 import java.util.List;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -47,6 +31,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.gtnewhorizons.modularui.api.UIInfos;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.tile.IWrenchable;
+import ic2.core.IC2;
+import ic2.core.IHasGui;
+
 public class BW_TileEntityContainer_Multiple extends BlockContainer {
 
     protected final String[] textureNames;
@@ -56,12 +50,8 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
 
-    public BW_TileEntityContainer_Multiple(
-            Material p_i45386_1_,
-            Class<? extends TileEntity>[] tileEntity,
-            String blockName,
-            String[] textureNames,
-            CreativeTabs tabs) {
+    public BW_TileEntityContainer_Multiple(Material p_i45386_1_, Class<? extends TileEntity>[] tileEntity,
+            String blockName, String[] textureNames, CreativeTabs tabs) {
         super(p_i45386_1_);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
@@ -74,16 +64,8 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World worldObj,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            int p_149727_6_,
-            float p_149727_7_,
-            float p_149727_8_,
-            float p_149727_9_) {
+    public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int p_149727_6_,
+            float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (worldObj.isRemote) {
             return true;
         }

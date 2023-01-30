@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks;
@@ -25,6 +16,16 @@ package com.github.bartimaeusnek.bartworks;
 import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
 import static gregtech.api.enums.GT_Values.VN;
+
+import java.io.IOException;
+import java.util.Map;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.github.bartimaeusnek.bartworks.API.*;
 import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.TooltipEventHandler;
@@ -45,6 +46,7 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
@@ -53,21 +55,13 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import java.io.IOException;
-import java.util.Map;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("ALL")
 @Mod(
         modid = MainMod.MOD_ID,
         name = MainMod.NAME,
         version = MainMod.VERSION,
-        dependencies = "required-after:IC2; "
-                + "required-after:gregtech; "
+        dependencies = "required-after:IC2; " + "required-after:gregtech; "
                 + "after:berriespp; "
                 + "after:tectech; "
                 + "after:GalacticraftMars; "
@@ -77,6 +71,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:RandomThings; "
                 + "before:miscutils; ")
 public final class MainMod {
+
     public static final String NAME = "BartWorks";
     public static final String VERSION = "GRADLETOKEN_VERSION";
     public static final String MOD_ID = "bartworks";
@@ -161,8 +156,8 @@ public final class MainMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
         if (ConfigHandler.BioLab) {
             GTNHBlocks.run();
-            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair :
-                    BioVatLogicAdder.BioVatGlass.getGlassMap().entrySet()) {
+            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair : BioVatLogicAdder.BioVatGlass.getGlassMap()
+                    .entrySet()) {
                 GT_OreDictUnificator.registerOre(
                         "blockGlass" + VN[pair.getValue()],
                         new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getaByte()));

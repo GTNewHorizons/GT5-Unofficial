@@ -1,42 +1,36 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.BioItemList.*;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.BioCulture;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.BioCulture;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class LabParts extends SimpleSubItemClass {
 
@@ -52,8 +46,7 @@ public class LabParts extends SimpleSubItemClass {
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                return BW_Util.getRarityFromByte(
-                        itemStack.getTagCompound().getCompoundTag("DNA").getByte("Rarity"));
+                return BW_Util.getRarityFromByte(itemStack.getTagCompound().getCompoundTag("DNA").getByte("Rarity"));
             case 1:
             case 2:
                 return BW_Util.getRarityFromByte(itemStack.getTagCompound().getByte("Rarity"));
@@ -65,8 +58,7 @@ public class LabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0
-                && stack.getTagCompound() != null
+        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null
                 && stack.getTagCompound().getIntArray("Color") != null
                 && stack.getTagCompound().getIntArray("Color").length > 0) {
             int[] rgb = stack.getTagCompound().getIntArray("Color");
@@ -108,22 +100,25 @@ public class LabParts extends SimpleSubItemClass {
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " "
-                        + itemStack.getTagCompound().getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                list.add(
+                        StatCollector.translateToLocal("tooltip.labparts.5.name") + " "
+                                + itemStack.getTagCompound().getString("Name")
+                                + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 if (!itemStack.getTagCompound().getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " "
-                        + itemStack.getTagCompound().getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                list.add(
+                        StatCollector.translateToLocal("tooltip.labparts.7.name") + " "
+                                + itemStack.getTagCompound().getString("Name")
+                                + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 break;
             case 2:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " "
-                        + itemStack.getTagCompound().getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                list.add(
+                        StatCollector.translateToLocal("tooltip.labparts.8.name") + " "
+                                + itemStack.getTagCompound().getString("Name")
+                                + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 break;
             default:
                 break;

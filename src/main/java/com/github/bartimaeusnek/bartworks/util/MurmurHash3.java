@@ -1,22 +1,13 @@
 /*
- *  The MurmurHash3 algorithm was created by Austin Appleby and placed in the public domain.
- *  This java port was authored by Yonik Seeley and also placed into the public domain.
- *  The author hereby disclaims copyright to this source code.
- *  <p>
- *  This produces exactly the same hash values as the final C++
- *  version of MurmurHash3 and is thus suitable for producing the same hash values across
- *  platforms.
- *  <p>
- *  The 32 bit x86 version of this hash should be the fastest variant for relatively short keys like ids.
- *  murmurhash3_x64_128 is a good choice for longer strings or if you need more than 32 bits of hash.
- *  <p>
- *  Note - The x86 and x64 versions do _not_ produce the same results, as the
- *  algorithms are optimized for their respective platforms.
- *  <p>
- *  See http://github.com/yonik/java_util for future updates to this file.
- *
- *
- *  Special Thanks to Austin Appleby and Yonik Seeley for placing this in the public domain and therefore allowing me to use it!
+ * The MurmurHash3 algorithm was created by Austin Appleby and placed in the public domain. This java port was authored
+ * by Yonik Seeley and also placed into the public domain. The author hereby disclaims copyright to this source code.
+ * <p> This produces exactly the same hash values as the final C++ version of MurmurHash3 and is thus suitable for
+ * producing the same hash values across platforms. <p> The 32 bit x86 version of this hash should be the fastest
+ * variant for relatively short keys like ids. murmurhash3_x64_128 is a good choice for longer strings or if you need
+ * more than 32 bits of hash. <p> Note - The x86 and x64 versions do _not_ produce the same results, as the algorithms
+ * are optimized for their respective platforms. <p> See http://github.com/yonik/java_util for future updates to this
+ * file. Special Thanks to Austin Appleby and Yonik Seeley for placing this in the public domain and therefore allowing
+ * me to use it!
  */
 package com.github.bartimaeusnek.bartworks.util;
 
@@ -67,8 +58,9 @@ public final class MurmurHash3 {
 
         for (int i = offset; i < roundedEnd; i += 4) {
             // little endian load order
-            int k1 =
-                    (data[i] & 0xff) | ((data[i + 1] & 0xff) << 8) | ((data[i + 2] & 0xff) << 16) | (data[i + 3] << 24);
+            int k1 = (data[i] & 0xff) | ((data[i + 1] & 0xff) << 8)
+                    | ((data[i + 2] & 0xff) << 16)
+                    | (data[i + 3] << 24);
             k1 *= c1;
             k1 = (k1 << 15) | (k1 >>> 17); // ROTL32(k1,15);
             k1 *= c2;
@@ -110,9 +102,8 @@ public final class MurmurHash3 {
     }
 
     /**
-     * Returns the MurmurHash3_x86_32 hash of the UTF-8 bytes of the String without actually encoding
-     * the string to a temporary buffer.  This is more than 2x faster than hashing the result
-     * of String.getBytes().
+     * Returns the MurmurHash3_x86_32 hash of the UTF-8 bytes of the String without actually encoding the string to a
+     * temporary buffer. This is more than 2x faster than hashing the result of String.getBytes().
      */
     public static int murmurhash3_x86_32(CharSequence data, int offset, int len, int seed) {
 
@@ -136,26 +127,14 @@ public final class MurmurHash3 {
                 bits = 8;
 
                 /***
-                 * // optimized ascii implementation (currently slower!!! code size?)
-                 * if (shift == 24) {
-                 * k1 = k1 | (code << 24);
+                 * // optimized ascii implementation (currently slower!!! code size?) if (shift == 24) { k1 = k1 | (code
+                 * << 24);
                  *
-                 * k1 *= c1;
-                 * k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
-                 * k1 *= c2;
+                 * k1 *= c1; k1 = (k1 << 15) | (k1 >>> 17); // ROTL32(k1,15); k1 *= c2;
                  *
-                 * h1 ^= k1;
-                 * h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
-                 * h1 = h1*5+0xe6546b64;
+                 * h1 ^= k1; h1 = (h1 << 13) | (h1 >>> 19); // ROTL32(h1,13); h1 = h1*5+0xe6546b64;
                  *
-                 * shift = 0;
-                 * nBytes += 4;
-                 * k1 = 0;
-                 * } else {
-                 * k1 |= code << shift;
-                 * shift += 8;
-                 * }
-                 * continue;
+                 * shift = 0; nBytes += 4; k1 = 0; } else { k1 |= code << shift; shift += 8; } continue;
                  ***/
             } else if (code < 0x800) {
                 k2 = (0xC0 | (code >> 6)) | ((0x80 | (code & 0x3F)) << 8);
@@ -169,8 +148,7 @@ public final class MurmurHash3 {
                 // int utf32 = pos < end ? (int) data.charAt(pos++) : 0;
                 int utf32 = (int) data.charAt(pos++);
                 utf32 = ((code - 0xD7C0) << 10) + (utf32 & 0x3FF);
-                k2 = (0xff & (0xF0 | (utf32 >> 18)))
-                        | ((0x80 | ((utf32 >> 12) & 0x3F))) << 8
+                k2 = (0xff & (0xF0 | (utf32 >> 18))) | ((0x80 | ((utf32 >> 12) & 0x3F))) << 8
                         | ((0x80 | ((utf32 >> 6) & 0x3F))) << 16
                         | (0x80 | (utf32 & 0x3F)) << 24;
                 bits = 32;
@@ -178,8 +156,8 @@ public final class MurmurHash3 {
 
             k1 |= k2 << shift;
 
-            // int used_bits = 32 - shift;  // how many bits of k2 were used in k1.
-            // int unused_bits = bits - used_bits; //  (bits-(32-shift)) == bits+shift-32  == bits-newshift
+            // int used_bits = 32 - shift; // how many bits of k2 were used in k1.
+            // int unused_bits = bits - used_bits; // (bits-(32-shift)) == bits+shift-32 == bits-newshift
 
             shift += bits;
             if (shift >= 32) {
@@ -325,6 +303,7 @@ public final class MurmurHash3 {
      * 128 bits of state
      */
     public static final class LongPair {
+
         public long val1;
         public long val2;
     }

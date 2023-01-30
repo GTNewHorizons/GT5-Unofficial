@@ -1,14 +1,16 @@
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 
 @SideOnly(Side.CLIENT)
 public class BW_EICPistonVisualizer extends EntityFX {
@@ -27,14 +29,8 @@ public class BW_EICPistonVisualizer extends EntityFX {
     }
 
     @Override
-    public void renderParticle(
-            Tessellator p_70539_1_,
-            float p_70539_2_,
-            float p_70539_3_,
-            float p_70539_4_,
-            float p_70539_5_,
-            float p_70539_6_,
-            float p_70539_7_) {
+    public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
+            float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);

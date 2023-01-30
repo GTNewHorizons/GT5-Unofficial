@@ -1,33 +1,26 @@
 /*
- * Copyright (c) 2018-2019 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2019 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.util;
 
+import java.util.Arrays;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
-import java.util.Arrays;
 
 @SuppressWarnings("unused")
 public class BW_ColorUtil {
+
     private BW_ColorUtil() {}
 
     public static byte getDarknessFromColor(short[] rgba, int index) {
@@ -65,54 +58,51 @@ public class BW_ColorUtil {
                         case 3:
                             if (rgba[3] - 50 > rgba[0]) return Dyes.dyeMagenta;
                             else if (rgba[0] > 200 && rgba[2] > 140) return Dyes.dyePink;
-                            else if (rgba[0] > rgba[1] + rgba[1] / 10
-                                    && rgba[0] > rgba[2] + rgba[2] / 10
+                            else if (rgba[0] > rgba[1] + rgba[1] / 10 && rgba[0] > rgba[2] + rgba[2] / 10
                                     && rgba[1] >> 4 == rgba[2] >> 4
                                     && rgba[1] + 50 > rgba[0]) {
-                                return Dyes.dyeBrown;
-                            } else return Dyes.dyeRed;
+                                        return Dyes.dyeBrown;
+                                    } else
+                                return Dyes.dyeRed;
                         case 4:
                             return Dyes._NULL;
                     }
                 }
-                if (isYellowScale(tmp))
-                    switch (getDarknessFromColor(rgba, 0)) {
-                        case 0:
-                        case 1:
-                            return Dyes.dyeBrown;
-                        case 2:
-                        case 3: {
-                            if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
-                            else return Dyes.dyeYellow;
-                        }
-                        case 4:
-                            return Dyes._NULL;
+                if (isYellowScale(tmp)) switch (getDarknessFromColor(rgba, 0)) {
+                    case 0:
+                    case 1:
+                        return Dyes.dyeBrown;
+                    case 2:
+                    case 3: {
+                        if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
+                        else return Dyes.dyeYellow;
                     }
+                    case 4:
+                        return Dyes._NULL;
+                }
                 return Dyes.dyePink;
             } else if (isGrenScale(tmp)) {
                 if (isCyanScale(tmp)) {
-                    if (rgba[2] + 40 < rgba[1])
-                        switch (getDarknessFromColor(rgba, 0)) {
-                            case 0:
-                            case 1:
-                                return Dyes.dyeGreen;
-                            case 2:
-                            case 3:
-                                return Dyes.dyeLime;
-                        }
-                    return Dyes.dyeCyan;
-                }
-                if (isYellowScale(tmp))
-                    switch (getDarknessFromColor(rgba, 0)) {
+                    if (rgba[2] + 40 < rgba[1]) switch (getDarknessFromColor(rgba, 0)) {
                         case 0:
                         case 1:
-                            return Dyes.dyeBrown;
+                            return Dyes.dyeGreen;
                         case 2:
-                        case 3: {
-                            if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
-                            else return Dyes.dyeYellow;
-                        }
+                        case 3:
+                            return Dyes.dyeLime;
                     }
+                    return Dyes.dyeCyan;
+                }
+                if (isYellowScale(tmp)) switch (getDarknessFromColor(rgba, 0)) {
+                    case 0:
+                    case 1:
+                        return Dyes.dyeBrown;
+                    case 2:
+                    case 3: {
+                        if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
+                        else return Dyes.dyeYellow;
+                    }
+                }
                 switch (getDarknessFromColor(rgba, 0)) {
                     case 0:
                     case 1:
@@ -213,7 +203,7 @@ public class BW_ColorUtil {
     }
 
     public static short[] splitColorToRBGArray(int rgb) {
-        return new short[] {(short) ((rgb >> 16) & 0xFF), (short) ((rgb >> 8) & 0xFF), (short) (rgb & 0xFF)};
+        return new short[] { (short) ((rgb >> 16) & 0xFF), (short) ((rgb >> 8) & 0xFF), (short) (rgb & 0xFF) };
     }
 
     public static int getColorFromRGBArray(short[] color) {

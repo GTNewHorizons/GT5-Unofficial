@@ -1,48 +1,43 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.crossmod.openComputers;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
-import li.cil.oc.api.network.SimpleComponent;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
 public class TileEntity_GTDataServer extends TileEntity
@@ -63,8 +58,7 @@ public class TileEntity_GTDataServer extends TileEntity
     public Object[] listData(Context context, Arguments args) {
         Set<String> ret = new HashSet<>();
         for (Map.Entry<Long, GT_NBT_DataBase> entry : OrbDataBase.entrySet()) {
-            ret.add((entry.getValue().getId() + Long.MAX_VALUE) + ". "
-                    + entry.getValue().getmDataTitle());
+            ret.add((entry.getValue().getId() + Long.MAX_VALUE) + ". " + entry.getValue().getmDataTitle());
         }
         return ret.toArray(new String[0]);
     }
@@ -72,7 +66,7 @@ public class TileEntity_GTDataServer extends TileEntity
     @Optional.Method(modid = "OpenComputers")
     @Callback
     public Object[] imprintOrb(Context context, Arguments args) {
-        return new Object[] {false};
+        return new Object[] { false };
     }
 
     private boolean isServerSide() {
@@ -107,10 +101,9 @@ public class TileEntity_GTDataServer extends TileEntity
                     short mapID = GT_Utility.ItemNBT.getMapID(this.mItems[0]);
                     byte data = (byte) (bookTitle.isEmpty() ? punchcardData.isEmpty() ? mapID != -1 ? 3 : -1 : 2 : 1);
 
-                    String title =
-                            data == 1 ? bookTitle : data == 2 ? punchcardData : data == 3 ? "" + mapID : "Custom Data";
-                    String name = data == 1
-                            ? "eBook"
+                    String title = data == 1 ? bookTitle
+                            : data == 2 ? punchcardData : data == 3 ? "" + mapID : "Custom Data";
+                    String name = data == 1 ? "eBook"
                             : data == 2 ? "Punch Card Data" : data == 3 ? "Map Data" : "Custom Data";
                     if (GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
                         this.OrbDataBase.put(

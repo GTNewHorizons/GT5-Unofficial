@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
@@ -25,13 +16,8 @@ package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
-import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
-import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
-import gregtech.api.objects.XSTR;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -49,7 +35,15 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
+import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
+import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
+import gregtech.api.objects.XSTR;
+
 public class ChunkProviderRoss128b extends ChunkProviderGenerate {
+
     XSTR rand = new XSTR();
     private BiomeGenBase[] biomesForGeneration;
     public static final BW_WordGenerator BWOreGen = new BW_WordGenerator();
@@ -74,8 +68,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         Block[] ablock = new Block[65536];
         byte[] abyte = new byte[65536];
         this.func_147424_a(p_73154_1_, p_73154_2_, ablock);
-        this.biomesForGeneration = this.worldObj
-                .getWorldChunkManager()
+        this.biomesForGeneration = this.worldObj.getWorldChunkManager()
                 .loadBlockGeneratorData(this.biomesForGeneration, p_73154_1_ * 16, p_73154_2_ * 16, 16, 16);
         for (int i = 0; i < this.biomesForGeneration.length; i++) {
             BiomeGenBase biomeGenBase = this.biomesForGeneration[i];
@@ -120,14 +113,13 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             this.rand.setSeed((long) p_73153_2_ * i1 + (long) p_73153_3_ * j1 ^ this.worldObj.getSeed());
         }
 
-        MinecraftForge.EVENT_BUS.post(
-                new PopulateChunkEvent.Pre(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
+        MinecraftForge.EVENT_BUS
+                .post(new PopulateChunkEvent.Pre(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
 
         int x1;
         int y1;
         int z1;
-        if (biomegenbase != BiomeGenBase.desert
-                && biomegenbase != BiomeGenBase.desertHills
+        if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills
                 && TerrainGen.populate(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false, LAKE)) {
             x1 = k + this.rand.nextInt(16) + 8;
             y1 = this.rand.nextInt(256);
@@ -136,8 +128,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             if (rni == 0) (new WorldGenLakes(Blocks.ice)).generate(this.worldObj, this.rand, x1, y1, z1);
             else if (rni == 4) (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, x1, y1, z1);
         }
-        if (biomegenbase != BiomeGenBase.ocean
-                && biomegenbase != BiomeGenBase.deepOcean
+        if (biomegenbase != BiomeGenBase.ocean && biomegenbase != BiomeGenBase.deepOcean
                 && biomegenbase != BiomeGenBase.river
                 && biomegenbase != BiomeGenBase.frozenOcean
                 && biomegenbase != BiomeGenBase.frozenRiver
@@ -169,8 +160,8 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         }
 
         BWOreGen.generate(this.rand, p_73153_2_, p_73153_3_, this.worldObj, this, this);
-        MinecraftForge.EVENT_BUS.post(
-                new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
+        MinecraftForge.EVENT_BUS
+                .post(new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
 
         BlockFalling.fallInstantly = false;
     }
@@ -179,8 +170,8 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
     public void recreateStructures(int p_82695_1_, int p_82695_2_) {}
 
     @Override
-    public void replaceBlocksForBiome(
-            int p_147422_1_, int p_147422_2_, Block[] blocks, byte[] metas, BiomeGenBase[] p_147422_5_) {
+    public void replaceBlocksForBiome(int p_147422_1_, int p_147422_2_, Block[] blocks, byte[] metas,
+            BiomeGenBase[] p_147422_5_) {
         super.replaceBlocksForBiome(p_147422_1_, p_147422_2_, blocks, metas, p_147422_5_);
         for (int i = 0; i < blocks.length; i++) {
             if (blocks[i] == Blocks.grass) {

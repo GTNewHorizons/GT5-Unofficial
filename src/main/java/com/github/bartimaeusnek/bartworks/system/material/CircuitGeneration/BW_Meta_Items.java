@@ -1,26 +1,28 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
+
+import java.util.*;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
@@ -28,6 +30,7 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -37,15 +40,6 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
-import java.util.*;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidStack;
 
 public class BW_Meta_Items {
 
@@ -66,17 +60,18 @@ public class BW_Meta_Items {
                 BW_Meta_Items.NEWCIRCUITS.getStack(2),
                 300,
                 480);
-        GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(new BWRecipes.DynamicGTRecipe(
-                false,
-                new ItemStack[] {BW_Meta_Items.NEWCIRCUITS.getStack(2)},
-                new ItemStack[] {BW_Meta_Items.NEWCIRCUITS.getStack(3)},
-                null,
-                new int[] {7500},
-                new FluidStack[] {Materials.SolderingAlloy.getMolten(576)},
-                null,
-                300,
-                BW_Util.getMachineVoltageFromTier(4),
-                BW_Util.CLEANROOM));
+        GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(
+                new BWRecipes.DynamicGTRecipe(
+                        false,
+                        new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(2) },
+                        new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(3) },
+                        null,
+                        new int[] { 7500 },
+                        new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
+                        null,
+                        300,
+                        BW_Util.getMachineVoltageFromTier(4),
+                        BW_Util.CLEANROOM));
     }
 
     @SuppressWarnings("deprecation")
@@ -204,12 +199,14 @@ public class BW_Meta_Items {
                             i,
                             0,
                             2,
-                            Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i))
-                                    .get(1)
-                                    .getIconIndex(),
+                            Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i)).get(1).getIconIndex(),
                             this.mIconList);
                     BW_Util.set2DCoordTo1DArray(
-                            i, 1, 2, aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"), this.mIconList);
+                            i,
+                            1,
+                            2,
+                            aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"),
+                            this.mIconList);
                     // aIconRegister.registerIcon("gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() +
                     // "/" + i));
                 }
@@ -219,25 +216,26 @@ public class BW_Meta_Items {
         @Override
         @SuppressWarnings("unchecked")
         protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
-            if (aStack.getItemDamage() == 0)
-                if (aStack.getTagCompound() != null
-                        && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
-                    aList.add("An Imprint for: "
-                            + GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(
-                                    CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
-                else aList.add("An Imprint for a Circuit");
-            else if (aStack.getItemDamage() == 1)
-                if (aStack.getTagCompound() != null
-                        && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
-                    aList.add("A Sliced "
-                            + GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(
-                                    CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
-                else aList.add("A Sliced Circuit");
+            if (aStack.getItemDamage() == 0) if (aStack.getTagCompound() != null
+                    && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
+                aList.add(
+                        "An Imprint for: " + GT_LanguageManager.getTranslation(
+                                GT_LanguageManager.getTranslateableItemStackName(
+                                        CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
+            else aList.add("An Imprint for a Circuit");
+            else if (aStack.getItemDamage() == 1) if (aStack.getTagCompound() != null
+                    && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
+                aList.add(
+                        "A Sliced " + GT_LanguageManager.getTranslation(
+                                GT_LanguageManager.getTranslateableItemStackName(
+                                        CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
+            else aList.add("A Sliced Circuit");
             super.addAdditionalToolTips(aList, aStack, aPlayer);
         }
     }
 
     public static class BW_GT_MetaGen_Item_Hook extends GT_MetaBase_Item {
+
         public static final HashSet<BW_Meta_Items.BW_GT_MetaGen_Item_Hook> sInstances = new HashSet<>();
         public final IIcon[] mIconList;
         public final BitSet mEnabledItems;
@@ -251,6 +249,7 @@ public class BW_Meta_Items {
             super(aUnlocalized);
 
             this.setCreativeTab(new CreativeTabs("bw.MetaItems.0") {
+
                 @Override
                 public Item getTabIconItem() {
                     return ItemRegistry.TAB;
@@ -271,7 +270,7 @@ public class BW_Meta_Items {
             return null;
         }
 
-        @SuppressWarnings({"unchecked", "rawtypes"})
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         public final ItemStack addItem(int aID, String aEnglish, String aToolTip, Object... aRandomData) {
             if (aToolTip == null) {
                 aToolTip = "";
@@ -369,8 +368,8 @@ public class BW_Meta_Items {
         }
 
         @Override
-        public IIcon getIcon(
-                ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+        public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem,
+                int useRemaining) {
             return this.getIconFromDamage(stack.getItemDamage());
         }
 

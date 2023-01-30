@@ -1,47 +1,25 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import static com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer.NoMetaValue;
 
-import com.github.bartimaeusnek.bartworks.API.SideReference;
-import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_OreDictUnificator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -50,6 +28,22 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.github.bartimaeusnek.bartworks.API.SideReference;
+import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.util.GT_OreDictUnificator;
 
 public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
@@ -64,17 +58,18 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
             Materials material = Materials.values()[i];
             if (((material.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
                     || ((material.getFluid(1) == null && material.getGas(1) == null)
-                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle)))) continue;
+                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+                continue;
             // for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-            //    if (material.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-            //        continue materialloop;
-            if (OreDictionary.doesOreNameExist(
-                    this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""))) {
+            // if (material.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
+            // continue materialloop;
+            if (OreDictionary
+                    .doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""))) {
                 hiddenThings.add(i);
                 continue;
             }
-            GT_OreDictUnificator.registerOre(
-                    this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""), tStack);
+            GT_OreDictUnificator
+                    .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""), tStack);
         }
 
         if (noSubIDMaterials != null) {
@@ -88,14 +83,14 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                                 && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
                 // for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-                //    if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-                //        continue materialloop;
+                // if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
+                // continue materialloop;
                 if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""))) {
                     hiddenThings.add(i);
                     continue;
                 }
-                GT_OreDictUnificator.registerOre(
-                        this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""), tStack);
+                GT_OreDictUnificator
+                        .registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""), tStack);
             }
         }
     }
@@ -163,28 +158,28 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < Materials.values().length; i++) {
             Materials w = Materials.values()[i];
-            if ((w == null)
-                    || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
-                            && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
+            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
+                    && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
+                continue;
             else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
                     || ((w.getFluid(1) == null && w.getGas(1) == null)
-                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle)))) continue;
+                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+                continue;
             else if (hiddenThings.contains(i)) continue;
             aList.add(new ItemStack(this, 1, i));
         }
-        if (hasList)
-            for (int i = 0; i < NoMetaValue.size(); i++) {
-                Materials w = NoMetaValue.get(i);
-                if ((w == null)
-                        || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
-                                && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
-                else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
-                        || ((w.getFluid(1) == null && w.getGas(1) == null)
-                                && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
-                    continue;
-                else if (hiddenThings.contains(i)) continue;
-                aList.add(new ItemStack(this, 1, i + 1001));
-            }
+        if (hasList) for (int i = 0; i < NoMetaValue.size(); i++) {
+            Materials w = NoMetaValue.get(i);
+            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
+                    && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
+                continue;
+            else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+                    || ((w.getFluid(1) == null && w.getGas(1) == null)
+                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+                continue;
+            else if (hiddenThings.contains(i)) continue;
+            aList.add(new ItemStack(this, 1, i + 1001));
+        }
     }
 
     @Override

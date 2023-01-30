@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
@@ -26,6 +17,14 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import java.util.Arrays;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -33,6 +32,7 @@ import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -49,194 +49,70 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.Arrays;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_THTR> {
 
     private static final int BASECASINGINDEX = 44;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_TileEntity_THTR> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_TileEntity_THTR>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-                        {
-                            "  BBBBBBB  ",
-                            " BBBBBBBBB ",
-                            "BBBBBBBBBBB",
-                            "BBBBBBBBBBB",
-                            "BBBBBBBBBBB",
-                            "BBBBBBBBBBB",
-                            "BBBBBBBBBBB",
-                            "BBBBBBBBBBB",
-                            "BBBBBBBBBBB",
-                            " BBBBBBBBB ",
-                            "  BBBBBBB  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  ccccccc  ",
-                            " c-------c ",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            "c---------c",
-                            " c-------c ",
-                            "  ccccccc  "
-                        },
-                        {
-                            "  bbb~bbb  ",
-                            " bbbbbbbbb ",
-                            "bbbbbbbbbbb",
-                            "bbbbbbbbbbb",
-                            "bbbbbbbbbbb",
-                            "bbbbbbbbbbb",
-                            "bbbbbbbbbbb",
-                            "bbbbbbbbbbb",
-                            "bbbbbbbbbbb",
-                            " bbbbbbbbb ",
-                            "  bbbbbbb  "
-                        },
-                    }))
-                    .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12)))
-                    .addElement(
-                            'b',
-                            ofChain(
-                                    ofHatchAdder(GT_TileEntity_THTR::addOutputToMachineList, BASECASINGINDEX, 1),
-                                    ofHatchAdder(GT_TileEntity_THTR::addMaintenanceToMachineList, BASECASINGINDEX, 1),
-                                    ofHatchAdder(GT_TileEntity_THTR::addEnergyInputToMachineList, BASECASINGINDEX, 1),
-                                    onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12))))
-                    .addElement(
-                            'B',
-                            ofChain(
-                                    ofHatchAdder(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2),
-                                    onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12))))
-                    // ofHatchAdderOptional(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2,
-                    // GregTech_API.sBlockCasings3, 12))
-                    .build();
+    private static final IStructureDefinition<GT_TileEntity_THTR> STRUCTURE_DEFINITION = StructureDefinition
+            .<GT_TileEntity_THTR>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] {
+                                    { "  BBBBBBB  ", " BBBBBBBBB ", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB",
+                                            "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", " BBBBBBBBB ",
+                                            "  BBBBBBB  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
+                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
+                                            "  ccccccc  " },
+                                    { "  bbb~bbb  ", " bbbbbbbbb ", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb",
+                                            "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", " bbbbbbbbb ",
+                                            "  bbbbbbb  " }, }))
+            .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12)))
+            .addElement(
+                    'b',
+                    ofChain(
+                            ofHatchAdder(GT_TileEntity_THTR::addOutputToMachineList, BASECASINGINDEX, 1),
+                            ofHatchAdder(GT_TileEntity_THTR::addMaintenanceToMachineList, BASECASINGINDEX, 1),
+                            ofHatchAdder(GT_TileEntity_THTR::addEnergyInputToMachineList, BASECASINGINDEX, 1),
+                            onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12))))
+            .addElement(
+                    'B',
+                    ofChain(
+                            ofHatchAdder(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2),
+                            onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12))))
+            // ofHatchAdderOptional(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2,
+            // GregTech_API.sBlockCasings3, 12))
+            .build();
 
     private static final int HELIUM_NEEDED = 730000;
     private static final int powerUsage = BW_Util.getMachineVoltageFromTier(5) / 2;
@@ -277,19 +153,13 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 .addInfo(
                         "Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
                 .addInfo("Reactor will take 4 800L/t of coolant multiplied by efficiency")
-                .addInfo("Uses " + GT_Utility.formatNumbers(powerUsage) + " EU/t")
-                .addInfo("One Operation takes 9 hour")
-                .addSeparator()
-                .beginStructureBlock(11, 12, 11, true)
-                .addController("Front bottom center")
+                .addInfo("Uses " + GT_Utility.formatNumbers(powerUsage) + " EU/t").addInfo("One Operation takes 9 hour")
+                .addSeparator().beginStructureBlock(11, 12, 11, true).addController("Front bottom center")
                 .addCasingInfo("Radiation Proof Casings", 500)
                 .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-                .addInputBus("Any top layer casing", 2)
-                .addInputHatch("Any top layer casing", 2)
-                .addOutputBus("Any bottom layer casing", 1)
-                .addOutputHatch("Any bottom layer casing", 1)
-                .addEnergyHatch("Any bottom layer casing", 1)
-                .addMaintenanceHatch("Any bottom layer casing", 1)
+                .addInputBus("Any top layer casing", 2).addInputHatch("Any top layer casing", 2)
+                .addOutputBus("Any bottom layer casing", 1).addOutputHatch("Any bottom layer casing", 1)
+                .addEnergyHatch("Any bottom layer casing", 1).addMaintenanceHatch("Any bottom layer casing", 1)
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
@@ -307,8 +177,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mCasing = 0;
-        return (checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0)
-                && this.mCasing >= 500
+        return (checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0) && this.mCasing >= 500
                 && this.mMaintenanceHatches.size() == 1
                 && this.mInputHatches.size() > 0
                 && this.mOutputHatches.size() > 0
@@ -382,14 +251,8 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         if (!(this.HeliumSupply >= GT_TileEntity_THTR.HELIUM_NEEDED && this.fuelsupply >= mincapacity)) return false;
 
         double eff = Math.min(
-                                Math.pow(
-                                                (double) (this.fuelsupply - mincapacity)
-                                                        / ((maxcapacity - mincapacity) / 10D),
-                                                2D)
-                                        + 1,
-                                100D)
-                        / 100D
-                - ((double) (getIdealStatus() - getRepairStatus()) / 10D);
+                Math.pow((double) (this.fuelsupply - mincapacity) / ((maxcapacity - mincapacity) / 10D), 2D) + 1,
+                100D) / 100D - ((double) (getIdealStatus() - getRepairStatus()) / 10D);
         if (eff <= 0D) return false;
 
         int toReduce = MathUtils.floorInt((double) this.fuelsupply * 0.005D * eff);
@@ -400,10 +263,8 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
         int meta = THTRMaterials.MATERIAL_USED_FUEL_INDEX;
 
-        this.mOutputItems = new ItemStack[] {
-            new ItemStack(THTRMaterials.aTHTR_Materials, burnedballs, meta),
-            new ItemStack(THTRMaterials.aTHTR_Materials, toReduce, meta + 1)
-        };
+        this.mOutputItems = new ItemStack[] { new ItemStack(THTRMaterials.aTHTR_Materials, burnedballs, meta),
+                new ItemStack(THTRMaterials.aTHTR_Materials, toReduce, meta + 1) };
 
         // this.updateSlots(); not needed ?
 
@@ -478,57 +339,39 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            "Progress:",
-                    GT_Utility.formatNumbers(this.mProgresstime / 20) + "secs /"
-                            + GT_Utility.formatNumbers(this.mMaxProgresstime / 20) + "secs",
-            "TRISO-Pebbles:",
-                    GT_Utility.formatNumbers(this.fuelsupply) + "pcs. / " + GT_Utility.formatNumbers(this.fuelsupply)
-                            + "psc.",
-            "Helium-Level:",
-                    GT_Utility.formatNumbers(this.HeliumSupply) + "L / "
-                            + GT_Utility.formatNumbers(GT_TileEntity_THTR.HELIUM_NEEDED) + "L",
-            "Coolant/t:", GT_Utility.formatNumbers(this.mProgresstime == 0 ? 0 : coolanttaking) + "L/t",
-            "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
-        };
+        return new String[] { "Progress:",
+                GT_Utility.formatNumbers(this.mProgresstime / 20) + "secs /"
+                        + GT_Utility.formatNumbers(this.mMaxProgresstime / 20)
+                        + "secs",
+                "TRISO-Pebbles:",
+                GT_Utility.formatNumbers(this.fuelsupply) + "pcs. / "
+                        + GT_Utility.formatNumbers(this.fuelsupply)
+                        + "psc.",
+                "Helium-Level:",
+                GT_Utility.formatNumbers(this.HeliumSupply) + "L / "
+                        + GT_Utility.formatNumbers(GT_TileEntity_THTR.HELIUM_NEEDED)
+                        + "L",
+                "Coolant/t:", GT_Utility.formatNumbers(this.mProgresstime == 0 ? 0 : coolanttaking) + "L/t",
+                "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX),
-                    TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
-                            .extFacing()
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX),
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                                .extFacing().build(),
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                                .extFacing().glow().build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX),
+                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER).extFacing()
                             .build(),
-                    TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX),
-                TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing()
+                            .glow().build() };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX)};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX) };
     }
 
     @Override
@@ -539,10 +382,12 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         }
         this.empty = !this.empty;
         GT_Utility.sendChatToPlayer(
-                aPlayer, "THTR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
+                aPlayer,
+                "THTR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
     }
 
     public static class THTRMaterials {
+
         static final SimpleSubItemClass aTHTR_Materials = new SimpleSubItemClass(
                 "BISOPelletCompound", // 0
                 "BISOPelletBall", // 1
@@ -551,7 +396,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 "TRISOPellet", // 4
                 "BurnedOutTRISOPelletBall", // 5
                 "BurnedOutTRISOPellet" // 6
-                );
+        );
         public static final int MATERIAL_FUEL_INDEX = 4;
         public static final int MATERIAL_USED_FUEL_INDEX = 5;
 
@@ -571,14 +416,12 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                     WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                     GT_Values.NI,
-                    new int[] {800, 375, 22, 22, 5},
+                    new int[] { 800, 375, 22, 22, 5 },
                     10000,
                     BW_Util.getMachineVoltageFromTier(4));
             GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 6),
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1)
-                    },
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 6),
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1) },
                     Materials.Concrete.getMolten(1296),
                     new ItemStack(GregTech_API.sBlockCasings3, 1, 12),
                     40,
@@ -615,10 +458,8 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             Arrays.fill(pellets, new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 4));
             GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
                     false,
-                    new ItemStack[] {
-                        new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3),
-                        GT_Utility.getIntegratedCircuit(17)
-                    },
+                    new ItemStack[] { new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3),
+                            GT_Utility.getIntegratedCircuit(17) },
                     pellets,
                     null,
                     null,
@@ -629,11 +470,9 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     0);
             GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
                     false,
-                    new ItemStack[] {
-                        new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 5),
-                        GT_Utility.getIntegratedCircuit(17)
-                    },
-                    new ItemStack[] {new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 6)},
+                    new ItemStack[] { new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 5),
+                            GT_Utility.getIntegratedCircuit(17) },
+                    new ItemStack[] { new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 6) },
                     null,
                     null,
                     null,
@@ -652,7 +491,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     GT_Values.NI,
                     GT_Values.NI,
                     GT_Values.NI,
-                    new int[] {300},
+                    new int[] { 300 },
                     1200,
                     30);
         }

@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.ASM;
@@ -26,31 +17,28 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Arrays;
 import java.util.List;
+
 import net.minecraft.launchwrapper.IClassTransformer;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
 
 public class BWCoreTransformer implements IClassTransformer {
-    public static final String[] DESCRIPTIONFORCONFIG = {
-        "REMOVING RAIN FROM LAST MILLENIUM (EXU)",
-        "REMVOING CREATURES FROM LAST MILLENIUM (EXU)",
-        "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
-        "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
-        "[UNUSED] PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API",
-        "DUCTTAPING RWG WORLDEN FAILS",
-        "PATCHING CRAFTING MANAGER FOR CACHING RECIPES"
-        // "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
+
+    public static final String[] DESCRIPTIONFORCONFIG = { "REMOVING RAIN FROM LAST MILLENIUM (EXU)",
+            "REMVOING CREATURES FROM LAST MILLENIUM (EXU)", "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
+            "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
+            "[UNUSED] PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API", "DUCTTAPING RWG WORLDEN FAILS",
+            "PATCHING CRAFTING MANAGER FOR CACHING RECIPES"
+            // "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
-        "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
-        "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
-        "net.minecraft.client.renderer.RenderGlobal",
-        "thaumcraft.common.tiles.TileWandPedestal",
-        "gregtech.GT_Mod",
-        "rwg.world.ChunkGeneratorRealistic",
-        "net.minecraft.item.crafting.CraftingManager"
-        // "gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter"
+            "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
+            "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
+            "net.minecraft.client.renderer.RenderGlobal", "thaumcraft.common.tiles.TileWandPedestal", "gregtech.GT_Mod",
+            "rwg.world.ChunkGeneratorRealistic", "net.minecraft.item.crafting.CraftingManager"
+            // "gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter"
     };
     static boolean obfs;
 
@@ -80,7 +68,10 @@ public class BWCoreTransformer implements IClassTransformer {
                     nu.insertBefore(
                             beginning,
                             new FieldInsnNode(
-                                    GETFIELD, "net/minecraft/world/World", obfs ? "field_72995_K" : "isRemote", "Z"));
+                                    GETFIELD,
+                                    "net/minecraft/world/World",
+                                    obfs ? "field_72995_K" : "isRemote",
+                                    "Z"));
                     nu.insertBefore(beginning, new JumpInsnNode(IFNE, label));
                     nu.add(new InsnNode(POP));
                     nu.add(label);
@@ -94,8 +85,8 @@ public class BWCoreTransformer implements IClassTransformer {
 
     public static byte[] transform(int id, byte[] basicClass) {
         if (!BWCoreTransformer.shouldTransform[id]) {
-            BWCore.BWCORE_LOG.info(
-                    "Patch: " + BWCoreTransformer.DESCRIPTIONFORCONFIG[id] + " is disabled, will not patch!");
+            BWCore.BWCORE_LOG
+                    .info("Patch: " + BWCoreTransformer.DESCRIPTIONFORCONFIG[id] + " is disabled, will not patch!");
             return basicClass;
         }
 
@@ -105,8 +96,7 @@ public class BWCoreTransformer implements IClassTransformer {
             ClassNode classNode = new ClassNode();
             classReader.accept(classNode, ClassReader.SKIP_FRAMES);
             List<MethodNode> methods = classNode.methods;
-            scase:
-            switch (id) {
+            scase: switch (id) {
                 case 0: {
                     BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     String name_deObfs = "canDoRainSnowIce";
@@ -122,7 +112,11 @@ public class BWCoreTransformer implements IClassTransformer {
                     }
                     BWCore.BWCORE_LOG.info("Creating new " + name_deObfs + "!");
                     MethodNode nu = new MethodNode(
-                            ACC_PUBLIC, name_deObfs, /*obfs ? dsc_Obfs :*/ dsc_deObfs, null, new String[0]);
+                            ACC_PUBLIC,
+                            name_deObfs,
+                            /* obfs ? dsc_Obfs : */ dsc_deObfs,
+                            null,
+                            new String[0]);
                     InsnList insnList = new InsnList();
                     insnList.add(new InsnNode(ICONST_0));
                     insnList.add(new InsnNode(IRETURN));
@@ -169,7 +163,7 @@ public class BWCoreTransformer implements IClassTransformer {
                                 && ASMUtils.isCorrectMethod(toPatch, dsc_universal)) {
                             BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
                             InsnList nu = new InsnList();
-                            LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
+                            LabelNode[] LabelNodes = { new LabelNode(), new LabelNode() };
 
                             String theWorld_src = "field_72769_h";
                             String renderEngine_src = "field_72770_i";
@@ -181,92 +175,92 @@ public class BWCoreTransformer implements IClassTransformer {
                                 if (toPatch.instructions.get(j) instanceof FieldInsnNode
                                         && toPatch.instructions.get(j).getOpcode() == GETSTATIC
                                         && !(nameFieldToPatch = ASMUtils.matchAny(
-                                                        ((FieldInsnNode) toPatch.instructions.get(j)).name,
-                                                        field_deObfs,
-                                                        field_src))
-                                                .isEmpty()) {
+                                                ((FieldInsnNode) toPatch.instructions.get(j)).name,
+                                                field_deObfs,
+                                                field_src)).isEmpty()) {
                                     boolean useSrc = nameFieldToPatch.equals(field_src);
-                                    if (useSrc)
-                                        BWCore.BWCORE_LOG.info(
-                                                "Found either Optifine or Fastcraft... this patch was annoying to make compatible to them...");
+                                    if (useSrc) BWCore.BWCORE_LOG.info(
+                                            "Found either Optifine or Fastcraft... this patch was annoying to make compatible to them...");
 
                                     nu.add(new VarInsnNode(ALOAD, 0));
-                                    nu.add(new FieldInsnNode(
-                                            GETFIELD,
-                                            "net/minecraft/client/renderer/RenderGlobal",
-                                            useSrc ? theWorld_src : "theWorld",
-                                            "Lnet/minecraft/client/multiplayer/WorldClient;"));
-                                    nu.add(new FieldInsnNode(
-                                            GETFIELD,
-                                            "net/minecraft/client/multiplayer/WorldClient",
-                                            useSrc ? provider_src : "provider",
-                                            "Lnet/minecraft/world/WorldProvider;"));
+                                    nu.add(
+                                            new FieldInsnNode(
+                                                    GETFIELD,
+                                                    "net/minecraft/client/renderer/RenderGlobal",
+                                                    useSrc ? theWorld_src : "theWorld",
+                                                    "Lnet/minecraft/client/multiplayer/WorldClient;"));
+                                    nu.add(
+                                            new FieldInsnNode(
+                                                    GETFIELD,
+                                                    "net/minecraft/client/multiplayer/WorldClient",
+                                                    useSrc ? provider_src : "provider",
+                                                    "Lnet/minecraft/world/WorldProvider;"));
                                     nu.add(
                                             new TypeInsnNode(
                                                     INSTANCEOF,
                                                     "com/github/bartimaeusnek/crossmod/galacticraft/planets/AbstractWorldProviderSpace"));
                                     nu.add(new JumpInsnNode(IFEQ, LabelNodes[0]));
                                     nu.add(new VarInsnNode(ALOAD, 0));
-                                    nu.add(new FieldInsnNode(
-                                            GETFIELD,
-                                            "net/minecraft/client/renderer/RenderGlobal",
-                                            useSrc ? renderEngine_src : "renderEngine",
-                                            "Lnet/minecraft/client/renderer/texture/TextureManager;"));
-                                    nu.add(new FieldInsnNode(
-                                            GETSTATIC,
-                                            "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128b/SkyProviderRoss128b",
-                                            "sunTex",
-                                            "Lnet/minecraft/util/ResourceLocation;"));
-                                    nu.add(new MethodInsnNode(
-                                            INVOKEVIRTUAL,
-                                            "net/minecraft/client/renderer/texture/TextureManager",
-                                            useSrc ? bindTexture_src : "bindTexture",
-                                            "(Lnet/minecraft/util/ResourceLocation;)V",
-                                            false));
+                                    nu.add(
+                                            new FieldInsnNode(
+                                                    GETFIELD,
+                                                    "net/minecraft/client/renderer/RenderGlobal",
+                                                    useSrc ? renderEngine_src : "renderEngine",
+                                                    "Lnet/minecraft/client/renderer/texture/TextureManager;"));
+                                    nu.add(
+                                            new FieldInsnNode(
+                                                    GETSTATIC,
+                                                    "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128b/SkyProviderRoss128b",
+                                                    "sunTex",
+                                                    "Lnet/minecraft/util/ResourceLocation;"));
+                                    nu.add(
+                                            new MethodInsnNode(
+                                                    INVOKEVIRTUAL,
+                                                    "net/minecraft/client/renderer/texture/TextureManager",
+                                                    useSrc ? bindTexture_src : "bindTexture",
+                                                    "(Lnet/minecraft/util/ResourceLocation;)V",
+                                                    false));
                                     nu.add(new JumpInsnNode(GOTO, LabelNodes[1]));
                                     nu.add(LabelNodes[0]);
                                     nu.add(new VarInsnNode(ALOAD, 0));
-                                    nu.add(new FieldInsnNode(
-                                            GETFIELD,
-                                            "net/minecraft/client/renderer/RenderGlobal",
-                                            useSrc ? renderEngine_src : "renderEngine",
-                                            "Lnet/minecraft/client/renderer/texture/TextureManager;"));
-                                    nu.add(new FieldInsnNode(
-                                            GETSTATIC,
-                                            "net/minecraft/client/renderer/RenderGlobal",
-                                            useSrc ? field_src : "locationSunPng",
-                                            "Lnet/minecraft/util/ResourceLocation;"));
-                                    nu.add(new MethodInsnNode(
-                                            INVOKEVIRTUAL,
-                                            "net/minecraft/client/renderer/texture/TextureManager",
-                                            useSrc ? bindTexture_src : "bindTexture",
-                                            "(Lnet/minecraft/util/ResourceLocation;)V",
-                                            false));
+                                    nu.add(
+                                            new FieldInsnNode(
+                                                    GETFIELD,
+                                                    "net/minecraft/client/renderer/RenderGlobal",
+                                                    useSrc ? renderEngine_src : "renderEngine",
+                                                    "Lnet/minecraft/client/renderer/texture/TextureManager;"));
+                                    nu.add(
+                                            new FieldInsnNode(
+                                                    GETSTATIC,
+                                                    "net/minecraft/client/renderer/RenderGlobal",
+                                                    useSrc ? field_src : "locationSunPng",
+                                                    "Lnet/minecraft/util/ResourceLocation;"));
+                                    nu.add(
+                                            new MethodInsnNode(
+                                                    INVOKEVIRTUAL,
+                                                    "net/minecraft/client/renderer/texture/TextureManager",
+                                                    useSrc ? bindTexture_src : "bindTexture",
+                                                    "(Lnet/minecraft/util/ResourceLocation;)V",
+                                                    false));
                                     nu.add(LabelNodes[1]);
                                     j++;
 
                                 } else {
                                     if (j < toPatch.instructions.size() - 2) {
                                         if (toPatch.instructions.get(j + 2) instanceof FieldInsnNode
-                                                && toPatch.instructions
-                                                                .get(j + 2)
-                                                                .getOpcode()
-                                                        == GETSTATIC
+                                                && toPatch.instructions.get(j + 2).getOpcode() == GETSTATIC
                                                 && !ASMUtils.matchAny(
-                                                                ((FieldInsnNode) toPatch.instructions.get(j + 2)).name,
-                                                                field_deObfs,
-                                                                field_src)
-                                                        .isEmpty()) continue;
+                                                        ((FieldInsnNode) toPatch.instructions.get(j + 2)).name,
+                                                        field_deObfs,
+                                                        field_src).isEmpty())
+                                            continue;
                                         if (toPatch.instructions.get(j + 1) instanceof FieldInsnNode
-                                                && toPatch.instructions
-                                                                .get(j + 1)
-                                                                .getOpcode()
-                                                        == GETSTATIC
+                                                && toPatch.instructions.get(j + 1).getOpcode() == GETSTATIC
                                                 && !ASMUtils.matchAny(
-                                                                ((FieldInsnNode) toPatch.instructions.get(j + 1)).name,
-                                                                field_deObfs,
-                                                                field_src)
-                                                        .isEmpty()) continue;
+                                                        ((FieldInsnNode) toPatch.instructions.get(j + 1)).name,
+                                                        field_deObfs,
+                                                        field_src).isEmpty())
+                                            continue;
                                     }
                                     nu.add(toPatch.instructions.get(j));
                                 }
@@ -301,7 +295,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     for (MethodNode toPatch : methods) {
                         if (ASMUtils.isCorrectMethod(toPatch, name_deObfs)) {
                             BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
-                            LabelNode[] LabelNodes = {new LabelNode(), new LabelNode()};
+                            LabelNode[] LabelNodes = { new LabelNode(), new LabelNode() };
                             InsnList nu = new InsnList();
                             // if (x < -28675) x %= -28675;
                             nu.add(new VarInsnNode(ILOAD, 2));
@@ -341,12 +335,13 @@ public class BWCoreTransformer implements IClassTransformer {
                             toPatch.instructions = new InsnList();
                             toPatch.instructions.add(new VarInsnNode(ALOAD, 1));
                             toPatch.instructions.add(new VarInsnNode(ALOAD, 2));
-                            toPatch.instructions.add(new MethodInsnNode(
-                                    INVOKESTATIC,
-                                    "com/github/bartimaeusnek/bartworks/ASM/BWCoreStaticReplacementMethodes",
-                                    "findCachedMatchingRecipe",
-                                    "(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",
-                                    false));
+                            toPatch.instructions.add(
+                                    new MethodInsnNode(
+                                            INVOKESTATIC,
+                                            "com/github/bartimaeusnek/bartworks/ASM/BWCoreStaticReplacementMethodes",
+                                            "findCachedMatchingRecipe",
+                                            "(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",
+                                            false));
                             toPatch.instructions.add(new InsnNode(ARETURN));
                             toPatch.localVariables.clear();
                             toPatch.maxStack = 2;
@@ -356,12 +351,12 @@ public class BWCoreTransformer implements IClassTransformer {
                     }
                 }
 
-                    //                case 6: {
-                    //                    BWCore.BWCORE_LOG.info("Could find: " +
-                    // BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
-                    //                    ((IntInsnNode) methods.get(11).instructions.get(10)).operand = 10000;
-                    //                    break scase;
-                    //                }
+                // case 6: {
+                // BWCore.BWCORE_LOG.info("Could find: " +
+                // BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                // ((IntInsnNode) methods.get(11).instructions.get(10)).operand = 10000;
+                // break scase;
+                // }
                 default: {
                     BWCore.BWCORE_LOG.info("Could not find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     return basicClass;

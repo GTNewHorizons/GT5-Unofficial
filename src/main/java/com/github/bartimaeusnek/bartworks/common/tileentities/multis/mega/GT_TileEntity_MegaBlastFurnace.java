@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
@@ -33,6 +24,16 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -44,6 +45,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -57,14 +59,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.*;
-import java.util.stream.Collectors;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 @Optional.Interface(
         iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti",
@@ -74,51 +68,46 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 11;
-    private static final IStructureDefinition<GT_TileEntity_MegaBlastFurnace> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_TileEntity_MegaBlastFurnace>builder()
-                    .addShape("main", createShape())
-                    .addElement('=', StructureElementAirNoHint.getInstance())
-                    .addElement(
-                            't',
-                            buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
-                                    .atLeast(OutputHatch.withAdder(
-                                                    GT_TileEntity_MegaBlastFurnace::addOutputHatchToTopList)
+    private static final IStructureDefinition<GT_TileEntity_MegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
+            .<GT_TileEntity_MegaBlastFurnace>builder().addShape("main", createShape())
+            .addElement('=', StructureElementAirNoHint.getInstance())
+            .addElement(
+                    't',
+                    buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
+                            .atLeast(
+                                    OutputHatch.withAdder(GT_TileEntity_MegaBlastFurnace::addOutputHatchToTopList)
                                             .withCount(t -> t.mPollutionOutputHatches.size()))
-                                    .casingIndex(CASING_INDEX)
-                                    .dot(1)
-                                    .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-                    .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-                    .addElement(
-                            'C',
-                            withChannel(
-                                    "coil",
-                                    ofCoil(
-                                            GT_TileEntity_MegaBlastFurnace::setCoilLevel,
-                                            GT_TileEntity_MegaBlastFurnace::getCoilLevel)))
-                    .addElement(
-                            'g',
-                            withChannel(
-                                    "glass",
-                                    BorosilicateGlass.ofBoroGlass(
-                                            (byte) 0,
-                                            (byte) 1,
-                                            Byte.MAX_VALUE,
-                                            (te, t) -> te.glasTier = t,
-                                            te -> te.glasTier)))
-                    .addElement(
-                            'b',
-                            buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
-                                    .atLeast(
-                                            InputHatch,
-                                            OutputHatch,
-                                            InputBus,
-                                            OutputBus,
-                                            Maintenance,
-                                            TTEnabledEnergyHatchElement.INSTANCE)
-                                    .casingIndex(CASING_INDEX)
-                                    .dot(1)
-                                    .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-                    .build();
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
+            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
+            .addElement(
+                    'C',
+                    withChannel(
+                            "coil",
+                            ofCoil(
+                                    GT_TileEntity_MegaBlastFurnace::setCoilLevel,
+                                    GT_TileEntity_MegaBlastFurnace::getCoilLevel)))
+            .addElement(
+                    'g',
+                    withChannel(
+                            "glass",
+                            BorosilicateGlass.ofBoroGlass(
+                                    (byte) 0,
+                                    (byte) 1,
+                                    Byte.MAX_VALUE,
+                                    (te, t) -> te.glasTier = t,
+                                    te -> te.glasTier)))
+            .addElement(
+                    'b',
+                    buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
+                            .atLeast(
+                                    InputHatch,
+                                    OutputHatch,
+                                    InputBus,
+                                    OutputBus,
+                                    Maintenance,
+                                    TTEnabledEnergyHatchElement.INSTANCE)
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
+            .build();
 
     private static String[][] createShape() {
         String[][] raw = new String[20][];
@@ -160,11 +149,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
 
     private HeatingCoilLevel mCoilLevel;
     protected final ArrayList<GT_MetaTileEntity_Hatch_Output> mPollutionOutputHatches = new ArrayList<>();
-    protected final FluidStack[] pollutionFluidStacks = {
-        Materials.CarbonDioxide.getGas(1000),
-        Materials.CarbonMonoxide.getGas(1000),
-        Materials.SulfurDioxide.getGas(1000)
-    };
+    protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
+            Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
     private int mHeatingCapacity;
     private byte glasTier;
     private int polPtick = ConfigHandler.basePollutionMBFSecond / 20 * ConfigHandler.megaMachinesMax;
@@ -186,28 +172,21 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace")
-                .addInfo("Controller block for the Mega Blast Furnace")
+        tt.addMachineType("Blast Furnace").addInfo("Controller block for the Mega Blast Furnace")
                 .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
                 .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
                 .addInfo("Each 1800K over the min. Heat required grants one perfect overclock")
                 .addInfo(
                         "For each perfect overclock the EBF will reduce recipe time 4 times (instead of 2) (100% efficiency)")
                 .addInfo("Additionally gives +100K for every tier past MV")
-                .addPollutionAmount(20 * getPollutionPerTick(null))
-                .addSeparator()
-                .beginStructureBlock(15, 20, 15, true)
-                .addController("3rd layer center")
-                .addCasingInfo("Heat Proof Machine Casing", 0)
+                .addPollutionAmount(20 * getPollutionPerTick(null)).addSeparator().beginStructureBlock(15, 20, 15, true)
+                .addController("3rd layer center").addCasingInfo("Heat Proof Machine Casing", 0)
                 .addOtherStructurePart("864x Heating Coils", "Inner 13x18x13 (Hollow)")
                 .addOtherStructurePart("1007x Borosilicate Glass", "Outer 15x18x15")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
-                .addEnergyHatch("Any bottom layer casing")
-                .addMaintenanceHatch("Any bottom layer casing")
-                .addMufflerHatch("Top middle 13x13")
-                .addInputBus("Any bottom layer casing")
-                .addInputHatch("Any bottom layer casing")
-                .addOutputBus("Any bottom layer casing")
+                .addEnergyHatch("Any bottom layer casing").addMaintenanceHatch("Any bottom layer casing")
+                .addMufflerHatch("Top middle 13x13").addInputBus("Any bottom layer casing")
+                .addInputHatch("Any bottom layer casing").addOutputBus("Any bottom layer casing")
                 .addOutputHatch("Gasses, Any top layer casing")
                 .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
                 .addOutputHatch("Platline fluids, Any bottom layer casing")
@@ -245,8 +224,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     }
 
     @Override
-    public boolean onWireCutterRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (aPlayer.isSneaking()) {
             mUseMultiparallelMode = !mUseMultiparallelMode;
             if (mUseMultiparallelMode) {
@@ -258,47 +237,26 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         } else {
             isBussesSeparate = !isBussesSeparate;
             GT_Utility.sendChatToPlayer(
-                    aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
             return true;
         }
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    casingTexturePages[0][CASING_INDEX],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                casingTexturePages[0][CASING_INDEX],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing()
+                            .glow().build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing().glow()
+                            .build() };
         }
-        return new ITexture[] {casingTexturePages[0][CASING_INDEX]};
+        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
 
     @Override
@@ -346,8 +304,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     public boolean checkRecipe(ItemStack itemStack) {
         ItemStack[] tInputs = null;
         FluidStack[] tFluids = this.getStoredFluids().toArray(new FluidStack[0]);
-        long nominalV =
-                LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this)
+                : BW_Util.getnominalVoltage(this);
 
         byte tTier = (byte) Math.max(1, Math.min(GT_Utility.getTier(nominalV), V.length - 1));
         GT_Recipe tRecipe = null;
@@ -364,36 +322,35 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
                         }
                     }
                 }
-                tInputs =
-                        Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
+                tInputs = Arrays
+                        .copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
                 tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(
-                        this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+                        this.getBaseMetaTileEntity(),
+                        false,
+                        gregtech.api.enums.GT_Values.V[tTier],
+                        tFluids,
+                        tInputs);
                 if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(false, tFluids, tInputs))) {
                     break;
                 }
             }
         } else {
             tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
-            if (circuitMode > 0
-                    && Arrays.stream(tInputs)
-                            .anyMatch(e ->
-                                    GT_Utility.areStacksEqual(e, GT_Utility.getIntegratedCircuit(circuitMode), true))) {
-                List<ItemStack> modInputs = Arrays.stream(tInputs)
-                        .filter(Objects::nonNull)
-                        .filter(e -> !e.getItem()
-                                .equals(GT_Utility.getIntegratedCircuit(circuitMode)
-                                        .getItem()))
+            if (circuitMode > 0 && Arrays.stream(tInputs)
+                    .anyMatch(e -> GT_Utility.areStacksEqual(e, GT_Utility.getIntegratedCircuit(circuitMode), true))) {
+                List<ItemStack> modInputs = Arrays.stream(tInputs).filter(Objects::nonNull)
+                        .filter(e -> !e.getItem().equals(GT_Utility.getIntegratedCircuit(circuitMode).getItem()))
                         .collect(Collectors.toList());
                 modInputs.add(GT_Utility.getIntegratedCircuit(circuitMode));
                 tInputs = modInputs.toArray(new ItemStack[0]);
             }
-            tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(
-                    this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+            tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes
+                    .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
             if (tRecipe == null) {
                 if (circuitMode == 0) return false;
                 tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
-                tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(
-                        this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+                tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes
+                        .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
             }
         }
 
@@ -415,8 +372,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         float tBatchMultiplier = 1.0f;
         if (this.mHeatingCapacity >= tRecipe.mSpecialValue) {
             int tCurrentPara = handleParallelRecipe(tRecipe, tFluids, tInputs, (int) tMaxPara);
-            tBatchMultiplier =
-                    mUseMultiparallelMode ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f) : 1.0f;
+            tBatchMultiplier = mUseMultiparallelMode
+                    ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f)
+                    : 1.0f;
             this.updateSlots();
             if (tCurrentPara <= 0) return false;
             processed = Math.min(tCurrentPara, ConfigHandler.megaMachinesMax);
@@ -430,16 +388,10 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator()
-                    .setRecipeEUt(tRecipe.mEUt)
-                    .setParallel(processed)
-                    .setDuration(tRecipe.mDuration)
-                    .setEUt(nominalV)
-                    .setRecipeHeat(tRecipe.mSpecialValue)
-                    .setMultiHeat(mHeatingCapacity)
-                    .enableHeatOC()
-                    .enableHeatDiscount()
-                    .calculate();
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+                    .setParallel(processed).setDuration(tRecipe.mDuration).setEUt(nominalV)
+                    .setRecipeHeat(tRecipe.mSpecialValue).setMultiHeat(mHeatingCapacity).enableHeatOC()
+                    .enableHeatDiscount().calculate();
 
             this.mMaxProgresstime = calculator.getDuration();
             this.lEUt = calculator.getConsumption();
@@ -546,15 +498,15 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         if (mMaintenanceHatches.size() != 1) return false;
 
         if (LoaderReference.tectech && this.glasTier < 8)
-            if (!areLazorsLowPowa()
-                    || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels())
-                    || areThingsNotProperlyTiered(this.getTecTechEnergyMultis())) return false;
+            if (!areLazorsLowPowa() || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels())
+                    || areThingsNotProperlyTiered(this.getTecTechEnergyMultis()))
+                return false;
 
         if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty())
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
                 if (this.glasTier < hatchEnergy.mTier) return false;
-        long nominalV =
-                LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this)
+                : BW_Util.getnominalVoltage(this);
         this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (BW_Util.getTier(nominalV) - 2);
 
         return true;
@@ -563,9 +515,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     @SuppressWarnings("rawtypes")
     @Optional.Method(modid = "tectech")
     private boolean areThingsNotProperlyTiered(Collection collection) {
-        if (!collection.isEmpty())
-            for (Object tecTechEnergyMulti : collection)
-                if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier) return true;
+        if (!collection.isEmpty()) for (Object tecTechEnergyMulti : collection)
+            if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier) return true;
         return false;
     }
 

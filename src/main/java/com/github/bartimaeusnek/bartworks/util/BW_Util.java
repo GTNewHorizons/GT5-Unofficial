@@ -1,54 +1,30 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.util;
 
 import static gregtech.api.enums.GT_Values.*;
 
-import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
-import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OreDictNames;
-import gregtech.api.enums.ToolDictNames;
-import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
@@ -64,9 +40,29 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-@SuppressWarnings({"unused", "RedundantSuppression"})
+import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OreDictNames;
+import gregtech.api.enums.ToolDictNames;
+import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.*;
+
+@SuppressWarnings({ "unused", "RedundantSuppression" })
 public class BW_Util {
 
     public static final int STANDART = 0;
@@ -279,24 +275,22 @@ public class BW_Util {
         return special;
     }
 
-    public static boolean addBlockToMachine(
-            int x, int y, int z, int offsetsize, IGregTechTileEntity aBaseMetaTileEntity, Block block) {
+    public static boolean addBlockToMachine(int x, int y, int z, int offsetsize,
+            IGregTechTileEntity aBaseMetaTileEntity, Block block) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offsetsize;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offsetsize;
 
-        return block == Blocks.air
-                ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
+        return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
                 : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block);
     }
 
-    public static boolean addBlockToMachine(
-            int x, int y, int z, int offsetsize, IGregTechTileEntity aBaseMetaTileEntity, Block block, int damage) {
+    public static boolean addBlockToMachine(int x, int y, int z, int offsetsize,
+            IGregTechTileEntity aBaseMetaTileEntity, Block block, int damage) {
         byte dmg = (byte) damage;
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offsetsize;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offsetsize;
 
-        return block == Blocks.air
-                ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
+        return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
                 : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block)
                         && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == dmg;
     }
@@ -305,14 +299,10 @@ public class BW_Util {
         for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
             if (pair.getMaterials().equals(materials)) return pair.getSievert();
         }
-        return (int)
-                (materials.getProtons() == 43L
-                        ? (materials.equals(Materials.NaquadahEnriched)
-                                ? 140
-                                : materials.equals(Materials.Naquadria)
-                                        ? 150
-                                        : materials.equals(Materials.Naquadah) ? 130 : 43)
-                        : materials.getProtons());
+        return (int) (materials.getProtons() == 43L
+                ? (materials.equals(Materials.NaquadahEnriched) ? 140
+                        : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43)
+                : materials.getProtons());
     }
 
     public static ItemStack setStackSize(ItemStack stack, int size) {
@@ -321,15 +311,14 @@ public class BW_Util {
     }
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
-        return itemStack != null
-                && GT_OreDictUnificator.getAssociation(itemStack) != null
+        return itemStack != null && GT_OreDictUnificator.getAssociation(itemStack) != null
                 && GT_OreDictUnificator.getAssociation(itemStack).mPrefix != null
                 && GT_OreDictUnificator.getAssociation(itemStack).mMaterial != null
                 && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
     }
 
-    public static Map<ItemStack, ItemStack[]> getInputsFromOutput(
-            Collection<GT_Recipe> gt_recipes, ItemStack... inputs) {
+    public static Map<ItemStack, ItemStack[]> getInputsFromOutput(Collection<GT_Recipe> gt_recipes,
+            ItemStack... inputs) {
         return gt_recipes.stream()
                 .filter(ar -> Arrays.stream(inputs).anyMatch(st -> GT_Utility.areStacksEqual(st, ar.mOutputs[0])))
                 .collect(Collectors.toMap(k -> k.mOutputs[0], k -> k.mInputs));
@@ -377,7 +366,7 @@ public class BW_Util {
         return hash;
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public static <T> T[] copyAndRemoveNulls(T[] input, Class<T> clazz) {
         List<T> ret = Arrays.stream(input).filter(Objects::nonNull).collect(Collectors.toList());
 
@@ -472,38 +461,27 @@ public class BW_Util {
     }
 
     /**
-     * Taken from the GTNH fork, made originally by Tec
-     * Calcualtes overclocked ness using long integers
+     * Taken from the GTNH fork, made originally by Tec Calcualtes overclocked ness using long integers
      *
      * @param aEUt      - recipe EUt
      * @param aDuration - recipe Duration
      * @param mAmperage - should be 1 ?
      */
-    public static void calculateOverclockedNessMulti(
-            @Nonnegative int aEUt,
-            @Nonnegative int aDuration,
-            @Nonnegative int mAmperage,
-            @Nonnegative long maxInputVoltage,
+    public static void calculateOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration,
+            @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
             @Nonnull GT_MetaTileEntity_MultiBlockBase base) {
         calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, false);
     }
 
-    public static void calculatePerfectOverclockedNessMulti(
-            @Nonnegative int aEUt,
-            @Nonnegative int aDuration,
-            @Nonnegative int mAmperage,
-            @Nonnegative long maxInputVoltage,
+    public static void calculatePerfectOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration,
+            @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
             @Nonnull GT_MetaTileEntity_MultiBlockBase base) {
         calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, true);
     }
 
-    private static void calculateOverclockednessMultiInternal(
-            @Nonnegative int aEUt,
-            @Nonnegative int aDuration,
-            @Nonnegative int mAmperage,
-            @Nonnegative long maxInputVoltage,
-            @Nonnull GT_MetaTileEntity_MultiBlockBase base,
-            @Nonnull boolean perfectOC) {
+    private static void calculateOverclockednessMultiInternal(@Nonnegative int aEUt, @Nonnegative int aDuration,
+            @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
+            @Nonnull GT_MetaTileEntity_MultiBlockBase base, @Nonnull boolean perfectOC) {
         byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
         if (mTier == 0) {
             // Long time calculation
@@ -528,9 +506,8 @@ public class BW_Util {
                 tempEUt <<= 2; // this actually controls overclocking
                 // xEUt *= 4;//this is effect of everclocking
                 base.mMaxProgresstime >>= perfectOC ? 2 : 1; // this is effect of overclocking
-                xEUt = base.mMaxProgresstime <= 0
-                        ? xEUt >> 1
-                        : xEUt << 2; // U know, if the time is less than 1 tick make the machine use less power
+                xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2; // U know, if the time is less than 1 tick
+                                                                           // make the machine use less power
             }
 
             while (xEUt > maxInputVoltage && xEUt >= aEUt) {
@@ -598,18 +575,8 @@ public class BW_Util {
         }
     }
 
-    public static boolean check_layer(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            int radius,
-            int yLevel,
-            int height,
-            Block block,
-            int dmg,
-            int offset,
-            boolean insideCheck,
-            Block inside,
-            int dmginside,
-            int aBaseCasingIndex) {
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height,
+            Block block, int dmg, int offset, boolean insideCheck, Block inside, int dmginside, int aBaseCasingIndex) {
         return BW_Util.check_layer(
                 aBaseMetaTileEntity,
                 radius,
@@ -625,29 +592,14 @@ public class BW_Util {
                 aBaseCasingIndex);
     }
 
-    public static boolean check_layer(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            int radius,
-            int yLevel,
-            int height,
-            Block block,
-            int dmg,
-            int offset,
-            int aBaseCasingIndex) {
-        return BW_Util.check_layer(
-                aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, aBaseCasingIndex);
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height,
+            Block block, int dmg, int offset, int aBaseCasingIndex) {
+        return BW_Util
+                .check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, aBaseCasingIndex);
     }
 
-    public static boolean check_layer(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            int radius,
-            int yLevel,
-            int height,
-            Block block,
-            int dmg,
-            int offset,
-            boolean controllerLayer,
-            int aBaseCasingIndex) {
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height,
+            Block block, int dmg, int offset, boolean controllerLayer, int aBaseCasingIndex) {
         return BW_Util.check_layer(
                 aBaseMetaTileEntity,
                 radius,
@@ -661,17 +613,8 @@ public class BW_Util {
                 aBaseCasingIndex);
     }
 
-    public static boolean check_layer(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            int radius,
-            int yLevel,
-            int height,
-            Block block,
-            int dmg,
-            int offset,
-            boolean controllerLayer,
-            boolean freeCorners,
-            int aBaseCasingIndex) {
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height,
+            Block block, int dmg, int offset, boolean controllerLayer, boolean freeCorners, int aBaseCasingIndex) {
         return BW_Util.check_layer(
                 aBaseMetaTileEntity,
                 radius,
@@ -689,18 +632,8 @@ public class BW_Util {
                 aBaseCasingIndex);
     }
 
-    public static boolean check_layer(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            int radius,
-            int yLevel,
-            int height,
-            Block block,
-            int dmg,
-            int offset,
-            boolean controllerLayer,
-            boolean insideCheck,
-            Block inside,
-            int dmginside,
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height,
+            Block block, int dmg, int offset, boolean controllerLayer, boolean insideCheck, Block inside, int dmginside,
             int aBaseCasingIndex) {
         return BW_Util.check_layer(
                 aBaseMetaTileEntity,
@@ -734,21 +667,9 @@ public class BW_Util {
      * @param aBaseCasingIndex    the Index for the hatches texture
      * @return if the layer check was completed
      */
-    public static boolean check_layer(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            int radius,
-            int yLevel,
-            int height,
-            Block block,
-            int dmg,
-            int offset,
-            boolean controllerLayer,
-            boolean freeCorners,
-            boolean insideCheck,
-            Block inside,
-            int dmginside,
-            boolean allowHatches,
-            int aBaseCasingIndex) {
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height,
+            Block block, int dmg, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck,
+            Block inside, int dmginside, boolean allowHatches, int aBaseCasingIndex) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offset;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offset;
         for (int x = -radius; x <= radius; x++) {
@@ -758,88 +679,91 @@ public class BW_Util {
                     if (controllerLayer && (xDir + x == 0 && zDir + z == 0)) continue;
                     boolean b = Math.abs(x) < radius && Math.abs(z) != radius;
                     if (insideCheck && b) {
-                        if (!(inside.equals(Blocks.air)
-                                        ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
-                                        : aBaseMetaTileEntity
-                                                .getBlockOffset(xDir + x, y, zDir + z)
-                                                .equals(inside))
+                        if (!(inside.equals(Blocks.air) ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
+                                : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside))
                                 && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside
                                         || dmginside > (-1))) {
                             if (!(allowHatches
                                     && (((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity())
-                                                    .addDynamoToMachineList(
-                                                            aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                    xDir + x, y, zDir + z),
-                                                            aBaseCasingIndex)
-                                            || ((GT_MetaTileEntity_MultiBlockBase)
-                                                            aBaseMetaTileEntity.getMetaTileEntity())
-                                                    .addEnergyInputToMachineList(
-                                                            aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                    xDir + x, y, zDir + z),
-                                                            aBaseCasingIndex)
-                                            || ((GT_MetaTileEntity_MultiBlockBase)
-                                                            aBaseMetaTileEntity.getMetaTileEntity())
-                                                    .addMaintenanceToMachineList(
-                                                            aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                    xDir + x, y, zDir + z),
-                                                            aBaseCasingIndex)
-                                            || ((GT_MetaTileEntity_MultiBlockBase)
-                                                            aBaseMetaTileEntity.getMetaTileEntity())
-                                                    .addMufflerToMachineList(
-                                                            aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                    xDir + x, y, zDir + z),
-                                                            aBaseCasingIndex)
-                                            || ((GT_MetaTileEntity_MultiBlockBase)
-                                                            aBaseMetaTileEntity.getMetaTileEntity())
-                                                    .addInputToMachineList(
-                                                            aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                    xDir + x, y, zDir + z),
-                                                            aBaseCasingIndex)
-                                            || ((GT_MetaTileEntity_MultiBlockBase)
-                                                            aBaseMetaTileEntity.getMetaTileEntity())
-                                                    .addOutputToMachineList(
-                                                            aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                    xDir + x, y, zDir + z),
-                                                            aBaseCasingIndex)))) {
+                                            .addDynamoToMachineList(
+                                                    aBaseMetaTileEntity
+                                                            .getIGregTechTileEntityOffset(xDir + x, y, zDir + z),
+                                                    aBaseCasingIndex)
+                                            || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity
+                                                    .getMetaTileEntity())
+                                                            .addEnergyInputToMachineList(
+                                                                    aBaseMetaTileEntity.getIGregTechTileEntityOffset(
+                                                                            xDir + x,
+                                                                            y,
+                                                                            zDir + z),
+                                                                    aBaseCasingIndex)
+                                            || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity
+                                                    .getMetaTileEntity())
+                                                            .addMaintenanceToMachineList(
+                                                                    aBaseMetaTileEntity.getIGregTechTileEntityOffset(
+                                                                            xDir + x,
+                                                                            y,
+                                                                            zDir + z),
+                                                                    aBaseCasingIndex)
+                                            || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity
+                                                    .getMetaTileEntity())
+                                                            .addMufflerToMachineList(
+                                                                    aBaseMetaTileEntity.getIGregTechTileEntityOffset(
+                                                                            xDir + x,
+                                                                            y,
+                                                                            zDir + z),
+                                                                    aBaseCasingIndex)
+                                            || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity
+                                                    .getMetaTileEntity())
+                                                            .addInputToMachineList(
+                                                                    aBaseMetaTileEntity.getIGregTechTileEntityOffset(
+                                                                            xDir + x,
+                                                                            y,
+                                                                            zDir + z),
+                                                                    aBaseCasingIndex)
+                                            || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity
+                                                    .getMetaTileEntity())
+                                                            .addOutputToMachineList(
+                                                                    aBaseMetaTileEntity.getIGregTechTileEntityOffset(
+                                                                            xDir + x,
+                                                                            y,
+                                                                            zDir + z),
+                                                                    aBaseCasingIndex)))) {
                                 return false;
                             }
                         }
                     }
-                    if (!b
-                            && !aBaseMetaTileEntity
-                                    .getBlockOffset(xDir + x, y, zDir + z)
-                                    .equals(block)
+                    if (!b && !aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block)
                             && (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmg || dmg > (-1))) {
                         if (!(allowHatches
                                 && (((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity())
-                                                .addDynamoToMachineList(
-                                                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                xDir + x, y, zDir + z),
-                                                        aBaseCasingIndex)
+                                        .addDynamoToMachineList(
+                                                aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z),
+                                                aBaseCasingIndex)
                                         || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity())
                                                 .addEnergyInputToMachineList(
-                                                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                xDir + x, y, zDir + z),
+                                                        aBaseMetaTileEntity
+                                                                .getIGregTechTileEntityOffset(xDir + x, y, zDir + z),
                                                         aBaseCasingIndex)
                                         || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity())
                                                 .addMaintenanceToMachineList(
-                                                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                xDir + x, y, zDir + z),
+                                                        aBaseMetaTileEntity
+                                                                .getIGregTechTileEntityOffset(xDir + x, y, zDir + z),
                                                         aBaseCasingIndex)
                                         || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity())
                                                 .addMufflerToMachineList(
-                                                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                xDir + x, y, zDir + z),
+                                                        aBaseMetaTileEntity
+                                                                .getIGregTechTileEntityOffset(xDir + x, y, zDir + z),
                                                         aBaseCasingIndex)
                                         || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity())
                                                 .addInputToMachineList(
-                                                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                xDir + x, y, zDir + z),
+                                                        aBaseMetaTileEntity
+                                                                .getIGregTechTileEntityOffset(xDir + x, y, zDir + z),
                                                         aBaseCasingIndex)
                                         || ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity())
                                                 .addOutputToMachineList(
-                                                        aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                                                xDir + x, y, zDir + z),
+                                                        aBaseMetaTileEntity
+                                                                .getIGregTechTileEntityOffset(xDir + x, y, zDir + z),
                                                         aBaseCasingIndex)))) {
                             return false;
                         }
@@ -850,15 +774,8 @@ public class BW_Util {
         return true;
     }
 
-    public static List<Byte> getMetasFromLayer(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            int radius,
-            int yLevel,
-            int height,
-            int offset,
-            boolean controllerLayer,
-            boolean freeCorners,
-            boolean insideCheck) {
+    public static List<Byte> getMetasFromLayer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel,
+            int height, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck) {
         ArrayList<Byte> ret = new ArrayList<>();
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offset;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offset;
@@ -951,8 +868,7 @@ public class BW_Util {
 
         if (block.equals(Blocks.glass)) return 3;
 
-        for (BioVatLogicAdder.BlockMetaPair B :
-                BioVatLogicAdder.BioVatGlass.getGlassMap().keySet())
+        for (BioVatLogicAdder.BlockMetaPair B : BioVatLogicAdder.BioVatGlass.getGlassMap().keySet())
             if (B.getBlock().equals(block) && B.getaByte().equals(meta))
                 return BioVatLogicAdder.BioVatGlass.getGlassMap().get(B);
 
@@ -961,17 +877,18 @@ public class BW_Util {
         return 0;
     }
 
-    public static <T> IStructureElement<T> ofGlassTiered(
-            byte mintier, byte maxtier, byte notset, BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
+    public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
+            BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
         return new IStructureElement<T>() {
-            private final IStructureElement<T> placementDelegate =
-                    BorosilicateGlass.ofBoroGlass(notset, mintier, maxtier, setter, getter);
+
+            private final IStructureElement<T> placementDelegate = BorosilicateGlass
+                    .ofBoroGlass(notset, mintier, maxtier, setter, getter);
 
             @Override
             public boolean check(T te, World world, int x, int y, int z) {
                 if (world.isAirBlock(x, y, z)) return false;
-                byte glasstier =
-                        BW_Util.calculateGlassTier(world.getBlock(x, y, z), (byte) world.getBlockMetadata(x, y, z));
+                byte glasstier = BW_Util
+                        .calculateGlassTier(world.getBlock(x, y, z), (byte) world.getBlockMetadata(x, y, z));
                 if (glasstier == 0) return false; // is not a glass ?
                 if (glasstier == notset) return false;
                 if (glasstier < mintier) return false;
@@ -992,8 +909,8 @@ public class BW_Util {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(
-                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                    AutoPlaceEnvironment env) {
                 return placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         };
@@ -1001,14 +918,15 @@ public class BW_Util {
 
     public static <T> IStructureElement<T> ofGlassTieredMixed(byte mintier, byte maxtier, int aDots) {
         return new IStructureElement<T>() {
-            private final IStructureElement<T> placementDelegate =
-                    BorosilicateGlass.ofBoroGlass((byte) 0, mintier, maxtier, (v1, v2) -> {}, (v1) -> (byte) 0);
+
+            private final IStructureElement<T> placementDelegate = BorosilicateGlass
+                    .ofBoroGlass((byte) 0, mintier, maxtier, (v1, v2) -> {}, (v1) -> (byte) 0);
 
             @Override
             public boolean check(T te, World world, int x, int y, int z) {
                 if (world.isAirBlock(x, y, z)) return false;
-                byte glasstier =
-                        BW_Util.calculateGlassTier(world.getBlock(x, y, z), (byte) world.getBlockMetadata(x, y, z));
+                byte glasstier = BW_Util
+                        .calculateGlassTier(world.getBlock(x, y, z), (byte) world.getBlockMetadata(x, y, z));
                 if (glasstier == 0) return false; // is not a glass ?
                 return glasstier >= mintier && glasstier <= maxtier;
             }
@@ -1025,8 +943,8 @@ public class BW_Util {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(
-                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                    AutoPlaceEnvironment env) {
                 return placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         };
@@ -1067,25 +985,13 @@ public class BW_Util {
                 aRecipe);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public static ShapedOreRecipe createGTCraftingRecipe(
-            ItemStack aResult,
-            Enchantment[] aEnchantmentsAdded,
-            int[] aEnchantmentLevelsAdded,
-            boolean aMirrored,
-            boolean aBuffered,
-            boolean aKeepNBT,
-            boolean aDismantleable,
-            boolean aRemovable,
-            boolean aReversible,
-            boolean aRemoveAllOthersWithSameOutput,
-            boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
-            boolean aRemoveAllOtherShapedsWithSameOutput,
-            boolean aRemoveAllOtherNativeRecipes,
-            boolean aCheckForCollisions,
-            boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis,
-            boolean aOnlyAddIfResultIsNotNull,
-            Object[] aRecipe) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
+            int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT,
+            boolean aDismantleable, boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
+            boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
+            boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
+            boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
         aResult = GT_OreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
@@ -1096,11 +1002,11 @@ public class BW_Util {
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
             else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum) aRecipe[i]).name();
-            else if (!(aRecipe[i] == null
-                    || aRecipe[i] instanceof ItemStack
+            else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
                     || aRecipe[i] instanceof ItemData
                     || aRecipe[i] instanceof String
-                    || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
+                    || aRecipe[i] instanceof Character))
+                aRecipe[i] = aRecipe[i].toString();
         }
 
         try {
@@ -1194,8 +1100,9 @@ public class BW_Util {
             for (; idx < aRecipe.length; idx += 2) {
                 if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                     if (D1) {
-                        GT_Log.err.println("WARNING: Missing Item for shaped Recipe: "
-                                + (aResult == null ? "null" : aResult.getDisplayName()));
+                        GT_Log.err.println(
+                                "WARNING: Missing Item for shaped Recipe: "
+                                        + (aResult == null ? "null" : aResult.getDisplayName()));
                         for (Object tContent : aRecipe) GT_Log.err.println(tContent);
                     }
                     return null;
@@ -1273,25 +1180,21 @@ public class BW_Util {
 
         if (aResult == null || aResult.stackSize <= 0) return null;
 
-        if (aRemoveAllOthersWithSameOutput
-                || aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT
+        if (aRemoveAllOthersWithSameOutput || aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT
                 || aRemoveAllOtherShapedsWithSameOutput
                 || aRemoveAllOtherNativeRecipes)
             tThereWasARecipe = GT_ModHandler.removeRecipeByOutput(
-                            aResult,
-                            !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
-                            aRemoveAllOtherShapedsWithSameOutput,
-                            aRemoveAllOtherNativeRecipes)
-                    || tThereWasARecipe;
+                    aResult,
+                    !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
+                    aRemoveAllOtherShapedsWithSameOutput,
+                    aRemoveAllOtherNativeRecipes) || tThereWasARecipe;
 
         if (aOnlyAddIfThereIsAnyRecipeOutputtingThis && !tThereWasARecipe) {
-            ArrayList<IRecipe> tList =
-                    (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
+            ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
             int tList_sS = tList.size();
             for (int i = 0; i < tList_sS && !tThereWasARecipe; i++) {
                 IRecipe tRecipe = tList.get(i);
-                if (GT_ModHandler.sSpecialRecipeClasses.contains(
-                        tRecipe.getClass().getName())) continue;
+                if (GT_ModHandler.sSpecialRecipeClasses.contains(tRecipe.getClass().getName())) continue;
                 if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
                     tList.remove(i--);
                     tList_sS = tList.size();
@@ -1306,14 +1209,13 @@ public class BW_Util {
         GT_Utility.updateItemStack(aResult);
 
         return new GT_Shaped_Recipe(
-                        GT_Utility.copy(aResult),
-                        aDismantleable,
-                        aRemovable,
-                        aKeepNBT,
-                        aEnchantmentsAdded,
-                        aEnchantmentLevelsAdded,
-                        aRecipe)
-                .setMirrored(aMirrored);
+                GT_Utility.copy(aResult),
+                aDismantleable,
+                aRemovable,
+                aKeepNBT,
+                aEnchantmentsAdded,
+                aEnchantmentLevelsAdded,
+                aRecipe).setMirrored(aMirrored);
     }
 
     public static void shortSleep(long nanos) {

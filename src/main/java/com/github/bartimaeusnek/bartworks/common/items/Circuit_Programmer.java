@@ -1,26 +1,28 @@
 /*
- * Copyright (c) 2018-2020 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.github.bartimaeusnek.bartworks.common.items;
+
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -36,6 +38,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -50,15 +53,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem, IItemWithModularUI {
 
@@ -82,11 +76,11 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
-        if (aStack != null && aStack.getTagCompound() != null)
-            aList.add(StatCollector.translateToLocal("tooltip.cp.0.name") + " "
-                    + (aStack.getTagCompound().getBoolean("HasChip")
-                            ? StatCollector.translateToLocal("tooltip.bw.yes.name")
-                            : StatCollector.translateToLocal("tooltip.bw.no.name")));
+        if (aStack != null && aStack.getTagCompound() != null) aList.add(
+                StatCollector.translateToLocal("tooltip.cp.0.name") + " "
+                        + (aStack.getTagCompound().getBoolean("HasChip")
+                                ? StatCollector.translateToLocal("tooltip.bw.yes.name")
+                                : StatCollector.translateToLocal("tooltip.bw.no.name")));
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
@@ -159,12 +153,14 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
         builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(86, 83), ModularUITextures.ITEM_SLOT);
 
         ItemStackHandler inventoryHandler = new ItemStackHandler(1) {
+
             @Override
             public int getSlotLimit(int slot) {
                 return 1;
             }
         };
         SlotWidget circuitSlotWidget = new SlotWidget(new BaseSlot(inventoryHandler, 0) {
+
             @Override
             public void putStack(ItemStack stack) {
                 if (isLVCircuit(stack)) {
@@ -182,39 +178,32 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
         }
         circuitSlotWidget.getMcSlot().putStack(initialStack);
 
-        builder.widget(circuitSlotWidget
-                .setChangeListener(widget -> {
-                    ItemStack stack = widget.getMcSlot().getStack();
-                    ItemStack heldItem = widget.getContext().getPlayer().getHeldItem();
-                    NBTTagCompound tag2 = heldItem.getTagCompound();
-                    if (tag2 == null) {
-                        tag2 = new NBTTagCompound();
-                    }
+        builder.widget(circuitSlotWidget.setChangeListener(widget -> {
+            ItemStack stack = widget.getMcSlot().getStack();
+            ItemStack heldItem = widget.getContext().getPlayer().getHeldItem();
+            NBTTagCompound tag2 = heldItem.getTagCompound();
+            if (tag2 == null) {
+                tag2 = new NBTTagCompound();
+            }
 
-                    if (stack != null) {
-                        tag2.setBoolean(NBT_KEY_HAS_CHIP, true);
-                        tag2.setByte(NBT_KEY_CHIP_CONFIG, (byte) stack.getItemDamage());
-                    } else {
-                        tag2.setBoolean(NBT_KEY_HAS_CHIP, false);
-                    }
-                    heldItem.setTagCompound(tag2);
-                })
-                .setFilter(stack -> isProgrammedCircuit(stack) || isLVCircuit(stack))
-                .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
-                .setPos(122, 60));
+            if (stack != null) {
+                tag2.setBoolean(NBT_KEY_HAS_CHIP, true);
+                tag2.setByte(NBT_KEY_CHIP_CONFIG, (byte) stack.getItemDamage());
+            } else {
+                tag2.setBoolean(NBT_KEY_HAS_CHIP, false);
+            }
+            heldItem.setTagCompound(tag2);
+        }).setFilter(stack -> isProgrammedCircuit(stack) || isLVCircuit(stack))
+                .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT).setPos(122, 60));
 
         for (int i = 0; i < 24; i++) {
             final int index = i;
-            builder.widget(new ButtonWidget()
-                    .setOnClick((clickData, widget) -> {
-                        if (circuitSlotWidget.getMcSlot().getHasStack()
-                                && isProgrammedCircuit(
-                                        circuitSlotWidget.getMcSlot().getStack())) {
-                            circuitSlotWidget.getMcSlot().putStack(createRealCircuit(index + 1));
-                        }
-                    })
-                    .setPos(32 + (i % 12) * 18, 21 + (i / 12) * 18)
-                    .setSize(18, 18));
+            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (circuitSlotWidget.getMcSlot().getHasStack()
+                        && isProgrammedCircuit(circuitSlotWidget.getMcSlot().getStack())) {
+                    circuitSlotWidget.getMcSlot().putStack(createRealCircuit(index + 1));
+                }
+            }).setPos(32 + (i % 12) * 18, 21 + (i / 12) * 18).setSize(18, 18));
         }
 
         return builder.build();
@@ -231,9 +220,6 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     private boolean isLVCircuit(ItemStack stack) {
         return BW_Util.checkStackAndPrefix(stack)
                 && GT_OreDictUnificator.getAssociation(stack).mPrefix.equals(OrePrefixes.circuit)
-                && GT_OreDictUnificator.getAssociation(stack)
-                        .mMaterial
-                        .mMaterial
-                        .equals(Materials.Basic);
+                && GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.Basic);
     }
 }
