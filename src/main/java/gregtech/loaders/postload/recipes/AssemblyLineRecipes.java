@@ -519,7 +519,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Energy_LuV.get(1),
                 400,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Energy_LuV.get(1, new Object() {}),
@@ -547,7 +547,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Energy_ZPM.get(1),
                 600,
-                (int) Tier.ZPM);
+                (int) TierEU.ZPM);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Energy_ZPM.get(1, new Object() {}),
@@ -617,7 +617,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Dynamo_LuV.get(1),
                 400,
-                (int) Tier.RECIPE_LuV);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Dynamo_LuV.get(1, new Object() {}),
@@ -645,7 +645,7 @@ public class AssemblyLineRecipes implements Runnable {
                 },
                 ItemList.Hatch_Dynamo_ZPM.get(1),
                 600,
-                (int) Tier.RECIPE_ZPM);
+                (int) TierEU.RECIPE_ZPM);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Dynamo_ZPM.get(1, new Object() {}),

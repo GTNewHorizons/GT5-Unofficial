@@ -4,10 +4,7 @@ import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Tier;
+import gregtech.api.enums.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -43,7 +40,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 new ItemStack[] {getModItem(MOD_ID_GTPP, "MU-metaitem.01", 1, 32105)},
                 new FluidStack[] {NF},
                 50 * 20,
-                (int) Tier.UXV,
+                (int) TierEU.RECIPE_UXV,
                 13_500);
     }
 }
