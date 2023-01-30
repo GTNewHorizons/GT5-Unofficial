@@ -2,24 +2,24 @@
 
 dependencies {
     shadowImplementation('com.github.GTNewHorizons:AVRcore:1.0.1')
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.41.259-pre:dev")
-    compile('com.github.GTNewHorizons:ModularUI:1.0.38:dev')
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.41.264:dev")
+    compile('com.github.GTNewHorizons:ModularUI:1.0.52:dev')
     compile('com.github.GTNewHorizons:Yamcl:0.5.84:dev')
-    compile('com.github.GTNewHorizons:NotEnoughItems:2.3.20-GTNH:dev')
-    compile('com.github.GTNewHorizons:CodeChickenLib:1.1.5.6:dev')
+    compile('com.github.GTNewHorizons:NotEnoughItems:2.3.24-GTNH:dev')
+    compile('com.github.GTNewHorizons:CodeChickenLib:1.1.5.7:dev')
     compile('com.github.GTNewHorizons:CodeChickenCore:1.1.7:dev')
     compile('com.github.GTNewHorizons:StructureLib:1.2.0-beta.2:dev')
     compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
     compile('com.github.GTNewHorizons:GTNEIOrePlugin:1.0.26:dev')
 
     // todo To remove, for testing only.
-    compile('com.github.GTNewHorizons:ExtraCells2:2.5.28:dev')
-    compile('com.github.GTNewHorizons:AE2FluidCraft-Rework:1.0.40-gtnh:dev')
+    compile('com.github.GTNewHorizons:ExtraCells2:2.5.31:dev')
+    compile('com.github.GTNewHorizons:AE2FluidCraft-Rework:1.0.60-gtnh:dev')
 
     compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:OpenComputers:1.8.0.4-GTNH:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.7.179:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-134-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:OpenComputers:1.8.0.9-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.7.203:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-152-GTNH:dev') {transitive=false}
 
     compileOnly('curse.maven:cofh-lib-220333:2388748') {transitive=false}
     compileOnly('curse.maven:computercraft-67504:2269339') {transitive=false}
