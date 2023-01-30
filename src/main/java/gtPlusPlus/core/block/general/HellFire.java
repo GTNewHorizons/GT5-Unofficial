@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.random.XSTR;
@@ -48,7 +47,6 @@ public class HellFire extends BlockFire {
         this.setBlockName("blockHellFire");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         GameRegistry.registerBlock(this, "blockHellFire");
-        LanguageRegistry.addName(this, "Hellish Fire");
         this.enableBrutalFire();
     }
 

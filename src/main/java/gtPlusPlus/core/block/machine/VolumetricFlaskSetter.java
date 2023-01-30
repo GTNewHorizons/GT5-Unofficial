@@ -12,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
@@ -44,7 +43,6 @@ public class VolumetricFlaskSetter extends BasicTileBlockWithTooltip {
     @SuppressWarnings("deprecation")
     public VolumetricFlaskSetter() {
         super(Material.iron);
-        LanguageRegistry.addName(this, "Volumetric Flask Configurator");
     }
 
     /**

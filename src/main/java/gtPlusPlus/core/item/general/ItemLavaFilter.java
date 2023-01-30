@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -46,11 +47,6 @@ public class ItemLavaFilter extends CoreItem {
     @Override
     public IIcon getIconFromDamage(int meta) {
         return this.mIcon[0];
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack tItem) {
-        return "Lava Filter";
     }
 
     private static boolean createNBT(ItemStack rStack) {
@@ -102,7 +98,7 @@ public class ItemLavaFilter extends CoreItem {
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        list.add(EnumChatFormatting.GRAY + "Filters Lava within a Thermal Boiler.");
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.itemLavaFilter.tooltip"));
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
         if (100 - getFilterDamage(stack) > 80) {
             durability = EnumChatFormatting.GRAY;

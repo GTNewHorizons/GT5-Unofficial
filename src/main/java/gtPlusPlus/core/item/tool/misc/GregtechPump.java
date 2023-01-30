@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -98,9 +99,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 
     private final HashMap<Integer, IIcon> mIconMap = new LinkedHashMap<Integer, IIcon>();
     private final HashMap<Integer, EnumRarity> rarity = new LinkedHashMap<Integer, EnumRarity>();
-    private final HashMap<Integer, EnumChatFormatting> descColour = new LinkedHashMap<Integer, EnumChatFormatting>();
     private final HashMap<Integer, String> itemName = new LinkedHashMap<Integer, String>();
-    private final HashMap<Integer, String> itemDescription = new LinkedHashMap<Integer, String>();
     private final HashMap<Integer, Boolean> hasEffect = new LinkedHashMap<Integer, Boolean>();
 
     public final HashMap<Short, Long[]> mElectricStats = new LinkedHashMap<Short, Long[]>();
@@ -111,12 +110,10 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                 aID, // ID
                 aPumpName, // Name
                 aEuMax, // Eu Storage
-                (short) aTier, // Tier
-                "Can be used to remove fluids from GT machine input & output slots.", // Tooltip
+                (short) aTier, // Tier/ Tooltip
                 aTier <= 0 ? EnumRarity.common
                         : aTier == 1 ? EnumRarity.uncommon
                                 : aTier == 2 ? EnumRarity.rare : aTier == 3 ? EnumRarity.epic : EnumRarity.common, // Rarity
-                EnumChatFormatting.GRAY, // Desc colour
                 false // Effect?
         );
     }
@@ -141,43 +138,26 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         }
     }
 
-    public void registerItem(final int id, final String localizedName, final long euStorage, final int tier,
-            final String description) {
-        this.registerItem(
-                id,
-                localizedName,
-                euStorage,
-                (short) tier,
-                description,
-                EnumRarity.common,
-                EnumChatFormatting.GRAY,
-                false);
+    public void registerItem(final int id, final String localizedName, final long euStorage, final int tier) {
+        this.registerItem(id, localizedName, euStorage, (short) tier, EnumRarity.common, false);
     }
 
     public void registerItem(final int id, final String localizedName, final long euStorage, final int tier,
-            final String description, final int burnTime) {
-        this.registerItem(
-                id,
-                localizedName,
-                euStorage,
-                (short) tier,
-                description,
-                EnumRarity.common,
-                EnumChatFormatting.GRAY,
-                false);
+            final int burnTime) {
+        this.registerItem(id, localizedName, euStorage, (short) tier, EnumRarity.common, false);
         this.setBurnValue(id, burnTime);
     }
 
     public void registerItem(final int id, final String localizedName, final long euStorage, final short tier,
-            final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
-            final boolean Effect) {
-        this.addItem(id, localizedName, EnumChatFormatting.YELLOW + "Electric", new Object[] {});
+            final EnumRarity regRarity, final boolean Effect) {
+        this.addItem(
+                id,
+                localizedName,
+                EnumChatFormatting.GRAY + "Can be used to remove fluids from GT machine input & output slots");
         if (euStorage > 0 && tier > 0)
             this.setElectricStats(this.mOffset + id, euStorage, GT_Values.V[tier], tier, -3L, true);
         this.rarity.put(id, regRarity);
         this.itemName.put(id, localizedName);
-        this.itemDescription.put(id, description);
-        this.descColour.put(id, colour);
         this.hasEffect.put(id, Effect);
     }
 
@@ -204,19 +184,19 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
     @Override
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList, final boolean aF3_H) {
         // aList.add("Meta: "+(aStack.getItemDamage()-mOffset));
-
         int aOffsetMeta = getCorrectMetaForItemstack(aStack);
-
-        if ((this.descColour.get(aOffsetMeta) != null) && (this.itemDescription.get(aOffsetMeta) != null)) {
-            aList.add(this.descColour.get(aOffsetMeta) + this.itemDescription.get(aOffsetMeta));
-        }
+        aList.add(
+                GT_LanguageManager.getTranslation(
+                        "gtplusplus." + this.getUnlocalizedName(aStack) + "." + aOffsetMeta + ".tooltip"));
 
         if (aOffsetMeta <= 3) {
             FluidStack f = getFluid(aStack);
-            aList.add("Cannot drain any other standard fluid container block");
-            aList.add("Cannot be emptied via RMB, use inside a tank with GUI");
-            aList.add(EnumChatFormatting.DARK_GRAY + "This is technically just a fancy fluid cell");
-            aList.add(EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName() : "No Fluids Contained"));
+            aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.0"));
+            aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.1"));
+            aList.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("item.itemGregtechPump.tooltip.2"));
+            aList.add(
+                    EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
+                            : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
             aList.add(
                     EnumChatFormatting.BLUE + (f != null ? "" + f.amount : "" + 0)
                             + "L"
@@ -229,25 +209,23 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                        EnumChatFormatting.AQUA + "Contains "
-                                + GT_Utility.formatNumbers(tStats[3])
-                                + " EU   Tier: "
-                                + (tStats[2] >= 0 ? tStats[2] : 0)
-                                + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                                "item.itemBaseEuItem.tooltip.1",
+                                GT_Utility.formatNumbers(tStats[3]),
+                                (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
                     aList.add(
-                            EnumChatFormatting.AQUA + "Empty. You should recycle it properly."
+                            EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
                                     + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                            EnumChatFormatting.AQUA + ""
-                                    + GT_Utility.formatNumbers(tCharge)
-                                    + " / "
-                                    + GT_Utility.formatNumbers(Math.abs(tStats[0]))
-                                    + " EU - Voltage: "
-                                    + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]
+                            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                                    "item.itemBaseEuItem.tooltip.3",
+                                    GT_Utility.formatNumbers(tCharge),
+                                    GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU - Voltage: ",
+                                    V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
                                     + EnumChatFormatting.GRAY);
                 }
             }
@@ -650,8 +628,12 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
             GT_ModHandler.registerBoxableItemToToolBox(rStack);
             this.mEnabledItems.set(aID);
             this.mVisibleItems.set(aID);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            GT_LanguageManager.addStringLocalization(
+                    "gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".name",
+                    aEnglish);
+            GT_LanguageManager.addStringLocalization(
+                    "gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".tooltip",
+                    aToolTip);
             final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {
@@ -713,7 +695,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         if (keyValue < 0 || keyValue > 3) {
             keyValue = 0;
         }
-        return this.itemName.get(keyValue);
+        return GT_LanguageManager
+                .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + keyValue + ".name");
     }
 
     /**

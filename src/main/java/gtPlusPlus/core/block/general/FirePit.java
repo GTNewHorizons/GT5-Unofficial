@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.block.base.BasicBlock;
@@ -40,7 +39,6 @@ public class FirePit extends BasicBlock {
         this.setResistance(35.0F);
         this.setStepSound(Block.soundTypeWood);
         GameRegistry.registerBlock(this, "blockFirePit");
-        LanguageRegistry.addName(this, "Fire Pit");
     }
 
     @Override

@@ -41,10 +41,4 @@ public class BaseItemFood extends ItemFood {
             }
         }
     }
-
-    @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-
-        return ("A Serving of " + this.localName);
-    }
 }

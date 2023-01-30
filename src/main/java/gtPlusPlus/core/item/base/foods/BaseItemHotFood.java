@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gtPlusPlus.api.objects.Logger;
@@ -63,16 +64,11 @@ public class BaseItemHotFood extends BaseItemFood {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("")) {
+            list.add(StatCollector.translateToLocal("item.itemBaseItemHotFood.tooltip.0"));
             list.add(
-                    EnumChatFormatting.GRAY + "Warning: "
-                            + EnumChatFormatting.RED
-                            + "Very hot!"
-                            + EnumChatFormatting.GRAY
-                            + " Avoid direct handling..");
-            list.add(
-                    EnumChatFormatting.GRAY + "This food has "
-                            + ((this.cooldownTime - stack.getItemDamage()) / 20)
-                            + " seconds left, until it is cool.");
+                    EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                            "item.itemBaseItemHotFood.tooltip.1",
+                            (this.cooldownTime - stack.getItemDamage()) / 20));
         }
         super.addInformation(stack, aPlayer, list, bool);
     }

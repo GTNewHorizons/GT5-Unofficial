@@ -16,7 +16,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Utility;
@@ -40,7 +39,6 @@ public class Machine_SuperJukebox extends BlockJukebox {
         setStepSound(soundTypePiston);
         setBlockTextureName("jukebox");
         GameRegistry.registerBlock(this, "blockSuperJukebox");
-        LanguageRegistry.addName(this, "Sir Mixalot [Jukebox]");
     }
 
     /**

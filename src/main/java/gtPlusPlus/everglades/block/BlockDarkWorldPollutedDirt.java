@@ -4,7 +4,6 @@ import net.minecraft.block.BlockDirt;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.interfaces.ITileTooltip;
@@ -17,7 +16,6 @@ public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileToolti
         this.setBlockName("blockDarkWorldGround2");
         this.setHardness(0.5F);
         this.setBlockTextureName("minecraft" + ":" + "dirt");
-        LanguageRegistry.addName(this, "Polluted Soil");
     }
 
     @Override

@@ -7,8 +7,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 
@@ -52,18 +54,8 @@ public class ItemDehydratorCoilWire extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        String itemName = "Coil Wire";
-        String suffixName = "";
-        if (tItem.getItemDamage() == 0) {
-            suffixName = " [EV]";
-        } else if (tItem.getItemDamage() == 1) {
-            suffixName = " [IV]";
-        } else if (tItem.getItemDamage() == 2) {
-            suffixName = " [LuV]";
-        } else if (tItem.getItemDamage() == 3) {
-            suffixName = " [ZPM]";
-        }
-        return (itemName + suffixName);
+        return StatCollector
+                .translateToLocalFormatted("item.itemDehydratorCoilWire.name", GT_Values.VN[tItem.getItemDamage() + 4]);
     }
 
     /*

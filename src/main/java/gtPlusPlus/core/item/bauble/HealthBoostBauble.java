@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import baubles.api.BaubleType;
 
@@ -31,8 +32,8 @@ public class HealthBoostBauble extends BaseBauble {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        list.add(EnumChatFormatting.GRAY + "You feel like you're on top of the world.");
-        list.add(EnumChatFormatting.GRAY + "Wear it around your neck like an amulet.");
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.thekeytothecity.tooltip.0"));
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.thekeytothecity.tooltip.1"));
         super.addInformation(stack, player, list, bool);
     }
 }

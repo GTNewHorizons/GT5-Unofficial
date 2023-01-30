@@ -37,6 +37,7 @@ public enum GTPP_DropType {
         this.mColour = aColour;
         map(aID, this);
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(aName.toLowerCase().replaceAll(" ", ""));
+        GT_LanguageManager.addStringLocalization("gtplusplus.drop." + this.mNameUnlocal, this.mName + " Drop");
     }
 
     public void setHidden() {
@@ -44,7 +45,7 @@ public enum GTPP_DropType {
     }
 
     public String getName() {
-        return GT_LanguageManager.addStringLocalization("drop." + this.mNameUnlocal, this.mName + " Drop");
+        return GT_LanguageManager.getTranslation("gtplusplus.drop." + this.mNameUnlocal);
     }
 
     public int[] getColours() {

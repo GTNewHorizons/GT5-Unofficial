@@ -240,7 +240,10 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     // Doing this override means that there is no localization for language
     // unless you specifically check for localization here and convert
     public String getItemStackDisplayName(ItemStack par1ItemStack) {
-        return "Spawn " + mEntityNameMap.get(par1ItemStack.getItemDamage());
+        return StatCollector.translateToLocalFormatted(
+                "item.ItemCustomSpawnEgg.name",
+                StatCollector
+                        .translateToLocal("entity." + mEntityNameMap.get(par1ItemStack.getItemDamage()) + ".name"));
     }
 
     @Override

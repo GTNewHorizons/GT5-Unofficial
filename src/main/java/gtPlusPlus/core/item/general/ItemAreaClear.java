@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -61,20 +62,15 @@ public class ItemAreaClear extends CoreItem {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        String itemName = "Debug Square";
-        String suffixName = "";
-        if (tItem.getItemDamage() == 0) {
-            suffixName = " [1]";
-        } else if (tItem.getItemDamage() == 1) {
-            suffixName = " [2]";
-        }
-        return (itemName + suffixName);
+        return StatCollector.translateToLocalFormatted("item.itemDebugClearing.name", tItem.getItemDamage() + 1);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        String mMode = (stack.getItemDamage() == 0 ? "Clear" : "Fill");
-        list.add(EnumChatFormatting.GRAY + "" + ("Mode: " + mMode));
+        list.add(
+                EnumChatFormatting.GRAY + ""
+                        + StatCollector
+                                .translateToLocal("item.itemDebugClearing." + stack.getItemDamage() + ".tooltip"));
         super.addInformation(stack, player, list, bool);
     }
 

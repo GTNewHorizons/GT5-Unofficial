@@ -43,6 +43,13 @@ entity.sickBlaze.name=Infected Zealot
 
 //Tile Entities
 tile.blockToolBuilder.name=GregTech Tool Constructor
+tile.blockEggBox.name=Egg Box
+tile.blockCircuitProgrammer.name=Circuit Programmer
+tile.blockDecayablesChest.name=Lead Lined Box
+tile.blockVolumetricFlaskSetter.name=Volumetric Flask Configurator
+tile.blockSuperLight.name=Shining Star
+tile.blockPestKiller.name=Pest Killer
+tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
 
 //Tools
 item.itemBufferCore.name=Energy Core
@@ -53,6 +60,9 @@ item.itemSandstoneHammer.name=Cobblestone Breaker
 # Tooltips
 GTPP.machines.chisel_slot.tooltip=Target Slot
 GTPP.machines.chisel_slot.tooltip.1=§7Put chiseled item to specify output
+GTPP.core.GT_Tooltip=Added by: §2Alkalus §7- §c[GT++]
+GTPP.core.GT_Tooltip_Builder=§2Alkalus §7- §c[GT++]
+GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection.
 
 //Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
@@ -164,7 +174,14 @@ item.backpackGray.name=Gray Backpack
 item.backpackBlack.name=Black Backpack
 item.backpackWhite.name=White Backpack
 item.itemBlueprint.name=Blueprint [I am useless]
-item.itemGemShards.name=Diamond Shards
+item.itemBlueprint.tooltip.0=Technical Document No. %d
+item.itemBlueprint.tooltip.1=Currently holding a blueprint for %s
+item.itemBlueprint.tooltip.2=Currently not holding a blueprint for anything.
+item.itemGemShards.0.name=Diamond Shards
+item.itemGemShards.1.name=Emerald Shards
+item.itemGemShards.2.name=Ruby Shards
+item.itemGemShards.3.name=Sapphire Shards
+item.itemGemShards.tooltip=Diamond Shards
 item.itemHalfCompleteCasings.name=Half Complete Casing
 item.itemSulfuricPotion.name=Throwable Vial of Sulfuric Acid
 item.itemHydrofluoricPotion.name=Throwable Vial of Hydrofluoric Acid
@@ -174,7 +191,25 @@ item.itemFoodRaisinToast.name=A Serving of Raisin Toast
 item.itemHotFoodRaisinToast.name=A Serving of Hot Raisin Toast
 item.itemFoodCurriedSausages.name=A Serving of Curried Sausages
 item.itemHotFoodCurriedSausages.name=A Serving of Hot Curried Sausages
-
+item.itemBaseItemHotFood.tooltip.0=§7Warning: §cVery hot!§7 Avoid direct handling..
+item.itemBaseItemHotFood.tooltip.1=This food has %d seconds left, until it is cool.
+item.itemBoilerChassis.name=Advanced Boiler Chassis [Tier %d]
+item.itemDehydratorCoilWire.name=Coil Wire [%s]
+item.itemDehydratorCoil.name=Dehydrator Coil [%s]
+item.itemLavaFilter.name=Lava Filter
+item.itemLavaFilter.tooltip=Filters Lava within a Thermal Boiler.
+item.itemGrindleTablet.name=Grindle
+item.itemGrindleTablet.tooltip=Used to read data from DataSticks & DataOrbs.
+item.itemDragonJar.0.name=Dragon Capture Jar
+item.itemDragonJar.0.tooltip=Does not contain anything.
+item.itemDragonJar.1.name=Captured Dragon Jar
+item.itemDragonJar.1.tooltip=Contains a %s.
+item.itemControlCore.name=Control Core [%s]
+item.itemControlCore.tooltip.0=Allows a Multiblock to function upto %s
+item.itemControlCore.tooltip.1=Required Tier is determined by the sum of the eu/t of all Energy Inputs
+item.itemControlCore.tooltip.2=Lower tiers may be used to underclock, which is useful in some situations
+item.thekeytothecity.tooltip.0=You feel like you're on top of the world.
+item.thekeytothecity.tooltip.1=Wear it around your neck like an amulet.
 
 //Conversion Dusts
 item.dustNeptunium238.name=Neptunium 238 Dust
@@ -1443,6 +1478,10 @@ item.dustPureYellorium.name=Purified Yellorium Dust
 
 //Shards
 item.itemDrained.name=Drained Shard
+item.itemAer.name=Aer Shard
+item.itemIgnis.name=Ignis Shard
+item.itemTerra.name=Terra Shard
+item.itemAqua.name=Aqua Shard
 item.itemDustInfusedAir.name=Infused Air Dust
 item.itemDustInfusedFire.name=Infused Fire Dust
 item.itemDustInfusedEarth.name=Infused Earth Dust
@@ -1497,7 +1536,18 @@ item.itemPlateDoublePlutonium239.name=Double Plutonium 239 Plate
 item.itemDustPlutonium239.name=Plutonium 239 Dust
 item.itemDustSmallPlutonium239.name=Small Plutonium 239 Dust 
 item.itemDustTinyPlutonium239.name=Tiny Plutonium 239 Dust
-
+item.itemCustomMetaCover.miscutils.GtMachineCasings=%s Machine Plate Cover
+item.itemGregtechPump.tooltip.0=Cannot drain any other standard fluid container block
+item.itemGregtechPump.tooltip.1=Cannot be emptied via RMB, use inside a tank with GUI
+item.itemGregtechPump.tooltip.2=This is technically just a fancy fluid cell
+item.itemGregtechPump.tooltip.3=No Fluids Contained
+item.itemBaseEuItem.tooltip.0=§eElectric
+item.itemBaseEuItem.tooltip.1=Contains %d EU   Tier: %d
+item.itemBaseEuItem.tooltip.2=Empty. You should recycle it properly.
+item.itemBaseEuItem.tooltip.3=%d / %d EU - Voltage: %d
+item.itemDebugClearing.name=Debug Square [%d]
+item.itemDebugClearing.0.tooltip=Mode: Clear
+item.itemDebugClearing.1.tooltip=Mode: Fill
 
 //Multitools
 item.AluminiumMultipick.name=Aluminium Multipick
@@ -1734,9 +1784,24 @@ item.itemPlateLudicrite.name=Ludicrite plate
 item.itemPlateVoid.name=Void plate
 item.itemPlateDimensionShard.name=Dimensional Shard plate
 item.rfEUBattery.name=Universally Chargeable Battery
+item.rfEUBattery.tooltip.0=§eIC2/EU Information§7);
+item.rfEUBattery.tooltip.1=§7Tier: [§e%d§7] Current Power: [§e%d§7/EU]
+item.rfEUBattery.tooltip.2=§7Transfer Limit: [§e%d§7Eu/t] Burn Time: [§e%d§7s]
+item.rfEUBattery.tooltip.3=§cRF Information§7
+item.rfEUBattery.tooltip.4=§7Extraction Rate: [§%d§7Rf/t] Insert Rate: [§c%d§7Rf/t]
+item.rfEUBattery.tooltip.5=§7Current Charge: [§c%d§7Rf / %dRf] §c%.2f%%§7
 item.personalCloakingDevice.name=§9Personal Cloaking Device§7
+item.personalCloakingDevice.tooltip.0=§aWorn as a Belt within Baubles.§7
+item.personalCloakingDevice.tooltip.1=§aDrains 10,000EU/t to provide invisibility.§7
+item.personalCloakingDevice.tooltip.2=§6IC2/EU Information§7
+item.personalCloakingDevice.tooltip.3=§7Tier: [§e%d§7] Input Limit: [§e%d§7EU/t]
+item.personalCloakingDevice.tooltip.4=§7Current Power: [§e%d§7EU] [§e%.2f%%§7]
+item.personalCloakingDevice.tooltip.5=§7Time Remaining: [§e%d§7 seconds]
 item.personalHealingDevice.name=§9Personal Healing NanoBooster§r
 item.SlowBuildingRing.name=§eSlow Building Ring§7
+item.SlowBuildingRing.tooltip.0=§aWorn as a Ring within Baubles. Prevents you from sprinting.§7
+item.SlowBuildingRing.tooltip.1=§aMovement speed reduced to crouch speed.§7
+item.SlowBuildingRing.tooltip.2=§aPress shift while worn to toggle crouch on/off.§7
 item.itemBufferCore1.name=Energy Core [ULV].
 item.itemBufferCore2.name=Energy Core [LV].
 item.itemBufferCore3.name=Energy Core [MV].
@@ -1762,6 +1827,9 @@ item.everglades.trigger.name=§6Alkalus Disk [§cActivated§6]
 tile.blockRainforestOakLog.name=Rainforest Oak
 tile.blockRainforestOakLeaves.name=Oak Leaves
 tile.blockRainforestOakSapling.name=Rainforest Oak Sapling
+tile.blockPineLogLog.name=Pine Log
+tile.blockPineLeaves.name=Pine Leaves
+tile.blockPineSapling.name=Pine Sapling
 
 //TC Stuff
 tile.blockFastAlchemyFurnace.0.name=Broken
@@ -3398,3 +3466,9 @@ item.BasicGenericChemItem.24.name=Advanced Naquadah Catalyst
 item.BasicGenericChemItem.25.name=Raw Intelligence Catalyst
 item.BasicGenericChemItem.26.name=Ultimate Plasticizer Catalyst
 item.BasicGenericChemItem.27.name=Biological Intelligence Catalyst
+
+item.ItemCustomSpawnEgg.name=Spawn %s
+item.itemSimpleFiremaker.message.0=You light the fire pit.
+item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire...
+item.itemSimpleFiremaker.message.2=You created a fire!
+item.itemSimpleFiremaker.message.3=Your attemp does nothing.

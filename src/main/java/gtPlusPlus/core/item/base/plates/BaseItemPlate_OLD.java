@@ -56,12 +56,6 @@ public class BaseItemPlate_OLD extends Item {
         }
     }
 
-    @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-
-        return (this.materialName + " plate");
-    }
-
     public final String getMaterialName() {
         return this.materialName;
     }

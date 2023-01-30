@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -54,22 +55,23 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
         // Write to tooltip list for each viable setting.
         if (itemStack.hasTagCompound()) {
             if (id != -1) {
-                list.add(EnumChatFormatting.GRAY + "Technical Document No. " + id);
+                list.add(
+                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                StatCollector.translateToLocal("item.itemBlueprint.tooltip.0"),
+                                id));
             }
             if (blueprint) {
-                list.add(EnumChatFormatting.BLUE + "Currently holding a blueprint for " + name);
+                list.add(
+                        EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted(
+                                StatCollector.translateToLocal("item.itemBlueprint.tooltip.1"),
+                                name));
             } else {
-                list.add(EnumChatFormatting.RED + "Currently not holding a blueprint for anything.");
+                list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.itemBlueprint.tooltip.2"));
             }
         } else {
-            list.add(EnumChatFormatting.RED + "Currently not holding a blueprint for anything.");
+            list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.itemBlueprint.tooltip.2"));
         }
         super.addInformation(itemStack, aPlayer, list, bool);
-    }
-
-    @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-        return "Blueprint";
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import gtPlusPlus.core.item.base.BaseItemColourable;
 import gtPlusPlus.core.util.Utils;
@@ -47,18 +48,8 @@ public class ItemGemShards extends BaseItemColourable {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        String suffix = " Shards";
-        String gemType = "";
-        if (tItem.getItemDamage() == 0) {
-            gemType = "Diamond";
-        } else if (tItem.getItemDamage() == 1) {
-            gemType = "Emerald";
-        } else if (tItem.getItemDamage() == 2) {
-            gemType = "Ruby";
-        } else if (tItem.getItemDamage() == 3) {
-            gemType = "Sapphire";
-        }
-        return (gemType + suffix);
+        return StatCollector
+                .translateToLocal(getUnlocalizedNameInefficiently(tItem) + "." + tItem.getItemDamage() + ".name");
     }
 
     @Override

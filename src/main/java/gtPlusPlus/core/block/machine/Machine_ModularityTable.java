@@ -11,7 +11,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
@@ -49,7 +48,6 @@ public class Machine_ModularityTable extends BlockContainer implements ITileTool
         this.setBlockName("blockModularity");
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockModularity");
-        LanguageRegistry.addName(this, "Modularity Configurator");
     }
 
     /**

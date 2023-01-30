@@ -14,7 +14,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
@@ -54,7 +53,6 @@ public class FishTrap extends BlockContainer implements ITileTooltip {
         this.setResistance(1f);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockFishTrap");
-        LanguageRegistry.addName(this, "Fish Catcher");
     }
 
     /**

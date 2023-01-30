@@ -14,7 +14,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
@@ -58,7 +57,6 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
         this.setHardness(5f);
         this.setResistance(1f);
         GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockDecayablesChest");
-        LanguageRegistry.addName(this, "Lead Lined Box");
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
     }
 

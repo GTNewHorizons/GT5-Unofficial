@@ -67,18 +67,6 @@ public class BaseItemBackpack extends Item {
     }
 
     @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-        // Name Formatting.
-        String temp = this.unlocalName.replace("backpack", "");
-        // Lets find the colour.
-        if (temp.toLowerCase().contains("dark")) {
-            temp = this.unlocalName.substring(12, this.unlocalName.length());
-            temp = "Dark " + temp;
-        }
-        return (temp + " Backpack");
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(CORE.MODID + ":" + "itemBackpack");

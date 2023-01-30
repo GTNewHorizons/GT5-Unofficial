@@ -14,7 +14,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
@@ -57,7 +56,6 @@ public class EggBox extends BlockContainer implements ITileTooltip {
         this.setHardness(5f);
         this.setResistance(1f);
         GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockEggBox");
-        LanguageRegistry.addName(this, "Egg Box");
     }
 
     /**

@@ -24,6 +24,7 @@ import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
@@ -39,23 +40,21 @@ public class BaseBauble extends Item implements IBauble {
      */
     private BaubleType mThisBauble;
 
-    private final String mDisplayName;
     private List<String> damageNegations = new ArrayList<String>();
     Multimap<String, AttributeModifier> attributes = HashMultimap.create();
 
     public BaseBauble(BaubleType type, String displayName) {
         this.mThisBauble = type;
-        this.mDisplayName = displayName;
         Utils.registerEvent(this);
         this.setMaxStackSize(1);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(Utils.sanitizeString(displayName.toLowerCase()));
+        GT_LanguageManager.addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", displayName);
         GameRegistry.registerItem(this, getUnlocalizedName());
     }
 
     public BaseBauble(BaubleType type, String unlocalName, int register) {
         this.mThisBauble = type;
-        this.mDisplayName = "";
         Utils.registerEvent(this);
         this.setMaxStackSize(1);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
@@ -63,10 +62,11 @@ public class BaseBauble extends Item implements IBauble {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        if (this.mDisplayName == null || this.mDisplayName.length() < 1) {
+        String key = "gtplusplus." + getUnlocalizedName() + ".name";
+        if (key.equals(GT_LanguageManager.getTranslation(key))) {
             return super.getItemStackDisplayName(tItem).replaceAll(".name", "");
         }
-        return this.mDisplayName;
+        return GT_LanguageManager.getTranslation(key);
     }
 
     @SubscribeEvent

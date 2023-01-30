@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
@@ -65,56 +66,16 @@ public class ItemControlCore extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(
-                EnumChatFormatting.GRAY + "Allows a Multiblock to function upto "
-                        + GT_Values.VN[stack.getItemDamage()]
-                        + "");
-        list.add(EnumChatFormatting.GRAY + "Required Tier is determined by the sum of the eu/t of all Energy Inputs");
-        list.add(EnumChatFormatting.GRAY + "Lower tiers may be used to underclock, which is useful in some situations");
+                EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                        "item.itemControlCore.tooltip.0",
+                        GT_Values.VN[stack.getItemDamage()]));
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.itemControlCore.tooltip.1"));
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.itemControlCore.tooltip.2"));
     }
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        if (tItem == null) {
-            return "Control Core";
-        }
-        String aReturnValue = super.getItemStackDisplayName(tItem);
-        if (tItem != null) {
-            try {
-                if (aReturnValue != null) {
-                    if (aReturnValue.toLowerCase().contains(".name")) {
-                        aReturnValue = "Control Core";
-                    } else {
-                        return aReturnValue;
-                    }
-                }
-            } catch (Throwable t) {}
-        }
-        if (aReturnValue == null || !aReturnValue.toLowerCase().contains("control core")
-                || aReturnValue.length() <= 0) {
-            aReturnValue = "Error";
-        }
-        String suffixName = "";
-        if (tItem.getItemDamage() == 0) {
-            suffixName = " [ULV]";
-        } else if (tItem.getItemDamage() == 1) {
-            suffixName = " [LV]";
-        } else if (tItem.getItemDamage() == 2) {
-            suffixName = " [MV]";
-        } else if (tItem.getItemDamage() == 3) {
-            suffixName = " [HV]";
-        } else if (tItem.getItemDamage() == 4) {
-            suffixName = " [EV]";
-        } else if (tItem.getItemDamage() == 5) {
-            suffixName = " [IV]";
-        } else if (tItem.getItemDamage() == 6) {
-            suffixName = " [LuV]";
-        } else if (tItem.getItemDamage() == 7) {
-            suffixName = " [ZPM]";
-        } else if (tItem.getItemDamage() == 8) {
-            suffixName = " [UV]";
-        } else if (tItem.getItemDamage() == 9) {
-            suffixName = " [MAX]";
-        }
-        return (aReturnValue + suffixName);
+        return StatCollector
+                .translateToLocalFormatted("item.itemControlCore.name", GT_Values.VN[tItem.getItemDamage()]);
     }
 }

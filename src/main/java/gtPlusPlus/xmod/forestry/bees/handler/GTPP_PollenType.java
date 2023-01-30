@@ -36,6 +36,7 @@ public enum GTPP_PollenType {
         this.mColour = aColour;
         map(aID, this);
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(aName.toLowerCase().replaceAll(" ", ""));
+        GT_LanguageManager.addStringLocalization("gtplusplus.pollen." + this.mNameUnlocal, this.mName + " Pollen");
     }
 
     public void setHidden() {
@@ -43,7 +44,7 @@ public enum GTPP_PollenType {
     }
 
     public String getName() {
-        return GT_LanguageManager.addStringLocalization("pollen." + this.mNameUnlocal, this.mName + " Pollen");
+        return GT_LanguageManager.getTranslation("gtplusplus.pollen." + this.mNameUnlocal);
     }
 
     public int[] getColours() {

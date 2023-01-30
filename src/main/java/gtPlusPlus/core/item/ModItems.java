@@ -722,8 +722,8 @@ public final class ModItems {
         shardDull = new BaseItemTCShard(
                 "Drained",
                 Utils.rgbtoHexValue(75, 75, 75),
-                "Can be infused to create a magical shard.",
-                "Obtained from Mining Stone/SandStone, Chopping Logs or Shovelling Dirt.");
+                new String[] { "Can be infused to create a magical shard.",
+                        "Obtained from Mining Stone/SandStone, Chopping Logs or Shovelling Dirt." });
 
         // Generates four elemental shards when TC is not installed.
         if (!LoadedMods.Thaumcraft) {

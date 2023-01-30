@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -46,15 +47,6 @@ public class BaseItemGrindle extends Item {
     }
 
     @Override
-    public String getItemStackDisplayName(final ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
-        if (aName.toLowerCase().contains(".name") || aName.toLowerCase().contains("git")) {
-            aName = "Grindle";
-        }
-        return aName;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(CORE.MODID + ":" + "itemTablet");
@@ -68,7 +60,7 @@ public class BaseItemGrindle extends Item {
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
-        aList.add("Used to read data from DataSticks & DataOrbs.");
+        aList.add(StatCollector.translateToLocal("item.itemGrindleTablet.tooltip"));
     }
 
     @Override

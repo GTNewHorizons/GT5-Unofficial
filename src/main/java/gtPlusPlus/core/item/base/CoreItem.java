@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -22,7 +23,6 @@ public class CoreItem extends Item {
 
     private final EnumRarity rarity;
     private final EnumChatFormatting descColour;
-    private final String[] itemDescription;
     protected String itemName;
     private final boolean hasEffect;
 
@@ -182,7 +182,7 @@ public class CoreItem extends Item {
         this.setMaxStackSize(stackSize);
         this.setMaxDamage(maxDmg);
         this.rarity = regRarity;
-        this.itemDescription = description;
+        this.setItemDescription(description);
         this.descColour = colour != null ? colour : EnumChatFormatting.RESET;
         this.hasEffect = Effect;
         this.turnsInto = OverrideItem;
@@ -203,7 +203,7 @@ public class CoreItem extends Item {
         this.setMaxStackSize(stackSize);
         this.setMaxDamage(maxDmg);
         this.rarity = regRarity;
-        this.itemDescription = description;
+        this.setItemDescription(description);
         this.descColour = colour != null ? colour : EnumChatFormatting.RESET;
         this.hasEffect = Effect;
         this.turnsInto = OverrideItem;
@@ -213,10 +213,12 @@ public class CoreItem extends Item {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        if (this.itemDescription.length > 0) {
-            for (int u = 0; u < this.itemDescription.length; u++) {
-                list.add(this.descColour + this.itemDescription[u]);
-            }
+        for (int i = 0;; i++) {
+            String tooltip = GT_LanguageManager
+                    .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
+            if (!("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i).equals(tooltip)) {
+                list.add(tooltip);
+            } else break;
         }
         // list.add(this.descColour+this.itemDescription);
         // super.addInformation(stack, aPlayer, list, bool);
@@ -271,6 +273,13 @@ public class CoreItem extends Item {
         return ItemUtils.getSimpleStack(this);
     }
 
+    public void setItemDescription(String[] description) {
+        for (int i = 0; i < description.length; i++) {
+            GT_LanguageManager.addStringLocalization(
+                    "gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i,
+                    description[i]);
+        }
+    }
     /*
      * @Override public String getItemStackDisplayName(final ItemStack tItem) { if ((this.itemName == null) ||
      * this.itemName.equals("")) { return super.getItemStackDisplayName(tItem); } return this.itemName; }

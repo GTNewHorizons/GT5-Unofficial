@@ -126,16 +126,7 @@ public class BaseItemComponent extends Item {
                 ItemUtils.getSimpleStack(this));
         registerComponent();
 
-        String aFormattedLangName = componentType.getName();
-        if (!aFormattedLangName.startsWith(" ")) {
-            if (aFormattedLangName.contains("@")) {
-                String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " %material " + aSplit[1];
-            }
-        }
-        if (aFormattedLangName.equals(componentType.getName())) {
-            aFormattedLangName = "%material" + aFormattedLangName;
-        }
+        String aFormattedLangName = componentType.getName().replace("@", "%material");
         GT_LanguageManager.addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", aFormattedLangName);
     }
 
@@ -413,30 +404,30 @@ public class BaseItemComponent extends Item {
 
     public static enum ComponentTypes {
 
-        DUST("Dust", " Dust", "dust", OrePrefixes.dust),
-        DUSTSMALL("DustSmall", "Small Pile of@Dust", "dustSmall", OrePrefixes.dustSmall),
-        DUSTTINY("DustTiny", "Tiny Pile of@Dust", "dustTiny", OrePrefixes.dustTiny),
-        INGOT("Ingot", " Ingot", "ingot", OrePrefixes.ingot),
-        HOTINGOT("HotIngot", "Hot@Ingot", "ingotHot", OrePrefixes.ingotHot),
-        PLATE("Plate", " Plate", "plate", OrePrefixes.plate),
-        PLATEDOUBLE("PlateDouble", "Double@Plate", "plateDouble", OrePrefixes.plateDouble),
-        ROD("Rod", " Rod", "stick", OrePrefixes.stick),
-        RODLONG("RodLong", "Long@Rod", "stickLong", OrePrefixes.stickLong),
-        GEAR("Gear", " Gear", "gearGt", OrePrefixes.gearGt),
-        SMALLGEAR("SmallGear", "Small@Gear", "gearGtSmall", OrePrefixes.gearGtSmall), // TODO
-        SCREW("Screw", " Screw", "screw", OrePrefixes.screw),
-        BOLT("Bolt", " Bolt", "bolt", OrePrefixes.bolt),
-        ROTOR("Rotor", " Rotor", "rotor", OrePrefixes.rotor),
-        RING("Ring", " Ring", "ring", OrePrefixes.ring),
-        FOIL("Foil", " Foil", "foil", OrePrefixes.foil),
-        PLASMACELL("CellPlasma", " Plasma Cell", "cellPlasma", OrePrefixes.cellPlasma),
-        CELL("Cell", " Cell", "cell", OrePrefixes.cell),
-        NUGGET("Nugget", " Nugget", "nugget", OrePrefixes.nugget),
-        PLATEHEAVY("HeavyPlate", "Heavy@Plate", "plateHeavy", OrePrefixes.plateQuadruple),
-        SPRING("Spring", " Spring", "spring", OrePrefixes.spring),
-        SMALLSPRING("SmallSpring", "Small@Spring", "springSmall", OrePrefixes.springSmall),
-        FINEWIRE("FineWire", "Fine@Wire", "wireFine", OrePrefixes.wireFine),
-        PLATEDENSE("PlateDense", "Dense@Plate", "plateDense", OrePrefixes.plateDense),;
+        DUST("Dust", "@ Dust", "dust", OrePrefixes.dust),
+        DUSTSMALL("DustSmall", "Small Pile of @ Dust", "dustSmall", OrePrefixes.dustSmall),
+        DUSTTINY("DustTiny", "Tiny Pile of @ Dust", "dustTiny", OrePrefixes.dustTiny),
+        INGOT("Ingot", "@ Ingot", "ingot", OrePrefixes.ingot),
+        HOTINGOT("HotIngot", "Hot @ Ingot", "ingotHot", OrePrefixes.ingotHot),
+        PLATE("Plate", "@ Plate", "plate", OrePrefixes.plate),
+        PLATEDOUBLE("PlateDouble", "Double @ Plate", "plateDouble", OrePrefixes.plateDouble),
+        ROD("Rod", "@ Rod", "stick", OrePrefixes.stick),
+        RODLONG("RodLong", "Long @ Rod", "stickLong", OrePrefixes.stickLong),
+        GEAR("Gear", "@ Gear", "gearGt", OrePrefixes.gearGt),
+        SMALLGEAR("SmallGear", "Small @ Gear", "gearGtSmall", OrePrefixes.gearGtSmall), // TODO
+        SCREW("Screw", "@ Screw", "screw", OrePrefixes.screw),
+        BOLT("Bolt", "@ Bolt", "bolt", OrePrefixes.bolt),
+        ROTOR("Rotor", "@ Rotor", "rotor", OrePrefixes.rotor),
+        RING("Ring", "@ Ring", "ring", OrePrefixes.ring),
+        FOIL("Foil", "@ Foil", "foil", OrePrefixes.foil),
+        PLASMACELL("CellPlasma", "@ Plasma Cell", "cellPlasma", OrePrefixes.cellPlasma),
+        CELL("Cell", "@ Cell", "cell", OrePrefixes.cell),
+        NUGGET("Nugget", "@ Nugget", "nugget", OrePrefixes.nugget),
+        PLATEHEAVY("HeavyPlate", "Heavy @ Plate", "plateHeavy", OrePrefixes.plateQuadruple),
+        SPRING("Spring", "@ Spring", "spring", OrePrefixes.spring),
+        SMALLSPRING("SmallSpring", "Small @ Spring", "springSmall", OrePrefixes.springSmall),
+        FINEWIRE("FineWire", "Fine @ Wire", "wireFine", OrePrefixes.wireFine),
+        PLATEDENSE("PlateDense", "Dense @ Plate", "plateDense", OrePrefixes.plateDense),;
 
         private String COMPONENT_NAME;
         private String DISPLAY_NAME;

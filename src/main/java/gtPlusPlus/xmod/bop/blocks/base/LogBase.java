@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -38,7 +37,6 @@ public abstract class LogBase extends BlockLog {
                 true);
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
-        LanguageRegistry.addName(this, blockNameLocalized);
         Blocks.fire.setFireInfo(this, 20, 100);
     }
 

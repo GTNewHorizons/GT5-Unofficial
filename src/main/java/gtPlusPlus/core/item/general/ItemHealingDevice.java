@@ -87,12 +87,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
     }
 
     @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-
-        return (EnumChatFormatting.BLUE + "Personal Healing NanoBooster" + EnumChatFormatting.RESET);
-    }
-
-    @Override
     public double getDurabilityForDisplay(final ItemStack stack) {
         // return 1.0D - getEnergyStored(stack) / this.capacity;
         return 1.0D - (this.getCharge(stack) / this.getMaxCharge(stack));

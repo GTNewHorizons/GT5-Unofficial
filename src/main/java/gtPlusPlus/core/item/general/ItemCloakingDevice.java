@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
@@ -107,12 +107,6 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
     }
 
     @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-
-        return (EnumChatFormatting.BLUE + "Personal Cloaking Device" + EnumChatFormatting.GRAY);
-    }
-
-    @Override
     public double getDurabilityForDisplay(final ItemStack stack) {
         // return 1.0D - getEnergyStored(stack) / this.capacity;
         return 1.0D - (this.getCharge(stack) / this.getMaxCharge(stack));
@@ -132,36 +126,23 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add("");
-        list.add(EnumChatFormatting.GREEN + "Worn as a Belt within Baubles." + EnumChatFormatting.GRAY);
-        list.add(EnumChatFormatting.GREEN + "Drains 10,000EU/t to provide invisibility." + EnumChatFormatting.GRAY);
+        list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.0"));
+        list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.1"));
         list.add("");
-        list.add(EnumChatFormatting.GOLD + "IC2/EU Information" + EnumChatFormatting.GRAY);
+        list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.2"));
         list.add(
-                EnumChatFormatting.GRAY + "Tier: ["
-                        + EnumChatFormatting.YELLOW
-                        + this.getTier(this.thisStack)
-                        + EnumChatFormatting.GRAY
-                        + "] Input Limit: ["
-                        + EnumChatFormatting.YELLOW
-                        + this.getTransferLimit(this.thisStack)
-                        + EnumChatFormatting.GRAY
-                        + "EU/t]");
+                StatCollector.translateToLocalFormatted(
+                        "item.personalCloakingDevice.tooltip.3",
+                        this.getTier(this.thisStack),
+                        this.getTransferLimit(this.thisStack)));
         list.add(
-                EnumChatFormatting.GRAY + "Current Power: ["
-                        + EnumChatFormatting.YELLOW
-                        + (long) this.getCharge(stack)
-                        + EnumChatFormatting.GRAY
-                        + "EU] ["
-                        + EnumChatFormatting.YELLOW
-                        + MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))
-                        + EnumChatFormatting.GRAY
-                        + "%]");
+                StatCollector.translateToLocalFormatted(
+                        "item.personalCloakingDevice.tooltip.4",
+                        (long) this.getCharge(stack),
+                        MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))));
         list.add(
-                EnumChatFormatting.GRAY + "Time Remaining: ["
-                        + EnumChatFormatting.YELLOW
-                        + this.secondsLeft(stack)
-                        + EnumChatFormatting.GRAY
-                        + " seconds]");
+                StatCollector
+                        .translateToLocalFormatted("item.personalCloakingDevice.tooltip.5", this.secondsLeft(stack)));
         super.addInformation(stack, aPlayer, list, bool);
     }
 
