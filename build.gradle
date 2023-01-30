@@ -1,4 +1,4 @@
-//version: 1675084541
+//version: 1675110695
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -66,7 +66,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.0.18'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.1.2'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -337,7 +337,7 @@ if (identifiedVersion == versionOverride) {
     out.style(Style.Failure).text('Override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println('!\7')
 }
 
-group = modGroup
+group = "com.github.GTNewHorizons"
 if (project.hasProperty("customArchiveBaseName") && customArchiveBaseName) {
     archivesBaseName = customArchiveBaseName
 } else {
@@ -714,16 +714,6 @@ if (usesShadowedDependencies.toBoolean()) {
 ext.publishableDevJar = usesShadowedDependencies.toBoolean() ? tasks.shadowJar : tasks.jar
 ext.publishableObfJar = tasks.reobfJar
 
-tasks.named('extractForgeUserdev', Copy).configure { efu ->
-    doLast {
-        // Fix CoFH-repackaged CCL not finding mappings
-        project.copy {
-            from(mcpTasks.userdevDir("conf"))
-            into(new File(project.buildDir, "unpacked/conf"))
-        }
-    }
-}
-
 tasks.register('apiJar', Jar) {
     from(sourceSets.main.allSource) {
         include modGroupPath + "/" + apiPackagePath + '/**'
@@ -828,7 +818,7 @@ publishing {
                 artifact apiJar
             }
 
-            groupId = System.getenv("ARTIFACT_GROUP_ID") ?: "com.github.GTNewHorizons"
+            groupId = System.getenv("ARTIFACT_GROUP_ID") ?: project.group
             artifactId = System.getenv("ARTIFACT_ID") ?: project.name
             // Using the identified version, not project.version as it has the prepended 1.7.10
             version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
