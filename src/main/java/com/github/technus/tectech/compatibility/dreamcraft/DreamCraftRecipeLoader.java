@@ -348,7 +348,7 @@ public class DreamCraftRecipeLoader {
                     128_000_000,
                     1,
                     new Object[] {
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 1),
+                        new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1L},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SpaceTime, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 8),
                         getModItem("eternalsingularity", "eternal_singularity", 1L),
@@ -1177,7 +1177,7 @@ public class DreamCraftRecipeLoader {
                     new ItemStack[] {
                         getItemContainer("Transformer_UMV_UIV").get(1),
                         getItemContainer("Display").get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 2),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.plate, getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
@@ -3097,12 +3097,12 @@ public class DreamCraftRecipeLoader {
                 128,
                 500000,
                 16,
-                new ItemStack[] {
+                new Object[] {
                     CustomItemList.Machine_Multi_EMjunction.get(1),
                     CustomItemList.eM_Computer_Bus.get(4),
                     ItemList.Field_Generator_UV.get(4),
                     ItemList.Sensor_UV.get(4),
-                    getItemContainer("NanoCircuit").get(4),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 4L},
                     getItemContainer("MysteriousCrystalLens").get(4),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 4),
                 },
@@ -3333,7 +3333,7 @@ public class DreamCraftRecipeLoader {
                     getItemContainer("Hull_UIV").get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 2L),
                     ItemList.Circuit_Chip_QPIC.get(4L),
-                    getItemContainer("NanoCircuit").get(2),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 2L},
                     ItemList.UHV_Coil.get(8L),
                     ItemList.Reactor_Coolant_Sp_6.get(1L),
                     ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -3362,7 +3362,7 @@ public class DreamCraftRecipeLoader {
                     getItemContainer("Hull_UIV").get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUIVBase, 8L),
                     ItemList.Circuit_Chip_QPIC.get(4L),
-                    getItemContainer("NanoCircuit").get(2),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 2L},
                     ItemList.UHV_Coil.get(8L),
                     ItemList.Reactor_Coolant_Sp_6.get(1L),
                     ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -3715,46 +3715,17 @@ public class DreamCraftRecipeLoader {
                 300 * 20,
                 8_000_000);
 
-        // GTNH UIV, UMV, UXV Circuits
+        // GTNH UMV, UXV Circuits
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Circuit_Biomainframe.get(1L),
-                192000,
-                512,
-                2000000,
-                32,
-                new Object[] {
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 8),
-                    ItemList.Circuit_Biomainframe.get(2L),
-                    ItemList.Circuit_Parts_CapacitorXSMD.get(32L),
-                    ItemList.Circuit_Parts_ResistorXSMD.get(32L),
-                    ItemList.Circuit_Parts_TransistorXSMD.get(32L),
-                    ItemList.Circuit_Parts_DiodeXSMD.get(32L),
-                    ItemList.Circuit_Chip_Ram.get(64L),
-                    ItemList.Circuit_Chip_NPIC.get(64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64),
-                    new Object[] {OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
-                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64)
-                },
-                new FluidStack[] {
-                    new FluidStack(solderUEV, 3744),
-                    Materials.Naquadria.getMolten(4032L),
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 20000)
-                },
-                getItemContainer("NanoCircuit").get(1L),
-                8000,
-                32_000_000);
-
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                getItemContainer("NanoCircuit").get(1L),
+                ItemList.Circuit_OpticalMainframe.get(1L),
                 384000,
                 1024,
                 4000000,
                 64,
-                new ItemStack[] {
+                new Object[] {
                     ItemList.Circuit_Board_Bio_Ultra.get(1L),
                     getItemContainer("PicoWafer").get(4L),
-                    getItemContainer("NanoCircuit").get(2L),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 2L},
                     ItemList.Circuit_Parts_TransistorXSMD.get(48L),
                     ItemList.Circuit_Parts_ResistorXSMD.get(48L),
                     ItemList.Circuit_Parts_CapacitorXSMD.get(48L),
@@ -3924,7 +3895,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 20),
+                        new Object[] {OrePrefixes.circuit.get(Materials.Optical), 20L},
                         ItemList.Field_Generator_UEV.get(4),
                         getModItem("eternalsingularity", "eternal_singularity", 4L),
                         getModItem("miscutils", "MU-metaitem.01", 1L, 32105),
@@ -4295,7 +4266,7 @@ public class DreamCraftRecipeLoader {
                             getModItem("DraconicEvolution", "wyvernCore", 4, 0),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1L),
-                            new Object[] {OrePrefixes.circuit.get(Materials.Nano), 1},
+                            new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1L}
                         },
                         new FluidStack[] {
                             Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L),
@@ -4749,8 +4720,8 @@ public class DreamCraftRecipeLoader {
                 },
                 new FluidStack(solderUEV, 288),
                 ItemList.Optically_Compatible_Memory.get(2),
-                10 * 20,
-                7_864_320,
+                20 * 20,
+                1_966_080,
                 false);
 
         // Optical Processor
@@ -5466,7 +5437,7 @@ public class DreamCraftRecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 6L),
                     ItemList.Gravistar.get(8L),
                     ItemList.Emitter_UEV.get(4L),
-                    new Object[] {OrePrefixes.circuit.get(Materials.Nano), 4},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 4L},
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64L),
@@ -5600,7 +5571,7 @@ public class DreamCraftRecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TranscendentMetal, 6L),
                     ItemList.Electric_Motor_UIV.get(2L),
                     ItemList.Electric_Piston_UIV.get(1L),
-                    new Object[] {OrePrefixes.circuit.get(Materials.Nano), 2L},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 2L},
                     new Object[] {OrePrefixes.circuit.get(Materials.Bio), 4L},
                     new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 8L},
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 6L)
@@ -5844,7 +5815,7 @@ public class DreamCraftRecipeLoader {
                     ItemList.Electric_Motor_UMV.get(2L),
                     ItemList.Electric_Piston_UMV.get(1L),
                     new Object[] {OrePrefixes.circuit.get(Materials.Piko), 2L},
-                    new Object[] {OrePrefixes.circuit.get(Materials.Nano), 4L},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 4L},
                     new Object[] {OrePrefixes.circuit.get(Materials.Bio), 8L},
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 6L)
                 },
@@ -6746,7 +6717,7 @@ public class DreamCraftRecipeLoader {
             new Object[] {OrePrefixes.circuit.get(Materials.Superconductor), 1L}, // UV
             new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 1L}, // UHV
             new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L}, // UEV
-            new Object[] {OrePrefixes.circuit.get(Materials.Nano), 1L}, // UIV
+            new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1L}, // UIV
             new Object[] {OrePrefixes.circuit.get(Materials.Piko), 1L}, // UMV
             new Object[] {OrePrefixes.circuit.get(Materials.Quantum), 1L}, // UXV
             new Object[] {OrePrefixes.circuit.get(Materials.Quantum), 4L
