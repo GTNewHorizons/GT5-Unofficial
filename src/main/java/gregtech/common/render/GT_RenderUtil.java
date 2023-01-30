@@ -20,9 +20,10 @@ public class GT_RenderUtil {
             GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 255.0f);
         } else {
             System.out.println("WARNING: " + aStack.getDisplayName() + " does not have an associated GT colour.");
-
-public static void renderBlockIcon(
-            RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ, IIcon aIcon, byte aSide) {
+        }
+    }
+    public static void renderBlockIcon(
+        RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ, IIcon aIcon, byte aSide) {
         switch (aSide) {
             case 0:
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
