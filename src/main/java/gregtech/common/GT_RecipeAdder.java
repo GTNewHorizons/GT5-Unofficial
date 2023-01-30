@@ -2874,7 +2874,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             FluidStack[] FluidInputArray,
             ItemStack[] OutputItemArray,
             FluidStack[] FluidOutputArray,
-            int[] aChances,
             int aDuration,
             int aEUt,
             boolean aCleanroom) {
@@ -2883,7 +2882,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 ItemInputArray,
                 OutputItemArray,
                 null,
-                aChances,
+                null,
                 FluidInputArray,
                 FluidOutputArray,
                 aDuration,
