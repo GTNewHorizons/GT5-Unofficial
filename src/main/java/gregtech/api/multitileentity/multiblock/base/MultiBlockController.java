@@ -1117,25 +1117,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public String getInventoryNameFromID(MultiBlockPart aPart) {
-        Map<String, String> tInvNames = getMultiBlockInventoryNames(aPart);
-        if (tInvNames == null) {
-            return "all";
-        }
-        return tInvNames.getOrDefault(aPart.getLockedInventory(), "all");
-    }
-
-    @Override
-    public String getInventoryNameFromID(MultiBlockPart aPart, String aID) {
-        Map<String, String> tInvNames = getMultiBlockInventoryNames(aPart);
-        if (tInvNames == null) {
-            return "all";
-        }
-        if (aID.equals("controller")) return "controller";
-        return tInvNames.getOrDefault(aID, "all");
-    }
-
-    @Override
     public boolean hasCustomInventoryName(MultiBlockPart aPart) {
         return hasCustomInventoryName();
     }
