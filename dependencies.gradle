@@ -9,7 +9,7 @@ dependencies {
     compile("com.github.GTNewHorizons:NotEnoughItems:2.3.24-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.7:dev")
     compile("com.github.GTNewHorizons:GTNHLib:0.0.11:dev")
-    compile("com.github.GTNewHorizons:ModularUI:1.0.52:dev")
+    compile("com.github.GTNewHorizons:ModularUI:1.0.53:dev")
     compile("com.github.GTNewHorizons:waila:1.5.22:dev")
     compile("com.github.GTNewHorizons:Eternal-Singularity:1.0.8:dev")
 
