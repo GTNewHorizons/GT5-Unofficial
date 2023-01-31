@@ -865,7 +865,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
         if (aType == InventoryUpgrade.OUTPUT && multiBlockOutputInventory.containsKey(aID)) {
             multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
-            multiBlockInputInventoryNames.remove(aID, aName);
+            multiBlockOutputInventoryNames.remove(aID, aName);
         }
     }
 
@@ -1063,8 +1063,17 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public List<String> getInventoryNames(MultiBlockPart aPart) {
         final List<String> inventoryNames = new ArrayList<>();
         inventoryNames.add("all");
-        inventoryNames.addAll(getMultiBlockInventory(aPart).keySet());
+        inventoryNames.add("controller");
+        inventoryNames.addAll(getMultiBlockInventoryNames(aPart).values());
         return inventoryNames;
+    }
+
+    @Override
+    public List<String> getInventoryIDs(MultiBlockPart aPart) {
+        final List<String> tInventoryIDs = new ArrayList<>();
+        tInventoryIDs.add("all");
+        tInventoryIDs.addAll(getMultiBlockInventory(aPart).keySet());
+        return tInventoryIDs;
     }
 
     @Override
@@ -1085,25 +1094,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
 
         return str.toString();
-    }
-
-    @Override
-    public String getInventoryNameFromID(MultiBlockPart aPart) {
-        Map<String, String> tInvNames = getMultiBlockInventoryNames(aPart);
-        if (tInvNames == null) {
-            return "all";
-        }
-        return tInvNames.getOrDefault(aPart.getLockedInventory(), "all");
-    }
-
-    @Override
-    public String getInventoryNameFromID(MultiBlockPart aPart, String aID) {
-        Map<String, String> tInvNames = getMultiBlockInventoryNames(aPart);
-        if (tInvNames == null) {
-            return "all";
-        }
-        if (aID.equals("controller")) return "controller";
-        return tInvNames.getOrDefault(aID, "all");
     }
 
     @Override

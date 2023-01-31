@@ -54,7 +54,5 @@ public interface IMultiBlockInventory {
 
     List<String> getInventoryNames(MultiBlockPart aPart);
 
-    String getInventoryNameFromID(MultiBlockPart aPart);
-
-    String getInventoryNameFromID(MultiBlockPart aPart, String aID);
+    List<String> getInventoryIDs(MultiBlockPart aPart);
 }

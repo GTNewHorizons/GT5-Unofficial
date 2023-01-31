@@ -787,20 +787,15 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
                         }
                         setSelected.run();
                     });
-                    label = controller.getInventoryNameFromID(this);
                 },
                 true);
-        int index = 0;
-        for (String tID : controller.getInventoryNames(this)) {
-            dropDown.setLabel(index++, controller.getInventoryNameFromID(this, tID));
-        }
         builder.widget(
                 dropDown.setSelected(mLockedInventoryIndex).setExpandedMaxHeight(60)
                         .setDirection(DropDownWidget.Direction.DOWN).setPos(53, 5).setSize(70, 11));
     }
 
     protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
-        final List<String> invNames = controller.getInventoryNames(this);
+        final List<String> invNames = controller.getInventoryIDs(this);
         if (index > invNames.size()) {
             return invNames.get(0);
         }
