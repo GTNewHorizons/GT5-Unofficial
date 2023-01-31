@@ -36,15 +36,15 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     public IStructureDefinition<MultiBlock_Macerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_Macerator>builder()
-                    .addShape(STACKABLE_TOP, transpose(new String[][] {
-                        {" CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC "},
-                    }))
-                    .addShape(STACKABLE_MIDDLE, transpose(new String[][] {
-                        {"  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  "},
-                    }))
-                    .addShape(STACKABLE_BOTTOM, transpose(new String[][] {
-                        {" A~F ", "AAAAA", "AAAAA", "AAAAA", " AAA "},
-                    }))
+                    .addShape(
+                            STACKABLE_TOP,
+                            transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
+                    .addShape(
+                            STACKABLE_MIDDLE,
+                            transpose(new String[][] { { "  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  " }, }))
+                    .addShape(
+                            STACKABLE_BOTTOM,
+                            transpose(new String[][] { { " A~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
                     .addElement('A', ofChain(addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), ENERGY_IN)))
                     .addElement(
                             'B',

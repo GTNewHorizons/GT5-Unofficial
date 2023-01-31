@@ -1,12 +1,15 @@
 package gregtech.api.multitileentity.multiblock.casing;
 
+import java.util.UUID;
+
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import java.util.UUID;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class InventoryUpgrade extends AdvancedCasing {
+
     public UUID mInventoryID;
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
