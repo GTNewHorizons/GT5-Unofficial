@@ -17,6 +17,7 @@ import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
+
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY = B[4];
 
     private int features = 0;
