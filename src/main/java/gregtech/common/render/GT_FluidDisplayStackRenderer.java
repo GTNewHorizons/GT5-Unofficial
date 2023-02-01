@@ -77,7 +77,7 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
             if (fluidAmount < 10_000) {
                 amountString = "" + fluidAmount + "L";
             } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount);
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + "L";
             }
 
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
