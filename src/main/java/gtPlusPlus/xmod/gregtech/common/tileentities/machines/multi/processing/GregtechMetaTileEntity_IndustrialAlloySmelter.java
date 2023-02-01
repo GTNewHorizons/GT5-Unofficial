@@ -251,7 +251,8 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
                 .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                 .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).enableHeatOC().setRecipeHeat(0)
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                .enableHeatOC().setRecipeHeat(0)
                 // Need to multiple by 2 because heat OC is done only once every 1800 and this one does it once every
                 // 900
                 .setMultiHeat((int) getCoilLevel().getHeat() * 2).calculate();

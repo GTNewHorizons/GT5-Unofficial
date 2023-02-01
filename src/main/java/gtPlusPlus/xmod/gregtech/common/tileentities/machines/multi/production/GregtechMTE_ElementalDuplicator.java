@@ -30,6 +30,8 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -274,6 +276,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
 
+        long tEnergy = getMaxInputEu();
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         GT_Recipe tRecipe = null;
@@ -317,14 +320,41 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
             return false;
         }
 
-        return super.checkRecipeGeneric(
-                aItemInputs,
-                aFluidInputs,
-                aMaxParallelRecipes,
-                aEUPercent,
-                aSpeedBonusPercent,
-                aOutputChanceRoll,
-                tRecipe);
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
+                .enableConsumption().enableOutputCalculation();
+        if (!mVoidExcess) {
+            helper.enableVoidProtection(this);
+        }
+
+        if (mUseMultiparallelMode) {
+            helper.enableBatchMode(128);
+        }
+
+        helper.build();
+
+        if (helper.getCurrentParallel() == 0) {
+            return false;
+        }
+
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
+                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                .enablePerfectOC().calculate();
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
+
+        mOutputItems = helper.getItemOutputs();
+        mOutputFluids = helper.getFluidOutputs();
+        updateSlots();
+
+        // Play sounds (GT++ addition - GT multiblocks play no sounds)
+        startProcess();
+        return true;
     }
 
     @Override

@@ -271,7 +271,8 @@ public class GregtechMetaTileEntity_IndustrialChisel
             GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
                     .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                     .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                    .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).calculate();
+                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                    .calculate();
             lEUt = -calculator.getConsumption();
             mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
 

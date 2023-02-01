@@ -696,7 +696,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
                 .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent)).setParallel(helper.getCurrentParallel())
+                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
                 .calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
@@ -903,7 +904,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
                 .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                 .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).calculate();
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                .calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(mMaxProgresstime * helper.getDurationMultiplier());
 

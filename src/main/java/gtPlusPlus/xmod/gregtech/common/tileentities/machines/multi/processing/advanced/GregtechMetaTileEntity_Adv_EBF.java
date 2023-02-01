@@ -296,9 +296,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
                 .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                 .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).enableHeatOC()
-                .enableHeatDiscount().setRecipeHeat(tRecipe.mSpecialValue).setMultiHeat((int) getCoilLevel().getHeat())
-                .calculate();
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                .enableHeatOC().enableHeatDiscount().setRecipeHeat(tRecipe.mSpecialValue)
+                .setMultiHeat((int) getCoilLevel().getHeat()).calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
 

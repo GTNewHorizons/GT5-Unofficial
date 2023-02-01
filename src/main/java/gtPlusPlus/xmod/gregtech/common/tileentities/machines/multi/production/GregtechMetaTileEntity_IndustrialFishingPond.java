@@ -508,7 +508,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
                 .setDuration(g.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                 .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel(Math.min(aMaxParallelRecipes, helper.getCurrentParallel())).calculate();
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                .calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
 
