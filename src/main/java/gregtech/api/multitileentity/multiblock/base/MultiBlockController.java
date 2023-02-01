@@ -394,8 +394,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public void onFirstTick(boolean aIsServerSide) {
         super.onFirstTick(aIsServerSide);
-        if (aIsServerSide) checkStructure(true);
-        else StructureLibAPI.queryAlignment(this);
+        if (aIsServerSide) {
+            checkStructure(true);
+        } else {
+            StructureLibAPI.queryAlignment(this);
+        }
     }
 
     private boolean tickCovers() {
@@ -428,10 +431,15 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public void onPostTick(long aTick, boolean aIsServerSide) {
         if (aIsServerSide) {
             if (aTick % 600 == 5) {
+                clearSpecialLists();
                 // Recheck the structure every 30 seconds or so
                 if (!checkStructure(false)) checkStructure(true);
             }
         }
+    }
+
+    protected void clearSpecialLists() {
+        mUpgradeCasings.clear();
     }
 
     @Override
