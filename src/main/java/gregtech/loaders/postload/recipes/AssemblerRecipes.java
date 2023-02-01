@@ -30,6 +30,7 @@ public class AssemblerRecipes implements Runnable {
         this.withoutGTPPRecipes();
         this.loadRailcraftRecipes();
         this.withGalaxySPace();
+		this.addBusAndHatchRecipes();
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1L),
