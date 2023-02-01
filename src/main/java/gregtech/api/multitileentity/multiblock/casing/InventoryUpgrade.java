@@ -44,11 +44,7 @@ public class InventoryUpgrade extends AdvancedCasing {
             mInventoryID = UUID.randomUUID();
         }
         mInventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
-        if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
-            mInventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
-        } else {
-            mInventoryName = "inventory" + GT_Values.VN[mTier];
-        }
+        mInventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
         
     }
 
@@ -56,9 +52,7 @@ public class InventoryUpgrade extends AdvancedCasing {
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
         aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, mInventoryID.toString());
-        if (!mInventoryName.equals("inventory" + GT_Values.VN[mTier])) {
-            aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, mInventoryName);
-        }
+        aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, mInventoryName);
     }
 
     @Override
