@@ -8,7 +8,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 
@@ -45,7 +44,7 @@ public class InventoryUpgrade extends AdvancedCasing {
         }
         mInventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
         mInventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
-        
+
     }
 
     @Override
