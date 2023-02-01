@@ -93,7 +93,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
-    private int mMaxProgresstime = 0, mProgresstime = 0;
+    private int mMaxProgressTime = 0, mProgressTime = 0;
     private boolean mStructureOkay = false, mStructureChanged = false;
     private boolean mWorks = true, mWorkUpdate = false, mWasShutdown = false, mActive = false;
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
@@ -467,12 +467,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     // IMachineProgress
     @Override
     public int getProgress() {
-        return mProgresstime;
+        return mProgressTime;
     }
 
     @Override
     public int getMaxProgress() {
-        return mMaxProgresstime;
+        return mMaxProgressTime;
     }
 
     @Override
@@ -654,9 +654,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                     tContainer.setMultiTile(world, x, y, z);
                     ((MultiBlockPart) te).setTarget(MultiBlockController.this, aModes);
 
-                    if (te instanceof AdvancedCasing) {
-                        mUpgradeCasings.add((AdvancedCasing) te);
-                    }
+                    registerSpecialCasings((MultiBlockPart) te);
                 }
 
                 return false;
@@ -666,6 +664,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 return TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon();
             }
         };
+    }
+
+    protected void registerSpecialCasings(MultiBlockPart aPart) {
+        if (aPart instanceof AdvancedCasing) {
+            mUpgradeCasings.add((AdvancedCasing) aPart);
+        }
     }
 
     /**
@@ -853,13 +857,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             if (multiBlockInputInventory.containsKey(aID)) return;
             multiBlockInputInventory.put(aID, new ItemStackHandler(aInventorySize));
             multiBlockInputInventoryNames.put(aID, aName);
-            return;
         }
         if (aType == InventoryUpgrade.OUTPUT || aType == InventoryUpgrade.BOTH) {
             if (multiBlockOutputInventory.containsKey(aID)) return;
             multiBlockOutputInventory.put(aID, new ItemStackHandler(aInventorySize));
             multiBlockOutputInventoryNames.put(aID, aName);
-            return;
         }
     }
 

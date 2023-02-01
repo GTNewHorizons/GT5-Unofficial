@@ -20,7 +20,7 @@ public class InventoryUpgrade extends AdvancedCasing {
     public static final int BOTH = 2;
     private String mInventoryName = "inventory";
     private int mInventorySize = 16;
-    private int mType = 2;
+    private int mType = BOTH;
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {
@@ -44,13 +44,21 @@ public class InventoryUpgrade extends AdvancedCasing {
             mInventoryID = UUID.randomUUID();
         }
         mInventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
-        mInventoryName = "inventory" + GT_Values.VN[mTier];
+        if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
+            mInventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
+        } else {
+            mInventoryName = "inventory" + GT_Values.VN[mTier];
+        }
+        
     }
 
     @Override
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
         aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, mInventoryID.toString());
+        if (!mInventoryName.equals("inventory" + GT_Values.VN[mTier])) {
+            aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, mInventoryName);
+        }
     }
 
     @Override

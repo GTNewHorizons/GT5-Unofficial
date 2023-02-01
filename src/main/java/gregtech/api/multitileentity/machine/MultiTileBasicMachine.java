@@ -31,8 +31,6 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
-    protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
-
     private static final String TEXTURE_LOCATION = "multitileentity/machines/";
     public IIconContainer[] mTexturesInactive = emptyIconContainerArray;
     public IIconContainer[] mTexturesActive = emptyIconContainerArray;
