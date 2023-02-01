@@ -319,6 +319,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         for (Slice slice : slices) {
             slice.reset();
         }
+        mMaxProgresstime = 0;
         getBaseMetaTileEntity().issueClientUpdate();
     }
 
