@@ -2316,18 +2316,6 @@ public class RECIPES_Machines {
                     GregtechItemList.Hatch_Air_Intake.get(1));
 
             RecipeUtils.addShapedGregtechRecipe(
-                    CI.getPlate(6, 1),
-                    ItemList.Casing_Gearbox_Titanium.get(1),
-                    CI.getPlate(6, 1),
-                    CI.getPlate(6, 1),
-                    CI.getFluidRegulator(5, 1),
-                    CI.getPlate(6, 1),
-                    CI.getTieredCircuit(6),
-                    ItemList.Hatch_Input_IV.get(1),
-                    CI.getTieredCircuit(6),
-                    GregtechItemList.Hatch_Reservoir.get(1));
-
-            RecipeUtils.addShapedGregtechRecipe(
                     CI.getPlate(7, 1),
                     GregtechItemList.Hatch_Air_Intake.get(1),
                     CI.getPlate(7, 1),
@@ -3041,6 +3029,15 @@ public class RECIPES_Machines {
         }
 
         int aCostMultiplier = 1;
+
+        // Reservoir Hatch
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hatch_Input_EV.get(1), GT_ModHandler.getModItem("RIO", "tile.machine", 1),
+                        ItemList.Electric_Pump_EV.get(1) },
+                GT_Values.NF,
+                GregtechItemList.Hatch_Reservoir.get(1),
+                100,
+                1920);
 
         // Mystic Frame
         CORE.RA.addSixSlotAssemblingRecipe(

@@ -1,26 +1,16 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.IFluidHandler;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_FluidGenerator {
-
-    private static Block sBlock_EIO;
-    private static Block sBlock_RIO;
 
     public GT_MetaTileEntity_Hatch_Reservoir(final int aID, final String aName, final String aNameRegional,
             final int aTier) {
@@ -38,10 +28,9 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public String[] getCustomTooltip() {
-        String[] aTooltip = new String[3];
-        aTooltip[0] = "Requires a Block of water facing the intake";
-        aTooltip[1] = "Infinite water supply hatch";
-        aTooltip[2] = "Creates 8000L of Water every 4 ticks";
+        String[] aTooltip = new String[2];
+        aTooltip[0] = "Infinite water supply hatch with 100ML capacity";
+        aTooltip[1] = "Fills to max capacity every 5 seconds";
         return aTooltip;
     }
 
@@ -52,65 +41,22 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public int getAmountOfFluidToGenerate() {
-        return 8000;
+        return 100000000;
     }
 
     @Override
     public int getMaxTickTime() {
-        return 4;
+        return 100;
     }
 
     @Override
     public int getCapacity() {
-        return 256000;
-    }
-
-    private static void setCrossModData() {
-        if (LoadedMods.EnderIO && sBlock_EIO == null) {
-            sBlock_EIO = GameRegistry.findBlock("EnderIO", "blockReservoir");
-        }
-        if (LoadedMods.RemoteIO && sBlock_RIO == null) {
-            sBlock_RIO = GameRegistry.findBlock("RIO", "machine");
-        }
-    }
-
-    public static boolean isTileValid(TileEntity aTile) {
-        if (aTile != null) {
-            if (aTile instanceof IFluidHandler) {
-                IFluidHandler aFluidHandler = (IFluidHandler) aTile;
-                return aFluidHandler.canDrain(ForgeDirection.UNKNOWN, FluidRegistry.WATER);
-            }
-        }
-        return false;
+        return 100000000;
     }
 
     @Override
     public boolean doesHatchMeetConditionsToGenerate() {
-        Block aWater = this.getBaseMetaTileEntity().getBlockAtSide(this.getBaseMetaTileEntity().getFrontFacing());
-        if (aWater != null && aWater != Blocks.air) {
-            if (!this.canTankBeFilled()) {
-                return false;
-            }
-            setCrossModData();
-            if (LoadedMods.EnderIO) {
-                if (aWater == sBlock_EIO) {
-                    return isTileValid(
-                            this.getBaseMetaTileEntity()
-                                    .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
-                }
-            }
-            if (LoadedMods.RemoteIO) {
-                if (aWater == sBlock_RIO
-                        && this.getBaseMetaTileEntity().getMetaIDAtSide(this.getBaseMetaTileEntity().getFrontFacing())
-                                == 0) {
-                    return isTileValid(
-                            this.getBaseMetaTileEntity()
-                                    .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
-                }
-            }
-            return aWater == Blocks.water || aWater == Blocks.flowing_water;
-        }
-        return false;
+        return true;
     }
 
     @Override
