@@ -27,4 +27,6 @@ public interface IMultiBlockController
     void registerInventory(String aName, String aID, int aInventorySize, int aType);
 
     void unregisterInventory(String aName, String aID, int aType);
+
+    void changeInventoryName(String aName, String aID, int aType);
 }

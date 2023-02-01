@@ -251,6 +251,7 @@ public class GT_Values {
                 LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
                 UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String
                 UPGRADE_INVENTORY_UUID = "gt.invuuid.upg", // String
+                UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
                 UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
                 UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
                 empty_ = "";

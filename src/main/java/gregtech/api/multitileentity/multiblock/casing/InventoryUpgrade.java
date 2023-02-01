@@ -4,6 +4,10 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -16,11 +20,14 @@ public class InventoryUpgrade extends AdvancedCasing {
     public static final int BOTH = 2;
     private String mInventoryName = "inventory";
     private int mInventorySize = 16;
+    private int mType = 2;
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {
-        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), mInventorySize, INPUT);
-        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), mInventorySize, OUTPUT);
+        if (mType == BOTH) {
+            mInventorySize /= 2;
+        }
+        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), mInventorySize, mType);
     }
 
     @Override
@@ -49,10 +56,29 @@ public class InventoryUpgrade extends AdvancedCasing {
     @Override
     protected void onBaseTEDestroyed() {
         super.onBaseTEDestroyed();
+        unregisterInventories();
+    }
+
+    private void unregisterInventories() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
-            controller.unregisterInventory(mInventoryName, mInventoryID.toString(), INPUT);
-            controller.unregisterInventory(mInventoryName, mInventoryID.toString(), OUTPUT);
+            controller.unregisterInventory(mInventoryName, mInventoryID.toString(), mType);
         }
+    }
+
+    @Override
+    public boolean hasGui(byte aSide) {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+        builder.widget(new TextFieldWidget().setGetter(() -> mInventoryName).setSetter((val) -> {
+            mInventoryName = val;
+            final IMultiBlockController controller = getTarget(false);
+            if (controller != null) {
+                controller.changeInventoryName(mInventoryName, mInventoryID.toString(), mType);
+            }
+        }).setSize(100, 25).setPos(50, 30));
     }
 }
