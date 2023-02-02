@@ -49,7 +49,7 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
 
     // 1 Trillion EU/t
     private static BigInteger UEV_cap_eu_per_tick =
-        UEV_wireless_eu_cap.divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+            UEV_wireless_eu_cap.divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     public static long EV_cap_storage = 60_000_000L;
     public static long IV_cap_storage = 600_000_000L;
@@ -96,10 +96,10 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
                 break;
             case 8:
                 lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_cap_storage)
-                    + EnumChatFormatting.GRAY + "EU");
+                        + EnumChatFormatting.GRAY + "EU");
                 lines.add("Supports up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_cap_eu_per_tick)
-                    + EnumChatFormatting.GRAY + "EU/t of wireless transfer per " + GT_Values.TIER_COLORS[10]
-                    + GT_Values.VN[10] + EnumChatFormatting.GRAY + " capacitor.");
+                        + EnumChatFormatting.GRAY + "EU/t of wireless transfer per " + GT_Values.TIER_COLORS[10]
+                        + GT_Values.VN[10] + EnumChatFormatting.GRAY + " capacitor.");
                 break;
         }
     }
