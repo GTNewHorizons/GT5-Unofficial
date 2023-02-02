@@ -276,7 +276,6 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
 
-        long tEnergy = getMaxInputEu();
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         GT_Recipe tRecipe = null;
@@ -321,7 +320,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         }
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
+                .setFluidInputs(aFluidInputs).setAvailableEUt(tVoltage).setMaxParallel(aMaxParallelRecipes)
                 .enableConsumption().enableOutputCalculation();
         if (!mVoidExcess) {
             helper.enableVoidProtection(this);
@@ -340,7 +339,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tVoltage)
                 .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
                 .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
                 .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
