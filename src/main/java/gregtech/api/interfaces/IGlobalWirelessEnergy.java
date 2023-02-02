@@ -5,6 +5,7 @@ import static gregtech.common.misc.GlobalVariableStorage.*;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
@@ -135,5 +136,17 @@ public interface IGlobalWirelessEnergy {
         GlobalEnergy.clear();
         GlobalEnergyName.clear();
         GlobalEnergyTeam.clear();
+    }
+
+    default void processInitialSettings(final IGregTechTileEntity machine, String UUID, String name, final long ticks) {
+
+        // On first tick find the player name and attempt to add them to the map.
+        if (ticks == 1) {
+            // UUID and username of the owner.
+            UUID = machine.getOwnerUuid().toString();
+            name = machine.getOwnerName();
+
+            strongCheckOrAddUser(UUID, name);
+        }
     }
 }
