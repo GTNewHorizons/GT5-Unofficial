@@ -18,15 +18,16 @@ public class InventoryUpgrade extends AdvancedCasing {
     public static final int OUTPUT = 1;
     public static final int BOTH = 2;
     private String mInventoryName = "inventory";
-    private int mInventorySize = 16;
+    private int mInventorySize;
     private int mType = BOTH;
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {
+        int tInvSize = mInventorySize;
         if (mType == BOTH) {
-            mInventorySize /= 2;
+            tInvSize /= 2;
         }
-        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), mInventorySize, mType);
+        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), tInvSize, mType);
     }
 
     @Override
