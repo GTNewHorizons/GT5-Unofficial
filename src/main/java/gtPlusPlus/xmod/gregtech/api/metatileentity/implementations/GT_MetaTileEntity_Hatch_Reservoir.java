@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public int getAmountOfFluidToGenerate() {
-        return 100000000;
+        return 1000000000;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public int getCapacity() {
-        return 100000000;
+        return 2000000000;
     }
 
     @Override
