@@ -1,4 +1,4 @@
-package gregtech.common.misc.spaceprojects.intefaces;
+package gregtech.common.misc.spaceprojects.interfaces;
 
 import java.util.List;
 
