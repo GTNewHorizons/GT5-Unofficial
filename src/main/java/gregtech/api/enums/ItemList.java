@@ -1166,6 +1166,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_LargeBoiler_TungstenSteel,
     Machine_Multi_BlastFurnace,
     Machine_Multi_PlasmaForge,
+    Machine_Multi_TranscendentPlasmaMixer,
     Machine_Multi_ImplosionCompressor,
     Machine_Multi_VacuumFreezer,
     Machine_Multi_Furnace,

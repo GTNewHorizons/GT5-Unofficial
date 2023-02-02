@@ -1728,6 +1728,26 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .setUsualFluidInputCount(9).setUsualFluidOutputCount(9)
                         .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
+
+        public static final GT_Recipe_Map sTranscendentPlasmaMixerRecipes = new GT_Recipe_Map_LargeNEI(
+            new HashSet<>(20),
+            "gt.recipe.plasmaforge",
+            "Transcendent Plasma Mixer",
+            null,
+            RES_PATH_GUI + "basicmachines/PlasmaForge",
+            9,
+            9,
+            0,
+            0,
+            1,
+            "Heat Capacity: ",
+            1,
+            " K",
+            false,
+            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+            .setUsualFluidInputCount(9).setUsualFluidOutputCount(9)
+            .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
+
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
                 new HashSet<>(200),
                 "gt.recipe.primitiveblastfurnace",
@@ -3441,7 +3461,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Draws text on NEI recipe.
-         * 
+         *
          * @param yShift y position to shift after this text
          */
         @SuppressWarnings("SameParameterValue")
@@ -3451,7 +3471,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Draws text on NEI recipe.
-         * 
+         *
          * @param xStart x position to start drawing
          * @param yShift y position to shift after this text
          */
@@ -5220,7 +5240,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Add a breeder cell.
-         * 
+         *
          * @param input          raw stack. should be undamaged.
          * @param output         breed output
          * @param heatMultiplier bonus progress per neutron pulse per heat step

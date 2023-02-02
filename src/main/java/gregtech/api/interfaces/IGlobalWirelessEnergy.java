@@ -57,7 +57,7 @@ public interface IGlobalWirelessEnergy {
     // If the value goes below 0 it will return false and not perform the operation.
     // BigIntegers have much slower operations than longs/ints. You should call these methods
     // as infrequently as possible and bulk store values to add to the global map.
-    default boolean addEUToGlobalEnergyMap(String user_uuid, BigInteger EU) {
+    default boolean addEUToGlobalEnergyMap(String userUUID, BigInteger EU) {
 
         // Mark the data as dirty and in need of saving.
         try {
@@ -68,15 +68,15 @@ public interface IGlobalWirelessEnergy {
         }
 
         // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
-        String team_uuid = GlobalEnergyTeam.getOrDefault(user_uuid, user_uuid);
+        String teamUUID = GlobalEnergyTeam.getOrDefault(userUUID, userUUID);
 
         // Get the teams total energy stored. If they are not in the map, return 0 EU.
-        BigInteger total_eu = GlobalEnergy.getOrDefault(team_uuid, BigInteger.ZERO);
-        total_eu = total_eu.add(EU);
+        BigInteger totalEU = GlobalEnergy.getOrDefault(teamUUID, BigInteger.ZERO);
+        totalEU = totalEU.add(EU);
 
         // If there is sufficient EU then complete the operation and return true.
-        if (total_eu.signum() >= 0) {
-            GlobalEnergy.put(team_uuid, total_eu);
+        if (totalEU.signum() >= 0) {
+            GlobalEnergy.put(teamUUID, totalEU);
             return true;
         }
 
@@ -138,15 +138,13 @@ public interface IGlobalWirelessEnergy {
         GlobalEnergyTeam.clear();
     }
 
-    default void processInitialSettings(final IGregTechTileEntity machine, String UUID, String name, final long ticks) {
+    default String processInitialSettings(final IGregTechTileEntity machine) {
 
-        // On first tick find the player name and attempt to add them to the map.
-        if (ticks == 1) {
-            // UUID and username of the owner.
-            UUID = machine.getOwnerUuid().toString();
-            name = machine.getOwnerName();
+        // UUID and username of the owner.
+        final String UUID = machine.getOwnerUuid().toString();
+        final String name = machine.getOwnerName();
 
-            strongCheckOrAddUser(UUID, name);
-        }
+        strongCheckOrAddUser(UUID, name);
+        return UUID;
     }
 }
