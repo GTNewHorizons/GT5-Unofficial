@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
-
-import gregtech.common.misc.spaceprojects.intefaces.ISpaceProject;
 
 public class SpaceProject implements ISpaceProject {
 
