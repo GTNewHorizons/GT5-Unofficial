@@ -429,12 +429,12 @@ public class GTMTE_LapotronicSuperCapacitor
                 .addInfo("When enabled every " + EnumChatFormatting.BLUE
                         + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks)
                         + EnumChatFormatting.GRAY + " ticks the LSC will attempt to re-balance against your")
-                .addInfo("wireless EU network. If there is less than " + GT_Values.TIER_COLORS[9]
+                .addInfo("wireless EU network. If there is less than " + EnumChatFormatting.RED
                         + GT_Utility.formatNumbers(LSC_wireless_eu_cap) + EnumChatFormatting.GRAY + "("
-                        + GT_Values.TIER_COLORS[10] + GT_Values.VN[9] + EnumChatFormatting.GRAY + ")" + " or "
-                        + GT_Values.TIER_COLORS[10] + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
+                        + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + ")" + " or "
+                        + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
                         + EnumChatFormatting.GRAY + "(" + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
-                        + EnumChatFormatting.GRAY + ")" + "EU in the LSC")
+                        + EnumChatFormatting.GRAY + ")" + " EU in the LSC")
                 .addInfo("it will withdraw from the network and add to the LSC. If there is more it will add")
                 .addInfo("the EU to the network and remove it from the LSC.")
                 .addSeparator()
@@ -446,6 +446,7 @@ public class GTMTE_LapotronicSuperCapacitor
                         "Lapotronic Capacitor (" + GT_Values.TIER_COLORS[4] + GT_Values.VN[4] + EnumChatFormatting.GRAY
                                 + "-" + GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY
                                 + "), Ultimate Capacitor (" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY + "-" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY + ")",
                         "Center 3x(1-47)x3 above base (9-423 blocks)")
                 .addStructureInfo(
@@ -854,6 +855,8 @@ public class GTMTE_LapotronicSuperCapacitor
                         : EnumChatFormatting.RED + "disabled" + EnumChatFormatting.RESET));
         ll.add(GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.RESET + " Capacitors detected: "
                 + getUHVCapacitorCount());
+        ll.add(GT_Values.TIER_COLORS[10] + GT_Values.VN[10] + EnumChatFormatting.RESET + " Capacitors detected: "
+                + getUEVCapacitorCount());
         ll.add("Total wireless EU: " + EnumChatFormatting.RED
                 + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
         ll.add("---------------------------------------------");
