@@ -83,17 +83,7 @@ public class BaseItemComponent extends Item {
         }
         registerComponent();
 
-        String aFormattedLangName = componentType.getName();
-        if (!aFormattedLangName.startsWith(" ")) {
-            if (aFormattedLangName.contains("@")) {
-                String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " %material " + aSplit[1];
-            }
-        }
-        if (aFormattedLangName.equals(componentType.getName())) {
-            aFormattedLangName = "%material" + aFormattedLangName;
-        }
-        GT_LanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", aFormattedLangName);
+        GT_LanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", getFormattedLangName());
     }
 
     // For Cell Generation
@@ -126,8 +116,12 @@ public class BaseItemComponent extends Item {
                 ItemUtils.getSimpleStack(this));
         registerComponent();
 
-        String aFormattedLangName = componentType.getName().replace("@", "%material");
-        GT_LanguageManager.addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", aFormattedLangName);
+        GT_LanguageManager
+                .addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", getFormattedLangName());
+    }
+
+    private String getFormattedLangName() {
+        return componentType.getName().replace("@", "%material");
     }
 
     public boolean registerComponent() {
