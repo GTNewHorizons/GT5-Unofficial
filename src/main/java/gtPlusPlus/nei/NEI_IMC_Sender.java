@@ -82,11 +82,6 @@ public class NEI_IMC_Sender {
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31097", -10);
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31098", -10);
 
-        // if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-        // // Compound Fabricator
-        // sendCatalyst("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:31024");
-        // }
-
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:965", -1);
 
         sendHandler("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");

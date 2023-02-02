@@ -1,10 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialVacuumFreezer;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_AssemblyLine;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_DistillationTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_EBF;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_Fusion_MK4;
@@ -38,12 +36,5 @@ public class GregtechFactoryGradeReplacementMultis {
                         31021,
                         "multimachine.adv.distillationtower",
                         "Dangote Distillus").getStackForm(1L));
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            GregtechItemList.Machine_Adv_AssemblyLine.set(
-                    new GregtechMetaTileEntity_Adv_AssemblyLine(
-                            31024,
-                            "multimachine.adv.assemblyline",
-                            "Compound Fabricator").getStackForm(1L));
-        }
     }
 }

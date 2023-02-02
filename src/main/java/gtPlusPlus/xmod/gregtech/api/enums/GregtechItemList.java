@@ -395,9 +395,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     Machine_Adv_ImplosionCompressor,
     Machine_Adv_DistillationTower,
 
-    // Advanced Assembly Line
-    Machine_Adv_AssemblyLine,
-
     // Advanced Vacuum Freezer
     Industrial_Cryogenic_Freezer,
     Casing_AdvancedVacuum,
