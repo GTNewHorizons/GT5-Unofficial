@@ -12,7 +12,6 @@ import gregtech.common.misc.GlobalEnergyWorldSavedData;
 // If you are adding very late-game content feel free to tap into this interface.
 // The eventual goal is to bypass laser/dynamo stuff and have energy deposited directly from ultra-endgame
 // multi-blocks directly into the users network.
-@SuppressWarnings("unused")
 public interface IGlobalWirelessEnergy {
 
     // User 0 will join user 1 by calling this function. They will share the same energy network.
