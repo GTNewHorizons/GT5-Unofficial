@@ -5,7 +5,6 @@ import static common.itemBlocks.IB_LapotronicEnergyUnit.*;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTEClass;
-import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
@@ -78,9 +77,10 @@ public class GTMTE_LapotronicSuperCapacitor
         ZPM(4, BigInteger.valueOf(ZPM_cap_storage)),
         UV(5, BigInteger.valueOf(UV_cap_storage)),
         UHV(6, MAX_LONG),
-        UEV(7, MAX_LONG),
         None(0, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(EV_cap_storage));
+        EV(1, BigInteger.valueOf(EV_cap_storage)),
+        UEV(7, MAX_LONG),
+        ;
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
@@ -429,7 +429,8 @@ public class GTMTE_LapotronicSuperCapacitor
                 .addInfo("When enabled every " + EnumChatFormatting.BLUE
                         + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks)
                         + EnumChatFormatting.GRAY + " ticks the LSC will attempt to re-balance against your")
-                .addInfo("wireless EU network. If there is less than " + EnumChatFormatting.RED
+                .addInfo("wireless EU network.")
+                .addInfo("If there is less than " + EnumChatFormatting.RED
                         + GT_Utility.formatNumbers(LSC_wireless_eu_cap) + EnumChatFormatting.GRAY + "("
                         + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + ")" + " or "
                         + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
@@ -446,7 +447,7 @@ public class GTMTE_LapotronicSuperCapacitor
                         "Lapotronic Capacitor (" + GT_Values.TIER_COLORS[4] + GT_Values.VN[4] + EnumChatFormatting.GRAY
                                 + "-" + GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY
                                 + "), Ultimate Capacitor (" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
-                                + EnumChatFormatting.GRAY + "-" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY + "-" + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
                                 + EnumChatFormatting.GRAY + ")",
                         "Center 3x(1-47)x3 above base (9-423 blocks)")
                 .addStructureInfo(
@@ -778,14 +779,13 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Passive loss is multiplied by number of UHV/UEV caps. Minimum of 1 otherwise loss is 0 for non-UHV/UEV caps
         // calculations.
-        long uhv_cap_multiplier =
-                min(temp_capacity_divided, max_passive_drain_eu_per_tick_per_uhv_cap * max(1, getUHVCapacitorCount()));
-
-        long uev_cap_multiplier =
-                min(temp_capacity_divided, max_passive_drain_eu_per_tick_per_uev_cap * max(1, getUEVCapacitorCount()));
+        if (getUHVCapacitorCount() != 0 || getUEVCapacitorCount() != 0) {
+            temp_capacity_divided = getUHVCapacitorCount() * max_passive_drain_eu_per_tick_per_uhv_cap
+                    + getUEVCapacitorCount() * max_passive_drain_eu_per_tick_per_uev_cap;
+        }
 
         // Passive loss is multiplied by number of maintenance issues.
-        long total_passive_loss = (uhv_cap_multiplier + uev_cap_multiplier) * (getIdealStatus() - repairStatus + 1);
+        long total_passive_loss = temp_capacity_divided * (getIdealStatus() - repairStatus + 1);
 
         // Maximum of 100,000 EU/t drained per UHV cell. The logic is 1% of EU capacity should be drained every 86400
         // seconds (1 day).
