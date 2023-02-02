@@ -64,6 +64,8 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
     private IIcon iconLapoUVTop;
     private IIcon iconUltimateSide;
     private IIcon iconUltimateTop;
+    private IIcon iconUltimateExtremeSide;
+    private IIcon iconUltimateExtremeTop;
 
     private Block_LapotronicEnergyUnit() {
         super(Material.iron);
@@ -100,6 +102,8 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 
         iconUltimateSide = ir.registerIcon("kekztech:UltimateEnergyUnit_side");
         iconUltimateTop = ir.registerIcon("kekztech:UltimateEnergyUnit_top");
+        iconUltimateExtremeSide = ir.registerIcon("kekztech:ReallyUltimateEnergyUnit_side");
+        iconUltimateExtremeTop = ir.registerIcon("kekztech:ReallyUltimateEnergyUnit_top");
     }
 
     @Override
@@ -117,6 +121,8 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
         par3List.add(new ItemStack(par1, 1, 4));
         // Ultimate battery
         par3List.add(new ItemStack(par1, 1, 5));
+        // UEV Cap
+        par3List.add(new ItemStack(par1, 1, 8));
     }
 
     @Override
@@ -138,6 +144,8 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
                 return (side < 2) ? iconLapoEmptyTop : iconLapoEmptySide;
             case 7:
                 return (side < 2) ? iconLapoEVTop : iconLapoEVSide;
+            case 8:
+                return (side < 2) ? iconUltimateExtremeTop : iconUltimateExtremeSide;
             default:
                 return iconUltimateTop;
         }
