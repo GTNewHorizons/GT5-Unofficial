@@ -21,6 +21,14 @@ public class InventoryUpgrade extends AdvancedCasing {
     private int mInventorySize;
     private int mType = BOTH;
 
+    public String getInventoryName() {
+        return mInventoryName;
+    }
+
+    public void setInventoryName(String aInventoryName) {
+        mInventoryName = aInventoryName;
+    }
+
     @Override
     protected void customWork(IMultiBlockController aTarget) {
         int tInvSize = mInventorySize;

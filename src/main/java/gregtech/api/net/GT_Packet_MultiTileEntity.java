@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
@@ -28,6 +29,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private byte mCommonData, mTexturePage, mUpdate, mRedstone, mColor;
     private ChunkCoordinates mTargetPos = null;
     private int mLockedInventoryIndex;
+    private String mInventoryName;
+    private int mInventoryLenght;
 
     // MultiBlockPart
     private byte mMode;
@@ -80,9 +83,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         mTargetPos = new ChunkCoordinates(aX, aY, aZ);
     }
 
-    public void setInventoryIndex(int aInventoryIndex) {
+    public void setInventoryIndex(int aInventoryIndex, String aInventoryName) {
         features |= INVENTORY;
         mLockedInventoryIndex = aInventoryIndex;
+        mInventoryName = aInventoryName;
     }
 
     @Override
@@ -120,6 +124,16 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             aOut.writeInt(mTargetPos.posZ);
         }
         if ((features & INVENTORY) == INVENTORY) {
+            if (mInventoryName != null && mInventoryName.length() > 0) {
+                mInventoryLenght = mInventoryName.length();
+                aOut.writeInt(mInventoryLenght);
+                for (char tChar : mInventoryName.toCharArray()) {
+                    aOut.writeChar(tChar);
+                }
+            } else {
+                mInventoryLenght = 0;
+                aOut.writeInt(mInventoryLenght);
+            }
             aOut.writeInt(mLockedInventoryIndex);
         }
 
@@ -165,7 +179,16 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             packet.setTargetPos(aData.readInt(), aData.readShort(), aData.readInt());
         }
         if ((packetFeatures & INVENTORY) == INVENTORY) {
-            packet.setInventoryIndex(aData.readInt());
+            int tLength = aData.readInt();
+            String tName = "";
+            if (tLength > 0) {
+                for (int i = 0; i < tLength; i++) {
+                    tName += aData.readChar();
+                }
+            } else {
+                tName = null;
+            }
+            packet.setInventoryIndex(aData.readInt(), tName);
         }
 
         return packet;
@@ -205,6 +228,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                 if ((features & INVENTORY) == INVENTORY && mte instanceof IMultiBlockPart) {
                     final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
                     mtePart.setLockedInventoryIndex(mLockedInventoryIndex);
+                    if (mtePart instanceof InventoryUpgrade) {
+                        final InventoryUpgrade invUpg = (InventoryUpgrade) mtePart;
+                        invUpg.setInventoryName(mInventoryName);
+                    }
                 }
             }
         } catch (Exception e) {
