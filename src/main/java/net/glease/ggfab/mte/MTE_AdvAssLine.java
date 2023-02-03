@@ -635,7 +635,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         GT_Recipe.GT_Recipe_AssemblyLine recipe = null;
         for (ItemStack stack : tDataStickList) {
             recipe = findRecipe(stack);
-            if (recipe != null && currentRecipe.mEUt <= inputVoltage) {
+            if (recipe != null && recipe.mEUt <= inputVoltage) {
                 setCurrentRecipe(stack, recipe);
                 // first overclock normally
                 calculateOverclockedNessMulti((long) currentRecipe.mEUt, Math.max(recipe.mDuration / recipe.mInputs.length, 1), 1, inputVoltage);
