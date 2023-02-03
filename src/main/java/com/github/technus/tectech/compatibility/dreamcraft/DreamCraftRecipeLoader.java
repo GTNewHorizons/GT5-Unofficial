@@ -3140,6 +3140,7 @@ public class DreamCraftRecipeLoader {
                 500000);
 
         // Batteries
+        // Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Energy_Cluster.get(1L),
                 12000,
@@ -3160,7 +3161,7 @@ public class DreamCraftRecipeLoader {
                 ItemList.ZPM2.get(1),
                 3000,
                 400000);
-
+        // Really Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.ZPM2.get(1L),
                 24000,
@@ -3182,6 +3183,28 @@ public class DreamCraftRecipeLoader {
                 ItemList.ZPM3.get(1),
                 4000,
                 1600000);
+        // Extremely Ultimate Battery
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.ZPM3.get(1L),
+                1200000,
+                128,
+                8000000,
+                16,
+                new Object[] { GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L }, ItemList.ZPM3.get(8),
+                        ItemList.Field_Generator_UEV.get(4), ItemList.Circuit_Wafer_PPIC.get(64),
+                        ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64), },
+                new FluidStack[] { new FluidStack(solderUEV, 9216), Materials.Quantium.getMolten(18_432),
+                        Materials.Naquadria.getMolten(9_216 * 2), Materials.SuperCoolant.getFluid(64_000) },
+                ItemList.ZPM4.get(1),
+                250 * 20,
+                6_400_000);
 
         if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
             // MK4 Computer
