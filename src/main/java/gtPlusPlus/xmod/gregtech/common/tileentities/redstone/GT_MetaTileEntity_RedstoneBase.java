@@ -106,6 +106,6 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip };
+        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
     }
 }

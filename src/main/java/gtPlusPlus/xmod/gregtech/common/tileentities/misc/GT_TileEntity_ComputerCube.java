@@ -115,7 +115,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "Built in Reactor Planner", "Built in Scanner", "Built in Info-Bank",
-                "Displays Fusion Recipes", CORE.GT_Tooltip };
+                "Displays Fusion Recipes", CORE.GT_Tooltip.get() };
     }
 
     @Override

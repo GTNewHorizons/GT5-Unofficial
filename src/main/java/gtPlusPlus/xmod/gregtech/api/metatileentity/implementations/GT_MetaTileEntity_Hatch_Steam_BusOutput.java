@@ -30,7 +30,7 @@ public class GT_MetaTileEntity_Hatch_Steam_BusOutput extends GT_MetaTileEntity_H
                 aTier,
                 4,
                 new String[] { "Item Output for Steam Multiblocks", "Capacity: 4 stacks",
-                        "Does not work with non-steam multiblocks", CORE.GT_Tooltip });
+                        "Does not work with non-steam multiblocks", CORE.GT_Tooltip.get() });
     }
 
     public GT_MetaTileEntity_Hatch_Steam_BusOutput(String aName, int aTier, String aDescription,

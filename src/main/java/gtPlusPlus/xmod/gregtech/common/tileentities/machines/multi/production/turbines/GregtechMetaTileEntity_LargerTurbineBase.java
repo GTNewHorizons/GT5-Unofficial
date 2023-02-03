@@ -107,7 +107,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         if (requiresMufflers()) {
             tt.addMufflerHatch("Any 7 dot hint (x4)", 7);
         }
-        tt.toolTipFinisher(CORE.GT_Tooltip_Builder);
+        tt.toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

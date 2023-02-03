@@ -63,7 +63,7 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater extends
                 .addInputBus("Bottom Layer (optional)", 1).addInputHatch("Bottom Layer", 1)
                 .addOutputBus("Top Layer (optional)", 1).addOutputHatch("Top Layer", 1)
                 .addEnergyHatch("Any Multi-use Casing", 1).addMaintenanceHatch("Any Multi-use Casing", 1)
-                .addMufflerHatch("Any Multi-use Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Multi-use Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

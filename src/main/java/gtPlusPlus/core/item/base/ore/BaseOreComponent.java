@@ -140,7 +140,7 @@ public class BaseOreComponent extends Item {
                     list.add(temp);
                 }
                 if (this.componentMaterial.isRadioactive) {
-                    list.add(CORE.GT_Tooltip_Radioactive + " | Level: " + this.componentMaterial.vRadiationLevel);
+                    list.add(CORE.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
                 }
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());

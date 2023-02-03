@@ -88,7 +88,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                 .addStructureInfo("All dynamos must be between EV and LuV tier.")
                 .addStructureInfo("All other hatches must be IV+ tier.")
                 .addStructureInfo("3x Output Hatches, 2x Input Hatches, 4x Dynamo Hatches")
-                .addStructureInfo("2x Maintenance Hatches, 4x Mufflers").toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addStructureInfo("2x Maintenance Hatches, 4x Mufflers").toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

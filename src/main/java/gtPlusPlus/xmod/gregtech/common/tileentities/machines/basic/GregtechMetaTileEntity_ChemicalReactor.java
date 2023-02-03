@@ -66,7 +66,7 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Because why not?", CORE.GT_Tooltip };
+        return new String[] { this.mDescription, "Because why not?", CORE.GT_Tooltip.get() };
     }
 
     @Override

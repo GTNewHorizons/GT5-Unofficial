@@ -39,7 +39,7 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "IC2 Steam + Water = Normal Steam.",
-                "Requires no power to run, although it's not very fast.", CORE.GT_Tooltip };
+                "Requires no power to run, although it's not very fast.", CORE.GT_Tooltip.get() };
     }
 
     @Override

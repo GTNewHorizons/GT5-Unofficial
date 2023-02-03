@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
         return new String[] { this.mDescription, "Produces " + getPollution() + " pollution/sec",
                 "Consumes fuel only when temperature is less than 100C",
                 "Fuel with burn time greater than 500 is more efficient.", "Doesn't explode if there's no water",
-                CORE.GT_Tooltip };
+                CORE.GT_Tooltip.get() };
     }
 
     public ITexture getOverlayIcon() {

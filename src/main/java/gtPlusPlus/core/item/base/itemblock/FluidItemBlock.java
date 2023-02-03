@@ -53,7 +53,7 @@ public class FluidItemBlock extends ItemBlock {
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         /*
          * list.add("Temperature: "+MathUtils.celsiusToKelvin(this.thisFluid.getMeltingPointC())+"K"); if
-         * (this.sRadiation > 0){ list.add(CORE.GT_Tooltip_Radioactive); }
+         * (this.sRadiation > 0){ list.add(CORE.GT_Tooltip_Radioactive.get()); }
          */
         super.addInformation(stack, aPlayer, list, bool);
     }

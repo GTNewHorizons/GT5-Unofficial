@@ -49,7 +49,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
                 .addOtherStructurePart("Advanced Fusion Coils", "Center part of the ring")
                 .addEnergyHatch("1-16, Specified casings", 2).addInputHatch("2-16, Specified casings", 1)
                 .addOutputHatch("1-16, Specified casings", 3).addStructureInfo("ALL Hatches must be UHV or better")
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

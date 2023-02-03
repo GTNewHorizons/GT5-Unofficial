@@ -113,7 +113,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
                 .addInputBus("Any Inconel Reinforced Casing", 1).addOutputBus("Any Inconel Reinforced Casing", 1)
                 .addEnergyHatch("Any Inconel Reinforced Casing", 1)
                 .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-                .addMufflerHatch("Any Inconel Reinforced Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Inconel Reinforced Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

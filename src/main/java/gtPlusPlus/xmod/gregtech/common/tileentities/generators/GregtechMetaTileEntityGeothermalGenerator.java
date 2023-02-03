@@ -39,7 +39,7 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
     public String[] getDescription() {
         String aPollution = "Causes " + this.getPollution() + " Pollution per second";
         return new String[] { this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-                aPollution, CORE.GT_Tooltip };
+                aPollution, CORE.GT_Tooltip.get() };
     }
 
     @Override

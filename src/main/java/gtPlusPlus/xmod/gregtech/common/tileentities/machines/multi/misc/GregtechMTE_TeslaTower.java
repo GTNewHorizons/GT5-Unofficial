@@ -98,7 +98,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
                 .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1).addInputBus("Any 4 dot hint (min 1)", 4)
                 .addInputHatch("Any 4 dot hint(min 1)", 4).addOutputHatch("Any 4 dot hint(min 1)", 4)
                 .addEnergyHatch("Any 4 dot hint(min 1)", 4).addMaintenanceHatch("Any 4 dot hint(min 1)", 4)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

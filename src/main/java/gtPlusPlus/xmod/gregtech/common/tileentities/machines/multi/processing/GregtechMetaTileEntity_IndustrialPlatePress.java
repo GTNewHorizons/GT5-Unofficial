@@ -69,7 +69,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends
                 .addController("Front Center").addCasingInfo("Material Press Machine Casings", 10)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

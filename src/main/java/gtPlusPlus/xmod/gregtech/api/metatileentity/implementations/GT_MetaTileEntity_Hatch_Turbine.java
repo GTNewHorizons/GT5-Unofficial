@@ -58,7 +58,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
                 "Right Click with a wrench to remove turbine",
                 "Right Click with a screwdriver for technical information",
                 "Sneak + Right Click with a wrench to rotate",
-                "Sneak + Right Click with a screwdriver to disable animations", CORE.GT_Tooltip };
+                "Sneak + Right Click with a screwdriver to disable animations", CORE.GT_Tooltip.get() };
     }
 
     @Override

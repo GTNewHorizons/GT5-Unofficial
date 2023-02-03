@@ -62,7 +62,7 @@ public class GregtechMetaTileEntity_IndustrialSifter
                 .addController("Bottom Center").addCasingInfo("Sieve Grate", 18).addCasingInfo("Sieve Casings", 35)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing (x4)", 1).addInputHatch("Any Casing", 1)
                 .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

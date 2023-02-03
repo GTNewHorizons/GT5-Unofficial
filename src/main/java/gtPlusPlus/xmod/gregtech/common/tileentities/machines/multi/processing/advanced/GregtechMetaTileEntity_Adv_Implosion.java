@@ -52,7 +52,7 @@ public class GregtechMetaTileEntity_Adv_Implosion
                 .addController("Front center").addCasingInfo("Robust TungstenSteel Casing", 10)
                 .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

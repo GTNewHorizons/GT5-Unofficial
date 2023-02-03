@@ -33,10 +33,10 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
         String aTankPortableness = "portable";
 
         if (this.mFluid == null) {
-            aTip = new String[] { this.mDescription, "A " + aTankPortableness + " tank.", CORE.GT_Tooltip };
+            aTip = new String[] { this.mDescription, "A " + aTankPortableness + " tank.", CORE.GT_Tooltip.get() };
         } else {
             aTip = new String[] { this.mDescription, "A " + aTankPortableness + " tank.",
-                    "Fluid: " + mFluid.getLocalizedName() + " " + mFluid.amount + "L", CORE.GT_Tooltip };
+                    "Fluid: " + mFluid.getLocalizedName() + " " + mFluid.amount + "L", CORE.GT_Tooltip.get() };
         }
         return aTip;
     }

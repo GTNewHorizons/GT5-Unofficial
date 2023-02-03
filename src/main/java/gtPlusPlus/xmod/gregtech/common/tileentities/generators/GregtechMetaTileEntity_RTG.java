@@ -175,7 +175,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
         return new String[] { this.mDescription, "Fuel is measured in minecraft days (Check with Scanner)",
                 "RTG changes output voltage depending on fuel",
                 "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-                "Output Voltage: " + this.getOutputTier() + " EU/t", CORE.GT_Tooltip };
+                "Output Voltage: " + this.getOutputTier() + " EU/t", CORE.GT_Tooltip.get() };
     }
 
     public GregtechMetaTileEntity_RTG(int aID, String aName, String aNameRegional, int aTier) {

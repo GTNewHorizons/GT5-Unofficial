@@ -152,7 +152,7 @@ public class ItemBlockGtBlock extends ItemBlock {
 
         if (this.mMaterial != null) {
             if (this.mMaterial.vRadiationLevel > 0) {
-                list.add(CORE.GT_Tooltip_Radioactive);
+                list.add(CORE.GT_Tooltip_Radioactive.get());
             }
         }
 

@@ -44,7 +44,7 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Does not require ice cubes", CORE.GT_Tooltip };
+        return new String[] { this.mDescription, "Does not require ice cubes", CORE.GT_Tooltip.get() };
     }
 
     @Override

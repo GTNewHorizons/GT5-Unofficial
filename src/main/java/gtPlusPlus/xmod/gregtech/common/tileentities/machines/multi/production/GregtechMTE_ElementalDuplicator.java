@@ -80,7 +80,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
                 .addInputHatch("Any 1 dot hint", 1).addOutputBus("Any 1 dot hint", 1)
                 .addOutputHatch("Any 1 dot hint", 1).addEnergyHatch("Any 1 dot hint", 1)
                 .addMaintenanceHatch("Any 1 dot hint", 1).addMufflerHatch("Any 1 dot hint", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

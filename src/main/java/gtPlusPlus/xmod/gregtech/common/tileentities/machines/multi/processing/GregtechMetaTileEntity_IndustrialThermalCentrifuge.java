@@ -65,7 +65,7 @@ public class GregtechMetaTileEntity_IndustrialThermalCentrifuge
                 .addCasingInfo("Thermal Processing Casings/Noise Hazard Sign Blocks", 8).addInputBus("Bottom Casing", 1)
                 .addOutputBus("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
                 .addMaintenanceHatch("Bottom Casing", 1).addMufflerHatch("Bottom Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

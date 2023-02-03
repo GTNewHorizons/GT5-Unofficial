@@ -50,7 +50,7 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
                 "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
                 "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
                 "Hold control to adjust direction", "Left Click with Screwdriver to reset",
-                "This module assumes the entire turbine is in the same Chunk", CORE.GT_Tooltip };
+                "This module assumes the entire turbine is in the same Chunk", CORE.GT_Tooltip.get() };
     }
 
     private GT_MetaTileEntity_LargeTurbine mParent = null;

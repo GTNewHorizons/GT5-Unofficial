@@ -74,7 +74,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     public String[] getDescription() {
         String aPollution = "Causes between " + pollMin + " and " + pollMax + " Pollution per second";
         return new String[] { this.mDescription, "Fuel Efficiency: " + this.getEfficiency() + "%", aPollution,
-                CORE.GT_Tooltip };
+                CORE.GT_Tooltip.get() };
     }
 
     @Override

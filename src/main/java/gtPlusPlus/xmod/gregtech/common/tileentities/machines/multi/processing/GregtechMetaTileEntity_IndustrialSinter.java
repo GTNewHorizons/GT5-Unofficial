@@ -10,7 +10,7 @@
  * "Controller Block for the Industrial Sinter Furnace", "Size: 3x5x3 [WxLxH] (Hollow)", "Controller (front centered)",
  * "2x Input Bus (side centered)", "2x Output Bus (side centered)", "1x Energy Hatch (top or bottom centered)",
  * "1x Maintenance Hatch (back centered)", "Sinter Furnace Casings for the rest (32 at least!)", "Causes " + 20 *
- * this.getPollutionPerTick(null) + " Pollution per second", CORE.GT_Tooltip }; }
+ * this.getPollutionPerTick(null) + " Pollution per second", CORE.GT_Tooltip.get() }; }
  * @Override public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte
  * aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) { if (aSide == aFacing) { return new
  * ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(7)), new GT_RenderedTexture(aActive ?

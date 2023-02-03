@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
         String[] S = super.getDescription();
         final String[] desc = new String[S.length + 1];
         System.arraycopy(S, 0, desc, 0, S.length);
-        desc[S.length] = CORE.GT_Tooltip;
+        desc[S.length] = CORE.GT_Tooltip.get();
         return desc;
     }
 

@@ -156,7 +156,7 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
                 + " types of plasma"
                 + aX;
 
-        String[] s2 = new String[] { a1, a2, a3, CORE.GT_Tooltip };
+        String[] s2 = new String[] { a1, a2, a3, CORE.GT_Tooltip.get() };
         return s2;
     }
 

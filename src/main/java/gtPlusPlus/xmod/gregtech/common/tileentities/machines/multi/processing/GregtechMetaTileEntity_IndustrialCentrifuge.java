@@ -73,7 +73,7 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends
                 .addOutputBus("Any Casing except front", 1).addInputHatch("Any Casing except front", 1)
                 .addOutputHatch("Any Casing except front", 1).addEnergyHatch("Any Casing except front", 1)
                 .addMaintenanceHatch("Any Casing except front", 1).addMufflerHatch("Any Casing except front", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

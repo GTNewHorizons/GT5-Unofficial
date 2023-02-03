@@ -121,7 +121,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                 .addEnergyHatch("Bottom Casing", 1).addMaintenanceHatch("Bottom Casing", 1)
                 .addSubChannelUsage("casing", "metal machine casing")
                 .addSubChannelUsage("machine", "tier machine casing").addSubChannelUsage("coil", "heating coil blocks")
-                .addSubChannelUsage("pipe", "pipe casing blocks").toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addSubChannelUsage("pipe", "pipe casing blocks").toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

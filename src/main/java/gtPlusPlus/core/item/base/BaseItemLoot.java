@@ -52,7 +52,7 @@ public class BaseItemLoot extends Item {
         list.add(this.lootQuality.getQuality());
 
         /*
-         * if (componentMaterial.isRadioactive){ list.add(CORE.GT_Tooltip_Radioactive); }
+         * if (componentMaterial.isRadioactive){ list.add(CORE.GT_Tooltip_Radioactive.get()); }
          */
 
         super.addInformation(stack, aPlayer, list, bool);

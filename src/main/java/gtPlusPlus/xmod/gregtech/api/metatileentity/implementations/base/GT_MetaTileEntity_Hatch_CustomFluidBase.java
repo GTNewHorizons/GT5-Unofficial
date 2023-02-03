@@ -184,7 +184,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
                 + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty")
                 + EnumChatFormatting.RESET;
         return new String[] { "Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
-                "Capacity: " + getCapacity() + "L", aFluidName, CORE.GT_Tooltip };
+                "Capacity: " + getCapacity() + "L", aFluidName, CORE.GT_Tooltip.get() };
     }
 
     public boolean isFluidInputAllowed(final FluidStack aFluid) {

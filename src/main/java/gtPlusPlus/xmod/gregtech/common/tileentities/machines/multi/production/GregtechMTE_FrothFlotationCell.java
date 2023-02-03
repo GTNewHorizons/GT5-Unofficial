@@ -66,7 +66,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
                 .addController("Front Center").addCasingInfo("Inconel Reinforced Casing", 68)
                 .addCasingInfo("Flotation Casing", 52).addInputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1)
                 .addOutputHatch("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
-                .addMaintenanceHatch("Bottom Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMaintenanceHatch("Bottom Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

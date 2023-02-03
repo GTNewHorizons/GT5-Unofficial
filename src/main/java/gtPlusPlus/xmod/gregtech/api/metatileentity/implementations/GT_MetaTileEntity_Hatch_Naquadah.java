@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
         String aNaquad = aDescCache[2];
         String[] s2 = new String[] { "Fluid Input for Multiblocks", "Capacity: " + getCapacity() + "L",
                 "Accepted Fluid: " + aNaq, "Accepted Fluid: " + aEnrNaq, "Accepted Fluid: " + aNaquad,
-                CORE.GT_Tooltip };
+                CORE.GT_Tooltip.get() };
         return s2;
     }
 

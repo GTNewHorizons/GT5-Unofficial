@@ -120,7 +120,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 .addController("Bottom Center").addCasingInfo("Sub-Station External Casings", 10)
                 .addDynamoHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addSubChannelUsage("capacitor", "Vanadium Capacitor Cell Tier")
-                .addSubChannelUsage("height", "Height of structure").toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addSubChannelUsage("height", "Height of structure").toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

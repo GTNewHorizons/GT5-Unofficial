@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
                 aTier,
                 17,
                 new String[] { "Holds Data Orbs for the Elemental Duplicator", "Can insert/extract the circuit slot",
-                        "Use Circuit to select a slot (1-16)", CORE.GT_Tooltip });
+                        "Use Circuit to select a slot (1-16)", CORE.GT_Tooltip.get() });
     }
 
     public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(String aName, int aTier, String aDescription,

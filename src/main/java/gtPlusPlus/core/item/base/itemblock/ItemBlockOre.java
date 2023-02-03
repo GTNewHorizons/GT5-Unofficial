@@ -80,7 +80,7 @@ public class ItemBlockOre extends ItemBlock {
 
         // Radioactive?
         if (this.mThisRadiation > 0) {
-            list.add(CORE.GT_Tooltip_Radioactive);
+            list.add(CORE.GT_Tooltip_Radioactive.get());
         }
 
         /**

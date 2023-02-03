@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip };
+        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
     }
 
     public boolean isSimpleMachine() {

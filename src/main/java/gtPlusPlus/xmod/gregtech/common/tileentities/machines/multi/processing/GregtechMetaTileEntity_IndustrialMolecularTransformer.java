@@ -66,7 +66,8 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
                 .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
                 .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
                 .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

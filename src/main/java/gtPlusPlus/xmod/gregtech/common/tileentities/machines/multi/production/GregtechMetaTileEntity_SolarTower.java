@@ -96,7 +96,7 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
                 .addCasingInfo("Structural Solar Casing", 229).addCasingInfo("Thermally Insulated Casing", 60)
                 .addCasingInfo("Salt Containment Casing", 66).addCasingInfo("Thermal Containment Casing", 60)
                 .addInputHatch("Any 2 dot hint(min 1)", 2).addOutputHatch("Any 2 dot hint(min 1)", 2)
-                .addMaintenanceHatch("Any 2 dot hint", 2).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMaintenanceHatch("Any 2 dot hint", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

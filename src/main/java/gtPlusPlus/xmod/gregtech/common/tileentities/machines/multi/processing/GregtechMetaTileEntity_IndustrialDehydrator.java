@@ -73,7 +73,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends
                 .addController("Bottom Center").addCasingInfo(mCasingName, 5).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

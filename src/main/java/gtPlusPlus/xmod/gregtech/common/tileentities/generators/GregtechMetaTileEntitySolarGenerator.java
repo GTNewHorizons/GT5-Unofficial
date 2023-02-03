@@ -37,7 +37,7 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-                "Output Voltage: " + this.getOutputTier() + " EU/t", CORE.GT_Tooltip };
+                "Output Voltage: " + this.getOutputTier() + " EU/t", CORE.GT_Tooltip.get() };
     }
 
     @Override

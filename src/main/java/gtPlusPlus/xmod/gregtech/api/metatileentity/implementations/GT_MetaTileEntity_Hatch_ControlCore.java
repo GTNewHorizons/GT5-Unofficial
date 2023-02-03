@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip };
+        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
     }
 
     @Override

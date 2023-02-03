@@ -736,7 +736,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     public String[] getDescription() {
         return new String[] { "Automatic Crafting Table Mk III",
                 // this.mDescription,
-                CORE.GT_Tooltip };
+                CORE.GT_Tooltip.get() };
     }
 
     @Override

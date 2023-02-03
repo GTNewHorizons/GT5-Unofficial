@@ -36,7 +36,7 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Point me at a Solar Tower", CORE.GT_Tooltip };
+        return new String[] { this.mDescription, "Point me at a Solar Tower", CORE.GT_Tooltip.get() };
     }
 
     @Override

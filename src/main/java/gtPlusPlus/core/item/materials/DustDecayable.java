@@ -44,7 +44,7 @@ public class DustDecayable extends BaseItemTickable {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         super.addInformation(stack, player, list, bool);
         if (this.radLevel > 0) {
-            list.add(CORE.GT_Tooltip_Radioactive);
+            list.add(CORE.GT_Tooltip_Radioactive.get());
         }
     }
 

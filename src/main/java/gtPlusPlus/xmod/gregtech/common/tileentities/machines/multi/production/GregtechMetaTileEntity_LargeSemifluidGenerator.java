@@ -70,7 +70,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
                 .addController("Front Center").addCasingInfo("Stable Titanium Machine Casing", 16)
                 .addCasingInfo("Steel Gear Box Machine Casing", 2).addCasingInfo("Engine Intake Machine Casing", 8)
                 .addInputHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .addDynamoHatch("Back Center", 2).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addDynamoHatch("Back Center", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

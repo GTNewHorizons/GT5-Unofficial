@@ -70,7 +70,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front center").addCasingInfo("Sturdy Printer Casing", 10).addInputBus("Any casing", 1)
                 .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

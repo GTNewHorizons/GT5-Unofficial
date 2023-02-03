@@ -82,7 +82,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         tt.addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front Center").addCasingInfo("Forge Casing", 10).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

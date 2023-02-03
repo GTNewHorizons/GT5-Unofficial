@@ -247,7 +247,7 @@ public class BaseItemComponent extends Item {
                     }
 
                     if (this.componentMaterial.isRadioactive) {
-                        list.add(CORE.GT_Tooltip_Radioactive);
+                        list.add(CORE.GT_Tooltip_Radioactive.get());
                     }
 
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {

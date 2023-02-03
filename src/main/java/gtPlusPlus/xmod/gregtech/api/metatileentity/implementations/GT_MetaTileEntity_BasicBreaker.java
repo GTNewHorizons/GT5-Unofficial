@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
                 + (GT_Values.V[tTier] / 16)
                 + EnumChatFormatting.GRAY
                 + " EU/t";
-        desc[5] = CORE.GT_Tooltip;
+        desc[5] = CORE.GT_Tooltip.get();
         return desc;
     }
 

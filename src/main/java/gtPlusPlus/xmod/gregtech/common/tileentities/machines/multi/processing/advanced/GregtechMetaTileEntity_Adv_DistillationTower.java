@@ -169,7 +169,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
                 .addOutputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1)
                 .addMaintenanceHatch("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
                 .addOutputHatch("One per layer except bottom", 2).addMufflerHatch("Top Casing", 3)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

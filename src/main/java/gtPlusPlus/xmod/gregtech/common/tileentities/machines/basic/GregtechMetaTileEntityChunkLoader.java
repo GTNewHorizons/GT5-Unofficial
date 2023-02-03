@@ -88,7 +88,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
     @Override
     public String[] getDescription() {
         return new String[] { "Loads " + getMaxChunksToLoadForTier(this.mTier) + " chunks when powered", "Consumes 2A",
-                "Behaves Identically to a Railcraft World Anchor", CORE.GT_Tooltip };
+                "Behaves Identically to a Railcraft World Anchor", CORE.GT_Tooltip.get() };
     }
 
     @Override

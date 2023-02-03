@@ -24,7 +24,7 @@ public class GT_MetaTileEntity_ULV_CombustionGenerator extends GT_MetaTileEntity
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "Produces " + (this.getPollution() * 20) + " pollution/sec",
-                "Fuel Efficiency: " + this.getEfficiency() + "%", CORE.GT_Tooltip };
+                "Fuel Efficiency: " + this.getEfficiency() + "%", CORE.GT_Tooltip.get() };
     }
 
     @Override

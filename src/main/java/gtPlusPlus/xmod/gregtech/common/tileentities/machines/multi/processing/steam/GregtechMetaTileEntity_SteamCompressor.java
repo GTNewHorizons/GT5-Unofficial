@@ -66,7 +66,7 @@ public class GregtechMetaTileEntity_SteamCompressor
                 .beginStructureBlock(3, 3, 4, true).addController("Front center").addCasingInfo(mCasingName, 28)
                 .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
-                .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

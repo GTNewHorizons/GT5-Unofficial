@@ -64,7 +64,7 @@ public class GregtechMetaTileEntityGeneratorArray
                 .addCasingInfo("Robust Tungstensteel Machine Casings", 10).addInputBus("Any casing", 1)
                 .addOutputBus("Any casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addDynamoHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

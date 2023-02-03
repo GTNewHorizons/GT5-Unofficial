@@ -61,7 +61,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
                 .addStructureInfo("Muffler's Tier must be IV+")
                 .addStructureInfo("4x Input Hatches, 2x Output Hatches, 1x Output Bus")
                 .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

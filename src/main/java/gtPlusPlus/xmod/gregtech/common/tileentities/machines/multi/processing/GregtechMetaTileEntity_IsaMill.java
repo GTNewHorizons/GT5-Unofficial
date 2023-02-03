@@ -81,7 +81,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                 .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
                 .addOtherStructurePart("Milling Ball Hatch", "Any Casing").addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

@@ -133,7 +133,7 @@ public class BaseItemDustUnique extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.sRadiation > 0) {
-            list.add(CORE.GT_Tooltip_Radioactive);
+            list.add(CORE.GT_Tooltip_Radioactive.get());
         }
         if (this.chemicalNotation.length() > 0 && !chemicalNotation.equals("")
                 && !chemicalNotation.equals("NullFormula")) {

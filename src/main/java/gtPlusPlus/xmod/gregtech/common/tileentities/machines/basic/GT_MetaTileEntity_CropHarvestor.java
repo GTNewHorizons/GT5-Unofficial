@@ -504,7 +504,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 "Can harvest 2 blocks above and below",
                 "Radius: " + aSide + " each side (" + aRadius + "x3x" + aRadius + ")",
                 "Has " + (this.mTier * 5) + "% chance for extra drops", "Holds " + this.getCapacity() + "L of Water",
-                CORE.GT_Tooltip };
+                CORE.GT_Tooltip.get() };
     }
 
     @Override

@@ -132,7 +132,8 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
                 .addMaintenanceHatch("Any casing", 1).addInputHatch("Hot fluid, bottom center", 2)
                 .addInputHatch("Distilled water, any bottom layer casing", 1)
                 .addOutputHatch("Cold fluid, top center", 3)
-                .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

@@ -78,7 +78,7 @@ public class BaseItemPlate_OLD extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.sRadiation > 0) {
-            list.add(CORE.GT_Tooltip_Radioactive);
+            list.add(CORE.GT_Tooltip_Radioactive.get());
         }
         if (StringUtils.containsSuperOrSubScript(this.chemicalNotation)) {
             list.add(this.chemicalNotation);

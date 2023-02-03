@@ -429,7 +429,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
 
     @Override
     public String[] getDescription() {
-        return new String[] { "It's simpler than you think. I promise.", this.mDescription, CORE.GT_Tooltip };
+        return new String[] { "It's simpler than you think. I promise.", this.mDescription, CORE.GT_Tooltip.get() };
     }
 
     /*

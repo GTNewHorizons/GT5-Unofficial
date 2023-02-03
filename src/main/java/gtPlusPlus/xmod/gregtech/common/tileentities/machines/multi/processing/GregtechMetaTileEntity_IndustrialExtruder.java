@@ -68,7 +68,7 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends
                 .addController("Front Center").addCasingInfo("Inconel Reinforced Casings", 14)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Back Center", 2)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

@@ -69,7 +69,7 @@ public class GregtechMetaTileEntity_SteamMacerator
                 .beginStructureBlock(3, 3, 3, true).addController("Front center").addCasingInfo(mCasingName, 14)
                 .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
-                .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

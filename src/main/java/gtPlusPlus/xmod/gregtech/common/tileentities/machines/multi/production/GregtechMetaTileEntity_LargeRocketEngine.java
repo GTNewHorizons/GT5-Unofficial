@@ -107,7 +107,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
                 .addInputBus("Side center line", 1).addInputHatch("Side center line", 1)
                 .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
                 .addDynamoHatch("Top center line", 2).addMufflerHatch("Back Center", 3)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

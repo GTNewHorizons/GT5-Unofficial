@@ -29,7 +29,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "Produces " + (this.getPollution() * 20) + " pollution/sec",
-                CORE.GT_Tooltip };
+                CORE.GT_Tooltip.get() };
     }
 
     @Override

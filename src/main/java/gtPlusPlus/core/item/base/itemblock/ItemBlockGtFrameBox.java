@@ -52,7 +52,7 @@ public class ItemBlockGtFrameBox extends ItemBlock {
         if (this.mMaterial != null) {
             list.add(this.mMaterial.vChemicalFormula);
             if (this.mMaterial.vRadiationLevel > 0) {
-                list.add(CORE.GT_Tooltip_Radioactive);
+                list.add(CORE.GT_Tooltip_Radioactive.get());
             }
         } else {
             list.add("Material is Null.");

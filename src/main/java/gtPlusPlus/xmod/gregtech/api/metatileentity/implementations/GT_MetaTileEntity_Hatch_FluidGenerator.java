@@ -79,7 +79,7 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
                 for (int i = 0; i < aCustomTips.length; i++) {
                     desc[S.length + i] = aCustomTips[i];
                 }
-                desc[S.length + aCustomTips.length] = CORE.GT_Tooltip;
+                desc[S.length + aCustomTips.length] = CORE.GT_Tooltip.get();
                 return desc;
             }
         } catch (Throwable t) {

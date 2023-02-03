@@ -65,7 +65,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
                 .addController("Bottom Center").addCasingInfo("Maceration Stack Casings", 26)
                 .addInputBus("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
                 .addMaintenanceHatch("Bottom Casing", 1).addOutputBus("One per layer except bottom layer", 2)
-                .addMufflerHatch("Any Casing", 2).toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .addMufflerHatch("Any Casing", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

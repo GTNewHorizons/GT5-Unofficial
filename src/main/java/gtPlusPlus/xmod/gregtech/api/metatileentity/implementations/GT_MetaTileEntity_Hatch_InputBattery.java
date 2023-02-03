@@ -45,7 +45,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
         } else {
             mSlots = 16;
         }
-        return new String[] { this.mDescription, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip };
+        return new String[] { this.mDescription, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip.get() };
     }
 
     @Override

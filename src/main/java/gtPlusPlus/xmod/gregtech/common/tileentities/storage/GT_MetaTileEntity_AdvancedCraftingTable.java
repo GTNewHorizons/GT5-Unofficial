@@ -468,7 +468,7 @@ public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_B
     @Override
     public String[] getDescription() {
         return new String[] { isAdvanced() ? "For the very large Projects" : "For the smaller Projects",
-                "Hold Shift in GUI to see slot usage", this.mDescription, CORE.GT_Tooltip };
+                "Hold Shift in GUI to see slot usage", this.mDescription, CORE.GT_Tooltip.get() };
     }
 
     @Override

@@ -66,7 +66,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
                 .addController("Front Center").addCasingInfo("Cutting Factory Frames", 26).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

@@ -85,7 +85,7 @@ public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer 
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "Accepts 4A and outputs 16A",
-                "Toggle 2A/8A half-mode with Screwdriver", CORE.GT_Tooltip };
+                "Toggle 2A/8A half-mode with Screwdriver", CORE.GT_Tooltip.get() };
     }
 
     @Override

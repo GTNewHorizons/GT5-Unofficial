@@ -2,6 +2,7 @@ package gtPlusPlus.core.lib;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -69,9 +70,10 @@ public class CORE {
             "[GT++]");
     public static final WeakHashMap<World, EntityPlayerMP> fakePlayerCache = new WeakHashMap<World, EntityPlayerMP>();
     // Tooltips;
-    public static final String GT_Tooltip = StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
-    public static final String GT_Tooltip_Builder = StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Builder");
-    public static final String GT_Tooltip_Radioactive = StatCollector
+    public static final Supplier<String> GT_Tooltip = () -> StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
+    public static final Supplier<String> GT_Tooltip_Builder = () -> StatCollector
+            .translateToLocal("GTPP.core.GT_Tooltip_Builder");
+    public static final Supplier<String> GT_Tooltip_Radioactive = () -> StatCollector
             .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
     public static final String noItem = "";
 

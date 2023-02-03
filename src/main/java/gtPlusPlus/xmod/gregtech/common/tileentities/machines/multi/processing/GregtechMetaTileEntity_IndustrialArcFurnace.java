@@ -71,7 +71,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
                 .addStructureInfo("n can be 3, 5 or 7").addCasingInfo(mCasingName, 10).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

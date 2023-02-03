@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
                     + "%";
             desc[mDescArray.length + 5] = "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100))
                     + "% of CO2/CO/SO2";
-            desc[mDescArray.length + 6] = CORE.GT_Tooltip;
+            desc[mDescArray.length + 6] = CORE.GT_Tooltip.get();
             return desc;
         } else {
             return new String[] {};

@@ -130,7 +130,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                 .addEnergyHatch("Any casing", 1, 2).addMaintenanceHatch("Any casing", 1, 2, 3)
                 .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
                 .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
