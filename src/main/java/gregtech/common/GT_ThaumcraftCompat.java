@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
@@ -246,6 +247,23 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
                 aInstability,
                 getAspectList(aAspects),
                 aMainInput,
+                aSideInputs);
+    }
+
+    @Override
+    public Object addInfusionEnchantmentRecipe(String aResearch, Enchantment aEnchantment, int aInstability,
+            List<TC_Aspects.TC_AspectStack> aAspects, ItemStack[] aSideInputs) {
+        if ((GT_Utility.isStringInvalid(aResearch)) || (aSideInputs == null)
+                || (aAspects == null)
+                || (aEnchantment == null)
+                || (aAspects.isEmpty())) {
+            return null;
+        }
+        return ThaumcraftApi.addInfusionEnchantmentRecipe(
+                aResearch,
+                aEnchantment,
+                aInstability,
+                getAspectList(aAspects),
                 aSideInputs);
     }
 
