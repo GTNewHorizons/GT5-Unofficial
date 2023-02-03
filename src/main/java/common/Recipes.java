@@ -924,6 +924,53 @@ public class Recipes {
                 6400,
                 BW_Util.getMachineVoltageFromTier(8));
 
+        // Extremely Ultimate Capacitor (UEV)
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
+                1200000,
+                128,
+                8000000,
+                16,
+                new Object[] {
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
+                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Optical), 1},
+                    ItemList.ZPM3.get(8L),
+                    ItemList.Field_Generator_UEV.get(4),
+                    ItemList.Circuit_Wafer_PPIC.get(64),
+                    ItemList.Circuit_Wafer_PPIC.get(64),
+                    ItemList.Circuit_Wafer_SoC2.get(64),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64)
+                },
+                new FluidStack[] {
+                    new FluidStack(solderUEV, 9216),
+                    Materials.Quantium.getMolten(18432),
+                    Materials.Naquadria.getMolten(18432),
+                    Materials.SuperCoolant.getFluid(64000)
+                },
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
+                250 * 20,
+                6_400_000);
+
+        // UEV Capacitor alt recipe
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    ItemList.ZPM4.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
+                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
+                    GT_Utility.getIntegratedCircuit(6)
+                },
+                null,
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
+                640 * 20,
+                BW_Util.getMachineVoltageFromTier(9));
+
         // Capacitor recycling
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7),
@@ -959,6 +1006,12 @@ public class Recipes {
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
                 ItemList.ZPM3.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
+                1200,
+                32);
+        GT_Values.RA.addUnboxingRecipe(
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
+                ItemList.ZPM4.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
                 1200,
                 32);
     }
