@@ -1166,7 +1166,6 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_LargeBoiler_TungstenSteel,
     Machine_Multi_BlastFurnace,
     Machine_Multi_PlasmaForge,
-    Machine_Multi_TranscendentPlasmaMixer,
     Machine_Multi_ImplosionCompressor,
     Machine_Multi_VacuumFreezer,
     Machine_Multi_Furnace,
@@ -2013,7 +2012,8 @@ public enum ItemList implements IItemContainer {
     BasicPhotolithographicFrameworkCasing,
     ReinforcedPhotolithographicFrameworkCasing,
     RadiationProofPhotolithographicFrameworkCasing,
-    InfinityCooledCasing;
+    InfinityCooledCasing,
+    Machine_Multi_TranscendentPlasmaMixer;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
             Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },

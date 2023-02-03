@@ -1731,21 +1731,21 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public static final GT_Recipe_Map sTranscendentPlasmaMixerRecipes = new GT_Recipe_Map_LargeNEI(
             new HashSet<>(20),
-            "gt.recipe.plasmaforge",
+            "gt.recipe.transcendentplasmamixerrecipes",
             "Transcendent Plasma Mixer",
             null,
             RES_PATH_GUI + "basicmachines/PlasmaForge",
-            9,
-            9,
+            1,
+            0,
             0,
             0,
             1,
-            "Heat Capacity: ",
+            "",
             1,
-            " K",
+            "",
             false,
             true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-            .setUsualFluidInputCount(9).setUsualFluidOutputCount(9)
+            .setUsualFluidInputCount(18).setUsualFluidOutputCount(1)
             .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
 
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
