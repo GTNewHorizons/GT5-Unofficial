@@ -6,13 +6,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.common.misc.spaceprojects.UpgradeStatus;
+import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
 
 public interface ISpaceProject {
 
     String getProjectName();
 
     String getUnlocalizedName();
+
+    String getLocalizedName();
 
     long getProjectVoltage();
 
@@ -42,6 +44,8 @@ public interface ISpaceProject {
 
     void loadExtraSavedWorldData(NBTTagCompound aNBT);
 
+    ISpaceProject copy();
+
     public interface ISP_Upgrade {
 
         String getUpgradeName();
@@ -67,5 +71,9 @@ public interface ISpaceProject {
         UpgradeStatus getStatus();
 
         List<ISP_Upgrade> getRequiredUpgrades();
+    }
+
+    public interface ISP_Requirement {
+
     }
 }

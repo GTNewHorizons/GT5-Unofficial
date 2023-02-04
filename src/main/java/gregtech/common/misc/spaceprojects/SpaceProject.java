@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 public class SpaceProject implements ISpaceProject {
 
@@ -37,6 +40,10 @@ public class SpaceProject implements ISpaceProject {
     @Override
     public String getUnlocalizedName() {
         return mSpaceProjectUnlocalizedName;
+    }
+
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(mSpaceProjectUnlocalizedName);
     }
 
     @Override
@@ -179,5 +186,13 @@ public class SpaceProject implements ISpaceProject {
     public void loadExtraSavedWorldData(NBTTagCompound aNBT) {
         // TODO Do things /s
 
+    }
+
+    @Override
+    public ISpaceProject copy() {
+        SpaceProject aCopy = new SpaceProject().setProjectName(mSpaceProjectName).setProjectUnlocalizedName(mSpaceProjectUnlocalizedName)
+        .setProjectVoltage(mVoltage).setProjectBuildTime(mBuildTime).setItemCosts(mItemCosts).setFluidCosts(mFluidCosts)
+        .setUpgrades(mUpgrades.toArray(new ISP_Upgrade[0])).setTotalStages(mTotalStages);
+        return aCopy;
     }
 }
