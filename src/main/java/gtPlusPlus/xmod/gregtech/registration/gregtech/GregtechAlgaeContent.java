@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gregtech.api.GregTech_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.GT_MetaTileEntity_Hatch_Catalysts;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.algae.GregtechMTE_AlgaePondBase;
@@ -12,10 +11,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.ch
 public class GregtechAlgaeContent {
 
     public static void run() {
-        if (LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Algae Content.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering Algae Content.");
+        run1();
     }
 
     private static void run1() {

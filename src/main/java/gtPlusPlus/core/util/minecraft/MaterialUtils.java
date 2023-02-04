@@ -267,17 +267,12 @@ public class MaterialUtils {
     }
 
     private static Materials getMaterialByName(String materialName) {
-
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            return (Materials) EnumUtils.getValue(gregtech.api.enums.Materials.class, materialName, false);
-        } else {
-            for (Materials m : Materials.values()) {
-                if (MaterialUtils.getMaterialName(m).toLowerCase().equals(materialName.toLowerCase())) {
-                    return m;
-                }
+        for (Materials m : Materials.values()) {
+            if (MaterialUtils.getMaterialName(m).toLowerCase().equals(materialName.toLowerCase())) {
+                return m;
             }
-            return null;
         }
+        return null;
     }
 
     @SuppressWarnings("deprecation")

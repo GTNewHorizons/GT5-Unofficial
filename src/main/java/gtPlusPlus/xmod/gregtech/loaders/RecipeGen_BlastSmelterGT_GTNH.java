@@ -77,10 +77,7 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                 if (x.mInputs[0] != null) {
                     for (int tag : OreDictionary.getOreIDs(x.mInputs[0])) {
                         String oreName = OreDictionary.getOreName(tag).toLowerCase();
-                        String mType = "dust";
-                        if (CORE.GTNH) {
-                            mType = "ingot";
-                        }
+                        String mType = "ingot";
                         if (oreName.startsWith(mType) && !oreName.contains("double")
                                 && !oreName.contains("triple")
                                 && !oreName.contains("quad")
@@ -154,8 +151,8 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                 enabled = x.mEnabled;
                 special = x.mSpecialValue;
 
-                // Check for GTNH, if it's found, continue to next recipe if the Temp is too high.
-                if (CORE.GTNH && special > 3600) {
+                // continue to next recipe if the Temp is too high.
+                if (special > 3600) {
                     Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to temp.");
                     continue;
                 } else {

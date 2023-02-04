@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.reliquary.util;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -56,9 +54,8 @@ public class ReliquaryRecipeHandler {
             Logger.INFO("Added new recipe for Glowing Water.");
         }
         if (CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { ItemUtils.simpleMetaStack(Items.ender_eye, 0, 32),
-                        CI.getFieldGenerator(5, GTNH ? 8 : 4),
-                        CI.getTieredComponent(OrePrefixes.plate, 5, GTNH ? 16 : 8), CI.getEmitter(3, 20) },
+                new ItemStack[] { ItemUtils.simpleMetaStack(Items.ender_eye, 0, 32), CI.getFieldGenerator(5, 8),
+                        CI.getTieredComponent(OrePrefixes.plate, 5, 16), CI.getEmitter(3, 20) },
                 FluidUtils.getUUM(50),
                 ReliquaryItems.emptyVoidTear(),
                 20 * 2000,

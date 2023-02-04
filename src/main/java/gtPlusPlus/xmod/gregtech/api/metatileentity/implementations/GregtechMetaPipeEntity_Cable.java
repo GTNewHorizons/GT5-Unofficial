@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,13 +14,11 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
     private static Textures.BlockIcons INSULATION_MEDIUM_PLUS;
 
     static {
-        if (GTNH) {
-            try {
-                INSULATION_MEDIUM_PLUS = (Textures.BlockIcons) GT_Utility
-                        .getField(Textures.BlockIcons.class, "INSULATION_MEDIUM_PLUS").get(null);
-            } catch (IllegalAccessException | NullPointerException e) {
-                throw new Error(e);
-            }
+        try {
+            INSULATION_MEDIUM_PLUS = (Textures.BlockIcons) GT_Utility
+                    .getField(Textures.BlockIcons.class, "INSULATION_MEDIUM_PLUS").get(null);
+        } catch (IllegalAccessException | NullPointerException e) {
+            throw new Error(e);
         }
     }
 
@@ -92,8 +88,7 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
             byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return GTNH ? getTextureGTNH(aBaseMetaTileEntity, aSide, aConnections, aColorIndex, aConnected, aRedstone)
-                : getTexturePure(aBaseMetaTileEntity, aSide, aConnections, aColorIndex, aConnected, aRedstone);
+        return getTextureGTNH(aBaseMetaTileEntity, aSide, aConnections, aColorIndex, aConnected, aRedstone);
     }
 
     private ITexture[] getTextureGTNH(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
@@ -146,72 +141,6 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
                     new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
                     new GT_RenderedTexture(
                             Textures.BlockIcons.INSULATION_HUGE,
-                            Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-        }
-        return new ITexture[] { new GT_RenderedTexture(
-                Textures.BlockIcons.INSULATION_FULL,
-                Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-    }
-
-    private ITexture[] getTexturePure(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-            byte aColorIndex, boolean aConnected, boolean aRedstone) {
-
-        // if (this.vRGB == null || this.vRGB.length < 3 || this.vRGB.length > 4){
-        // this.vRGB = new short[]{200, 0, 200, 0};
-        // }
-        // if (this.vRGB.length != 4){
-        // short[] tempRGB = this.vRGB;
-        // this.vRGB = new short[]{tempRGB[0], tempRGB[1], tempRGB[2], 0};
-        // }
-        //
-        // Materials wireMaterial = this.mMaterial;
-        //
-        // if (wireMaterial == null){
-        // wireMaterial = Materials.Iron;
-        // }
-
-        // With the code in constructors it should work
-        Materials wireMaterial = mMaterial;
-        if (wireMaterial == null) {
-            wireMaterial = Materials.Iron;
-        }
-
-        if (!(this.mInsulated)) return new ITexture[] { new GT_RenderedTexture(
-                wireMaterial.mIconSet.mTextures[69],
-                Dyes.getModulation(aColorIndex, this.vRGB)) };
-        if (aConnected) {
-            float tThickNess = getThickNess();
-            if (tThickNess < 0.124F) return new ITexture[] { new GT_RenderedTexture(
-                    Textures.BlockIcons.INSULATION_FULL,
-                    Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-            if (tThickNess < 0.374F)
-                return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-                        new GT_RenderedTexture(
-                                Textures.BlockIcons.INSULATION_TINY,
-                                Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-            if (tThickNess < 0.499F)
-                return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-                        new GT_RenderedTexture(
-                                Textures.BlockIcons.INSULATION_SMALL,
-                                Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-            if (tThickNess < 0.624F)
-                return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-                        new GT_RenderedTexture(
-                                Textures.BlockIcons.INSULATION_MEDIUM,
-                                Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-            if (tThickNess < 0.749F)
-                return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-                        new GT_RenderedTexture(
-                                Textures.BlockIcons.INSULATION_LARGE,
-                                Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-            if (tThickNess < 0.874F)
-                return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-                        new GT_RenderedTexture(
-                                Textures.BlockIcons.INSULATION_HUGE,
-                                Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-            return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-                    new GT_RenderedTexture(
-                            Textures.BlockIcons.INSULATION_FULL,
                             Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
         }
         return new ITexture[] { new GT_RenderedTexture(

@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechIndustrialWiremill {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill) {
+            run1();
         }
     }
 

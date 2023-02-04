@@ -11,11 +11,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaP
 public class GregtechPollutionDevices {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            if (PollutionUtils.isPollutionEnabled()) {
-                Logger.INFO("Gregtech5u Content | Registering Anti-Pollution Devices.");
-                run1();
-            }
+        if (PollutionUtils.isPollutionEnabled()) {
+            Logger.INFO("Gregtech5u Content | Registering Anti-Pollution Devices.");
+            run1();
         }
     }
 

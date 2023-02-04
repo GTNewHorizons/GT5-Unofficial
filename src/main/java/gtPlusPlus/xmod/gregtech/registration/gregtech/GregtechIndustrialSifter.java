@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechIndustrialSifter {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Sifter Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_IndustrialSifter) { // TODO
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Sifter Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_IndustrialSifter) {
+            run1();
         }
     }
 

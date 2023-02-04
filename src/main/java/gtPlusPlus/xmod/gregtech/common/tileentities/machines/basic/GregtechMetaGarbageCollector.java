@@ -376,7 +376,7 @@ public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
             mLocalTickVar = System.currentTimeMillis();
             long aDiff = mLocalTickVar - this.mLastCleanup;
             if (Utils.getSecondsFromMillis(aDiff) >= (this.mFrequency * 60)) {
-                CORE.gc();
+                System.gc();
                 this.mLastCleanup = mLocalTickVar;
             }
         }

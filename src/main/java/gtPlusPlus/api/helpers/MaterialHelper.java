@@ -10,7 +10,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class MaterialHelper {
@@ -38,30 +37,28 @@ public class MaterialHelper {
      */
     public static boolean generateHexadecuplePipe(Materials aMaterial, String name, String displayName, int aID,
             int baseCapacity, int heatCapacity, boolean gasProof) {
-        if (Utils.getGregtechVersionAsInt() >= 50930) {
-            try {
-                Class<GT_MetaPipeEntity_Fluid> aPipeEntity = GT_MetaPipeEntity_Fluid.class;
-                Constructor<GT_MetaPipeEntity_Fluid> constructor = aPipeEntity.getConstructor(
-                        new Class[] { int.class, String.class, String.class, float.class, Materials.class, int.class,
-                                int.class, boolean.class, int.class });
-                if (constructor != null) {
-                    GT_MetaPipeEntity_Fluid aPipe;
-                    aPipe = constructor.newInstance(
-                            aID,
-                            "GT_Pipe_" + name + "_Hexadecuple",
-                            "Hexadecuple " + displayName + " Fluid Pipe",
-                            1.0F,
-                            aMaterial,
-                            baseCapacity,
-                            heatCapacity,
-                            gasProof,
-                            16);
-                    return GT_OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
-                }
+        try {
+            Class<GT_MetaPipeEntity_Fluid> aPipeEntity = GT_MetaPipeEntity_Fluid.class;
+            Constructor<GT_MetaPipeEntity_Fluid> constructor = aPipeEntity.getConstructor(
+                    new Class[] { int.class, String.class, String.class, float.class, Materials.class, int.class,
+                            int.class, boolean.class, int.class });
+            if (constructor != null) {
+                GT_MetaPipeEntity_Fluid aPipe;
+                aPipe = constructor.newInstance(
+                        aID,
+                        "GT_Pipe_" + name + "_Hexadecuple",
+                        "Hexadecuple " + displayName + " Fluid Pipe",
+                        1.0F,
+                        aMaterial,
+                        baseCapacity,
+                        heatCapacity,
+                        gasProof,
+                        16);
+                return GT_OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
+            }
 
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-                    | IllegalArgumentException | InvocationTargetException e) {}
-        }
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {}
         return false;
     }
 

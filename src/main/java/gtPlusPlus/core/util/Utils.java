@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -46,7 +45,6 @@ import org.apache.commons.lang3.EnumUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -58,16 +56,13 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.SystemUtils;
 import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 import ic2.core.Ic2Items;
@@ -805,63 +800,6 @@ public class Utils {
         CORE.sBookList.put(aMapping, rStack);
         Logger.INFO("Creating book: " + aTitle + " by " + aAuthor + ". Using Meta " + vMeta + ".");
         return GT_Utility.copy(new Object[] { rStack });
-    }
-
-    @SuppressWarnings({ "unused", "unchecked" })
-    public static Pair<Integer, Integer> getGregtechVersion() {
-        Pair<Integer, Integer> version;
-        if (GT_Mod.VERSION == 509) {
-            Class<GT_Mod> clazz;
-            try {
-
-                if (LoadedMods.BeyondRealityCore) {
-                    // Safely assume it's Beyond Reality running .28-pre (If it's not, tough shit really?)
-                    return new Pair<Integer, Integer>(9, 28);
-                }
-
-                clazz = (Class<GT_Mod>) ReflectionUtils.getClass("gregtech.GT_Mod");
-                Field mSubversion = ReflectionUtils.getField(clazz, "SUBVERSION");
-                if (mSubversion != null) {
-                    int mSub = 0;
-                    mSub = mSubversion.getInt(clazz);
-                    if (mSub != 0) {
-                        version = new Pair<Integer, Integer>(9, mSub);
-                        return version;
-                    }
-                }
-            } catch (Throwable t) {
-
-            }
-        }
-        // 5.08.33
-        else if (GT_Mod.VERSION == 508) {
-            version = new Pair<Integer, Integer>(8, 33);
-            return version;
-
-        }
-        // 5.07.07
-        else if (GT_Mod.VERSION == 507) {
-            version = new Pair<Integer, Integer>(7, 7);
-            return version;
-        }
-        // Returb Bad Value
-        version = new Pair<Integer, Integer>(0, 0);
-        return version;
-    }
-
-    public static int getGregtechVersionAsInt() {
-        Pair<Integer, Integer> ver = getGregtechVersion();
-        return 50000 + (ver.getKey() * 100) + (ver.getValue());
-    }
-
-    public static String getGregtechVersionAsString() {
-        Pair<Integer, Integer> ver = getGregtechVersion();
-        return "5." + ver.getKey() + "." + ver.getValue();
-    }
-
-    public static int getGregtechSubVersion() {
-        Pair<Integer, Integer> ver = getGregtechVersion();
-        return ver.getValue();
     }
 
     public static SecureRandom generateSecureRandom() {

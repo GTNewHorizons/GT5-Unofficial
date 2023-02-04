@@ -383,14 +383,6 @@ public class RecipeGen_Recycling implements Runnable {
             return ItemUtils.getSimpleStack(Items.clay_ball, amount);
         }
 
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            if (oredictName.toLowerCase().contains("rutile")) {
-                mTemp = oredictName.replace("Rutile", "Titanium");
-            }
-            if (oredictName.toLowerCase().contains("vanadiumsteel")) {
-                mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
-            }
-        }
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
         if (!oreDictList.isEmpty()) {
             final ItemStack returnValue = oreDictList.get(0).copy();

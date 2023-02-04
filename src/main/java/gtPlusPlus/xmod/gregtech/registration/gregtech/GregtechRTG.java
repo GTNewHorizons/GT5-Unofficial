@@ -7,10 +7,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileE
 public class GregtechRTG {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering RTG.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering RTG.");
+        run1();
     }
 
     private static void run1() {

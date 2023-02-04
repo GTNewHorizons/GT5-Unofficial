@@ -3,14 +3,13 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;
 
 public class GregtechSolarGenerators {
 
     public static void run() {
-        if (LoadedMods.Gregtech && ConfigSwitches.enableMachine_SolarGenerators) {
+        if (ConfigSwitches.enableMachine_SolarGenerators) {
             Logger.INFO("Gregtech5u Content | Registering Solar Generator Blocks.");
             if (CORE.ConfigSwitches.enableMachine_SolarGenerators) {
                 run1();

@@ -12,7 +12,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -31,12 +30,7 @@ public class GTPP_Cover_Overflow_Item extends GT_CoverBehavior {
         sQuantumChest = ReflectionUtils.getClass("gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest");
         sSuperChestGTPP = ReflectionUtils
                 .getClass("gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest");
-        if (CORE.GTNH) {
-            sSuperChestGTNH = ReflectionUtils
-                    .getClass("gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest");
-        } else {
-            sSuperChestGTNH = null;
-        }
+        sSuperChestGTNH = ReflectionUtils.getClass("gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest");
         if (sQuantumChest != null) {
             mItemAmountFields.put(0, ReflectionUtils.getField(sQuantumChest, "mItemCount"));
             mItemTypeFields.put(0, ReflectionUtils.getField(sQuantumChest, "mItemStack"));
@@ -81,7 +75,7 @@ public class GTPP_Cover_Overflow_Item extends GT_CoverBehavior {
         } else if (sSuperChestGTPP.isInstance(aMetaTileEntity)) {
             didHandle = handleDigitalChest(aMetaTileEntity, 1);
 
-        } else if (CORE.GTNH && sSuperChestGTNH != null && sSuperChestGTNH.isInstance(aMetaTileEntity)) {
+        } else if (sSuperChestGTNH != null && sSuperChestGTNH.isInstance(aMetaTileEntity)) {
             didHandle = handleDigitalChest(aMetaTileEntity, 2);
         }
 

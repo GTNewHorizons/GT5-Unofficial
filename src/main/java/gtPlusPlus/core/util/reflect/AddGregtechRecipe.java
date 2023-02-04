@@ -132,49 +132,47 @@ public final class AddGregtechRecipe {
 
     public static boolean addCircuitAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput,
             int aDuration, int aEUt) {
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            try {
-                IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
-                if (IGT_RecipeAdder != null) {
-                    Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
-                    Method addRecipe = classRA.getMethod(
-                            "addCircuitAssemblerRecipe",
-                            ItemStack.class,
-                            FluidStack.class,
-                            ItemStack.class,
-                            int.class,
-                            int.class);
-                    if (addRecipe != null) {
-                        if (aFluidInput.isFluidEqual(FluidUtils.getFluidStack("molten.tin", 1))) {
-                            boolean[] didAdd = new boolean[3];
-                            FluidStack moltenMetal = FluidUtils.getFluidStack("molten.tin", 144);
-                            // Tin
-                            didAdd[0] = (boolean) addRecipe
-                                    .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
-                            moltenMetal = FluidUtils.getFluidStack("molten.lead", 144);
-                            // Lead
-                            didAdd[1] = (boolean) addRecipe
-                                    .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
-                            moltenMetal = FluidUtils.getFluidStack("molten.solderingalloy", 144 / 2);
-                            // Soldering Alloy
-                            didAdd[2] = (boolean) addRecipe
-                                    .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
+        try {
+            IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
+            if (IGT_RecipeAdder != null) {
+                Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
+                Method addRecipe = classRA.getMethod(
+                        "addCircuitAssemblerRecipe",
+                        ItemStack.class,
+                        FluidStack.class,
+                        ItemStack.class,
+                        int.class,
+                        int.class);
+                if (addRecipe != null) {
+                    if (aFluidInput.isFluidEqual(FluidUtils.getFluidStack("molten.tin", 1))) {
+                        boolean[] didAdd = new boolean[3];
+                        FluidStack moltenMetal = FluidUtils.getFluidStack("molten.tin", 144);
+                        // Tin
+                        didAdd[0] = (boolean) addRecipe
+                                .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
+                        moltenMetal = FluidUtils.getFluidStack("molten.lead", 144);
+                        // Lead
+                        didAdd[1] = (boolean) addRecipe
+                                .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
+                        moltenMetal = FluidUtils.getFluidStack("molten.solderingalloy", 144 / 2);
+                        // Soldering Alloy
+                        didAdd[2] = (boolean) addRecipe
+                                .invoke(IGT_RecipeAdder, aInputs, moltenMetal, aOutput, aDuration, aEUt);
 
-                            if (didAdd[0] && didAdd[1] && didAdd[2]) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+                        if (didAdd[0] && didAdd[1] && didAdd[2]) {
+                            return true;
                         } else {
-                            return (boolean) addRecipe
-                                    .invoke(IGT_RecipeAdder, aInputs, aFluidInput, aOutput, aDuration, aEUt);
+                            return false;
                         }
+                    } else {
+                        return (boolean) addRecipe
+                                .invoke(IGT_RecipeAdder, aInputs, aFluidInput, aOutput, aDuration, aEUt);
                     }
                 }
-            } catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
-                return false;
             }
+        } catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+            return false;
         }
         return false;
     }
@@ -183,31 +181,29 @@ public final class AddGregtechRecipe {
             final FluidStack p2, final FluidStack p3, final ItemStack p4, final ItemStack p5, final int p6,
             final int p7) {
 
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            try {
-                IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
-                if (IGT_RecipeAdder != null) {
-                    Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
-                    // final ItemStack p0, final ItemStack p1, final FluidStack p2, final FluidStack p3, final ItemStack
-                    // p4, final ItemStack p5, final int p6, final int p7
-                    Method addRecipe = classRA.getMethod(
-                            "addChemicalRecipeForBasicMachineOnly",
-                            ItemStack.class,
-                            ItemStack.class,
-                            FluidStack.class,
-                            FluidStack.class,
-                            ItemStack.class,
-                            ItemStack.class,
-                            int.class,
-                            int.class);
-                    if (addRecipe != null) {
-                        return (boolean) addRecipe.invoke(IGT_RecipeAdder, p0, p1, p2, p3, p4, p5, p6, p7);
-                    }
+        try {
+            IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
+            if (IGT_RecipeAdder != null) {
+                Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
+                // final ItemStack p0, final ItemStack p1, final FluidStack p2, final FluidStack p3, final ItemStack
+                // p4, final ItemStack p5, final int p6, final int p7
+                Method addRecipe = classRA.getMethod(
+                        "addChemicalRecipeForBasicMachineOnly",
+                        ItemStack.class,
+                        ItemStack.class,
+                        FluidStack.class,
+                        FluidStack.class,
+                        ItemStack.class,
+                        ItemStack.class,
+                        int.class,
+                        int.class);
+                if (addRecipe != null) {
+                    return (boolean) addRecipe.invoke(IGT_RecipeAdder, p0, p1, p2, p3, p4, p5, p6, p7);
                 }
-            } catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
-
             }
+        } catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+
         }
 
         return GT_Values.RA.addChemicalRecipe(p0, p1, p2, p3, p4, p6);

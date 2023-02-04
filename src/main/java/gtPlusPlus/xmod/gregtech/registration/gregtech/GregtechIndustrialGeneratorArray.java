@@ -7,12 +7,10 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.Gr
 public class GregtechIndustrialGeneratorArray {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Generator Array Multiblock.");
-            // if (CORE.ConfigSwitches.enableMultiblock_IndustrialSifter) { // TODO
-            run1();
-            // }
-        }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Generator Array Multiblock.");
+        // if (CORE.ConfigSwitches.enableMultiblock_IndustrialSifter) { // TODO
+        run1();
+        // }
     }
 
     private static void run1() {

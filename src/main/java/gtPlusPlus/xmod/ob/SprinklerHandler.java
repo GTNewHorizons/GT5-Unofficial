@@ -55,11 +55,9 @@ public class SprinklerHandler {
                 registerSprinklerFertilizer(f);
             }
         }
-        if (LoadedMods.IndustrialCraft2) {
-            f = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
-            if (f != null) {
-                registerSprinklerFertilizer(f);
-            }
+        f = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
+        if (f != null) {
+            registerSprinklerFertilizer(f);
         }
     }
 }

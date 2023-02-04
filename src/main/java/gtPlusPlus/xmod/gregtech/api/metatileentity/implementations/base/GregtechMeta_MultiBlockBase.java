@@ -68,7 +68,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.*;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -1886,37 +1885,20 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                     "Invalid recipe, Fallback lookup. " + this.getRecipeMap().mRecipeList.size()
                             + " | "
                             + this.getRecipeMap().mNEIName);
-            if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-                try {
-                    return (GT_Recipe) findRecipe08.invoke(
-                            getRecipeMap(),
-                            aTileEntity,
-                            aRecipe,
-                            aNotUnificated,
-                            aVoltage,
-                            aFluids,
-                            aSpecialSlot,
-                            aInputs);
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            } else {
-                try {
-                    return (GT_Recipe) findRecipe09.invoke(
-                            getRecipeMap(),
-                            aTileEntity,
-                            aRecipe,
-                            aNotUnificated,
-                            aDontCheckStackSizes,
-                            aVoltage,
-                            aFluids,
-                            aSpecialSlot,
-                            aInputs);
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    e.printStackTrace();
-                    return null;
-                }
+            try {
+                return (GT_Recipe) findRecipe09.invoke(
+                        getRecipeMap(),
+                        aTileEntity,
+                        aRecipe,
+                        aNotUnificated,
+                        aDontCheckStackSizes,
+                        aVoltage,
+                        aFluids,
+                        aSpecialSlot,
+                        aInputs);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                e.printStackTrace();
+                return null;
             }
         } else {
             return mRecipeResult;

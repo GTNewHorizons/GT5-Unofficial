@@ -90,107 +90,53 @@ public class RECIPE_IC2 {
         checkForEnderIO();
         addAdvancedHazmat();
 
-        if (!CORE.GTNH) {
-            // Rotor Blade Recipes
+        RecipeUtils.addShapedRecipe(
+                plate_T1,
+                plate_T1,
+                plate_T1,
+                plate_T1,
+                ring_T1,
+                plate_T1,
+                plate_T1,
+                plate_T1,
+                plate_T1,
+                rotor_blade_T1);
 
-            RecipeUtils.addShapedRecipe(
-                    plate_T1,
-                    ingot_T1,
-                    plate_T1,
-                    plate_T1,
-                    ingot_T1,
-                    plate_T1,
-                    plate_T1,
-                    ingot_T1,
-                    plate_T1,
-                    rotor_blade_T1);
+        RecipeUtils.addShapedRecipe(
+                plate_T2,
+                plate_T2,
+                plate_T2,
+                plate_T2,
+                ring_T2,
+                plate_T2,
+                plate_T2,
+                plate_T2,
+                plate_T2,
+                rotor_blade_T2);
 
-            RecipeUtils.addShapedRecipe(
-                    plate_T2,
-                    ingot_T2,
-                    plate_T2,
-                    plate_T2,
-                    ingot_T2,
-                    plate_T2,
-                    plate_T2,
-                    ingot_T2,
-                    plate_T2,
-                    rotor_blade_T2);
+        RecipeUtils.addShapedRecipe(
+                plate_T3,
+                plate_T3,
+                plate_T3,
+                plate_T3,
+                ring_T3,
+                plate_T3,
+                plate_T3,
+                plate_T3,
+                plate_T3,
+                rotor_blade_T3);
 
-            RecipeUtils.addShapedRecipe(
-                    plate_T3,
-                    ingot_T3,
-                    plate_T3,
-                    plate_T3,
-                    ingot_T3,
-                    plate_T3,
-                    plate_T3,
-                    ingot_T3,
-                    plate_T3,
-                    rotor_blade_T3);
-
-            RecipeUtils.addShapedRecipe(
-                    plate_T4,
-                    ingot_T4,
-                    plate_T4,
-                    plate_T4,
-                    ingot_T4,
-                    plate_T4,
-                    plate_T4,
-                    ingot_T4,
-                    plate_T4,
-                    rotor_blade_T4);
-        }
-        if (CORE.GTNH) {
-
-            RecipeUtils.addShapedRecipe(
-                    plate_T1,
-                    plate_T1,
-                    plate_T1,
-                    plate_T1,
-                    ring_T1,
-                    plate_T1,
-                    plate_T1,
-                    plate_T1,
-                    plate_T1,
-                    rotor_blade_T1);
-
-            RecipeUtils.addShapedRecipe(
-                    plate_T2,
-                    plate_T2,
-                    plate_T2,
-                    plate_T2,
-                    ring_T2,
-                    plate_T2,
-                    plate_T2,
-                    plate_T2,
-                    plate_T2,
-                    rotor_blade_T2);
-
-            RecipeUtils.addShapedRecipe(
-                    plate_T3,
-                    plate_T3,
-                    plate_T3,
-                    plate_T3,
-                    ring_T3,
-                    plate_T3,
-                    plate_T3,
-                    plate_T3,
-                    plate_T3,
-                    rotor_blade_T3);
-
-            RecipeUtils.addShapedRecipe(
-                    plate_T4,
-                    plate_T4,
-                    plate_T4,
-                    plate_T4,
-                    ring_T4,
-                    plate_T4,
-                    plate_T4,
-                    plate_T4,
-                    plate_T4,
-                    rotor_blade_T4);
-        }
+        RecipeUtils.addShapedRecipe(
+                plate_T4,
+                plate_T4,
+                plate_T4,
+                plate_T4,
+                ring_T4,
+                plate_T4,
+                plate_T4,
+                plate_T4,
+                plate_T4,
+                rotor_blade_T4);
 
         // Shaft Extruder Recipe
         GT_ModHandler.addCraftingRecipe(
@@ -269,11 +215,7 @@ public class RECIPE_IC2 {
                 shaft_T1,
                 2560,
                 250);
-        if (LoadedMods.EnderIO || CORE.GTNH) {
-            Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Energetic]");
-        } else {
-            Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Magnalium]");
-        }
+        Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Energetic]");
         GT_Values.RA.addExtruderRecipe(
                 GT_Utility.copyAmount(9L, block_T2),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
@@ -300,11 +242,7 @@ public class RECIPE_IC2 {
                 shaft_T3,
                 10240,
                 2000);
-        if (LoadedMods.EnderIO || CORE.GTNH) {
-            Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Vibrant]");
-        } else {
-            Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Ultimet]");
-        }
+        Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Vibrant]");
         GT_Values.RA.addExtruderRecipe(
                 GT_Utility.copyAmount(9L, block_T4),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
@@ -319,105 +257,53 @@ public class RECIPE_IC2 {
                 4000);
         Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Iridium]");
 
-        if (!CORE.GTNH) {
-            // Rotor Recipes
-            RecipeUtils.addShapedRecipe(
-                    null,
-                    rotor_blade_T1,
-                    null,
-                    rotor_blade_T1,
-                    shaft_T1,
-                    rotor_blade_T1,
-                    null,
-                    rotor_blade_T1,
-                    null,
-                    rotor_T1);
+        RecipeUtils.addShapedRecipe(
+                shaft_T1,
+                rotor_blade_T1,
+                craftingToolHardHammer,
+                rotor_blade_T1,
+                ring_T1,
+                rotor_blade_T1,
+                craftingToolWrench,
+                rotor_blade_T1,
+                shaft_T1,
+                rotor_T1);
 
-            RecipeUtils.addShapedRecipe(
-                    null,
-                    rotor_blade_T2,
-                    null,
-                    rotor_blade_T2,
-                    shaft_T2,
-                    rotor_blade_T2,
-                    null,
-                    rotor_blade_T2,
-                    null,
-                    rotor_T2);
+        RecipeUtils.addShapedRecipe(
+                shaft_T2,
+                rotor_blade_T2,
+                craftingToolHardHammer,
+                rotor_blade_T2,
+                ring_T2,
+                rotor_blade_T2,
+                craftingToolWrench,
+                rotor_blade_T2,
+                shaft_T2,
+                rotor_T2);
 
-            RecipeUtils.addShapedRecipe(
-                    null,
-                    rotor_blade_T3,
-                    null,
-                    rotor_blade_T3,
-                    shaft_T3,
-                    rotor_blade_T3,
-                    null,
-                    rotor_blade_T3,
-                    null,
-                    rotor_T3);
+        RecipeUtils.addShapedRecipe(
+                shaft_T3,
+                rotor_blade_T3,
+                craftingToolHardHammer,
+                rotor_blade_T3,
+                ring_T3,
+                rotor_blade_T3,
+                craftingToolWrench,
+                rotor_blade_T3,
+                shaft_T3,
+                rotor_T3);
 
-            RecipeUtils.addShapedRecipe(
-                    null,
-                    rotor_blade_T4,
-                    null,
-                    rotor_blade_T4,
-                    shaft_T4,
-                    rotor_blade_T4,
-                    null,
-                    rotor_blade_T4,
-                    null,
-                    rotor_T4);
-        }
-        if (CORE.GTNH) {
-            RecipeUtils.addShapedRecipe(
-                    shaft_T1,
-                    rotor_blade_T1,
-                    craftingToolHardHammer,
-                    rotor_blade_T1,
-                    ring_T1,
-                    rotor_blade_T1,
-                    craftingToolWrench,
-                    rotor_blade_T1,
-                    shaft_T1,
-                    rotor_T1);
-
-            RecipeUtils.addShapedRecipe(
-                    shaft_T2,
-                    rotor_blade_T2,
-                    craftingToolHardHammer,
-                    rotor_blade_T2,
-                    ring_T2,
-                    rotor_blade_T2,
-                    craftingToolWrench,
-                    rotor_blade_T2,
-                    shaft_T2,
-                    rotor_T2);
-
-            RecipeUtils.addShapedRecipe(
-                    shaft_T3,
-                    rotor_blade_T3,
-                    craftingToolHardHammer,
-                    rotor_blade_T3,
-                    ring_T3,
-                    rotor_blade_T3,
-                    craftingToolWrench,
-                    rotor_blade_T3,
-                    shaft_T3,
-                    rotor_T3);
-
-            RecipeUtils.addShapedRecipe(
-                    shaft_T4,
-                    rotor_blade_T4,
-                    craftingToolHardHammer,
-                    rotor_blade_T4,
-                    ring_T4,
-                    rotor_blade_T4,
-                    craftingToolWrench,
-                    rotor_blade_T4,
-                    shaft_T4,
-                    rotor_T4);
-        }
+        RecipeUtils.addShapedRecipe(
+                shaft_T4,
+                rotor_blade_T4,
+                craftingToolHardHammer,
+                rotor_blade_T4,
+                ring_T4,
+                rotor_blade_T4,
+                craftingToolWrench,
+                rotor_blade_T4,
+                shaft_T4,
+                rotor_T4);
     }
 
     private static void addAdvancedHazmat() {

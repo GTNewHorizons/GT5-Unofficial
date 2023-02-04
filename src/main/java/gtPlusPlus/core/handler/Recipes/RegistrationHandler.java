@@ -17,7 +17,6 @@ public class RegistrationHandler {
         RECIPES_Tools.loadRecipes();
         RECIPES_General.loadRecipes();
         RECIPES_Machines.loadRecipes();
-        RECIPES_Shapeless.loadRecipes();
         RECIPES_MachineComponents.loadRecipes();
         RECIPE_Batteries.loadRecipes();
         Logger.INFO("Loaded: " + recipesSuccess + " Failed: " + recipesFailed);

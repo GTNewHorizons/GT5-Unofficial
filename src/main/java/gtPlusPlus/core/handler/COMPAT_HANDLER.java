@@ -1,7 +1,5 @@
 package gtPlusPlus.core.handler;
 
-import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
-
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
@@ -35,7 +33,6 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.recipe.RECIPES_Extruder;
 import gtPlusPlus.core.recipe.RECIPES_GREGTECH;
 import gtPlusPlus.core.recipe.RECIPES_LaserEngraver;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
@@ -73,98 +70,90 @@ public class COMPAT_HANDLER {
     }
 
     public static void registerGregtechMachines() {
-        if (Gregtech) {
+        // Debug
+        GregtechItemList.Garbage_Collector_Debug_Machine.set(
+                new GregtechMetaGarbageCollector(
+                        "garbagecollector.01.tier.single",
+                        "JVM Garbage Collector",
+                        "Useful for debugging or smoother performance on local servers").getStackForm(1L));
 
-            // Debug
-            GregtechItemList.Garbage_Collector_Debug_Machine.set(
-                    new GregtechMetaGarbageCollector(
-                            "garbagecollector.01.tier.single",
-                            "JVM Garbage Collector",
-                            "Useful for debugging or smoother performance on local servers").getStackForm(1L));
+        // Free IDs
+        /*
+         * --- 859 to 868 --- 911 to 940
+         */
 
-            // Free IDs
-            /*
-             * --- 859 to 868 --- 911 to 940
-             */
-
-            new RECIPES_LaserEngraver();
-            new RECIPES_Extruder();
-            GregtechGeneratorsULV.run();
-            GregtechEnergyBuffer.run();
-            GregtechLFTR.run();
-            GregtechSteamCondenser.run();
-            GregtechSafeBlock.run();
-            // GregtechSuperConductionPoint.run();
-            GregtechIronBlastFurnace.run();
-            GregtechIndustrialCentrifuge.run();
-            GregtechIndustrialCokeOven.run();
-            GregtechIndustrialPlatePress.run();
-            GregtechRocketFuelGenerator.run();
-            GregtechIndustrialElectrolyzer.run();
-            GregtechIndustrialMacerator.run();
-            GregtechIndustrialWiremill.run();
-            GregtechIndustrialMassFabricator.run();
-            GregtechIndustrialBlastSmelter.run();
-            GregtechQuantumForceTransformer.run();
-            GregtechSolarGenerators.run();
-            GregtechPowerSubStation.run();
-            GregtechDehydrator.run();
-            GregtechAdvancedBoilers.run();
-            GregtechPollutionDevices.run();
-            GregtechTieredFluidTanks.run();
-            // GregtechIndustrialMultiTank.run();
-            GregtechGeothermalThermalGenerator.run();
-            Gregtech4Content.run();
-            GregtechIndustrialFuelRefinery.run();
-            GregtechTreeFarmerTE.run();
-            GregtechIndustrialTreeFarm.run();
-            GregtechIndustrialSifter.run();
-            GregtechSimpleWasher.run();
-            GregtechRTG.run();
-            GregtechCyclotron.run();
-            GregtechHiAmpTransformer.run();
-            GregtechIndustrialThermalCentrifuge.run();
-            GregtechIndustrialWashPlant.run();
-            GregtechSemiFluidgenerators.run();
-            GregtechWirelessChargers.run();
-            GregtechIndustrialGeneratorArray.run();
-            GregtechIndustrialCuttingFactory.run();
-            // GregtechMiniRaFusion.run();
-            GregtechComponentAssembler.run();
-            GregtechTeslaTower.run();
-            GregtechSuperChests.run();
-            GregtechIndustrialFishPond.run();
-            GregtechTieredChunkloaders.run();
-            GregtechIndustrialExtruder.run();
-            GregtechIndustrialMultiMachine.run();
-            // GregtechBedrockPlatforms.run();
-            GregtechBufferDynamos.run();
-            GregtechAmazonWarehouse.run();
-            GregtechFactoryGradeReplacementMultis.run();
-            GregtechThaumcraftDevices.run();
-            GregtechThreadedBuffers.run();
-            GregtechIndustrialMixer.run();
-            GregtechCustomHatches.run();
-            // GregtechNaqReactor.run();
-            GregtechIndustrialArcFurnace.run();
-            GregtechSolarTower.run();
-            GregtechLargeTurbinesAndHeatExchanger.run();
-            GregtechPowerBreakers.run();
-            GregtechFluidReactor.run();
-            GregtechAlgaeContent.run();
-            GregtechIndustrialAlloySmelter.run();
-            GregtechIsaMill.run();
-            GregtechSteamMultis.run();
-            GregtechIndustrialForgeHammer.run();
-            GregtechMolecularTransformer.run();
-            GregtechIndustrialElementDuplicator.run();
-            GregtechIndustrialRockBreaker.run();
-            GregtechIndustrialChisel.run();
-            GregtechIndustrialFluidHeater.run();
-
-            // New Horizons Content
-            NewHorizonsAccelerator.run();
-        }
+        new RECIPES_LaserEngraver();
+        GregtechGeneratorsULV.run();
+        GregtechEnergyBuffer.run();
+        GregtechLFTR.run();
+        GregtechSteamCondenser.run();
+        GregtechSafeBlock.run();
+        GregtechIronBlastFurnace.run();
+        GregtechIndustrialCentrifuge.run();
+        GregtechIndustrialCokeOven.run();
+        GregtechIndustrialPlatePress.run();
+        GregtechRocketFuelGenerator.run();
+        GregtechIndustrialElectrolyzer.run();
+        GregtechIndustrialMacerator.run();
+        GregtechIndustrialWiremill.run();
+        GregtechIndustrialMassFabricator.run();
+        GregtechIndustrialBlastSmelter.run();
+        GregtechQuantumForceTransformer.run();
+        GregtechSolarGenerators.run();
+        GregtechPowerSubStation.run();
+        GregtechDehydrator.run();
+        GregtechAdvancedBoilers.run();
+        GregtechPollutionDevices.run();
+        GregtechTieredFluidTanks.run();
+        // GregtechIndustrialMultiTank.run();
+        GregtechGeothermalThermalGenerator.run();
+        Gregtech4Content.run();
+        GregtechIndustrialFuelRefinery.run();
+        GregtechTreeFarmerTE.run();
+        GregtechIndustrialTreeFarm.run();
+        GregtechIndustrialSifter.run();
+        GregtechSimpleWasher.run();
+        GregtechRTG.run();
+        GregtechCyclotron.run();
+        GregtechHiAmpTransformer.run();
+        GregtechIndustrialThermalCentrifuge.run();
+        GregtechIndustrialWashPlant.run();
+        GregtechSemiFluidgenerators.run();
+        GregtechWirelessChargers.run();
+        GregtechIndustrialGeneratorArray.run();
+        GregtechIndustrialCuttingFactory.run();
+        // GregtechMiniRaFusion.run();
+        GregtechComponentAssembler.run();
+        GregtechTeslaTower.run();
+        GregtechSuperChests.run();
+        GregtechIndustrialFishPond.run();
+        GregtechTieredChunkloaders.run();
+        GregtechIndustrialExtruder.run();
+        GregtechIndustrialMultiMachine.run();
+        // GregtechBedrockPlatforms.run();
+        GregtechBufferDynamos.run();
+        GregtechAmazonWarehouse.run();
+        GregtechFactoryGradeReplacementMultis.run();
+        GregtechThaumcraftDevices.run();
+        GregtechThreadedBuffers.run();
+        GregtechIndustrialMixer.run();
+        GregtechCustomHatches.run();
+        // GregtechNaqReactor.run();
+        GregtechIndustrialArcFurnace.run();
+        GregtechSolarTower.run();
+        GregtechLargeTurbinesAndHeatExchanger.run();
+        GregtechPowerBreakers.run();
+        GregtechFluidReactor.run();
+        GregtechAlgaeContent.run();
+        GregtechIndustrialAlloySmelter.run();
+        GregtechIsaMill.run();
+        GregtechSteamMultis.run();
+        GregtechIndustrialForgeHammer.run();
+        GregtechMolecularTransformer.run();
+        GregtechIndustrialElementDuplicator.run();
+        GregtechIndustrialRockBreaker.run();
+        GregtechIndustrialChisel.run();
+        GregtechIndustrialFluidHeater.run();
     }
 
     // InterMod
@@ -203,9 +192,7 @@ public class COMPAT_HANDLER {
         if (LoadedMods.CompactWindmills) {
             COMPAT_CompactWindmills.OreDict();
         }
-        if (LoadedMods.IndustrialCraft2) {
-            COMPAT_IC2.OreDict();
-        }
+        COMPAT_IC2.OreDict();
         if (LoadedMods.PamsHarvestcraft) {
             COMPAT_HarvestCraft.OreDict();
         }

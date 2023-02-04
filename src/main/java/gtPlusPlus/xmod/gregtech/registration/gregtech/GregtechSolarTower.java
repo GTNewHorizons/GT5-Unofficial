@@ -12,10 +12,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
 public class GregtechSolarTower {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Solar Tower.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering Solar Tower.");
+        run1();
     }
 
     private static void run1() {

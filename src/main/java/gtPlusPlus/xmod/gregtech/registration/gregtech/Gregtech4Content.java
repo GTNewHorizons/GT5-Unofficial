@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gregtech.api.GregTech_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.*;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_CropHarvestor;
@@ -20,18 +19,16 @@ public class Gregtech4Content {
     // ID Range 828, 829, 833 - 850
 
     public static void run() {
-        if (LoadedMods.Gregtech) {
-            Logger.INFO("Max MTE: " + GregTech_API.METATILEENTITIES.length + " | " + GregTech_API.MAXIMUM_METATILE_IDS);
-            workbenches();
-            thermalBoiler();
-            multiCrafter();
-            tesseracts();
-            shelves();
-            basic();
-            automation();
-            redstone();
-            computer();
-        }
+        Logger.INFO("Max MTE: " + GregTech_API.METATILEENTITIES.length + " | " + GregTech_API.MAXIMUM_METATILE_IDS);
+        workbenches();
+        thermalBoiler();
+        multiCrafter();
+        tesseracts();
+        shelves();
+        basic();
+        automation();
+        redstone();
+        computer();
     }
 
     private static void computer() {

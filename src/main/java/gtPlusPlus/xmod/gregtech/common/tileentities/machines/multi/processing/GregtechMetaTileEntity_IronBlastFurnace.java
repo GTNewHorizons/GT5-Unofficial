@@ -27,7 +27,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -55,18 +54,10 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
 
     @Override
     public String[] getDescription() {
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            return new String[] { "Iron is a much better furnace material!", "Can be Automated",
-                    "Multiblock: 3x3x5 hollow with opening on top",
-                    "Same shape as Bronze/Bricked blast furnace, except one ring of 8 taller.",
-                    "40 Iron Plated Bricks required", };
-        } else {
-            return new String[] { "Sloooowly, Skip the Bronze age, Get some Steel!",
-                    "Multiblock: 3x3x5 hollow with opening on top", "40 Iron Plated Bricks required", "----",
-                    "Even though Iron melts hotter than bronze,", "this machine is to help players skip looking",
-                    "for tin and copper, which are not as common",
-                    "as Iron is. This machine takes 5x longer than the bronze", "blast furnace as a result.", "----", };
-        }
+        return new String[] { "Iron is a much better furnace material!", "Can be Automated",
+                "Multiblock: 3x3x5 hollow with opening on top",
+                "Same shape as Bronze/Bricked blast furnace, except one ring of 8 taller.",
+                "40 Iron Plated Bricks required", };
     }
 
     @Override
@@ -345,11 +336,7 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
     }
 
     private int getProperTime(int time) {
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            return (int) (time / 3);
-        } else {
-            return time;
-        }
+        return time / 3;
     }
 
     private boolean checkRecipe() {

@@ -1,7 +1,5 @@
 package gtPlusPlus.core.util.minecraft.gregtech;
 
-import static gtPlusPlus.core.lib.CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +14,6 @@ import gregtech.common.GT_Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -24,28 +21,14 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class PollutionUtils {
 
-    private static boolean mIsPollutionEnabled = true;
-
     public static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<FluidStack>();
 
-    static {
-        if (MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {
-            mIsPollutionEnabled = mPollution();
-        } else {
-            mIsPollutionEnabled = false;
-        }
-    }
-
     public static boolean isPollutionEnabled() {
-        return mIsPollutionEnabled;
-    }
-
-    private static boolean mPollution() {
         return GT_Mod.gregtechproxy.mPollution;
     }
 
     public static boolean addPollution(IGregTechTileEntity te, int pollutionValue) {
-        if (mIsPollutionEnabled) {
+        if (GT_Mod.gregtechproxy.mPollution) {
             GT_Pollution.addPollution(te, pollutionValue);
             return true;
         }
@@ -53,7 +36,7 @@ public class PollutionUtils {
     }
 
     public static boolean addPollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
-        if (mIsPollutionEnabled) {
+        if (GT_Mod.gregtechproxy.mPollution) {
             IHasWorldObjectAndCoords j = (IHasWorldObjectAndCoords) aTileOfSomeSort;
             Chunk c = j.getWorld().getChunkFromBlockCoords(j.getXCoord(), j.getZCoord());
             return addPollution(c, pollutionValue);
@@ -62,7 +45,7 @@ public class PollutionUtils {
     }
 
     public static boolean addPollution(Chunk aChunk, int pollutionValue) {
-        if (mIsPollutionEnabled) {
+        if (GT_Mod.gregtechproxy.mPollution) {
             GT_Pollution.addPollution(aChunk, pollutionValue);
             return true;
         }
@@ -98,7 +81,7 @@ public class PollutionUtils {
     }
 
     public static boolean nullifyPollution(Chunk aChunk) {
-        if (mIsPollutionEnabled) {
+        if (GT_Mod.gregtechproxy.mPollution) {
             if (aChunk == null) {
                 return false;
             }

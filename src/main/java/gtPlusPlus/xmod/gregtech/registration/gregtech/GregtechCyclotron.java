@@ -7,10 +7,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.Gr
 public class GregtechCyclotron {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering COMET Cyclotron.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering COMET Cyclotron.");
+        run1();
     }
 
     private static void run1() {

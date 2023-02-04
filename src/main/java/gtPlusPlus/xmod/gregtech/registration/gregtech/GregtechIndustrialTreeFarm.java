@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.Gr
 public class GregtechIndustrialTreeFarm {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer) {
-                Logger.INFO("Gregtech5u Content | Registering Tree Farm Multiblock.");
-                run1();
-            }
+        if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer) {
+            Logger.INFO("Gregtech5u Content | Registering Tree Farm Multiblock.");
+            run1();
         }
     }
 

@@ -13,11 +13,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.Gregt
 public class GregtechPowerSubStation {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Power Substation Node.");
-            if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Power Substation Node.");
+        if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation) {
+            run1();
         }
     }
 

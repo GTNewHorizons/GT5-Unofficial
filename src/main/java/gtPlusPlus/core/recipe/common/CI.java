@@ -13,7 +13,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
@@ -235,34 +234,7 @@ public class CI {
     }
 
     public static Object getTieredCircuit(int tier) {
-        if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) {
-            if (tier == 0) {
-                return GregtechItemList.Old_Circuit_Primitive.get(1);
-            } else if (tier == 1) {
-                return GregtechItemList.Old_Circuit_Basic.get(1);
-            } else if (tier == 2) {
-                return GregtechItemList.Old_Circuit_Good.get(1);
-            } else if (tier == 3) {
-                return GregtechItemList.Old_Circuit_Advanced.get(1);
-            } else if (tier == 4) {
-                return GregtechItemList.Old_Circuit_Data.get(1);
-            } else if (tier == 5) {
-                return GregtechItemList.Old_Circuit_Elite.get(1);
-            } else if (tier == 6) {
-                return GregtechItemList.Old_Circuit_Master.get(1);
-            } else if (tier == 7) {
-                return GregtechItemList.Old_Circuit_Ultimate.get(1);
-            } else if (tier == 8) {
-                return GregtechItemList.Circuit_IV.get(1);
-            } else if (tier == 9) {
-                return GregtechItemList.Circuit_LuV.get(1);
-            } else if (tier == 10) {
-                return GregtechItemList.Circuit_ZPM.get(1);
-            }
-        } else {
-            return getTieredCircuitOreDictName(tier);
-        }
-        return _NULL;
+        return getTieredCircuitOreDictName(tier);
     }
 
     public static ItemStack[] getAllCircuitsOfTier(int tier) {
@@ -352,19 +324,11 @@ public class CI {
     }
 
     public static ItemStack getDataOrb() {
-        if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) {
-            return GregtechItemList.Old_Tool_DataOrb.get(1);
-        } else {
-            return ItemList.Tool_DataOrb.get(1);
-        }
+        return ItemList.Tool_DataOrb.get(1);
     }
 
     public static ItemStack getDataStick() {
-        if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) {
-            return GregtechItemList.Old_Tool_DataStick.get(1);
-        } else {
-            return ItemList.Tool_DataStick.get(1);
-        }
+        return ItemList.Tool_DataStick.get(1);
     }
 
     public static final ItemStack getTieredMachineHull(int tier) {
@@ -481,10 +445,9 @@ public class CI {
             ALLOY.TITANSTEEL, ELEMENT.STANDALONE.ASTRAL_TITANIUM, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN,
             ELEMENT.STANDALONE.HYPOGEN };
 
-    private static final Materials[] aMaterial_Cables = new Materials[] { !CORE.GTNH ? Materials.Lead : Materials.Tin,
-            Materials.Cobalt, Materials.AnnealedCopper, Materials.Gold, Materials.Titanium, Materials.Nichrome,
-            Materials.Platinum, Materials.YttriumBariumCuprate, Materials.Naquadah, Materials.Duranium,
-            Materials.Superconductor, };
+    private static final Materials[] aMaterial_Cables = new Materials[] { Materials.Tin, Materials.Cobalt,
+            Materials.AnnealedCopper, Materials.Gold, Materials.Titanium, Materials.Nichrome, Materials.Platinum,
+            Materials.YttriumBariumCuprate, Materials.Naquadah, Materials.Duranium, Materials.Superconductor, };
 
     private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.Primitive, Materials.Basic,
             Materials.Good, Materials.Advanced, Materials.Data, Materials.Data, Materials.Elite, Materials.Master,
@@ -747,9 +710,6 @@ public class CI {
     }
 
     public static ItemStack getFluidRegulator(int aTier, int aSize) {
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            return CI.getElectricPump(aTier, aSize);
-        }
         ItemStack aType;
         int aLazyTier = 0;
         if (aTier == aLazyTier++) {
@@ -1011,26 +971,10 @@ public class CI {
     }
 
     public static ItemStack getHeatCoil(int i) {
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            if (i == 1) {
-                return ItemList.Casing_Coil_Kanthal.get(1);
-            } else if (i == 2) {
-                return ItemList.Casing_Coil_Nichrome.get(1);
-            } else {
-                return ItemList.Casing_Coil_Cupronickel.get(1);
-            }
-        } else {
-            if (!CORE.GTNH) {
-                if (i > 6) {
-                    i = 6;
-                }
-            } else {
-                if (i > 8) {
-                    i = 8;
-                }
-            }
-            return ItemUtils.simpleMetaStack(StaticFields59.getBlockCasings5(), i, 1);
+        if (i > 8) {
+            i = 8;
         }
+        return ItemUtils.simpleMetaStack(StaticFields59.getBlockCasings5(), i, 1);
     }
 
     public static ItemStack getNumberedBioCircuit(int i) {

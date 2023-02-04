@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechIndustrialCokeOven {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Coke Oven Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Coke Oven Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
+            run1();
         }
     }
 

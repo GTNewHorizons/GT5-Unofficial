@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.thermalfoundation;
 
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
@@ -14,11 +13,6 @@ public class HANDLER_TF {
             TF_Fluids.preInit();
             TF_Items.preInit();
             TF_Blocks.preInit();
-            if (LoadedMods.Gregtech) {
-                if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-                    // mGregMatLoader.enableMaterial(Materials.Enderium);
-                }
-            }
         }
     }
 
@@ -35,9 +29,7 @@ public class HANDLER_TF {
             TF_Fluids.postInit();
             TF_Items.postInit();
             TF_Blocks.postInit();
-            if (LoadedMods.Gregtech) {
-                TF_Gregtech_Recipes.run();
-            }
+            TF_Gregtech_Recipes.run();
         }
     }
 }

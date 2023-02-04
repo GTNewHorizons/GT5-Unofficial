@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +34,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
@@ -52,12 +50,11 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     /** The crafting matrix inventory (3x3). */
     public CraftingHelper mInventoryCrafter;
 
-    public static enum MODE {
+    public enum MODE {
 
-        CRAFTING("CIRCUIT", "ASSEMBLY"),
+        CRAFTING("DISASSEMBLY", "ASSEMBLY"),
         ASSEMBLY("CRAFTING", "DISASSEMBLY"),
-        DISASSEMBLY("ASSEMBLY", "CIRCUIT"),
-        CIRCUIT("DISASSEMBLY", "CRAFTING");
+        DISASSEMBLY("ASSEMBLY", "CRAFTING");
 
         private final String lastMode;
         private final String nextMode;
@@ -88,9 +85,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
 
     @Override
     public String getMachineType() {
-        String sType = "Assembler, Disassembler, "
-                + ((CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) ? "Circuit Assembler" : "");
-        return sType;
+        return "Assembler, Disassembler";
     }
 
     @Override
@@ -208,78 +203,32 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         if (this.mMachineMode == MODE.ASSEMBLY) {
             return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-        } else if (this.mMachineMode == MODE.CIRCUIT && !CORE.GTNH) {
-            if (fCircuitMap != null) {
-                return fCircuitMap;
-            }
-            GT_Recipe_Map r;
-            try {
-                Field f = ReflectionUtils.getField(GT_Recipe.GT_Recipe_Map.class, "sCircuitAssemblerRecipes");
-                if (f != null) {
-                    r = (GT_Recipe_Map) f.get(null);
-                    if (r != null) {
-                        fCircuitMap = r;
-                        return r;
-                    }
-                }
-            } catch (IllegalArgumentException | IllegalAccessException e) {}
         } else if (this.mMachineMode == MODE.DISASSEMBLY || this.mMachineMode == MODE.CRAFTING) {
             return null;
         }
         return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
     }
 
-    private boolean isModernGT = true;
-
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (isModernGT && !CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            isModernGT = false;
-        }
-        // 5.09 support
-        if (isModernGT && !CORE.GTNH) {
+        if (mMachineMode.nextMode() == MODE.CRAFTING) {
+            mMachineMode = MODE.ASSEMBLY;
+        } else {
             mMachineMode = mMachineMode.nextMode();
-            if (mMachineMode == MODE.CRAFTING) {
-                PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.AQUA + "AutoCrafting");
-            } else if (mMachineMode == MODE.ASSEMBLY) {
-                PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.GREEN + "Assembly");
-            } else if (mMachineMode == MODE.DISASSEMBLY) {
-                PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.RED + "Disassembly");
-            } else {
-                PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "Running the Auto-Crafter in mode: " + EnumChatFormatting.YELLOW + "Circuit Assembly");
-            }
         }
-        // 5.08 support
-        else {
-            if (mMachineMode.nextMode() == MODE.CIRCUIT) {
-                mMachineMode = MODE.ASSEMBLY;
-            } else if (mMachineMode.nextMode() == MODE.CRAFTING) {
-                mMachineMode = MODE.ASSEMBLY;
-            } else {
-                mMachineMode = mMachineMode.nextMode();
-            }
 
-            if (mMachineMode == MODE.CRAFTING) {
-                PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "You are now running the Auto-Crafter in mode: " + EnumChatFormatting.AQUA + "AutoCrafting");
-            } else if (mMachineMode == MODE.ASSEMBLY) {
-                PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "You are now running the Auto-Crafter in mode: " + EnumChatFormatting.GREEN + "Assembly");
-            } else {
-                PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "You are now running the Auto-Crafter in mode: " + EnumChatFormatting.RED + "Disassembly");
-            }
+        if (mMachineMode == MODE.CRAFTING) {
+            PlayerUtils.messagePlayer(
+                    aPlayer,
+                    "You are now running the Auto-Crafter in mode: " + EnumChatFormatting.AQUA + "AutoCrafting");
+        } else if (mMachineMode == MODE.ASSEMBLY) {
+            PlayerUtils.messagePlayer(
+                    aPlayer,
+                    "You are now running the Auto-Crafter in mode: " + EnumChatFormatting.GREEN + "Assembly");
+        } else {
+            PlayerUtils.messagePlayer(
+                    aPlayer,
+                    "You are now running the Auto-Crafter in mode: " + EnumChatFormatting.RED + "Disassembly");
         }
     }
 
@@ -484,8 +433,8 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
         if (mMachineMode == MODE.DISASSEMBLY) {
             tMode = "§cDisassembly";
             tSpecialText = "" + (60 + 12 * this.mTier) + "% chance to recover disassembled parts.";
-        } else if (mMachineMode == MODE.ASSEMBLY || mMachineMode == MODE.CIRCUIT) {
-            tMode = mMachineMode == MODE.ASSEMBLY ? "§aAssembly" : "§eCircuit Assembly";
+        } else if (mMachineMode == MODE.ASSEMBLY) {
+            tMode = "§aAssembly";
             if (mLastRecipeToBuffer != null && mLastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {
                 tSpecialText = "Currently processing: " + mLastRecipeToBuffer.mOutputs[0].getDisplayName();
             } else {

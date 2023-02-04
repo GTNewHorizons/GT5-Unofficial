@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaT
 public class GregtechTreeFarmerTE {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Tree Farmer Structural Block.");
-            if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Tree Farmer Structural Block.");
+        if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer) {
+            run1();
         }
     }
 

@@ -1,6 +1,5 @@
 package gtPlusPlus.core.recipe;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -12,7 +11,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -48,21 +46,19 @@ public class RECIPES_General {
     static ItemStack RECIPE_HydrogenDust;
 
     public static void loadRecipes() {
-        if (LoadedMods.Gregtech) {
-            RECIPE_Paper = ItemUtils.getSimpleStack(Items.paper);
-            RECIPE_Dirt = ItemUtils.getSimpleStack(Blocks.dirt);
-            RECIPE_Snow = ItemUtils.getSimpleStack(Blocks.snow);
-            RECIPE_Obsidian = ItemUtils.getSimpleStack(Blocks.obsidian);
-            RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
-            RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);
-            RECIPE_BasicCasingIC2 = ItemUtils.getItemStackFromFQRN("IC2:blockMachine", 1);
-            OUTPUT_Workbench_Bronze = GregtechItemList.GT4_Workbench_Bronze.get(1);
-            OUTPUT_Workbench_Advanced = GregtechItemList.GT4_Workbench_Advanced.get(1);
-            OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase, 2);
-            run();
-            addCompressedObsidian();
-            migratedRecipes();
-        }
+        RECIPE_Paper = ItemUtils.getSimpleStack(Items.paper);
+        RECIPE_Dirt = ItemUtils.getSimpleStack(Blocks.dirt);
+        RECIPE_Snow = ItemUtils.getSimpleStack(Blocks.snow);
+        RECIPE_Obsidian = ItemUtils.getSimpleStack(Blocks.obsidian);
+        RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
+        RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);
+        RECIPE_BasicCasingIC2 = ItemUtils.getItemStackFromFQRN("IC2:blockMachine", 1);
+        OUTPUT_Workbench_Bronze = GregtechItemList.GT4_Workbench_Bronze.get(1);
+        OUTPUT_Workbench_Advanced = GregtechItemList.GT4_Workbench_Advanced.get(1);
+        OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase, 2);
+        run();
+        addCompressedObsidian();
+        migratedRecipes();
     }
 
     private static void run() {
@@ -185,12 +181,7 @@ public class RECIPES_General {
         }
 
         // Iron bars
-        final ItemStack ironBars;
-        if (CORE.GTNH) {
-            ironBars = ItemUtils.getItemStackFromFQRN("dreamcraft:item.SteelBars", 1);
-        } else {
-            ironBars = ItemUtils.getItemStackFromFQRN("minecraft:iron_bars", 1);
-        }
+        final ItemStack ironBars = ItemUtils.getItemStackFromFQRN("dreamcraft:item.SteelBars", 1);
 
         // Fish Trap
         if (RecipeUtils.addShapedRecipe(
@@ -206,38 +197,6 @@ public class RECIPES_General {
                 ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))) {
             Logger.INFO("Added a recipe for the Fish Trap.");
         }
-
-        // Small Gear Extruder Shape
-        if (!CORE.GTNH) {
-            GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Shape_Extruder_SmallGear.get(1L),
-                    GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                            | GT_ModHandler.RecipeBits.REVERSIBLE,
-                    new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Gear,
-                            Character.valueOf('X'), OrePrefixes.plate.get(Materials.Steel), Character.valueOf('S'),
-                            OrePrefixes.screw.get(Materials.Steel) });
-
-            String[] ironTypes = { "", "Wrought", "Pig", "Any" };
-            for (int y = 0; y < ironTypes.length; y++) {
-                // Iron bars
-                String ironRecipe = "stick" + ironTypes[y] + "Iron";
-                if (RecipeUtils.addShapedRecipe(
-                        null,
-                        CI.craftingToolWrench,
-                        null,
-                        ironRecipe,
-                        ironRecipe,
-                        ironRecipe,
-                        ironRecipe,
-                        ironRecipe,
-                        ironRecipe,
-                        ItemUtils.getItemStackFromFQRN("minecraft:iron_bars", 8))) {
-                    Logger.INFO("Re-added old GT recipe for Iron Bars.");
-                }
-            }
-        }
-
-        // Shaped Crafting for ULV Material Dusts
 
         // Potin
         if (RecipeUtils.addShapelessGregtechRecipe(
@@ -449,8 +408,8 @@ public class RECIPES_General {
         // Pest Killer
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(16), CI.getTieredMachineCasing(1), CI.getElectricPump(2, 1),
-                        CI.getPlate(2, GTNH ? 4 : 2),
-                        ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), GTNH ? 2 : 1), },
+                        CI.getPlate(2, 4),
+                        ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), 2), },
                 FluidUtils.getHotWater(500), // Fluid
                 ItemUtils.getSimpleStack(ModBlocks.blockPestKiller), // Output
                 20 * 60, // Dur

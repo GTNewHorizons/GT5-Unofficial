@@ -46,7 +46,6 @@ import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -269,7 +268,7 @@ public class ItemUtils {
         } else {
             temp2 = fqrnSplit[2];
         }
-        temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, temp1, Integer.parseInt(temp2), stackSize);
+        temp = ItemUtils.getItemStackWithMeta(true, fqrn, temp1, Integer.parseInt(temp2), stackSize);
         return temp;
     }
 
@@ -350,14 +349,6 @@ public class ItemUtils {
             return getSimpleStack(Items.clay_ball, amount);
         }
 
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            if (oredictName.toLowerCase().contains("rutile")) {
-                mTemp = oredictName.replace("Rutile", "Titanium");
-            }
-            if (oredictName.toLowerCase().contains("vanadiumsteel")) {
-                mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
-            }
-        }
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
         if (!oreDictList.isEmpty()) {
             final ItemStack returnValue = oreDictList.get(0).copy();
@@ -873,12 +864,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getGregtechCircuit(final int Meta) {
-        return ItemUtils.getItemStackWithMeta(
-                LoadedMods.Gregtech,
-                "gregtech:gt.integrated_circuit",
-                "Gregtech Circuit",
-                Meta,
-                0);
+        return ItemUtils.getItemStackWithMeta(true, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
     }
 
     public static ItemStack[] getBlockDrops(final ArrayList<ItemStack> blockDrops) {

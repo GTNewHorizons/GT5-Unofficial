@@ -6,11 +6,9 @@ import java.util.Set;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
@@ -32,19 +30,6 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
     private void generateRecipes(final Material material) {
         Logger.WARNING("Generating Shaped Crafting recipes for " + material.getLocalizedName()); // TODO
-
-        if (!CORE.GTNH) {
-            // Nuggets
-            if (ItemUtils.checkForInvalidItems(material.getNugget(1))
-                    && ItemUtils.checkForInvalidItems(material.getIngot(1)))
-                GT_ModHandler.addShapelessCraftingRecipe(
-                        material.getIngot(1),
-                        new Object[] { material.getNugget(1), material.getNugget(1), material.getNugget(1),
-                                material.getNugget(1), material.getNugget(1), material.getNugget(1),
-                                material.getNugget(1), material.getNugget(1), material.getNugget(1) });
-        }
-
-        // Plates
 
         // Single Plate Shaped/Shapeless
         if (ItemUtils.checkForInvalidItems(material.getPlate(1))
@@ -83,32 +68,13 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
         // Ring Recipe
         if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getRing(1))
                 && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-            if (CORE.GTNH) {
-                if (GT_ModHandler.addCraftingRecipe(
-                        material.getRing(1),
-                        gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                                | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "h ", "fR", 'R', material.getRod(1) })) {
-                    Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getRing(1),
+                    GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "h ", "fR", 'R', material.getRod(1) })) {
+                Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Success");
             } else {
-                if (RecipeUtils.addShapedRecipe(
-                        "craftingToolHardHammer",
-                        null,
-                        null,
-                        null,
-                        material.getRod(1),
-                        null,
-                        null,
-                        null,
-                        null,
-                        material.getRing(1))) {
-                    Logger.WARNING("Ring Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Ring Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+                Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 

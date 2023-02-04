@@ -474,9 +474,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         if (LoadedMods.Railcraft || OreDictUtils.containsValidEntries("oreSaltpeter")) {
             mMixedOreData.put(new Pair<String, Integer>("oreSaltpeter", 10));
         }
-        if (LoadedMods.IndustrialCraft2 || OreDictUtils.containsValidEntries("oreUranium")) {
-            mMixedOreData.put(new Pair<String, Integer>("oreUranium", 10));
-        }
+        mMixedOreData.put(new Pair<String, Integer>("oreUranium", 10));
         if (OreDictUtils.containsValidEntries("oreSulfur")) {
             mMixedOreData.put(new Pair<String, Integer>("oreSulfur", 15));
         }

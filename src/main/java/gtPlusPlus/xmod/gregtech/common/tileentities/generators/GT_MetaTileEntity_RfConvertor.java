@@ -205,7 +205,7 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
             aCurrentOutputAmperage = aTest;
             PlayerUtils.messagePlayer(aPlayer, "Now handling " + maxAmperesOut() + " Amps.");
         } else {
-            if (this.mTier < (CORE.GTNH ? GT_Values.V.length : 9)) {
+            if (this.mTier < GT_Values.V.length) {
                 this.mTier++;
             } else {
                 this.mTier = 0;

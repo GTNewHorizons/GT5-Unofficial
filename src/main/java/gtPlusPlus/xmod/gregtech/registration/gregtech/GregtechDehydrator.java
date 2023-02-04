@@ -9,7 +9,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -20,11 +19,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechDehydrator {
 
     public static void run() {
-        if (LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
-            if (CORE.ConfigSwitches.enableMachine_Dehydrators) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
+        if (CORE.ConfigSwitches.enableMachine_Dehydrators) {
+            run1();
         }
     }
 

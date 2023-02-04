@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechIndustrialWashPlant {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Wash Plant Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Wash Plant Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {
+            run1();
         }
     }
 

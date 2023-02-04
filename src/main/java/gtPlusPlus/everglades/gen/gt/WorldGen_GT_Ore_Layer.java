@@ -19,7 +19,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -44,7 +43,6 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
     public final Material mBetween;
     public final Material mSporadic;
 
-    public static boolean mUpdated = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK;
     public static final Block mStoneTypes;
 
     // public final String mBiome;
@@ -65,16 +63,12 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
     public final String aTextWorldgen = "worldgen.";
 
     static {
-        if (mUpdated) {
-            Object tempBlock = null;
-            try {
-                Field temp = ReflectionUtils.getField(GregTech_API.class, "sBlockStones");
-                tempBlock = temp.get(null);
-            } catch (IllegalArgumentException | IllegalAccessException e) {}
-            mStoneTypes = (Block) tempBlock;
-        } else {
-            mStoneTypes = null;
-        }
+        Object tempBlock = null;
+        try {
+            Field temp = ReflectionUtils.getField(GregTech_API.class, "sBlockStones");
+            tempBlock = temp.get(null);
+        } catch (IllegalArgumentException | IllegalAccessException e) {}
+        mStoneTypes = (Block) tempBlock;
     }
 
     public WorldGen_GT_Ore_Layer(String aName, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
@@ -224,7 +218,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
                     || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
                     || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
                     || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites)
-                    || (mUpdated && tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, mStoneTypes))) {
+                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, mStoneTypes)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -244,7 +238,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
                     || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
                     || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
                     || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites)
-                    || (mUpdated && tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, mStoneTypes))) {
+                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, mStoneTypes)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -579,7 +573,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
                 || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand)
                 || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt)
                 || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites)
-                || (mUpdated && tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, mStoneTypes))
+                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, mStoneTypes)
                 || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_Everglades.blockSecondLayer)
                 || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_Everglades.blockMainFiller)
                 || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_Everglades.blockSecondaryFiller)
@@ -599,37 +593,22 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
         // Get Class and Methods
         Method setOres = null;
-        boolean is08 = !CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK;
 
-        // GT 5.08
-        if (is08) {
-            try {
-                setOres = GT_TileEntity_Ores.class
-                        .getDeclaredMethod("setOreBlock", World.class, int.class, int.class, int.class, int.class);
-            } catch (NoSuchMethodException | SecurityException e) {
+        try {
+            setOres = GT_TileEntity_Ores.class.getDeclaredMethod(
+                    "setOreBlock",
+                    World.class,
+                    int.class,
+                    int.class,
+                    int.class,
+                    int.class,
+                    boolean.class);
+        } catch (NoSuchMethodException | SecurityException e) {
 
-            }
-        }
-        // GT 5.09
-        else {
-            try {
-                setOres = GT_TileEntity_Ores.class.getDeclaredMethod(
-                        "setOreBlock",
-                        World.class,
-                        int.class,
-                        int.class,
-                        int.class,
-                        int.class,
-                        boolean.class);
-            } catch (NoSuchMethodException | SecurityException e) {
-
-            }
         }
 
         try {
-            if (is08 && setOres != null) {
-                setOres.invoke(null, aWorld, aX, aY, aZ, mMetaItemSubID);
-            } else if (!is08 && setOres != null) {
+            if (setOres != null) {
                 setOres.invoke(null, aWorld, aX, aY, aZ, mMetaItemSubID, useless);
             } else {
                 return false;

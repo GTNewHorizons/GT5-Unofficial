@@ -56,21 +56,19 @@ public class HazmatUtils {
         // Make Nano a hazmat suit
         // Make Quantum a hazmat suit
 
-        if (LoadedMods.IndustrialCraft2 || LoadedMods.IndustrialCraft2Classic) {
-            AutoMap<ItemStack> aVanillaIC2Armour = new AutoMap<ItemStack>();
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoHelmet, 1));
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoBodyarmor, 1));
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoLeggings, 1));
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoBoots, 1));
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumHelmet, 1));
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumBodyarmor, 1));
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumLeggings, 1));
-            aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumBoots, 1));
-            for (ItemStack aItem : aVanillaIC2Armour) {
-                addProtection(aItem);
-            }
-            Logger.INFO("[Hazmat] Registered IC2 Items as hazmat gear.");
+        AutoMap<ItemStack> aVanillaIC2Armour = new AutoMap<ItemStack>();
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoHelmet, 1));
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoBodyarmor, 1));
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoLeggings, 1));
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.nanoBoots, 1));
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumHelmet, 1));
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumBodyarmor, 1));
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumLeggings, 1));
+        aVanillaIC2Armour.add(ItemUtils.getSimpleStack(Ic2Items.quantumBoots, 1));
+        for (ItemStack aItem : aVanillaIC2Armour) {
+            addProtection(aItem);
         }
+        Logger.INFO("[Hazmat] Registered IC2 Items as hazmat gear.");
 
         if (LoadedMods.isModLoaded("EMT")) {
             AutoMap<Field> aItemFields = new AutoMap<Field>();

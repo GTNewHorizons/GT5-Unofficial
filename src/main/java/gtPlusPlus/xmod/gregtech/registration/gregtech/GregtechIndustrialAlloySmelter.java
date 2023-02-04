@@ -7,10 +7,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechIndustrialAlloySmelter {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Alloy Smelter Multiblock.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Alloy Smelter Multiblock.");
+        run1();
     }
 
     private static void run1() {

@@ -5,7 +5,6 @@ import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -50,22 +49,20 @@ public class COMPAT_IC2 {
 
         if (ConfigSwitches.disableIC2Recipes) {
 
-            if (LoadedMods.Gregtech) {
-                // Fuck these right off.
-                RemoveRecipeQueue.add("IC2:itemCable");
-                RemoveRecipeQueue.add("IC2:itemCable:1");
-                RemoveRecipeQueue.add("IC2:itemCable:2");
-                RemoveRecipeQueue.add("IC2:itemCable:3");
-                RemoveRecipeQueue.add("IC2:itemCable:5");
-                RemoveRecipeQueue.add("IC2:itemCable:6");
-                RemoveRecipeQueue.add("IC2:itemCable:10");
-                RemoveRecipeQueue.add("IC2:itemCable:13");
-                // RemoveRecipeQueue.add(itemCropnalyzer);
-                // RemoveRecipeQueue.add(itemSolarHelmet);
+            // Fuck these right off.
+            RemoveRecipeQueue.add("IC2:itemCable");
+            RemoveRecipeQueue.add("IC2:itemCable:1");
+            RemoveRecipeQueue.add("IC2:itemCable:2");
+            RemoveRecipeQueue.add("IC2:itemCable:3");
+            RemoveRecipeQueue.add("IC2:itemCable:5");
+            RemoveRecipeQueue.add("IC2:itemCable:6");
+            RemoveRecipeQueue.add("IC2:itemCable:10");
+            RemoveRecipeQueue.add("IC2:itemCable:13");
+            // RemoveRecipeQueue.add(itemCropnalyzer);
+            // RemoveRecipeQueue.add(itemSolarHelmet);
 
-                // AddRecipeQueue.add(Cropnalyzer);
-                // AddRecipeQueue.add(SolarHelmet);
-            }
+            // AddRecipeQueue.add(Cropnalyzer);
+            // AddRecipeQueue.add(SolarHelmet);
         }
     }
 }

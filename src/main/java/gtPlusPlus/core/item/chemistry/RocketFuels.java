@@ -220,22 +220,6 @@ public class RocketFuels extends ItemPackage {
         }
     }
 
-    private static void createLOX() {
-        GT_Values.RA.addVacuumFreezerRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidOxygen", 1),
-                20 * 16);
-        CORE.RA.addAdvancedFreezerRecipe(
-                new ItemStack[] {},
-                new FluidStack[] { FluidUtils.getFluidStack("oxygen", 3000) },
-                new FluidStack[] { FluidUtils.getFluidStack(Liquid_Oxygen, 3000) },
-                new ItemStack[] {},
-                new int[] {},
-                20 * 16,
-                240,
-                0);
-    }
-
     private static void createLOH() {
         GT_Values.RA.addVacuumFreezerRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
@@ -475,9 +459,6 @@ public class RocketFuels extends ItemPackage {
         createHydrazine();
         createMonomethylhydrazine();
 
-        if (!CORE.GTNH) {
-            createLOX();
-        }
         createLOH();
 
         createHydratedAmmoniumNitrateSlurry();

@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechIndustrialThermalCentrifuge {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge) {
+            run1();
         }
     }
 

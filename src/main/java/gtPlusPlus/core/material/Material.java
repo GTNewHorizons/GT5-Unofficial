@@ -33,7 +33,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
@@ -1138,11 +1137,7 @@ public class Material {
     }
 
     public final ItemStack getCable16(final int stacksize) {
-        if (GregtechConduits.cableGt16 != null) {
-            return getComponentByPrefix(GregtechConduits.cableGt16, stacksize);
-        } else {
-            return ItemUtils.getErrorStack(stacksize);
-        }
+        return getComponentByPrefix(OrePrefixes.cableGt16, stacksize);
     }
 
     /**

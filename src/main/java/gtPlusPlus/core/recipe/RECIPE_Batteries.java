@@ -3,7 +3,6 @@ package gtPlusPlus.core.recipe;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -20,11 +19,8 @@ public class RECIPE_Batteries {
     static ItemStack machineTransformer_EV;
 
     public static void loadRecipes() {
-
-        if (LoadedMods.Gregtech) {
-            machineTransformer_EV = ItemList.Transformer_EV_HV.get(1);
-            run();
-        }
+        machineTransformer_EV = ItemList.Transformer_EV_HV.get(1);
+        run();
     }
 
     private static void run() {

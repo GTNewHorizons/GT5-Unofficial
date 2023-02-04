@@ -9,11 +9,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.me
 public class GregtechIndustrialBlastSmelter {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Alloy Blast Smelter Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Alloy Blast Smelter Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter) {
+            run1();
         }
     }
 

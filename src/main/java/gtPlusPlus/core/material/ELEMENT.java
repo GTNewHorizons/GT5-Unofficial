@@ -4,7 +4,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -597,66 +596,8 @@ public final class ELEMENT {
 
     public ELEMENT() {
         // GTNH Trinium Handling
-        if (CORE.GTNH) {
-            // yay
-            Materials a1 = MaterialUtils.getMaterial("Trinium");
-            Materials a2 = Materials.valueOf("Trinium");
-            Materials a3 = Materials.get("Trinium");
-            Materials a4;
-            if (a1 == null) {
-                Logger.INFO("[Material] First attempt to find Trinium failed, using backup method.");
-                if (a2 == null) {
-                    Logger.INFO("[Material] Fallback attempt to find Trinium failed, using second fallback.");
-                    if (a3 == null) {
-                        Logger.INFO("[Material] Fallback attempt to find Trinium failed, dumping materials.");
-                        for (Materials m : Materials.values()) {
-                            Logger.INFO("[Material] Found " + MaterialUtils.getMaterialName(m));
-                        }
-                        a4 = null;
-                    } else {
-                        Logger.INFO("[Material] a3 Found " + MaterialUtils.getMaterialName(a3));
-                        a4 = a3;
-                    }
-                } else {
-                    Logger.INFO("[Material] a2 Found " + MaterialUtils.getMaterialName(a2));
-                    a4 = a2;
-                }
-                TRINIUM = MaterialUtils.generateMaterialFromGtENUM(a4);
-            } else {
-                Logger.INFO("[Material] a1 Found " + MaterialUtils.getMaterialName(a1));
-                TRINIUM = MaterialUtils.generateMaterialFromGtENUM(a1);
-            }
-
-            TRINIUM_REFINED = TRINIUM;
-
-        } else {
-            TRINIUM = new Material(
-                    "Trinium",
-                    MaterialState.SOLID,
-                    TextureSet.SET_FINE,
-                    new short[] { 70, 110, 30 },
-                    604,
-                    4057,
-                    181,
-                    133,
-                    false,
-                    "Ke",
-                    0,
-                    false); // Not a GT Inherited Material
-            TRINIUM_REFINED = new Material(
-                    "Refined Trinium",
-                    MaterialState.SOLID,
-                    TextureSets.REFINED.get(),
-                    new short[] { 210, 255, 170 },
-                    4304,
-                    14057,
-                    181,
-                    133,
-                    false,
-                    "Ke",
-                    0,
-                    new MaterialStack[] { new MaterialStack(TRINIUM, 1) }); // Not a GT Inherited Material
-        }
+        TRINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Trinium);
+        TRINIUM_REFINED = TRINIUM;
     }
 
     public static ELEMENT getInstance() {

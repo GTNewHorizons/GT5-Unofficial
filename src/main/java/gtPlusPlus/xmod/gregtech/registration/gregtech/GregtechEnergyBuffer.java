@@ -19,10 +19,8 @@ public class GregtechEnergyBuffer {
     // public static Item itemBufferCore;
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
+        run1();
     }
 
     private static void run1() {

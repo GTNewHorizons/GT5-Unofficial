@@ -165,10 +165,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 
     @Override
     public void onConfigLoad(final GT_Config aConfig) {
-        int J = 1;
-        if (CORE.GTNH) {
-            J = 4;
-        }
+        int J = 4;
         TESSERACT_ENERGY_COST = 128 * J;
         TESSERACT_ENERGY_COST_DIMENSIONAL = 512 * J;
     }
@@ -535,9 +532,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
                 ? TESSERACT_ENERGY_COST
                 : TESSERACT_ENERGY_COST_DIMENSIONAL);
 
-        if (CORE.GTNH) {
-            J *= 4;
-        }
+        J *= 4;
 
         this.mNeededEnergy += J;
 

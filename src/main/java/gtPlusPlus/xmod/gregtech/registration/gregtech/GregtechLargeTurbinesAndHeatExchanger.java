@@ -10,10 +10,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.tu
 public class GregtechLargeTurbinesAndHeatExchanger {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Larger Turbines & Extra Large Heat Exchanger.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering Larger Turbines & Extra Large Heat Exchanger.");
+        run1();
     }
 
     private static void run1() {

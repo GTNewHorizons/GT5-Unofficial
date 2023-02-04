@@ -94,8 +94,6 @@ public final class ModItems {
     public static Item itemPlateBlutonium;
     public static Item itemPlateCyanite;
     public static Item itemPlateLudicrite;
-    // Thaumcraft
-    public static Item itemPlateVoidMetal;
     // Pneumaticraft
     public static Item itemPlateCompressedIron;
     // SimplyJetpacks
@@ -534,8 +532,7 @@ public final class ModItems {
             // in radioisotope thermoelectric generators (RTGs)
             // and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PLUTONIUM238, false);
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustPlutonium239", 1) == null
-                    || Utils.getGregtechVersionAsInt() < 50931) {
+            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustPlutonium239", 1) == null) {
                 MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PLUTONIUM239, false);
             }
 
@@ -543,10 +540,6 @@ public final class ModItems {
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().STRONTIUM90, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM210, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().AMERICIUM241, false);
-
-            if (!CORE.GTNH) {
-                MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.getInstance().TRINIUM);
-            }
 
             // Custom Materials that will have standalone refinery processes
             MaterialGenerator.generate(ELEMENT.STANDALONE.ADVANCED_NITINOL, false);
@@ -565,10 +558,6 @@ public final class ModItems {
 
             MISC_MATERIALS.run();
 
-            // Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
-            if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-                MaterialGenerator.generate(ALLOY.TUNGSTEN_CARBIDE);
-            }
             MaterialGenerator.generate(ALLOY.SILICON_CARBIDE);
             MaterialGenerator.generate(ALLOY.ZIRCONIUM_CARBIDE);
             MaterialGenerator.generate(ALLOY.TANTALUM_CARBIDE);
@@ -656,10 +645,6 @@ public final class ModItems {
             MaterialGenerator.generate(ALLOY.HG1223, false, false);
 
             // Generate Fictional Materials
-            if (!CORE.GTNH) {
-                MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM, false);
-                MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
-            }
             MaterialGenerator.generate(ALLOY.TRINIUM_TITANIUM);
             MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
             MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);
@@ -900,12 +885,9 @@ public final class ModItems {
             dustFertUN32 = ItemUtils
                     .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
-            ItemStack temp1 = null;
+            ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
             ItemStack temp2 = null;
 
-            if (LoadedMods.IndustrialCraft2) {
-                temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
-            }
             if (LoadedMods.Forestry) {
                 temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
             }
@@ -1264,20 +1246,6 @@ public final class ModItems {
             Logger.WARNING("BigReactors not Found - Skipping Resources.");
         }
 
-        // Thaumcraft
-        if ((LoadedMods.Thaumcraft || LOAD_ALL_CONTENT) && !CORE.GTNH) {
-            Logger.INFO("Thaumcraft Found - Loading Resources.");
-            // Item Init
-            try {
-                ItemUtils.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
-                itemPlateVoidMetal = ItemUtils.generateSpecialUsePlate("Void", "Void", new short[] { 82, 17, 82 }, 0);
-                GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
-            } catch (final NullPointerException e) {}
-
-        } else {
-            Logger.WARNING("Thaumcraft not Found - Skipping Resources.");
-        }
-
         // Pneumaticraft
         if (LoadedMods.PneumaticCraft || LOAD_ALL_CONTENT) {
             Logger.INFO("PneumaticCraft Found - Loading Resources.");
@@ -1311,22 +1279,18 @@ public final class ModItems {
         }
 
         // IC2 Exp
-        if (LoadedMods.IndustrialCraft2 || LOAD_ALL_CONTENT) {
-            Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
+        Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
 
-            // Baubles Mod Test
-            try {
-                final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
-                if (baublesTest != null) {
-                    COMPAT_Baubles.run();
-                } else {
-                    Logger.INFO("Baubles Not Found - Skipping Resources.");
-                }
-            } catch (final Throwable T) {
+        // Baubles Mod Test
+        try {
+            final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
+            if (baublesTest != null) {
+                COMPAT_Baubles.run();
+            } else {
                 Logger.INFO("Baubles Not Found - Skipping Resources.");
             }
-        } else {
-            Logger.WARNING("IndustrialCraft2 not Found - Skipping Resources.");
+        } catch (final Throwable T) {
+            Logger.INFO("Baubles Not Found - Skipping Resources.");
         }
 
         // Special Item Handling Case

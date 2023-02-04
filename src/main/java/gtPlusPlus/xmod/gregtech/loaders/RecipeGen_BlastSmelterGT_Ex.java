@@ -26,13 +26,10 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
-
-        boolean keepHighTempRecipes = !CORE.GTNH;
-
         switch (aPrefix) {
             case dust:
                 ItemStack tDustStack;
-                if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600) {
+                if (aMaterial.mBlastFurnaceTemp <= 3600) {
                     if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L)))
                             && (!aMaterial.contains(SubTag.NO_SMELTING))) {
                         if (aMaterial.mBlastFurnaceRequired) {
@@ -58,7 +55,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                     }
                 }
             case ingot:
-                if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600) {
+                if (aMaterial.mBlastFurnaceTemp <= 3600) {
                     if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L)))
                             && (!aMaterial.contains(SubTag.NO_SMELTING))) {
                         if (aMaterial.mBlastFurnaceRequired) {
@@ -80,7 +77,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                 }
                 break;
             case dustSmall:
-                if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600) {
+                if (aMaterial.mBlastFurnaceTemp <= 3600) {
                     if (aMaterial.mBlastFurnaceRequired) {
                         addBlastRecipe(
                                 GT_Utility.copyAmount(4L, new Object[] { aStack }),
@@ -102,7 +99,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                 }
                 break;
             case dustTiny:
-                if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600) {
+                if (aMaterial.mBlastFurnaceTemp <= 3600) {
                     if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
                         if (aMaterial.mBlastFurnaceRequired) {
                             addBlastRecipe(
@@ -127,7 +124,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
                 }
                 break;
             default:
-                if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600) {
+                if (aMaterial.mBlastFurnaceTemp <= 3600) {
                     if (!aMaterial.contains(SubTag.NO_SMELTING)) {
                         if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
                             addBlastRecipe(

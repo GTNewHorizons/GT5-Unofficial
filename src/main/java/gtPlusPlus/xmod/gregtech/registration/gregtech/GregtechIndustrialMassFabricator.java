@@ -17,12 +17,10 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.Gr
 public class GregtechIndustrialMassFabricator {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Matter Fabricator Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_MatterFabricator) {
-                generateRecipes();
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Matter Fabricator Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_MatterFabricator) {
+            generateRecipes();
+            run1();
         }
     }
 
@@ -67,65 +65,34 @@ public class GregtechIndustrialMassFabricator {
         GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(UUA_From_Scrap);
         GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(UUA_From_ScrapBoxes);
 
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            // Basic UUM
-            GT_Recipe generateUUM = new GTPP_Recipe(
-                    false,
-                    new ItemStack[] { CI.getNumberedCircuit(1) },
-                    new ItemStack[] { GT_Values.NI },
-                    null,
-                    null,
-                    new FluidStack[] { GT_Values.NF },
-                    new FluidStack[] { Materials.UUMatter.getFluid(1) },
-                    160 * 20,
-                    32,
-                    0);
+        // Basic UUM
+        GT_Recipe generateUUM_LV = new GTPP_Recipe(
+                false,
+                new ItemStack[] { CI.getNumberedCircuit(1) },
+                new ItemStack[] { GT_Values.NI },
+                null,
+                null,
+                new FluidStack[] { GT_Values.NF },
+                new FluidStack[] { Materials.UUMatter.getFluid(1) },
+                160 * 20,
+                256,
+                0);
 
-            // Basic UUM
-            GT_Recipe generateUUMFromUUA = new GTPP_Recipe(
-                    false,
-                    new ItemStack[] { CI.getNumberedCircuit(2) },
-                    new ItemStack[] { GT_Values.NI },
-                    null,
-                    null,
-                    new FluidStack[] { Materials.UUAmplifier.getFluid(1) },
-                    new FluidStack[] { Materials.UUMatter.getFluid(1) },
-                    40 * 20,
-                    32,
-                    0);
+        // Basic UUM
+        GT_Recipe generateUUMFromUUA_LV = new GTPP_Recipe(
+                false,
+                new ItemStack[] { CI.getNumberedCircuit(2) },
+                new ItemStack[] { GT_Values.NI },
+                null,
+                null,
+                new FluidStack[] { Materials.UUAmplifier.getFluid(1) },
+                new FluidStack[] { Materials.UUMatter.getFluid(1) },
+                40 * 20,
+                256,
+                0);
 
-            GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUM);
-            GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUMFromUUA);
-        } else {
-            // Basic UUM
-            GT_Recipe generateUUM_LV = new GTPP_Recipe(
-                    false,
-                    new ItemStack[] { CI.getNumberedCircuit(1) },
-                    new ItemStack[] { GT_Values.NI },
-                    null,
-                    null,
-                    new FluidStack[] { GT_Values.NF },
-                    new FluidStack[] { Materials.UUMatter.getFluid(1) },
-                    160 * 20,
-                    256,
-                    0);
-
-            // Basic UUM
-            GT_Recipe generateUUMFromUUA_LV = new GTPP_Recipe(
-                    false,
-                    new ItemStack[] { CI.getNumberedCircuit(2) },
-                    new ItemStack[] { GT_Values.NI },
-                    null,
-                    null,
-                    new FluidStack[] { Materials.UUAmplifier.getFluid(1) },
-                    new FluidStack[] { Materials.UUMatter.getFluid(1) },
-                    40 * 20,
-                    256,
-                    0);
-
-            GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUM_LV);
-            GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUMFromUUA_LV);
-        }
+        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUM_LV);
+        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUMFromUUA_LV);
 
         Logger.INFO(
                 "Generated " + GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.mRecipeList.size()

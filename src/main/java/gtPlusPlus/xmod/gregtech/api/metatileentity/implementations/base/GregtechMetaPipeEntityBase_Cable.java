@@ -35,7 +35,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import ic2.api.energy.tile.IEnergySink;
 
@@ -83,22 +82,20 @@ public class GregtechMetaPipeEntityBase_Cable extends MetaPipeEntity implements 
         final String lookingForValue = "mWireHeatingTicks";
         int temp = 4;
         Field field;
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            try {
-                field = clazz.getClass().getField(lookingForValue);
-                final Class<?> clazzType = field.getType();
-                if (clazzType.toString().equals("int")) {
-                    temp = (field.getInt(clazz));
-                } else {
-                    temp = 4;
-                }
-            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-                // Utils.LOG_INFO("FATAL ERROR - REFLECTION FAILED FOR GT CABLES
-                // - PLEASE REPORT THIS.");
-                Logger.WARNING("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
-                Logger.ERROR("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
+        try {
+            field = clazz.getClass().getField(lookingForValue);
+            final Class<?> clazzType = field.getType();
+            if (clazzType.toString().equals("int")) {
+                temp = (field.getInt(clazz));
+            } else {
                 temp = 4;
             }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            // Utils.LOG_INFO("FATAL ERROR - REFLECTION FAILED FOR GT CABLES
+            // - PLEASE REPORT THIS.");
+            Logger.WARNING("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
+            Logger.ERROR("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
+            temp = 4;
         }
         return temp;
     }
@@ -365,20 +362,12 @@ public class GregtechMetaPipeEntityBase_Cable extends MetaPipeEntity implements 
         this.mTransferredAmperageLast20 = Math.max(this.mTransferredAmperageLast20, this.mTransferredAmperage);
 
         if ((aVoltage > this.mVoltage) || (this.mTransferredAmperage > this.mAmperage)) {
-            // GT 5.09
-            if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-                if (this.mOverheat > (this.mWireHeatingTicks * 100)) {
-                    this.getBaseMetaTileEntity().setToFire();
-                } else {
-                    this.mOverheat += 100;
-                }
-                return aAmperage;
-            }
-            // GT 5.08
-            else {
+            if (this.mOverheat > (this.mWireHeatingTicks * 100)) {
                 this.getBaseMetaTileEntity().setToFire();
-                return aAmperage;
+            } else {
+                this.mOverheat += 100;
             }
+            return aAmperage;
         }
 
         return rUsedAmperes;

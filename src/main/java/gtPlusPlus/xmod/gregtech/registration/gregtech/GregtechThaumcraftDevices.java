@@ -8,7 +8,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaP
 public class GregtechThaumcraftDevices {
 
     public static void run() {
-        if (LoadedMods.Gregtech && LoadedMods.Thaumcraft) {
+        if (LoadedMods.Thaumcraft) {
             Logger.INFO("Gregtech5u Content | Registering Thaumcraft content.");
             run1();
         }

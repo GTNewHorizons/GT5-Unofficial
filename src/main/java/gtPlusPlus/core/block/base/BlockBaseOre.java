@@ -18,7 +18,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -106,26 +105,20 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
             GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(
                     blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
                     this.blockMaterial.getRGBA());
-            if (aIconSet != null) {
-                return new ITexture[] { new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
-            }
+            return new ITexture[] { new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
         }
 
         if (hiddenTextureArray == null) {
-            if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-                hiddenTextureArray = Textures.BlockIcons.GRANITES;
-            } else {
-                try {
-                    Field o = ReflectionUtils.getField(Textures.BlockIcons.class, "STONES");
-                    if (o != null) {
-                        hiddenTextureArray = (IIconContainer[]) o.get(Textures.BlockIcons.class);
-                    }
-                    if (hiddenTextureArray == null) {
-                        hiddenTextureArray = new IIconContainer[6];
-                    }
-                } catch (IllegalArgumentException | IllegalAccessException e) {
+            try {
+                Field o = ReflectionUtils.getField(Textures.BlockIcons.class, "STONES");
+                if (o != null) {
+                    hiddenTextureArray = (IIconContainer[]) o.get(Textures.BlockIcons.class);
+                }
+                if (hiddenTextureArray == null) {
                     hiddenTextureArray = new IIconContainer[6];
                 }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                hiddenTextureArray = new IIconContainer[6];
             }
         }
         return new ITexture[] { new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] { 240, 240, 240, 0 }) };
@@ -200,26 +193,20 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(
                         blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
                         this.blockMaterial.getRGBA());
-                if (aIconSet != null) {
-                    return new ITexture[] { new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
-                }
+                return new ITexture[] { new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
             }
 
             if (hiddenTextureArray == null) {
-                if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-                    hiddenTextureArray = Textures.BlockIcons.GRANITES;
-                } else {
-                    try {
-                        Field o = ReflectionUtils.getField(Textures.BlockIcons.class, "STONES");
-                        if (o != null) {
-                            hiddenTextureArray = (IIconContainer[]) o.get(Textures.BlockIcons.class);
-                        }
-                        if (hiddenTextureArray == null) {
-                            hiddenTextureArray = new IIconContainer[6];
-                        }
-                    } catch (IllegalArgumentException | IllegalAccessException e) {
+                try {
+                    Field o = ReflectionUtils.getField(Textures.BlockIcons.class, "STONES");
+                    if (o != null) {
+                        hiddenTextureArray = (IIconContainer[]) o.get(Textures.BlockIcons.class);
+                    }
+                    if (hiddenTextureArray == null) {
                         hiddenTextureArray = new IIconContainer[6];
                     }
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    hiddenTextureArray = new IIconContainer[6];
                 }
             }
             return new ITexture[] { new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] { 240, 240, 240, 0 }) };

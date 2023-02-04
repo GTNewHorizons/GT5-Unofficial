@@ -4,7 +4,6 @@ import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -18,13 +17,12 @@ public class ItemsMultiTools {
     private static void run() {
 
         // Load Multitools
-        final boolean gtStyleTools = LoadedMods.Gregtech;
         if (CORE.ConfigSwitches.enableMultiSizeTools) {
 
             // GT Materials
             final Materials[] rm = Materials.values();
             for (final Materials m : rm) {
-                toolFactoryGT(m, gtStyleTools);
+                toolFactoryGT(m);
             }
 
             // GT++ Materials
@@ -53,9 +51,9 @@ public class ItemsMultiTools {
         }
     }
 
-    private static boolean toolFactoryGT(final Materials m, final boolean b) {
-        ModItems.MP_GTMATERIAL = ItemUtils.generateMultiPick(b, m);
-        ModItems.MS_GTMATERIAL = ItemUtils.generateMultiShovel(b, m);
+    private static boolean toolFactoryGT(final Materials m) {
+        ModItems.MP_GTMATERIAL = ItemUtils.generateMultiPick(true, m);
+        ModItems.MS_GTMATERIAL = ItemUtils.generateMultiShovel(true, m);
         return true;
     }
 

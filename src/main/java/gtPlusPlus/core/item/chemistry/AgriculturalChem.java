@@ -558,18 +558,16 @@ public class AgriculturalChem extends ItemPackage {
         /**
          * IC2 Support
          */
-        if (LoadedMods.IndustrialCraft2) {
-            aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
-            CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] { CI.getNumberedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4) },
-                    null,
-                    null,
-                    new ItemStack[] { ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod,
-                            aManureByprod },
-                    new int[] { 10000, 2000, 2000 },
-                    20 * 20,
-                    240);
-        }
+        aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
+        CORE.RA.addDehydratorRecipe(
+                new ItemStack[] { CI.getNumberedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4) },
+                null,
+                null,
+                new ItemStack[] { ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod,
+                        aManureByprod },
+                new int[] { 10000, 2000, 2000 },
+                20 * 20,
+                240);
 
         // Dirt Production
         CORE.RA.addCompressorRecipe(

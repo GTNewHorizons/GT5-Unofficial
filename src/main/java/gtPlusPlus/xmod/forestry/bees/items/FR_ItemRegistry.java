@@ -17,7 +17,6 @@ import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.core.utils.StringUtil;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 
 public class FR_ItemRegistry {
@@ -56,17 +55,10 @@ public class FR_ItemRegistry {
 
         // Magic Bee like Frames
 
-        if (!CORE.GTNH) {
-            hiveFrameVoid = new MB_ItemFrame(
-                    MB_FrameType.VOID,
-                    EnumRarity.rare,
-                    "Makes your bee die in the blink of an eye.");
-        } else {
-            hiveFrameVoid = new MB_ItemFrame(
-                    MB_FrameType.USELESS,
-                    EnumRarity.common,
-                    "No more cheaty frames for GTNH players.");
-        }
+        hiveFrameVoid = new MB_ItemFrame(
+                MB_FrameType.USELESS,
+                EnumRarity.common,
+                "No more cheaty frames for GTNH players.");
 
         hiveFrameAccelerated = new MB_ItemFrame(
                 MB_FrameType.ACCELERATED,

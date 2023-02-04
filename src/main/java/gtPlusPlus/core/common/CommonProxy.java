@@ -50,11 +50,6 @@ public class CommonProxy {
     public CommonProxy() {
         // Should Register Gregtech Materials I've Made
         Utils.registerEvent(this);
-        if (!CORE.GTNH) {
-            Logger.INFO("We're using Gregtech " + Utils.getGregtechVersionAsString());
-        } else {
-            Logger.INFO("We're using GTNH's Gregtech " + Utils.getGregtechVersionAsString());
-        }
     }
 
     public void preInit(final FMLPreInitializationEvent e) {

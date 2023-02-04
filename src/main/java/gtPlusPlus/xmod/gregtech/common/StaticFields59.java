@@ -25,7 +25,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -97,22 +96,13 @@ public class StaticFields59 {
         Logger.INFO("[SH] Got Method: calculatePollutionReduction");
 
         // Yep...
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            mAddFurnaceRecipe = getMethod(
-                    GT_ModHandler.class,
-                    "addSmeltingAndAlloySmeltingRecipe",
-                    ItemStack.class,
-                    ItemStack.class);
-            Logger.INFO("[SH] Got Method: addSmeltingAndAlloySmeltingRecipe");
-        } else {
-            mAddFurnaceRecipe = getMethod(
-                    GT_ModHandler.class,
-                    "addSmeltingAndAlloySmeltingRecipe",
-                    ItemStack.class,
-                    ItemStack.class,
-                    boolean.class);
-            Logger.INFO("[SH] Got Method: addSmeltingAndAlloySmeltingRecipe");
-        }
+        mAddFurnaceRecipe = getMethod(
+                GT_ModHandler.class,
+                "addSmeltingAndAlloySmeltingRecipe",
+                ItemStack.class,
+                ItemStack.class,
+                boolean.class);
+        Logger.INFO("[SH] Got Method: addSmeltingAndAlloySmeltingRecipe");
     }
 
     public static final synchronized Block getBlockCasings5() {
@@ -293,7 +283,7 @@ public class StaticFields59 {
                 Logger.INFO("Heating Coils are bad.");
                 mHeatingCapacity = 0;
         }
-        if (CORE.GTNH && aCoilTier <= 10) {
+        if (aCoilTier <= 10) {
             mHeatingCapacity += 1;
         }
         return mHeatingCapacity;

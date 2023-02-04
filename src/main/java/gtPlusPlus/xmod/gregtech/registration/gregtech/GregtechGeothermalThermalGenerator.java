@@ -8,7 +8,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -17,11 +16,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileE
 public class GregtechGeothermalThermalGenerator {
 
     public static void run() {
-        if (LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Geothermal Engines.");
-            if (CORE.ConfigSwitches.enableMachine_GeothermalEngines) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Geothermal Engines.");
+        if (CORE.ConfigSwitches.enableMachine_GeothermalEngines) {
+            run1();
         }
     }
 

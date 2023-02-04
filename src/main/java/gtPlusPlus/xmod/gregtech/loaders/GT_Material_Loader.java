@@ -8,7 +8,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -39,7 +38,7 @@ public class GT_Material_Loader {
 
             // Try Reflectively add ourselves to the GT loader.
             Class mInterface = ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler");
-            if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && mInterface != null) {
+            if (mInterface != null) {
 
                 // Make this class Dynamically implement IMaterialHandler
                 if (mProxyObject == null) {
@@ -114,10 +113,6 @@ public class GT_Material_Loader {
      */
 
     private static synchronized boolean tryEnableMaterial(Materials mMaterial) {
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            return false;
-        }
-
         boolean value = ReflectionUtils.setField(mMaterial, "mHasParentMod", true);
         if (value) {
             Logger.DEBUG_MATERIALS("Set mHasParentMod true for " + mMaterial.mDefaultLocalName);
@@ -128,9 +123,6 @@ public class GT_Material_Loader {
     }
 
     private static synchronized boolean tryEnableMaterialPart(OrePrefixes prefix, Materials mMaterial) {
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            return false;
-        }
         try {
             Method enableComponent = ReflectionUtils.getClass("gregtech.api.enums.OrePrefixes")
                     .getDeclaredMethod("enableComponent", Materials.class);
@@ -157,9 +149,6 @@ public class GT_Material_Loader {
     }
 
     private static synchronized boolean tryEnableAllComponentsForMaterial(Materials material) {
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            return false;
-        }
         try {
             tryEnableMaterial(material);
             int mValid = 0;

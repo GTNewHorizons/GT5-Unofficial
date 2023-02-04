@@ -107,32 +107,6 @@ public class BOP_Block_Registrator {
                 160,
                 8);
 
-        if (!CORE.GTNH) {
-            GT_Values.RA.addAssemblerRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    ItemList.Circuit_Integrated.getWithDamage(0L, 2L, new Object[0]),
-                    Materials.SeedOil.getFluid(50L),
-                    ItemList.FR_Stick.get(1L, new Object[0]),
-                    16,
-                    8);
-            GT_Values.RA.addAssemblerRecipe(
-                    GT_Utility.copyAmount(8L, aStack),
-                    ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]),
-                    Materials.SeedOil.getFluid(250L),
-                    ItemList.FR_Casing_Impregnated.get(1L, new Object[0]),
-                    64,
-                    16);
-            GT_Values.RA.addChemicalBathRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    Materials.Creosote.getFluid(1000L),
-                    GT_ModHandler.getModItem("Railcraft", "tile.railcraft.cube", 1L, 8),
-                    null,
-                    null,
-                    null,
-                    16,
-                    16);
-        }
-
         final short aMeta = (short) aStack.getItemDamage();
         if (aMeta == 32767) {
             if (GT_Utility.areStacksEqual(

@@ -214,32 +214,29 @@ public class Core_SulfuricChemistry implements IPlugin {
         }
 
         // Multi Block Recipes
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
-                for (ItemStack i : r.mOutputs) {
-                    i.stackSize = 1;
-                    if (ItemStack.areItemStacksEqual(
-                            i,
-                            ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
-                        mRemovedRecipes1.put(r);
-                        r.mEnabled = false;
-                        r.mHidden = true;
-                        mDisabled++;
-                        continue recipe;
-                    }
-                    continue;
+        recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+            for (ItemStack i : r.mOutputs) {
+                i.stackSize = 1;
+                if (ItemStack
+                        .areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
+                    mRemovedRecipes1.put(r);
+                    r.mEnabled = false;
+                    r.mHidden = true;
+                    mDisabled++;
+                    continue recipe;
                 }
-                for (FluidStack f : r.mFluidOutputs) {
-                    f.amount = 1;
-                    if (FluidStack.areFluidStackTagsEqual(f, mStack)) {
-                        mRemovedRecipes1.put(r);
-                        r.mEnabled = false;
-                        r.mHidden = true;
-                        mDisabled++;
-                        continue recipe;
-                    }
-                    continue;
+                continue;
+            }
+            for (FluidStack f : r.mFluidOutputs) {
+                f.amount = 1;
+                if (FluidStack.areFluidStackTagsEqual(f, mStack)) {
+                    mRemovedRecipes1.put(r);
+                    r.mEnabled = false;
+                    r.mHidden = true;
+                    mDisabled++;
+                    continue recipe;
                 }
+                continue;
             }
         }
 
@@ -277,31 +274,28 @@ public class Core_SulfuricChemistry implements IPlugin {
         }
 
         // Multi Block Recipes
-        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
-                for (ItemStack i : r.mOutputs) {
-                    i.stackSize = 1;
-                    if (ItemStack
-                            .areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
-                        mRemovedRecipes2.put(r);
-                        r.mEnabled = false;
-                        r.mHidden = true;
-                        mDisabled++;
-                        continue recipe;
-                    }
-                    continue;
+        recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+            for (ItemStack i : r.mOutputs) {
+                i.stackSize = 1;
+                if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
+                    mRemovedRecipes2.put(r);
+                    r.mEnabled = false;
+                    r.mHidden = true;
+                    mDisabled++;
+                    continue recipe;
                 }
-                for (FluidStack f : r.mFluidOutputs) {
-                    f.amount = 1;
-                    if (FluidStack.areFluidStackTagsEqual(f, mStack)) {
-                        mRemovedRecipes2.put(r);
-                        r.mEnabled = false;
-                        r.mHidden = true;
-                        mDisabled++;
-                        continue recipe;
-                    }
-                    continue;
+                continue;
+            }
+            for (FluidStack f : r.mFluidOutputs) {
+                f.amount = 1;
+                if (FluidStack.areFluidStackTagsEqual(f, mStack)) {
+                    mRemovedRecipes2.put(r);
+                    r.mEnabled = false;
+                    r.mHidden = true;
+                    mDisabled++;
+                    continue recipe;
                 }
+                continue;
             }
         }
 

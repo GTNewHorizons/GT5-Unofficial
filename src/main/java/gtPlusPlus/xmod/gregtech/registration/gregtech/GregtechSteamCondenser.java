@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaC
 public class GregtechSteamCondenser {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Steam Condensor.");
-            if (CORE.ConfigSwitches.enableMachine_SteamConverter) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Steam Condensor.");
+        if (CORE.ConfigSwitches.enableMachine_SteamConverter) {
+            run1();
         }
     }
 

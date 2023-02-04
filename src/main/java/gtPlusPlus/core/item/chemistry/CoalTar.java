@@ -38,7 +38,7 @@ public class CoalTar extends ItemPackage {
                 FluidUtils.getFluidStack("nitrofuel", 7500),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 11),
                 100,
-                CORE.GTNH ? 1000 : 500);
+                1000);
         CORE.RA.addChemicalRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellBioDiesel", 9),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 2),
@@ -46,7 +46,7 @@ public class CoalTar extends ItemPackage {
                 FluidUtils.getFluidStack("nitrofuel", 3000),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 11),
                 300,
-                CORE.GTNH ? 1000 : 500);
+                1000);
     }
 
     public static void recipeCreateEthylene() {

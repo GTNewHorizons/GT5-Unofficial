@@ -8,10 +8,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 public class GregtechPowerBreakers {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Power Breakers.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering Power Breakers.");
+        run1();
     }
 
     private static void run1() {

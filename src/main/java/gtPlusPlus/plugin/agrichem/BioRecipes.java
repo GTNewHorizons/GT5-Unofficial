@@ -1,7 +1,5 @@
 package gtPlusPlus.plugin.agrichem;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -424,9 +422,9 @@ public class BioRecipes {
     private static void recipeCatalystCarrier() {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getBioChip(20), ItemUtils.getItemStackOfAmountFromOreDict("plateSteel", GTNH ? 8 : 4),
-                        ItemUtils.getItemStackOfAmountFromOreDict("wireFineCopper", GTNH ? 4 : 2),
-                        ItemUtils.getItemStackOfAmountFromOreDict("screwTin", GTNH ? 6 : 3) },
+                new ItemStack[] { getBioChip(20), ItemUtils.getItemStackOfAmountFromOreDict("plateSteel", 8),
+                        ItemUtils.getItemStackOfAmountFromOreDict("wireFineCopper", 4),
+                        ItemUtils.getItemStackOfAmountFromOreDict("screwTin", 6) },
                 GT_Values.NF,
                 CI.getEmptyCatalyst(1),
                 300 * 20,

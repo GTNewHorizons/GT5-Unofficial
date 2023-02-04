@@ -6,7 +6,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatch_Dynamo {
@@ -56,18 +55,10 @@ public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatc
     @Override
     public String[] getDescription() {
         String[] g;
-        if (CORE.GTNH || (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechVersionAsInt() >= 50932)) {
-            g = new String[] { "Dynamo with internal storage and additional Amp capacity",
-                    "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
-                    CORE.GT_Tooltip.get() };
+        g = new String[] { "Dynamo with internal storage and additional Amp capacity",
+                "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
+                CORE.GT_Tooltip.get() };
 
-        } else {
-            g = new String[] { "Dynamo with internal storage and additional Amp capacity",
-                    "Stores " + maxEUStore() + "EU", "Amperage In: 4", "Amperage Out: 4",
-                    "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
-                    "Large Turbines only supply 1A to this, other Multiblocks can inject more amps",
-                    CORE.GT_Tooltip.get() };
-        }
         return g;
     }
 

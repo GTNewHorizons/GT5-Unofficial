@@ -11,15 +11,13 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaT
 public class GregtechCustomHatches {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
-            run1();
-            if (PollutionUtils.isPollutionEnabled()) {
-                run2();
-            }
-            run3();
-            run4();
+        Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
+        run1();
+        if (PollutionUtils.isPollutionEnabled()) {
+            run2();
         }
+        run3();
+        run4();
     }
 
     private static void run1() {

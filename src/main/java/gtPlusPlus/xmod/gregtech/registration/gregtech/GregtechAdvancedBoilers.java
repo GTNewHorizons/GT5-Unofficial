@@ -7,7 +7,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.RECIPES_MachineComponents;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -19,10 +18,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity
 public class GregtechAdvancedBoilers {
 
     public static void run() {
-        if (LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Advanced Boilers.");
-            run1();
-        }
+        Logger.INFO("Gregtech5u Content | Registering Advanced Boilers.");
+        run1();
     }
 
     private static void run1() {

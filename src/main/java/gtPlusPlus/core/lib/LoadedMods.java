@@ -7,19 +7,16 @@ import java.util.HashMap;
 import cpw.mods.fml.common.Loader;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 
 public class LoadedMods {
 
     // Initialize Variables
-    public static boolean Gregtech = false;
     public static boolean PlayerAPI = false;
     public static boolean BuildCraft = false;
     public static boolean EnderIO = false;
     public static boolean Big_Reactors = false;
-    public static boolean IndustrialCraft2 = false;
     public static boolean IndustrialCraft2Classic = false;
     public static boolean Simply_Jetpacks = false;
     public static boolean RFTools = false;
@@ -39,7 +36,6 @@ public class LoadedMods {
     public static boolean MagicBees = false;
     public static boolean ExtraBees = false;
     public static boolean Psychedelicraft = false;
-    public static boolean MiscUtils = true; // Dummy For MetaData Lookups in MT Wrapper
     public static boolean ThermalFoundation = false;
     public static boolean IHL = false;
     public static boolean AdvancedSolarPanel = false;
@@ -72,29 +68,21 @@ public class LoadedMods {
     @SuppressWarnings("deprecation")
     public static void checkLoaded() {
         Logger.INFO("Looking for optional mod prereqs.");
-        if (isModLoaded("gregtech")) {
-            Gregtech = true;
-            Logger.INFO("Components enabled for: Gregtech");
-            if (Gregtech) {
-                try {
-                    CORE.sRecipeAdder = CORE.RA = new GregtechRecipeAdder();
-                    Logger.INFO("Created Gregtech recipe handler.");
-                    GregtechTextures.BlockIcons.VOID.name();
-                    GregtechTextures.ItemIcons.VOID.name();
-                    Logger.INFO("Created Gregtech texture handler.");
-                } catch (final NullPointerException e) {
-                    Logger.INFO("Could NOT create a Gregtech recipe handler.");
-                }
-            }
-
-            totalMods++;
+        Logger.INFO("Components enabled for: Gregtech");
+        try {
+            CORE.RA = new GregtechRecipeAdder();
+            Logger.INFO("Created Gregtech recipe handler.");
+            GregtechTextures.BlockIcons.VOID.name();
+            GregtechTextures.ItemIcons.VOID.name();
+            Logger.INFO("Created Gregtech texture handler.");
+        } catch (final NullPointerException e) {
+            Logger.INFO("Could NOT create a Gregtech recipe handler.");
         }
-        if (isModLoaded("dreamcraft")
-                || ReflectionUtils.doesClassExist("gregtech.api.util.GT_Multiblock_Tooltip_Builder")) {
+
+        totalMods++;
+        if (isModLoaded("dreamcraft")) {
             DreamCraft = true;
-            GTNH = true;
             Logger.INFO("Components enabled for: DreamCraft");
-            Logger.INFO("Components enabled for: GT: New Horizons");
             totalMods++;
         }
         if (isModLoaded("beyondrealitycore")) {
@@ -151,11 +139,6 @@ public class LoadedMods {
         if (isModLoaded("BigReactors")) {
             Big_Reactors = true;
             Logger.INFO("Components enabled for: Big Reactors");
-            totalMods++;
-        }
-        if (isModLoaded("IC2")) {
-            IndustrialCraft2 = true;
-            Logger.INFO("Components enabled for: IndustrialCraft2");
             totalMods++;
         }
         if (isModLoaded("IC2-Classic-Spmod")) {

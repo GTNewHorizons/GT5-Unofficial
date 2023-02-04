@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.thermalfoundation.item;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -8,9 +7,7 @@ import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
 import cofh.core.util.energy.FurnaceFuelHandler;
 import cofh.core.util.fluid.BucketHandler;
-import cofh.lib.util.helpers.ItemHelper;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
@@ -74,20 +71,5 @@ public class TF_Items {
                 .registerFluidContainer(TF_Fluids.fluidEnder, bucketEnder, FluidContainerRegistry.EMPTY_BUCKET);
     }
 
-    public static void postInit() {
-        if (!CORE.GTNH) {
-            ItemHelper.addRecipe(
-                    ItemHelper.ShapelessRecipe(
-                            ItemHelper.cloneStack(dustPyrotheum, 1),
-                            new Object[] { "dustCoal", "dustSulfur", "dustRedstone", "dustBlaze" }));
-            ItemHelper.addRecipe(
-                    ItemHelper.ShapelessRecipe(
-                            ItemHelper.cloneStack(dustCryotheum, 1),
-                            new Object[] { Items.snowball, "dustSaltpeter", "dustRedstone", "dustBlizz" }));
-            ItemHelper.addRecipe(
-                    ItemHelper.ShapelessRecipe(
-                            ItemHelper.cloneStack(dustCryotheum, 1),
-                            new Object[] { Items.snowball, "dustNitor", "dustRedstone", "dustBlizz" }));
-        }
-    }
+    public static void postInit() {}
 }

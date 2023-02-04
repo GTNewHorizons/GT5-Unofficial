@@ -87,103 +87,101 @@ public class GregtechFluidHandler {
             }
         }
 
-        if (LoadedMods.IndustrialCraft2) {
-            Logger.INFO("Adding in GT Fluids for various nuclear related content.");
+        Logger.INFO("Adding in GT Fluids for various nuclear related content.");
 
-            FluidUtils.addGtFluid(
-                    "hydrofluoricAcid",
-                    "Industrial Strength Hydrofluoric Acid",
-                    GT_Materials.HydrofluoricAcid,
-                    1,
-                    120,
-                    GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L),
-                    ItemUtils.getEmptyCell(),
-                    1000,
-                    false);
-            generateIC2FluidCell("HydrofluoricAcid");
+        FluidUtils.addGtFluid(
+                "hydrofluoricAcid",
+                "Industrial Strength Hydrofluoric Acid",
+                GT_Materials.HydrofluoricAcid,
+                1,
+                120,
+                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L),
+                ItemUtils.getEmptyCell(),
+                1000,
+                false);
+        generateIC2FluidCell("HydrofluoricAcid");
 
-            FluidUtils.generateFluidNoPrefix(
-                    "SulfurDioxide",
-                    "High Quality Sulfur Dioxide",
-                    263,
-                    GT_Materials.SulfurDioxide.mRGBa);
+        FluidUtils.generateFluidNoPrefix(
+                "SulfurDioxide",
+                "High Quality Sulfur Dioxide",
+                263,
+                GT_Materials.SulfurDioxide.mRGBa);
 
-            FluidUtils.addGtFluid(
-                    "sulfurousAcid",
-                    "Sulfurous Acid",
-                    GT_Materials.SulfurousAcid,
-                    4,
-                    75,
-                    GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L),
-                    ItemUtils.getEmptyCell(),
-                    1000,
-                    false);
-            generateIC2FluidCell("SulfurousAcid");
+        FluidUtils.addGtFluid(
+                "sulfurousAcid",
+                "Sulfurous Acid",
+                GT_Materials.SulfurousAcid,
+                4,
+                75,
+                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L),
+                ItemUtils.getEmptyCell(),
+                1000,
+                false);
+        generateIC2FluidCell("SulfurousAcid");
 
-            FluidUtils.addGtFluid(
-                    "sulfuricApatite",
-                    "Sulfuric Apatite Mix",
-                    GT_Materials.SulfuricApatite,
-                    4,
-                    500,
-                    GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L),
-                    ItemUtils.getEmptyCell(),
-                    1000,
-                    false);
-            generateIC2FluidCell("SulfuricApatite");
+        FluidUtils.addGtFluid(
+                "sulfuricApatite",
+                "Sulfuric Apatite Mix",
+                GT_Materials.SulfuricApatite,
+                4,
+                500,
+                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L),
+                ItemUtils.getEmptyCell(),
+                1000,
+                false);
+        generateIC2FluidCell("SulfuricApatite");
 
-            // Check for IHL Hydrogen Chloride
-            if (!LoadedMods.IHL || (ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null)) {
-                if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null) {
-                    if (LoadedMods.IHL) {
-                        Logger.INFO(
-                                "IHL Loaded but hydrogen chloride could not be found for some reason. How about we add our own.");
-                    } else {
-                        Logger.INFO("No Suitable versions of Hydrogen Chloride available, adding our own.");
-                    }
-                    FluidUtils.addGtFluid(
-                            "hydrogenChloride",
-                            "Industrial Strength Hydrogen Chloride",
-                            GT_Materials.HydrogenChloride,
-                            4,
-                            75,
-                            GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L),
-                            ItemUtils.getEmptyCell(),
-                            1000,
-                            false);
-                    generateIC2FluidCell("HydrogenChloride");
+        // Check for IHL Hydrogen Chloride
+        if (!LoadedMods.IHL || (ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null)) {
+            if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null) {
+                if (LoadedMods.IHL) {
+                    Logger.INFO(
+                            "IHL Loaded but hydrogen chloride could not be found for some reason. How about we add our own.");
+                } else {
+                    Logger.INFO("No Suitable versions of Hydrogen Chloride available, adding our own.");
                 }
+                FluidUtils.addGtFluid(
+                        "hydrogenChloride",
+                        "Industrial Strength Hydrogen Chloride",
+                        GT_Materials.HydrogenChloride,
+                        4,
+                        75,
+                        GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L),
+                        ItemUtils.getEmptyCell(),
+                        1000,
+                        false);
+                generateIC2FluidCell("HydrogenChloride");
             }
-
-            FluidUtils.addGtFluid(
-                    "sulfuricLithium",
-                    "Sulfuric Lithium Mix",
-                    GT_Materials.SulfuricLithium,
-                    4,
-                    280,
-                    GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L),
-                    ItemUtils.getEmptyCell(),
-                    1000,
-                    false);
-            generateIC2FluidCell("SulfuricLithium");
-
-            FluidUtils.addGtFluid(
-                    "lithiumHydroxide",
-                    "Lithium Hydroxide",
-                    GT_Materials.LithiumHydroxide,
-                    4,
-                    500,
-                    GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L),
-                    ItemUtils.getEmptyCell(),
-                    1000,
-                    false);
-            generateIC2FluidCell("LithiumHydroxide");
         }
+
+        FluidUtils.addGtFluid(
+                "sulfuricLithium",
+                "Sulfuric Lithium Mix",
+                GT_Materials.SulfuricLithium,
+                4,
+                280,
+                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L),
+                ItemUtils.getEmptyCell(),
+                1000,
+                false);
+        generateIC2FluidCell("SulfuricLithium");
+
+        FluidUtils.addGtFluid(
+                "lithiumHydroxide",
+                "Lithium Hydroxide",
+                GT_Materials.LithiumHydroxide,
+                4,
+                500,
+                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L),
+                ItemUtils.getEmptyCell(),
+                1000,
+                false);
+        generateIC2FluidCell("LithiumHydroxide");
     }
 
     private static ItemStack generateIC2FluidCell(final String fluidNameWithCaps) {
         Logger.INFO("Adding a Cell for " + fluidNameWithCaps);
-        if (LoadedMods.IndustrialCraft2 && !LoadedMods.IndustrialCraft2Classic) {
+        if (!LoadedMods.IndustrialCraft2Classic) {
             return Utils.createInternalNameAndFluidCell(fluidNameWithCaps);
         }
         return null;
@@ -191,7 +189,7 @@ public class GregtechFluidHandler {
 
     private static ItemStack generateIC2FluidCellNoOreDict(final String fluidNameWithCaps) {
         Logger.INFO("Adding a Cell for " + fluidNameWithCaps);
-        if (LoadedMods.IndustrialCraft2 && !LoadedMods.IndustrialCraft2Classic) {
+        if (!LoadedMods.IndustrialCraft2Classic) {
             return Utils.createInternalNameAndFluidCellNoOreDict(fluidNameWithCaps);
         }
         return null;

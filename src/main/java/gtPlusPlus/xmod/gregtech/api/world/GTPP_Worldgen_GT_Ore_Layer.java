@@ -16,7 +16,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.loaders.misc.GT_Achievements;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 
 public class GTPP_Worldgen_GT_Ore_Layer extends GTPP_Worldgen {
@@ -241,18 +240,10 @@ public class GTPP_Worldgen_GT_Ore_Layer extends GTPP_Worldgen {
         }
 
         if (mSetOre != null) {
-            if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-                try {
-                    return (boolean) mSetOre.invoke(world, x, y, z, secondarymeta, bool);
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException t) {
-                    return false;
-                }
-            } else {
-                try {
-                    return (boolean) mSetOre.invoke(world, x, y, z, secondarymeta);
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException t) {
-                    return false;
-                }
+            try {
+                return (boolean) mSetOre.invoke(world, x, y, z, secondarymeta, bool);
+            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException t) {
+                return false;
             }
         } else {
             return false;

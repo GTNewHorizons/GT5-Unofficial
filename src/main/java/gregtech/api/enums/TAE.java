@@ -9,7 +9,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 
@@ -84,18 +83,15 @@ public class TAE {
             // Handle page 2.
             Logger.INFO("[TAE} Registering Texture, Last used casing ID is " + gtPPLastUsedIndex + ".");
             if (gtPPLastUsedIndex >= 128) {
-                if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 30) {
-                    Field x = ReflectionUtils.getField(Textures.BlockIcons.class, "casingTexturePages");
-                    if (x != null) {
-                        ITexture[][] h = (ITexture[][]) x.get(null);
-                        if (h != null) {
-                            h[64][secondaryIndex++] = GTPP_CopiedBlockTexture;
-                            x.set(null, h);
-                            Logger.INFO(
-                                    "[TAE} Registered Texture with ID " + (secondaryIndex - 1)
-                                            + " in secondary index.");
-                            return true;
-                        }
+                Field x = ReflectionUtils.getField(Textures.BlockIcons.class, "casingTexturePages");
+                if (x != null) {
+                    ITexture[][] h = (ITexture[][]) x.get(null);
+                    if (h != null) {
+                        h[64][secondaryIndex++] = GTPP_CopiedBlockTexture;
+                        x.set(null, h);
+                        Logger.INFO(
+                                "[TAE} Registered Texture with ID " + (secondaryIndex - 1) + " in secondary index.");
+                        return true;
                     }
                 }
             }
@@ -116,9 +112,7 @@ public class TAE {
 
     public static ITexture getTexture(int index) {
         if (gtPPLastUsedIndex >= 128) {
-            if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 30) {
-                return Textures.BlockIcons.getCasingTextureForId(((64 * 128) + index));
-            }
+            return Textures.BlockIcons.getCasingTextureForId(((64 * 128) + index));
         }
         return Textures.BlockIcons.getCasingTextureForId((64 + index));
     }
@@ -127,9 +121,7 @@ public class TAE {
 
         if (ID >= 64) {
             if (gtPPLastUsedIndex >= 128) {
-                if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 30) {
-                    return (128 + ID);
-                }
+                return (128 + ID);
             }
         }
         return (64 + ID);

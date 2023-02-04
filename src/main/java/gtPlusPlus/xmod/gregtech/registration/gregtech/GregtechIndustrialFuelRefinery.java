@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.Gr
 public class GregtechIndustrialFuelRefinery {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Industrial Fuel Processing and Refinery Multiblock.");
-            if (CORE.ConfigSwitches.enableMultiblock_NuclearFuelRefinery) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Industrial Fuel Processing and Refinery Multiblock.");
+        if (CORE.ConfigSwitches.enableMultiblock_NuclearFuelRefinery) {
+            run1();
         }
     }
 

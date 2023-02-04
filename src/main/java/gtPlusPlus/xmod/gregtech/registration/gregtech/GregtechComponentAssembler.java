@@ -11,7 +11,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.util.GTPP_Recipe;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -22,12 +21,6 @@ public class GregtechComponentAssembler {
     public static void run() {
 
         if (!enableMachine_ComponentAssemblers) {
-            return;
-        }
-
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-            Logger.INFO(
-                    "Component Assemblers cannot be created in 5.08.33 during the pre-release. Please wait for 1.7.0 release.");
             return;
         }
 

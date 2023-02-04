@@ -37,7 +37,6 @@ import gtPlusPlus.api.objects.minecraft.multi.NoEUBonusMultiBehaviour;
 import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
 import gtPlusPlus.api.objects.minecraft.multi.NoSpeedBonusMultiBehaviour;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
-import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -88,10 +87,6 @@ public class HANDLER_GT {
             GT_Materials.init(mMaterialProperties);
         }
 
-        if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH) {
-            OldCircuitHandler.preInit();
-        }
-
         GregtechFluidHandler.run();
     }
 
@@ -109,10 +104,6 @@ public class HANDLER_GT {
         // Only loads if the config option is true (default: true)
         if (CORE.ConfigSwitches.enableSkookumChoochers) {
             sMetaGeneratedToolInstance = MetaGeneratedGregtechTools.getInstance();
-        }
-
-        if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH) {
-            OldCircuitHandler.init();
         }
 
         // Generates recipes for all gregtech smelting and alloy smelting combinations.
@@ -134,10 +125,6 @@ public class HANDLER_GT {
 
         if (CORE.ConfigSwitches.enableNitroFix) {
             GregtechNitroDieselFix.run();
-        }
-
-        if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH) {
-            OldCircuitHandler.postInit();
         }
 
         // Register custom singles to the PA
@@ -508,7 +495,7 @@ public class HANDLER_GT {
         Item aU;
         Collection<GT_Recipe> aAssRecipes = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList;
         // 170, 172, 174, 176
-        if (aAssRecipes.size() > 0 && (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH)) {
+        if (aAssRecipes.size() > 0) {
             recipe: for (GT_Recipe aG : aAssRecipes) {
                 if (aG.mOutputs != null && aG.mOutputs.length > 0) {
                     outputs: for (ItemStack aI : aG.mOutputs) {

@@ -8,11 +8,9 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 public class GregtechIronBlastFurnace {
 
     public static void run() {
-        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-            Logger.INFO("Gregtech5u Content | Registering Iron Blast Furnace.");
-            if (CORE.ConfigSwitches.enableMultiblock_IronBlastFurnace) {
-                run1();
-            }
+        Logger.INFO("Gregtech5u Content | Registering Iron Blast Furnace.");
+        if (CORE.ConfigSwitches.enableMultiblock_IronBlastFurnace) {
+            run1();
         }
     }
 
