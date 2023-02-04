@@ -44,6 +44,12 @@ public interface ISpaceProject {
 
     void loadExtraSavedWorldData(NBTTagCompound aNBT);
 
+    void setProjectStage(int aStage);
+
+    void setCurrentUpgradeBeingBuilt(ISP_Upgrade aUpgrade);
+
+    void goToNextStage();
+
     ISpaceProject copy();
 
     public interface ISP_Upgrade {
