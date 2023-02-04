@@ -169,8 +169,14 @@ public class SpaceProject implements ISpaceProject {
         return this;
     }
 
+    @Override
     public void setCurrentUpgradeBeingBuilt(ISP_Upgrade aCurrentUpgrade) {
         mCurrentUpgrade = aCurrentUpgrade;
+    }
+
+    @Override
+    public void setProjectStage(int aStage) {
+        mCurrentStage = aStage;
     }
 
     /*
@@ -195,5 +201,11 @@ public class SpaceProject implements ISpaceProject {
                 .setProjectBuildTime(mBuildTime).setItemCosts(mItemCosts).setFluidCosts(mFluidCosts)
                 .setUpgrades(mUpgrades.toArray(new ISP_Upgrade[0])).setTotalStages(mTotalStages);
         return aCopy;
+    }
+
+    @Override
+    public void goToNextStage() {
+        if (mCurrentStage == mTotalStages) return;
+        mCurrentStage++;
     }
 }

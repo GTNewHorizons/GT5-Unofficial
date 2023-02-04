@@ -83,6 +83,8 @@ import gregtech.common.covers.GT_Cover_FacadeAE;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
+import gregtech.common.misc.spaceprojects.commands.SPM_Command;
+import gregtech.common.misc.spaceprojects.commands.SP_Command;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.Waila;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
@@ -708,6 +710,8 @@ public class GT_Mod implements IGT_Mod {
         }
 
         aEvent.registerServerCommand(new GT_Command());
+        aEvent.registerServerCommand(new SP_Command());
+        aEvent.registerServerCommand(new SPM_Command());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         GT_Runnable_MachineBlockUpdate.initExecutorService();
     }
