@@ -3,6 +3,7 @@ package gregtech.api.interfaces.internal;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.TC_Aspects;
@@ -37,6 +38,9 @@ public interface IThaumcraftCompat {
 
     Object addInfusionRecipe(String aResearch, ItemStack aMainInput, ItemStack[] aSideInputs, ItemStack aOutput,
             int aInstability, List<TC_Aspects.TC_AspectStack> aAspects);
+
+    Object addInfusionEnchantmentRecipe(String aResearch, Enchantment aEnchantment, int aInstability,
+            List<TC_Aspects.TC_AspectStack> aAspects, ItemStack[] aSideInputs);
 
     Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory,
             ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<TC_AspectStack> aAspects,
