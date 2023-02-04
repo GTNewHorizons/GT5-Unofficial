@@ -1,4 +1,4 @@
-package gregtech.common.misc.spaceprojects;
+package gregtech.common.misc.spaceprojects.enums;
 
 public enum UpgradeStatus {
     Locked,
