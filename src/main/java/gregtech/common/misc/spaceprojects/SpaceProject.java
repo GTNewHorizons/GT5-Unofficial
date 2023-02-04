@@ -190,9 +190,10 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public ISpaceProject copy() {
-        SpaceProject aCopy = new SpaceProject().setProjectName(mSpaceProjectName).setProjectUnlocalizedName(mSpaceProjectUnlocalizedName)
-        .setProjectVoltage(mVoltage).setProjectBuildTime(mBuildTime).setItemCosts(mItemCosts).setFluidCosts(mFluidCosts)
-        .setUpgrades(mUpgrades.toArray(new ISP_Upgrade[0])).setTotalStages(mTotalStages);
+        SpaceProject aCopy = new SpaceProject().setProjectName(mSpaceProjectName)
+                .setProjectUnlocalizedName(mSpaceProjectUnlocalizedName).setProjectVoltage(mVoltage)
+                .setProjectBuildTime(mBuildTime).setItemCosts(mItemCosts).setFluidCosts(mFluidCosts)
+                .setUpgrades(mUpgrades.toArray(new ISP_Upgrade[0])).setTotalStages(mTotalStages);
         return aCopy;
     }
 }
