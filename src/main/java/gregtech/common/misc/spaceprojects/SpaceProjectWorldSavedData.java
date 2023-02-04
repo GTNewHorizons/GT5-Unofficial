@@ -1,6 +1,7 @@
 package gregtech.common.misc.spaceprojects;
 
 import static gregtech.common.misc.spaceprojects.SpaceProjectManager.mSpaceTeamProjects;
+import static gregtech.common.misc.spaceprojects.SpaceProjectManager.mSpaceTeams;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,7 +30,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
 
-    private static final String SPACE_PROJECT_MANAGER = "GT_SpaceProjectManagerNBT";
+    private static final String SPACE_TEAM_PROJECTS = "GT_SpaceTeamProjectsNBT";
+
+    private static final String SPACE_TEAMS = "GT_SpaceTeamsNBT";
 
     public SpaceProjectWorldSavedData() {
         super(DATA_NAME);
@@ -38,13 +41,23 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         try {
-            byte[] ba = aNBT.getByteArray(SPACE_PROJECT_MANAGER);
+            byte[] ba = aNBT.getByteArray(SPACE_TEAM_PROJECTS);
             InputStream byteArrayInputStream = new ByteArrayInputStream(ba);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Object data = objectInputStream.readObject();
             mSpaceTeamProjects = (Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>) data;
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(SPACE_PROJECT_MANAGER + " FAILED");
+            System.out.println(SPACE_TEAM_PROJECTS + " FAILED");
+            exception.printStackTrace();
+        }
+        try {
+            byte[] ba = aNBT.getByteArray(SPACE_TEAMS);
+            InputStream byteArrayInputStream = new ByteArrayInputStream(ba);
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            Object data = objectInputStream.readObject();
+            mSpaceTeams = (Map<UUID, UUID>) data;
+        } catch (IOException | ClassNotFoundException exception) {
+            System.out.println(SPACE_TEAMS + " FAILED");
             exception.printStackTrace();
         }
     }
@@ -57,22 +70,34 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             objectOutputStream.writeObject(mSpaceTeamProjects);
             objectOutputStream.flush();
             byte[] data = byteArrayOutputStream.toByteArray();
-            aNBT.setByteArray(SPACE_PROJECT_MANAGER, data);
+            aNBT.setByteArray(SPACE_TEAM_PROJECTS, data);
         } catch (IOException exception) {
-            System.out.println(SPACE_PROJECT_MANAGER + " SAVE FAILED");
+            System.out.println(SPACE_TEAM_PROJECTS + " SAVE FAILED");
+            exception.printStackTrace();
+        }
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(mSpaceTeams);
+            objectOutputStream.flush();
+            byte[] data = byteArrayOutputStream.toByteArray();
+            aNBT.setByteArray(SPACE_TEAMS, data);
+        } catch (IOException exception) {
+            System.out.println(SPACE_TEAMS + " SAVE FAILED");
             exception.printStackTrace();
         }
     }
 
     @SubscribeEvent
-    public void onWorldLoad(WorldEvent.Load event) {
-        if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
-            loadInstance(event.world);
+    public void onWorldLoad(WorldEvent.Load aEvent) {
+        if (!aEvent.world.isRemote && aEvent.world.provider.dimensionId == 0) {
+            loadInstance(aEvent.world);
         }
     }
 
     private static void loadInstance(World aWorld) {
         mSpaceTeamProjects.clear();
+        mSpaceTeams.clear();
         MapStorage tStorage = aWorld.mapStorage;
         INSTANCE = (SpaceProjectWorldSavedData) tStorage.loadData(SpaceProjectWorldSavedData.class, DATA_NAME);
         if (INSTANCE == null) {
