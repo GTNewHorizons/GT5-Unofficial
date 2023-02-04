@@ -143,7 +143,7 @@ tile.kekztech_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
 tile.kekztech_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
 tile.kekztech_lapotronicenergyunit_block.6.name=Empty Capacitor (-)
 tile.kekztech_lapotronicenergyunit_block.7.name=Lapotron Capacitor (EV)
-tile.kekztech_lapotronicenergyunit_block.8.name=Ultimate Extreme Capacitor (UEV)
+tile.kekztech_lapotronicenergyunit_block.8.name=Extremely Ultimate Capacitor (UEV)
 tile.kekztech_lapotronicenergyunit_block.desc=Part of the Lapotronic Super Capacitor
 
 # -------- Thaumium Reinforced Jar: Block
