@@ -35,6 +35,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
@@ -67,22 +68,15 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                             lazy(
                                     x -> GT_HatchElementBuilder.<LargeFusionComputerPP>builder()
                                             .atLeast(GT_HatchElement.InputHatch)
-                                            .adder(LargeFusionComputerPP::addInjector).casingIndex(x.textureIndex())
+                                            .adder(LargeFusionComputerPP::addFluidIO).casingIndex(x.textureIndex())
                                             .dot(1).buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
-                    .addElement(
-                            'O',
-                            lazy(
-                                    x -> GT_HatchElementBuilder.<LargeFusionComputerPP>builder()
-                                            .atLeast(GT_HatchElement.OutputHatch)
-                                            .adder(LargeFusionComputerPP::addExtractor).casingIndex(x.textureIndex())
-                                            .dot(2).buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
                     .addElement(
                             'E',
                             lazy(
                                     x -> GT_HatchElementBuilder.<LargeFusionComputerPP>builder()
                                             .atLeast(HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
                                             .adder(LargeFusionComputerPP::addEnergyInjector)
-                                            .casingIndex(x.textureIndex()).dot(3)
+                                            .casingIndex(x.textureIndex()).dot(2)
                                             .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                     .addElement('F', lazy(x -> ofFrame(x.getFrameBox()))).build();
         }
@@ -140,7 +134,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.eEnergyMulti.clear();
-        if (structureCheck_EM(MAIN_NAME, 23, 3, 40) && mInputHatches.size() > 1
+        if (structureCheck_EM(MAIN_NAME, 23, 3, 40) && !mInputHatches.isEmpty()
                 && !mOutputHatches.isEmpty()
                 && (mEnergyHatches.size() + eEnergyMulti.size()) != 0) {
             fixAllIssue();
@@ -488,26 +482,27 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
         return false;
     }
 
-    private boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+    private boolean addFluidIO(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)) return false;
-        GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
-        if (tHatch.mTier < hatchTier()) return false;
-        tHatch.updateTexture(aBaseCasingIndex);
-        tHatch.mRecipeMap = getRecipeMap();
-        return mInputHatches.add(tHatch);
-    }
-
-    private boolean addExtractor(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        if (aBaseMetaTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)) return false;
-        GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
-        if (tHatch.mTier < hatchTier()) return false;
-        tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatches.add(tHatch);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
+            GT_MetaTileEntity_Hatch tHatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
+            if (tHatch.mTier < hatchTier()) return false;
+        } else {
+            return false;
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+            GT_MetaTileEntity_Hatch_Input tInput = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+            tInput.updateTexture(aBaseCasingIndex);
+            tInput.mRecipeMap = getRecipeMap();
+            return mInputHatches.add(tInput);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+            GT_MetaTileEntity_Hatch_Output tOutput = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
+            tOutput.updateTexture(aBaseCasingIndex);
+            return mOutputHatches.add(tOutput);
+        }
+        return false;
     }
 
     @Override
@@ -677,10 +672,10 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             "              CCCCCHHHHHHHHHCCCCC              ", "                CCCCC     CCCCC                ",
             "                   CC     CC                   ", "                    FCCCCCF                    ", };
 
-    public static final String[] L3 = { "                    FCOBOCF                    ",
+    public static final String[] L3 = { "                    FCIBICF                    ",
             "                   CC     CC                   ", "                CCCHHHHHHHHHCCC                ",
             "              CCHHHHHHHHHHHHHHHCC              ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
-            "           CHHHHHHHCC     CCHHHHHHHC           ", "          CHHHHHCCC FCOBOCF CCCHHHHHC          ",
+            "           CHHHHHHHCC     CCHHHHHHHC           ", "          CHHHHHCCC FCIBICF CCCHHHHHC          ",
             "         CHHHHCC               CCHHHHC         ", "        CHHHCC                   CCHHHC        ",
             "       CHHHC                       CHHHC       ", "      CHHHC                         CHHHC      ",
             "     CHHHC                           CHHHC     ", "    CHHHC                             CHHHC    ",
@@ -688,8 +683,8 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             "   CHHHC                               CHHHC   ", "  CHHHC                                 CHHHC  ",
             "  CHHHC                                 CHHHC  ", "  CHHHC                                 CHHHC  ",
             " CHHHC                                   CHHHC ", "FCHHHCF                                 FCHHHCF",
-            "C HHH C                                 C HHH C", "O HHH O                                 O HHH O",
-            "B HHH B                                 B HHH B", "O HHH O                                 O HHH O",
+            "C HHH C                                 C HHH C", "I HHH I                                 I HHH I",
+            "B HHH B                                 B HHH B", "I HHH I                                 I HHH I",
             "C HHH C                                 C HHH C", "FCHHHCF                                 FCHHHCF",
             " CHHHC                                   CHHHC ", "  CHHHC                                 CHHHC  ",
             "  CHHHC                                 CHHHC  ", "  CHHHC                                 CHHHC  ",
@@ -697,8 +692,8 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             "    CHHHC                             CHHHC    ", "    CHHHC                             CHHHC    ",
             "     CHHHC                           CHHHC     ", "      CHHHC                         CHHHC      ",
             "       CHHHC                       CHHHC       ", "        CHHHCC                   CCHHHC        ",
-            "         CHHHHCC               CCHHHHC         ", "          CHHHHHCCC FCO~OCF CCCHHHHHC          ",
+            "         CHHHHCC               CCHHHHC         ", "          CHHHHHCCC FCI~ICF CCCHHHHHC          ",
             "           CHHHHHHHCC     CCHHHHHHHC           ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
             "              CCHHHHHHHHHHHHHHHCC              ", "                CCCHHHHHHHHHCCC                ",
-            "                   CC     CC                   ", "                    FCOBOCF                    ", };
+            "                   CC     CC                   ", "                    FCIBICF                    ", };
 }
