@@ -4921,6 +4921,41 @@ public class DreamCraftRecipeLoader {
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
+        // EOH Controller Recipe.
+        {
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemList.Machine_Multi_PlasmaForge.get(1),
+                    512_000_000, // total comp 1234
+                    2 * 16_384, // comp/s
+                    (int) TierEU.RECIPE_MAX, // eu/t
+                    64, // amperage
+                    new Object[] {
+                            CustomItemList.Machine_Multi_Transformer.get(1),
+                            CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
+                            CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
+                            CustomItemList.StabilisationFieldGeneratorTier0.get(0),
+
+                            CustomItemList.Machine_Multi_Computer.get(64),
+                            ItemList.Quantum_Tank_IV.get(64),
+                            ItemList.Quantum_Chest_IV.get(64),
+                            getModItem("bartworks", "gt.blockmachines", 12739), // VM 3
+
+                            ItemList.Field_Generator_UMV.get(16),
+                            ItemList.Robot_Arm_UMV.get(16),
+                            ItemList.ZPM3.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64)
+                    },
+                    new FluidStack[] {
+                            FluidUtils.getFluidStack("time", 144_000),
+                            FluidUtils.getFluidStack("space", 144_000),
+                            FluidUtils.getFluidStack("molten.metastable oganesson", 144_000),
+                            FluidUtils.getFluidStack("molten.shirabon", 144_000),
+                    },
+                    CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
+                    50_000,
+                    (int) TierEU.RECIPE_UMV);
+        }
+
         // EOH Spatial Individual Casing
         {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -5527,6 +5562,44 @@ public class DreamCraftRecipeLoader {
                         (int) TierEU.RECIPE_UMV);
             }
         }
+
+        // EOH Infinite Spacetime Energy Boundary Casing
+        // EOH Controller Recipe.
+        {
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemList.Machine_Multi_PlasmaForge.get(1),
+                    512_000_000, // total comp 1234
+                    2 * 16_384, // comp/s
+                    (int) TierEU.RECIPE_MAX, // eu/t
+                    64, // amperage
+                    new Object[] {
+                            CustomItemList.Machine_Multi_Transformer.get(1),
+                            CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
+                            CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
+                            CustomItemList.StabilisationFieldGeneratorTier0.get(0),
+
+                            CustomItemList.Machine_Multi_Computer.get(64),
+                            ItemList.Quantum_Tank_IV.get(64),
+                            ItemList.Quantum_Chest_IV.get(64),
+                            getModItem("bartworks", "gt.blockmachines", 12739), // VM 3
+
+                            ItemList.Field_Generator_UMV.get(16),
+                            ItemList.Robot_Arm_UMV.get(16),
+                            ItemList.ZPM3.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64)
+                    },
+                    new FluidStack[] {
+                            FluidUtils.getFluidStack("time", 144_000),
+                            FluidUtils.getFluidStack("space", 144_000),
+                            FluidUtils.getFluidStack("molten.metastable oganesson", 144_000),
+                            FluidUtils.getFluidStack("molten.shirabon", 144_000),
+                    },
+                    CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
+                    50_000,
+                    (int) TierEU.RECIPE_UMV);
+        }
+
+
     }
 
     private void addWirelessEnergyRecipes() {
