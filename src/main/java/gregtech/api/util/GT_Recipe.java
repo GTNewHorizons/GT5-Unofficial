@@ -3374,6 +3374,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public void drawNEIDescription(NEIRecipeInfo recipeInfo) {
+            drawNEIEnergyInfo(recipeInfo);
+            drawNEIDurationInfo(recipeInfo);
             drawNEISpecialInfo(recipeInfo);
             drawNEIRecipeOwnerInfo(recipeInfo);
         }
