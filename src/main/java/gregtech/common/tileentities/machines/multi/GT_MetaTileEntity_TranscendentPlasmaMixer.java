@@ -1,23 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraftforge.fluids.FluidStack;
-
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorColen;
@@ -29,63 +11,46 @@ import static java.lang.Math.max;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
-public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer> implements IGlobalWirelessEnergy, ISurvivalConstructable {
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
-    private static final String[][] structure = new String[][]{{
-        " CAC ",
-        " ABA ",
-        " ABA ",
-        " A~A ",
-        " ABA ",
-        " ABA ",
-        " CAC "
-    },{
-        "CBBBC",
-        "A   A",
-        "A   A",
-        "A   A",
-        "A   A",
-        "A   A",
-        "CBBBC"
-    },{
-        "ABBBA",
-        "B   B",
-        "B   B",
-        "B   B",
-        "B   B",
-        "B   B",
-        "ABBBA"
-    },{
-        "CBBBC",
-        "A   A",
-        "A   A",
-        "A   A",
-        "A   A",
-        "A   A",
-        "CBBBC"
-    },{
-        " CAC ",
-        " ABA ",
-        " ABA ",
-        " ABA ",
-        " ABA ",
-        " ABA ",
-        " CAC "
-    }};
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.common.items.GT_IntegratedCircuit_Item;
+
+public class GT_MetaTileEntity_TranscendentPlasmaMixer
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer>
+        implements IGlobalWirelessEnergy, ISurvivalConstructable {
+
+    private static final String[][] structure = new String[][] {
+            { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
+            { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
+            { "ABBBA", "B   B", "B   B", "B   B", "B   B", "B   B", "ABBBA" },
+            { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
+            { " CAC ", " ABA ", " ABA ", " ABA ", " ABA ", " ABA ", " CAC " } };
 
     private static final String STRUCTURE_PIECE_MAIN = "MAIN";
     private static final IStructureDefinition<GT_MetaTileEntity_TranscendentPlasmaMixer> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_TranscendentPlasmaMixer>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement(
-            'B',
-            buildHatchAdder(GT_MetaTileEntity_TranscendentPlasmaMixer.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, Maintenance)
-                .casingIndex(DIM_INJECTION_CASING).dot(1)
-                .buildAndChain(GregTech_API.sBlockCasings1, DIM_INJECTION_CASING))
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings1, DIM_TRANS_CASING))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings1, DIM_BRIDGE_CASING)).build();
-
-
+            .<GT_MetaTileEntity_TranscendentPlasmaMixer>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
+            .addElement(
+                    'B',
+                    buildHatchAdder(GT_MetaTileEntity_TranscendentPlasmaMixer.class)
+                            .atLeast(InputHatch, OutputHatch, InputBus, Maintenance).casingIndex(DIM_INJECTION_CASING)
+                            .dot(1).buildAndChain(GregTech_API.sBlockCasings1, DIM_INJECTION_CASING))
+            .addElement('A', ofBlock(GregTech_API.sBlockCasings1, DIM_TRANS_CASING))
+            .addElement('C', ofBlock(GregTech_API.sBlockCasings1, DIM_BRIDGE_CASING)).build();
 
     private String ownerUUID;
 
@@ -106,17 +71,15 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Transcendent Mixer").addInfo("Controller block for the Assembling Line")
-            .addInfo("Assisting in all your DTPF needs.")
-            .addInfo("This multiblock will run in parallel according to the circuit provided to the")
-            .addInfo("controller slot. E.g. 3x Circuit #16 = 48x parallel. All inputs will scale,")
-            .addInfo("except time. All EU is deducted from wireless EU networks only.")
-            .addInfo(AuthorColen)
-            .addSeparator().beginStructureBlock(5, 7, 5, false)
-            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
-            .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
-            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
-            .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch")
-            .toolTipFinisher("Gregtech");
+                .addInfo("Assisting in all your DTPF needs.")
+                .addInfo("This multiblock will run in parallel according to the circuit provided to the")
+                .addInfo("controller slot. E.g. 3x Circuit #16 = 48x parallel. All inputs will scale,")
+                .addInfo("except time. All EU is deducted from wireless EU networks only.").addInfo(AuthorColen)
+                .addSeparator().beginStructureBlock(5, 7, 5, false)
+                .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
+                .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
+                .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
+                .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch").toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -126,13 +89,14 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING],
-                TextureFactory.builder().addIcon(OVERLAY_DTPF_ON).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build() };
+                    TextureFactory.builder().addIcon(OVERLAY_DTPF_ON).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build() };
             return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING],
-                TextureFactory.builder().addIcon(OVERLAY_DTPF_OFF).extFacing().build() };
+                    TextureFactory.builder().addIcon(OVERLAY_DTPF_OFF).extFacing().build() };
         }
 
         return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING] };
@@ -157,7 +121,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
     boolean processRecipe(ItemStack[] items, FluidStack[] fluids) {
 
         GT_Recipe originalRecipe = GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes
-            .findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, fluids, items);
+                .findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, fluids, items);
 
         if (originalRecipe == null) {
             return false;
@@ -206,17 +170,26 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        return new String[] {"test"};
+        return new String[] { "test" };
     }
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] {"gh","hio"};
+        return new String[] { "gh", "hio" };
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, elementBudget, env, false, true);
+        return survivialBuildPiece(
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                HORIZONTAL_OFFSET,
+                VERTICAL_OFFSET,
+                DEPTH_OFFSET,
+                elementBudget,
+                env,
+                false,
+                true);
     }
 
     @Override
@@ -248,7 +221,6 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
-
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
