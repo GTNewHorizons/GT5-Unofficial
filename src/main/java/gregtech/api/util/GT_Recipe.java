@@ -1506,7 +1506,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 RES_PATH_GUI + "basicmachines/FluidHeater",
                 1,
                 0,
-                1,
+                0,
                 0,
                 1,
                 E,
@@ -3441,7 +3441,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Draws text on NEI recipe.
-         * 
+         *
          * @param yShift y position to shift after this text
          */
         @SuppressWarnings("SameParameterValue")
@@ -3451,7 +3451,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Draws text on NEI recipe.
-         * 
+         *
          * @param xStart x position to start drawing
          * @param yShift y position to shift after this text
          */
@@ -5220,7 +5220,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Add a breeder cell.
-         * 
+         *
          * @param input          raw stack. should be undamaged.
          * @param output         breed output
          * @param heatMultiplier bonus progress per neutron pulse per heat step
