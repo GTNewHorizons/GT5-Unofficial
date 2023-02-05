@@ -20,11 +20,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.*;
 import static java.lang.Math.max;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer> implements IGlobalWirelessEnergy, ISurvivalConstructable {
 
@@ -76,7 +79,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
         .addElement(
             'B',
             buildHatchAdder(GT_MetaTileEntity_TranscendentPlasmaMixer.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, Maintenance, Muffler)
+                .atLeast(InputHatch, OutputHatch, InputBus, Maintenance)
                 .casingIndex(DIM_INJECTION_CASING).dot(1)
                 .buildAndChain(GregTech_API.sBlockCasings1, DIM_INJECTION_CASING))
         .addElement('A', ofBlock(GregTech_API.sBlockCasings1, DIM_TRANS_CASING))
@@ -101,8 +104,19 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addInfo("Transcending Dimensional Boundaries.");
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Transcendent Mixer").addInfo("Controller block for the Assembling Line")
+            .addInfo("Assisting in all your DTPF needs.")
+            .addInfo("This multiblock will run in parallel according to the circuit provided to the")
+            .addInfo("controller slot. E.g. 3x Circuit #16 = 48x parallel. All inputs will scale,")
+            .addInfo("except time. All EU is deducted from wireless EU networks only.")
+            .addInfo(AuthorColen)
+            .addSeparator().beginStructureBlock(5, 7, 5, false)
+            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
+            .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
+            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
+            .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch")
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
