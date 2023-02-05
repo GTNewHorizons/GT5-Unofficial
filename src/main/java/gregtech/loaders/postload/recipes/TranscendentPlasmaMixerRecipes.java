@@ -41,7 +41,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Calcium.getPlasma(1000),
                 Materials.Niobium.getPlasma(1000)
             },
-            PROSAIC_EU_PER_L
+            CRUDE_EU_PER_L
         );
 
         addTranscendentPlasmaMixerRecipe(Materials.ExcitedDTPC.getFluid(1000L),
@@ -57,7 +57,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Silver.getPlasma(1000),
                 Materials.Titanium.getPlasma(1000),
             },
-            CRUDE_EU_PER_L
+            PROSAIC_EU_PER_L
         );
 
         addTranscendentPlasmaMixerRecipe(Materials.ExcitedDTRC.getFluid(1000L),
