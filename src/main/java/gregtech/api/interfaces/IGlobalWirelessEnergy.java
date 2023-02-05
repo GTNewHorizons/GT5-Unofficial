@@ -5,9 +5,9 @@ import static gregtech.common.misc.GlobalVariableStorage.*;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 
 // If you are adding very late-game content feel free to tap into this interface.
