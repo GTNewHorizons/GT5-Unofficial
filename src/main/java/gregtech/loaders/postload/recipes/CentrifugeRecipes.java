@@ -688,9 +688,9 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {1000, 500},
-                200,
-                (int) GT_Values.VP[3]);
+                new int[] { 1000, 500 },
+                2000,
+                (int) TierEU.RECIPE_HV);
         // Uranium Enrichment in Centrifuge by adding Fluorine (Uranium Hexafluoride)
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L),
@@ -703,12 +703,9 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {10000},
+                new int[] { 10000 },
                 4000,
-                (int) GT_Values.VP[4]);
-                new int[] { 2000, 200 },
-                800,
-                320);
+                (int) TierEU.RECIPE_EV);
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L),
                 GT_Values.NI,
