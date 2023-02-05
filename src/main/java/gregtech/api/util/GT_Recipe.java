@@ -1796,6 +1796,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 });
             }
 
+            @Override
             public void drawNEIDescription(NEIRecipeInfo recipeInfo) {
                 drawNEISpecialInfo(recipeInfo);
                 drawNEIRecipeOwnerInfo(recipeInfo);
