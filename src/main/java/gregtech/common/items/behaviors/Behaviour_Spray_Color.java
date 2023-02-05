@@ -129,7 +129,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
-        long tRemainingPaint = tNBT == null ? 0L
+        long tRemainingPaint = tNBT == null ? this.mUses
                 : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
         aList.add(this.mTooltipUses + " " + tRemainingPaint);
         aList.add(this.mTooltipUnstackable);

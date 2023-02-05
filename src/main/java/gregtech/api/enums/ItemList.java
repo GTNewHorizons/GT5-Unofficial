@@ -405,6 +405,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_Wiring_Elite,
     Circuit_Parts_Crystal_Chip_Elite,
     Circuit_Parts_Crystal_Chip_Master,
+    Circuit_Parts_Crystal_Chip_Wetware,
     Circuit_Primitive,
     Circuit_Basic,
     Circuit_Good,
@@ -1563,7 +1564,7 @@ public enum ItemList implements IItemContainer {
     Distillation_Tower,
     Energy_LapotronicOrb2,
     Ore_Processor,
-
+    ZPM4,
     ZPM3,
     ZPM2,
     Energy_Module,

@@ -1510,7 +1510,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 RES_PATH_GUI + "basicmachines/FluidHeater",
                 1,
                 0,
-                1,
+                0,
                 0,
                 1,
                 E,
