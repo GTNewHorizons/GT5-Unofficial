@@ -7,10 +7,7 @@ import common.items.ErrorItem;
 import common.items.MetaItem_CraftingComponent;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -956,7 +953,7 @@ public class Recipes {
                 },
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
                 250 * 20,
-                6_400_000);
+                (int) TierEU.RECIPE_UEV);
 
         // UEV Capacitor alt recipe
         GT_Values.RA.addAssemblerRecipe(
@@ -969,7 +966,7 @@ public class Recipes {
                 null,
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
                 640 * 20,
-                BW_Util.getMachineVoltageFromTier(9));
+                (int) TierEU.RECIPE_UHV);
 
         // Capacitor recycling
         GT_Values.RA.addUnboxingRecipe(
@@ -977,43 +974,43 @@ public class Recipes {
                 GT_ModHandler.getIC2Item("lapotronCrystal", 1L, 26),
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
                 1200,
-                32);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
                 ItemList.Energy_LapotronicOrb.get(1L),
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
                 1200,
-                32);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2),
                 ItemList.Energy_LapotronicOrb2.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
                 1200,
-                32);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3),
                 ItemList.Energy_Module.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
                 1200,
-                32);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
                 ItemList.Energy_Cluster.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
                 1200,
-                32);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
                 ItemList.ZPM3.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
                 1200,
-                32);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
                 ItemList.ZPM4.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
                 1200,
-                32);
+                (int) TierEU.RECIPE_LV);
     }
 
     /*private static void registerRecipes_SpaceElevator() {
