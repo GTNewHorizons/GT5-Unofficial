@@ -315,24 +315,6 @@ public class RECIPES_GREGTECH {
     }
 
     private static void fusionRecipes() {
-
-        /**
-         * Adds a Fusion reactor Recipe
-         *
-         * @param aInput1                        = first Input (not null, and respects StackSize)
-         * @param aInput2                        = second Input (not null, and respects StackSize)
-         * @param aOutput                        = Output of the Fusion (can be null, and respects StackSize)
-         * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
-         * @param aFusionEnergyPerTick           = The EU generated per Tick (can even be negative!)
-         * @param aEnergyNeededForStartingFusion = EU needed for heating the Reactor up (must be >= 0)
-         */
-
-        // Hydrogen Plasma
-        /*
-         * CORE.RA.addFusionReactorRecipe( Particle.getIon("Hydrogen", 0), Particle.getIon("Hydrogen", 0),
-         * Materials.Hydrogen.getPlasma(1), 5000, 16, 4096, 40000000);
-         */
-
         // Hypogen Creation
         GT_Values.RA.addFusionReactorRecipe(
                 ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(144),
@@ -1476,12 +1458,9 @@ public class RECIPES_GREGTECH {
 
         ThermalFuel.addSteamTurbineFuel(FluidUtils.getFluidStack("steam", 1024));
 
-        // CORE.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel",
-        // 0, 1), null, 112, 0);
         GT_Values.RA.addFuel(ItemUtils.getSimpleStack(Items.lava_bucket), null, 32, 2);
         GT_Values.RA.addFuel(ItemUtils.getIC2Cell(2), null, 32, 2);
         GT_Values.RA.addFuel(ItemUtils.getIC2Cell(11), null, 24, 2);
-        // System.exit(1);
     }
 
     private static void extractorRecipes() {
