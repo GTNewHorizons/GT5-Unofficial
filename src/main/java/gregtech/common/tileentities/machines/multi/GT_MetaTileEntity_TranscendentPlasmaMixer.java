@@ -5,7 +5,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
@@ -17,7 +16,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -27,7 +25,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.*;
 import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer> implements IGlobalWirelessEnergy, ISurvivalConstructable {
 
@@ -79,7 +76,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
         .addElement(
             'B',
             buildHatchAdder(GT_MetaTileEntity_TranscendentPlasmaMixer.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, Maintenance, Energy)
+                .atLeast(InputHatch, OutputHatch, InputBus, Maintenance, Muffler)
                 .casingIndex(DIM_INJECTION_CASING).dot(1)
                 .buildAndChain(GregTech_API.sBlockCasings1, DIM_INJECTION_CASING))
         .addElement('A', ofBlock(GregTech_API.sBlockCasings1, DIM_TRANS_CASING))
@@ -123,12 +120,13 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
             return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING],
                 TextureFactory.builder().addIcon(OVERLAY_DTPF_OFF).extFacing().build() };
         }
+
         return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING] };
     }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        return false;
+        return true;
     }
 
     int multiplier = 1;
@@ -144,26 +142,39 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
 
     boolean processRecipe(ItemStack[] items, FluidStack[] fluids) {
 
-        GT_Recipe gtRecipe = GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes
+        GT_Recipe originalRecipe = GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes
             .findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, fluids, items);
 
-        if (gtRecipe == null) {
+        if (originalRecipe == null) {
             return false;
         }
 
-        if (!addEUToGlobalEnergyMap(ownerUUID, 1000 * gtRecipe.mEUt * multiplier)) {
+        if (!addEUToGlobalEnergyMap(ownerUUID, 1000 * originalRecipe.mEUt * multiplier)) {
             return false;
+        }
+
+        // Fluid handling.
+        {
+            // Output items/fluids.
+            GT_Recipe modifiedRecipe = originalRecipe.copy();
+
+            // Multiply up the input plasmas.
+            for (FluidStack fluidStack : modifiedRecipe.mFluidInputs) {
+                fluidStack.amount *= multiplier;
+            }
+
+            // Multiply up the output fluid.
+            modifiedRecipe.mFluidOutputs[0].amount *= multiplier;
+
+            // Takes items/fluids from hatches/busses.
+            if (!modifiedRecipe.isRecipeInputEqual(true, fluids, items)) return false;
+
+            mOutputFluids = modifiedRecipe.mFluidOutputs;
+            mOutputItems = modifiedRecipe.mOutputs;
         }
 
         mMaxProgresstime = 100;
         mEUt = 0;
-
-        // Output items/fluids.
-        mOutputFluids = gtRecipe.mFluidOutputs.clone();
-
-        for (FluidStack fluidStack : mOutputFluids) {
-            fluidStack.amount *= multiplier;
-        }
 
         updateSlots();
 
@@ -186,7 +197,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer extends GT_MetaTileEntity
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] {""};
+        return new String[] {"gh","hio"};
     }
 
     @Override

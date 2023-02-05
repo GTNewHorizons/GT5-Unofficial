@@ -465,7 +465,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected long getActualEnergyUsage() {
-        return ((long) -mEUt * 10000) / Math.max(1000, mEfficiency);
+        return ((long) -mEUt * 10_000) / Math.max(1000, mEfficiency);
     }
 
     /**
@@ -693,7 +693,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     /**
      * Calcualtes the overclockedness using long integers
-     * 
+     *
      * @param aEUt            - recipe EUt
      * @param aDuration       - recipe Duration
      * @param mAmperage       - should be 1 ?
