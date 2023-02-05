@@ -599,7 +599,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
             tTime = System.nanoTime() - tTime;
             if (mTimeStatistics.length > 0) mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1)
                     % mTimeStatistics.length] = (int) tTime;
-            if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1000000L)
+            if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
                     && mTickTimer > 1000
                     && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
                     && mLagWarningCount++ < 10)

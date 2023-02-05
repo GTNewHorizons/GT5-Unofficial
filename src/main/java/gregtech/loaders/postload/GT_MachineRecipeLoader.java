@@ -89,6 +89,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         new ThermalCentrifugeRecipes().run();
         new VacuumFreezerRecipes().run();
         new WiremillRecipes().run();
+        new TranscendentPlasmaMixerRecipes().run();
 
         GT_BauxiteRefineChain.run();
         GT_NaniteChain.run();

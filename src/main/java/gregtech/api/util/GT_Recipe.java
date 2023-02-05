@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.awt.*;
@@ -1728,6 +1729,70 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .setUsualFluidInputCount(9).setUsualFluidOutputCount(9)
                         .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
+
+        public static final GT_Recipe_Map sTranscendentPlasmaMixerRecipes = new TranscendentPlasmaMixerRecipeMap(
+                new HashSet<>(20),
+                "gt.recipe.transcendentplasmamixerrecipes",
+                "Transcendent Plasma Mixer",
+                null,
+                RES_PATH_GUI + "basicmachines/PlasmaForge",
+                1,
+                0,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                false,
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                        .setUsualFluidInputCount(18).setUsualFluidOutputCount(1);
+
+        public static class TranscendentPlasmaMixerRecipeMap extends GT_Recipe_Map_LargeNEI {
+
+            public TranscendentPlasmaMixerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
+                    String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                    int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                    int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
+                    boolean aNEIAllowed) {
+                super(
+                        aRecipeList,
+                        aUnlocalizedName,
+                        aLocalName,
+                        aNEIName,
+                        aNEIGUIPath,
+                        aUsualInputCount,
+                        aUsualOutputCount,
+                        aMinimalInputItems,
+                        aMinimalInputFluids,
+                        aAmperage,
+                        aNEISpecialValuePre,
+                        aNEISpecialValueMultiplier,
+                        aNEISpecialValuePost,
+                        aShowVoltageAmperageInNEI,
+                        aNEIAllowed);
+                useModularUI(true);
+                setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                    final GT_Recipe recipe = recipeInfo.recipe;
+                    List<String> result = new ArrayList<>();
+
+                    result.add("Total: " + formatNumbers(1000L * (long) recipe.mEUt) + " EU");
+
+                    result.add("Average: " + formatNumbers((1000L * (long) recipe.mEUt) / recipe.mDuration) + "EU/t");
+
+                    result.add("Time: " + formatNumbers((double) recipe.mDuration / 20L) + "s");
+
+                    return result;
+                });
+            }
+
+            @Override
+            public void drawNEIDescription(NEIRecipeInfo recipeInfo) {
+                drawNEISpecialInfo(recipeInfo);
+                drawNEIRecipeOwnerInfo(recipeInfo);
+            }
+        }
+
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
                 new HashSet<>(200),
                 "gt.recipe.primitiveblastfurnace",
