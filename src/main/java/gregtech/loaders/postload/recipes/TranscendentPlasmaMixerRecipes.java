@@ -25,7 +25,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             fluidInput,
             new FluidStack[] { fluidOutput },
             100,
-            EUPerL,
+            EUPerL, // NOT EU/T, I am simply using the field for this purpose.
             0);
     }
 
