@@ -3143,7 +3143,7 @@ public class DreamCraftRecipeLoader {
         // Alternate Energy Module Recipe
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Energy_LapotronicOrb2.get(1L),
-                128000,
+                128_000,
                 64,
                 2_000_000,
                 16,
@@ -3212,9 +3212,9 @@ public class DreamCraftRecipeLoader {
         // Extremely Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.ZPM3.get(1L),
-                1200000,
+                1_200_000,
                 128,
-                8000000,
+                8_000_000,
                 16,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
