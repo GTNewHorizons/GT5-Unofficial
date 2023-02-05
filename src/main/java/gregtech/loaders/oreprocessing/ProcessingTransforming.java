@@ -1,30 +1,33 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingTransforming implements IOreRecipeRegistrator {
+
     public ProcessingTransforming() {
         for (OrePrefixes tPrefix : OrePrefixes.values())
             if (((tPrefix.mMaterialAmount > 0L) && (!tPrefix.mIsContainer) && (!tPrefix.mIsEnchantable))
-                    || (tPrefix == OrePrefixes.plank)) tPrefix.add(this);
+                    || (tPrefix == OrePrefixes.plank))
+                tPrefix.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         if (aPrefix == OrePrefixes.plank) aPrefix = OrePrefixes.plate;
         switch (aMaterial.mName) {
             case "Wood":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.SeedOil.getFluid(
-                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)),
+                        Materials.SeedOil
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -33,8 +36,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                         8);
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.SeedOilLin.getFluid(
-                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
+                        Materials.SeedOilLin
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -43,8 +46,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                         8);
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.SeedOilHemp.getFluid(
-                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
+                        Materials.SeedOilHemp
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -55,8 +58,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Iron":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.FierySteel.getFluid(
-                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)),
+                        Materials.FierySteel
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -72,8 +75,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "WroughtIron":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.FierySteel.getFluid(
-                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)),
+                        Materials.FierySteel
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -89,8 +92,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Steel":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.FierySteel.getFluid(
-                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 200L, true)),
+                        Materials.FierySteel
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 200L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L),
                         GT_Values.NI,
                         GT_Values.NI,

@@ -1,8 +1,18 @@
 package gregtech.common.covers.redstone;
 
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -16,16 +26,9 @@ import gregtech.common.covers.GT_Cover_NeedMaintainance;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import java.util.UUID;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
 
-public class GT_Cover_WirelessMaintenanceDetector
-        extends GT_Cover_AdvancedRedstoneTransmitterBase<
-                GT_Cover_WirelessMaintenanceDetector.MaintenanceTransmitterData> {
+public class GT_Cover_WirelessMaintenanceDetector extends
+        GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessMaintenanceDetector.MaintenanceTransmitterData> {
 
     public GT_Cover_WirelessMaintenanceDetector(ITexture coverTexture) {
         super(MaintenanceTransmitterData.class, coverTexture);
@@ -41,8 +44,8 @@ public class GT_Cover_WirelessMaintenanceDetector
         return createDataObject();
     }
 
-    private static byte computeSignalBasedOnMaintenance(
-            MaintenanceTransmitterData coverVariable, ICoverable tileEntity) {
+    private static byte computeSignalBasedOnMaintenance(MaintenanceTransmitterData coverVariable,
+            ICoverable tileEntity) {
         boolean signal = false;
 
         if (tileEntity instanceof IGregTechTileEntity) {
@@ -73,9 +76,10 @@ public class GT_Cover_WirelessMaintenanceDetector
                             if (coverVariable.mode == MaintenanceMode.ROTOR_80) {
                                 signal = current >= max * 8 / 10;
                             } else {
-                                long expectedDamage = Math.round(Math.min(
-                                        (double) multiTE.mEUt / multiTE.damageFactorLow,
-                                        Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
+                                long expectedDamage = Math.round(
+                                        Math.min(
+                                                (double) multiTE.mEUt / multiTE.damageFactorLow,
+                                                Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
                                 signal = current + expectedDamage * 2 >= max;
                             }
                         } else {
@@ -93,13 +97,8 @@ public class GT_Cover_WirelessMaintenanceDetector
     }
 
     @Override
-    public MaintenanceTransmitterData doCoverThingsImpl(
-            byte aSide,
-            byte aInputRedstone,
-            int aCoverID,
-            MaintenanceTransmitterData aCoverVariable,
-            ICoverable aTileEntity,
-            long aTimer) {
+    public MaintenanceTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+            MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
         long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
@@ -108,20 +107,20 @@ public class GT_Cover_WirelessMaintenanceDetector
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(
-            byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(
-            byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID,
+            MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRateImpl(
-            byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRateImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
+            ICoverable aTileEntity) {
         return 60;
     }
 
@@ -137,6 +136,7 @@ public class GT_Cover_WirelessMaintenanceDetector
     }
 
     public static class MaintenanceTransmitterData extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData {
+
         private MaintenanceMode mode;
 
         public MaintenanceTransmitterData(int frequency, UUID uuid, boolean invert, MaintenanceMode mode) {
@@ -190,10 +190,8 @@ public class GT_Cover_WirelessMaintenanceDetector
 
     // GUI stuff
 
-    private static final String[] extraTexts = new String[] {
-        "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
-        ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%"
-    };
+    private static final String[] extraTexts = new String[] { "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
+            ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%" };
 
     @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
@@ -225,9 +223,9 @@ public class GT_Cover_WirelessMaintenanceDetector
         protected void addUIWidgets(ModularWindow.Builder builder) {
             super.addUIWidgets(builder);
             for (int i = 0; i < 8; i++) {
-                builder.widget(new TextWidget(extraTexts[i])
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
+                builder.widget(
+                        new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
             }
         }
 
@@ -243,8 +241,8 @@ public class GT_Cover_WirelessMaintenanceDetector
                             coverData.mode = MaintenanceMode.values()[index];
                             return coverData;
                         },
-                        widget -> widget.setToggleTexture(
-                                        GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
+                        widget -> widget
+                                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
                                 .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
         }

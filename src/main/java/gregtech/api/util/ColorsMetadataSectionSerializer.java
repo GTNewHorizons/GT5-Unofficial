@@ -1,25 +1,29 @@
 package gregtech.api.util;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.client.resources.data.BaseMetadataSectionSerializer;
+import net.minecraft.util.JsonUtils;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.client.resources.data.BaseMetadataSectionSerializer;
-import net.minecraft.util.JsonUtils;
 
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer implements JsonSerializer {
-    public ColorsMetadataSection deserialize(
-            JsonElement metadataColors, Type type, JsonDeserializationContext context) {
+
+    public ColorsMetadataSection deserialize(JsonElement metadataColors, Type type,
+            JsonDeserializationContext context) {
         // Default values
         boolean enableGuiTint = GregTech_API.sColoredGUI;
         Map<String, String> hexGuiTintMap = new HashMap<>();
@@ -39,8 +43,8 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
 
         if (jsonObject.has("guiTint")) {
             JsonObject guiTints = JsonUtils.func_152754_s(jsonObject, "guiTint");
-            enableGuiTint =
-                    JsonUtils.getJsonObjectBooleanFieldValueOrDefault(guiTints, "enableGuiTintWhenPainted", true);
+            enableGuiTint = JsonUtils
+                    .getJsonObjectBooleanFieldValueOrDefault(guiTints, "enableGuiTintWhenPainted", true);
 
             for (Dyes dye : Dyes.values()) {
                 hexGuiTintMap.put(dye.mName, GT_Util.toHexString(dye.getRGBA()));

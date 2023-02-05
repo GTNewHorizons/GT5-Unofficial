@@ -7,47 +7,12 @@ import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.SIDE_DOWN;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import gregtech.GT_Mod;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddInventorySlots;
-import gregtech.api.interfaces.modularui.IGetGUITextureSet;
-import gregtech.api.interfaces.tileentity.IGTEnet;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.IIC2Enet;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
-import gregtech.api.util.GT_TooltipDataCache;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -69,35 +34,70 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
+import gregtech.GT_Mod;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddInventorySlots;
+import gregtech.api.interfaces.modularui.IGetGUITextureSet;
+import gregtech.api.interfaces.tileentity.IGTEnet;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IIC2Enet;
+import gregtech.api.net.GT_Packet_Block_Event;
+import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
+import gregtech.api.util.GT_TooltipDataCache;
+import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+
 /**
  * The Functions my old TileEntities and my BaseMetaTileEntities have in common.
  * <p/>
  * Basically everything a TileEntity should have.
  */
-public abstract class BaseTileEntity extends TileEntity
-        implements IHasWorldObjectAndCoords,
-                IIC2Enet,
-                IGTEnet,
-                ITileWithModularUI,
-                IAddGregtechLogo,
-                IGetGUITextureSet,
-                IAddInventorySlots {
+public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet,
+        ITileWithModularUI, IAddGregtechLogo, IGetGUITextureSet, IAddInventorySlots {
+
     protected boolean mInventoryChanged = false;
 
     /**
      * Buffers adjacent TileEntities for faster access
      * <p/>
-     * "this" means that there is no TileEntity, while "null" means that it doesn't know if there is even a TileEntity and still needs to check that if needed.
+     * "this" means that there is no TileEntity, while "null" means that it doesn't know if there is even a TileEntity
+     * and still needs to check that if needed.
      */
     private final TileEntity[] mBufferedTileEntities = new TileEntity[6];
     /**
-     * If this TileEntity checks for the Chunk to be loaded before returning World based values.
-     * The AdvPump hacks this to false to ensure everything runs properly even when far Chunks are not actively loaded.
-     * But anything else should not cause worfin' Chunks, uhh I mean orphan Chunks.
+     * If this TileEntity checks for the Chunk to be loaded before returning World based values. The AdvPump hacks this
+     * to false to ensure everything runs properly even when far Chunks are not actively loaded. But anything else
+     * should not cause worfin' Chunks, uhh I mean orphan Chunks.
      */
     public boolean ignoreUnloadedChunks = true;
     /**
-     * This Variable checks if this TileEntity is dead, because Minecraft is too stupid to have proper TileEntity unloading.
+     * This Variable checks if this TileEntity is dead, because Minecraft is too stupid to have proper TileEntity
+     * unloading.
      */
     public boolean isDead = false;
 
@@ -107,8 +107,8 @@ public abstract class BaseTileEntity extends TileEntity
         if (aPlayer != null) {
             if (aPlayer.rotationPitch >= 65 && aAllowedFacings[SIDE_UP]) return SIDE_UP;
             if (aPlayer.rotationPitch <= -65 && aAllowedFacings[SIDE_DOWN]) return SIDE_DOWN;
-            final byte rFacing =
-                    COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * aPlayer.rotationYaw / 360.0F) & 0x3];
+            final byte rFacing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * aPlayer.rotationYaw / 360.0F)
+                    & 0x3];
             if (aAllowedFacings[rFacing]) return rFacing;
         }
         for (final byte tSide : ALL_VALID_SIDES) if (aAllowedFacings[tSide]) return tSide;
@@ -407,9 +407,9 @@ public abstract class BaseTileEntity extends TileEntity
 
     public Block getBlock(ChunkCoordinates aCoords) {
         if (worldObj == null) return Blocks.air;
-        if (ignoreUnloadedChunks
-                && crossedChunkBorder(aCoords)
-                && !worldObj.blockExists(aCoords.posX, aCoords.posY, aCoords.posZ)) return Blocks.air;
+        if (ignoreUnloadedChunks && crossedChunkBorder(aCoords)
+                && !worldObj.blockExists(aCoords.posX, aCoords.posY, aCoords.posZ))
+            return Blocks.air;
         return worldObj.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ);
     }
 
@@ -471,8 +471,7 @@ public abstract class BaseTileEntity extends TileEntity
             mBufferedTileEntities[aSide] = null;
             return getTileEntityAtSide(aSide);
         }
-        if (mBufferedTileEntities[aSide].xCoord == tX
-                && mBufferedTileEntities[aSide].yCoord == tY
+        if (mBufferedTileEntities[aSide].xCoord == tX && mBufferedTileEntities[aSide].yCoord == tY
                 && mBufferedTileEntities[aSide].zCoord == tZ) {
             return mBufferedTileEntities[aSide];
         }
@@ -531,8 +530,8 @@ public abstract class BaseTileEntity extends TileEntity
                 // update if it was / is strong powered.
                 if (((((mStrongRedstone | oStrongRedstone) >>> dir.ordinal()) & 1) != 0)
                         && getBlock(x1, y1, z1).isNormalCube()) {
-                    final int skipUpdateSide = dir.getOpposite()
-                            .ordinal(); // Don't update this block. Still updates diagonal blocks twice if conditions
+                    final int skipUpdateSide = dir.getOpposite().ordinal(); // Don't update this block. Still updates
+                                                                            // diagonal blocks twice if conditions
                     // meet.
 
                     for (final ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS) {
@@ -548,7 +547,10 @@ public abstract class BaseTileEntity extends TileEntity
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
         NW.sendPacketToAllPlayersInRange(
-                worldObj, new GT_Packet_Block_Event(xCoord, (short) yCoord, zCoord, aID, aValue), xCoord, zCoord);
+                worldObj,
+                new GT_Packet_Block_Event(xCoord, (short) yCoord, zCoord, aID, aValue),
+                xCoord,
+                zCoord);
     }
 
     protected boolean crossedChunkBorder(int aX, int aZ) {
@@ -679,8 +681,7 @@ public abstract class BaseTileEntity extends TileEntity
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {}
 
     public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.bindPlayerInventory(
-                buildContext.getPlayer(), 7, getGUITextureSet().getItemSlot());
+        builder.bindPlayerInventory(buildContext.getPlayer(), 7, getGUITextureSet().getItemSlot());
     }
 
     public String getLocalName() {
@@ -705,29 +706,24 @@ public abstract class BaseTileEntity extends TileEntity
         int titleWidth = 0, titleHeight = 0;
         if (NetworkUtils.isClient()) {
             final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            //noinspection unchecked
-            final List<String> titleLines =
-                    fontRenderer.listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
-            titleWidth = titleLines.size() > 1
-                    ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
+            // noinspection unchecked
+            final List<String> titleLines = fontRenderer
+                    .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
+            titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
                     : fontRenderer.getStringWidth(title);
-            //noinspection PointlessArithmeticExpression
+            // noinspection PointlessArithmeticExpression
             titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
         }
 
         final DrawableWidget tab = new DrawableWidget();
-        final TextWidget text = new TextWidget(title)
-                .setDefaultColor(getTitleColor())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setMaxWidth(titleWidth);
+        final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
+                .setTextAlignment(Alignment.CenterLeft).setMaxWidth(titleWidth);
         if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
-            tab.setDrawable(getGUITextureSet().getTitleTabAngular())
-                    .setPos(0, -(titleHeight + TAB_PADDING) + 1)
+            tab.setDrawable(getGUITextureSet().getTitleTabAngular()).setPos(0, -(titleHeight + TAB_PADDING) + 1)
                     .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
         } else {
-            tab.setDrawable(getGUITextureSet().getTitleTabDark())
-                    .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
+            tab.setDrawable(getGUITextureSet().getTitleTabDark()).setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
                     .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
         }
@@ -735,15 +731,13 @@ public abstract class BaseTileEntity extends TileEntity
     }
 
     protected void addTitleItemIconStyle(ModularWindow.Builder builder, String title) {
-        builder.widget(new MultiChildWidget()
-                .addChild(new DrawableWidget()
-                        .setDrawable(getGUITextureSet().getTitleTabNormal())
-                        .setPos(0, 0)
-                        .setSize(24, 24))
-                .addChild(new ItemDrawable(getStackForm(1)).asWidget().setPos(4, 4))
-                .addTooltip(title)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(0, -24 + 3));
+        builder.widget(
+                new MultiChildWidget()
+                        .addChild(
+                                new DrawableWidget().setDrawable(getGUITextureSet().getTitleTabNormal()).setPos(0, 0)
+                                        .setSize(24, 24))
+                        .addChild(new ItemDrawable(getStackForm(1)).asWidget().setPos(4, 4)).addTooltip(title)
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(0, -24 + 3));
     }
 
     @Override
@@ -757,10 +751,8 @@ public abstract class BaseTileEntity extends TileEntity
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(152, 63));
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(152, 63));
     }
 
     protected int getGUIWidth() {
@@ -781,14 +773,11 @@ public abstract class BaseTileEntity extends TileEntity
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
+            background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 1)
-                .startFromSlot(0)
-                .endAtSlot(0)
-                .background(background)
-                .build()
-                .setPos(79, 34));
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 1).startFromSlot(0).endAtSlot(0).background(background)
+                        .build().setPos(79, 34));
     }
 
     @Override
@@ -797,14 +786,11 @@ public abstract class BaseTileEntity extends TileEntity
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
+            background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
-                .startFromSlot(0)
-                .endAtSlot(3)
-                .background(background)
-                .build()
-                .setPos(70, 25));
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3).background(background)
+                        .build().setPos(70, 25));
     }
 
     @Override
@@ -813,14 +799,11 @@ public abstract class BaseTileEntity extends TileEntity
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
+            background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
-                .startFromSlot(0)
-                .endAtSlot(8)
-                .background(background)
-                .build()
-                .setPos(61, 16));
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8).background(background)
+                        .build().setPos(61, 16));
     }
 
     @Override
@@ -829,14 +812,11 @@ public abstract class BaseTileEntity extends TileEntity
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
+            background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .background(background)
-                .build()
-                .setPos(52, 7));
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).background(background)
+                        .build().setPos(52, 7));
     }
 
     public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -859,76 +839,65 @@ public abstract class BaseTileEntity extends TileEntity
         if (ccs == null) return;
 
         final AtomicBoolean dialogOpened = new AtomicBoolean(false);
-        builder.widget(
-                new SlotWidget(new BaseSlot(inventoryHandler, ccs.getCircuitSlot(), true)) {
-                    @Override
-                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        final ItemStack newCircuit;
-                        if (clickData.shift) {
-                            if (clickData.mouseButton == 0) {
-                                if (NetworkUtils.isClient() && !dialogOpened.get()) {
-                                    openSelectCircuitDialog(getContext(), dialogOpened);
-                                }
-                                return;
-                            } else {
-                                newCircuit = null;
-                            }
-                        } else {
-                            final List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
-                            final int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
-                            if (index < 0) {
-                                int curIndex = GT_Utility.findMatchingStackInList(
-                                                tCircuits, inv.getStackInSlot(ccs.getCircuitSlot()))
-                                        + 1;
-                                if (clickData.mouseButton == 0) {
-                                    curIndex += 1;
-                                } else {
-                                    curIndex -= 1;
-                                }
-                                curIndex = Math.floorMod(curIndex, tCircuits.size() + 1) - 1;
-                                newCircuit = curIndex < 0 ? null : tCircuits.get(curIndex);
-                            } else {
-                                // set to whatever it is
-                                newCircuit = tCircuits.get(index);
-                            }
+        builder.widget(new SlotWidget(new BaseSlot(inventoryHandler, ccs.getCircuitSlot(), true)) {
+
+            @Override
+            protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                final ItemStack newCircuit;
+                if (clickData.shift) {
+                    if (clickData.mouseButton == 0) {
+                        if (NetworkUtils.isClient() && !dialogOpened.get()) {
+                            openSelectCircuitDialog(getContext(), dialogOpened);
                         }
-                        inv.setInventorySlotContents(ccs.getCircuitSlot(), newCircuit);
+                        return;
+                    } else {
+                        newCircuit = null;
                     }
+                } else {
+                    final List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
+                    final int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
+                    if (index < 0) {
+                        int curIndex = GT_Utility
+                                .findMatchingStackInList(tCircuits, inv.getStackInSlot(ccs.getCircuitSlot())) + 1;
+                        if (clickData.mouseButton == 0) {
+                            curIndex += 1;
+                        } else {
+                            curIndex -= 1;
+                        }
+                        curIndex = Math.floorMod(curIndex, tCircuits.size() + 1) - 1;
+                        newCircuit = curIndex < 0 ? null : tCircuits.get(curIndex);
+                    } else {
+                        // set to whatever it is
+                        newCircuit = tCircuits.get(index);
+                    }
+                }
+                inv.setInventorySlotContents(ccs.getCircuitSlot(), newCircuit);
+            }
 
-                    @Override
-                    protected void phantomScroll(int direction) {
-                        phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
-                    }
+            @Override
+            protected void phantomScroll(int direction) {
+                phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
+            }
 
-                    @Override
-                    public List<String> getExtraTooltip() {
-                        return Arrays.asList(
-                                EnumChatFormatting.DARK_GRAY
-                                        + EnumChatFormatting.getTextWithoutFormattingCodes(
-                                                StatCollector.translateToLocal(
-                                                        "GT5U.machines.select_circuit.tooltip.1")),
-                                EnumChatFormatting.DARK_GRAY
-                                        + EnumChatFormatting.getTextWithoutFormattingCodes(
-                                                StatCollector.translateToLocal(
-                                                        "GT5U.machines.select_circuit.tooltip.2")),
-                                EnumChatFormatting.DARK_GRAY
-                                        + EnumChatFormatting.getTextWithoutFormattingCodes(
-                                                StatCollector.translateToLocal(
-                                                        "GT5U.machines.select_circuit.tooltip.3")));
-                    }
-                }.setOverwriteItemStackTooltip(list -> {
-                            list.removeIf(line ->
-                                    line.contains(StatCollector.translateToLocal("gt.integrated_circuit.tooltip.0"))
-                                            || line.contains(
-                                                    StatCollector.translateToLocal("gt.integrated_circuit.tooltip.1")));
-                            return list;
-                        })
-                        .disableShiftInsert()
-                        .setHandlePhantomActionClient(true)
-                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
-                        .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                        .setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));
+            @Override
+            public List<String> getExtraTooltip() {
+                return Arrays.asList(
+                        EnumChatFormatting.DARK_GRAY + EnumChatFormatting.getTextWithoutFormattingCodes(
+                                StatCollector.translateToLocal("GT5U.machines.select_circuit.tooltip.1")),
+                        EnumChatFormatting.DARK_GRAY + EnumChatFormatting.getTextWithoutFormattingCodes(
+                                StatCollector.translateToLocal("GT5U.machines.select_circuit.tooltip.2")),
+                        EnumChatFormatting.DARK_GRAY + EnumChatFormatting.getTextWithoutFormattingCodes(
+                                StatCollector.translateToLocal("GT5U.machines.select_circuit.tooltip.3")));
+            }
+        }.setOverwriteItemStackTooltip(list -> {
+            list.removeIf(
+                    line -> line.contains(StatCollector.translateToLocal("gt.integrated_circuit.tooltip.0"))
+                            || line.contains(StatCollector.translateToLocal("gt.integrated_circuit.tooltip.1")));
+            return list;
+        }).disableShiftInsert().setHandlePhantomActionClient(true)
+                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));
     }
 
     protected void openSelectCircuitDialog(ModularUIContext uiContext, AtomicBoolean dialogOpened) {
@@ -939,16 +908,16 @@ public abstract class BaseTileEntity extends TileEntity
         final IInventory inv = (IInventory) this;
 
         final List<ItemStack> circuits = ccs.getConfigurationCircuits();
-        uiContext.openClientWindow(player -> new SelectItemUIFactory(
+        uiContext.openClientWindow(
+                player -> new SelectItemUIFactory(
                         StatCollector.translateToLocal("GT5U.machines.select_circuit"),
                         getStackForm(0),
                         this::onCircuitSelected,
                         circuits,
                         GT_Utility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
-                .setAnotherWindow(true, dialogOpened)
-                .setGuiTint(getGUIColorization())
-                .setCurrentGetter(() -> inv.getStackInSlot(ccs.getCircuitSlot()))
-                .createWindow(new UIBuildContext(player)));
+                                .setAnotherWindow(true, dialogOpened).setGuiTint(getGUIColorization())
+                                .setCurrentGetter(() -> inv.getStackInSlot(ccs.getCircuitSlot()))
+                                .createWindow(new UIBuildContext(player)));
     }
 
     protected void onCircuitSelected(ItemStack selected) {

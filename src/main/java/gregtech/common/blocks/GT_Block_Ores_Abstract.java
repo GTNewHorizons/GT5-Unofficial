@@ -1,23 +1,10 @@
 package gregtech.common.blocks;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_Renderer_Block;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -37,7 +24,23 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.render.GT_Renderer_Block;
+
 public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider {
+
     private static final String DOT_NAME = ".name";
     private static final String DOT_TOOLTIP = ".tooltip";
     public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal<>();
@@ -45,8 +48,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     public static boolean tHideOres;
     public static Set<Materials> aBlockedOres = new HashSet<>();
 
-    protected GT_Block_Ores_Abstract(
-            String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta, Material aMaterial) {
+    protected GT_Block_Ores_Abstract(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta,
+            Material aMaterial) {
         super(GT_Item_Ores.class, aUnlocalizedName, aMaterial);
         this.isBlockContainer = true;
         setStepSound(soundTypeStone);
@@ -71,10 +74,9 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
                             GregTech_API.sGeneratedMaterials[i].getToolTip());
                     GT_LanguageManager.addStringLocalization(
                             getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_NAME,
-                            "Small "
-                                    + (GT_LanguageManager.i18nPlaceholder
-                                            ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i])
-                                            : getLocalizedName(GregTech_API.sGeneratedMaterials[i])));
+                            "Small " + (GT_LanguageManager.i18nPlaceholder
+                                    ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i])
+                                    : getLocalizedName(GregTech_API.sGeneratedMaterials[i])));
                     GT_LanguageManager.addStringLocalization(
                             getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_TOOLTIP,
                             GregTech_API.sGeneratedMaterials[i].getToolTip());
@@ -159,16 +161,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean onBlockActivated(
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            EntityPlayer aPlayer,
-            int aSide,
-            float aOffsetX,
-            float aOffsetY,
-            float aOffsetZ) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide,
+            float aOffsetX, float aOffsetY, float aOffsetZ) {
         if (!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) {
             return false;
         }
@@ -184,8 +178,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean onBlockEventReceived(
-            World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_, int p_149696_5_, int p_149696_6_) {
+    public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_,
+            int p_149696_5_, int p_149696_6_) {
         super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
         TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
         return tileentity != null && tileentity.receiveClientEvent(p_149696_5_, p_149696_6_);
@@ -212,15 +206,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity entity,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            double explosionX,
-            double explosionY,
-            double explosionZ) {
+    public float getExplosionResistance(Entity entity, World aWorld, int aX, int aY, int aZ, double explosionX,
+            double explosionY, double explosionZ) {
         return 1.0F + getHarvestLevel(aWorld.getBlockMetadata(aX, aY, aZ)) * 1.0F;
     }
 
@@ -285,7 +272,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
         GT_Renderer_Block.addHitEffects(
-                effectRenderer, this, worldObj, target.blockX, target.blockY, target.blockZ, target.sideHit);
+                effectRenderer,
+                this,
+                worldObj,
+                target.blockX,
+                target.blockY,
+                target.blockZ,
+                target.sideHit);
         return true;
     }
 
@@ -315,8 +308,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         aWorld.removeTileEntity(aX, aY, aZ);
     }
 
-    public abstract OrePrefixes[]
-            getProcessingPrefix(); // Must have 8 entries; an entry can be null to disable automatic recipes.
+    public abstract OrePrefixes[] getProcessingPrefix(); // Must have 8 entries; an entry can be null to disable
+                                                         // automatic recipes.
 
     public abstract boolean[] getEnabledMetas(); // Must have 8 entries.
 
@@ -330,8 +323,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         if ((tTileEntity instanceof GT_TileEntity_Ores)) {
             return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), aFortune);
         }
-        return mTemporaryTileEntity.get() == null
-                ? new ArrayList<>()
+        return mTemporaryTileEntity.get() == null ? new ArrayList<>()
                 : mTemporaryTileEntity.get().getDrops(getDroppedBlock(), aFortune);
     }
 
@@ -342,7 +334,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     public abstract ITexture[] getTextureSet(); // Must have 16 entries.
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {

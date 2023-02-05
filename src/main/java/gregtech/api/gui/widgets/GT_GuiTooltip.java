@@ -1,12 +1,14 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import org.lwjgl.input.Keyboard;
+
+import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 
 public class GT_GuiTooltip {
 
@@ -16,8 +18,8 @@ public class GT_GuiTooltip {
     public boolean enabled = true;
 
     /**
-     * Used to create a tooltip that will appear over the specified bounds.
-     * This will initially be a "static" tooltip that doesn't respect verbosity levels or respond to the shift key.
+     * Used to create a tooltip that will appear over the specified bounds. This will initially be a "static" tooltip
+     * that doesn't respect verbosity levels or respond to the shift key.
      *
      * @param bounds
      * @param text
@@ -28,8 +30,8 @@ public class GT_GuiTooltip {
     }
 
     /**
-     * Used to create a tooltip that will appear over the specified bounds.
-     * This will initially be a "dynamic" tooltip that respects verbosity levels and responds to the shift key.
+     * Used to create a tooltip that will appear over the specified bounds. This will initially be a "dynamic" tooltip
+     * that respects verbosity levels and responds to the shift key.
      *
      * @param bounds
      * @param data

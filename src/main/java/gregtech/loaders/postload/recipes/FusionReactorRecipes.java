@@ -4,11 +4,12 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 
 public class FusionReactorRecipes implements Runnable {
+
     @Override
     public void run() {
         // Fusion tiering -T1 32768EU/t -T2 65536EU/t - T3 131073EU/t
-        // Fusion with margin 32700         65450          131000
-        // Startup  max       160M EU       320M EU        640M EU
+        // Fusion with margin 32700 65450 131000
+        // Startup max 160M EU 320M EU 640M EU
         // Fluid input,Fluid input,Fluid output,ticks,EU/t,Startup
         // FT1, FT2, FT3 - fusion tier required, + - requires different startup recipe (startup cost bigger than
         // available on the tier)

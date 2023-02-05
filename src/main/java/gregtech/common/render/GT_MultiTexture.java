@@ -1,15 +1,21 @@
 package gregtech.common.render;
 
-import gregtech.GT_Mod;
-import gregtech.api.interfaces.ITexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
+import gregtech.GT_Mod;
+import gregtech.api.interfaces.ITexture;
+
 /**
- * <p>Lets Multiple ITextures Render overlay over each other.<</p>
- * <p>I should have done this much earlier...</p>
+ * <p>
+ * Lets Multiple ITextures Render overlay over each other.<
+ * </p>
+ * <p>
+ * I should have done this much earlier...
+ * </p>
  */
 public class GT_MultiTexture extends GT_TextureBase implements ITexture {
+
     protected final ITexture[] mTextures;
 
     public static GT_MultiTexture get(ITexture... aTextures) {

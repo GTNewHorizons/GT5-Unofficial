@@ -5,6 +5,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.MathHelper;
 
 public class GT_ClientPollutionMap {
+
     private static final byte RADIUS = 24;
     private static final byte DISTANCE_RELOAD_MAP = 5; // When player moved x chunks, shift the map to new center.
     private static final byte SIZE = RADIUS * 2 + 1; // Area to keep stored.
@@ -50,14 +51,14 @@ public class GT_ClientPollutionMap {
 
         int relX = chunkX - x0 + RADIUS;
         if (relX >= SIZE || relX < 0) // out of bounds
-        return;
+            return;
         int relZ = chunkZ - z0 + RADIUS;
         if (relZ >= SIZE || relZ < 0) // out of bounds
-        return;
+            return;
 
         pollution = pollution / 225;
         if (pollution > Short.MAX_VALUE) // Sanity
-        chunkMatrix[relX][relZ] = Short.MAX_VALUE; // Max pollution = 7,3mill
+            chunkMatrix[relX][relZ] = Short.MAX_VALUE; // Max pollution = 7,3mill
         else if (pollution < 0) chunkMatrix[relX][relZ] = 0;
         else chunkMatrix[relX][relZ] = (short) (pollution);
     }
@@ -99,43 +100,39 @@ public class GT_ClientPollutionMap {
         int xDiff = chunkX - x0;
         int zDiff = chunkZ - z0;
         boolean[] allEmpty = new boolean[SIZE]; // skip check z row if its empty.
-        if (xDiff > 0)
-            for (byte x = 0; x < SIZE; x++) {
-                int xOff = x + xDiff;
-                if (xOff < SIZE) {
-                    chunkMatrix[x] = chunkMatrix[xOff].clone();
-                } else {
-                    chunkMatrix[x] = new short[SIZE];
-                    allEmpty[x] = true;
-                }
+        if (xDiff > 0) for (byte x = 0; x < SIZE; x++) {
+            int xOff = x + xDiff;
+            if (xOff < SIZE) {
+                chunkMatrix[x] = chunkMatrix[xOff].clone();
+            } else {
+                chunkMatrix[x] = new short[SIZE];
+                allEmpty[x] = true;
             }
-        else if (xDiff < 0)
-            for (byte x = SIZE - 1; x >= 0; x--) {
-                int xOff = x + xDiff;
-                if (xOff > 0) {
-                    chunkMatrix[x] = chunkMatrix[xOff].clone();
-                } else {
-                    chunkMatrix[x] = new short[SIZE];
-                    allEmpty[x] = true;
-                }
+        }
+        else if (xDiff < 0) for (byte x = SIZE - 1; x >= 0; x--) {
+            int xOff = x + xDiff;
+            if (xOff > 0) {
+                chunkMatrix[x] = chunkMatrix[xOff].clone();
+            } else {
+                chunkMatrix[x] = new short[SIZE];
+                allEmpty[x] = true;
             }
+        }
 
-        if (zDiff > 0)
-            for (byte x = 0; x < SIZE; x++) {
-                if (allEmpty[x]) continue;
-                for (int z = 0; z < SIZE; z++) {
-                    int zOff = z + zDiff;
-                    chunkMatrix[x][z] = (zOff < SIZE) ? chunkMatrix[x][zOff] : 0;
-                }
+        if (zDiff > 0) for (byte x = 0; x < SIZE; x++) {
+            if (allEmpty[x]) continue;
+            for (int z = 0; z < SIZE; z++) {
+                int zOff = z + zDiff;
+                chunkMatrix[x][z] = (zOff < SIZE) ? chunkMatrix[x][zOff] : 0;
             }
-        else if (zDiff < 0)
-            for (byte x = 0; x < SIZE; x++) {
-                if (allEmpty[x]) continue;
-                for (int z = SIZE - 1; z >= 0; z--) {
-                    int zOff = z + zDiff;
-                    chunkMatrix[x][z] = (zOff > 0) ? chunkMatrix[x][zOff] : 0;
-                }
+        }
+        else if (zDiff < 0) for (byte x = 0; x < SIZE; x++) {
+            if (allEmpty[x]) continue;
+            for (int z = SIZE - 1; z >= 0; z--) {
+                int zOff = z + zDiff;
+                chunkMatrix[x][z] = (zOff > 0) ? chunkMatrix[x][zOff] : 0;
             }
+        }
 
         x0 = chunkX;
         z0 = chunkZ;

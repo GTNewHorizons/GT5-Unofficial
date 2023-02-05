@@ -1,6 +1,20 @@
 package gregtech.api.util;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.MutableTriple;
+
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
+
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -8,18 +22,9 @@ import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
 import gregtech.api.objects.XSTR;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.PriorityQueue;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.MutableTriple;
 
 public class GT_ParallelHelper {
+
     /**
      * @mMachineMeta a MetaTileEntity Controller
      */
@@ -39,7 +44,8 @@ public class GT_ParallelHelper {
     /**
      * @mCurrentParallel The current parallel possible for the multiblock
      * @mMaxParallel The maximum possible parallel possible for the multiblock
-     * @mBatchModifier The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible parallel, but also duration
+     * @mBatchModifier The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
+     *                 parallel, but also duration
      */
     private int mCurrentParallel = 0, mMaxParallel = 1, mBatchModifier = 1;
     /**
@@ -56,7 +62,8 @@ public class GT_ParallelHelper {
      * @mVoidProtection Does the multi have void protection enabled
      * @mConsume Should the Parallel Helper automatically consume for the multi
      * @mBatchMode Is batch mode turned on?
-     * @mCalculateOutputs Should the Parallel Helper automatically calculate the outputs of the recipe with current parallel
+     * @mCalculateOutputs Should the Parallel Helper automatically calculate the outputs of the recipe with current
+     *                    parallel
      * @mBuilt Has the Parallel Helper been built?
      */
     private boolean mVoidProtection, mConsume, mBatchMode, mCalculateOutputs, mBuilt;
@@ -143,8 +150,8 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Enables Batch mode. Can do up to an additional processed recipes of mCurrentParallel * mBatchModifier
-     * A batch modifier of 1 does nothing
+     * Enables Batch mode. Can do up to an additional processed recipes of mCurrentParallel * mBatchModifier A batch
+     * modifier of 1 does nothing
      */
     public GT_ParallelHelper enableBatchMode(int aBatchModifier) {
         mBatchMode = true;
@@ -153,7 +160,8 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Enables the outputs to be calculated with its current Parallels, useful if one isn't doing anything special with outputs
+     * Enables the outputs to be calculated with its current Parallels, useful if one isn't doing anything special with
+     * outputs
      */
     public GT_ParallelHelper enableOutputCalculation() {
         mCalculateOutputs = true;
@@ -278,9 +286,8 @@ public class GT_ParallelHelper {
 
         float tRecipeEUt = mRecipe.mEUt * mEUtModifier;
         // Consume inputs to determine normal parallel
-        for (;
-                mCurrentParallel < mMaxParallel / mBatchModifier && tCurrentUsage < (mAvailableEUt - tRecipeEUt);
-                mCurrentParallel++) {
+        for (; mCurrentParallel < mMaxParallel / mBatchModifier
+                && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
             if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
                 tCurrentUsage += tRecipeEUt;
             } else {
@@ -373,10 +380,8 @@ public class GT_ParallelHelper {
                         if (!tHatch.outputsLiquids()) {
                             continue;
                         }
-                        if (tHatch.isFluidLocked()
-                                && tLockedFluidName != null
-                                && !tLockedFluidName.equals(
-                                        tFluidOutput.getFluid().getName())) {
+                        if (tHatch.isFluidLocked() && tLockedFluidName != null
+                                && !tLockedFluidName.equals(tFluidOutput.getFluid().getName())) {
                             continue;
                         }
                     }
@@ -391,8 +396,8 @@ public class GT_ParallelHelper {
             }
             // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
             // the lowest priority fluid is the number of complete parallel crafts we can support
-            PriorityQueue<MutableTriple<Integer, Integer, FluidStack>> aParallelQueue =
-                    new PriorityQueue<>(Comparator.comparing(MutableTriple::getLeft));
+            PriorityQueue<MutableTriple<Integer, Integer, FluidStack>> aParallelQueue = new PriorityQueue<>(
+                    Comparator.comparing(MutableTriple::getLeft));
             for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
                 aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
             }
@@ -470,8 +475,8 @@ public class GT_ParallelHelper {
             }
             // now that all partial stacks have been counted, create a priority queue for our outputs
             // the lowest priority item is the number of complete parallel crafts we can support
-            PriorityQueue<MutableTriple<Integer, Integer, ItemStack>> aParallelQueue =
-                    new PriorityQueue<>(Comparator.comparing(MutableTriple::getLeft));
+            PriorityQueue<MutableTriple<Integer, Integer, ItemStack>> aParallelQueue = new PriorityQueue<>(
+                    Comparator.comparing(MutableTriple::getLeft));
             for (Entry<ItemStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
                 aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
             }

@@ -10,6 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class ImplosionCompressorRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addImplosionRecipe(

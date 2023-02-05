@@ -2,12 +2,14 @@ package gregtech.api.interfaces;
 
 import static gregtech.api.enums.GT_Values.UNCOLORED_RBGA;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public interface IIconContainer {
+
     /**
      * @return A regular Icon.
      */
@@ -26,8 +28,7 @@ public interface IIconContainer {
     @SideOnly(Side.CLIENT)
     default int getIconPasses() {
         return 1;
-    }
-    ;
+    };
 
     /**
      * @return the Default Texture File for this Icon.

@@ -2,6 +2,11 @@ package gregtech.api.gui;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
+import java.awt.Rectangle;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
@@ -14,9 +19,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.power.Power;
 import gregtech.nei.NEI_TransferRectHost;
-import java.awt.Rectangle;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.StatCollector;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -24,11 +26,16 @@ import net.minecraft.util.StatCollector;
  * The GUI-Container I use for all my Basic Machines
  */
 public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machine implements NEI_TransferRectHost {
+
     private static final int NEEDS_STEAM_VENTING = 64;
     private static final GT_GuiTabIconSet TAB_ICONSET_BRONZE = new GT_GuiTabIconSet(
-            GT_GuiIcon.TAB_NORMAL_BRONZE, GT_GuiIcon.TAB_HIGHLIGHT_BRONZE, GT_GuiIcon.TAB_DISABLED_BRONZE);
+            GT_GuiIcon.TAB_NORMAL_BRONZE,
+            GT_GuiIcon.TAB_HIGHLIGHT_BRONZE,
+            GT_GuiIcon.TAB_DISABLED_BRONZE);
     private static final GT_GuiTabIconSet TAB_ICONSET_STEEL = new GT_GuiTabIconSet(
-            GT_GuiIcon.TAB_NORMAL_STEEL, GT_GuiIcon.TAB_HIGHLIGHT_STEEL, GT_GuiIcon.TAB_DISABLED_STEEL);
+            GT_GuiIcon.TAB_NORMAL_STEEL,
+            GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
+            GT_GuiIcon.TAB_DISABLED_STEEL);
     private final int textColor = this.getTextColorOrDefault("title", 0x404040);
     public final String mName, mNEI;
     public final byte mProgressBarDirection, mProgressBarAmount;
@@ -46,23 +53,13 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
             POWER_SOURCE_KEY = "GT5U.machines.powersource.";
 
-    public GT_GUIContainer_BasicMachine(
-            InventoryPlayer aInventoryPlayer,
-            IGregTechTileEntity aTileEntity,
-            String aName,
-            String aTextureFile,
-            String aNEI) {
+    public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
+            String aTextureFile, String aNEI) {
         this(aInventoryPlayer, aTileEntity, aName, aTextureFile, aNEI, (byte) 0, (byte) 1);
     }
 
-    public GT_GUIContainer_BasicMachine(
-            InventoryPlayer aInventoryPlayer,
-            IGregTechTileEntity aTileEntity,
-            String aName,
-            String aTextureFile,
-            String aNEI,
-            byte aProgressBarDirection,
-            byte aProgressBarAmount) {
+    public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
+            String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
         super(
                 new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity),
                 RES_PATH_GUI + "basicmachines/" + aTextureFile);
@@ -87,57 +84,67 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         if (machine.isSteampowered()) {
             batterySlotTooltipKey = UNUSED_SLOT_TOOLTIP;
             batterySlotTooltipArgs = new String[0];
-            addToolTip(new GT_GuiSmartTooltip(
-                    tProblemArea,
-                    new TooltipVisibilityProvider() {
-                        public boolean shouldShowTooltip() {
-                            return hasErrorCode(NEEDS_STEAM_VENTING);
-                        }
-                    },
-                    mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
+            addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
+
+                public boolean shouldShowTooltip() {
+                    return hasErrorCode(NEEDS_STEAM_VENTING);
+                }
+            }, mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
         } else {
             String pTier1 = powerTierName(machine.mTier);
             if (machine.mTier == GT_Values.VN.length - 1) {
                 batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP_ALT;
-                batterySlotTooltipArgs = new String[] {pTier1};
+                batterySlotTooltipArgs = new String[] { pTier1 };
             } else {
                 batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
-                batterySlotTooltipArgs = new String[] {pTier1, powerTierName((byte) (machine.mTier + 1))};
+                batterySlotTooltipArgs = new String[] { pTier1, powerTierName((byte) (machine.mTier + 1)) };
             }
-            addToolTip(new GT_GuiSlotTooltip(
-                    container.slotFluidTransferToggle, mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)));
-            addToolTip(new GT_GuiSlotTooltip(
-                    container.slotItemTransferToggle, mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));
+            addToolTip(
+                    new GT_GuiSlotTooltip(
+                            container.slotFluidTransferToggle,
+                            mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)));
+            addToolTip(
+                    new GT_GuiSlotTooltip(
+                            container.slotItemTransferToggle,
+                            mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));
         }
         if (recipes != null && recipes.hasFluidInputs()) {
-            addToolTip(new GT_GuiSlotTooltip(
-                    container.slotFluidInput, mTooltipCache.getData(FLUID_INPUT_TOOLTIP, machine.getCapacity())));
+            addToolTip(
+                    new GT_GuiSlotTooltip(
+                            container.slotFluidInput,
+                            mTooltipCache.getData(FLUID_INPUT_TOOLTIP, machine.getCapacity())));
         }
         if (recipes != null && recipes.hasFluidOutputs()) {
-            addToolTip(new GT_GuiSlotTooltip(
-                    container.slotFluidOutput, mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, machine.getCapacity())));
+            addToolTip(
+                    new GT_GuiSlotTooltip(
+                            container.slotFluidOutput,
+                            mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, machine.getCapacity())));
         }
-        addToolTip(new GT_GuiSlotTooltip(
-                getContainer().slotBattery, mTooltipCache.getData(batterySlotTooltipKey, batterySlotTooltipArgs)));
-        addToolTip(new GT_GuiSlotTooltip(
-                container.slotSpecial,
-                mTooltipCache.getData(
-                        recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP)));
-        addToolTip(new GT_GuiSmartTooltip(
-                tProblemArea,
-                new TooltipVisibilityProvider() {
-                    public boolean shouldShowTooltip() {
-                        return container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING);
-                    }
-                },
+        addToolTip(
+                new GT_GuiSlotTooltip(
+                        getContainer().slotBattery,
+                        mTooltipCache.getData(batterySlotTooltipKey, batterySlotTooltipArgs)));
+        addToolTip(
+                new GT_GuiSlotTooltip(
+                        container.slotSpecial,
+                        mTooltipCache.getData(
+                                recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
+                                        : UNUSED_SLOT_TOOLTIP)));
+        addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
+
+            public boolean shouldShowTooltip() {
+                return container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING);
+            }
+        },
                 mTooltipCache.getData(
                         STALLED_STUTTERING_TOOLTIP,
-                        StatCollector.translateToLocal(
-                                POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
+                        StatCollector
+                                .translateToLocal(POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
     }
 
     /**
      * Apply proper coloration to a machine's power tier short name
+     * 
      * @param machineTier
      * @return colored power tier short name
      */
@@ -171,14 +178,12 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             if (mContainer.mMaxProgressTime > 0) {
                 int tSize = mProgressBarDirection < 2 ? 20 : 18;
                 int tProgress = Math.max(
-                                1,
-                                Math.min(
-                                        tSize * mProgressBarAmount,
-                                        (mContainer.mProgressTime > 0 ? 1 : 0)
-                                                + mContainer.mProgressTime
-                                                        * tSize
-                                                        * mProgressBarAmount
-                                                        / mContainer.mMaxProgressTime))
+                        1,
+                        Math.min(
+                                tSize * mProgressBarAmount,
+                                (mContainer.mProgressTime > 0 ? 1 : 0) + mContainer.mProgressTime * tSize
+                                        * mProgressBarAmount
+                                        / mContainer.mMaxProgressTime))
                         % (tSize + 1);
 
                 switch (mProgressBarDirection) { // yes, my OCD was mad at me before I did the Tabs.
@@ -218,8 +223,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     @Override
     protected GT_GuiTabIconSet getTabBackground() {
         if (getMachine().isSteampowered()) {
-            return getMachine() instanceof GT_MetaTileEntity_BasicMachine_Steel
-                    ? TAB_ICONSET_STEEL
+            return getMachine() instanceof GT_MetaTileEntity_BasicMachine_Steel ? TAB_ICONSET_STEEL
                     : TAB_ICONSET_BRONZE;
         }
         return super.getTabBackground();
@@ -253,7 +257,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
 
     @Override
     public Object[] getNeiTransferRectArgs() {
-        return new Object[] {getMachine().getPower()};
+        return new Object[] { getMachine().getPower() };
     }
 
     @Override

@@ -1,5 +1,23 @@
 package gregtech.common.items;
 
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -12,36 +30,22 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import javax.annotation.Nullable;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 /** This class holds cells for non-GT fluids. */
 public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
+
     public static GT_MetaGenerated_Item_98 INSTANCE;
 
     /**
      * Registered fluids.
      *
-     * <p>When adding a fluid, don't forget to make sure that GregTech loads after the mod that adds
-     * that fluid!
+     * <p>
+     * When adding a fluid, don't forget to make sure that GregTech loads after the mod that adds that fluid!
      *
-     * <p>In order to avoid breaking existing worlds, fluids must not have their IDs changed! The
-     * only safe modification that can be made to this enum is adding new fluids, or removing
-     * existing fluids. When removing fluids, maybe leave a comment mentioning the old ID, so that
-     * we don't re-use it for a new fluid.
+     * <p>
+     * In order to avoid breaking existing worlds, fluids must not have their IDs changed! The only safe modification
+     * that can be made to this enum is adding new fluids, or removing existing fluids. When removing fluids, maybe
+     * leave a comment mentioning the old ID, so that we don't re-use it for a new fluid.
      */
     public enum FluidCell {
         // Next unused ID: 22
@@ -84,8 +88,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         LIQUID_ENDER(3, "ender", CellType.REGULAR),
 
         // Hardcore Ender Expansion
-        ENDER_GOO(4, "endergoo", CellType.REGULAR),
-        ;
+        ENDER_GOO(4, "endergoo", CellType.REGULAR),;
 
         private final int mId;
         /** This is the Forge internal fluid name. */
@@ -117,8 +120,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         /**
          * Get a copy of this stack with stack size 1.
          *
-         * Always returns non-null stack even if the fluid referenced doesn't exist,
-         * so don't assume it's always valid.
+         * Always returns non-null stack even if the fluid referenced doesn't exist, so don't assume it's always valid.
          */
         public ItemStack get() {
             trySetStack();
@@ -128,8 +130,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         /**
          * Get a copy of this cell WITHOUT copy.
          *
-         * Always returns non-null stack even if the fluid referenced doesn't exist,
-         * so don't assume it's always valid.
+         * Always returns non-null stack even if the fluid referenced doesn't exist, so don't assume it's always valid.
          *
          * Use with caution.
          */
@@ -141,8 +142,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         /**
          * Get a copy of this cell with specified stack size.
          *
-         * Always returns non-null stack even if the fluid referenced doesn't exist,
-         * so don't assume it's always valid.
+         * Always returns non-null stack even if the fluid referenced doesn't exist, so don't assume it's always valid.
          */
         public ItemStack get(int aStackSize) {
             trySetStack();
@@ -158,6 +158,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
     /** Cell type specifies the cell capacity, appearance, and item name format. */
     private enum CellType {
+
         REGULAR(1_000, OrePrefixes.cell),
         SMALL(144, OrePrefixes.cell),
         MOLTEN(144, OrePrefixes.cellMolten),
@@ -174,6 +175,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
     /** Struct class holding data that we need to properly handle a registered fluid cell item. */
     private static class RegisteredFluidData {
+
         private final Fluid fluid;
         private final short[] rgba;
         private final IIconContainer iconContainer;
@@ -188,7 +190,8 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     /**
      * Map of ID to registered fluid data.
      *
-     * <p>Only contains IDs that were successfully registered.
+     * <p>
+     * Only contains IDs that were successfully registered.
      */
     private final Map<Integer, RegisteredFluidData> registeredFluidDataMap;
 
@@ -205,8 +208,8 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     }
 
     /**
-     * Loading needs to happen after the fluids we need have been registered, which means during post-load.
-     * However, cell icons seem to be deleted some time between load and post-load, so we must pre-cache them.
+     * Loading needs to happen after the fluids we need have been registered, which means during post-load. However,
+     * cell icons seem to be deleted some time between load and post-load, so we must pre-cache them.
      */
     public static synchronized void preInit() {
         if (INSTANCE == null) INSTANCE = new GT_MetaGenerated_Item_98();
@@ -253,8 +256,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             // The fluid is not guaranteed to exist.
             // These fluids are non-GT fluids, so the mod may not be present.
             if (isStackAlreadySet) {
-                throw new RuntimeException("Cell item for fluid " + fluidName
-                        + " has already been created, but the fluid doesn't exist during postload");
+                throw new RuntimeException(
+                        "Cell item for fluid " + fluidName
+                                + " has already been created, but the fluid doesn't exist during postload");
             } else {
                 // fluid doesn't exist and this item has not been referenced
                 return;
@@ -269,8 +273,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         GT_LanguageManager.addStringLocalization(
                 getUnlocalizedName(aCell.mStack) + ".name",
-                cellType.prefix.mLocalizedMaterialPre
-                        + fluid.getLocalizedName(fluidStack)
+                cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
                         + cellType.prefix.mLocalizedMaterialPost);
 
         int color = fluid.getColor();
@@ -310,11 +313,8 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
-        Arrays.stream(FluidCell.values())
-                .filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
-                .map(FluidCell::get)
-                .filter(Objects::nonNull)
-                .forEach(aList::add);
+        Arrays.stream(FluidCell.values()).filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
+                .map(FluidCell::get).filter(Objects::nonNull).forEach(aList::add);
     }
 
     @Override

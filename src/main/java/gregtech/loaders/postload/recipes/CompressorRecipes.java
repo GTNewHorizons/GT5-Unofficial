@@ -5,6 +5,13 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isEBXLLoaded;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
 
+import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
+import mods.railcraft.common.items.RailcraftToolItems;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -13,20 +20,20 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class CompressorRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_ModHandler.addCompressionRecipe(
-                getModItem(MOD_ID_GTPP, "blockRainforestOakSapling", 8, 0), ItemList.IC2_Plantball.get(1));
+                getModItem(MOD_ID_GTPP, "blockRainforestOakSapling", 8, 0),
+                ItemList.IC2_Plantball.get(1));
 
         GT_Values.RA.addCompressorRecipe(
-                ItemList.IC2_Compressed_Coal_Chunk.get(1L), ItemList.IC2_Industrial_Diamond.get(1L), 300, 2);
+                ItemList.IC2_Compressed_Coal_Chunk.get(1L),
+                ItemList.IC2_Industrial_Diamond.get(1L),
+                300,
+                2);
         GT_ModHandler.addCompressionRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L),
                 GT_ModHandler.getIC2Item("Uran238", 1L));
@@ -44,7 +51,8 @@ public class CompressorRecipes implements Runnable {
                 GT_ModHandler.getIC2Item("smallPlutonium", 1L));
         GT_ModHandler.addCompressionRecipe(new ItemStack(Blocks.ice, 2, 32767), new ItemStack(Blocks.packed_ice, 1, 0));
         GT_ModHandler.addCompressionRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L), new ItemStack(Blocks.ice, 1, 0));
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L),
+                new ItemStack(Blocks.ice, 1, 0));
         GT_ModHandler.addCompressionRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 4L),
                 getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockQuartz", 1L));
@@ -68,31 +76,44 @@ public class CompressorRecipes implements Runnable {
 
         if (isEBXLLoaded) {
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 0), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 0),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 1), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 1),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 2), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 2),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 3), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 3),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 4), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 4),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 5), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 5),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 6), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 6),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 7), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_1", 4, 7),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 0), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 0),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 1), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 1),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 2), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 2),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 3), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 3),
+                    ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 4), ItemList.IC2_Plantball.get(1));
+                    getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 4),
+                    ItemList.IC2_Plantball.get(1));
         }
         if (isRailcraftLoaded) {
             GT_Values.RA.addCompressorRecipe(RailcraftToolItems.getCoalCoke(9), EnumCube.COKE_BLOCK.getItem(), 300, 2);

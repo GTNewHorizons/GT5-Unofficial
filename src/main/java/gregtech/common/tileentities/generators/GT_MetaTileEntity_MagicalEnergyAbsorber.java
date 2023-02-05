@@ -12,7 +12,40 @@ import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.UNDERLINE;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDragonEgg;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemEnchantedBook;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.AspectSourceHelper;
+import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.visnet.VisNetHandler;
+
 import com.google.common.base.Enums;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,37 +63,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDragonEgg;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemEnchantedBook;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.AspectSourceHelper;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.visnet.VisNetHandler;
 
 interface MagicalEnergyBBListener {
+
     void onMagicalEnergyBBUpdate();
 }
 
@@ -68,10 +73,10 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         implements MagicalEnergyBBListener {
 
     private static final boolean THAUMCRAFT_LOADED = Loader.isModLoaded(MOD_ID_TC);
-    private static final ConcurrentHashMap<UUID, GT_MetaTileEntity_MagicalEnergyAbsorber> sSubscribedCrystals =
-            new ConcurrentHashMap<>(4);
-    private static final List<Aspect> sPrimalAspects =
-            (THAUMCRAFT_LOADED) ? Aspect.getPrimalAspects() : new ArrayList<>();
+    private static final ConcurrentHashMap<UUID, GT_MetaTileEntity_MagicalEnergyAbsorber> sSubscribedCrystals = new ConcurrentHashMap<>(
+            4);
+    private static final List<Aspect> sPrimalAspects = (THAUMCRAFT_LOADED) ? Aspect.getPrimalAspects()
+            : new ArrayList<>();
     private static final Map<Aspect, Integer> sAspectsEnergy = new HashMap<>();
     private static boolean sAllowMultipleEggs = false;
     private static GT_MetaTileEntity_MagicalEnergyAbsorber sActiveSiphon = null;
@@ -92,8 +97,8 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         onConfigLoad(GregTech_API.sMachineFile);
     }
 
-    private GT_MetaTileEntity_MagicalEnergyAbsorber(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    private GT_MetaTileEntity_MagicalEnergyAbsorber(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         onConfigLoad(GregTech_API.sMachineFile);
     }
@@ -112,13 +117,11 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             sEnergyFromVis = aConfig.get(machineconfig, "MagicEnergyAbsorber.EnergyPerVis", 20);
             sEnergyPerEssentia = aConfig.get(machineconfig, "MagicEnergyAbsorber.EnergyPerEssentia", 320);
             for (Aspect tAspect : Aspect.aspects.values()) {
-                //noinspection UnstableApiUsage
+                // noinspection UnstableApiUsage
                 sAspectsEnergy.put(
                         tAspect,
                         Enums.getIfPresent(TC_Aspects.class, tAspect.getTag().toUpperCase(Locale.ENGLISH))
-                                        .or(TC_Aspects.AER)
-                                        .mValue
-                                * sEnergyPerEssentia);
+                                .or(TC_Aspects.AER).mValue * sEnergyPerEssentia);
             }
         }
     }
@@ -131,8 +134,10 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     public void onConfigLoad(GT_Config aConfig) {
         sharedConfigLoad(aConfig);
         mEfficiency = aConfig.get(machineconfig, "MagicEnergyAbsorber.efficiency.tier." + mTier, 100 - mTier * 10);
-        mMaxVisPerDrain = (int) Math.round(Math.sqrt(
-                (double) (V[mTier] * 10000) / (sEnergyFromVis * (getEfficiency() != 0 ? getEfficiency() : 100))));
+        mMaxVisPerDrain = (int) Math.round(
+                Math.sqrt(
+                        (double) (V[mTier] * 10000)
+                                / (sEnergyFromVis * (getEfficiency() != 0 ? getEfficiency() : 100))));
         if (Math.pow(mMaxVisPerDrain, 2) * sEnergyFromVis * (getEfficiency() != 0 ? getEfficiency() : 100) < V[mTier]) {
             mMaxVisPerDrain += 1;
         }
@@ -203,15 +208,26 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         List<String> description = new ArrayList<>();
         description.add(
                 UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
-        description.add(LI + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET) + GRAY + " "
-                + LIGHT_PURPLE + "Dragon Egg" + GRAY + " atop");
+        description.add(
+                LI + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
+                        + GRAY
+                        + " "
+                        + LIGHT_PURPLE
+                        + "Dragon Egg"
+                        + GRAY
+                        + " atop");
         if (sEnergyPerEndercrystal > 0) {
             description.add(LI + sEnergyPerEndercrystal + EU_PER + LIGHT_PURPLE + "Ender Crystal" + GRAY + " in range");
         }
         if (THAUMCRAFT_LOADED) {
             description.add(LI + mMaxVisPerDrain + "%%%CV/t from an " + LIGHT_PURPLE + "Energised Node" + GRAY);
-            description.add(LI + (sEnergyPerEssentia * getEfficiency()) / 100 + EU_PER + LIGHT_PURPLE + "Essentia"
-                    + GRAY + " Aspect-Value from containers in range");
+            description.add(
+                    LI + (sEnergyPerEssentia * getEfficiency()) / 100
+                            + EU_PER
+                            + LIGHT_PURPLE
+                            + "Essentia"
+                            + GRAY
+                            + " Aspect-Value from containers in range");
         }
         description.add(" ");
         description.add(UNDERLINE + "Lookup range (Use Screwdriver to change):");
@@ -220,8 +236,13 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         description.add(" ");
         description.add(
                 UNDERLINE + "Fuels on " + LIGHT_PURPLE + UNDERLINE + "enchantments" + GRAY + UNDERLINE + " input:");
-        description.add("- Item:%%%" + (10000 * getEfficiency()) / 100 + EU_PER + LIGHT_PURPLE + "enchant" + GRAY
-                + " weight × level / max");
+        description.add(
+                "- Item:%%%" + (10000 * getEfficiency()) / 100
+                        + EU_PER
+                        + LIGHT_PURPLE
+                        + "enchant"
+                        + GRAY
+                        + " weight × level / max");
         description.add("- Book:%%%" + 10000 + EU_PER + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
         description.add(" ");
         description.add("Efficiency:%%%" + GREEN + getEfficiency() + "%");
@@ -230,108 +251,63 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
     @Override
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[] {
-            super.getFront(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC),
-            TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build(),
-            OVERLAYS_ENERGY_OUT[mTier]
-        };
+        return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build(),
+                OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
-        return new ITexture[] {
-            super.getBack(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT),
-            TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_MAGIC_FRONT_GLOW)
-                    .glow()
-                    .build()
-        };
+        return new ITexture[] { super.getBack(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_FRONT),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
-        return new ITexture[] {
-            super.getBottom(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC),
-            TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build()
-        };
+        return new ITexture[] { super.getBottom(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
-        return new ITexture[] {super.getTop(aColor)[0], TextureFactory.of(MACHINE_CASING_DRAGONEGG)};
+        return new ITexture[] { super.getTop(aColor)[0], TextureFactory.of(MACHINE_CASING_DRAGONEGG) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
-        return new ITexture[] {
-            super.getSides(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC),
-            TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build()
-        };
+        return new ITexture[] { super.getSides(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
-        return new ITexture[] {
-            super.getFrontActive(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
-                    .glow()
-                    .build(),
-            OVERLAYS_ENERGY_OUT[mTier]
-        };
+        return new ITexture[] { super.getFrontActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build(),
+                OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
-        return new ITexture[] {
-            super.getBackActive(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_MAGIC_FRONT_ACTIVE_GLOW)
-                    .glow()
-                    .build()
-        };
+        return new ITexture[] { super.getBackActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_ACTIVE_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[] {
-            super.getBottomActive(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
-                    .glow()
-                    .build()
-        };
+        return new ITexture[] { super.getBottomActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[] {
-            super.getTopActive(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_DRAGONEGG),
-            TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_DRAGONEGG_GLOW)
-                    .glow()
-                    .build()
-        };
+        return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(MACHINE_CASING_DRAGONEGG),
+                TextureFactory.builder().addIcon(MACHINE_CASING_DRAGONEGG_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[] {
-            super.getSidesActive(aColor)[0],
-            TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
-                    .glow()
-                    .build()
-        };
+        return new ITexture[] { super.getSidesActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build() };
     }
 
     @Override
@@ -373,8 +349,9 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                 mNextGenerateTickRate = 20;
             }
             aBaseMetaTileEntity.increaseStoredEnergyUnits(tGeneratedEU, true);
-            aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork()
-                    && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
+            aBaseMetaTileEntity.setActive(
+                    aBaseMetaTileEntity.isAllowedToWork()
+                            && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
         }
     }
 
@@ -398,8 +375,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                 final double oZ = aBaseMetaTileEntity.getZCoord() + 8D / 16D;
 
                 final ParticleEventBuilder particleEventBuilder = new ParticleEventBuilder()
-                        .setWorld(getBaseMetaTileEntity().getWorld())
-                        .setIdentifier(ParticleFX.PORTAL);
+                        .setWorld(getBaseMetaTileEntity().getWorld()).setIdentifier(ParticleFX.PORTAL);
 
                 for (int i = 0; i < 9; i++) {
                     final double dX = (XSTR_INSTANCE.nextFloat() - 0.5D) / 2D;
@@ -415,10 +391,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                     final double mY = -(dXZ * dY) / 4D;
                     final double mZ = dZ * 4D;
 
-                    particleEventBuilder
-                            .setMotion(mX, mY, mZ)
-                            .setPosition(x, y, z)
-                            .run();
+                    particleEventBuilder.setMotion(mX, mY, mZ).setPosition(x, y, z).run();
                 }
             }
         }
@@ -498,8 +471,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         }
 
         // Only consume input when it can store EU and push output
-        if ((getBaseMetaTileEntity().getStoredEU() + tEU)
-                        < getBaseMetaTileEntity().getEUCapacity()
+        if ((getBaseMetaTileEntity().getStoredEU() + tEU) < getBaseMetaTileEntity().getEUCapacity()
                 && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tOutputStack)) {
             decrStackSize(getInputSlot(), 1);
         } else {
@@ -516,8 +488,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     private long absorbFromEgg() {
         if (!hasEgg()) return 0;
         if (!sAllowMultipleEggs) {
-            if (sActiveSiphon != null
-                    && sActiveSiphon != this
+            if (sActiveSiphon != null && sActiveSiphon != this
                     && sActiveSiphon.getBaseMetaTileEntity() != null
                     && !sActiveSiphon.getBaseMetaTileEntity().isInvalidTileEntity()
                     && sActiveSiphon.isChunkLoaded()
@@ -575,20 +546,18 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
         long tEU = 0;
 
-        long tEUtoGen = getBaseMetaTileEntity().getEUCapacity()
-                - getBaseMetaTileEntity().getUniversalEnergyStored();
+        long tEUtoGen = getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getUniversalEnergyStored();
         List<Aspect> mAvailableEssentiaAspects = mMagicalEnergyBB.getAvailableAspects();
 
         // try to drain 1 of whatever aspect available in containers within RANGE
         for (int i = mAvailableEssentiaAspects.size() - 1; i >= 0 && tEUtoGen > 0; i--) {
             Aspect aspect = mAvailableEssentiaAspects.get(i);
             long tAspectEU = ((long) sAspectsEnergy.get(aspect) * getEfficiency()) / 100;
-            if (tAspectEU <= tEUtoGen
-                    && AspectSourceHelper.drainEssentia(
-                            (TileEntity) getBaseMetaTileEntity(),
-                            aspect,
-                            ForgeDirection.UNKNOWN,
-                            mMagicalEnergyBB.getRange())) {
+            if (tAspectEU <= tEUtoGen && AspectSourceHelper.drainEssentia(
+                    (TileEntity) getBaseMetaTileEntity(),
+                    aspect,
+                    ForgeDirection.UNKNOWN,
+                    mMagicalEnergyBB.getRange())) {
                 tEUtoGen -= tAspectEU;
                 tEU += tAspectEU;
             }
@@ -634,6 +603,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
      * Handles Bounding Box ranged operations for Magic sources
      */
     static class MagicalEnergyBB {
+
         private final GT_MetaTileEntity_MagicalEnergyAbsorber mAbsorber;
         private final MagicalEnergyBBListener mListener;
         private final int mDefaultTier;
@@ -709,8 +679,8 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             double tX = tBaseMetaTileEntity.getXCoord();
             double tY = tBaseMetaTileEntity.getYCoord();
             double tZ = tBaseMetaTileEntity.getZCoord();
-            return AxisAlignedBB.getBoundingBox(
-                    tX - tRange, tY - tRange, tZ - tRange, tX + tRange, tY + tRange, tZ + tRange);
+            return AxisAlignedBB
+                    .getBoundingBox(tX - tRange, tY - tRange, tZ - tRange, tX + tRange, tY + tRange, tZ + tRange);
         }
 
         private void scanLivingCrystals() {
@@ -788,8 +758,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         }
 
         /**
-         * Change the Bounding Box tier relatively to offset
-         * with wrapping at tier limits
+         * Change the Bounding Box tier relatively to offset with wrapping at tier limits
          *
          * @param aOffset relative tier change
          */

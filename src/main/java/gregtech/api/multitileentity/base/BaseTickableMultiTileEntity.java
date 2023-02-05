@@ -2,14 +2,16 @@ package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Util;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Util;
+
 public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity implements IMTE_OnNeighborBlockChange {
+
     /** Variable for seeing if the Tick Function is called right now. */
     public boolean mIsRunningTick = false;
     /** Gets set to true when the Block received a Block Update. */
@@ -84,22 +86,22 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
 
     /** The first part of the Tick. */
     public void onPreTick(long aTick, boolean isServerSide) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     /** The regular Tick. */
     public void onTick(long aTimer, boolean isServerSide) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     /** The absolute last part of the Tick. */
     public void onPostTick(long aTick, boolean isServerSide) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     /** Gets called when there is an Exception happening during one of the Tick Functions. */
     public void onTickFailed(long aTimer, boolean isServerSide) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override

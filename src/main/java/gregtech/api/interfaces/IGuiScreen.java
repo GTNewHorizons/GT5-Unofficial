@@ -1,13 +1,15 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.gui.widgets.GT_GuiTooltip;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.entity.RenderItem;
 
+import gregtech.api.gui.widgets.GT_GuiTooltip;
+
 public interface IGuiScreen {
 
     interface IGuiElement {
+
         void onInit();
 
         default void onRemoved() {}

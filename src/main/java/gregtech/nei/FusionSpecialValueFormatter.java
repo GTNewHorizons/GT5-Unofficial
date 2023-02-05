@@ -1,9 +1,10 @@
 package gregtech.nei;
 
-import gregtech.api.enums.GT_Values;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+
+import gregtech.api.enums.GT_Values;
 
 public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
 

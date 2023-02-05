@@ -1,14 +1,17 @@
 package gregtech.loaders.postload;
 
-import gregtech.GT_Mod;
-import gregtech.api.util.GT_Utility;
 import java.util.Set;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
 
+import gregtech.GT_Mod;
+import gregtech.api.util.GT_Utility;
+
 public class GT_BlockResistanceLoader implements Runnable {
+
     @Override
     public void run() {
         if (GT_Mod.gregtechproxy.mHardRock) {

@@ -3,7 +3,16 @@ package gregtech.common.items;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 
+import java.util.BitSet;
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import com.google.common.collect.ImmutableList;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -14,20 +23,16 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
-import java.util.BitSet;
-import java.util.List;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
+
     public static GT_MetaGenerated_Item_99 INSTANCE;
 
     /**
      * Ore prefixes appear in this list in the order in which they will be assigned ID blocks.
      *
-     * <p>In order to avoid breaking existing worlds, the entries in this list must not be re-ordered! The only safe
+     * <p>
+     * In order to avoid breaking existing worlds, the entries in this list must not be re-ordered! The only safe
      * modification that can be made to this list is adding new entries to the end.
      */
     private static final ImmutableList<OrePrefixes> CRACKED_CELL_TYPES = ImmutableList.of(
@@ -41,9 +46,8 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
     private static final int NUM_CRACKED_CELL_TYPES = CRACKED_CELL_TYPES.size();
 
     /**
-     * Assignment of metadata IDs:
-     *        0 -    999: Molten cells
-     *   10_000 - 15_999: Cracked fluid cells (# IDs used is NUM_CRACKED_CELL_TYPES * 1_000; update this if you add any)
+     * Assignment of metadata IDs: 0 - 999: Molten cells 10_000 - 15_999: Cracked fluid cells (# IDs used is
+     * NUM_CRACKED_CELL_TYPES * 1_000; update this if you add any)
      */
     private BitSet enabled = new BitSet();
 
@@ -57,12 +61,10 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
                 continue;
             }
 
-            if ((tMaterial.contains(SubTag.SMELTING_TO_FLUID))
-                    && (!tMaterial.contains(SubTag.NO_SMELTING))
+            if ((tMaterial.contains(SubTag.SMELTING_TO_FLUID)) && (!tMaterial.contains(SubTag.NO_SMELTING))
                     && !tMaterial.contains(SubTag.SMELTING_TO_GEM)) {
                 registerMolten(tMaterial, tMaterial.mMetaItemSubID);
-                if (tMaterial.mSmeltInto != tMaterial
-                        && tMaterial.mSmeltInto.mMetaItemSubID >= 0
+                if (tMaterial.mSmeltInto != tMaterial && tMaterial.mSmeltInto.mMetaItemSubID >= 0
                         && tMaterial.mSmeltInto.mMetaItemSubID < 1_000) {
                     registerMolten(tMaterial.mSmeltInto, tMaterial.mSmeltInto.mMetaItemSubID);
                 }
@@ -83,9 +85,11 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
         enabled.set(i);
 
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".name", cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
+                getUnlocalizedName(tStack) + ".name",
+                cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".tooltip", tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
+                getUnlocalizedName(tStack) + ".tooltip",
+                tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
 
         if (cellMolten.mIsUnificatable) {
             GT_OreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -101,9 +105,11 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
             enabled.set(offset + i);
 
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".name", prefix.getDefaultLocalNameFormatForItem(tMaterial));
+                    getUnlocalizedName(tStack) + ".name",
+                    prefix.getDefaultLocalNameFormatForItem(tMaterial));
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".tooltip", tMaterial.getToolTip(prefix.mMaterialAmount / M));
+                    getUnlocalizedName(tStack) + ".tooltip",
+                    tMaterial.getToolTip(prefix.mMaterialAmount / M));
 
             if (prefix.mIsUnificatable) {
                 GT_OreDictUnificator.set(prefix, tMaterial, tStack);

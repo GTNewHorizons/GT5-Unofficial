@@ -6,17 +6,19 @@ import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
 public class MixerRecipes implements Runnable {
 
@@ -1122,70 +1124,51 @@ public class MixerRecipes implements Runnable {
                 100,
                 250);
         GT_Values.RA.addMixerRecipe(
-                new ItemStack[] {
-                    Materials.NaquadahEnriched.getDust(8),
-                    Materials.Holmium.getDust(2),
-                    GT_Utility.getIntegratedCircuit(4)
-                },
+                new ItemStack[] { Materials.NaquadahEnriched.getDust(8), Materials.Holmium.getDust(2),
+                        GT_Utility.getIntegratedCircuit(4) },
                 null,
-                new ItemStack[] {Materials.EnrichedHolmium.getDust(10)},
+                new ItemStack[] { Materials.EnrichedHolmium.getDust(10) },
                 null,
                 30 * 20,
                 (int) GT_Values.VP[7]);
 
         // Catalysts for Plasma Forge.
         GT_Values.RA.addMixerRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {
-                    Materials.Helium.getPlasma(1000L),
-                    Materials.Iron.getPlasma(1000L),
-                    Materials.Calcium.getPlasma(1000L),
-                    Materials.Niobium.getPlasma(1000L)
-                },
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.Helium.getPlasma(1000L), Materials.Iron.getPlasma(1000L),
+                        Materials.Calcium.getPlasma(1000L), Materials.Niobium.getPlasma(1000L) },
+                new ItemStack[] { GT_Values.NI },
+                new FluidStack[] { Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L) },
                 50_000,
                 125_000);
 
         GT_Values.RA.addMixerRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(10)},
-                new FluidStack[] {
-                    Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L),
-                    Materials.Radon.getPlasma(1000L),
-                    Materials.Nickel.getPlasma(1000L),
-                    Materials.Boron.getPlasma(1000L),
-                    Materials.Sulfur.getPlasma(1000L)
-                },
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(10) },
+                new FluidStack[] { Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L),
+                        Materials.Radon.getPlasma(1000L), Materials.Nickel.getPlasma(1000L),
+                        Materials.Boron.getPlasma(1000L), Materials.Sulfur.getPlasma(1000L) },
+                new ItemStack[] { GT_Values.NI },
+                new FluidStack[] { Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L) },
                 50_000,
                 125_000 * 4);
 
         GT_Values.RA.addMixerRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(11)},
-                new FluidStack[] {
-                    Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L),
-                    Materials.Nitrogen.getPlasma(1000L),
-                    Materials.Zinc.getPlasma(1000L),
-                    Materials.Silver.getPlasma(1000L),
-                    Materials.Titanium.getPlasma(1000L)
-                },
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(11) },
+                new FluidStack[] { Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L),
+                        Materials.Nitrogen.getPlasma(1000L), Materials.Zinc.getPlasma(1000L),
+                        Materials.Silver.getPlasma(1000L), Materials.Titanium.getPlasma(1000L) },
+                new ItemStack[] { GT_Values.NI },
+                new FluidStack[] { Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L) },
                 50_000,
                 125_000 * 16);
 
         GT_Values.RA.addMixerRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(12)},
-                new FluidStack[] {
-                    Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L),
-                    Materials.Americium.getPlasma(1000L),
-                    Materials.Bismuth.getPlasma(1000L),
-                    Materials.Oxygen.getPlasma(1000L),
-                    Materials.Tin.getPlasma(1000L)
-                },
-                new ItemStack[] {GT_Values.NI},
-                new FluidStack[] {Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(12) },
+                new FluidStack[] { Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L),
+                        Materials.Americium.getPlasma(1000L), Materials.Bismuth.getPlasma(1000L),
+                        Materials.Oxygen.getPlasma(1000L), Materials.Tin.getPlasma(1000L) },
+                new ItemStack[] { GT_Values.NI },
+                new FluidStack[] { Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L) },
                 50_000,
                 125_000 * 64);
 
@@ -1407,10 +1390,10 @@ public class MixerRecipes implements Runnable {
                 16);
 
         RA.addMixerRecipe(
-                new ItemStack[] {ItemList.IC2_Spray_WeedEx.get(1)},
-                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10)},
+                new ItemStack[] { ItemList.IC2_Spray_WeedEx.get(1) },
+                new FluidStack[] { MaterialsKevlar.NaphthenicAcid.getFluid(10) },
                 new ItemStack[] {},
-                new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
+                new FluidStack[] { Materials.WeedEX9000.getFluid(750) },
                 100,
                 100);
 

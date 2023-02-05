@@ -1,15 +1,17 @@
 package gregtech.common.render;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+
 public interface IRenderedBlock {
+
     /** @return the Textures to be rendered */
     @SideOnly(Side.CLIENT)
     ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered);
@@ -50,6 +52,7 @@ public interface IRenderedBlock {
     IRenderedBlock passRenderingToObject(IBlockAccess aWorld, int aX, int aY, int aZ);
 
     class ErrorRenderer implements IRenderedBlockSideCheck, IRenderedBlock {
+
         public static final ErrorRenderer INSTANCE = new ErrorRenderer();
         public ITexture[] mErrorTexture = Textures.BlockIcons.ERROR_RENDERING;
 

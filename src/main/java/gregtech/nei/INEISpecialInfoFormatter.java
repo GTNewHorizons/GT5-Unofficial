@@ -10,8 +10,10 @@ import java.util.function.Function;
 public interface INEISpecialInfoFormatter {
 
     /**
-     * @param recipeInfo Recipe info to draw description. You can retrieve special value with {@code recipeInfo.recipe.mSpecialValue}.
-     * @param applyPrefixAndSuffix Function to apply {@link gregtech.api.util.GT_Recipe.GT_Recipe_Map#formatSpecialValue}.
+     * @param recipeInfo           Recipe info to draw description. You can retrieve special value with
+     *                             {@code recipeInfo.recipe.mSpecialValue}.
+     * @param applyPrefixAndSuffix Function to apply
+     *                             {@link gregtech.api.util.GT_Recipe.GT_Recipe_Map#formatSpecialValue}.
      * @return List of strings containing info for special value etc.
      */
     List<String> format(NEIRecipeInfo recipeInfo, Function<Integer, String> applyPrefixAndSuffix);

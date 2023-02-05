@@ -1,40 +1,30 @@
 package gregtech.common.render;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 
 public class GT_SidedTexture extends GT_TextureBase implements ITexture, IColorModulationContainer {
+
     protected final ITexture[] mTextures;
     /**
      * DO NOT MANIPULATE THE VALUES INSIDE THIS ARRAY!!!
      * <p/>
-     * Just set this variable to another different Array instead.
-     * Otherwise some colored things will get Problems.
+     * Just set this variable to another different Array instead. Otherwise some colored things will get Problems.
      */
     private final short[] mRGBa;
 
-    protected GT_SidedTexture(
-            IIconContainer aIcon0,
-            IIconContainer aIcon1,
-            IIconContainer aIcon2,
-            IIconContainer aIcon3,
-            IIconContainer aIcon4,
-            IIconContainer aIcon5,
-            short[] aRGBa,
-            boolean aAllowAlpha) {
+    protected GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2,
+            IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
-        mTextures = new ITexture[] {
-            TextureFactory.of(aIcon0, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon1, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon2, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon3, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon4, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon5, aRGBa, aAllowAlpha)
-        };
+        mTextures = new ITexture[] { TextureFactory.of(aIcon0, aRGBa, aAllowAlpha),
+                TextureFactory.of(aIcon1, aRGBa, aAllowAlpha), TextureFactory.of(aIcon2, aRGBa, aAllowAlpha),
+                TextureFactory.of(aIcon3, aRGBa, aAllowAlpha), TextureFactory.of(aIcon4, aRGBa, aAllowAlpha),
+                TextureFactory.of(aIcon5, aRGBa, aAllowAlpha) };
         mRGBa = aRGBa;
     }
 

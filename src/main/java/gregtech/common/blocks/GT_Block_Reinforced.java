@@ -2,16 +2,8 @@ package gregtech.common.blocks;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.WorldSpawnedEventBuilder;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,6 +21,16 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.*;
+import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 
 public class GT_Block_Reinforced extends GT_Generic_Block {
 
@@ -53,11 +55,9 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Neutronium Reinforced Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Raw Deep Dark Portal Block");
         ItemList.Block_BronzePlate.set(new ItemStack(this.setHardness(60.0f).setResistance(150.0f), 1, 0));
-        ItemList.Block_IridiumTungstensteel.set(
-                new ItemStack(this.setHardness(400.0f).setResistance(600.0f), 1, 1));
+        ItemList.Block_IridiumTungstensteel.set(new ItemStack(this.setHardness(400.0f).setResistance(600.0f), 1, 1));
         ItemList.Block_Plascrete.set(new ItemStack(this.setHardness(5.0f).setResistance(6.0f), 1, 2));
-        ItemList.Block_TungstenSteelReinforced.set(
-                new ItemStack(this.setHardness(250.0f).setResistance(400.0f), 1, 3));
+        ItemList.Block_TungstenSteelReinforced.set(new ItemStack(this.setHardness(250.0f).setResistance(400.0f), 1, 3));
         ItemList.Block_BrittleCharcoal.set(new ItemStack(this.setHardness(0.5f).setResistance(8.0f), 1, 4));
         ItemList.Block_Powderbarrel.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 5));
         ItemList.Block_SSFUEL.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 6));
@@ -65,24 +65,16 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         ItemList.Block_SteelPlate.set(new ItemStack(this.setHardness(150.0f).setResistance(200.0f), 1, 8));
         ItemList.Block_TitaniumPlate.set(new ItemStack(this.setHardness(200.0f).setResistance(300.0f), 1, 9));
         ItemList.Block_NaquadahPlate.set(new ItemStack(this.setHardness(500.0f).setResistance(1000.0f), 1, 10));
-        ItemList.Block_NeutroniumPlate.set(
-                new ItemStack(this.setHardness(750.0f).setResistance(2500.0f), 1, 11));
-        ItemList.Block_BedrockiumCompressed.set(
-                new ItemStack(this.setHardness(1500.0f).setResistance(5000.0f), 1, 12));
+        ItemList.Block_NeutroniumPlate.set(new ItemStack(this.setHardness(750.0f).setResistance(2500.0f), 1, 11));
+        ItemList.Block_BedrockiumCompressed.set(new ItemStack(this.setHardness(1500.0f).setResistance(5000.0f), 1, 12));
         GT_ModHandler.addShapelessCraftingRecipe(
-                new ItemStack(Items.coal, 1, 1), new Object[] {ItemList.Block_BrittleCharcoal.get(1)});
+                new ItemStack(Items.coal, 1, 1),
+                new Object[] { ItemList.Block_BrittleCharcoal.get(1) });
         GT_ModHandler.addCraftingRecipe(
-                ItemList.Block_Powderbarrel.get(1L), GT_ModHandler.RecipeBits.REVERSIBLE, new Object[] {
-                    "WSW",
-                    "GGG",
-                    "WGW",
-                    'W',
-                    OrePrefixes.plate.get(Materials.Wood),
-                    'G',
-                    new ItemStack(Items.gunpowder, 1),
-                    'S',
-                    new ItemStack(Items.string, 1)
-                });
+                ItemList.Block_Powderbarrel.get(1L),
+                GT_ModHandler.RecipeBits.REVERSIBLE,
+                new Object[] { "WSW", "GGG", "WGW", 'W', OrePrefixes.plate.get(Materials.Wood), 'G',
+                        new ItemStack(Items.gunpowder, 1), 'S', new ItemStack(Items.string, 1) });
     }
 
     @Override
@@ -176,8 +168,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX,
+            double explosionY, double explosionZ) {
         if (world == null) {
             return 0.0F;
         }
@@ -251,8 +243,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public void dropBlockAsItemWithChance(
-            World aWorld, int aX, int aY, int aZ, int aMetadata, float chance, int aFortune) {
+    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int aMetadata, float chance,
+            int aFortune) {
         if (aMetadata == 4) {
             this.dropBlockAsItem(aWorld, aX, aY, aZ, new ItemStack(Items.coal, XSTR_INSTANCE.nextInt(2) + 1, 1));
         } else {
@@ -265,13 +257,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
             EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
             world.spawnEntityInWorld(entitytntprimed);
-            new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
-                    .setPitch(1f)
-                    .setVolume(1f)
-                    .setIdentifier(SoundResource.GAME_TNT_PRIMED)
-                    .setEntity(entitytntprimed)
-                    .setWorld(world)
-                    .run();
+            new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f).setVolume(1f)
+                    .setIdentifier(SoundResource.GAME_TNT_PRIMED).setEntity(entitytntprimed).setWorld(world).run();
             world.setBlockToAir(x, y, z);
             return false;
         }
@@ -296,8 +283,12 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
         if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
-            EntityTNTPrimed entitytntprimed =
-                    new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, explosion.getExplosivePlacedBy());
+            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(
+                    world,
+                    x + 0.5F,
+                    y + 0.5F,
+                    z + 0.5F,
+                    explosion.getExplosivePlacedBy());
             entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
             world.spawnEntityInWorld(entitytntprimed);
         }
@@ -305,16 +296,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world,
-            int x,
-            int y,
-            int z,
-            EntityPlayer player,
-            int side,
-            float xOffset,
-            float yOffset,
-            float zOffset) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset,
+            float yOffset, float zOffset) {
         if ((player.getCurrentEquippedItem() != null)
                 && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)
                 && world.getBlockMetadata(x, y, z) == 5) {

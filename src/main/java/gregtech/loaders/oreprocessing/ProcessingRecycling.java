@@ -1,14 +1,16 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingRecycling() {
         for (OrePrefixes tPrefix : OrePrefixes.values())
             if ((tPrefix.mIsMaterialBased) && (tPrefix.mMaterialAmount > 0L) && (tPrefix.mIsContainer))
@@ -16,10 +18,9 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if ((aMaterial != Materials.Empty)
-                && (GT_Utility.getFluidForFilledItem(aStack, true) == null)
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
+        if ((aMaterial != Materials.Empty) && (GT_Utility.getFluidForFilledItem(aStack, true) == null)
                 && !aMaterial.contains(SubTag.SMELTING_TO_FLUID))
             GT_Values.RA.addCannerRecipe(
                     aStack,

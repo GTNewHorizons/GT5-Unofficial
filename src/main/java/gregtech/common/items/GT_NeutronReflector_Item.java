@@ -1,11 +1,13 @@
 package gregtech.common.items;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.items.GT_Generic_Item;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
-import net.minecraft.item.ItemStack;
 
 public class GT_NeutronReflector_Item extends GT_Generic_Item implements IReactorComponent {
+
     public GT_NeutronReflector_Item(String aUnlocalized, String aEnglish, int aMaxDamage) {
         super(aUnlocalized, aEnglish, "Undestructable");
         this.setMaxStackSize(64);
@@ -13,15 +15,8 @@ public class GT_NeutronReflector_Item extends GT_Generic_Item implements IReacto
     }
 
     @Override
-    public boolean acceptUraniumPulse(
-            IReactor reactor,
-            ItemStack yourStack,
-            ItemStack pulsingStack,
-            int youX,
-            int youY,
-            int pulseX,
-            int pulseY,
-            boolean heatrun) {
+    public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
+            int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
             ((IReactorComponent) pulsingStack.getItem())
                     .acceptUraniumPulse(reactor, pulsingStack, yourStack, pulseX, pulseY, youX, youY, heatrun);

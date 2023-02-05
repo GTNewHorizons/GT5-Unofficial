@@ -2,21 +2,25 @@ package gregtech.common.covers;
 
 import static gregtech.api.enums.GT_Values.SIDE_UNKNOWN;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.ISerializableObject;
 import java.lang.ref.WeakReference;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.ISerializableObject;
+
 public final class CoverInfo {
+
     private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d";
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(SIDE_UNKNOWN, null);
@@ -44,8 +48,7 @@ public final class CoverInfo {
         coverSide = aNBT.getByte(NBT_SIDE);
         coverID = aNBT.getInteger(NBT_ID);
         coverBehavior = GregTech_API.getCoverBehaviorNew(coverID);
-        coverData = aNBT.hasKey(NBT_DATA)
-                ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
+        coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
                 : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
     }
@@ -158,8 +161,12 @@ public final class CoverInfo {
     }
 
     public ModularWindow createWindow(EntityPlayer player) {
-        final GT_CoverUIBuildContext buildContext =
-                new GT_CoverUIBuildContext(player, coverID, coverSide, coveredTile.get(), true);
+        final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
+                player,
+                coverID,
+                coverSide,
+                coveredTile.get(),
+                true);
         return getCoverBehavior().createWindow(buildContext);
     }
 

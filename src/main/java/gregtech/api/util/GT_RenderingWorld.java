@@ -1,13 +1,10 @@
 package gregtech.api.util;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
@@ -20,10 +17,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+
 /**
  * Provide a fake IBlockAccess to support CTM. Facade are supposed to set these when they are placed/received by client.
  */
 public class GT_RenderingWorld implements IBlockAccess {
+
     private static final GT_RenderingWorld INSTANCE = new GT_RenderingWorld();
     /*
      * I do not think this map would ever grow too huge, so I won't go too overcomplicated on this one
@@ -56,8 +59,7 @@ public class GT_RenderingWorld implements IBlockAccess {
     public void register(int x, int y, int z, Block block, int meta) {
         ChunkPosition key = new ChunkPosition(x, y, z);
         infos.put(key, new BlockInfo(block, meta));
-        index.computeIfAbsent(new ChunkCoordIntPair(x >> 4, z >> 4), p -> new HashSet<>())
-                .add(key);
+        index.computeIfAbsent(new ChunkCoordIntPair(x >> 4, z >> 4), p -> new HashSet<>()).add(key);
     }
 
     public void unregister(int x, int y, int z, Block block, int meta) {
@@ -123,6 +125,7 @@ public class GT_RenderingWorld implements IBlockAccess {
     }
 
     public class FMLEventHandler {
+
         public FMLEventHandler() {
             FMLCommonHandler.instance().bus().register(this);
         }
@@ -134,6 +137,7 @@ public class GT_RenderingWorld implements IBlockAccess {
     }
 
     public class ForgeEventHandler {
+
         private ForgeEventHandler() {
             MinecraftForge.EVENT_BUS.register(this);
         }
@@ -154,6 +158,7 @@ public class GT_RenderingWorld implements IBlockAccess {
     }
 
     private static class BlockInfo {
+
         private final Block block;
         private final int meta;
 

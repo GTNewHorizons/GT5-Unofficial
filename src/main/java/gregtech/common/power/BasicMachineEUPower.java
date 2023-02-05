@@ -3,6 +3,7 @@ package gregtech.common.power;
 import static gregtech.api.enums.GT_Values.V;
 
 public class BasicMachineEUPower extends EUPower {
+
     protected static final String OC = " (OC)";
     protected boolean wasOverclocked;
 
@@ -36,9 +37,8 @@ public class BasicMachineEUPower extends EUPower {
                 tempEUt <<= 2; // this actually controls overclocking
                 // xEUt *= 4;//this is effect of everclocking
                 recipeDuration >>= 1; // this is effect of overclocking
-                xEUt = recipeDuration == 0
-                        ? xEUt >> 1
-                        : xEUt << 2; // U know, if the time is less than 1 tick make the machine use 2x less power
+                xEUt = recipeDuration == 0 ? xEUt >> 1 : xEUt << 2; // U know, if the time is less than 1 tick make the
+                                                                    // machine use 2x less power
             }
             if (xEUt > Integer.MAX_VALUE - 1) {
                 recipeEuPerTick = Integer.MAX_VALUE - 1;

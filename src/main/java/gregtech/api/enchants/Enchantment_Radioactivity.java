@@ -1,16 +1,18 @@
 package gregtech.api.enchants;
 
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+
 public class Enchantment_Radioactivity extends EnchantmentDamage {
+
     public static Enchantment_Radioactivity INSTANCE;
 
     public Enchantment_Radioactivity() {

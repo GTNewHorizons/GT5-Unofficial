@@ -3,19 +3,6 @@ package gregtech.common;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.common.GT_Proxy.dimensionWisePollution;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.metatileentity.IMachineCallback;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet_Pollution;
-import gregtech.api.util.GT_ChunkAssociatedData;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_PollutionRenderer;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -24,8 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,45 +33,46 @@ import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.metatileentity.IMachineCallback;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GT_Packet_Pollution;
+import gregtech.api.util.GT_ChunkAssociatedData;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.render.GT_PollutionRenderer;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
+
 public class GT_Pollution {
+
     private static final Storage STORAGE = new Storage();
     /**
-     * Pollution dispersion until effects start:
-     * Calculation: ((Limit * 0.01) + 2000) * (4 <- spreading rate)
+     * Pollution dispersion until effects start: Calculation: ((Limit * 0.01) + 2000) * (4 <- spreading rate)
      * <p>
-     * SMOG(500k) 466.7 pollution/sec
-     * Poison(750k) 633,3 pollution/sec
-     * Dying Plants(1mio) 800 pollution/sec
-     * Sour Rain(1.5mio) 1133.3 pollution/sec
+     * SMOG(500k) 466.7 pollution/sec Poison(750k) 633,3 pollution/sec Dying Plants(1mio) 800 pollution/sec Sour
+     * Rain(1.5mio) 1133.3 pollution/sec
      * <p>
-     * Pollution producers (pollution/sec)
-     * Bronze Boiler(20)
-     * Lava Boiler(20)
-     * High Pressure Boiler(20)
-     * Bronze Blast Furnace(50)
-     * Diesel Generator(40/80/160)
-     * Gas Turbine(20/40/80)
-     * Charcoal Pile(100)
+     * Pollution producers (pollution/sec) Bronze Boiler(20) Lava Boiler(20) High Pressure Boiler(20) Bronze Blast
+     * Furnace(50) Diesel Generator(40/80/160) Gas Turbine(20/40/80) Charcoal Pile(100)
      * <p>
-     * Large Diesel Engine(320)
-     * Electric Blast Furnace(100)
-     * Implosion Compressor(2000)
-     * Large Boiler(240)
-     * Large Gas Turbine(160)
-     * Multi Smelter(100)
-     * Pyrolyse Oven(400)
+     * Large Diesel Engine(320) Electric Blast Furnace(100) Implosion Compressor(2000) Large Boiler(240) Large Gas
+     * Turbine(160) Multi Smelter(100) Pyrolyse Oven(400)
      * <p>
      * Machine Explosion(100,000)
      * <p>
      * Other Random Shit: lots and lots
      * <p>
-     * Muffler Hatch Pollution reduction:  ** inaccurate **
-     * LV (0%), MV (30%), HV (52%), EV (66%), IV (76%), LuV (84%), ZPM (89%), UV (92%), MAX (95%)
+     * Muffler Hatch Pollution reduction: ** inaccurate ** LV (0%), MV (30%), HV (52%), EV (66%), IV (76%), LuV (84%),
+     * ZPM (89%), UV (92%), MAX (95%)
      */
     private List<ChunkCoordIntPair> pollutionList = new ArrayList<>(); // chunks left to process in this cycle
 
-    private final Set<ChunkCoordIntPair> pollutedChunks =
-            new HashSet<>(); // a global list of all chunks with positive pollution
+    private final Set<ChunkCoordIntPair> pollutedChunks = new HashSet<>(); // a global list of all chunks with positive
+                                                                           // pollution
     private int operationsPerTick = 0; // how much chunks should be processed in each cycle
     private static final short cycleLen = 1200;
     private final World world;
@@ -167,25 +157,28 @@ public class GT_Pollution {
                         if (!(GT_Utility.isWearingFullGasHazmat(tEnt))) {
                             switch (XSTR_INSTANCE.nextInt(3)) {
                                 default:
-                                    tEnt.addPotionEffect(new PotionEffect(
-                                            Potion.digSlowdown.id,
-                                            Math.min(tPollution / 1000, 1000),
-                                            tPollution / 400000));
+                                    tEnt.addPotionEffect(
+                                            new PotionEffect(
+                                                    Potion.digSlowdown.id,
+                                                    Math.min(tPollution / 1000, 1000),
+                                                    tPollution / 400000));
                                 case 1:
-                                    tEnt.addPotionEffect(new PotionEffect(
-                                            Potion.weakness.id,
-                                            Math.min(tPollution / 1000, 1000),
-                                            tPollution / 400000));
+                                    tEnt.addPotionEffect(
+                                            new PotionEffect(
+                                                    Potion.weakness.id,
+                                                    Math.min(tPollution / 1000, 1000),
+                                                    tPollution / 400000));
                                 case 2:
-                                    tEnt.addPotionEffect(new PotionEffect(
-                                            Potion.moveSlowdown.id,
-                                            Math.min(tPollution / 1000, 1000),
-                                            tPollution / 400000));
+                                    tEnt.addPotionEffect(
+                                            new PotionEffect(
+                                                    Potion.moveSlowdown.id,
+                                                    Math.min(tPollution / 1000, 1000),
+                                                    tPollution / 400000));
                             }
                         }
                     }
 
-                    //				Poison effects
+                    // Poison effects
                     if (tPollution > GT_Mod.gregtechproxy.mPollutionPoisonLimit) {
                         // AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(tPos.chunkPosX*16, 0, tPos.chunkPosZ*16,
                         // tPos.chunkPosX*16+16, 256, tPos.chunkPosZ*16+16);
@@ -198,21 +191,28 @@ public class GT_Pollution {
                                     default:
                                         tEnt.addPotionEffect(new PotionEffect(Potion.hunger.id, tPollution / 500000));
                                     case 1:
-                                        tEnt.addPotionEffect(new PotionEffect(
-                                                Potion.confusion.id, Math.min(tPollution / 2000, 1000), 1));
+                                        tEnt.addPotionEffect(
+                                                new PotionEffect(
+                                                        Potion.confusion.id,
+                                                        Math.min(tPollution / 2000, 1000),
+                                                        1));
                                     case 2:
-                                        tEnt.addPotionEffect(new PotionEffect(
-                                                Potion.poison.id,
-                                                Math.min(tPollution / 4000, 1000),
-                                                tPollution / 500000));
+                                        tEnt.addPotionEffect(
+                                                new PotionEffect(
+                                                        Potion.poison.id,
+                                                        Math.min(tPollution / 4000, 1000),
+                                                        tPollution / 500000));
                                     case 3:
-                                        tEnt.addPotionEffect(new PotionEffect(
-                                                Potion.blindness.id, Math.min(tPollution / 2000, 1000), 1));
+                                        tEnt.addPotionEffect(
+                                                new PotionEffect(
+                                                        Potion.blindness.id,
+                                                        Math.min(tPollution / 2000, 1000),
+                                                        1));
                                 }
                             }
                         }
 
-                        //				killing plants
+                        // killing plants
                         if (tPollution > GT_Mod.gregtechproxy.mPollutionVegetationLimit) {
                             int f = 20;
                             for (; f < (tPollution / 25000); f++) {
@@ -231,7 +231,11 @@ public class GT_Pollution {
             // Send new value to players nearby
             if (tPollution > POLLUTIONPACKET_MINVALUE) {
                 NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(
-                        world.provider.dimensionId, (actualPos.chunkXPos << 4), 64, (actualPos.chunkZPos << 4), 256);
+                        world.provider.dimensionId,
+                        (actualPos.chunkXPos << 4),
+                        64,
+                        (actualPos.chunkZPos << 4),
+                        256);
                 GT_Values.NW.sendToAllAround(new GT_Packet_Pollution(actualPos, tPollution), point);
             }
         }
@@ -259,8 +263,7 @@ public class GT_Pollution {
             tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
             world.setBlockToAir(x, y, z);
         }
-        if (tBlock == Blocks.waterlily
-                || tBlock == Blocks.wheat
+        if (tBlock == Blocks.waterlily || tBlock == Blocks.wheat
                 || tBlock == Blocks.cactus
                 || tBlock.getMaterial() == Material.cactus
                 || tBlock == Blocks.melon_block
@@ -268,8 +271,7 @@ public class GT_Pollution {
             tBlock.dropBlockAsItem(world, x, y, z, tMeta, 0);
             world.setBlockToAir(x, y, z);
         }
-        if (tBlock == Blocks.red_flower
-                || tBlock == Blocks.yellow_flower
+        if (tBlock == Blocks.red_flower || tBlock == Blocks.yellow_flower
                 || tBlock == Blocks.carrots
                 || tBlock == Blocks.potatoes
                 || tBlock == Blocks.pumpkin
@@ -289,8 +291,7 @@ public class GT_Pollution {
             world.setBlock(x, y, z, Blocks.sand);
         }
 
-        if (sourRain
-                && world.isRaining()
+        if (sourRain && world.isRaining()
                 && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone)
                 && world.getBlock(x, y + 1, z) == Blocks.air
                 && world.canBlockSeeTheSky(x, y, z)) {
@@ -333,12 +334,12 @@ public class GT_Pollution {
     }
 
     /**
-     * Add some pollution to given chunk. Can pass in negative to remove pollution.
-     * Will clamp the final pollution number to 0 if it would be changed into negative.
+     * Add some pollution to given chunk. Can pass in negative to remove pollution. Will clamp the final pollution
+     * number to 0 if it would be changed into negative.
      *
-     * @param w world to modify. do nothing if it's a client world
-     * @param chunkX chunk coordinate X, i.e. blockX >> 4
-     * @param chunkZ chunk coordinate Z, i.e. blockZ >> 4
+     * @param w          world to modify. do nothing if it's a client world
+     * @param chunkX     chunk coordinate X, i.e. blockX >> 4
+     * @param chunkZ     chunk coordinate Z, i.e. blockZ >> 4
      * @param aPollution desired delta. Positive means the pollution in chunk would go higher.
      */
     public static void addPollution(World w, int chunkX, int chunkZ, int aPollution) {
@@ -346,8 +347,8 @@ public class GT_Pollution {
         mutatePollution(w, chunkX, chunkZ, d -> d.changeAmount(aPollution), null);
     }
 
-    private static void mutatePollution(
-            World world, int x, int z, Consumer<ChunkData> mutator, @Nullable Set<ChunkCoordIntPair> chunks) {
+    private static void mutatePollution(World world, int x, int z, Consumer<ChunkData> mutator,
+            @Nullable Set<ChunkCoordIntPair> chunks) {
         ChunkData data = STORAGE.get(world, x, z);
         boolean hadPollution = data.getAmount() > 0;
         mutator.accept(data);
@@ -359,23 +360,24 @@ public class GT_Pollution {
         }
     }
 
-    /** @see #getPollution(World, int, int)  */
+    /** @see #getPollution(World, int, int) */
     public static int getPollution(IGregTechTileEntity te) {
         return getPollution(te.getWorld(), te.getXCoord() >> 4, te.getZCoord() >> 4);
     }
 
-    /** @see #getPollution(World, int, int)  */
+    /** @see #getPollution(World, int, int) */
     public static int getPollution(Chunk ch) {
         return getPollution(ch.worldObj, ch.xPosition, ch.zPosition);
     }
 
     /**
      * Get the pollution in specified chunk
-     * @param w world to look in. can be a client world, but that limits the knowledge to what server side send us
+     * 
+     * @param w      world to look in. can be a client world, but that limits the knowledge to what server side send us
      * @param chunkX chunk coordinate X, i.e. blockX >> 4
      * @param chunkZ chunk coordinate Z, i.e. blockZ >> 4
-     * @return pollution amount. may be 0 if pollution is disabled, or if it's a client world and server did not send
-     * us info about this chunk
+     * @return pollution amount. may be 0 if pollution is disabled, or if it's a client world and server did not send us
+     *         info about this chunk
      */
     public static int getPollution(World w, int chunkX, int chunkZ) {
         if (!GT_Mod.gregtechproxy.mPollution) return 0;
@@ -392,12 +394,11 @@ public class GT_Pollution {
 
     public static boolean hasPollution(Chunk ch) {
         if (!GT_Mod.gregtechproxy.mPollution) return false;
-        return STORAGE.isCreated(ch.worldObj, ch.getChunkCoordIntPair())
-                && STORAGE.get(ch).getAmount() > 0;
+        return STORAGE.isCreated(ch.worldObj, ch.getChunkCoordIntPair()) && STORAGE.get(ch).getAmount() > 0;
     }
 
     // Add compatibility with old code
-    @Deprecated /*Don't use it... too weird way of passing position*/
+    @Deprecated /* Don't use it... too weird way of passing position */
     public static void addPollution(World aWorld, ChunkPosition aPos, int aPollution) {
         // The abuse of ChunkPosition to store block position and dim...
         // is just bad especially when that is both used to store ChunkPos and BlockPos depending on context
@@ -409,6 +410,7 @@ public class GT_Pollution {
     }
 
     public static class GT_PollutionEventHandler {
+
         @SubscribeEvent
         public void chunkWatch(ChunkWatchEvent.Watch event) {
             if (!GT_Mod.gregtechproxy.mPollution) return;
@@ -429,6 +431,7 @@ public class GT_Pollution {
 
     @ParametersAreNonnullByDefault
     private static final class Storage extends GT_ChunkAssociatedData<ChunkData> {
+
         private Storage() {
             super("Pollution", ChunkData.class, 64, (byte) 0, false);
         }
@@ -465,6 +468,7 @@ public class GT_Pollution {
     }
 
     private static final class ChunkData implements GT_ChunkAssociatedData.IData {
+
         public int amount;
 
         private ChunkData() {

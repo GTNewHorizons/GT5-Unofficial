@@ -1,9 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ToolHarvestHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -11,7 +7,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ToolHarvestHelper;
+
 public class GT_Tool_File extends GT_Tool {
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
@@ -95,16 +97,14 @@ public class GT_Tool_File extends GT_Tool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack)
-                        .mIconSet
-                        .mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.mTextureIndex]
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.mTextureIndex]
                 : Textures.ItemIcons.HANDLE_FILE;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
                 : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
@@ -113,8 +113,12 @@ public class GT_Tool_File extends GT_Tool {
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE
-                + " has been filed D for 'Dead' by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " has been filed D for 'Dead' by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 }

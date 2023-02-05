@@ -1,9 +1,5 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -12,7 +8,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import io.netty.buffer.ByteBuf;
+
 public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
+
     private static final int PRIVATE_MASK = 0xFFFE0000;
     private static final int PUBLIC_MASK = 0x0000FFFF;
     private static final int CHECKBOX_MASK = 0x00010000;
@@ -25,15 +28,15 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
         super();
     }
 
-    public GT_Packet_WirelessRedstoneCover(
-            int mX, short mY, int mZ, byte coverSide, int coverID, int dimID, int publicChannel, int checkBoxValue) {
+    public GT_Packet_WirelessRedstoneCover(int mX, short mY, int mZ, byte coverSide, int coverID, int dimID,
+            int publicChannel, int checkBoxValue) {
         super(mX, mY, mZ, coverSide, coverID, 0, dimID);
         mPublicChannel = publicChannel;
         mCheckBoxValue = checkBoxValue;
     }
 
-    public GT_Packet_WirelessRedstoneCover(
-            byte coverSide, int coverID, ICoverable tile, int publicChannel, int checkBoxValue) {
+    public GT_Packet_WirelessRedstoneCover(byte coverSide, int coverID, ICoverable tile, int publicChannel,
+            int checkBoxValue) {
         super(coverSide, coverID, 0, tile);
         mPublicChannel = publicChannel;
         mCheckBoxValue = checkBoxValue;
@@ -85,8 +88,7 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
         if (world != null && world.blockExists(mX, mY, mZ)) {
             TileEntity tile = world.getTileEntity(mX, mY, mZ);
             if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
-                int tPrivateChannel =
-                        (mCheckBoxValue > 0) ? mPlayer.getUniqueID().hashCode() & PRIVATE_MASK : 0;
+                int tPrivateChannel = (mCheckBoxValue > 0) ? mPlayer.getUniqueID().hashCode() & PRIVATE_MASK : 0;
                 int tCoverData = tPrivateChannel | (mCheckBoxValue & CHECKBOX_MASK) | (mPublicChannel & PUBLIC_MASK);
                 ((IGregTechTileEntity) tile).receiveCoverData(side, coverID, tCoverData);
             }

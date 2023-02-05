@@ -1,16 +1,19 @@
 package gregtech.common.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.interfaces.IHasFluidDisplayItem;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet_New;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.interfaces.IHasFluidDisplayItem;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GT_Packet_New;
+import io.netty.buffer.ByteBuf;
+
 public class MessageUpdateFluidDisplayItem extends GT_Packet_New {
+
     private int mBlockX, mBlockY, mBlockZ, mDim;
 
     public MessageUpdateFluidDisplayItem() {

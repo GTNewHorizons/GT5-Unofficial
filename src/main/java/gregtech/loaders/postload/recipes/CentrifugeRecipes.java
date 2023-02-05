@@ -6,16 +6,18 @@ import static gregtech.loaders.postload.GT_MachineRecipeLoader.isExtraUtilitiesL
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class CentrifugeRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addCentrifugeRecipe(
@@ -29,9 +31,9 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {10000, 10000, 9000},
+                new int[] { 10000, 10000, 9000 },
                 400,
-                (int) Tier.RECIPE_MV);
+                (int) TierEU.RECIPE_MV);
 
         GT_Values.RA.addCentrifugeRecipe(
                 ItemList.Cell_Empty.get(1),
@@ -59,7 +61,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 3),
-                new int[] {10000, 10000, 10000, 9500, 9000, 8500},
+                new int[] { 10000, 10000, 10000, 9500, 9000, 8500 },
                 8100,
                 30);
 
@@ -74,9 +76,9 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Tin.getDust(1),
                 Materials.Nickel.getDust(1),
                 Materials.Antimony.getDust(1),
-                new int[] {10000, 4000, 2000, 2000, 2000, 2000},
+                new int[] { 10000, 4000, 2000, 2000, 2000, 2000 },
                 40,
-                (int) Tier.RECIPE_MV);
+                (int) TierEU.RECIPE_MV);
 
         // food ->CH4
         GT_Values.RA.addCentrifugeRecipe(
@@ -596,9 +598,9 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {5000, 100, 5000},
+                new int[] { 5000, 100, 5000 },
                 600,
-                (int) Tier.RECIPE_MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addCentrifugeRecipe(
                 new ItemStack(Blocks.dirt, 1, 32767),
                 GT_Values.NI,
@@ -610,7 +612,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {1250, 5000, 5000},
+                new int[] { 1250, 5000, 5000 },
                 250,
                 30);
         GT_Values.RA.addCentrifugeRecipe(
@@ -624,7 +626,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {2500, 5000, 5000},
+                new int[] { 2500, 5000, 5000 },
                 250,
                 30);
         GT_Values.RA.addCentrifugeRecipe(
@@ -638,7 +640,7 @@ public class CentrifugeRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1),
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {2500, 2500, 5000, 5000},
+                new int[] { 2500, 2500, 5000, 5000 },
                 650,
                 30);
         GT_Values.RA.addCentrifugeRecipe(
@@ -652,7 +654,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {10000, 1000},
+                new int[] { 10000, 1000 },
                 300,
                 5);
         GT_Values.RA.addCentrifugeRecipe(
@@ -704,6 +706,9 @@ public class CentrifugeRecipes implements Runnable {
                 new int[] {10000},
                 4000,
                 (int) GT_Values.VP[4]);
+                new int[] { 2000, 200 },
+                800,
+                320);
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L),
                 GT_Values.NI,
@@ -715,7 +720,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {2000, 3000},
+                new int[] { 2000, 3000 },
                 1600,
                 320);
         GT_Values.RA.addCentrifugeRecipe(
@@ -729,7 +734,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {5000, 1000},
+                new int[] { 5000, 1000 },
                 28800,
                 320);
         GT_Values.RA.addCentrifugeRecipe(
@@ -743,7 +748,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {2000, 3000},
+                new int[] { 2000, 3000 },
                 25600,
                 640);
         GT_Values.RA.addCentrifugeRecipe(
@@ -814,7 +819,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {3750, 2500, 9000, 0, 0, 0},
+                new int[] { 3750, 2500, 9000, 0, 0, 0 },
                 11520,
                 20);
         GT_Values.RA.addCentrifugeRecipe(
@@ -828,7 +833,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L),
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {5625, 9900, 5625, 2500, 0, 0},
+                new int[] { 5625, 9900, 5625, 2500, 0, 0 },
                 5760,
                 20);
 
@@ -843,7 +848,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Gold.getNuggets(4),
                 Materials.Sapphire.getDust(1),
                 Materials.Tantalite.getDust(1),
-                new int[] {5000, 1000, 1000, 250, 1250, 500},
+                new int[] { 5000, 1000, 1000, 250, 1250, 500 },
                 320,
                 80);
         GT_Values.RA.addCentrifugeRecipe(
@@ -857,7 +862,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {1000, 700, 9000, 0, 0, 0},
+                new int[] { 1000, 700, 9000, 0, 0, 0 },
                 200,
                 12);
 
@@ -872,7 +877,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Scheelite, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Bauxite, 1L),
-                new int[] {2000, 1000, 250, 50, 250, 500},
+                new int[] { 2000, 1000, 250, 50, 250, 500 },
                 40,
                 1024);
         GT_Values.RA.addCentrifugeRecipe(
@@ -886,7 +891,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Scheelite, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bauxite, 9L),
-                new int[] {2000, 4000, 1000, 200, 2250, 4500},
+                new int[] { 2000, 4000, 1000, 200, 2250, 4500 },
                 328,
                 4096);
 
@@ -902,7 +907,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cerium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cadmium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Caesium, 1L),
-                new int[] {2500, 2500, 2500, 2500, 2500, 2500},
+                new int[] { 2500, 2500, 2500, 2500, 2500, 2500 },
                 64,
                 20);
 
@@ -917,7 +922,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Flint, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.RareEarth, 1L),
-                new int[] {2000, 2000, 2000, 2000, 2000, 2000},
+                new int[] { 2000, 2000, 2000, 2000, 2000, 2000 },
                 64,
                 20);
         GT_Values.RA.addCentrifugeRecipe(
@@ -931,7 +936,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Basalt, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Flint, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 2L),
-                new int[] {9000, 9000, 9000, 9000, 9000, 9000},
+                new int[] { 9000, 9000, 9000, 9000, 9000, 9000 },
                 518,
                 80);
 
@@ -947,7 +952,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.PhosphorousPentoxide.getDust(2),
                 Materials.SodaAsh.getDust(1),
                 Materials.BandedIron.getDust(4),
-                new int[] {6400, 6000, 4500, 10000, 10000, 10000},
+                new int[] { 6400, 6000, 4500, 10000, 10000, 10000 },
                 6000,
                 30);
         // Stone Dust and Metal Mixture centrifuge recipes
@@ -962,7 +967,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Biotite.getDust(4),
                 Materials.MetalMixture.getDust(3),
                 Materials.Sodalite.getDust(2),
-                new int[] {10000, 10000, 10000, 10000, 10000, 10000},
+                new int[] { 10000, 10000, 10000, 10000, 10000, 10000 },
                 8640,
                 30);
         GT_Values.RA.addCentrifugeRecipe(
@@ -976,9 +981,9 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Barite.getDust(4),
                 Materials.Chromite.getDust(3),
                 Materials.Ilmenite.getDust(2),
-                new int[] {10000, 10000, 10000, 10000, 10000, 10000},
+                new int[] { 10000, 10000, 10000, 10000, 10000, 10000 },
                 13125,
-                (int) Tier.EV);
+                (int) TierEU.RECIPE_EV);
 
         GT_Values.RA.addCentrifugeRecipe(
                 null,
@@ -1020,7 +1025,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {10000, 10000},
+                new int[] { 10000, 10000 },
                 600,
                 2000000);
 

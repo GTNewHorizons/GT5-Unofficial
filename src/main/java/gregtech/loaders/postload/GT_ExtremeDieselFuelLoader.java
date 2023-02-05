@@ -4,6 +4,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 
 public class GT_ExtremeDieselFuelLoader implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Adding extreme diesel fuel.");

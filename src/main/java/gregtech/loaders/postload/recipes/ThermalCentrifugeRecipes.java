@@ -2,12 +2,13 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.RA;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class ThermalCentrifugeRecipes implements Runnable {
 

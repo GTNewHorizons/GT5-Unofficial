@@ -1,11 +1,13 @@
 package gregtech.api.enums;
 
-import gregtech.api.objects.MaterialStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.objects.MaterialStack;
+
 public class MaterialBuilder {
+
     public static final int DIESEL = 0, GAS = 1, THERMAL = 2, SEMIFLUID = 3, PLASMA = 4, MAGIC = 5;
 
     private int metaItemSubID;
@@ -46,34 +48,32 @@ public class MaterialBuilder {
 
     public Materials constructMaterial() {
         return new Materials(
-                        metaItemSubID,
-                        iconSet,
-                        toolSpeed,
-                        durability,
-                        toolQuality,
-                        types,
-                        r,
-                        g,
-                        b,
-                        a,
-                        name,
-                        defaultLocalName,
-                        fuelType,
-                        fuelPower,
-                        meltingPoint,
-                        blastFurnaceTemp,
-                        blastFurnaceRequired,
-                        transparent,
-                        oreValue,
-                        densityMultiplier,
-                        densityDivider,
-                        color,
-                        extraData,
-                        materialList,
-                        aspects)
-                .setHasCorrespondingFluid(hasCorrespondingFluid)
-                .setHasCorrespondingGas(hasCorrespondingGas)
-                .setCanBeCracked(canBeCracked);
+                metaItemSubID,
+                iconSet,
+                toolSpeed,
+                durability,
+                toolQuality,
+                types,
+                r,
+                g,
+                b,
+                a,
+                name,
+                defaultLocalName,
+                fuelType,
+                fuelPower,
+                meltingPoint,
+                blastFurnaceTemp,
+                blastFurnaceRequired,
+                transparent,
+                oreValue,
+                densityMultiplier,
+                densityDivider,
+                color,
+                extraData,
+                materialList,
+                aspects).setHasCorrespondingFluid(hasCorrespondingFluid).setHasCorrespondingGas(hasCorrespondingGas)
+                        .setCanBeCracked(canBeCracked);
     }
 
     public MaterialBuilder setName(String name) {

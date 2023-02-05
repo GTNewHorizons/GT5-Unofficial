@@ -2,6 +2,14 @@ package gregtech.common.tileentities.boilers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -9,6 +17,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -30,16 +39,10 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank
         implements IGetTitleColor, IAddUIWidgets {
+
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
@@ -48,13 +51,13 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public boolean mHadNoWater = false;
     private int mExcessWater = 0;
 
-    public GT_MetaTileEntity_Boiler(
-            int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures) {
+    public GT_MetaTileEntity_Boiler(int aID, String aName, String aNameRegional, String aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Boiler(
-            int aID, String aName, String aNameRegional, String[] aDescription, ITexture... aTextures) {
+    public GT_MetaTileEntity_Boiler(int aID, String aName, String aNameRegional, String[] aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
     }
 
@@ -67,17 +70,12 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        ITexture[] tmp =
-                mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte) (aActive ? 4 : 3)) : aSide][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        ITexture[] tmp = mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte) (aActive ? 4 : 3)) : aSide][aColorIndex
+                + 1];
         if (aSide != aFacing && tmp.length == 2) {
-            tmp = new ITexture[] {tmp[0]};
+            tmp = new ITexture[] { tmp[0] };
         }
         return tmp;
     }
@@ -214,8 +212,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         }
         try {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
-        } catch (Throwable ignored) {
-        }
+        } catch (Throwable ignored) {}
     }
 
     @Override
@@ -275,8 +272,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.mTemperature < getMaxTemperature())
-                && (this.mProcessingEnergy > 0)
+        if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0)
                 && (aTick % getHeatUpRate() == 0L)) {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
@@ -325,11 +321,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, int aSide) {
         IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte) aSide);
         if (tTileEntity == null) return;
-        FluidStack tDrained = aBaseMetaTileEntity.drain(
-                ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
+        FluidStack tDrained = aBaseMetaTileEntity
+                .drain(ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
         if (tDrained == null) return;
-        int tFilledAmount =
-                tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tDrained, false);
+        int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tDrained, false);
         if (tFilledAmount <= 0) return;
         tTileEntity.fill(
                 ForgeDirection.getOrientation(aSide).getOpposite(),
@@ -370,13 +365,13 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         if (aIndex == GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) {
             GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 2, 1.0F, aX, aY, aZ);
 
-            new ParticleEventBuilder()
-                    .setIdentifier(ParticleFX.CLOUD)
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .setMotion(0D, 0D, 0D)
-                    .<ParticleEventBuilder>times(8, x -> x.setPosition(
-                                    aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
-                            .run());
+            new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD).setWorld(getBaseMetaTileEntity().getWorld())
+                    .setMotion(0D, 0D, 0D).<ParticleEventBuilder>times(
+                            8,
+                            x -> x.setPosition(
+                                    aX - 0.5D + XSTR_INSTANCE.nextFloat(),
+                                    aY,
+                                    aZ - 0.5D + XSTR_INSTANCE.nextFloat()).run());
         }
     }
 
@@ -420,15 +415,13 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] {
-            getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant())
-        };
+        return new IDrawable[] { getGUITextureSet().getItemSlot(),
+                GT_UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
     }
 
     protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] {
-            getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant())
-        };
+        return new IDrawable[] { getGUITextureSet().getItemSlot(),
+                GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
     }
 
     @Override
@@ -438,44 +431,41 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new SlotWidget(inventoryHandler, 0)
-                        .setPos(43, 25)
+        builder.widget(
+                new SlotWidget(inventoryHandler, 0).setPos(43, 25)
                         .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
-                .widget(new SlotWidget(inventoryHandler, 1)
-                        .setPos(43, 61)
-                        .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-                .widget(createFuelSlot())
-                .widget(createAshSlot())
-                .widget(new ProgressBar()
-                        .setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
-                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(70, 25)
-                        .setSize(10, 54))
-                .widget(new ProgressBar()
-                        .setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(83, 25)
-                        .setSize(10, 54))
-                .widget(new ProgressBar()
-                        .setProgress(() -> (float) mTemperature / maxProgresstime())
-                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(96, 25)
-                        .setSize(10, 54))
-                .widget(new ProgressBar()
-                        // cap minimum so that one can easily see there's fuel remaining
-                        .setProgress(
-                                () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
-                        .setTexture(getProgressbarFuel(), 14)
-                        .setDirection(ProgressBar.Direction.UP)
-                        .setPos(116, 45)
-                        .setSize(14, 14))
-                .widget(new DrawableWidget()
-                        .setDrawable(getOverlaySlotCanister())
-                        .setPos(43, 43)
-                        .setSize(18, 18));
+                .widget(
+                        new SlotWidget(inventoryHandler, 1).setPos(
+                                43,
+                                61).setBackground(
+                                        getGUITextureSet().getItemSlot(),
+                                        getOverlaySlotOut()))
+                .widget(createFuelSlot()).widget(
+                        createAshSlot())
+                .widget(
+                        new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+                                .setTexture(
+                                        getProgressbarEmpty(),
+                                        GT_UITextures.PROGRESSBAR_BOILER_STEAM,
+                                        10)
+                                .setDirection(ProgressBar.Direction.UP).setPos(70, 25).setSize(10, 54))
+                .widget(
+                        new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
+                                .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
+                                .setDirection(ProgressBar.Direction.UP).setPos(83, 25).setSize(10, 54))
+                .widget(
+                        new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
+                                .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
+                                .setDirection(ProgressBar.Direction.UP).setPos(96, 25).setSize(10, 54))
+                .widget(
+                        new ProgressBar()
+                                // cap minimum so that one can easily see there's fuel remaining
+                                .setProgress(
+                                        () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5)
+                                                : 0)
+                                .setTexture(getProgressbarFuel(), 14).setDirection(ProgressBar.Direction.UP)
+                                .setPos(116, 45).setSize(14, 14))
+                .widget(new DrawableWidget().setDrawable(getOverlaySlotCanister()).setPos(43, 43).setSize(18, 18));
     }
 
     protected SlotWidget createFuelSlot() {

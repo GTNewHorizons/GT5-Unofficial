@@ -2,13 +2,43 @@ package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Supplier;
+
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.core.localization.WailaText;
 import appeng.me.helpers.AENetworkProxy;
+
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
@@ -36,46 +66,22 @@ import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.function.Supplier;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
- * Extend this Class to add a new MetaMachine
- * Call the Constructor with the desired ID at the load-phase (not preload and also not postload!)
- * Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
+ * Extend this Class to add a new MetaMachine Call the Constructor with the desired ID at the load-phase (not preload
+ * and also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
- * Call the Constructor like the following example inside the Load Phase, to register it.
- * "new GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * Call the Constructor like the following example inside the Load Phase, to register it. "new
+ * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
 public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallback<MetaTileEntity> {
+
     /**
-     * Only assigned for the MetaTileEntity in the List! Also only used to get the localized Name for the ItemStack and for getInvName.
+     * Only assigned for the MetaTileEntity in the List! Also only used to get the localized Name for the ItemStack and
+     * for getInvName.
      */
     public final String mName;
     /**
@@ -108,16 +114,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public long mSoundRequests = 0;
 
     /**
-     * This registers your Machine at the List.
-     * Use only ID's larger than 2048, because i reserved these ones.
-     * See also the List in the API, as it has a Description containing all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048, because i reserved these ones. See also
+     * the List in the API, as it has a Description containing all the reservations.
      *
      * @param aID the ID
      * @example for Constructor overload.
-     * <p/>
-     * public GT_MetaTileEntity_EBench(int aID, String mName, String mNameRegional) {
-     * super(aID, mName, mNameRegional);
-     * }
+     *          <p/>
+     *          public GT_MetaTileEntity_EBench(int aID, String mName, String mNameRegional) { super(aID, mName,
+     *          mNameRegional); }
      */
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
         if (GregTech_API.sPostloadStarted || !GregTech_API.sPreloadStarted)
@@ -147,6 +151,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     /**
      * This method will only be called on client side
+     * 
      * @return whether the secondary description should be display. default is false
      */
     @Deprecated
@@ -173,10 +178,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public ItemStack getStackForm(long aAmount) {
-        return new ItemStack(
-                GregTech_API.sBlockMachines,
-                (int) aAmount,
-                getBaseMetaTileEntity().getMetaTileID());
+        return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
     @Override
@@ -186,33 +188,33 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void onServerStart() {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void onWorldSave(File aSaveDirectory) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void onWorldLoad(File aSaveDirectory) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void onConfigLoad(GT_Config aConfig) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
@@ -222,12 +224,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
-    public boolean onWrenchRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
             return true;
@@ -236,32 +238,30 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean onWireCutterRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (!aPlayer.isSneaking()) return false;
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity)
                 && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
-            return ((IGregTechTileEntity) tTileEntity)
-                    .getMetaTileEntity()
+            return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
                     .onWireCutterRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
         }
         return false;
     }
 
     @Override
-    public boolean onSolderingToolRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (!aPlayer.isSneaking()) return false;
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity)
                 && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
-            return ((IGregTechTileEntity) tTileEntity)
-                    .getMetaTileEntity()
+            return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
                     .onSolderingToolRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
         }
         return false;
@@ -269,28 +269,34 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void onExplosion() {
-        GT_Log.exp.println("Machine at " + this.getBaseMetaTileEntity().getXCoord() + " | "
-                + this.getBaseMetaTileEntity().getYCoord() + " | "
-                + this.getBaseMetaTileEntity().getZCoord() + " DIMID: "
-                + this.getBaseMetaTileEntity().getWorld().provider.dimensionId + " exploded.");
+        GT_Log.exp.println(
+                "Machine at " + this.getBaseMetaTileEntity().getXCoord()
+                        + " | "
+                        + this.getBaseMetaTileEntity().getYCoord()
+                        + " | "
+                        + this.getBaseMetaTileEntity().getZCoord()
+                        + " DIMID: "
+                        + this.getBaseMetaTileEntity().getWorld().provider.dimensionId
+                        + " exploded.");
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
-            /* Client tick counter that is set to 5 on hiding pipes and covers.
-             * It triggers a texture update next client tick when reaching 4, with provision for 3 more update tasks,
-             * spreading client change detection related work and network traffic on different ticks, until it reaches 0.
+            /*
+             * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
+             * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
+             * work and network traffic on different ticks, until it reaches 0.
              */
             aBaseMetaTileEntity.issueTextureUpdate();
         }
@@ -298,55 +304,54 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void inValidate() {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void onRemoval() {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     /**
      * When a GUI is opened
      */
     public void onOpenGUI() {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     /**
      * When a GUI is closed
      */
     public void onCloseGUI() {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     /**
-     * a Player rightclicks the Machine
-     * Sneaky rightclicks are not getting passed to this!
+     * a Player rightclicks the Machine Sneaky rightclicks are not getting passed to this!
      */
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         return false;
     }
 
     @Override
-    public boolean onRightclick(
-            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+            float aY, float aZ) {
         return onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void onValueUpdate(byte aValue) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
@@ -356,17 +361,17 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void stopSoundLoop(byte aValue, double aX, double aY, double aZ) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
@@ -425,8 +430,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * @return what type of texture does this machine use for GUI,
-     * i.e. Bronze, Steel, or Primitive
+     * @return what type of texture does this machine use for GUI, i.e. Bronze, Steel, or Primitive
      */
     public SteamVariant getSteamVariant() {
         return SteamVariant.NONE;
@@ -468,8 +472,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * @return the amount of E-net Impulses of the maxEUOutput size, which can be outputted by this Device.
-     * Default is 1 Pulse, this shouldn't be set to smaller Values than 1, as it won't output anything in that Case!
+     * @return the amount of E-net Impulses of the maxEUOutput size, which can be outputted by this Device. Default is 1
+     *         Pulse, this shouldn't be set to smaller Values than 1, as it won't output anything in that Case!
      */
     public long maxAmperesOut() {
         return 1;
@@ -570,8 +574,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * @return the amount of EU, which this Device stores before starting to emit Energy.
-     * useful if you don't want to emit stored Energy until a certain Level is reached.
+     * @return the amount of EU, which this Device stores before starting to emit Energy. useful if you don't want to
+     *         emit stored Energy until a certain Level is reached.
      */
     public long getMinimumStoredEU() {
         return 512;
@@ -627,8 +631,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public ArrayList<String> getSpecialDebugInfo(
-            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
+    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
+            int aLogLevel, ArrayList<String> aList) {
         return aList;
     }
 
@@ -683,12 +687,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void onMachineBlockUpdate() {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     @Override
@@ -732,8 +736,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * If this TileEntity makes use of Sided Redstone behaviors.
-     * Determines only, if the Output Redstone Array is getting filled with 0 for true, or 15 for false.
+     * If this TileEntity makes use of Sided Redstone behaviors. Determines only, if the Output Redstone Array is
+     * getting filled with 0 for true, or 15 for false.
      */
     public boolean hasSidedRedstoneOutputBehavior() {
         return false;
@@ -743,15 +747,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * When the Facing gets changed.
      */
     public void onFacingChange() {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     /**
      * if the IC2 Teleporter can drain from this.
      */
     public boolean isTeleporterCompatible() {
-        return isEnetOutput()
-                && getBaseMetaTileEntity().getOutputVoltage() >= 128
+        return isEnetOutput() && getBaseMetaTileEntity().getOutputVoltage() >= 128
                 && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
     }
 
@@ -806,7 +809,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     public void setItemCount(int aCount) {
-        /*Do nothing*/
+        /* Do nothing */
     }
 
     public int getMaxItemCount() {
@@ -889,8 +892,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex)
-                && aStack != null
+        return isValidSlot(aIndex) && aStack != null
                 && aIndex < mInventory.length
                 && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex]))
                 && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
@@ -898,8 +900,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex)
-                && aStack != null
+        return isValidSlot(aIndex) && aStack != null
                 && aIndex < mInventory.length
                 && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
@@ -917,7 +918,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
         if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[] {};
-        return new FluidTankInfo[] {getInfo()};
+        return new FluidTankInfo[] { getInfo() };
     }
 
     public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
@@ -932,8 +933,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                     Integer.MAX_VALUE,
                     Math.min(
                             aFluid.amount / 2,
-                            getBaseMetaTileEntity().getSteamCapacity()
-                                    - getBaseMetaTileEntity().getStoredSteam()));
+                            getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam > 0) {
                 markDirty();
                 if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
@@ -1112,14 +1112,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void addCollisionBoxesToList(
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            AxisAlignedBB inputAABB,
-            List<AxisAlignedBB> outputAABB,
-            Entity collider) {
+    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
+            List<AxisAlignedBB> outputAABB, Entity collider) {
         AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
     }
@@ -1186,12 +1180,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     // === Waila compat ===
 
     @Override
-    public void getWailaBody(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        currenttip.add(String.format(
-                "Facing: %s",
-                ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
-                        .name()));
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
+        currenttip.add(
+                String.format(
+                        "Facing: %s",
+                        ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing()).name()));
 
         if (Loader.isModLoaded("appliedenergistics2") && this instanceof IPowerChannelState) {
             // adapted from PowerStateWailaDataProvider
@@ -1214,8 +1208,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void getWailaNBTData(
-            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+            int z) {
         if (Loader.isModLoaded("appliedenergistics2") && this instanceof IPowerChannelState) {
             // adapted from PowerStateWailaDataProvider
             final IPowerChannelState state = (IPowerChannelState) this;

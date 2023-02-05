@@ -1,12 +1,15 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.interfaces.IGuiIcon;
 import java.util.Arrays;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
+import gregtech.api.interfaces.IGuiIcon;
+
 public enum GT_GuiIcon implements IGuiIcon {
+
     BUTTON_NORMAL(0, 0, 0),
     BUTTON_DOWN(0, 32, 0),
     BUTTON_HIGHLIGHT(0, 32 * 2, 0),
@@ -52,15 +55,12 @@ public enum GT_GuiIcon implements IGuiIcon {
     TAB_HIGHLIGHT_BRICK(2, 18, 3 * 20, 18, 20),
     TAB_DISABLED_BRICK(2, 18 * 2, 3 * 20, 18, 20),
     TAB_INFO_GRAY(2, 220, 0, 18, 20),
-    TAB_INFO_BLUE(2, 220 + 18, 0, 18, 20),
-    ;
+    TAB_INFO_BLUE(2, 220 + 18, 0, 18, 20),;
 
     private static final int T_SIZE = 256;
-    private static ResourceLocation[] TEXTURES = {
-        new ResourceLocation("gregtech", "textures/gui/GuiButtons.png"),
-        new ResourceLocation("gregtech", "textures/gui/GuiCover.png"),
-        new ResourceLocation("gregtech", "textures/gui/GuiTabs.png"),
-    };
+    private static ResourceLocation[] TEXTURES = { new ResourceLocation("gregtech", "textures/gui/GuiButtons.png"),
+            new ResourceLocation("gregtech", "textures/gui/GuiCover.png"),
+            new ResourceLocation("gregtech", "textures/gui/GuiTabs.png"), };
 
     public final int x, y, width, height;
     public final IGuiIcon overlay;
@@ -83,20 +83,13 @@ public enum GT_GuiIcon implements IGuiIcon {
         this(texID, x, y, width, height, null);
     }
 
-    public static void render(
-            IGuiIcon icon, double x, double y, double width, double height, double zLevel, boolean doDraw) {
+    public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
+            boolean doDraw) {
         render(icon, x, y, width, height, zLevel, doDraw, false);
     }
 
-    public static void render(
-            IGuiIcon icon,
-            double x,
-            double y,
-            double width,
-            double height,
-            double zLevel,
-            boolean doDraw,
-            boolean flipHoritontally) {
+    public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
+            boolean doDraw, boolean flipHoritontally) {
         Tessellator tess = Tessellator.instance;
         if (doDraw) {
             Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES[icon.getTexId()]);

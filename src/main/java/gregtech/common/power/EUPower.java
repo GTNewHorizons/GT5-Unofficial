@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 
 public class EUPower extends Power {
+
     protected final int amperage;
     protected int originalVoltage;
 

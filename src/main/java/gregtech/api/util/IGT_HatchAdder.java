@@ -3,6 +3,7 @@ package gregtech.api.util;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public interface IGT_HatchAdder<T> {
+
     /**
      * Callback to add hatch, needs to check if hatch is valid (and add it)
      *

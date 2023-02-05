@@ -4,7 +4,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SoundResource;
@@ -18,11 +23,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_ImplosionCompressor
         extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_ImplosionCompressor> {
+
     public GT_MetaTileEntity_ImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -39,21 +43,13 @@ public class GT_MetaTileEntity_ImplosionCompressor
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Implosion Compressor")
-                .addInfo("Explosions are fun")
+        tt.addMachineType("Implosion Compressor").addInfo("Explosions are fun")
                 .addInfo("Controller block for the Implosion Compressor")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Solid Steel Machine Casing", 16)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
+                .addController("Front center").addCasingInfo("Solid Steel Machine Casing", 16)
                 .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
-                .addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1)
-                .addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1)
-                .toolTipFinisher("Gregtech");
+                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
+                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -64,41 +60,19 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    BlockIcons.casingTexturePages[0][16],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                BlockIcons.casingTexturePages[0][16],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][16],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { BlockIcons.casingTexturePages[0][16],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW).extFacing().glow()
+                            .build() };
         }
-        return new ITexture[] {Textures.BlockIcons.casingTexturePages[0][16]};
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
     }
 
     @Override
@@ -131,8 +105,8 @@ public class GT_MetaTileEntity_ImplosionCompressor
         }
         ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
         if (!tInputList.isEmpty()) {
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sImplosionRecipes.findRecipe(
-                    getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sImplosionRecipes
+                    .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
             if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
@@ -143,7 +117,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
                 }
-                this.mOutputItems = new ItemStack[] {tRecipe.getOutput(0), tRecipe.getOutput(1)};
+                this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0), tRecipe.getOutput(1) };
                 sendLoopStart((byte) 20);
                 updateSlots();
                 return true;

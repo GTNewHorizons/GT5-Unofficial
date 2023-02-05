@@ -1,5 +1,14 @@
 package gregtech.common.fluid;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GT_Values;
@@ -8,15 +17,9 @@ import gregtech.api.interfaces.fluid.IGT_Fluid;
 import gregtech.api.interfaces.fluid.IGT_RegisteredFluid;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import javax.annotation.Nonnull;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, Runnable {
+
     private final String localizedName;
     private final ResourceLocation stillIconResourceLocation;
     private final ResourceLocation flowingIconResourceLocation;
@@ -79,8 +82,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
      */
     @Override
     public int getColor() {
-        return (Math.max(0, Math.min(255, colorRGBA[0])) << 16)
-                | (Math.max(0, Math.min(255, colorRGBA[1])) << 8)
+        return (Math.max(0, Math.min(255, colorRGBA[0])) << 16) | (Math.max(0, Math.min(255, colorRGBA[1])) << 8)
                 | Math.max(0, Math.min(255, colorRGBA[2]));
     }
 
@@ -111,13 +113,16 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
      * @inheritDoc
      */
     @Override
-    public IGT_RegisteredFluid registerContainers(
-            final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize) {
+    public IGT_RegisteredFluid registerContainers(final ItemStack fullContainer, final ItemStack emptyContainer,
+            final int containerSize) {
         if (fullContainer != null && emptyContainer != null) {
             final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
             if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
                 GT_Values.RA.addFluidCannerRecipe(
-                        fullContainer, GT_Utility.getContainerItem(fullContainer, false), null, fluidStack);
+                        fullContainer,
+                        GT_Utility.getContainerItem(fullContainer, false),
+                        null,
+                        fluidStack);
             }
         }
         return this;
@@ -179,8 +184,8 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
     // ----- Runnable interface implementations -----
 
     /**
-     * This {@link Runnable#run()} implementation is scheduled within the {@link GregTech_API#sGTBlockIconload}
-     * to load this {@link IGT_Fluid}'s texture icons.
+     * This {@link Runnable#run()} implementation is scheduled within the {@link GregTech_API#sGTBlockIconload} to load
+     * this {@link IGT_Fluid}'s texture icons.
      *
      * @see Runnable#run()
      */

@@ -1,21 +1,22 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingItem() {
         OrePrefixes.item.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (GT_OreDictUnificator.getItemData(aStack) == null
-                && !aOreDictName.equals("itemCertusQuartz")
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
+        if (GT_OreDictUnificator.getItemData(aStack) == null && !aOreDictName.equals("itemCertusQuartz")
                 && !aOreDictName.equals("itemNetherQuartz")) {
             switch (aOreDictName) {
                 case "itemSilicon":

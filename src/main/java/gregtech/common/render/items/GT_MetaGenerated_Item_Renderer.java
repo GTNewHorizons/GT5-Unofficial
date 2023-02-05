@@ -1,17 +1,22 @@
 package gregtech.common.render.items;
 
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_Utility;
+import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
+
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import org.lwjgl.opengl.GL11;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
-    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();
-    ;
+    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();;
     private final IItemRenderer mMaterialRenderer = new GT_GeneratedMaterial_Renderer();
 
     public GT_MetaGenerated_Item_Renderer() {
@@ -58,6 +63,18 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
         if (aMetaData < aItem.mOffset) {
             IItemRenderer aMaterialRenderer = aItem.getMaterialRenderer(aMetaData);
+
+            // Handle fluid rendering.
+            if (aMaterialRenderer == null) {
+                ItemData itemData = getAssociation(aStack);
+                if (itemData != null) {
+                    Materials material = itemData.mMaterial.mMaterial;
+                    if (material.renderer != null) {
+                        aMaterialRenderer = material.renderer;
+                    }
+                }
+            }
+
             return aMaterialRenderer != null ? aMaterialRenderer : mMaterialRenderer;
         }
 

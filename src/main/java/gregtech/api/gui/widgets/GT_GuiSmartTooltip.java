@@ -1,10 +1,13 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 import java.awt.Rectangle;
 
+import gregtech.api.util.GT_TooltipDataCache.TooltipData;
+
 public class GT_GuiSmartTooltip extends GT_GuiTooltip {
+
     public interface TooltipVisibilityProvider {
+
         boolean shouldShowTooltip();
     }
 

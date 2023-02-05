@@ -2,15 +2,10 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,24 +23,22 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+
 public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
+
     public static Map jumpChargeMap = new ConcurrentHashMap();
     public int mCharge, mTransfer, mTier, mDamageEnergyCost, mSpecials;
     public boolean mChargeProvider;
     public double mArmorAbsorbtionPercentage;
 
-    public GT_EnergyArmor_Item(
-            int aID,
-            String aUnlocalized,
-            String aEnglish,
-            int aCharge,
-            int aTransfer,
-            int aTier,
-            int aDamageEnergyCost,
-            int aSpecials,
-            double aArmorAbsorbtionPercentage,
-            boolean aChargeProvider,
-            int aType,
+    public GT_EnergyArmor_Item(int aID, String aUnlocalized, String aEnglish, int aCharge, int aTransfer, int aTier,
+            int aDamageEnergyCost, int aSpecials, double aArmorAbsorbtionPercentage, boolean aChargeProvider, int aType,
             int aArmorIndex) {
         super(ArmorMaterial.DIAMOND, aArmorIndex, aType);
         setMaxStackSize(1);
@@ -123,8 +116,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
         }
 
         if (!aPlayer.worldObj.isRemote && (mSpecials & 4) != 0) {
-            if (GT_ModHandler.canUseElectricItem(aStack, 50000)
-                    && aPlayer.getFoodStats().needFood()) {
+            if (GT_ModHandler.canUseElectricItem(aStack, 50000) && aPlayer.getFoodStats().needFood()) {
                 aPlayer.getFoodStats().addStats(1, 0.0F);
                 GT_ModHandler.useElectricItem(aStack, 50000, aPlayer);
             }
@@ -146,8 +138,8 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
         }
 
         if (!aPlayer.worldObj.isRemote && (mSpecials & 128) != 0) {
-            float jumpCharge =
-                    jumpChargeMap.containsKey(aPlayer) ? ((Float) jumpChargeMap.get(aPlayer)).floatValue() : 1.0F;
+            float jumpCharge = jumpChargeMap.containsKey(aPlayer) ? ((Float) jumpChargeMap.get(aPlayer)).floatValue()
+                    : 1.0F;
 
             if (GT_ModHandler.canUseElectricItem(aStack, 1000) && aPlayer.onGround && jumpCharge < 1.0F) {
                 jumpCharge = 1.0F;
@@ -172,8 +164,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
         }
 
         if ((mSpecials & 256) != 0) {
-            if (GT_ModHandler.canUseElectricItem(aStack, 100)
-                    && aPlayer.isSprinting()
+            if (GT_ModHandler.canUseElectricItem(aStack, 100) && aPlayer.isSprinting()
                     && (aPlayer.onGround && Math.abs(aPlayer.motionX) + Math.abs(aPlayer.motionZ) > 0.10000000149011612D
                             || aPlayer.isInWater())) {
                 GT_ModHandler.useElectricItem(aStack, 100, aPlayer);
@@ -217,21 +208,21 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
                 tTargetChargeItem = null;
             }
 
-            if (aPlayer.worldObj.isDaytime()
-                    && aPlayer.worldObj.canBlockSeeTheSky(
-                            MathHelper.floor_double(aPlayer.posX),
-                            MathHelper.floor_double(aPlayer.posY + 1),
-                            MathHelper.floor_double(aPlayer.posZ))) {
+            if (aPlayer.worldObj.isDaytime() && aPlayer.worldObj.canBlockSeeTheSky(
+                    MathHelper.floor_double(aPlayer.posX),
+                    MathHelper.floor_double(aPlayer.posY + 1),
+                    MathHelper.floor_double(aPlayer.posZ))) {
                 if ((mSpecials & 32) != 0 && tTargetChargeItem != null) {
                     GT_ModHandler.chargeElectricItem(tTargetChargeItem, 20, Integer.MAX_VALUE, true, false);
                 }
             } else {
-                /* TODO:
-                if ((mSpecials & 16) != 0 && tTargetDechargeItem != null && GT_ModHandler.canUseElectricItem(tTargetDechargeItem, 10)) {
-                	if (aPlayer.worldObj.getBlock	((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ) == Blocks.air)
-                		aPlayer.worldObj.setBlock	((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ, GregTech_API.sBlockList[3]);
-                	GT_ModHandler.useElectricItem(tTargetDechargeItem, 10, aPlayer);
-                }*/
+                /*
+                 * TODO: if ((mSpecials & 16) != 0 && tTargetDechargeItem != null &&
+                 * GT_ModHandler.canUseElectricItem(tTargetDechargeItem, 10)) { if (aPlayer.worldObj.getBlock
+                 * ((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ) == Blocks.air) aPlayer.worldObj.setBlock
+                 * ((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ, GregTech_API.sBlockList[3]);
+                 * GT_ModHandler.useElectricItem(tTargetDechargeItem, 10, aPlayer); }
+                 */
                 // }
             }
         }
@@ -305,9 +296,8 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
                 if (armor != null && armor.getItem() == this && (mSpecials & 2) != 0) {
                     int distanceFactor = (int) event.distance - 3;
                     int energyCost = (this.mDamageEnergyCost * distanceFactor) / 4;
-                    if (energyCost
-                            <= GT_ModHandler.dischargeElectricItem(
-                                    armor, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true)) {
+                    if (energyCost <= GT_ModHandler
+                            .dischargeElectricItem(armor, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true)) {
                         GT_ModHandler.dischargeElectricItem(armor, energyCost, Integer.MAX_VALUE, true, false, true);
                         event.setCanceled(true);
                         break;
@@ -318,17 +308,15 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     }
 
     @Override
-    public ISpecialArmor.ArmorProperties getProperties(
-            EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slotIndex) {
+    public ISpecialArmor.ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source,
+            double damage, int slotIndex) {
         return new ISpecialArmor.ArmorProperties(
                 (source == DamageSource.fall && (mSpecials & 2) != 0) ? 10 : 0,
                 getBaseAbsorptionRatio() * mArmorAbsorbtionPercentage,
-                mDamageEnergyCost > 0
-                        ? 25
-                                * GT_ModHandler.dischargeElectricItem(
-                                        armor, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true)
-                                / mDamageEnergyCost
-                        : 0);
+                mDamageEnergyCost > 0 ? 25
+                        * GT_ModHandler
+                                .dischargeElectricItem(armor, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true)
+                        / mDamageEnergyCost : 0);
     }
 
     @Override
@@ -337,10 +325,10 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     }
 
     @Override
-    public void damageArmor(
-            EntityLivingBase entity, ItemStack itemStack, DamageSource source, int damage, int slotIndex) {
-        GT_ModHandler.dischargeElectricItem(
-                itemStack, damage * mDamageEnergyCost, Integer.MAX_VALUE, true, false, true);
+    public void damageArmor(EntityLivingBase entity, ItemStack itemStack, DamageSource source, int damage,
+            int slotIndex) {
+        GT_ModHandler
+                .dischargeElectricItem(itemStack, damage * mDamageEnergyCost, Integer.MAX_VALUE, true, false, true);
     }
 
     private double getBaseAbsorptionRatio() {

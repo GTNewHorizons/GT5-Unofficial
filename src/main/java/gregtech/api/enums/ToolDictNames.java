@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 public enum ToolDictNames {
+
     craftingToolSaw,
     craftingToolHoe,
     craftingToolAxe,

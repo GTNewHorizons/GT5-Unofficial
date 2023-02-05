@@ -4,6 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 
 public class GT_Tool_Turbine_Normal extends GT_Tool_Turbine {
+
     @Override
     public float getSpeedMultiplier() {
         return 2.0F;

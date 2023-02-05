@@ -6,6 +6,11 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isBartWorksLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeHooks;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -16,20 +21,32 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
 
 public class FluidExtractorRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Dye_SquidInk.get(1L), GT_Values.NI, getFluidStack("squidink", 144), 10000, 128, 4);
+                ItemList.Dye_SquidInk.get(1L),
+                GT_Values.NI,
+                getFluidStack("squidink", 144),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Dye_Indigo.get(1L), GT_Values.NI, getFluidStack("indigo", 144), 10000, 128, 4);
+                ItemList.Dye_Indigo.get(1L),
+                GT_Values.NI,
+                getFluidStack("indigo", 144),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Crop_Drop_Indigo.get(1L), GT_Values.NI, getFluidStack("indigo", 144), 10000, 128, 4);
+                ItemList.Crop_Drop_Indigo.get(1L),
+                GT_Values.NI,
+                getFluidStack("indigo", 144),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
                 ItemList.Crop_Drop_MilkWart.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L),
@@ -38,19 +55,54 @@ public class FluidExtractorRecipes implements Runnable {
                 128,
                 4);
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Crop_Drop_OilBerry.get(1L), GT_Values.NI, Materials.Oil.getFluid(100L), 10000, 128, 4);
+                ItemList.Crop_Drop_OilBerry.get(1L),
+                GT_Values.NI,
+                Materials.Oil.getFluid(100L),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Crop_Drop_UUMBerry.get(1L), GT_Values.NI, Materials.UUMatter.getFluid(4L), 10000, 128, 4);
+                ItemList.Crop_Drop_UUMBerry.get(1L),
+                GT_Values.NI,
+                Materials.UUMatter.getFluid(4L),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Crop_Drop_UUABerry.get(1L), GT_Values.NI, Materials.UUAmplifier.getFluid(4L), 10000, 128, 4);
+                ItemList.Crop_Drop_UUABerry.get(1L),
+                GT_Values.NI,
+                Materials.UUAmplifier.getFluid(4L),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                new ItemStack(Items.fish, 1, 0), GT_Values.NI, Materials.FishOil.getFluid(40L), 10000, 16, 4);
+                new ItemStack(Items.fish, 1, 0),
+                GT_Values.NI,
+                Materials.FishOil.getFluid(40L),
+                10000,
+                16,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                new ItemStack(Items.fish, 1, 1), GT_Values.NI, Materials.FishOil.getFluid(60L), 10000, 16, 4);
+                new ItemStack(Items.fish, 1, 1),
+                GT_Values.NI,
+                Materials.FishOil.getFluid(60L),
+                10000,
+                16,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                new ItemStack(Items.fish, 1, 2), GT_Values.NI, Materials.FishOil.getFluid(70L), 10000, 16, 4);
+                new ItemStack(Items.fish, 1, 2),
+                GT_Values.NI,
+                Materials.FishOil.getFluid(70L),
+                10000,
+                16,
+                4);
         GT_Values.RA.addFluidExtractionRecipe(
-                new ItemStack(Items.fish, 1, 3), GT_Values.NI, Materials.FishOil.getFluid(30L), 10000, 16, 4);
+                new ItemStack(Items.fish, 1, 3),
+                GT_Values.NI,
+                Materials.FishOil.getFluid(30L),
+                10000,
+                16,
+                4);
 
         GT_Values.RA.addFluidExtractionRecipe(
                 new ItemStack(Items.coal, 1, 1),
@@ -386,9 +438,19 @@ public class FluidExtractorRecipes implements Runnable {
                 1440);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                new ItemStack(Items.wheat_seeds, 1, 32767), GT_Values.NI, Materials.SeedOil.getFluid(10), 10000, 32, 2);
+                new ItemStack(Items.wheat_seeds, 1, 32767),
+                GT_Values.NI,
+                Materials.SeedOil.getFluid(10),
+                10000,
+                32,
+                2);
         GT_Values.RA.addFluidExtractionRecipe(
-                new ItemStack(Items.melon_seeds, 1, 32767), GT_Values.NI, Materials.SeedOil.getFluid(10), 10000, 32, 2);
+                new ItemStack(Items.melon_seeds, 1, 32767),
+                GT_Values.NI,
+                Materials.SeedOil.getFluid(10),
+                10000,
+                32,
+                2);
         GT_Values.RA.addFluidExtractionRecipe(
                 new ItemStack(Items.pumpkin_seeds, 1, 32767),
                 GT_Values.NI,
@@ -397,12 +459,27 @@ public class FluidExtractorRecipes implements Runnable {
                 32,
                 2);
         GT_Values.RA.addFluidExtractionRecipe(
-                ItemList.Crop_Drop_Rape.get(1), null, Materials.SeedOil.getFluid(125), 10000, 32, 2);
+                ItemList.Crop_Drop_Rape.get(1),
+                null,
+                Materials.SeedOil.getFluid(125),
+                10000,
+                32,
+                2);
 
         GT_Values.RA.addFluidSmelterRecipe(
-                new ItemStack(Items.snowball, 1, 0), GT_Values.NI, Materials.Water.getFluid(250L), 10000, 32, 4);
+                new ItemStack(Items.snowball, 1, 0),
+                GT_Values.NI,
+                Materials.Water.getFluid(250L),
+                10000,
+                32,
+                4);
         GT_Values.RA.addFluidSmelterRecipe(
-                new ItemStack(Blocks.snow, 1, 0), GT_Values.NI, Materials.Water.getFluid(1000L), 10000, 128, 4);
+                new ItemStack(Blocks.snow, 1, 0),
+                GT_Values.NI,
+                Materials.Water.getFluid(1000L),
+                10000,
+                128,
+                4);
         GT_Values.RA.addFluidSmelterRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L),
                 GT_Values.NI,
@@ -439,10 +516,20 @@ public class FluidExtractorRecipes implements Runnable {
         if (isBartWorksLoaded) {
             // xenon
             GT_Values.RA.addFluidExtractionRecipe(
-                    getModItem("gregtech", "gt.comb", 1L, 134), null, getFluidStack("xenon", 250), 100 * 100, 50, 8192);
+                    getModItem("gregtech", "gt.comb", 1L, 134),
+                    null,
+                    getFluidStack("xenon", 250),
+                    100 * 100,
+                    50,
+                    8192);
             // neon
             GT_Values.RA.addFluidExtractionRecipe(
-                    getModItem("gregtech", "gt.comb", 1L, 135), null, getFluidStack("neon", 250), 100 * 100, 15, 8192);
+                    getModItem("gregtech", "gt.comb", 1L, 135),
+                    null,
+                    getFluidStack("neon", 250),
+                    100 * 100,
+                    15,
+                    8192);
             // krpton
             GT_Values.RA.addFluidExtractionRecipe(
                     getModItem("gregtech", "gt.comb", 1L, 136),

@@ -1,24 +1,29 @@
 package gregtech.api.gui;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.util.concurrent.UncheckedExecutionException;
-import cpw.mods.fml.relauncher.FMLLaunchHandler;
-import cpw.mods.fml.relauncher.Side;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.ColorsMetadataSection;
 import java.util.concurrent.ExecutionException;
+
 import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
+
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
+import cpw.mods.fml.relauncher.Side;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.ColorsMetadataSection;
+
 public class GT_GUIColorOverride {
+
     private static final Object NOT_FOUND = new Object();
-    private static final LoadingCache<ResourceLocation, Object> cache = CacheBuilder.newBuilder()
-            .softValues()
+    private static final LoadingCache<ResourceLocation, Object> cache = CacheBuilder.newBuilder().softValues()
             .build(new CacheLoader<ResourceLocation, Object>() {
+
                 @Override
                 public Object load(@Nonnull ResourceLocation key) throws Exception {
                     IResource ir = Minecraft.getMinecraft().getResourceManager().getResource(key);

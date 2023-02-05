@@ -4,6 +4,7 @@ import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.GT_CircuitryBehavior;
 
 public class GT_Circuit_BasicLogic extends GT_CircuitryBehavior {
+
     public GT_Circuit_BasicLogic(int aIndex) {
         super(aIndex);
     }
@@ -39,17 +40,16 @@ public class GT_Circuit_BasicLogic extends GT_CircuitryBehavior {
                     aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 7) {
             aRedstoneCircuitBlock.setRedstone(
-                    (byte) (15 - getStrongestRedstone(aRedstoneCircuitBlock)), aRedstoneCircuitBlock.getOutputFacing());
+                    (byte) (15 - getStrongestRedstone(aRedstoneCircuitBlock)),
+                    aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 9) {
             aRedstoneCircuitBlock.setRedstone(
-                    (byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0)
-                            ^ (getStrongestRedstone(aRedstoneCircuitBlock)
-                                    | getWeakestRedstone(aRedstoneCircuitBlock))),
+                    (byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0) ^ (getStrongestRedstone(aRedstoneCircuitBlock)
+                            | getWeakestRedstone(aRedstoneCircuitBlock))),
                     aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 11) {
             aRedstoneCircuitBlock.setRedstone(
-                    (byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0)
-                            ^ getStrongestRedstone(aRedstoneCircuitBlock)
+                    (byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0) ^ getStrongestRedstone(aRedstoneCircuitBlock)
                             ^ getWeakestRedstone(aRedstoneCircuitBlock)),
                     aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 13) {

@@ -1,15 +1,21 @@
 package gregtech.api.interfaces;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import gregtech.api.render.TextureFactory;
+
 /**
- * <p>This Interface defines operations to configure and build instances of the {@link ITexture} implementations</p>
- * <p>Use the {@link TextureFactory#builder()} method to get an instance of the {@link ITextureBuilder} implementation.</p>
+ * <p>
+ * This Interface defines operations to configure and build instances of the {@link ITexture} implementations
+ * </p>
+ * <p>
+ * Use the {@link TextureFactory#builder()} method to get an instance of the {@link ITextureBuilder} implementation.
+ * </p>
  */
 public interface ITextureBuilder {
+
     /**
      * Build the {@link ITexture}
      *
@@ -20,14 +26,19 @@ public interface ITextureBuilder {
 
     /**
      * @param block The {@link Block}
-     * @param meta The meta value for the Block
+     * @param meta  The meta value for the Block
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder setFromBlock(final Block block, final int meta);
 
     /**
-     * @param side <p>The {@link ForgeDirection} side providing the texture</p>
-     *             <p>Default is {@link ForgeDirection#UNKNOWN} to use same side as rendered</p>
+     * @param side
+     *             <p>
+     *             The {@link ForgeDirection} side providing the texture
+     *             </p>
+     *             <p>
+     *             Default is {@link ForgeDirection#UNKNOWN} to use same side as rendered
+     *             </p>
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder setFromSide(final ForgeDirection side);
@@ -52,6 +63,7 @@ public interface ITextureBuilder {
 
     /**
      * Set alpha blending
+     * 
      * @param allowAlpha to set
      *
      * @return {@link ITextureBuilder} for chaining

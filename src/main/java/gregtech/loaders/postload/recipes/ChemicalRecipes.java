@@ -5,16 +5,17 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.*;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 public class ChemicalRecipes implements Runnable {
 
@@ -238,9 +239,7 @@ public class ChemicalRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 1),
                 5760);
 
-        for (Fluid tFluid : new Fluid[] {
-            FluidRegistry.WATER, GT_ModHandler.getDistilledWater(1L).getFluid()
-        }) {
+        for (Fluid tFluid : new Fluid[] { FluidRegistry.WATER, GT_ModHandler.getDistilledWater(1L).getFluid() }) {
             GT_Values.RA.addChemicalRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
@@ -525,9 +524,9 @@ public class ChemicalRecipes implements Runnable {
                 5,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(22)},
-                new FluidStack[] {Materials.Hydrogen.getGas(16000), Materials.Oxygen.getGas(8000)},
-                new FluidStack[] {GT_ModHandler.getDistilledWater(8000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(22) },
+                new FluidStack[] { Materials.Hydrogen.getGas(16000), Materials.Oxygen.getGas(8000) },
+                new FluidStack[] { GT_ModHandler.getDistilledWater(8000) },
                 new ItemStack[] {},
                 80,
                 30);
@@ -829,7 +828,10 @@ public class ChemicalRecipes implements Runnable {
 
         // 2Na + S = Na2S
         GT_Values.RA.addChemicalRecipe(
-                Materials.Sodium.getDust(2), Materials.Sulfur.getDust(1), Materials.SodiumSulfide.getDust(3), 60);
+                Materials.Sodium.getDust(2),
+                Materials.Sulfur.getDust(1),
+                Materials.SodiumSulfide.getDust(3),
+                60);
         // H2S + H2O + (O2) = 0.5H2SO4(Diluted) ( S loss
         GT_Values.RA.addChemicalRecipe(
                 Materials.HydricSulfide.getCells(1),
@@ -3441,10 +3443,14 @@ public class ChemicalRecipes implements Runnable {
 
     public void polymerizationRecipes() {
         GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.VinylAcetate.mFluid, Materials.VinylAcetate.getCells(1), Materials.PolyvinylAcetate.mFluid);
+                Materials.VinylAcetate.mFluid,
+                Materials.VinylAcetate.getCells(1),
+                Materials.PolyvinylAcetate.mFluid);
 
         GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.Ethylene.mGas, Materials.Ethylene.getCells(1), Materials.Plastic.mStandardMoltenFluid);
+                Materials.Ethylene.mGas,
+                Materials.Ethylene.getCells(1),
+                Materials.Plastic.mStandardMoltenFluid);
 
         GT_Values.RA.addDefaultPolymerizationRecipes(
                 Materials.Tetrafluoroethylene.mGas,
@@ -3457,7 +3463,9 @@ public class ChemicalRecipes implements Runnable {
                 Materials.PolyvinylChloride.mStandardMoltenFluid);
 
         GT_Values.RA.addDefaultPolymerizationRecipes(
-                Materials.Styrene.mFluid, Materials.Styrene.getCells(1), Materials.Polystyrene.mStandardMoltenFluid);
+                Materials.Styrene.mFluid,
+                Materials.Styrene.getCells(1),
+                Materials.Polystyrene.mStandardMoltenFluid);
     }
 
     public void singleBlockOnly() {
@@ -3853,482 +3861,374 @@ public class ChemicalRecipes implements Runnable {
 
     public void multiblockOnly() {
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.PotassiumNitrade.getDust(10), Materials.ChromiumTrioxide.getDust(8)},
+                new ItemStack[] { Materials.PotassiumNitrade.getDust(10), Materials.ChromiumTrioxide.getDust(8) },
                 null,
-                new FluidStack[] {Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)},
-                new ItemStack[] {Materials.Potassiumdichromate.getDust(11)},
+                new FluidStack[] { Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000) },
+                new ItemStack[] { Materials.Potassiumdichromate.getDust(11) },
                 100,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Saltpeter.getDust(10), Materials.ChromiumTrioxide.getDust(8)},
+                new ItemStack[] { Materials.Saltpeter.getDust(10), Materials.ChromiumTrioxide.getDust(8) },
                 null,
-                new FluidStack[] {Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)},
-                new ItemStack[] {Materials.Potassiumdichromate.getDust(11)},
+                new FluidStack[] { Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000) },
+                new ItemStack[] { Materials.Potassiumdichromate.getDust(11) },
                 100,
                 480);
 
         // Potassium Dichromate shortcut
         // 2 Cr + 6O + 10 Saltpeter/Potassium Dichromate = 10 K2Cr2O7 + 2NO + 3O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    Materials.PotassiumNitrade.getDust(64),
-                    Materials.PotassiumNitrade.getDust(64),
-                    Materials.PotassiumNitrade.getDust(32),
-                    Materials.Chrome.getDust(2 * 16),
-                    GT_Utility.getIntegratedCircuit(11)
-                },
-                new FluidStack[] {Materials.Oxygen.getGas(6000 * 16)},
-                new FluidStack[] {Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16)},
-                new ItemStack[] {
-                    Materials.Potassiumdichromate.getDust(64),
-                    Materials.Potassiumdichromate.getDust(64),
-                    Materials.Potassiumdichromate.getDust(48)
-                },
+                new ItemStack[] { Materials.PotassiumNitrade.getDust(64), Materials.PotassiumNitrade.getDust(64),
+                        Materials.PotassiumNitrade.getDust(32), Materials.Chrome.getDust(2 * 16),
+                        GT_Utility.getIntegratedCircuit(11) },
+                new FluidStack[] { Materials.Oxygen.getGas(6000 * 16) },
+                new FluidStack[] { Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16) },
+                new ItemStack[] { Materials.Potassiumdichromate.getDust(64), Materials.Potassiumdichromate.getDust(64),
+                        Materials.Potassiumdichromate.getDust(48) },
                 2560,
                 (int) GT_Values.VP[7]);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    Materials.Saltpeter.getDust(64),
-                    Materials.Saltpeter.getDust(64),
-                    Materials.Saltpeter.getDust(32),
-                    Materials.Chrome.getDust(2 * 16),
-                    GT_Utility.getIntegratedCircuit(11)
-                },
-                new FluidStack[] {Materials.Oxygen.getGas(6000 * 16)},
-                new FluidStack[] {Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16)},
-                new ItemStack[] {
-                    Materials.Potassiumdichromate.getDust(64),
-                    Materials.Potassiumdichromate.getDust(64),
-                    Materials.Potassiumdichromate.getDust(48)
-                },
+                new ItemStack[] { Materials.Saltpeter.getDust(64), Materials.Saltpeter.getDust(64),
+                        Materials.Saltpeter.getDust(32), Materials.Chrome.getDust(2 * 16),
+                        GT_Utility.getIntegratedCircuit(11) },
+                new FluidStack[] { Materials.Oxygen.getGas(6000 * 16) },
+                new FluidStack[] { Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16) },
+                new ItemStack[] { Materials.Potassiumdichromate.getDust(64), Materials.Potassiumdichromate.getDust(64),
+                        Materials.Potassiumdichromate.getDust(48) },
                 2560,
                 (int) GT_Values.VP[7]);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                new FluidStack[] {Materials.Benzene.getFluid(1000L), Materials.Methane.getGas(2000L)},
-                new FluidStack[] {Materials.Dimethylbenzene.getFluid(1000L), Materials.Hydrogen.getGas(4000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                new FluidStack[] { Materials.Benzene.getFluid(1000L), Materials.Methane.getGas(2000L) },
+                new FluidStack[] { Materials.Dimethylbenzene.getFluid(1000L), Materials.Hydrogen.getGas(4000L) },
                 null,
                 4000,
                 120);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(8),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Galena, 27),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 9)
-                },
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(36000)},
-                new FluidStack[] {new FluidStack(ItemList.sIndiumConcentrate, 72000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(8),
+                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Galena, 27),
+                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 9) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(36000) },
+                new FluidStack[] { new FluidStack(ItemList.sIndiumConcentrate, 72000) },
                 null,
                 160,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pentlandite, 9)
-                },
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000L)},
-                new FluidStack[] {new FluidStack(ItemList.sNickelSulfate, 18000)},
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 1)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pentlandite, 9) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(9000L) },
+                new FluidStack[] { new FluidStack(ItemList.sNickelSulfate, 18000) },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 1) },
                 25,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 9)
-                },
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000L)},
-                new FluidStack[] {new FluidStack(ItemList.sBlueVitriol, 18000)},
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 1)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 9) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(9000L) },
+                new FluidStack[] { new FluidStack(ItemList.sBlueVitriol, 18000) },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 1) },
                 25,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L),
-                    GT_Utility.getIntegratedCircuit(8)
-                },
-                new FluidStack[] {Materials.Air.getGas(8000L)},
-                new FluidStack[] {Materials.Radon.getGas(800L)},
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 64L)},
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L),
+                        GT_Utility.getIntegratedCircuit(8) },
+                new FluidStack[] { Materials.Air.getGas(8000L) },
+                new FluidStack[] { Materials.Radon.getGas(800L) },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 64L) },
                 1500,
                 480);
 
         // 3SiO2 + 4Al = 3Si + 2Al2O3
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4) },
                 null,
                 null,
-                new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 3),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 10)
-                },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 3),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 10) },
                 10,
                 120);
 
         // 10Si + 30HCl -> 0.3 SiH2Cl2 + 9 HSiCl3 + 0.3 SiCl4 + 0.2 Si2Cl6 + 20.4H
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 10)
-                },
-                new FluidStack[] {Materials.HydrochloricAcid.getFluid(30000)},
-                new FluidStack[] {
-                    Materials.Trichlorosilane.getFluid(9000),
-                    Materials.SiliconTetrachloride.getFluid(300),
-                    Materials.Hexachlorodisilane.getFluid(200),
-                    Materials.Dichlorosilane.getGas(300),
-                    Materials.Hydrogen.getGas(20400)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 10) },
+                new FluidStack[] { Materials.HydrochloricAcid.getFluid(30000) },
+                new FluidStack[] { Materials.Trichlorosilane.getFluid(9000),
+                        Materials.SiliconTetrachloride.getFluid(300), Materials.Hexachlorodisilane.getFluid(200),
+                        Materials.Dichlorosilane.getGas(300), Materials.Hydrogen.getGas(20400) },
                 null,
                 150,
                 480);
 
         // 2CO + 2C3H6 + 4H =RhHCO(P(C6H5)3)3= C4H8O + C4H8O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(4), MaterialsKevlar.OrganorhodiumCatalyst.getDustTiny(1)
-                },
-                new FluidStack[] {
-                    Materials.Hydrogen.getGas(4000),
-                    Materials.Propene.getGas(2000),
-                    Materials.CarbonMonoxide.getGas(2000)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.Butyraldehyde.getFluid(1000), MaterialsKevlar.Isobutyraldehyde.getFluid(1000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(4),
+                        MaterialsKevlar.OrganorhodiumCatalyst.getDustTiny(1) },
+                new FluidStack[] { Materials.Hydrogen.getGas(4000), Materials.Propene.getGas(2000),
+                        Materials.CarbonMonoxide.getGas(2000) },
+                new FluidStack[] { MaterialsKevlar.Butyraldehyde.getFluid(1000),
+                        MaterialsKevlar.Isobutyraldehyde.getFluid(1000) },
                 null,
                 300,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), MaterialsKevlar.OrganorhodiumCatalyst.getDust(1)},
-                new FluidStack[] {
-                    Materials.Hydrogen.getGas(36000),
-                    Materials.Propene.getGas(18000),
-                    Materials.CarbonMonoxide.getGas(18000)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.Butyraldehyde.getFluid(9000), MaterialsKevlar.Isobutyraldehyde.getFluid(9000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                        MaterialsKevlar.OrganorhodiumCatalyst.getDust(1) },
+                new FluidStack[] { Materials.Hydrogen.getGas(36000), Materials.Propene.getGas(18000),
+                        Materials.CarbonMonoxide.getGas(18000) },
+                new FluidStack[] { MaterialsKevlar.Butyraldehyde.getFluid(9000),
+                        MaterialsKevlar.Isobutyraldehyde.getFluid(9000) },
                 null,
                 2000,
                 30);
 
         // C2H4 + O =Al2O3,Ag= C2H4O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(2),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 1L)
-                },
-                new FluidStack[] {Materials.Ethylene.getGas(1000), Materials.Oxygen.getGas(1000)},
-                new FluidStack[] {MaterialsKevlar.EthyleneOxide.getGas(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(2),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 1L) },
+                new FluidStack[] { Materials.Ethylene.getGas(1000), Materials.Oxygen.getGas(1000) },
+                new FluidStack[] { MaterialsKevlar.EthyleneOxide.getGas(1000) },
                 null,
                 50,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(8),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 9L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9L)
-                },
-                new FluidStack[] {Materials.Ethylene.getGas(9000), Materials.Oxygen.getGas(9000)},
-                new FluidStack[] {MaterialsKevlar.EthyleneOxide.getGas(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(8),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 9L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9L) },
+                new FluidStack[] { Materials.Ethylene.getGas(9000), Materials.Oxygen.getGas(9000) },
+                new FluidStack[] { MaterialsKevlar.EthyleneOxide.getGas(9000) },
                 null,
                 400,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[] {
-                    MaterialsKevlar.EthyleneOxide.getGas(1000),
-                    Materials.Dimethyldichlorosilane.getFluid(4000),
-                    Materials.Water.getFluid(5000)
-                },
-                new FluidStack[] {MaterialsKevlar.SiliconOil.getFluid(5000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+                new FluidStack[] { MaterialsKevlar.EthyleneOxide.getGas(1000),
+                        Materials.Dimethyldichlorosilane.getFluid(4000), Materials.Water.getFluid(5000) },
+                new FluidStack[] { MaterialsKevlar.SiliconOil.getFluid(5000) },
                 null,
                 15,
                 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(8)},
-                new FluidStack[] {
-                    MaterialsKevlar.EthyleneOxide.getGas(9000),
-                    Materials.Dimethyldichlorosilane.getFluid(36000),
-                    Materials.Water.getFluid(45000)
-                },
-                new FluidStack[] {MaterialsKevlar.SiliconOil.getFluid(45000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(8) },
+                new FluidStack[] { MaterialsKevlar.EthyleneOxide.getGas(9000),
+                        Materials.Dimethyldichlorosilane.getFluid(36000), Materials.Water.getFluid(45000) },
+                new FluidStack[] { MaterialsKevlar.SiliconOil.getFluid(45000) },
                 null,
                 100,
                 1920);
 
         // NH3 + CH4O =SiO2,Al2O3= CH5N + H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(10),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L)
-                },
-                new FluidStack[] {Materials.Methanol.getFluid(1000), Materials.Ammonia.getGas(1000)},
-                new FluidStack[] {MaterialsKevlar.Methylamine.getGas(1000L), Materials.Water.getFluid(1000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L) },
+                new FluidStack[] { Materials.Methanol.getFluid(1000), Materials.Ammonia.getGas(1000) },
+                new FluidStack[] { MaterialsKevlar.Methylamine.getGas(1000L), Materials.Water.getFluid(1000L) },
                 null,
                 1500,
                 500000);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 5L)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.Ethyleneglycol.getFluid(4000), MaterialsKevlar.SiliconOil.getFluid(1000)
-                },
-                new FluidStack[] {MaterialsKevlar.PolyurethaneResin.getFluid(1000L)},
-                null,
-                200,
-                500000);
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 9L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 9L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 45L)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.Ethyleneglycol.getFluid(36000), MaterialsKevlar.SiliconOil.getFluid(9000)
-                },
-                new FluidStack[] {MaterialsKevlar.PolyurethaneResin.getFluid(9000L)},
-                null,
-                1500,
-                500000);
+        GT_Values.RA
+                .addMultiblockChemicalRecipe(
+                        new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 1L),
+                                GT_OreDictUnificator
+                                        .get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 5L) },
+                        new FluidStack[] { MaterialsKevlar.Ethyleneglycol.getFluid(4000),
+                                MaterialsKevlar.SiliconOil.getFluid(1000) },
+                        new FluidStack[] { MaterialsKevlar.PolyurethaneResin.getFluid(1000L) },
+                        null,
+                        200,
+                        500000);
+        GT_Values.RA
+                .addMultiblockChemicalRecipe(
+                        new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 9L),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 9L),
+                                GT_OreDictUnificator
+                                        .get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 45L) },
+                        new FluidStack[] { MaterialsKevlar.Ethyleneglycol.getFluid(36000),
+                                MaterialsKevlar.SiliconOil.getFluid(9000) },
+                        new FluidStack[] { MaterialsKevlar.PolyurethaneResin.getFluid(9000L) },
+                        null,
+                        1500,
+                        500000);
 
         // 3NH3 + 6CH4O =Al2O3,SiO2= CH5N + C2H7N + C3H9N + 6H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(3),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L)
-                },
-                new FluidStack[] {Materials.Methanol.getFluid(6000), Materials.Ammonia.getGas(3000)},
-                new FluidStack[] {
-                    MaterialsKevlar.Methylamine.getGas(1000L),
-                    Materials.Dimethylamine.getGas(1000L),
-                    MaterialsKevlar.Trimethylamine.getGas(1000L),
-                    Materials.Water.getFluid(6000L)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(3),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L) },
+                new FluidStack[] { Materials.Methanol.getFluid(6000), Materials.Ammonia.getGas(3000) },
+                new FluidStack[] { MaterialsKevlar.Methylamine.getGas(1000L), Materials.Dimethylamine.getGas(1000L),
+                        MaterialsKevlar.Trimethylamine.getGas(1000L), Materials.Water.getFluid(6000L) },
                 null,
                 400,
                 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(11),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9L)
-                },
-                new FluidStack[] {Materials.Methanol.getFluid(54000), Materials.Ammonia.getGas(27000)},
-                new FluidStack[] {
-                    MaterialsKevlar.Methylamine.getGas(9000L),
-                    Materials.Dimethylamine.getGas(9000L),
-                    MaterialsKevlar.Trimethylamine.getGas(9000L),
-                    Materials.Water.getFluid(54000L)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(11),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9L) },
+                new FluidStack[] { Materials.Methanol.getFluid(54000), Materials.Ammonia.getGas(27000) },
+                new FluidStack[] { MaterialsKevlar.Methylamine.getGas(9000L), Materials.Dimethylamine.getGas(9000L),
+                        MaterialsKevlar.Trimethylamine.getGas(9000L), Materials.Water.getFluid(54000L) },
                 null,
                 3000,
                 1920);
 
         // 18SOCl2 + 5C10H10O4 + 6CO2 = 7C8H4Cl2O2 + 22HCl + 18SO2
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                new FluidStack[] {
-                    MaterialsKevlar.ThionylChloride.getFluid(18000),
-                    MaterialsKevlar.DimethylTerephthalate.getFluid(5000L),
-                    Materials.CarbonDioxide.getGas(6000L)
-                },
-                new FluidStack[] {
-                    Materials.DilutedHydrochloricAcid.getFluid(22000L), Materials.SulfurDioxide.getGas(18000L)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                new FluidStack[] { MaterialsKevlar.ThionylChloride.getFluid(18000),
+                        MaterialsKevlar.DimethylTerephthalate.getFluid(5000L), Materials.CarbonDioxide.getGas(6000L) },
+                new FluidStack[] { Materials.DilutedHydrochloricAcid.getFluid(22000L),
+                        Materials.SulfurDioxide.getGas(18000L) },
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 48L)
-                },
+                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 48L) },
                 400,
                 1920);
 
         // 2CH4O + C8H6O4 =H2SO4= C10H10O4 + 2H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                new FluidStack[] {
-                    MaterialsKevlar.TerephthalicAcid.getFluid(1000L),
-                    Materials.Methanol.getFluid(2000),
-                    Materials.SulfuricAcid.getFluid(2000)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.DimethylTerephthalate.getFluid(1000L), Materials.DilutedSulfuricAcid.getFluid(2000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                new FluidStack[] { MaterialsKevlar.TerephthalicAcid.getFluid(1000L), Materials.Methanol.getFluid(2000),
+                        Materials.SulfuricAcid.getFluid(2000) },
+                new FluidStack[] { MaterialsKevlar.DimethylTerephthalate.getFluid(1000L),
+                        Materials.DilutedSulfuricAcid.getFluid(2000) },
                 null,
                 250,
                 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {
-                    MaterialsKevlar.TerephthalicAcid.getFluid(9000L),
-                    Materials.Methanol.getFluid(18000),
-                    Materials.SulfuricAcid.getFluid(18000)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.DimethylTerephthalate.getFluid(9000L), Materials.DilutedSulfuricAcid.getFluid(18000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { MaterialsKevlar.TerephthalicAcid.getFluid(9000L), Materials.Methanol.getFluid(18000),
+                        Materials.SulfuricAcid.getFluid(18000) },
+                new FluidStack[] { MaterialsKevlar.DimethylTerephthalate.getFluid(9000L),
+                        Materials.DilutedSulfuricAcid.getFluid(18000) },
                 null,
                 1750,
                 1920);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[] {Materials.Benzene.getFluid(1000), Materials.Methane.getGas(2000)},
-                new FluidStack[] {MaterialsKevlar.IIIDimethylbenzene.getFluid(1000L), Materials.Hydrogen.getGas(4000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+                new FluidStack[] { Materials.Benzene.getFluid(1000), Materials.Methane.getGas(2000) },
+                new FluidStack[] { MaterialsKevlar.IIIDimethylbenzene.getFluid(1000L),
+                        Materials.Hydrogen.getGas(4000) },
                 null,
                 4000,
                 120);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(3)},
-                new FluidStack[] {Materials.Benzene.getFluid(1000), Materials.Methane.getGas(2000)},
-                new FluidStack[] {MaterialsKevlar.IVDimethylbenzene.getFluid(1000L), Materials.Hydrogen.getGas(4000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(3) },
+                new FluidStack[] { Materials.Benzene.getFluid(1000), Materials.Methane.getGas(2000) },
+                new FluidStack[] { MaterialsKevlar.IVDimethylbenzene.getFluid(1000L), Materials.Hydrogen.getGas(4000) },
                 null,
                 4000,
                 120);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIHydroxide, 45L)
-                },
-                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10000L)},
-                new FluidStack[] {
-                    GT_Values.NF,
-                },
-                new ItemStack[] {
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(49),
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIHydroxide, 45L) },
+                new FluidStack[] { MaterialsKevlar.NaphthenicAcid.getFluid(10000L) },
+                new FluidStack[] { GT_Values.NF, },
+                new ItemStack[] { MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(49), },
                 200,
                 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 7L)
-                },
-                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10000L)},
-                new FluidStack[] {
-                    Materials.AceticAcid.getFluid(15000L),
-                },
-                new ItemStack[] {
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
-                    MaterialsKevlar.CobaltIINaphthenate.getDust(49),
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 7L) },
+                new FluidStack[] { MaterialsKevlar.NaphthenicAcid.getFluid(10000L) },
+                new FluidStack[] { Materials.AceticAcid.getFluid(15000L), },
+                new ItemStack[] { MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                        MaterialsKevlar.CobaltIINaphthenate.getDust(49), },
                 200,
                 1920);
 
         // PCl3 + 3C6H5Cl + 6Na = 6NaCl + C18H15P
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.getIntegratedCircuit(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 6L)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.PhosphorusTrichloride.getFluid(1000L), Materials.Chlorobenzene.getFluid(3000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 6L) },
+                new FluidStack[] { MaterialsKevlar.PhosphorusTrichloride.getFluid(1000L),
+                        Materials.Chlorobenzene.getFluid(3000) },
                 null,
-                new ItemStack[] {MaterialsKevlar.Triphenylphosphene.getDust(34), Materials.Salt.getDust(12)},
+                new ItemStack[] { MaterialsKevlar.Triphenylphosphene.getDust(34), Materials.Salt.getDust(12) },
                 400,
                 1920);
 
         // 4NaH + C3H9BO3 = NaBH4 + 3CH3ONa
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(1), MaterialsKevlar.SodiumHydride.getDust(8)},
-                new FluidStack[] {MaterialsKevlar.TrimethylBorate.getFluid(1000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1), MaterialsKevlar.SodiumHydride.getDust(8) },
+                new FluidStack[] { MaterialsKevlar.TrimethylBorate.getFluid(1000L) },
                 null,
-                new ItemStack[] {
-                    MaterialsKevlar.SodiumBorohydride.getDust(6), MaterialsKevlar.SodiumMethoxide.getDust(18)
-                },
+                new ItemStack[] { MaterialsKevlar.SodiumBorohydride.getDust(6),
+                        MaterialsKevlar.SodiumMethoxide.getDust(18) },
                 600,
                 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), MaterialsKevlar.SodiumHydride.getDust(64)},
-                new FluidStack[] {MaterialsKevlar.TrimethylBorate.getFluid(8000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9), MaterialsKevlar.SodiumHydride.getDust(64) },
+                new FluidStack[] { MaterialsKevlar.TrimethylBorate.getFluid(8000L) },
                 null,
-                new ItemStack[] {
-                    MaterialsKevlar.SodiumBorohydride.getDust(48),
-                    MaterialsKevlar.SodiumMethoxide.getDust(64),
-                    MaterialsKevlar.SodiumMethoxide.getDust(64),
-                    MaterialsKevlar.SodiumMethoxide.getDust(16)
-                },
+                new ItemStack[] { MaterialsKevlar.SodiumBorohydride.getDust(48),
+                        MaterialsKevlar.SodiumMethoxide.getDust(64), MaterialsKevlar.SodiumMethoxide.getDust(64),
+                        MaterialsKevlar.SodiumMethoxide.getDust(16) },
                 600,
                 1920);
 
         // 2CH3COOH = CH3COCH3 + CO2 + H
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.copyAmount(0, Materials.Calcite.getDust(5)), GT_Utility.getIntegratedCircuit(24)
-                },
-                new FluidStack[] {Materials.AceticAcid.getFluid(2000)},
-                new FluidStack[] {
-                    Materials.Acetone.getFluid(1000),
-                    Materials.CarbonDioxide.getGas(1000),
-                    Materials.Water.getFluid(1000)
-                },
+                new ItemStack[] { GT_Utility.copyAmount(0, Materials.Calcite.getDust(5)),
+                        GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.AceticAcid.getFluid(2000) },
+                new FluidStack[] { Materials.Acetone.getFluid(1000), Materials.CarbonDioxide.getGas(1000),
+                        Materials.Water.getFluid(1000) },
                 null,
                 400,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.copyAmount(0, Materials.Calcium.getDust(1)), GT_Utility.getIntegratedCircuit(24)
-                },
-                new FluidStack[] {Materials.AceticAcid.getFluid(2000)},
-                new FluidStack[] {
-                    Materials.Acetone.getFluid(1000),
-                    Materials.CarbonDioxide.getGas(1000),
-                    Materials.Water.getFluid(1000)
-                },
+                new ItemStack[] { GT_Utility.copyAmount(0, Materials.Calcium.getDust(1)),
+                        GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.AceticAcid.getFluid(2000) },
+                new FluidStack[] { Materials.Acetone.getFluid(1000), Materials.CarbonDioxide.getGas(1000),
+                        Materials.Water.getFluid(1000) },
                 null,
                 400,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    GT_Utility.copyAmount(0, Materials.Quicklime.getDust(2)), GT_Utility.getIntegratedCircuit(24)
-                },
-                new FluidStack[] {Materials.AceticAcid.getFluid(2000)},
-                new FluidStack[] {
-                    Materials.Acetone.getFluid(1000),
-                    Materials.CarbonDioxide.getGas(1000),
-                    Materials.Water.getFluid(1000)
-                },
+                new ItemStack[] { GT_Utility.copyAmount(0, Materials.Quicklime.getDust(2)),
+                        GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.AceticAcid.getFluid(2000) },
+                new FluidStack[] { Materials.Acetone.getFluid(1000), Materials.CarbonDioxide.getGas(1000),
+                        Materials.Water.getFluid(1000) },
                 null,
                 400,
                 480);
 
         // C + 4H + O = CH3OH
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Carbon.getDust(1), GT_Utility.getIntegratedCircuit(23)},
-                new FluidStack[] {Materials.Hydrogen.getGas(4000), Materials.Oxygen.getGas(1000)},
-                new FluidStack[] {Materials.Methanol.getFluid(1000)},
+                new ItemStack[] { Materials.Carbon.getDust(1), GT_Utility.getIntegratedCircuit(23) },
+                new FluidStack[] { Materials.Hydrogen.getGas(4000), Materials.Oxygen.getGas(1000) },
+                new FluidStack[] { Materials.Methanol.getFluid(1000) },
                 null,
                 320,
                 96);
@@ -4336,610 +4236,530 @@ public class ChemicalRecipes implements Runnable {
         // This recipe collides with one for Vinyl Chloride
         // 2C + 4H + 2O = CH3COOH
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Carbon.getDust(2), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Hydrogen.getGas(4000), Materials.Oxygen.getGas(2000)},
-                new FluidStack[] {Materials.AceticAcid.getFluid(1000)},
+                new ItemStack[] { Materials.Carbon.getDust(2), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Hydrogen.getGas(4000), Materials.Oxygen.getGas(2000) },
+                new FluidStack[] { Materials.AceticAcid.getFluid(1000) },
                 null,
                 480,
                 30);
         // 2CO + 4H = CH3COOH
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.CarbonMonoxide.getGas(2000), Materials.Hydrogen.getGas(4000)},
-                new FluidStack[] {Materials.AceticAcid.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.CarbonMonoxide.getGas(2000), Materials.Hydrogen.getGas(4000) },
+                new FluidStack[] { Materials.AceticAcid.getFluid(1000) },
                 null,
                 320,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(8)},
-                new FluidStack[] {Materials.Hydrogen.getGas(9000), Materials.Chlorine.getGas(9000)},
-                new FluidStack[] {Materials.HydrochloricAcid.getFluid(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(8) },
+                new FluidStack[] { Materials.Hydrogen.getGas(9000), Materials.Chlorine.getGas(9000) },
+                new FluidStack[] { Materials.HydrochloricAcid.getFluid(9000) },
                 null,
                 7,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[] {
-                    Materials.Chlorine.getGas(10000), Materials.Water.getFluid(10000), Materials.Mercury.getFluid(1000)
-                },
-                new FluidStack[] {Materials.HypochlorousAcid.getFluid(10000), Materials.Hydrogen.getGas(10000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+                new FluidStack[] { Materials.Chlorine.getGas(10000), Materials.Water.getFluid(10000),
+                        Materials.Mercury.getFluid(1000) },
+                new FluidStack[] { Materials.HypochlorousAcid.getFluid(10000), Materials.Hydrogen.getGas(10000) },
                 null,
                 600,
                 8);
 
         // H2O + 4Cl + C3H6 + NaOH = C3H5ClO + NaCl·H2O + 2HCl
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.SodiumHydroxide.getDust(3), GT_Utility.getIntegratedCircuit(23)},
-                new FluidStack[] {
-                    Materials.Propene.getGas(1000), Materials.Chlorine.getGas(4000), Materials.Water.getFluid(1000)
-                },
-                new FluidStack[] {
-                    Materials.Epichlorohydrin.getFluid(1000),
-                    Materials.SaltWater.getFluid(1000),
-                    Materials.HydrochloricAcid.getFluid(2000)
-                },
+                new ItemStack[] { Materials.SodiumHydroxide.getDust(3), GT_Utility.getIntegratedCircuit(23) },
+                new FluidStack[] { Materials.Propene.getGas(1000), Materials.Chlorine.getGas(4000),
+                        Materials.Water.getFluid(1000) },
+                new FluidStack[] { Materials.Epichlorohydrin.getFluid(1000), Materials.SaltWater.getFluid(1000),
+                        Materials.HydrochloricAcid.getFluid(2000) },
                 null,
                 640,
                 30);
         // H2O + 2Cl + C3H6 + NaOH =Hg= C3H5ClO + NaCl·H2O + 2H
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.SodiumHydroxide.getDust(3), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Propene.getGas(1000),
-                    Materials.Chlorine.getGas(2000),
-                    Materials.Water.getFluid(1000),
-                    Materials.Mercury.getFluid(100)
-                },
-                new FluidStack[] {
-                    Materials.Epichlorohydrin.getFluid(1000),
-                    Materials.SaltWater.getFluid(1000),
-                    Materials.Hydrogen.getGas(2000)
-                },
+                new ItemStack[] { Materials.SodiumHydroxide.getDust(3), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Propene.getGas(1000), Materials.Chlorine.getGas(2000),
+                        Materials.Water.getFluid(1000), Materials.Mercury.getFluid(100) },
+                new FluidStack[] { Materials.Epichlorohydrin.getFluid(1000), Materials.SaltWater.getFluid(1000),
+                        Materials.Hydrogen.getGas(2000) },
                 null,
                 640,
                 30);
         // HClO + 2Cl + C3H6 + NaOH = C3H5ClO + NaCl·H2O + HCl
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.SodiumHydroxide.getDust(3), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Propene.getGas(1000),
-                    Materials.Chlorine.getGas(2000),
-                    Materials.HypochlorousAcid.getFluid(1000)
-                },
-                new FluidStack[] {
-                    Materials.Epichlorohydrin.getFluid(1000),
-                    Materials.SaltWater.getFluid(1000),
-                    Materials.HydrochloricAcid.getFluid(1000)
-                },
+                new ItemStack[] { Materials.SodiumHydroxide.getDust(3), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Propene.getGas(1000), Materials.Chlorine.getGas(2000),
+                        Materials.HypochlorousAcid.getFluid(1000) },
+                new FluidStack[] { Materials.Epichlorohydrin.getFluid(1000), Materials.SaltWater.getFluid(1000),
+                        Materials.HydrochloricAcid.getFluid(1000) },
                 null,
                 640,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Apatite.getDust(9)},
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(5000), Materials.Water.getFluid(10000)},
-                new FluidStack[] {Materials.PhosphoricAcid.getFluid(3000), Materials.HydrochloricAcid.getFluid(1000)},
-                new ItemStack[] {Materials.Gypsum.getDust(40)},
+                new ItemStack[] { Materials.Apatite.getDust(9) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(5000), Materials.Water.getFluid(10000) },
+                new FluidStack[] { Materials.PhosphoricAcid.getFluid(3000), Materials.HydrochloricAcid.getFluid(1000) },
+                new ItemStack[] { Materials.Gypsum.getDust(40) },
                 320,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Phosphorus.getDust(4), GT_Utility.getIntegratedCircuit(1)},
-                new FluidStack[] {Materials.Oxygen.getGas(10000)},
+                new ItemStack[] { Materials.Phosphorus.getDust(4), GT_Utility.getIntegratedCircuit(1) },
+                new FluidStack[] { Materials.Oxygen.getGas(10000) },
                 null,
-                new ItemStack[] {Materials.PhosphorousPentoxide.getDust(14)},
+                new ItemStack[] { Materials.PhosphorousPentoxide.getDust(14) },
                 40,
                 30);
 
         // 2P + 5O + 3H2O = 2H3PO4
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Phosphorus.getDust(1), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Oxygen.getGas(2500), Materials.Water.getFluid(1500)},
-                new FluidStack[] {Materials.PhosphoricAcid.getFluid(1000)},
+                new ItemStack[] { Materials.Phosphorus.getDust(1), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Oxygen.getGas(2500), Materials.Water.getFluid(1500) },
+                new FluidStack[] { Materials.PhosphoricAcid.getFluid(1000) },
                 null,
                 320,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                new FluidStack[] {
-                    Materials.Propene.getGas(8000),
-                    Materials.Benzene.getFluid(8000),
-                    Materials.PhosphoricAcid.getFluid(1000)
-                },
-                new FluidStack[] {Materials.Cumene.getFluid(8000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                new FluidStack[] { Materials.Propene.getGas(8000), Materials.Benzene.getFluid(8000),
+                        Materials.PhosphoricAcid.getFluid(1000) },
+                new FluidStack[] { Materials.Cumene.getFluid(8000) },
                 null,
                 1920,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Propene.getGas(1000),
-                    Materials.Benzene.getFluid(1000),
-                    Materials.PhosphoricAcid.getFluid(100),
-                    Materials.Oxygen.getGas(2000)
-                },
-                new FluidStack[] {Materials.Phenol.getFluid(1000), Materials.Acetone.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Propene.getGas(1000), Materials.Benzene.getFluid(1000),
+                        Materials.PhosphoricAcid.getFluid(100), Materials.Oxygen.getGas(2000) },
+                new FluidStack[] { Materials.Phenol.getFluid(1000), Materials.Acetone.getFluid(1000) },
                 null,
                 480,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                new FluidStack[] {
-                    Materials.Acetone.getFluid(1000),
-                    Materials.Phenol.getFluid(2000),
-                    Materials.HydrochloricAcid.getFluid(1000)
-                },
-                new FluidStack[] {Materials.BisphenolA.getFluid(1000), Materials.Water.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                new FluidStack[] { Materials.Acetone.getFluid(1000), Materials.Phenol.getFluid(2000),
+                        Materials.HydrochloricAcid.getFluid(1000) },
+                new FluidStack[] { Materials.BisphenolA.getFluid(1000), Materials.Water.getFluid(1000) },
                 null,
                 160,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.SodiumHydroxide.getDust(6), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Acetone.getFluid(1000),
-                    Materials.Phenol.getFluid(2000),
-                    Materials.HydrochloricAcid.getFluid(1000),
-                    Materials.Epichlorohydrin.getFluid(2000)
-                },
-                new FluidStack[] {Materials.Epoxid.getMolten(1000), Materials.SaltWater.getFluid(2000)},
+                new ItemStack[] { Materials.SodiumHydroxide.getDust(6), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Acetone.getFluid(1000), Materials.Phenol.getFluid(2000),
+                        Materials.HydrochloricAcid.getFluid(1000), Materials.Epichlorohydrin.getFluid(2000) },
+                new FluidStack[] { Materials.Epoxid.getMolten(1000), Materials.SaltWater.getFluid(2000) },
                 null,
                 480,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {Materials.Hydrogen.getGas(9000), Materials.Fluorine.getGas(9000)},
-                new FluidStack[] {Materials.HydrofluoricAcid.getFluid(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.Hydrogen.getGas(9000), Materials.Fluorine.getGas(9000) },
+                new FluidStack[] { Materials.HydrofluoricAcid.getFluid(9000) },
                 null,
                 7,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.HydrofluoricAcid.getFluid(4000),
-                    Materials.Methane.getGas(2000),
-                    Materials.Chlorine.getGas(12000)
-                },
-                new FluidStack[] {Materials.Tetrafluoroethylene.getGas(1000), Materials.HydrochloricAcid.getFluid(12000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.HydrofluoricAcid.getFluid(4000), Materials.Methane.getGas(2000),
+                        Materials.Chlorine.getGas(12000) },
+                new FluidStack[] { Materials.Tetrafluoroethylene.getGas(1000),
+                        Materials.HydrochloricAcid.getFluid(12000) },
                 null,
                 540,
                 240);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Silicon.getDust(1), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Methane.getGas(2000), Materials.Chlorine.getGas(4000), Materials.Water.getFluid(1000)
-                },
-                new FluidStack[] {
-                    Materials.HydrochloricAcid.getFluid(2000), Materials.DilutedHydrochloricAcid.getFluid(2000)
-                },
-                new ItemStack[] {Materials.Polydimethylsiloxane.getDust(3)},
+                new ItemStack[] { Materials.Silicon.getDust(1), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Methane.getGas(2000), Materials.Chlorine.getGas(4000),
+                        Materials.Water.getFluid(1000) },
+                new FluidStack[] { Materials.HydrochloricAcid.getFluid(2000),
+                        Materials.DilutedHydrochloricAcid.getFluid(2000) },
+                new ItemStack[] { Materials.Polydimethylsiloxane.getDust(3) },
                 480,
                 96);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.Silicon.getDust(1), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Methanol.getFluid(2000), Materials.HydrochloricAcid.getFluid(2000)},
-                new FluidStack[] {Materials.DilutedHydrochloricAcid.getFluid(2000)},
-                new ItemStack[] {Materials.Polydimethylsiloxane.getDust(3)},
+                new ItemStack[] { Materials.Silicon.getDust(1), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Methanol.getFluid(2000), Materials.HydrochloricAcid.getFluid(2000) },
+                new FluidStack[] { Materials.DilutedHydrochloricAcid.getFluid(2000) },
+                new ItemStack[] { Materials.Polydimethylsiloxane.getDust(3) },
                 480,
                 96);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Nitrogen.getGas(10000), Materials.Hydrogen.getGas(30000)},
-                new FluidStack[] {Materials.Ammonia.getGas(10000)},
-                new ItemStack[] {null},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Nitrogen.getGas(10000), Materials.Hydrogen.getGas(30000) },
+                new FluidStack[] { Materials.Ammonia.getGas(10000) },
+                new ItemStack[] { null },
                 800,
                 480);
 
         // 2NH3 + 7O = N2O4 + 3H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(23)},
-                new FluidStack[] {Materials.Ammonia.getGas(2000), Materials.Oxygen.getGas(7000)},
-                new FluidStack[] {Materials.DinitrogenTetroxide.getGas(1000), Materials.Water.getFluid(3000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(23) },
+                new FluidStack[] { Materials.Ammonia.getGas(2000), Materials.Oxygen.getGas(7000) },
+                new FluidStack[] { Materials.DinitrogenTetroxide.getGas(1000), Materials.Water.getFluid(3000) },
                 null,
                 480,
                 30);
         // 7O + 6H + 2N = N2O4 + 3H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(23)},
-                new FluidStack[] {
-                    Materials.Nitrogen.getGas(2000), Materials.Hydrogen.getGas(6000), Materials.Oxygen.getGas(7000)
-                },
-                new FluidStack[] {Materials.DinitrogenTetroxide.getGas(1000), Materials.Water.getFluid(3000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(23) },
+                new FluidStack[] { Materials.Nitrogen.getGas(2000), Materials.Hydrogen.getGas(6000),
+                        Materials.Oxygen.getGas(7000) },
+                new FluidStack[] { Materials.DinitrogenTetroxide.getGas(1000), Materials.Water.getFluid(3000) },
                 null,
                 1100,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {Materials.Oxygen.getGas(100000), Materials.Ammonia.getGas(36000)},
-                new FluidStack[] {Materials.NitricOxide.getGas(36000), Materials.Water.getFluid(54000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.Oxygen.getGas(100000), Materials.Ammonia.getGas(36000) },
+                new FluidStack[] { Materials.NitricOxide.getGas(36000), Materials.Water.getFluid(54000) },
                 null,
                 170,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(8)},
-                new FluidStack[] {Materials.Oxygen.getGas(100000), Materials.Ammonia.getGas(36000)},
-                new FluidStack[] {Materials.NitricOxide.getGas(36000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(8) },
+                new FluidStack[] { Materials.Oxygen.getGas(100000), Materials.Ammonia.getGas(36000) },
+                new FluidStack[] { Materials.NitricOxide.getGas(36000) },
                 null,
                 170,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {Materials.NitricOxide.getGas(9000), Materials.Oxygen.getGas(9000)},
-                new FluidStack[] {Materials.NitrogenDioxide.getGas(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.NitricOxide.getGas(9000), Materials.Oxygen.getGas(9000) },
+                new FluidStack[] { Materials.NitrogenDioxide.getGas(9000) },
                 null,
                 80,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {Materials.NitrogenDioxide.getGas(27000), Materials.Water.getFluid(9000)},
-                new FluidStack[] {Materials.NitricAcid.getFluid(18000), Materials.NitricOxide.getGas(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.NitrogenDioxide.getGas(27000), Materials.Water.getFluid(9000) },
+                new FluidStack[] { Materials.NitricAcid.getFluid(18000), Materials.NitricOxide.getGas(9000) },
                 null,
                 120,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Hydrogen.getGas(3000), Materials.Nitrogen.getGas(1000), Materials.Oxygen.getGas(4000)
-                },
-                new FluidStack[] {Materials.NitricAcid.getFluid(1000), Materials.Water.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Hydrogen.getGas(3000), Materials.Nitrogen.getGas(1000),
+                        Materials.Oxygen.getGas(4000) },
+                new FluidStack[] { Materials.NitricAcid.getFluid(1000), Materials.Water.getFluid(1000) },
                 null,
                 320,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Ammonia.getGas(1000), Materials.Oxygen.getGas(4000)},
-                new FluidStack[] {Materials.NitricAcid.getFluid(1000), Materials.Water.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Ammonia.getGas(1000), Materials.Oxygen.getGas(4000) },
+                new FluidStack[] { Materials.NitricAcid.getFluid(1000), Materials.Water.getFluid(1000) },
                 null,
                 320,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.NitrogenDioxide.getGas(2000),
-                    Materials.Oxygen.getGas(1000),
-                    Materials.Water.getFluid(1000)
-                },
-                new FluidStack[] {Materials.NitricAcid.getFluid(2000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.NitrogenDioxide.getGas(2000), Materials.Oxygen.getGas(1000),
+                        Materials.Water.getFluid(1000) },
+                new FluidStack[] { Materials.NitricAcid.getFluid(2000) },
                 null,
                 320,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), Materials.Sulfur.getDust(9)},
-                new FluidStack[] {Materials.Hydrogen.getGas(18000)},
-                new FluidStack[] {Materials.HydricSulfide.getGas(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9), Materials.Sulfur.getDust(9) },
+                new FluidStack[] { Materials.Hydrogen.getGas(18000) },
+                new FluidStack[] { Materials.HydricSulfide.getGas(9000) },
                 null,
                 4,
                 120);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), Materials.Sulfur.getDust(9)},
-                new FluidStack[] {Materials.Oxygen.getGas(18000)},
-                new FluidStack[] {Materials.SulfurDioxide.getGas(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9), Materials.Sulfur.getDust(9) },
+                new FluidStack[] { Materials.Oxygen.getGas(18000) },
+                new FluidStack[] { Materials.SulfurDioxide.getGas(9000) },
                 null,
                 4,
                 120);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {Materials.HydricSulfide.getGas(9000), Materials.Oxygen.getGas(27000)},
-                new FluidStack[] {Materials.SulfurDioxide.getGas(9000), Materials.Water.getFluid(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.HydricSulfide.getGas(9000), Materials.Oxygen.getGas(27000) },
+                new FluidStack[] { Materials.SulfurDioxide.getGas(9000), Materials.Water.getFluid(9000) },
                 null,
                 60,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(8)},
-                new FluidStack[] {Materials.HydricSulfide.getGas(9000), Materials.Oxygen.getGas(27000)},
-                new FluidStack[] {Materials.SulfurDioxide.getGas(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(8) },
+                new FluidStack[] { Materials.HydricSulfide.getGas(9000), Materials.Oxygen.getGas(27000) },
+                new FluidStack[] { Materials.SulfurDioxide.getGas(9000) },
                 null,
                 60,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(7)},
-                new FluidStack[] {Materials.SulfurDioxide.getGas(9000), Materials.HydricSulfide.getGas(18000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(7) },
+                new FluidStack[] { Materials.SulfurDioxide.getGas(9000), Materials.HydricSulfide.getGas(18000) },
                 null,
-                new ItemStack[] {Materials.Sulfur.getDust(27)},
+                new ItemStack[] { Materials.Sulfur.getDust(27) },
                 60,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {Materials.SulfurTrioxide.getGas(9000), Materials.Water.getFluid(9000)},
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.SulfurTrioxide.getGas(9000), Materials.Water.getFluid(9000) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(9000) },
                 null,
                 260,
                 480);
 
         // S + O3 + H2O = H2SO4
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24), Materials.Sulfur.getDust(1)},
-                new FluidStack[] {Materials.Oxygen.getGas(3000), Materials.Water.getFluid(1000)},
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24), Materials.Sulfur.getDust(1) },
+                new FluidStack[] { Materials.Oxygen.getGas(3000), Materials.Water.getFluid(1000) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(1000) },
                 null,
                 480,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(7), Materials.Sulfur.getDust(9)},
-                new FluidStack[] {Materials.Oxygen.getGas(27000), Materials.Water.getFluid(9000)},
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(7), Materials.Sulfur.getDust(9) },
+                new FluidStack[] { Materials.Oxygen.getGas(27000), Materials.Water.getFluid(9000) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(9000) },
                 null,
                 260,
                 480);
 
         // H2S + O4 = H2SO4
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.HydricSulfide.getGas(1000), Materials.Oxygen.getGas(4000)},
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.HydricSulfide.getGas(1000), Materials.Oxygen.getGas(4000) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(1000) },
                 null,
                 480,
                 30);
 
         // SO2 + O + H2O = H2SO4
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.SulfurDioxide.getGas(1000), Materials.Oxygen.getGas(1000), Materials.Water.getFluid(1000)
-                },
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.SulfurDioxide.getGas(1000), Materials.Oxygen.getGas(1000),
+                        Materials.Water.getFluid(1000) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(1000) },
                 null,
                 600,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                new FluidStack[] {
-                    Materials.SulfurDioxide.getGas(9000), Materials.Oxygen.getGas(9000), Materials.Water.getFluid(9000)
-                },
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.SulfurDioxide.getGas(9000), Materials.Oxygen.getGas(9000),
+                        Materials.Water.getFluid(9000) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(9000) },
                 null,
                 150,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[] {
-                    Materials.HydrochloricAcid.getFluid(1000),
-                    Materials.Ethylene.getGas(1000),
-                    Materials.Oxygen.getGas(1000)
-                },
-                new FluidStack[] {Materials.VinylChloride.getGas(1000), Materials.Water.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+                new FluidStack[] { Materials.HydrochloricAcid.getFluid(1000), Materials.Ethylene.getGas(1000),
+                        Materials.Oxygen.getGas(1000) },
+                new FluidStack[] { Materials.VinylChloride.getGas(1000), Materials.Water.getFluid(1000) },
                 null,
                 160,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Chlorine.getGas(2000), Materials.Ethylene.getGas(2000), Materials.Oxygen.getGas(1000)
-                },
-                new FluidStack[] {Materials.VinylChloride.getGas(2000), Materials.Water.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Chlorine.getGas(2000), Materials.Ethylene.getGas(2000),
+                        Materials.Oxygen.getGas(1000) },
+                new FluidStack[] { Materials.VinylChloride.getGas(2000), Materials.Water.getFluid(1000) },
                 null,
                 240,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[] {
-                    Materials.Isoprene.getFluid(1728),
-                    Materials.Air.getGas(6000),
-                    Materials.Titaniumtetrachloride.getFluid(80)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+                new FluidStack[] { Materials.Isoprene.getFluid(1728), Materials.Air.getGas(6000),
+                        Materials.Titaniumtetrachloride.getFluid(80) },
                 null,
-                new ItemStack[] {Materials.RawRubber.getDust(18)},
+                new ItemStack[] { Materials.RawRubber.getDust(18) },
                 640,
                 30);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[] {
-                    Materials.Isoprene.getFluid(1728),
-                    Materials.Oxygen.getGas(6000),
-                    Materials.Titaniumtetrachloride.getFluid(80)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+                new FluidStack[] { Materials.Isoprene.getFluid(1728), Materials.Oxygen.getGas(6000),
+                        Materials.Titaniumtetrachloride.getFluid(80) },
                 null,
-                new ItemStack[] {Materials.RawRubber.getDust(24)},
+                new ItemStack[] { Materials.RawRubber.getDust(24) },
                 640,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(3)},
-                new FluidStack[] {
-                    Materials.Styrene.getFluid(36), Materials.Butadiene.getGas(108), Materials.Air.getGas(2000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(3) },
+                new FluidStack[] { Materials.Styrene.getFluid(36), Materials.Butadiene.getGas(108),
+                        Materials.Air.getGas(2000) },
                 null,
-                new ItemStack[] {Materials.RawStyreneButadieneRubber.getDust(1)},
+                new ItemStack[] { Materials.RawStyreneButadieneRubber.getDust(1) },
                 160,
                 240);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(3)},
-                new FluidStack[] {
-                    Materials.Styrene.getFluid(72), Materials.Butadiene.getGas(216), Materials.Oxygen.getGas(2000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(3) },
+                new FluidStack[] { Materials.Styrene.getFluid(72), Materials.Butadiene.getGas(216),
+                        Materials.Oxygen.getGas(2000) },
                 null,
-                new ItemStack[] {Materials.RawStyreneButadieneRubber.getDust(3)},
+                new ItemStack[] { Materials.RawStyreneButadieneRubber.getDust(3) },
                 160,
                 240);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(4)},
-                new FluidStack[] {
-                    Materials.Styrene.getFluid(540),
-                    Materials.Butadiene.getGas(1620),
-                    Materials.Titaniumtetrachloride.getFluid(100),
-                    Materials.Air.getGas(15000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(4) },
+                new FluidStack[] { Materials.Styrene.getFluid(540), Materials.Butadiene.getGas(1620),
+                        Materials.Titaniumtetrachloride.getFluid(100), Materials.Air.getGas(15000) },
                 null,
-                new ItemStack[] {
-                    Materials.RawStyreneButadieneRubber.getDust(22), Materials.RawStyreneButadieneRubber.getDustSmall(2)
-                },
+                new ItemStack[] { Materials.RawStyreneButadieneRubber.getDust(22),
+                        Materials.RawStyreneButadieneRubber.getDustSmall(2) },
                 640,
                 240);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(4)},
-                new FluidStack[] {
-                    Materials.Styrene.getFluid(540),
-                    Materials.Butadiene.getGas(1620),
-                    Materials.Titaniumtetrachloride.getFluid(100),
-                    Materials.Oxygen.getGas(7500)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(4) },
+                new FluidStack[] { Materials.Styrene.getFluid(540), Materials.Butadiene.getGas(1620),
+                        Materials.Titaniumtetrachloride.getFluid(100), Materials.Oxygen.getGas(7500) },
                 null,
-                new ItemStack[] {Materials.RawStyreneButadieneRubber.getDust(30)},
+                new ItemStack[] { Materials.RawStyreneButadieneRubber.getDust(30) },
                 640,
                 240);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), Materials.Salt.getDust(18)},
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000)},
-                new FluidStack[] {Materials.HydrochloricAcid.getFluid(9000)},
-                new ItemStack[] {Materials.SodiumBisulfate.getDust(63)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9), Materials.Salt.getDust(18) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(9000) },
+                new FluidStack[] { Materials.HydrochloricAcid.getFluid(9000) },
+                new ItemStack[] { Materials.SodiumBisulfate.getDust(63) },
                 135,
                 120);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), Materials.SodiumHydroxide.getDust(27)},
-                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000)},
-                new FluidStack[] {Materials.Water.getFluid(9000)},
-                new ItemStack[] {Materials.SodiumBisulfate.getDust(63)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9), Materials.SodiumHydroxide.getDust(27) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(9000) },
+                new FluidStack[] { Materials.Water.getFluid(9000) },
+                new ItemStack[] { Materials.SodiumBisulfate.getDust(63) },
                 135,
                 120);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Benzene.getFluid(1000), Materials.Chlorine.getGas(2000), Materials.Water.getFluid(1000)
-                },
-                new FluidStack[] {
-                    Materials.Phenol.getFluid(1000),
-                    Materials.HydrochloricAcid.getFluid(1000),
-                    Materials.DilutedHydrochloricAcid.getFluid(1000)
-                },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Benzene.getFluid(1000), Materials.Chlorine.getGas(2000),
+                        Materials.Water.getFluid(1000) },
+                new FluidStack[] { Materials.Phenol.getFluid(1000), Materials.HydrochloricAcid.getFluid(1000),
+                        Materials.DilutedHydrochloricAcid.getFluid(1000) },
                 null,
                 560,
                 30);
         // C6H6 + 2Cl + NaOH = C6H6O + NaCl + HCl
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {Materials.SodiumHydroxide.getDust(6), GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Benzene.getFluid(2000), Materials.Chlorine.getGas(4000)},
-                new FluidStack[] {Materials.Phenol.getFluid(2000), Materials.HydrochloricAcid.getFluid(2000)},
-                new ItemStack[] {Materials.Salt.getDust(4)},
+                new ItemStack[] { Materials.SodiumHydroxide.getDust(6), GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Benzene.getFluid(2000), Materials.Chlorine.getGas(4000) },
+                new FluidStack[] { Materials.Phenol.getFluid(2000), Materials.HydrochloricAcid.getFluid(2000) },
+                new ItemStack[] { Materials.Salt.getDust(4) },
                 1120,
                 30);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.LightFuel.getFluid(20000), Materials.HeavyFuel.getFluid(4000)},
-                new FluidStack[] {Materials.Fuel.getFluid(24000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.LightFuel.getFluid(20000), Materials.HeavyFuel.getFluid(4000) },
+                new FluidStack[] { Materials.Fuel.getFluid(24000) },
                 null,
                 100,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Fuel.getFluid(10000), Materials.Tetranitromethane.getFluid(200)},
-                new FluidStack[] {Materials.NitroFuel.getFluid(10000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Fuel.getFluid(10000), Materials.Tetranitromethane.getFluid(200) },
+                new FluidStack[] { Materials.NitroFuel.getFluid(10000) },
                 null,
                 120,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.BioDiesel.getFluid(10000), Materials.Tetranitromethane.getFluid(400)},
-                new FluidStack[] {Materials.NitroFuel.getFluid(9000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.BioDiesel.getFluid(10000), Materials.Tetranitromethane.getFluid(400) },
+                new FluidStack[] { Materials.NitroFuel.getFluid(9000) },
                 null,
                 120,
                 480);
         // CH4 + 2H2O = CO2 + 8H
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(11)},
-                new FluidStack[] {Materials.Methane.getGas(5000), GT_ModHandler.getDistilledWater(10000)},
-                new FluidStack[] {Materials.CarbonDioxide.getGas(5000), Materials.Hydrogen.getGas(40000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(11) },
+                new FluidStack[] { Materials.Methane.getGas(5000), GT_ModHandler.getDistilledWater(10000) },
+                new FluidStack[] { Materials.CarbonDioxide.getGas(5000), Materials.Hydrogen.getGas(40000) },
                 null,
                 200,
                 480);
         // CH4 + H2O = CO + 6H
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(12)},
-                new FluidStack[] {Materials.Methane.getGas(5000), GT_ModHandler.getDistilledWater(5000)},
-                new FluidStack[] {Materials.CarbonMonoxide.getGas(5000), Materials.Hydrogen.getGas(30000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(12) },
+                new FluidStack[] { Materials.Methane.getGas(5000), GT_ModHandler.getDistilledWater(5000) },
+                new FluidStack[] { Materials.CarbonMonoxide.getGas(5000), Materials.Hydrogen.getGas(30000) },
                 null,
                 200,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Nitrogen.getGas(20000), Materials.Oxygen.getGas(10000)},
-                new FluidStack[] {Materials.NitrousOxide.getGas(10000)},
-                new ItemStack[] {null},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Nitrogen.getGas(20000), Materials.Oxygen.getGas(10000) },
+                new FluidStack[] { Materials.NitrousOxide.getGas(10000) },
+                new ItemStack[] { null },
                 50,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Naphtha.getFluid(16000),
-                    Materials.Gas.getGas(2000),
-                    Materials.Methanol.getFluid(1000),
-                    Materials.Acetone.getFluid(1000)
-                },
-                new FluidStack[] {Materials.GasolineRaw.getFluid(20000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Naphtha.getFluid(16000), Materials.Gas.getGas(2000),
+                        Materials.Methanol.getFluid(1000), Materials.Acetone.getFluid(1000) },
+                new FluidStack[] { Materials.GasolineRaw.getFluid(20000) },
                 null,
                 100,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.GasolineRaw.getFluid(10000), Materials.Toluene.getFluid(1000)},
-                new FluidStack[] {Materials.GasolineRegular.getFluid(11000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.GasolineRaw.getFluid(10000), Materials.Toluene.getFluid(1000) },
+                new FluidStack[] { Materials.GasolineRegular.getFluid(11000) },
                 null,
                 10,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.GasolineRegular.getFluid(20000),
-                    Materials.Octane.getFluid(2000),
-                    Materials.NitrousOxide.getGas(6000),
-                    Materials.Toluene.getFluid(1000),
-                    Materials.AntiKnock.getFluid(3000L)
-                },
-                new FluidStack[] {Materials.GasolinePremium.getFluid(32000L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.GasolineRegular.getFluid(20000), Materials.Octane.getFluid(2000),
+                        Materials.NitrousOxide.getGas(6000), Materials.Toluene.getFluid(1000),
+                        Materials.AntiKnock.getFluid(3000L) },
+                new FluidStack[] { Materials.GasolinePremium.getFluid(32000L) },
                 null,
                 50,
                 1920);
         // C2H6O + C4H8 = C6H14O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Ethanol.getFluid(1000), Materials.Butene.getGas(1000)},
-                new FluidStack[] {Materials.AntiKnock.getFluid(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Ethanol.getFluid(1000), Materials.Butene.getGas(1000) },
+                new FluidStack[] { Materials.AntiKnock.getFluid(1000) },
                 null,
                 400,
                 480);
         // CH4O + C4H8 = C5H12O
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.Methanol.getFluid(1000), Materials.Butene.getGas(1000)},
-                new FluidStack[] {Materials.MTBEMixture.getGas(1000)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Methanol.getFluid(1000), Materials.Butene.getGas(1000) },
+                new FluidStack[] { Materials.MTBEMixture.getGas(1000) },
                 null,
                 20,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {
-                    Materials.Naquadria.getMolten(4608L),
-                    Materials.ElectrumFlux.getMolten(4608L),
-                    Materials.Radon.getGas(16000L)
-                },
-                new FluidStack[] {Materials.EnrichedNaquadria.getFluid(9216L)},
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(24) },
+                new FluidStack[] { Materials.Naquadria.getMolten(4608L), Materials.ElectrumFlux.getMolten(4608L),
+                        Materials.Radon.getGas(16000L) },
+                new FluidStack[] { Materials.EnrichedNaquadria.getFluid(9216L) },
                 null,
                 600,
                 500000);
@@ -4947,350 +4767,263 @@ public class ChemicalRecipes implements Runnable {
         if (isGTNHLanthanidLoaded && isGTPPLoaded) {
             // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("formaldehyde"), 1000),
-                        new FluidStack(FluidRegistry.getFluid("aniline"), 2000),
-                        Materials.HydrochloricAcid.getFluid(1000)
-                    },
-                    new FluidStack[] {MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000L)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("formaldehyde"), 1000),
+                            new FluidStack(FluidRegistry.getFluid("aniline"), 2000),
+                            Materials.HydrochloricAcid.getFluid(1000) },
+                    new FluidStack[] { MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000L) },
                     null,
                     1200,
                     1920);
             // C6H5NO2 + 6H =Pd= C6H7N + 2H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L)
-                    },
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 9000), Materials.Hydrogen.getGas(54000)
-                    },
-                    new FluidStack[] {
-                        Materials.Water.getFluid(18000), new FluidStack(FluidRegistry.getFluid("aniline"), 9000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 9000),
+                            Materials.Hydrogen.getGas(54000) },
+                    new FluidStack[] { Materials.Water.getFluid(18000),
+                            new FluidStack(FluidRegistry.getFluid("aniline"), 9000) },
                     null,
                     900,
                     1920);
             // C6H6 + HNO3 =H2SO4= C6H5NO2 + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                    new FluidStack[] {
-                        Materials.Benzene.getFluid(5000),
-                        Materials.SulfuricAcid.getFluid(3000),
-                        Materials.NitricAcid.getFluid(5000),
-                        GT_ModHandler.getDistilledWater(10000)
-                    },
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000),
-                        Materials.DilutedSulfuricAcid.getFluid(3000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                    new FluidStack[] { Materials.Benzene.getFluid(5000), Materials.SulfuricAcid.getFluid(3000),
+                            Materials.NitricAcid.getFluid(5000), GT_ModHandler.getDistilledWater(10000) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000),
+                            Materials.DilutedSulfuricAcid.getFluid(3000) },
                     null,
                     8,
                     122880);
             // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                    new FluidStack[] {
-                        MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000L),
-                        new FluidStack(FluidRegistry.getFluid("phosgene"), 2000)
-                    },
-                    new FluidStack[] {MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                    new FluidStack[] { MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000L),
+                            new FluidStack(FluidRegistry.getFluid("phosgene"), 2000) },
+                    new FluidStack[] { MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L) },
                     null,
                     600,
                     1920);
 
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(9),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L)
-                    },
-                    new FluidStack[] {MaterialsKevlar.Butyraldehyde.getFluid(9000), Materials.Hydrogen.getGas(18000)},
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("butanol"), 9000)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L) },
+                    new FluidStack[] { MaterialsKevlar.Butyraldehyde.getFluid(9000), Materials.Hydrogen.getGas(18000) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("butanol"), 9000) },
                     null,
                     80,
                     480);
 
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L)
-                    },
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("butanol"), 2000),
-                        new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000),
-                        Materials.IronIIIChloride.getFluid(100)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("butanol"), 2000),
+                            new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000),
+                            Materials.IronIIIChloride.getFluid(100) },
                     null,
-                    new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 1L)},
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 1L) },
                     600,
                     1920);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(9),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 9L)
-                    },
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("butanol"), 18000),
-                        new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000),
-                        Materials.IronIIIChloride.getFluid(900)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 9L) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("butanol"), 18000),
+                            new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000),
+                            Materials.IronIIIChloride.getFluid(900) },
                     null,
-                    new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 9L)},
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 9L) },
                     4500,
                     1920);
             // C2H4 + CO + H2O =C4NiO= C3H6O2
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                    new FluidStack[] {
-                        Materials.Ethylene.getGas(1000),
-                        Materials.CarbonMonoxide.getGas(1000),
-                        MaterialsKevlar.NickelTetracarbonyl.getFluid(100),
-                        Materials.Water.getFluid(1000)
-                    },
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                    new FluidStack[] { Materials.Ethylene.getGas(1000), Materials.CarbonMonoxide.getGas(1000),
+                            MaterialsKevlar.NickelTetracarbonyl.getFluid(100), Materials.Water.getFluid(1000) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000) },
                     null,
                     200,
                     1920);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                    new FluidStack[] {
-                        Materials.Ethylene.getGas(9000),
-                        Materials.CarbonMonoxide.getGas(9000),
-                        MaterialsKevlar.NickelTetracarbonyl.getFluid(900),
-                        Materials.Water.getFluid(9000)
-                    },
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                    new FluidStack[] { Materials.Ethylene.getGas(9000), Materials.CarbonMonoxide.getGas(9000),
+                            MaterialsKevlar.NickelTetracarbonyl.getFluid(900), Materials.Water.getFluid(9000) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000) },
                     null,
                     1500,
                     1920);
             // C6H7N + HNO3 =H2SO4,C4H6O3= C6H6N2O2 + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("aniline"), 1000),
-                        new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 100),
-                        Materials.NitrationMixture.getFluid(2000)
-                    },
-                    new FluidStack[] {
-                        MaterialsKevlar.IVNitroaniline.getFluid(1000L), Materials.DilutedSulfuricAcid.getFluid(1000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("aniline"), 1000),
+                            new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 100),
+                            Materials.NitrationMixture.getFluid(2000) },
+                    new FluidStack[] { MaterialsKevlar.IVNitroaniline.getFluid(1000L),
+                            Materials.DilutedSulfuricAcid.getFluid(1000) },
                     null,
                     300,
                     1920);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("aniline"), 9000),
-                        new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 900),
-                        Materials.NitrationMixture.getFluid(18000)
-                    },
-                    new FluidStack[] {
-                        MaterialsKevlar.IVNitroaniline.getFluid(9000L), Materials.DilutedSulfuricAcid.getFluid(9000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("aniline"), 9000),
+                            new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 900),
+                            Materials.NitrationMixture.getFluid(18000) },
+                    new FluidStack[] { MaterialsKevlar.IVNitroaniline.getFluid(9000L),
+                            Materials.DilutedSulfuricAcid.getFluid(9000) },
                     null,
                     2000,
                     1920);
             // C6H6N2O2 + 6H =Pd,NO2= C6H8N2 + 2H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L) },
+                    new FluidStack[] { Materials.NitrogenDioxide.getGas(100), Materials.Hydrogen.getGas(6000),
+                            MaterialsKevlar.IVNitroaniline.getFluid(1000L) },
+                    new FluidStack[] { Materials.Water.getFluid(2000L) },
                     new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L)
-                    },
-                    new FluidStack[] {
-                        Materials.NitrogenDioxide.getGas(100),
-                        Materials.Hydrogen.getGas(6000),
-                        MaterialsKevlar.IVNitroaniline.getFluid(1000L)
-                    },
-                    new FluidStack[] {Materials.Water.getFluid(2000L)},
-                    new ItemStack[] {
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 16L)
-                    },
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 16L) },
                     400,
                     500000);
             // C4H10O2 =Cu= C4H6O2 + 4H
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L)
-                    },
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000)},
-                    new FluidStack[] {MaterialsKevlar.GammaButyrolactone.getFluid(1000), Materials.Hydrogen.getGas(4000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000) },
+                    new FluidStack[] { MaterialsKevlar.GammaButyrolactone.getFluid(1000),
+                            Materials.Hydrogen.getGas(4000) },
                     null,
                     100,
                     1920);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(9),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 9L)
-                    },
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 9000)},
-                    new FluidStack[] {
-                        MaterialsKevlar.GammaButyrolactone.getFluid(9000), Materials.Hydrogen.getGas(36000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 9L) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 9000) },
+                    new FluidStack[] { MaterialsKevlar.GammaButyrolactone.getFluid(9000),
+                            Materials.Hydrogen.getGas(36000) },
                     null,
                     700,
                     1920);
 
             // 2CH2O + C2H2 =SiO2,CuO,Bi2O3= C4H6O2
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L)
-                    },
-                    new FluidStack[] {
-                        MaterialsKevlar.Acetylene.getGas(1000L),
-                        new FluidStack(FluidRegistry.getFluid("formaldehyde"), 2000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L) },
+                    new FluidStack[] { MaterialsKevlar.Acetylene.getGas(1000L),
+                            new FluidStack(FluidRegistry.getFluid("formaldehyde"), 2000) },
                     null,
-                    new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12L)},
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12L) },
                     400,
                     1920);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(9),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 9L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 9L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9L)
-                    },
-                    new FluidStack[] {
-                        MaterialsKevlar.Acetylene.getGas(9000L),
-                        new FluidStack(FluidRegistry.getFluid("formaldehyde"), 18000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 9L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 9L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9L) },
+                    new FluidStack[] { MaterialsKevlar.Acetylene.getGas(9000L),
+                            new FluidStack(FluidRegistry.getFluid("formaldehyde"), 18000) },
                     null,
-                    new ItemStack[] {
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 44L)
-                    },
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 44L) },
                     3000,
                     1920);
             // C4H6O2 + 4H =NiAl= C4H10O2
-            GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.RaneyNickelActivated, 1L)
-                    },
-                    new FluidStack[] {Materials.Hydrogen.getGas(4000L)},
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000)},
-                    null,
-                    300,
-                    500000);
+            GT_Values.RA
+                    .addMultiblockChemicalRecipe(
+                            new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12L),
+                                    GT_OreDictUnificator
+                                            .get(OrePrefixes.dust, MaterialsKevlar.RaneyNickelActivated, 1L) },
+                            new FluidStack[] { Materials.Hydrogen.getGas(4000L) },
+                            new FluidStack[] { new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000) },
+                            null,
+                            300,
+                            500000);
 
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 9L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 9L)
-                    },
-                    new FluidStack[] {MaterialsKevlar.NMethylIIPyrrolidone.getFluid(1000)},
-                    new FluidStack[] {
-                        MaterialsKevlar.LiquidCrystalKevlar.getFluid(9000L),
-                        Materials.DilutedHydrochloricAcid.getFluid(2000L)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 9L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 9L) },
+                    new FluidStack[] { MaterialsKevlar.NMethylIIPyrrolidone.getFluid(1000) },
+                    new FluidStack[] { MaterialsKevlar.LiquidCrystalKevlar.getFluid(9000L),
+                            Materials.DilutedHydrochloricAcid.getFluid(2000L) },
                     null,
                     600,
                     500000);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(9),
-                        getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 7L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 63L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 63L)
-                    },
-                    new FluidStack[] {MaterialsKevlar.NMethylIIPyrrolidone.getFluid(7000)},
-                    new FluidStack[] {
-                        MaterialsKevlar.LiquidCrystalKevlar.getFluid(63000L),
-                        Materials.DilutedHydrochloricAcid.getFluid(14000L)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
+                            getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 7L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 63L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 63L) },
+                    new FluidStack[] { MaterialsKevlar.NMethylIIPyrrolidone.getFluid(7000) },
+                    new FluidStack[] { MaterialsKevlar.LiquidCrystalKevlar.getFluid(63000L),
+                            Materials.DilutedHydrochloricAcid.getFluid(14000L) },
                     null,
                     3500,
                     500000);
 
             // Na2B4O7(H2O)10 + 2HCl = 2NaCl + 4H3BO3 + 5H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 23L)
-                    },
-                    new FluidStack[] {Materials.HydrochloricAcid.getFluid(2000L)},
-                    new FluidStack[] {
-                        new FluidStack(FluidRegistry.getFluid("boricacid"), 4000), Materials.Water.getFluid(5000L)
-                    },
-                    new ItemStack[] {Materials.Salt.getDust(4)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 23L) },
+                    new FluidStack[] { Materials.HydrochloricAcid.getFluid(2000L) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("boricacid"), 4000),
+                            Materials.Water.getFluid(5000L) },
+                    new ItemStack[] { Materials.Salt.getDust(4) },
                     800,
                     480);
             // H3BO3 + 3CH4O =H2SO4= C3H9BO3 + 3H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
-                    new FluidStack[] {
-                        Materials.Methanol.getFluid(3000L),
-                        new FluidStack(FluidRegistry.getFluid("boricacid"), 1000),
-                        Materials.SulfuricAcid.getFluid(6000L)
-                    },
-                    new FluidStack[] {
-                        Materials.DilutedSulfuricAcid.getFluid(6000L), MaterialsKevlar.TrimethylBorate.getFluid(1000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+                    new FluidStack[] { Materials.Methanol.getFluid(3000L),
+                            new FluidStack(FluidRegistry.getFluid("boricacid"), 1000),
+                            Materials.SulfuricAcid.getFluid(6000L) },
+                    new FluidStack[] { Materials.DilutedSulfuricAcid.getFluid(6000L),
+                            MaterialsKevlar.TrimethylBorate.getFluid(1000) },
                     null,
                     600,
                     960);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
-                    new FluidStack[] {
-                        Materials.Methanol.getFluid(27000L),
-                        new FluidStack(FluidRegistry.getFluid("boricacid"), 9000),
-                        Materials.SulfuricAcid.getFluid(54000L)
-                    },
-                    new FluidStack[] {
-                        Materials.DilutedSulfuricAcid.getFluid(54000L), MaterialsKevlar.TrimethylBorate.getFluid(9000)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                    new FluidStack[] { Materials.Methanol.getFluid(27000L),
+                            new FluidStack(FluidRegistry.getFluid("boricacid"), 9000),
+                            Materials.SulfuricAcid.getFluid(54000L) },
+                    new FluidStack[] { Materials.DilutedSulfuricAcid.getFluid(54000L),
+                            MaterialsKevlar.TrimethylBorate.getFluid(9000) },
                     null,
                     4500,
                     960);
             // RhCl3 + 3C18H15P + 3NaBH4 + CO = RhC55H46P3O + 3NaCl + 3B + 11H
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.RhodiumChloride, 4L),
-                        MaterialsKevlar.Triphenylphosphene.getDust(64),
-                        MaterialsKevlar.Triphenylphosphene.getDust(38),
-                        MaterialsKevlar.SodiumBorohydride.getDust(18)
-                    },
-                    new FluidStack[] {Materials.CarbonMonoxide.getGas(1000L)},
-                    new FluidStack[] {Materials.Hydrogen.getGas(11000L)},
-                    new ItemStack[] {
-                        MaterialsKevlar.OrganorhodiumCatalyst.getDust(64),
-                        MaterialsKevlar.OrganorhodiumCatalyst.getDust(42),
-                        Materials.Salt.getDust(6),
-                        Materials.Boron.getDust(3)
-                    },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.RhodiumChloride, 4L),
+                            MaterialsKevlar.Triphenylphosphene.getDust(64),
+                            MaterialsKevlar.Triphenylphosphene.getDust(38),
+                            MaterialsKevlar.SodiumBorohydride.getDust(18) },
+                    new FluidStack[] { Materials.CarbonMonoxide.getGas(1000L) },
+                    new FluidStack[] { Materials.Hydrogen.getGas(11000L) },
+                    new ItemStack[] { MaterialsKevlar.OrganorhodiumCatalyst.getDust(64),
+                            MaterialsKevlar.OrganorhodiumCatalyst.getDust(42), Materials.Salt.getDust(6),
+                            Materials.Boron.getDust(3) },
                     800,
                     500000);
             // 2NaOH + N2H4 =Mn= 2N + 2H2O + 2NaH
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(9),
-                        Materials.SodiumHydroxide.getDust(6),
-                        Materials.Manganese.getDustTiny(1)
-                    },
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("hydrazine"), 1000)},
-                    new FluidStack[] {Materials.Nitrogen.getGas(2000L), Materials.Water.getFluid(2000L)},
-                    new ItemStack[] {MaterialsKevlar.SodiumHydride.getDust(4)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(9), Materials.SodiumHydroxide.getDust(6),
+                            Materials.Manganese.getDustTiny(1) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("hydrazine"), 1000) },
+                    new FluidStack[] { Materials.Nitrogen.getGas(2000L), Materials.Water.getFluid(2000L) },
+                    new ItemStack[] { MaterialsKevlar.SodiumHydride.getDust(4) },
                     10,
                     1920);
             GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] {
-                        GT_Utility.getIntegratedCircuit(18),
-                        Materials.SodiumHydroxide.getDust(54),
-                        Materials.Manganese.getDust(1)
-                    },
-                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("hydrazine"), 9000)},
-                    new FluidStack[] {Materials.Nitrogen.getGas(18000L), Materials.Water.getFluid(18000L)},
-                    new ItemStack[] {MaterialsKevlar.SodiumHydride.getDust(36)},
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(18), Materials.SodiumHydroxide.getDust(54),
+                            Materials.Manganese.getDust(1) },
+                    new FluidStack[] { new FluidStack(FluidRegistry.getFluid("hydrazine"), 9000) },
+                    new FluidStack[] { Materials.Nitrogen.getGas(18000L), Materials.Water.getFluid(18000L) },
+                    new ItemStack[] { MaterialsKevlar.SodiumHydride.getDust(36) },
                     70,
                     1920);
         }

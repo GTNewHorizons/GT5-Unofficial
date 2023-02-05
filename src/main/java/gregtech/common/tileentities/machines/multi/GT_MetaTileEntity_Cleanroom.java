@@ -4,8 +4,20 @@ import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ISecondaryDescribable;
@@ -19,18 +31,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.ConfigCategory;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiBlockBase
         implements IConstructable, ISecondaryDescribable {
+
     private int mHeight = -1;
 
     public GT_MetaTileEntity_Cleanroom(int aID, String aName, String aNameRegional) {
@@ -49,22 +53,17 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Cleanroom")
-                .addInfo("Controller block for the Cleanroom")
+        tt.addMachineType("Cleanroom").addInfo("Controller block for the Cleanroom")
                 .addInfo("Consumes 40 EU/t when first turned on")
                 .addInfo("and 4 EU/t once at 100% efficiency when not overclocked") // ?
                 .addInfo("An energy hatch accepts up to 2A, so you can use 2A LV or 1A MV")
                 .addInfo("2 LV batteries + 1 LV generator or 1 MV generator") // ?
                 .addInfo("Time required to reach full efficiency is proportional to")
-                .addInfo("the height of empty space within")
-                .addInfo("Make sure your Energy Hatch matches! ?")
-                .addInfo("Machines that cause pollution aren't allowed to be put in.")
-                .addSeparator()
-                .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
-                .addController("Top center")
+                .addInfo("the height of empty space within").addInfo("Make sure your Energy Hatch matches! ?")
+                .addInfo("Machines that cause pollution aren't allowed to be put in.").addSeparator()
+                .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true).addController("Top center")
                 .addCasingInfo("Plascrete", 20)
-                .addStructureInfo(
-                        GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass") // check
+                .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass") // check
                 .addStructureInfo("Other material can be used in place of Plascrete. See config for detail") // check
                 .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
                 .addEnergyHatch("Any casing. Exactly one.") // check
@@ -72,14 +71,13 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                 .addStructureInfo("1x Reinforced Door (keep closed or efficiency will reduce)")
                 .addStructureInfo("Up to 10 Machine Hulls for Item & Energy transfer through walls")
                 .addStructureInfo("You can also use Diodes for more power")
-                .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
-                .toolTipFinisher("Gregtech");
+                .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit").toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[] {"The structure in both X and Z axis has to be a square."};
+        return new String[] { "The structure in both X and Z axis has to be a square." };
     }
 
     @Override
@@ -195,17 +193,17 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                         } else if (tBlock == GregTech_API.sBlockReinforced && tMeta == 2) {
                             mPlascreteCount++;
                         } else {
-                            final IGregTechTileEntity tTileEntity =
-                                    aBaseMetaTileEntity.getIGregTechTileEntityOffset(dX, dY, dZ);
+                            final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                                    .getIGregTechTileEntityOffset(dX, dY, dZ);
                             if ((!this.addMaintenanceToMachineList(tTileEntity, 210))
                                     && (!this.addEnergyInputToMachineList(tTileEntity, 210))) {
                                 if (tBlock instanceof ic2.core.block.BlockIC2Door) {
                                     if ((tMeta & 8) == 0) {
                                         // let's not fiddle with bits anymore.
                                         if (Math.abs(dZ) < z) // on side parallel to z axis
-                                        doorState = tMeta == 1 || tMeta == 3 || tMeta == 4 || tMeta == 6;
+                                            doorState = tMeta == 1 || tMeta == 3 || tMeta == 4 || tMeta == 6;
                                         else if (Math.abs(dX) < x) // on side parallel to x axis
-                                        doorState = tMeta == 0 || tMeta == 2 || tMeta == 5 || tMeta == 7;
+                                            doorState = tMeta == 0 || tMeta == 2 || tMeta == 5 || tMeta == 7;
                                         // corners ignored
                                     }
                                     mDoorCount++;
@@ -222,8 +220,9 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                             mHullCount++;
                                         } else {
                                             if (debugCleanroom) {
-                                                GT_Log.out.println("Cleanroom: Incorrect GT block? "
-                                                        + tBlock.getUnlocalizedName());
+                                                GT_Log.out.println(
+                                                        "Cleanroom: Incorrect GT block? "
+                                                                + tBlock.getUnlocalizedName());
                                             }
                                             return false;
                                         }
@@ -236,9 +235,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                             if (config.containsKey(key)) {
                                                 otherBlocks.compute(key, (k, v) -> v == null ? 1 : v + 1);
                                             } else {
-                                                if (debugCleanroom)
-                                                    GT_Log.out.println("Cleanroom: not allowed block "
-                                                            + tBlock.getUnlocalizedName());
+                                                if (debugCleanroom) GT_Log.out.println(
+                                                        "Cleanroom: not allowed block " + tBlock.getUnlocalizedName());
                                                 return false;
                                             }
                                         }
@@ -250,8 +248,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                 }
             }
         }
-        if (this.mMaintenanceHatches.size() != 1
-                || this.mEnergyHatches.size() != 1
+        if (this.mMaintenanceHatches.size() != 1 || this.mEnergyHatches.size() != 1
                 || mDoorCount > 4
                 || mHullCount > 10) {
             return false;
@@ -289,26 +286,25 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     private void setCallbacks(int x, int y, int z, IGregTechTileEntity aBaseMetaTileEntity) {
         for (int dX = -x + 1; dX <= x - 1; dX++)
-            for (int dZ = -z + 1; dZ <= z - 1; dZ++)
-                for (int dY = -1; dY >= y + 1; dY--) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityOffset(dX, dY, dZ);
+            for (int dZ = -z + 1; dZ <= z - 1; dZ++) for (int dY = -1; dY >= y + 1; dY--) {
+                TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityOffset(dX, dY, dZ);
 
-                    if (tTileEntity instanceof IGregTechTileEntity) {
-                        IMetaTileEntity iMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                if (tTileEntity instanceof IGregTechTileEntity) {
+                    IMetaTileEntity iMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
 
-                        if (iMetaTileEntity instanceof IMachineCallback<?>)
-                            checkAndSetCallback((IMachineCallback<?>) iMetaTileEntity);
+                    if (iMetaTileEntity instanceof IMachineCallback<?>)
+                        checkAndSetCallback((IMachineCallback<?>) iMetaTileEntity);
 
-                    } else if (tTileEntity instanceof IMachineCallback<?>)
-                        checkAndSetCallback((IMachineCallback<?>) tTileEntity);
-                }
+                } else if (tTileEntity instanceof IMachineCallback<?>)
+                    checkAndSetCallback((IMachineCallback<?>) tTileEntity);
+            }
     }
 
     @SuppressWarnings("unchecked")
     private void checkAndSetCallback(IMachineCallback<?> iMachineCallback) {
-        if (debugCleanroom)
-            GT_Log.out.println("Cleanroom: IMachineCallback detected, checking for cleanroom: "
-                    + (iMachineCallback.getType() == this.getClass()));
+        if (debugCleanroom) GT_Log.out.println(
+                "Cleanroom: IMachineCallback detected, checking for cleanroom: "
+                        + (iMachineCallback.getType() == this.getClass()));
         if (iMachineCallback.getType() == this.getClass())
             ((IMachineCallback<GT_MetaTileEntity_Cleanroom>) iMachineCallback).setCallbackBase(this);
     }
@@ -319,32 +315,18 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == ForgeDirection.DOWN.ordinal() || aSide == ForgeDirection.UP.ordinal()) {
-            return new ITexture[] {
-                TextureFactory.of(BLOCK_PLASCRETE),
-                aActive
-                        ? TextureFactory.of(
-                                TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW)
-                                        .glow()
-                                        .build())
-                        : TextureFactory.of(
-                                TextureFactory.of(OVERLAY_TOP_CLEANROOM),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_TOP_CLEANROOM_GLOW)
-                                        .glow()
-                                        .build())
-            };
+            return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE),
+                    aActive ? TextureFactory.of(
+                            TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
+                            TextureFactory.builder().addIcon(OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW).glow().build())
+                            : TextureFactory.of(
+                                    TextureFactory.of(OVERLAY_TOP_CLEANROOM),
+                                    TextureFactory.builder().addIcon(OVERLAY_TOP_CLEANROOM_GLOW).glow().build()) };
         }
-        return new ITexture[] {TextureFactory.of(BLOCK_PLASCRETE)};
+        return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE) };
     }
 
     @Override
@@ -381,21 +363,20 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         int y = baseEntity.getYCoord();
         int z = baseEntity.getZCoord();
         int yoff = Math.max(i * 2, 3);
-        for (int X = x - i; X <= x + i; X++)
-            for (int Y = y; Y >= y - yoff; Y--)
-                for (int Z = z - i; Z <= z + i; Z++) {
-                    if (X == x && Y == y && Z == z) continue;
-                    if (X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - yoff) {
-                        if (b) StructureLibAPI.hintParticle(world, X, Y, Z, GregTech_API.sBlockReinforced, 2);
-                        else world.setBlock(X, Y, Z, GregTech_API.sBlockReinforced, 2, 2);
-                    } else if (Y == y) {
-                        if (b) StructureLibAPI.hintParticle(world, X, Y, Z, GregTech_API.sBlockCasings3, 11);
-                        else world.setBlock(X, Y, Z, GregTech_API.sBlockCasings3, 11, 2);
-                    }
-                }
+        for (int X = x - i; X <= x + i; X++) for (int Y = y; Y >= y - yoff; Y--) for (int Z = z - i; Z <= z + i; Z++) {
+            if (X == x && Y == y && Z == z) continue;
+            if (X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - yoff) {
+                if (b) StructureLibAPI.hintParticle(world, X, Y, Z, GregTech_API.sBlockReinforced, 2);
+                else world.setBlock(X, Y, Z, GregTech_API.sBlockReinforced, 2, 2);
+            } else if (Y == y) {
+                if (b) StructureLibAPI.hintParticle(world, X, Y, Z, GregTech_API.sBlockCasings3, 11);
+                else world.setBlock(X, Y, Z, GregTech_API.sBlockCasings3, 11, 2);
+            }
+        }
     }
 
     private static class ConfigEntry {
+
         int percentage;
         int allowedCount;
         int meta;
@@ -434,20 +415,14 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         for (ConfigCategory cc : cfg.getCategory(category).getChildren()) {
             final String name = cc.get("Name").getString();
             if (cc.containsKey("Count")) {
-                if (cc.containsKey("Meta"))
-                    config.put(
-                            name + ":" + cc.get("Meta").getInt(),
-                            new ConfigEntry(
-                                    0, cc.get("Count").getInt(), cc.get("Meta").getInt()));
+                if (cc.containsKey("Meta")) config.put(
+                        name + ":" + cc.get("Meta").getInt(),
+                        new ConfigEntry(0, cc.get("Count").getInt(), cc.get("Meta").getInt()));
                 else config.put(name, new ConfigEntry(0, cc.get("Count").getInt(), wildcard_meta));
             } else if (cc.containsKey("Percentage")) {
-                if (cc.containsKey("Meta"))
-                    config.put(
-                            name + ":" + cc.get("Meta").getInt(),
-                            new ConfigEntry(
-                                    cc.get("Percentage").getInt(),
-                                    0,
-                                    cc.get("Meta").getInt()));
+                if (cc.containsKey("Meta")) config.put(
+                        name + ":" + cc.get("Meta").getInt(),
+                        new ConfigEntry(cc.get("Percentage").getInt(), 0, cc.get("Meta").getInt()));
                 else config.put(name, new ConfigEntry(cc.get("Percentage").getInt(), 0, wildcard_meta));
             }
         }

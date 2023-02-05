@@ -2,15 +2,17 @@ package gregtech.common.misc;
 
 import static gregtech.common.misc.GlobalVariableStorage.*;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.HashMap;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.event.world.WorldEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GlobalEnergyWorldSavedData extends WorldSavedData {
 

@@ -3,6 +3,7 @@ package gregtech.api.multitileentity.interfaces;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
 interface IMultiBlockEnergy {
+
     boolean isUniversalEnergyStored(MultiBlockPart aPart, long aEnergyAmount);
 
     long getUniversalEnergyStored(MultiBlockPart aPart);

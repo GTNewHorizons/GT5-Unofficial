@@ -1,5 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -7,11 +11,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ElectrolyzerRecipes implements Runnable {
+
     @Override
     public void run() {
         // H2O = 2H + O
@@ -168,7 +170,7 @@ public class ElectrolyzerRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {10000, 10000, 917, 0, 0, 0},
+                new int[] { 10000, 10000, 917, 0, 0, 0 },
                 200,
                 30);
         // IC2 Fertilizer = H2O + CaCO3 + C
@@ -199,7 +201,7 @@ public class ElectrolyzerRecipes implements Runnable {
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {10000, 10000},
+                new int[] { 10000, 10000 },
                 1000,
                 60);
 

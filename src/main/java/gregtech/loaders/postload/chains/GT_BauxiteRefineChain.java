@@ -1,11 +1,12 @@
 package gregtech.loaders.postload.chains;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_BauxiteRefineChain {
 
@@ -42,22 +43,13 @@ public class GT_BauxiteRefineChain {
                 400);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {
-                    Materials.Aluminiumhydroxide.getDust(1),
-                },
-                new FluidStack[] {
-                    Materials.CarbonDioxide.getGas(5000), MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8000)
-                },
-                new FluidStack[] {
-                    MaterialsOreAlum.SluiceJuice.getFluid(5000),
-                },
-                new ItemStack[] {
-                    Materials.Aluminiumoxide.getDust(64),
-                    Materials.Aluminiumoxide.getDust(16),
-                    Materials.SodiumCarbonate.getDust(9),
-                    Materials.Calcite.getDust(10),
-                    MaterialsOreAlum.BauxiteSlag.getDust(16)
-                },
+                new ItemStack[] { Materials.Aluminiumhydroxide.getDust(1), },
+                new FluidStack[] { Materials.CarbonDioxide.getGas(5000),
+                        MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8000) },
+                new FluidStack[] { MaterialsOreAlum.SluiceJuice.getFluid(5000), },
+                new ItemStack[] { Materials.Aluminiumoxide.getDust(64), Materials.Aluminiumoxide.getDust(16),
+                        Materials.SodiumCarbonate.getDust(9), Materials.Calcite.getDust(10),
+                        MaterialsOreAlum.BauxiteSlag.getDust(16) },
                 300,
                 480);
 
@@ -72,7 +64,7 @@ public class GT_BauxiteRefineChain {
                 Materials.SiliconDioxide.getDust(1),
                 Materials.Iron.getDust(1),
                 GT_Values.NI,
-                new int[] {8000, 6000, 2000, 9000, 8000},
+                new int[] { 8000, 6000, 2000, 9000, 8000 },
                 40,
                 120);
 
@@ -83,7 +75,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Rutile.getDust(1),
                 MaterialsOreAlum.IlmeniteSlag.getDust(1),
                 GT_Values.NI,
-                new int[] {8500, 3000},
+                new int[] { 8500, 3000 },
                 420,
                 1000);
 
@@ -94,7 +86,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Rutile.getDust(1),
                 MaterialsOreAlum.IlmeniteSlag.getDust(1),
                 GT_Values.NI,
-                new int[] {8500, 6000},
+                new int[] { 8500, 6000 },
                 420,
                 1000);
 
@@ -109,13 +101,12 @@ public class GT_BauxiteRefineChain {
                 Materials.Manganese.getDust(1),
                 Materials.Magnesium.getDust(1),
                 GT_Values.NI,
-                new int[] {8000, 1000, 2000, 5000, 6000},
+                new int[] { 8000, 1000, 2000, 5000, 6000 },
                 40,
                 120);
 
-        OrePrefixes[] washable = new OrePrefixes[] {
-            OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.dustImpure, OrePrefixes.dustPure
-        };
+        OrePrefixes[] washable = new OrePrefixes[] { OrePrefixes.crushed, OrePrefixes.crushedPurified,
+                OrePrefixes.dustImpure, OrePrefixes.dustPure };
 
         for (OrePrefixes ore : washable) {
             GT_Values.RA.addMixerRecipe(
@@ -163,7 +154,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1),
                 null,
                 null,
-                new int[] {10000, 2000, 2000, 2000},
+                new int[] { 10000, 2000, 2000, 2000 },
                 45,
                 100);
 
@@ -178,7 +169,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Beryllium, 1),
                 null,
-                new int[] {10000, 2000, 2000, 2000, 2000},
+                new int[] { 10000, 2000, 2000, 2000, 2000 },
                 45,
                 100);
 
@@ -193,7 +184,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1),
                 null,
-                new int[] {10000, 10000, 2000, 2000, 2000},
+                new int[] { 10000, 10000, 2000, 2000, 2000 },
                 45,
                 100);
 
@@ -208,7 +199,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
-                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                new int[] { 5000, 4000, 2000, 2000, 2000, 2000 },
                 45,
                 120);
 
@@ -223,7 +214,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Chrome, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
-                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                new int[] { 5000, 4000, 2000, 2000, 2000, 2000 },
                 45,
                 120);
 
@@ -238,7 +229,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1),
-                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                new int[] { 5000, 4000, 2000, 2000, 2000, 2000 },
                 45,
                 120);
 
@@ -253,7 +244,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Aluminiumoxide, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
-                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                new int[] { 5000, 4000, 2000, 2000, 2000, 2000 },
                 45,
                 120);
 
@@ -268,7 +259,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Aluminiumoxide, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1),
-                new int[] {5000, 1000, 2000, 2000, 2000, 2000},
+                new int[] { 5000, 1000, 2000, 2000, 2000, 2000 },
                 45,
                 120);
 
@@ -283,7 +274,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
-                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                new int[] { 5000, 4000, 2000, 2000, 2000, 2000 },
                 45,
                 120);
     }

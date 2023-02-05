@@ -21,6 +21,19 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -36,19 +49,9 @@ import gregtech.api.objects.XSTR;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
+
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
     private static final float coverThickness = blockMax / 8.0F;
@@ -63,34 +66,44 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         RenderingRegistry.registerBlockHandler(this);
     }
 
-    public static boolean renderStandardBlock(
-            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+            RenderBlocks aRenderer) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof IPipeRenderedTileEntity)) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][] {
-                ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) DOWN.ordinal()),
-                ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) UP.ordinal()),
-                ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) NORTH.ordinal()),
-                ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) SOUTH.ordinal()),
-                ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) WEST.ordinal()),
-                ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) EAST.ordinal())
-            });
+            return renderStandardBlock(
+                    aWorld,
+                    aX,
+                    aY,
+                    aZ,
+                    aBlock,
+                    aRenderer,
+                    new ITexture[][] { ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) DOWN.ordinal()),
+                            ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) UP.ordinal()),
+                            ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) NORTH.ordinal()),
+                            ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) SOUTH.ordinal()),
+                            ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) WEST.ordinal()),
+                            ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) EAST.ordinal()) });
         }
         if ((tTileEntity instanceof ITexturedTileEntity)) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][] {
-                ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) DOWN.ordinal()),
-                ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) UP.ordinal()),
-                ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) NORTH.ordinal()),
-                ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) SOUTH.ordinal()),
-                ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) WEST.ordinal()),
-                ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) EAST.ordinal())
-            });
+            return renderStandardBlock(
+                    aWorld,
+                    aX,
+                    aY,
+                    aZ,
+                    aBlock,
+                    aRenderer,
+                    new ITexture[][] { ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) DOWN.ordinal()),
+                            ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) UP.ordinal()),
+                            ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) NORTH.ordinal()),
+                            ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) SOUTH.ordinal()),
+                            ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) WEST.ordinal()),
+                            ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) EAST.ordinal()) });
         }
         return false;
     }
 
-    public static boolean renderStandardBlock(
-            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, ITexture[][] aTextures) {
+    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+            RenderBlocks aRenderer, ITexture[][] aTextures) {
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
@@ -103,14 +116,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         return true;
     }
 
-    public static boolean renderPipeBlock(
-            IBlockAccess aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            Block aBlock,
-            IPipeRenderedTileEntity aTileEntity,
-            RenderBlocks aRenderer) {
+    public static boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+            IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
         final byte aConnections = aTileEntity.getConnections();
         if ((aConnections & (HAS_FRESHFOAM | HAS_HARDENEDFOAM)) != 0) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
@@ -471,8 +478,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void addHitEffects(
-            EffectRenderer effectRenderer, Block block, World world, int x, int y, int z, int side) {
+    public static void addHitEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z,
+            int side) {
         double rX = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
         double rY = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
         double rZ = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
@@ -489,11 +496,18 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         } else if (side == 5) {
             rX = x + 1.1;
         }
-        effectRenderer.addEffect((new EntityDiggingFX(
-                        world, rX, rY, rZ, 0.0, 0.0, 0.0, block, block.getDamageValue(world, x, y, z), side))
-                .applyColourMultiplier(x, y, z)
-                .multiplyVelocity(0.2F)
-                .multipleParticleScaleBy(0.6F));
+        effectRenderer.addEffect(
+                (new EntityDiggingFX(
+                        world,
+                        rX,
+                        rY,
+                        rZ,
+                        0.0,
+                        0.0,
+                        0.0,
+                        block,
+                        block.getDamageValue(world, x, y, z),
+                        side)).applyColourMultiplier(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
     }
 
     @SideOnly(Side.CLIENT)
@@ -504,7 +518,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     final double bX = x + (iX + 0.5) / 4.0;
                     final double bY = y + (iY + 0.5) / 4.0;
                     final double bZ = z + (iZ + 0.5) / 4.0;
-                    effectRenderer.addEffect((new EntityDiggingFX(
+                    effectRenderer.addEffect(
+                            (new EntityDiggingFX(
                                     world,
                                     bX,
                                     bY,
@@ -513,8 +528,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                     bY - y - 0.5,
                                     bZ - z - 0.5,
                                     block,
-                                    block.getDamageValue(world, x, y, z)))
-                            .applyColourMultiplier(x, y, z));
+                                    block.getDamageValue(world, x, y, z))).applyColourMultiplier(x, y, z));
                 }
             }
         }
@@ -610,24 +624,65 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
                 renderNegativeYFacing(
-                        null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) DOWN.ordinal()), true);
+                        null,
+                        aRenderer,
+                        aBlock,
+                        0,
+                        0,
+                        0,
+                        tTileEntity.getTexture(aBlock, (byte) DOWN.ordinal()),
+                        true);
                 renderPositiveYFacing(
-                        null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) UP.ordinal()), true);
+                        null,
+                        aRenderer,
+                        aBlock,
+                        0,
+                        0,
+                        0,
+                        tTileEntity.getTexture(aBlock, (byte) UP.ordinal()),
+                        true);
                 renderNegativeZFacing(
-                        null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) NORTH.ordinal()), true);
+                        null,
+                        aRenderer,
+                        aBlock,
+                        0,
+                        0,
+                        0,
+                        tTileEntity.getTexture(aBlock, (byte) NORTH.ordinal()),
+                        true);
                 renderPositiveZFacing(
-                        null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) SOUTH.ordinal()), true);
+                        null,
+                        aRenderer,
+                        aBlock,
+                        0,
+                        0,
+                        0,
+                        tTileEntity.getTexture(aBlock, (byte) SOUTH.ordinal()),
+                        true);
                 renderNegativeXFacing(
-                        null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) WEST.ordinal()), true);
+                        null,
+                        aRenderer,
+                        aBlock,
+                        0,
+                        0,
+                        0,
+                        tTileEntity.getTexture(aBlock, (byte) WEST.ordinal()),
+                        true);
                 renderPositiveXFacing(
-                        null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) EAST.ordinal()), true);
-            } else if (aMeta > 0
-                    && (aMeta < GregTech_API.METATILEENTITIES.length)
+                        null,
+                        aRenderer,
+                        aBlock,
+                        0,
+                        0,
+                        0,
+                        tTileEntity.getTexture(aBlock, (byte) EAST.ordinal()),
+                        true);
+            } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
                     && aBlock instanceof GT_Block_Machines
                     && (GregTech_API.METATILEENTITIES[aMeta] != null)
                     && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
-                renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
-            }
+                        renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
+                    }
             aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         }
 
@@ -756,7 +811,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     0,
                     0,
                     tMetaTileEntity.getTexture(
-                            iGregTechTileEntity, (byte) DOWN.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false),
+                            iGregTechTileEntity,
+                            (byte) DOWN.ordinal(),
+                            (byte) WEST.ordinal(),
+                            (byte) -1,
+                            true,
+                            false),
                     true);
             renderPositiveYFacing(
                     null,
@@ -766,7 +826,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     0,
                     0,
                     tMetaTileEntity.getTexture(
-                            iGregTechTileEntity, (byte) UP.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false),
+                            iGregTechTileEntity,
+                            (byte) UP.ordinal(),
+                            (byte) WEST.ordinal(),
+                            (byte) -1,
+                            true,
+                            false),
                     true);
             renderNegativeZFacing(
                     null,
@@ -776,7 +841,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     0,
                     0,
                     tMetaTileEntity.getTexture(
-                            iGregTechTileEntity, (byte) NORTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false),
+                            iGregTechTileEntity,
+                            (byte) NORTH.ordinal(),
+                            (byte) WEST.ordinal(),
+                            (byte) -1,
+                            true,
+                            false),
                     true);
             renderPositiveZFacing(
                     null,
@@ -786,7 +856,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     0,
                     0,
                     tMetaTileEntity.getTexture(
-                            iGregTechTileEntity, (byte) SOUTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false),
+                            iGregTechTileEntity,
+                            (byte) SOUTH.ordinal(),
+                            (byte) WEST.ordinal(),
+                            (byte) -1,
+                            true,
+                            false),
                     true);
             renderNegativeXFacing(
                     null,
@@ -796,7 +871,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     0,
                     0,
                     tMetaTileEntity.getTexture(
-                            iGregTechTileEntity, (byte) WEST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false),
+                            iGregTechTileEntity,
+                            (byte) WEST.ordinal(),
+                            (byte) WEST.ordinal(),
+                            (byte) -1,
+                            true,
+                            false),
                     true);
             renderPositiveXFacing(
                     null,
@@ -806,24 +886,22 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     0,
                     0,
                     tMetaTileEntity.getTexture(
-                            iGregTechTileEntity, (byte) EAST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false),
+                            iGregTechTileEntity,
+                            (byte) EAST.ordinal(),
+                            (byte) WEST.ordinal(),
+                            (byte) -1,
+                            true,
+                            false),
                     true);
         }
     }
 
-    public static void renderNegativeYFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -833,19 +911,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderPositiveYFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1))) return;
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -855,19 +926,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderNegativeZFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2))) return;
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -877,19 +941,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderPositiveZFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3))) return;
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -899,19 +956,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderNegativeXFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4))) return;
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -921,19 +971,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderPositiveXFacing(
-            IBlockAccess aWorld,
-            RenderBlocks aRenderer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            ITexture[] aIcon,
-            boolean aFullBlock) {
+    public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
+            int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5))) return;
-            Tessellator.instance.setBrightness(
-                    aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
+            Tessellator.instance
+                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -944,8 +987,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
+    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
+            RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
         if (aBlock instanceof IRenderedBlock) {
@@ -959,13 +1002,11 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             } else {
                 final boolean[] tSides = new boolean[6];
                 if (tRenderer instanceof IRenderedBlockSideCheck) {
-                    for (byte tSide : ALL_VALID_SIDES)
-                        rReturn |= (tSides[tSide] =
-                                ((IRenderedBlockSideCheck) tRenderer).renderFullBlockSide(aBlock, aRenderer, tSide));
+                    for (byte tSide : ALL_VALID_SIDES) rReturn |= (tSides[tSide] = ((IRenderedBlockSideCheck) tRenderer)
+                            .renderFullBlockSide(aBlock, aRenderer, tSide));
                 } else {
-                    for (byte tSide : ALL_VALID_SIDES)
-                        rReturn |= (tSides[tSide] = aBlock.shouldSideBeRendered(
-                                aWorld, aX + OFFX[tSide], aY + OFFY[tSide], aZ + OFFZ[tSide], tSide));
+                    for (byte tSide : ALL_VALID_SIDES) rReturn |= (tSides[tSide] = aBlock
+                            .shouldSideBeRendered(aWorld, aX + OFFX[tSide], aY + OFFY[tSide], aZ + OFFZ[tSide], tSide));
                 }
                 for (int i = 0, j = tRenderer.getRenderPasses(aBlock); i < j; i++) {
                     if (tRenderer.usesRenderPass(i)) {

@@ -1,12 +1,5 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.interfaces.metatileentity.IFluidLockable;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -17,7 +10,17 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.interfaces.metatileentity.IFluidLockable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+import io.netty.buffer.ByteBuf;
+
 public class GT_Packet_SetLockedFluid extends GT_Packet_New {
+
     protected int mX;
     protected short mY;
     protected int mZ;
@@ -89,7 +92,9 @@ public class GT_Packet_SetLockedFluid extends GT_Packet_New {
                 mPlayer,
                 String.format(
                         GT_LanguageManager.addStringLocalization(
-                                "Interaction_DESCRIPTION_Index_151.4", "Successfully locked Fluid to %s", false),
+                                "Interaction_DESCRIPTION_Index_151.4",
+                                "Successfully locked Fluid to %s",
+                                false),
                         new FluidStack(tFluid, 1).getLocalizedName()));
 
         mteToLock.onFluidLockPacketReceived(tFluid.getName());

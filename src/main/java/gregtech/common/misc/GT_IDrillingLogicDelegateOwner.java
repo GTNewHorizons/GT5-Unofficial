@@ -1,8 +1,9 @@
 package gregtech.common.misc;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 
 /** @author Relvl on 27.01.2022 */
 public interface GT_IDrillingLogicDelegateOwner extends IMetaTileEntity {

@@ -24,16 +24,16 @@ public class GT_ProcessingArrayRecipeLoader {
         // Canner
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.canner", GT_Recipe_Map.sCannerRecipes);
         // Centrifuge
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.centrifuge", GT_Recipe_Map.sMultiblockCentrifugeRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.centrifuge", GT_Recipe_Map.sMultiblockCentrifugeRecipes);
         // Chemical Bath
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.chemicalbath", GT_Recipe_Map.sChemicalBathRecipes);
         // Chemical Reactor
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.chemicalreactor", GT_Recipe_Map.sMultiblockChemicalRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.chemicalreactor", GT_Recipe_Map.sMultiblockChemicalRecipes);
         // Circuit Assembler
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.circuitassembler", GT_Recipe_Map.sCircuitAssemblerRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.circuitassembler", GT_Recipe_Map.sCircuitAssemblerRecipes);
         // Compressor
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.compressor", GT_Recipe_Map.sCompressorRecipes);
         // Cutting Machine
@@ -41,8 +41,8 @@ public class GT_ProcessingArrayRecipeLoader {
         // Distillery
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.distillery", GT_Recipe_Map.sDistilleryRecipes);
         // Electrolyzer
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.electrolyzer", GT_Recipe_Map.sMultiblockElectrolyzerRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.electrolyzer", GT_Recipe_Map.sMultiblockElectrolyzerRecipes);
         // Extractor
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.extractor", GT_Recipe_Map.sExtractorRecipes);
         // Extruder
@@ -52,13 +52,13 @@ public class GT_ProcessingArrayRecipeLoader {
         // Fluid Canner
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.fluidcanner", GT_Recipe_Map.sFluidCannerRecipes);
         // Fluid Extractor
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.fluidextractor", GT_Recipe_Map.sFluidExtractionRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.fluidextractor", GT_Recipe_Map.sFluidExtractionRecipes);
         // Fluid Heater
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.fluidheater", GT_Recipe_Map.sFluidHeaterRecipes);
         // Fluid Solidifier
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.fluidsolidifier", GT_Recipe_Map.sFluidSolidficationRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.fluidsolidifier", GT_Recipe_Map.sFluidSolidficationRecipes);
         // Forge Hammer
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.hammer", GT_Recipe_Map.sHammerRecipes);
         // Forming Press
@@ -71,7 +71,8 @@ public class GT_ProcessingArrayRecipeLoader {
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.macerator", GT_Recipe_Map.sMaceratorRecipes);
         // Magnetic Separator
         GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.electromagneticseparator", GT_Recipe_Map.sElectroMagneticSeparatorRecipes);
+                "basicmachine.electromagneticseparator",
+                GT_Recipe_Map.sElectroMagneticSeparatorRecipes);
         // Matter Amplifier
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.amplifab", GT_Recipe_Map.sAmplifiers);
         // Microwave
@@ -81,8 +82,8 @@ public class GT_ProcessingArrayRecipeLoader {
         // Ore Washer
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.orewasher", GT_Recipe_Map.sOreWasherRecipes);
         // Plasma Arc Furnace
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.plasmaarcfurnace", GT_Recipe_Map.sPlasmaArcFurnaceRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.plasmaarcfurnace", GT_Recipe_Map.sPlasmaArcFurnaceRecipes);
         // Polarizer
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.polarizer", GT_Recipe_Map.sPolarizerRecipes);
         // Printer
@@ -96,8 +97,8 @@ public class GT_ProcessingArrayRecipeLoader {
         // Slicer
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.slicer", GT_Recipe_Map.sSlicerRecipes);
         // Thermal Centrifuge
-        GT_ProcessingArray_Manager.addRecipeMapToPA(
-                "basicmachine.thermalcentrifuge", GT_Recipe_Map.sThermalCentrifugeRecipes);
+        GT_ProcessingArray_Manager
+                .addRecipeMapToPA("basicmachine.thermalcentrifuge", GT_Recipe_Map.sThermalCentrifugeRecipes);
         // Unboxinator
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.unboxinator", GT_Recipe_Map.sUnboxinatorRecipes);
         // Wiremill

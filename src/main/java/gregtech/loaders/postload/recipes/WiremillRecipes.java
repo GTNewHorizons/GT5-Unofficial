@@ -1,5 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -7,14 +10,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeRegistrator;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class WiremillRecipes implements Runnable {
+
     @Override
     public void run() {
-        GT_RecipeRegistrator.registerWiremillRecipes(
-                Materials.Graphene, 400, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
+        GT_RecipeRegistrator
+                .registerWiremillRecipes(Materials.Graphene, 400, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
 
         GT_RecipeRegistrator.registerWiremillRecipes(Materials.SpaceTime, 400, 32_000);
 

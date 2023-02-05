@@ -1,10 +1,12 @@
 package gregtech.nei;
 
-import codechicken.lib.gui.GuiDraw;
 import java.awt.*;
 import java.util.List;
 
+import codechicken.lib.gui.GuiDraw;
+
 public class NEIHandlerAbsoluteTooltip {
+
     private final Rectangle area;
     private final String tooltip;
     private Dimension displaySize;

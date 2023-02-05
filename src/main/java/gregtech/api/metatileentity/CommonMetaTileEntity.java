@@ -2,9 +2,15 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.Packet;
+
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -18,12 +24,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.Packet;
 
 public abstract class CommonMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
+
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
 
     protected boolean createNewMetatileEntity(short aID) {
@@ -89,8 +92,8 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     /**
-     * Shifts the machine Inventory index according to the change in Input/Output Slots.
-     * Default implementation does not do anything to the slotIndex.
+     * Shifts the machine Inventory index according to the change in Input/Output Slots. Default implementation does not
+     * do anything to the slotIndex.
      */
     protected int migrateInventoryIndex(int slotIndex, int nbtVersion) {
         return slotIndex;

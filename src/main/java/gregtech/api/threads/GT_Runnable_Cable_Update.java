@@ -2,17 +2,19 @@ package gregtech.api.threads;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
-import gregtech.GT_Mod;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.common.GT_Proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.GT_Mod;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.common.GT_Proxy;
+
 public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
+
     protected GT_Runnable_Cable_Update(World aWorld, ChunkCoordinates aCoords) {
         super(aWorld, aCoords);
     }
@@ -60,15 +62,20 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                                     tCoords = new ChunkCoordinates(
                                             aCoords.posX + offset.offsetX,
                                             aCoords.posY + offset.offsetY,
-                                            aCoords.posZ + offset.offsetZ))) tQueue.add(tCoords);
+                                            aCoords.posZ + offset.offsetZ)))
+                                tQueue.add(tCoords);
                         }
                     }
                 }
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId "
-                            + world.provider.dimensionId + "}",
+                    "Well this update was broken... " + mCoords
+                            + ", mWorld={"
+                            + world.getProviderName()
+                            + " @dimId "
+                            + world.provider.dimensionId
+                            + "}",
                     e);
         }
     }

@@ -1,11 +1,13 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 @SuppressWarnings("deprecation")
 public abstract class GT_Packet_New extends GT_Packet {
+
     public GT_Packet_New(boolean aIsReference) {
         super(aIsReference);
     }

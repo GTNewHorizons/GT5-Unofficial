@@ -3,15 +3,17 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+
 public class ChemicalBathRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addChemicalBathRecipe(
@@ -582,7 +584,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 300,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L),
                 Materials.TungstenSteel.getMolten(144L),
@@ -600,7 +602,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 400,
-                (int) Tier.RECIPE_MV);
+                (int) TierEU.RECIPE_MV);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1L),
                 Materials.Osmium.getMolten(144L),
@@ -618,7 +620,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 500,
-                (int) Tier.RECIPE_HV);
+                (int) TierEU.RECIPE_HV);
 
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L),
@@ -740,7 +742,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_Values.NI,
                 null,
                 1200,
-                (int) Tier.RECIPE_LV);
+                (int) TierEU.RECIPE_LV);
 
         // Na + H2O = NaOH + H
         GT_Values.RA.addChemicalBathRecipe(
@@ -761,7 +763,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Tantalite, 1),
                 Materials.Tantalum.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                new int[] {10000, 3000, 4000},
+                new int[] { 10000, 3000, 4000 },
                 800,
                 8);
         GT_Values.RA.addChemicalBathRecipe(
@@ -770,7 +772,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pyrolusite, 1),
                 Materials.Manganese.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                new int[] {10000, 7000, 4000},
+                new int[] { 10000, 7000, 4000 },
                 800,
                 8);
         GT_Values.RA.addChemicalBathRecipe(
@@ -779,7 +781,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Quartzite, 1),
                 Materials.CertusQuartz.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                new int[] {10000, 3000, 4000},
+                new int[] { 10000, 3000, 4000 },
                 800,
                 8);
         GT_Values.RA.addChemicalBathRecipe(
@@ -788,7 +790,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.CertusQuartz, 1),
                 Materials.Barium.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                new int[] {10000, 7000, 4000},
+                new int[] { 10000, 7000, 4000 },
                 800,
                 8);
         GT_Values.RA.addChemicalBathRecipe(
@@ -797,7 +799,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 1),
                 Materials.Rutile.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                new int[] {10000, 5000, 4000},
+                new int[] { 10000, 5000, 4000 },
                 800,
                 8);
         GT_Values.RA.addChemicalBathRecipe(
@@ -806,7 +808,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Thorium, 1),
                 Materials.Uranium.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                new int[] {10000, 3000, 4000},
+                new int[] { 10000, 3000, 4000 },
                 800,
                 8);
         GT_Values.RA.addChemicalBathRecipe(
@@ -815,7 +817,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Stibnite, 1),
                 Materials.Antimony.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                new int[] {10000, 5000, 4000},
+                new int[] { 10000, 5000, 4000 },
                 800,
                 8);
 

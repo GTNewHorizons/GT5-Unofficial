@@ -3,6 +3,7 @@ package gregtech.api.objects.iterators;
 import java.util.Iterator;
 
 public class MergedIterator<T> implements Iterator<T> {
+
     private final Iterator<T>[] inners;
     private int current;
 

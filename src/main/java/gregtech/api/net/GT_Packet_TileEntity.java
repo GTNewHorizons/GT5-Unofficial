@@ -1,15 +1,18 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.GT_Mod;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.GT_Mod;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import io.netty.buffer.ByteBuf;
+
 public class GT_Packet_TileEntity extends GT_Packet_New {
+
     private int mX, mZ, mC0, mC1, mC2, mC3, mC4, mC5;
     private short mY, mID, mRID;
     private byte mTexture, mTexturePage, mUpdate, mRedstone, mColor;
@@ -19,23 +22,8 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
     }
 
     // For multi tiles
-    public GT_Packet_TileEntity(
-            int aX,
-            short aY,
-            int aZ,
-            short aRID,
-            short aID,
-            int aC0,
-            int aC1,
-            int aC2,
-            int aC3,
-            int aC4,
-            int aC5,
-            byte aTexture,
-            byte aTexturePage,
-            byte aUpdate,
-            byte aRedstone,
-            byte aColor) {
+    public GT_Packet_TileEntity(int aX, short aY, int aZ, short aRID, short aID, int aC0, int aC1, int aC2, int aC3,
+            int aC4, int aC5, byte aTexture, byte aTexturePage, byte aUpdate, byte aRedstone, byte aColor) {
         super(false);
         mX = aX;
         mY = aY;
@@ -56,22 +44,8 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
     }
 
     // For meta tiles
-    public GT_Packet_TileEntity(
-            int aX,
-            short aY,
-            int aZ,
-            short aID,
-            int aC0,
-            int aC1,
-            int aC2,
-            int aC3,
-            int aC4,
-            int aC5,
-            byte aTexture,
-            byte aTexturePage,
-            byte aUpdate,
-            byte aRedstone,
-            byte aColor) {
+    public GT_Packet_TileEntity(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4,
+            int aC5, byte aTexture, byte aTexturePage, byte aUpdate, byte aRedstone, byte aColor) {
         this(
                 aX,
                 aY,
@@ -92,21 +66,8 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
     }
 
     // For pipes
-    public GT_Packet_TileEntity(
-            int aX,
-            short aY,
-            int aZ,
-            short aID,
-            int aC0,
-            int aC1,
-            int aC2,
-            int aC3,
-            int aC4,
-            int aC5,
-            byte aTexture,
-            byte aUpdate,
-            byte aRedstone,
-            byte aColor) {
+    public GT_Packet_TileEntity(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4,
+            int aC5, byte aTexture, byte aUpdate, byte aRedstone, byte aColor) {
         this(aX, aY, aZ, (short) 0, aID, aC0, aC1, aC2, aC3, aC4, aC5, aTexture, (byte) 0, aUpdate, aRedstone, aColor);
     }
 
@@ -164,17 +125,28 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
         final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
         try {
             final Block tBlock;
-            if (tTileEntity instanceof BaseMetaTileEntity)
-                ((BaseMetaTileEntity) tTileEntity)
-                        .receiveMetaTileEntityData(
-                                mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mTexturePage, mUpdate, mRedstone, mColor);
-            else if (tTileEntity instanceof BaseMetaPipeEntity)
-                ((BaseMetaPipeEntity) tTileEntity)
-                        .receiveMetaTileEntityData(
-                                mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
+            if (tTileEntity instanceof BaseMetaTileEntity) ((BaseMetaTileEntity) tTileEntity).receiveMetaTileEntityData(
+                    mID,
+                    mC0,
+                    mC1,
+                    mC2,
+                    mC3,
+                    mC4,
+                    mC5,
+                    mTexture,
+                    mTexturePage,
+                    mUpdate,
+                    mRedstone,
+                    mColor);
+            else if (tTileEntity instanceof BaseMetaPipeEntity) ((BaseMetaPipeEntity) tTileEntity)
+                    .receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Exception setting tile entity data for tile entity {} at ({}, {}, {})", tTileEntity, mX, mY, mZ);
+                    "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
+                    tTileEntity,
+                    mX,
+                    mY,
+                    mZ);
         }
     }
 

@@ -1,14 +1,9 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +14,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+
 public class Behaviour_Spray_Color extends Behaviour_None {
+
     private final ItemStack mEmpty;
     private final ItemStack mUsed;
     private final ItemStack mFull;
@@ -34,10 +37,10 @@ public class Behaviour_Spray_Color extends Behaviour_None {
             Blocks.hardened_clay,
             ItemList.TE_Rockwool.getBlock());
     private final String mTooltip;
-    private final String mTooltipUses =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+    private final String mTooltipUses = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
+    private final String mTooltipUnstackable = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
     public Behaviour_Spray_Color(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -51,18 +54,8 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
@@ -136,8 +129,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
-        long tRemainingPaint = tNBT == null
-                ? 0L
+        long tRemainingPaint = tNBT == null ? this.mUses
                 : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
         aList.add(this.mTooltipUses + " " + tRemainingPaint);
         aList.add(this.mTooltipUnstackable);

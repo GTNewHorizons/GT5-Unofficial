@@ -12,16 +12,19 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_I
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 
+import net.minecraft.block.Block;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraft.block.Block;
 
 public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> {
+
     private IStructureDefinition<MultiBlock_Macerator> STRUCTURE_DEFINITION = null;
 
     @Override
@@ -33,23 +36,25 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     public IStructureDefinition<MultiBlock_Macerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_Macerator>builder()
-                    .addShape(STACKABLE_TOP, transpose(new String[][] {
-                        {" CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC "},
-                    }))
-                    .addShape(STACKABLE_MIDDLE, transpose(new String[][] {
-                        {"  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  "},
-                    }))
-                    .addShape(STACKABLE_BOTTOM, transpose(new String[][] {
-                        {" A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA "},
-                    }))
+                    .addShape(
+                            STACKABLE_TOP,
+                            transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
+                    .addShape(
+                            STACKABLE_MIDDLE,
+                            transpose(new String[][] { { "  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  " }, }))
+                    .addShape(
+                            STACKABLE_BOTTOM,
+                            transpose(new String[][] { { " A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
                     .addElement('A', ofChain(addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), ENERGY_IN)))
                     .addElement(
                             'B',
-                            ofChain(addMultiTileCasing(
-                                    getCasingRegistryID(), getCasingMeta(), FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
+                            ofChain(
+                                    addMultiTileCasing(
+                                            getCasingRegistryID(),
+                                            getCasingMeta(),
+                                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
                     .addElement('C', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
-                    .addElement('D', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
-                    .build();
+                    .addElement('D', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -72,12 +77,9 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Macerator")
-                .addInfo("Controller for the Macerator")
-                .addSeparator()
+        tt.addMachineType("Macerator").addInfo("Controller for the Macerator").addSeparator()
                 .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
-                .addController("Bottom Front Center")
-                .addCasingInfo("Test Casing", 60)
+                .addController("Bottom Front Center").addCasingInfo("Test Casing", 60)
                 .addEnergyHatch("Any bottom layer casing")
                 .addInputHatch("Any non-optional external facing casing on the stacks")
                 .addInputBus("Any non-optional external facing casing on the stacks")
@@ -124,22 +126,15 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
         // TODO: MTE(Texture)
         if (mFacing == aSide) {
             return new ITexture[] {
-                // Base Texture
-                MACHINE_CASINGS[1][0],
-                // Active
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                // Active Glow
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+                    // Base Texture
+                    MACHINE_CASINGS[1][0],
+                    // Active
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
+                    // Active Glow
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing()
+                            .glow().build() };
         }
         // Base Texture
-        return new ITexture[] {MACHINE_CASINGS[1][0]};
+        return new ITexture[] { MACHINE_CASINGS[1][0] };
     }
 }
