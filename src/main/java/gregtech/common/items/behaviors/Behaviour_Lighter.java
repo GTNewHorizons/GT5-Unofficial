@@ -130,7 +130,7 @@ public class Behaviour_Lighter extends Behaviour_None {
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
-        long tFuelAmount = tNBT == null ? 0L
+        long tFuelAmount = tNBT == null ? this.mFuelAmount
                 : GT_Utility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount
                         : tNBT.getLong("GT.LighterFuel");
         aList.add(this.mTooltipUses + " " + tFuelAmount);
