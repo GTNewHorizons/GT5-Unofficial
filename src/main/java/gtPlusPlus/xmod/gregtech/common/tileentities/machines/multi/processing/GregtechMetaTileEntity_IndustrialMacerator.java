@@ -58,14 +58,14 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Maceration Stack")
+        tt.addMachineType(getMachineType()).addInfo("Controller block for the Industrial Maceration Stack")
                 .addInfo("60% faster than using single block machines of the same voltage")
-                .addInfo("Processes 8*tier materials at a time").addInfo("ULV = Tier 0, LV = Tier 1, etc.")
+                .addInfo("Maximum of 8*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 6, 3, true)
-                .addController("Bottom Center").addCasingInfo("Maceration Stack Casings", 26)
-                .addInputBus("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
-                .addMaintenanceHatch("Bottom Casing", 1).addOutputBus("One per layer except bottom layer", 2)
-                .addMufflerHatch("Any Casing", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Bottom center").addCasingInfo("Maceration Stack Casings", 26)
+                .addInputBus("Bottom casing", 1).addEnergyHatch("Bottom casing", 1)
+                .addMaintenanceHatch("Bottom casing", 1).addOutputBus("One per layer except bottom layer", 2)
+                .addMufflerHatch("Any casing except bottom layer", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
