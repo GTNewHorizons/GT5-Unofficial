@@ -4,10 +4,10 @@ public enum PartsEnum {
     // Ingots
     HotIngot("Hot % Ingot"),
     Ingot("% Ingot"),
-    DoubleIngot("Double % Ingot"),
-    TripleIngot("Triple % Ingot"),
-    QuadrupleIngot("Quadruple % Ingot"),
-    QuintupleIngot("Quintuple % Ingot"),
+//    DoubleIngot("Double % Ingot"),
+//    TripleIngot("Triple % Ingot"),
+//    QuadrupleIngot("Quadruple % Ingot"),
+//    QuintupleIngot("Quintuple % Ingot"),
 
     // Gears
     Gear("% Gear"),
@@ -16,10 +16,10 @@ public enum PartsEnum {
     // Plates
     DensePlate("Dense % Plate"),
     Plate("% Plate"),
-    DoublePlate("Double % Plate"),
-    TriplePlate("Triple % Plate"),
-    QuadruplePlate("Quadruple % Plate"),
-    QuintuplePlate("Quintuple % Plate"),
+//    DoublePlate("Double % Plate"),
+//    TriplePlate("Triple % Plate"),
+//    QuadruplePlate("Quadruple % Plate"),
+//    QuintuplePlate("Quintuple % Plate"),
 
     // Gems.
     Gem("% Gem"),
