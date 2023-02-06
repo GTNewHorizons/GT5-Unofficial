@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.awt.*;
@@ -1745,10 +1744,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 0,
                 "",
                 false,
-                true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                        .setUsualFluidInputCount(18).setUsualFluidOutputCount(1);
+                true);
 
-        public static class TranscendentPlasmaMixerRecipeMap extends GT_Recipe_Map_LargeNEI {
+        public static class TranscendentPlasmaMixerRecipeMap extends GT_Recipe_Map {
 
             public TranscendentPlasmaMixerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
                     String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
@@ -1772,24 +1770,33 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         aShowVoltageAmperageInNEI,
                         aNEIAllowed);
                 useModularUI(true);
-                setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
-                    final GT_Recipe recipe = recipeInfo.recipe;
-                    List<String> result = new ArrayList<>();
-
-                    result.add("Total: " + formatNumbers(1000L * (long) recipe.mEUt) + " EU");
-
-                    result.add("Average: " + formatNumbers((1000L * (long) recipe.mEUt) / recipe.mDuration) + "EU/t");
-
-                    result.add("Time: " + formatNumbers((double) recipe.mDuration / 20L) + "s");
-
-                    return result;
-                });
+                setUsualFluidInputCount(16);
+                setUsualFluidOutputCount(1);
+                setProgressBarPos(86, 44);
+                setLogoPos(87, 81);
+                setNEIBackgroundSize(172, 100);
             }
 
             @Override
-            public void drawNEIDescription(NEIRecipeInfo recipeInfo) {
-                drawNEISpecialInfo(recipeInfo);
-                drawNEIRecipeOwnerInfo(recipeInfo);
+            public List<Pos2d> getItemInputPositions(int itemInputCount) {
+                return UIHelper.getGridPositions(itemInputCount, 60, 8, 1);
+            }
+
+            @Override
+            public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+                return UIHelper.getGridPositions(fluidInputCount, 6, 26, 4);
+            }
+
+            @Override
+            public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+                return UIHelper.getGridPositions(fluidOutputCount, 114, 44, 1);
+            }
+
+            @Override
+            protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
+                Power power = recipeInfo.power;
+                drawNEIText(recipeInfo, GT_Utility.trans("152", "Total: ") + power.getTotalPowerString());
+                drawNEIText(recipeInfo, "Average: " + power.getPowerUsageString());
             }
         }
 
