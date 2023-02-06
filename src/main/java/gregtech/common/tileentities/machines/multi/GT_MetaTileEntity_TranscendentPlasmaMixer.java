@@ -12,6 +12,7 @@ import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -70,13 +71,12 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Transcendent Mixer").addInfo("Controller block for the Assembling Line")
-                .addInfo("Assisting in all your DTPF needs.")
+        tt.addMachineType("Transcendent Mixer").addInfo("Assisting in all your DTPF needs.")
                 .addInfo("This multiblock will run in parallel according to the circuit provided to the")
                 .addInfo("controller slot. E.g. 3x Circuit #16 = 48x parallel. All inputs will scale,")
                 .addInfo("except time. All EU is deducted from wireless EU networks only.").addInfo(AuthorColen)
-                .addSeparator().beginStructureBlock(5, 7, 5, false)
-                .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
+                .addInfo("Controller slot and circuit slot are separate.").addSeparator()
+                .beginStructureBlock(5, 7, 5, false).addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
                 .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
                 .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
                 .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch").toolTipFinisher("Gregtech");
@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         if (aStack.getItem() instanceof GT_IntegratedCircuit_Item) {
-            multiplier = max(1, aStack.getItemDamage());
+            multiplier = aStack.stackSize * max(1, aStack.getItemDamage());
         }
 
         return processRecipe(getCompactedInputs(), getCompactedFluids());
@@ -169,16 +169,6 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] { "test" };
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] { "gh", "hio" };
-    }
-
-    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivialBuildPiece(
                 STRUCTURE_PIECE_MAIN,
@@ -200,11 +190,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             return false;
         }
 
-        if (mMaintenanceHatches.size() != 1) {
-            return false;
-        }
-
-        return true;
+        return (mMaintenanceHatches.size() == 1);
     }
 
     @Override
@@ -231,5 +217,17 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             // Adds player to the wireless network if they do not already exist on it.
             ownerUUID = processInitialSettings(aBaseMetaTileEntity);
         }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("eMultiplier", multiplier);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        multiplier = aNBT.getInteger("eMultiplier");
+        super.loadNBTData(aNBT);
     }
 }
