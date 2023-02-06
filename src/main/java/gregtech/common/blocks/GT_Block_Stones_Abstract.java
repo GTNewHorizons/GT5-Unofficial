@@ -1,14 +1,7 @@
 package gregtech.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,7 +15,17 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.*;
+import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+
 public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRecipeRegistrator {
+
     public GT_Block_Stones_Abstract(Class<? extends ItemBlock> aItemClass, String aName) {
         super(aItemClass, aName, Material.rock);
         OrePrefixes.crafting.add(this);
@@ -59,27 +62,27 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 1, 6),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"f", "X", 'X', new ItemStack(this, 1, 7)});
+                new Object[] { "f", "X", 'X', new ItemStack(this, 1, 7) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 1, 14),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"f", "X", 'X', new ItemStack(this, 1, 15)});
+                new Object[] { "f", "X", 'X', new ItemStack(this, 1, 15) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 1, 4),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"h", "X", 'X', new ItemStack(this, 1, 3)});
+                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 3) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 1, 12),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"h", "X", 'X', new ItemStack(this, 1, 11)});
+                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 11) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 1, 1),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"h", "X", 'X', new ItemStack(this, 1, 0)});
+                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 0) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 1, 9),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"h", "X", 'X', new ItemStack(this, 1, 8)});
+                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 8) });
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 3), new ItemStack(this, 1, 4), 16, 10);
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 11), new ItemStack(this, 1, 12), 16, 10);
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 0), new ItemStack(this, 1, 1), 16, 10);
@@ -87,34 +90,34 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 4, 3),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"XX", "XX", 'X', new ItemStack(this, 4, 0)});
+                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 0) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 4, 11),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"XX", "XX", 'X', new ItemStack(this, 4, 8)});
+                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 8) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 4, 3),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"XX", "XX", 'X', new ItemStack(this, 4, 7)});
+                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 7) });
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(this, 4, 11),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {"XX", "XX", 'X', new ItemStack(this, 4, 15)});
+                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 15) });
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GT_Values.RA.addLaserEngraverRecipe(
                     new ItemStack(this, 1, 7),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     new ItemStack(this, 1, 6),
                     50,
                     16);
             GT_Values.RA.addLaserEngraverRecipe(
                     new ItemStack(this, 1, 15),
-                    GT_Utility.copyAmount(0L, new Object[] {aStack}),
+                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
                     new ItemStack(this, 1, 14),
                     50,
                     16);

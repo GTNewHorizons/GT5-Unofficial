@@ -2,6 +2,12 @@ package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -12,10 +18,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeTurbine {
 
@@ -28,49 +30,28 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return new ITexture[] {
-            MACHINE_CASINGS[1][aColorIndex + 1],
-            aFacing == aSide
-                    ? (aActive
-                            ? TextureFactory.builder()
-                                    .addIcon(LARGETURBINE_SS_ACTIVE5)
-                                    .build()
-                            : hasTurbine()
-                                    ? TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_SS5)
-                                            .build()
-                                    : TextureFactory.builder()
-                                            .addIcon(LARGETURBINE_SS_EMPTY5)
-                                            .build())
-                    : casingTexturePages[0][58]
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
+                aFacing == aSide
+                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
+                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
+                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
+                        : casingTexturePages[0][58] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Gas Turbine")
-                .addInfo("Controller block for the Large Gas Turbine")
+        tt.addMachineType("Gas Turbine").addInfo("Controller block for the Large Gas Turbine")
                 .addInfo("Needs a Turbine, place inside controller")
                 .addInfo("Warning: Will be capped at 8192 EU/t in a future update")
                 .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
                 // .addInfo("The excess fuel that gets consumed will be voided!")
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 4, true)
-                .addController("Front center")
-                .addCasingInfo("Stainless Steel Turbine Casing", 24)
-                .addDynamoHatch("Back center", 1)
-                .addMaintenanceHatch("Side centered", 2)
-                .addMufflerHatch("Side centered", 2)
-                .addInputHatch("Gas Fuel, Side centered", 2)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, true)
+                .addController("Front center").addCasingInfo("Stainless Steel Turbine Casing", 24)
+                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
+                .addMufflerHatch("Side centered", 2).addInputHatch("Gas Fuel, Side centered", 2)
                 .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -103,24 +84,24 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
+    public boolean isNewStyleRendering() {
+        return true;
+    }
+
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GT_Mod.gregtechproxy.mPollutionLargeGasTurbinePerSecond;
     }
 
     @Override
-    int fluidIntoPower(
-            ArrayList<FluidStack> aFluids,
-            int aOptFlow,
-            int aBaseEff,
-            int overflowMultiplier,
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
             float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(
-                    aFluids.get(0),
-                    0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
+            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
+                                                                          // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
 
             if (aOptFlow < fuelValue) {
@@ -172,9 +153,9 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
 
             // EU/t output cap to properly tier the LGT against the Advanced LGT, will be implemented in a future dev
             // update
-            /*if (tEU > 8192) {
-                tEU = 8192;
-            }*/
+            /*
+             * if (tEU > 8192) { tEU = 8192; }
+             */
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine
@@ -198,9 +179,8 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
         float efficiency = 0;
 
         if (totalFlow > actualOptimalFlow) {
-            efficiency = 1.0f
-                    - Math.abs((totalFlow - actualOptimalFlow))
-                            / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow))
+                    / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
         } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }

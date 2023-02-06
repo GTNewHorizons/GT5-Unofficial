@@ -1,12 +1,7 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_ToolHarvestHelper;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +12,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import gregtech.GT_Mod;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_ToolHarvestHelper;
+import gregtech.api.util.GT_Utility;
+
 public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 200 : 400;
@@ -67,29 +70,19 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
                         Material.glass, //
                         Material.ice, //
                         Material.packedIce //
-                        );
+                );
     }
 
     @Override
-    public int convertBlockDrops(
-            List<ItemStack> aDrops,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            byte aMetaData,
-            int aFortune,
-            boolean aSilkTouch,
-            BlockEvent.HarvestDropsEvent aEvent) {
+    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
+            int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(
-                null, true, 2147483647L, null, new ItemStack(aBlock, 1, aMetaData));
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes
+                .findRecipe(null, true, 2147483647L, null, new ItemStack(aBlock, 1, aMetaData));
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(
-                        null, true, 2147483647L, null, GT_Utility.copyAmount(1L, new Object[] {tDrop}));
+                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes
+                        .findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1L, new Object[] { tDrop }));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {
@@ -113,8 +106,7 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
         super.onToolCrafted(aStack, aPlayer);
         try {
             GT_Mod.instance.achievements.issueAchievement(aPlayer, "hammertime");
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     @Override
@@ -124,8 +116,12 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE
-                + " has been jackhammered into pieces by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " has been jackhammered into pieces by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 }

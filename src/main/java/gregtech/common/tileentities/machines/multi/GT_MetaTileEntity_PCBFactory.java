@@ -10,6 +10,18 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -30,6 +42,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -53,21 +66,11 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class GT_MetaTileEntity_PCBFactory
-        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PCBFactory>
-        implements ISurvivalConstructable {
+public class GT_MetaTileEntity_PCBFactory extends
+        GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PCBFactory> implements ISurvivalConstructable {
+
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
@@ -78,9 +81,8 @@ public class GT_MetaTileEntity_PCBFactory
     private float mRoughnessMultiplier = 1;
     private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0, mCurrentParallel = 0, mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
-    private int[] mBioOffsets = new int[] {-5, -1},
-            mOCTier1Offsets = new int[] {2, -11},
-            mOCTier2Offsets = new int[] {2, -11};
+    private int[] mBioOffsets = new int[] { -5, -1 }, mOCTier1Offsets = new int[] { 2, -11 },
+            mOCTier2Offsets = new int[] { 2, -11 };
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
     private static final int mBioRotateBitMap = 0b1000000;
     private static final int mOCTier2BitMap = 0b100000;
@@ -90,10 +92,12 @@ public class GT_MetaTileEntity_PCBFactory
     private static final int mTier2BitMap = 0b10;
     private static final int mTier1BitMap = 0b1;
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
-    private static final IStructureDefinition<GT_MetaTileEntity_PCBFactory> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_PCBFactory>builder()
-                    .addShape(tier1, transpose(new String[][] {
-                        // spotless:off
+    private static final IStructureDefinition<GT_MetaTileEntity_PCBFactory> STRUCTURE_DEFINITION = StructureDefinition
+            .<GT_MetaTileEntity_PCBFactory>builder().addShape(
+                    tier1,
+                    transpose(
+                            new String[][] {
+                                    // spotless:off
                         {"       ","E     E","E     E","EEEEEEE","E     E","E     E","       "},
                         {"EEEEEEE","CAAAAAC","CAAAAAC","CCCCCCC","CCCCCCC","CCCCCCC","E     E"},
                         {"EAAAAAE","C-----C","C-----C","C-----C","C-----C","C-----C","ECCCCCE"},
@@ -101,9 +105,11 @@ public class GT_MetaTileEntity_PCBFactory
                         {"EAAAAAE","C-----C","B-FFF-B","B-FFF-B","B-FFF-B","C-----C","EPPPPPE"},
                         {"ECC~CCE","CDDDDDC","CDDDDDC","CDDDDDC","CDDDDDC","CDDDDDC","EPPPPPE"}
                         //spotless:on
-                    }))
-                    .addShape(tier2, transpose(new String[][] {
-                        // spotless:off
+                            })).addShape(
+                                    tier2,
+                                    transpose(
+                                            new String[][] {
+                                                    // spotless:off
                         {"    ","    ","    ","HGGH","HGGH","HGGH","HGGH","HGGH","    ","    ","    "},
                         {"    ","    ","HGGH","GGGG","GGGG","GGGG","GGGG","GGGG","HGGH","    ","    "},
                         {"    ","HGGH","GGGG","G  G","G  G","G  G","G  G","G  G","GGGG","HGGH","    "},
@@ -112,9 +118,11 @@ public class GT_MetaTileEntity_PCBFactory
                         {"HGGH","G  G","G  G","G  G","G  G","G  G","G  G","G  G","G  G","G  G","HGGH"},
                         {"HGGH","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","HGGH"}
                         //spotless:on
-                    }))
-                    .addShape(tier3, transpose(new String[][] {
-                        // spotless:off
+                                            })).addShape(
+                                                    tier3,
+                                                    transpose(
+                                                            new String[][] {
+                                                                    // spotless:off
                         {"       ","       ","       ","       ","   I   ","   I   ","       ","       ","       ","       "},
                         {"       ","       ","       ","   I   ","   I   ","   I   ","   I   ","       ","       ","       "},
                         {"       ","       ","  KKK  ","  KIK  ","  K K  ","  K K  ","   I   ","       ","       ","       "},
@@ -138,9 +146,11 @@ public class GT_MetaTileEntity_PCBFactory
                         {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {" II~II ","IIJJJII","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IIJJJII"," IIIII "}
                         //spotless:on
-                    }))
-                    .addShape(bioUpgrade, transpose(new String[][] {
-                        // spotless:off
+                                                            })).addShape(
+                                                                    bioUpgrade,
+                                                                    transpose(
+                                                                            new String[][] {
+                                                                                    // spotless:off
                         {"            ","            ","   LLLLLL   ","            ","            "},
                         {"            ","            ","  L      L  ","            ","            "},
                         {"E   E  E   E"," LLL    LLL "," LLL    LLL "," LLL    LLL ","E   E  E   E"},
@@ -149,9 +159,12 @@ public class GT_MetaTileEntity_PCBFactory
                         {"EAAAE  EAAAE","A   A  A   A","A   A  A   A","A   A  A   A","EAAAE  EAAAE"},
                         {"ELLLE  ELLLE","LLLLL  LLLLL","LLLLL  LLLLL","LLLLL  LLLLL","ELLLE  ELLLE"}
                         //spotless:on
-                    }))
-                    .addShape(ocTier1Upgrade, transpose(new String[][] {
-                        // spotless:off
+                                                                            }))
+            .addShape(
+                    ocTier1Upgrade,
+                    transpose(
+                            new String[][] {
+                                    // spotless:off
                         {"EKKKE","K   K","K   K","K   K","EKKKE"},
                         {"E   E"," KKK "," K K "," KKK ","E   E"},
                         {"E   E"," NNN "," N N "," NNN ","E   E"},
@@ -163,9 +176,11 @@ public class GT_MetaTileEntity_PCBFactory
                         {"ENNNE","NKKKN","NK KN","NKKKN","ENNNE"},
                         {"EGGGE","GGGGG","GGMGG","GGGGG","EGGGE"}
                         //spotless:on
-                    }))
-                    .addShape(ocTier2Upgrade, transpose(new String[][] {
-                        // spotless:off
+                            })).addShape(
+                                    ocTier2Upgrade,
+                                    transpose(
+                                            new String[][] {
+                                                    // spotless:off
                         {"RGGGR","G   G","G   G","G   G","RGGGR"},
                         {"R   R"," GGG "," GTG "," GGG ","R   R"},
                         {"R   R"," NNN "," NTN "," NNN ","R   R"},
@@ -177,61 +192,50 @@ public class GT_MetaTileEntity_PCBFactory
                         {"RNNNR","NQQQN","NQTQN","NQQQN","RNNNR"},
                         {"RGGGR","GGGGG","GGSGG","GGGGG","RGGGR"}
                         //spotless:on
-                    }))
-                    .addElement('E', ofFrame(Materials.DamascusSteel))
-                    .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 11))
-                    .addElement('D', ofBlock(GregTech_API.sBlockReinforced, 2))
-                    .addElement(
-                            'A',
-                            ofChain(
-                                    ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
-                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0, true),
-                                    // warded glass
-                                    ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
-                    .addElement('B', ofBlock(GregTech_API.sBlockCasings3, 10))
-                    .addElement('F', ofFrame(Materials.VibrantAlloy))
-                    .addElement(
-                            'P',
-                            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
-                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                                    .dot(1)
-                                    .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11))
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 11))
-                    .addElement('H', ofFrame(Materials.Duranium))
-                    .addElement('G', ofBlock(GregTech_API.sBlockCasings8, 12))
-                    .addElement('I', ofBlock(GregTech_API.sBlockCasings8, 13))
-                    .addElement('K', ofBlock(GregTech_API.sBlockCasings8, 10))
-                    .addElement(
-                            'J',
-                            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
-                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                                    .dot(1)
-                                    .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 13))
-                    .addElement('L', ofBlock(GregTech_API.sBlockCasings4, 1))
-                    .addElement(
-                            'M',
-                            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
-                                    .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
-                                    .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
-                                    .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
-                                    .dot(2)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 12))
-                    .addElement('N', ofBlock(GregTech_API.sBlockCasings2, 15))
-                    .addElement('O', ofBlock(GregTech_API.sBlockCasings8, 4))
-                    .addElement(
-                            'S',
-                            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
-                                    .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
-                                    .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
-                                    .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
-                                    .dot(2)
-                                    .buildAndChain(GregTech_API.sBlockCasings8, 12))
-                    .addElement('R', ofFrame(Materials.Americium))
-                    .addElement('Q', ofBlock(GregTech_API.sBlockCasings8, 14))
-                    .addElement('T', ofBlock(GregTech_API.sBlockCasings1, 15))
-                    .build();
+                                            })).addElement('E', ofFrame(Materials.DamascusSteel))
+            .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 11))
+            .addElement('D', ofBlock(GregTech_API.sBlockReinforced, 2))
+            .addElement(
+                    'A',
+                    ofChain(
+                            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0, true),
+                            // warded glass
+                            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
+            .addElement('B', ofBlock(GregTech_API.sBlockCasings3, 10)).addElement('F', ofFrame(Materials.VibrantAlloy))
+            .addElement(
+                    'P',
+                    buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
+                            .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy)).dot(1)
+                            .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11))
+                            .buildAndChain(GregTech_API.sBlockCasings8, 11))
+            .addElement('H', ofFrame(Materials.Duranium)).addElement('G', ofBlock(GregTech_API.sBlockCasings8, 12))
+            .addElement('I', ofBlock(GregTech_API.sBlockCasings8, 13))
+            .addElement('K', ofBlock(GregTech_API.sBlockCasings8, 10))
+            .addElement(
+                    'J',
+                    buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
+                            .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy)).dot(1)
+                            .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
+                            .buildAndChain(GregTech_API.sBlockCasings8, 13))
+            .addElement('L', ofBlock(GregTech_API.sBlockCasings4, 1))
+            .addElement(
+                    'M',
+                    buildHatchAdder(GT_MetaTileEntity_PCBFactory.class).hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+                            .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
+                            .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)).dot(2)
+                            .buildAndChain(GregTech_API.sBlockCasings8, 12))
+            .addElement('N', ofBlock(GregTech_API.sBlockCasings2, 15))
+            .addElement('O', ofBlock(GregTech_API.sBlockCasings8, 4))
+            .addElement(
+                    'S',
+                    buildHatchAdder(GT_MetaTileEntity_PCBFactory.class).hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+                            .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
+                            .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)).dot(2)
+                            .buildAndChain(GregTech_API.sBlockCasings8, 12))
+            .addElement('R', ofFrame(Materials.Americium)).addElement('Q', ofBlock(GregTech_API.sBlockCasings8, 14))
+            .addElement('T', ofBlock(GregTech_API.sBlockCasings1, 15)).build();
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
@@ -247,20 +251,19 @@ public class GT_MetaTileEntity_PCBFactory
         if (mBioUpgrade) {
             if (mBioRotate) {
                 final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-                getStructureDefinition()
-                        .buildOrHints(
-                                this,
-                                stackSize,
-                                bioUpgrade,
-                                tTile.getWorld(),
-                                transformFacing(getExtendedFacing()),
-                                tTile.getXCoord(),
-                                tTile.getYCoord(),
-                                tTile.getZCoord(),
-                                mBioOffsets[1],
-                                6,
-                                mBioOffsets[0],
-                                hintsOnly);
+                getStructureDefinition().buildOrHints(
+                        this,
+                        stackSize,
+                        bioUpgrade,
+                        tTile.getWorld(),
+                        transformFacing(getExtendedFacing()),
+                        tTile.getXCoord(),
+                        tTile.getYCoord(),
+                        tTile.getZCoord(),
+                        mBioOffsets[1],
+                        6,
+                        mBioOffsets[0],
+                        hintsOnly);
             } else {
                 buildPiece(bioUpgrade, stackSize, hintsOnly, mBioOffsets[0], 6, mBioOffsets[1]);
             }
@@ -290,25 +293,32 @@ public class GT_MetaTileEntity_PCBFactory
         if (mBioUpgrade) {
             if (mBioRotate) {
                 final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-                getStructureDefinition()
-                        .survivalBuild(
-                                this,
-                                stackSize,
-                                bioUpgrade,
-                                tTile.getWorld(),
-                                transformFacing(getExtendedFacing()),
-                                tTile.getXCoord(),
-                                tTile.getYCoord(),
-                                tTile.getZCoord(),
-                                mBioOffsets[1],
-                                6,
-                                mBioOffsets[0],
-                                elementBudget,
-                                env,
-                                false);
+                getStructureDefinition().survivalBuild(
+                        this,
+                        stackSize,
+                        bioUpgrade,
+                        tTile.getWorld(),
+                        transformFacing(getExtendedFacing()),
+                        tTile.getXCoord(),
+                        tTile.getYCoord(),
+                        tTile.getZCoord(),
+                        mBioOffsets[1],
+                        6,
+                        mBioOffsets[0],
+                        elementBudget,
+                        env,
+                        false);
             } else {
                 built += survivialBuildPiece(
-                        bioUpgrade, stackSize, mBioOffsets[0], 6, mBioOffsets[1], elementBudget, env, false, true);
+                        bioUpgrade,
+                        stackSize,
+                        mBioOffsets[0],
+                        6,
+                        mBioOffsets[1],
+                        elementBudget,
+                        env,
+                        false,
+                        true);
             }
         }
 
@@ -354,52 +364,26 @@ public class GT_MetaTileEntity_PCBFactory
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
+            if (aActive) return new ITexture[] {
                     BlockIcons.getCasingTextureForId(
-                            getTier() < 3
-                                    ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
+                            getTier() < 3 ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
                                     : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 13)),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
             return new ITexture[] {
-                BlockIcons.getCasingTextureForId(
-                        getTier() < 3
-                                ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
-                                : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 13)),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+                    BlockIcons.getCasingTextureForId(
+                            getTier() < 3 ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
+                                    : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 13)),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing().glow().build() };
         }
-        return new ITexture[] {
-            BlockIcons.getCasingTextureForId(
-                    mSetTier < 3
-                            ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
-                            : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
-        };
+        return new ITexture[] { BlockIcons.getCasingTextureForId(
+                mSetTier < 3 ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
+                        : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)) };
     }
 
     @Override
@@ -434,19 +418,18 @@ public class GT_MetaTileEntity_PCBFactory
         if (mBioUpgrade) {
             if (mBioRotate) {
                 final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-                if (!getStructureDefinition()
-                        .check(
-                                this,
-                                bioUpgrade,
-                                tTile.getWorld(),
-                                transformFacing(getExtendedFacing()),
-                                tTile.getXCoord(),
-                                tTile.getYCoord(),
-                                tTile.getZCoord(),
-                                mBioOffsets[1],
-                                6,
-                                mBioOffsets[0],
-                                !mMachine)) {
+                if (!getStructureDefinition().check(
+                        this,
+                        bioUpgrade,
+                        tTile.getWorld(),
+                        transformFacing(getExtendedFacing()),
+                        tTile.getXCoord(),
+                        tTile.getYCoord(),
+                        tTile.getZCoord(),
+                        mBioOffsets[1],
+                        6,
+                        mBioOffsets[0],
+                        !mMachine)) {
                     return false;
                 }
             } else {
@@ -479,8 +462,7 @@ public class GT_MetaTileEntity_PCBFactory
 
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
 
-        if (mMaintenanceHatches.size() != 1
-                || mOutputBusses.isEmpty()
+        if (mMaintenanceHatches.size() != 1 || mOutputBusses.isEmpty()
                 || mInputBusses.isEmpty()
                 || mInputHatches.isEmpty()) {
             return false;
@@ -521,20 +503,20 @@ public class GT_MetaTileEntity_PCBFactory
         return false;
     }
 
-    private boolean processRecipe(
-            ItemStack aStack, ItemStack[] aItemInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aMap) {
+    private boolean processRecipe(ItemStack aStack, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            GT_Recipe.GT_Recipe_Map aMap) {
         mOutputItems = null;
         mOutputFluids = null;
         if (aItemInputs == null || aFluidInputs == null) {
             return false;
         }
 
-        long voltage = getMaxInputVoltage();
+        long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
         int tier = GT_Utility.getTier(voltage);
 
-        GT_Recipe tRecipe =
-                aMap.findRecipe(getBaseMetaTileEntity(), null, true, false, V[tier], aFluidInputs, aStack, aItemInputs);
+        GT_Recipe tRecipe = aMap
+                .findRecipe(getBaseMetaTileEntity(), null, true, false, V[tier], aFluidInputs, aStack, aItemInputs);
 
         if (tRecipe == null) {
             return false;
@@ -562,20 +544,14 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         boolean recipeAllowed = (((recipeBitMap & mTier1BitMap) == mTier1BitMap && (mTier >= 1))
-                        || ((recipeBitMap & mTier2BitMap) == mTier2BitMap && (mTier >= 2))
-                        || ((recipeBitMap & mTier3BitMap) == mTier3BitMap && (mTier >= 3)))
+                || ((recipeBitMap & mTier2BitMap) == mTier2BitMap && (mTier >= 2))
+                || ((recipeBitMap & mTier3BitMap) == mTier3BitMap && (mTier >= 3)))
                 && ((recipeBitMap & mBioBitMap) == 0 || ((recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade));
 
         if (recipeAllowed) {
-            GT_ParallelHelper helper = new GT_ParallelHelper()
-                    .setRecipe(tRecipe)
-                    .setItemInputs(aItemInputs)
-                    .setFluidInputs(aFluidInputs)
-                    .setMaxParallel(aMaxParallel)
-                    .setAvailableEUt(getMaxInputEu())
-                    .setEUtModifier(aExtraPower)
-                    .enableConsumption()
-                    .build();
+            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                    .setFluidInputs(aFluidInputs).setMaxParallel(aMaxParallel).setAvailableEUt(getMaxInputEu())
+                    .setEUtModifier(aExtraPower).enableConsumption().build();
             mCurrentParallel = helper.getCurrentParallel();
 
             if (mCurrentParallel > 0) {
@@ -585,13 +561,9 @@ public class GT_MetaTileEntity_PCBFactory
                 this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
                 if (mOCTier1 || mOCTier2) {
-                    GT_OverclockCalculator calc = new GT_OverclockCalculator()
-                            .setRecipeEUt(tRecipe.mEUt)
-                            .setDuration(tRecipe.mDuration)
-                            .setEUt(voltage)
-                            .setAmperage(amps)
-                            .setEUtDiscount(aExtraPower)
-                            .setSpeedBoost((float) Math.pow(mRoughnessMultiplier, 2));
+                    GT_OverclockCalculator calc = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+                            .setDuration(tRecipe.mDuration).setEUt(voltage).setAmperage(amps)
+                            .setEUtDiscount(aExtraPower).setSpeedBoost((float) Math.pow(mRoughnessMultiplier, 2));
                     if (mOCTier2) {
                         calc.enablePerfectOC();
                     }
@@ -755,8 +727,7 @@ public class GT_MetaTileEntity_PCBFactory
                     break;
             }
         } else if (curRotation == Rotation.CLOCKWISE || curRotation == Rotation.COUNTER_CLOCKWISE) {
-            newFlip = curRotation == Rotation.CLOCKWISE
-                    ? curFlip == Flip.NONE ? Flip.NONE : Flip.HORIZONTAL
+            newFlip = curRotation == Rotation.CLOCKWISE ? curFlip == Flip.NONE ? Flip.NONE : Flip.HORIZONTAL
                     : curFlip != Flip.NONE ? Flip.NONE : Flip.HORIZONTAL;
             newDirection = curRotation == Rotation.CLOCKWISE ? ForgeDirection.UP : ForgeDirection.DOWN;
         } else {
@@ -806,8 +777,8 @@ public class GT_MetaTileEntity_PCBFactory
     }
 
     @Override
-    protected void calculateOverclockedNessMultiInternal(
-            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
+            boolean perfectOC) {
         int hatches = Math.max(getExoticEnergyHatches().size(), 1);
         long zMaxInputVoltage = maxInputVoltage;
         long zTime = aDuration;
@@ -853,7 +824,8 @@ public class GT_MetaTileEntity_PCBFactory
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mSeparate = !mSeparate;
         GT_Utility.sendChatToPlayer(
-                aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
     }
 
     @Override
@@ -873,46 +845,77 @@ public class GT_MetaTileEntity_PCBFactory
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
-        long voltage = getMaxInputVoltage();
+        long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
 
         return new String[] {
-            /* 1*/ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-            /* 2*/ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-            /* 3*/ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(getActualEnergyUsage()) + EnumChatFormatting.RESET + " EU/t",
-            /* 4*/ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(voltage) + EnumChatFormatting.RESET + " EU/t(*" + amps + " A)"
-                    + StatCollector.translateToLocal("GT5U.machines.tier")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + VN[GT_Utility.getTier(voltage)] + EnumChatFormatting.RESET,
-            /* 5*/ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
-                    + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
-                    + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
-            /* 6*/ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
-                    + mPollutionReduction + EnumChatFormatting.RESET + " %",
-            /* 7*/ StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.GREEN
-                    + mMaxParallel,
-            /* 8*/ StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": " + EnumChatFormatting.GREEN
-                    + mCurrentParallel
-        };
+                /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(getActualEnergyUsage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(voltage)
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*"
+                        + amps
+                        + " A)"
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GT_Utility.getTier(voltage)]
+                        + EnumChatFormatting.RESET,
+                /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (getIdealStatus() - getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + Float.toString(mEfficiency / 100.0F)
+                        + EnumChatFormatting.RESET
+                        + " %",
+                /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                        + EnumChatFormatting.GREEN
+                        + mPollutionReduction
+                        + EnumChatFormatting.RESET
+                        + " %",
+                /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                        + EnumChatFormatting.GREEN
+                        + mMaxParallel,
+                /* 8 */ StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
+                        + EnumChatFormatting.GREEN
+                        + mCurrentParallel };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Circuit Board Fabricator")
-                .addInfo("Controller for the PCB Factory")
-                .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + "IMPORTANT!"
-                        + " Check the configuration menu before building.")
+        tt.addMachineType("Circuit Board Fabricator").addInfo("Controller for the PCB Factory")
+                .addInfo(
+                        EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
+                                + "IMPORTANT!"
+                                + " Check the configuration menu before building.")
                 .addInfo("Tier of the machine determines the available recipes.")
                 .addInfo("Machine tier (1-3) is set in the controller GUI.")
                 .addInfo("The configuration menu can be used to add upgrades.")
@@ -925,46 +928,74 @@ public class GT_MetaTileEntity_PCBFactory
                 .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
                 .addInfo("Thermosink uses 10 L/s of Space Coolant and enables perfect overclocks.")
                 .addInfo("Trace size can be changed to modify the material usage and machine speed.")
-                .addInfo(AuthorBlueWeabo)
-                .beginStructureBlock(30, 38, 13, false)
-                .addSeparator()
+                .addInfo(AuthorBlueWeabo).beginStructureBlock(30, 38, 13, false).addSeparator()
                 .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
                 .addEnergyHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
                 .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
                 .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
                 .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-                .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1"
-                        + EnumChatFormatting.GRAY + "Center of the Liquid Cooling/Thermosink")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1
-                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(
+                        "Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD
+                                + "1"
+                                + EnumChatFormatting.GRAY
+                                + "Center of the Liquid Cooling/Thermosink")
+                .addStructureInfo(
+                        EnumChatFormatting.BLUE + "Base Multi (Tier "
+                                + EnumChatFormatting.DARK_PURPLE
+                                + 1
+                                + EnumChatFormatting.BLUE
+                                + "):")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Reinforced Glass")
-                .addStructureInfo(EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY
-                        + " Basic Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "77"
+                                + EnumChatFormatting.GRAY
+                                + " Basic Photolithography Framework Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2
-                        + EnumChatFormatting.BLUE + " (Adds to Tier " + EnumChatFormatting.DARK_PURPLE + 1
-                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(
+                        EnumChatFormatting.BLUE + "Tier "
+                                + EnumChatFormatting.DARK_PURPLE
+                                + 2
+                                + EnumChatFormatting.BLUE
+                                + " (Adds to Tier "
+                                + EnumChatFormatting.DARK_PURPLE
+                                + 1
+                                + EnumChatFormatting.BLUE
+                                + "):")
                 .addStructureInfo(EnumChatFormatting.GOLD + "34" + EnumChatFormatting.GRAY + " Duranium Frame Box")
-                .addStructureInfo(EnumChatFormatting.GOLD + "158" + EnumChatFormatting.GRAY
-                        + " Reinforced Photolithography Framework Casing")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3
-                        + EnumChatFormatting.BLUE + ":")
-                .addStructureInfo(EnumChatFormatting.GOLD + "292" + EnumChatFormatting.GRAY
-                        + " Radiation Proof Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "158"
+                                + EnumChatFormatting.GRAY
+                                + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.BLUE + "Tier "
+                                + EnumChatFormatting.DARK_PURPLE
+                                + 3
+                                + EnumChatFormatting.BLUE
+                                + ":")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "292"
+                                + EnumChatFormatting.GRAY
+                                + " Radiation Proof Photolithography Framework Casing")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
                 .addStructureInfo(EnumChatFormatting.BLUE + "Biochamber Upgrade")
-                .addStructureInfo(EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY
-                        + " Clean Stainless Steel Machine Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "68"
+                                + EnumChatFormatting.GRAY
+                                + " Clean Stainless Steel Machine Casing")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier "
-                        + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(
+                        EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier "
+                                + EnumChatFormatting.DARK_PURPLE
+                                + 1
+                                + EnumChatFormatting.BLUE
+                                + "):")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(
@@ -973,13 +1004,21 @@ public class GT_MetaTileEntity_PCBFactory
                         EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "21" + EnumChatFormatting.GRAY
-                        + " Reinforced Photolithography Framework Casing")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Thermosink Radiator(Tier " + EnumChatFormatting.DARK_PURPLE
-                        + 2 + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "21"
+                                + EnumChatFormatting.GRAY
+                                + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.BLUE + "Thermosink Radiator(Tier "
+                                + EnumChatFormatting.DARK_PURPLE
+                                + 2
+                                + EnumChatFormatting.BLUE
+                                + "):")
                 .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
-                .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY
-                        + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "41"
+                                + EnumChatFormatting.GRAY
+                                + " Reinforced Photolithography Framework Casing")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
                 .addStructureInfo(
@@ -1069,100 +1108,85 @@ public class GT_MetaTileEntity_PCBFactory
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         buildContext.addSyncedWindow(10, this::createConfigurationWindow);
-        builder.widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> {
-                            if (!widget.isClient()) widget.getContext().openSyncedWindow(10);
-                        })
-                        .setSize(18, 18)
-                        .setBackground(GT_UITextures.BUTTON_STANDARD)
-                        .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                        .addTooltip("Configuration Menu")
+        builder.widget(
+                new ButtonWidget().setOnClick(
+                        (clickData, widget) -> { if (!widget.isClient()) widget.getContext().openSyncedWindow(10); })
+                        .setSize(18, 18).setBackground(GT_UITextures.BUTTON_STANDARD)
+                        .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC).addTooltip("Configuration Menu")
                         .setPos(151, 24))
-                .widget(new TextWidget(new Text("Tier"))
-                        .setTextAlignment(Alignment.Center)
-                        .setScale(0.91f)
-                        .setSize(20, 16)
-                        .setPos(152, 46))
-                .widget(new TextFieldWidget()
-                        .setGetterInt(() -> mSetTier)
-                        .setSetterInt(val -> {
-                            mSetTier = val;
-                        })
-                        .setNumbers(1, 3)
-                        .setTextColor(Color.WHITE.normal)
-                        .setTextAlignment(Alignment.Center)
-                        .addTooltip("PCB Factory Tier")
-                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                        .setSize(18, 18)
-                        .setPos(151, 61));
+                .widget(
+                        new TextWidget(new Text("Tier")).setTextAlignment(Alignment.Center).setScale(0.91f)
+                                .setSize(20, 16).setPos(152, 46))
+                .widget(
+                        new TextFieldWidget().setGetterInt(() -> mSetTier).setSetterInt(val -> { mSetTier = val; })
+                                .setNumbers(1, 3).setTextColor(Color.WHITE.normal).setTextAlignment(Alignment.Center)
+                                .addTooltip("PCB Factory Tier").setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                .setSize(18, 18).setPos(151, 61));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(200, 160);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                        .setPos(5, 5)
-                        .setSize(16, 16))
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC).setPos(5, 5).setSize(16, 16))
                 .widget(new TextWidget("Configuration Menu").setPos(25, 9))
                 .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
-                .widget(new DynamicPositionedColumn()
-                        .setSynced(false)
-                        .widget(new MultiChildWidget()
-                                .addChild(
-                                        new CycleButtonWidget()
-                                                .setToggle(() -> mBioUpgrade, val -> {
+                .widget(
+                        new DynamicPositionedColumn().setSynced(false)
+                                .widget(
+                                        new MultiChildWidget()
+                                                .addChild(new CycleButtonWidget().setToggle(() -> mBioUpgrade, val -> {
                                                     mBioUpgrade = val;
                                                     if (!mBioUpgrade) {
                                                         GT_Utility.sendChatToPlayer(
                                                                 player,
-                                                                GT_Utility.trans(
-                                                                        "339.1", "Biochamber Upgrade Disabled"));
+                                                                GT_Utility
+                                                                        .trans("339.1", "Biochamber Upgrade Disabled"));
                                                     } else {
                                                         GT_Utility.sendChatToPlayer(
                                                                 player,
                                                                 GT_Utility.trans("339", "Biochamber Upgrade Enabled"));
                                                     }
-                                                })
-                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                                                .setSize(90, 18)
-                                                .addTooltip(
-                                                        "Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
-                                .addChild(new DrawableWidget()
-                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                        .setSize(18, 18))
-                                .addChild(new TextWidget("Biochamber")
-                                        .setTextAlignment(Alignment.Center)
-                                        .setPos(23, 5))
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new MultiChildWidget()
-                                .addChild(new CycleButtonWidget()
-                                        .setToggle(() -> mBioRotate, val -> {
-                                            mBioRotate = val;
-                                            if (!mBioRotate) {
-                                                GT_Utility.sendChatToPlayer(
-                                                        player,
-                                                        GT_Utility.trans("340.1", "Rotated biochamber disabled"));
-                                            } else {
-                                                GT_Utility.sendChatToPlayer(
-                                                        player, GT_Utility.trans("340", "Rotated biochamber enabled"));
-                                            }
-                                        })
-                                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                                        .setSize(90, 18)
-                                        .addTooltip("Rotates the biochamber by 90 degrees."))
-                                .addChild(new DrawableWidget()
-                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                        .setSize(18, 18))
-                                .addChild(new TextWidget("Bio Rotation")
-                                        .setTextAlignment(Alignment.Center)
-                                        .setPos(23, 5))
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new MultiChildWidget()
-                                .addChild(
-                                        new CycleButtonWidget()
-                                                .setToggle(() -> mOCTier1, val -> {
+                                                }).setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                        .setSize(90, 18).addTooltip(
+                                                                "Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
+                                                .addChild(
+                                                        new DrawableWidget()
+                                                                .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                                                .setSize(18, 18))
+                                                .addChild(
+                                                        new TextWidget("Biochamber").setTextAlignment(Alignment.Center)
+                                                                .setPos(23, 5))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new MultiChildWidget()
+                                                .addChild(new CycleButtonWidget().setToggle(() -> mBioRotate, val -> {
+                                                    mBioRotate = val;
+                                                    if (!mBioRotate) {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility
+                                                                        .trans("340.1", "Rotated biochamber disabled"));
+                                                    } else {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility.trans("340", "Rotated biochamber enabled"));
+                                                    }
+                                                }).setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                        .setSize(90, 18)
+                                                        .addTooltip("Rotates the biochamber by 90 degrees."))
+                                                .addChild(
+                                                        new DrawableWidget()
+                                                                .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                                                .setSize(18, 18))
+                                                .addChild(
+                                                        new TextWidget("Bio Rotation")
+                                                                .setTextAlignment(Alignment.Center).setPos(23, 5))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new MultiChildWidget()
+                                                .addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
                                                     mOCTier1 = val;
                                                     if (!mOCTier1) {
                                                         GT_Utility.sendChatToPlayer(
@@ -1173,22 +1197,20 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 player,
                                                                 GT_Utility.trans("341", "Tier 1 cooling enabled"));
                                                     }
-                                                })
-                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                                                .setSize(90, 18)
-                                                .addTooltip(
-                                                        "Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive."))
-                                .addChild(new DrawableWidget()
-                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                        .setSize(18, 18))
-                                .addChild(new TextWidget("Liquid Cooling")
-                                        .setTextAlignment(Alignment.Center)
-                                        .setPos(20, 5))
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new MultiChildWidget()
-                                .addChild(
-                                        new CycleButtonWidget()
-                                                .setToggle(() -> mOCTier2, val -> {
+                                                }).setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                        .setSize(90, 18).addTooltip(
+                                                                "Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive."))
+                                                .addChild(
+                                                        new DrawableWidget()
+                                                                .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                                                .setSize(18, 18))
+                                                .addChild(
+                                                        new TextWidget("Liquid Cooling")
+                                                                .setTextAlignment(Alignment.Center).setPos(20, 5))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new MultiChildWidget()
+                                                .addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
                                                     mOCTier2 = val;
                                                     if (!mOCTier2) {
                                                         GT_Utility.sendChatToPlayer(
@@ -1199,128 +1221,100 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 player,
                                                                 GT_Utility.trans("342", "Tier 2 cooling enabled"));
                                                     }
-                                                })
-                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                                                .setSize(90, 18)
+                                                }).setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                        .setSize(90, 18).addTooltip(
+                                                                "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of space coolant."))
+                                                .addChild(
+                                                        new DrawableWidget()
+                                                                .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                                                .setSize(18, 18))
+                                                .addChild(
+                                                        new TextWidget("Thermosink").setTextAlignment(Alignment.Center)
+                                                                .setPos(20, 5))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new TextWidget(new Text("Trace Size")).setSize(90, 18)
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()).setPos(0, 4))
+                                .widget(
+                                        new TextFieldWidget()
+                                                .setGetterInt(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
+                                                .setSetterInt(val -> { mRoughnessMultiplier = 100f / val; })
+                                                .setNumbers(50, 200).setTextColor(Color.WHITE.normal)
+                                                .setTextAlignment(Alignment.Center)
                                                 .addTooltip(
-                                                        "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of space coolant."))
-                                .addChild(new DrawableWidget()
-                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                        .setSize(18, 18))
-                                .addChild(new TextWidget("Thermosink")
-                                        .setTextAlignment(Alignment.Center)
-                                        .setPos(20, 5))
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new TextWidget(new Text("Trace Size"))
-                                .setSize(90, 18)
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                                .setPos(0, 4))
-                        .widget(new TextFieldWidget()
-                                .setGetterInt(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                                .setSetterInt(val -> {
-                                    mRoughnessMultiplier = 100f / val;
-                                })
-                                .setNumbers(50, 200)
-                                .setTextColor(Color.WHITE.normal)
-                                .setTextAlignment(Alignment.Center)
-                                .addTooltip(
-                                        "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.")
-                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                .setSize(90, 16))
-                        .widget(new DrawableWidget()
-                                .setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
-                                .setSize(18, 18)
-                                .addTooltip(
-                                        new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
-                                .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
-                        .setPos(10, 25))
-                .widget(new DynamicPositionedColumn()
-                        .setSynced(false)
-                        .widget(new TextWidget(new Text("Bio Upgrade Offsets"))
-                                .setSize(72, 18)
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new DynamicPositionedRow()
-                                .setSynced(false)
-                                .widget(new TextFieldWidget()
-                                        .setGetterInt(() -> mBioOffsets[0])
-                                        .setSetterInt(val -> {
-                                            mBioOffsets[0] = val;
-                                        })
-                                        .setNumbers(-16, 16)
-                                        .setTextColor(Color.WHITE.normal)
-                                        .setTextAlignment(Alignment.Center)
-                                        .addTooltip("X Offset")
-                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                        .setSize(36, 18))
-                                .widget(new TextFieldWidget()
-                                        .setGetterInt(() -> mBioOffsets[1])
-                                        .setSetterInt(val -> {
-                                            mBioOffsets[1] = val;
-                                        })
-                                        .setNumbers(-16, 16)
-                                        .setTextColor(Color.WHITE.normal)
-                                        .setTextAlignment(Alignment.Center)
-                                        .addTooltip("Z Offset")
-                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                        .setSize(36, 18))
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new TextWidget(new Text("Cooler Tier 1 Offsets"))
-                                .setSize(72, 18)
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new DynamicPositionedRow()
-                                .setSynced(false)
-                                .widget(new TextFieldWidget()
-                                        .setGetterInt(() -> mOCTier1Offsets[0])
-                                        .setSetterInt(val -> {
-                                            mOCTier1Offsets[0] = val;
-                                        })
-                                        .setNumbers(-16, 16)
-                                        .setTextColor(Color.WHITE.normal)
-                                        .setTextAlignment(Alignment.Center)
-                                        .addTooltip("X Offset")
-                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                        .setSize(36, 18))
-                                .widget(new TextFieldWidget()
-                                        .setGetterInt(() -> mOCTier1Offsets[1])
-                                        .setSetterInt(val -> {
-                                            mOCTier1Offsets[1] = val;
-                                        })
-                                        .setNumbers(-16, 16)
-                                        .setTextColor(Color.WHITE.normal)
-                                        .setTextAlignment(Alignment.Center)
-                                        .addTooltip("Z Offset")
-                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                        .setSize(36, 18))
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new TextWidget(new Text("Cooler Tier 2 Offsets"))
-                                .setSize(72, 18)
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new DynamicPositionedRow()
-                                .setSynced(false)
-                                .widget(new TextFieldWidget()
-                                        .setGetterInt(() -> mOCTier2Offsets[0])
-                                        .setSetterInt(val -> {
-                                            mOCTier2Offsets[0] = val;
-                                        })
-                                        .setNumbers(-16, 16)
-                                        .setTextColor(Color.WHITE.normal)
-                                        .setTextAlignment(Alignment.Center)
-                                        .addTooltip("X Offset")
-                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                        .setSize(36, 18))
-                                .widget(new TextFieldWidget()
-                                        .setGetterInt(() -> mOCTier2Offsets[1])
-                                        .setSetterInt(val -> {
-                                            mOCTier2Offsets[1] = val;
-                                        })
-                                        .setNumbers(-16, 16)
-                                        .setTextColor(Color.WHITE.normal)
-                                        .setTextAlignment(Alignment.Center)
-                                        .addTooltip("Z Offset")
-                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                        .setSize(36, 18))
-                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .setPos(110, 25));
+                                                        "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.")
+                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD).setSize(90, 16))
+                                .widget(
+                                        new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                                                .setSize(18, 18)
+                                                .addTooltip(
+                                                        new Text("Can't change configuration when running !")
+                                                                .color(Color.RED.dark(3)))
+                                                .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
+                                .setPos(10, 25))
+                .widget(
+                        new DynamicPositionedColumn().setSynced(false)
+                                .widget(
+                                        new TextWidget(new Text("Bio Upgrade Offsets")).setSize(72, 18)
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new DynamicPositionedRow().setSynced(false).widget(
+                                                new TextFieldWidget().setGetterInt(() -> mBioOffsets[0])
+                                                        .setSetterInt(val -> { mBioOffsets[0] = val; })
+                                                        .setNumbers(-16, 16).setTextColor(Color.WHITE.normal)
+                                                        .setTextAlignment(Alignment.Center).addTooltip("X Offset")
+                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                        .setSize(36, 18))
+                                                .widget(
+                                                        new TextFieldWidget().setGetterInt(() -> mBioOffsets[1])
+                                                                .setSetterInt(val -> { mBioOffsets[1] = val; })
+                                                                .setNumbers(-16, 16).setTextColor(Color.WHITE.normal)
+                                                                .setTextAlignment(Alignment.Center)
+                                                                .addTooltip("Z Offset")
+                                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                                .setSize(36, 18))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new TextWidget(new Text("Cooler Tier 1 Offsets")).setSize(72, 18)
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new DynamicPositionedRow().setSynced(false).widget(
+                                                new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[0])
+                                                        .setSetterInt(val -> { mOCTier1Offsets[0] = val; })
+                                                        .setNumbers(-16, 16).setTextColor(Color.WHITE.normal)
+                                                        .setTextAlignment(Alignment.Center).addTooltip("X Offset")
+                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                        .setSize(36, 18))
+                                                .widget(
+                                                        new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[1])
+                                                                .setSetterInt(val -> { mOCTier1Offsets[1] = val; })
+                                                                .setNumbers(-16, 16).setTextColor(Color.WHITE.normal)
+                                                                .setTextAlignment(Alignment.Center)
+                                                                .addTooltip("Z Offset")
+                                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                                .setSize(36, 18))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new TextWidget(new Text("Cooler Tier 2 Offsets")).setSize(72, 18)
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(
+                                        new DynamicPositionedRow().setSynced(false).widget(
+                                                new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[0])
+                                                        .setSetterInt(val -> { mOCTier2Offsets[0] = val; })
+                                                        .setNumbers(-16, 16).setTextColor(Color.WHITE.normal)
+                                                        .setTextAlignment(Alignment.Center).addTooltip("X Offset")
+                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                        .setSize(36, 18))
+                                                .widget(
+                                                        new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[1])
+                                                                .setSetterInt(val -> { mOCTier2Offsets[1] = val; })
+                                                                .setNumbers(-16, 16).setTextColor(Color.WHITE.normal)
+                                                                .setTextAlignment(Alignment.Center)
+                                                                .addTooltip("Z Offset")
+                                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                                .setSize(36, 18))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .setPos(110, 25));
         return builder.build();
     }
 }

@@ -2,13 +2,15 @@ package gregtech.api.multitileentity.base;
 
 import static gregtech.api.enums.GT_Values.NW;
 
-import gregtech.api.net.GT_Packet_SendCoverData;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 
+import gregtech.api.net.GT_Packet_SendCoverData;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
+
 public abstract class BaseNontickableMultiTileEntity extends BaseMultiTileEntity {
+
     boolean mConstructed = false; // Keeps track of whether this TE has been constructed and placed in the world
 
     public BaseNontickableMultiTileEntity() {
@@ -47,8 +49,8 @@ public abstract class BaseNontickableMultiTileEntity extends BaseMultiTileEntity
     }
 
     @Override
-    public void receiveCoverData(
-            byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
+    public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData,
+            EntityPlayerMP aPlayer) {
         super.receiveCoverData(aCoverSide, aCoverID, aCoverData, aPlayer);
         // We don't get ticked so issue the texture update right away
         issueTextureUpdate();

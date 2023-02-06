@@ -5,6 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Slot_Output extends Slot {
+
     public GT_Slot_Output(IInventory inventory, int slotIndex, int xPos, int yPos) {
         super(inventory, slotIndex, xPos, yPos);
     }

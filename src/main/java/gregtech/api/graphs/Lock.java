@@ -1,9 +1,11 @@
 package gregtech.api.graphs;
 
 import java.util.ArrayList;
+
 import net.minecraft.tileentity.TileEntity;
 
 public class Lock {
+
     protected ArrayList<TileEntity> tiles = new ArrayList<>();
 
     public void addTileEntity(TileEntity tileEntity) {

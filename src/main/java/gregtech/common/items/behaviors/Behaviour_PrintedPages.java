@@ -1,12 +1,15 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.GT_Utility;
+
 public class Behaviour_PrintedPages extends Behaviour_None {
+
     public static String getTitle(ItemStack aStack) {
         NBTTagCompound tNBT = aStack.getTagCompound();
         if (tNBT == null) {

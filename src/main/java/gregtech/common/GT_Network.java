@@ -2,8 +2,17 @@ package gregtech.common;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
+import java.util.EnumMap;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -20,16 +29,11 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.MessageToMessageCodec;
-import java.util.EnumMap;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 @ChannelHandler.Sharable
 @SuppressWarnings("deprecation")
 public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> implements IGT_NetworkHandler {
+
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
     private final GT_Packet[] mSubChannels;
 
@@ -55,7 +59,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
                 new GT_Packet_SendCoverData(), // 16
                 new GT_Packet_RequestCoverData(), // 17
                 new GT_Packet_MultiTileEntity() // 18
-                );
+        );
     }
 
     public GT_Network(String channelName, GT_Packet... packetTypes) {
@@ -72,15 +76,13 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
         final ByteBuf tBuf = Unpooled.buffer().writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
-        aOutput.add(new FMLProxyPacket(
-                tBuf, aContext.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
+        aOutput.add(new FMLProxyPacket(tBuf, aContext.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
     }
 
     @Override
     protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput)
             throws Exception {
-        final ByteArrayDataInput aData =
-                ByteStreams.newDataInput(aPacket.payload().array());
+        final ByteArrayDataInput aData = ByteStreams.newDataInput(aPacket.payload().array());
         final GT_Packet tPacket = this.mSubChannels[aData.readByte()].decode(aData);
         tPacket.setINetHandler(aPacket.handler());
         aOutput.add(tPacket);
@@ -96,35 +98,23 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             GT_FML_LOGGER.info("player null");
             return;
         }
-        this.mChannel
-                .get(Side.SERVER)
-                .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
                 .set(FMLOutboundHandler.OutboundTarget.PLAYER);
-        this.mChannel
-                .get(Side.SERVER)
-                .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
-                .set(aPlayer);
+        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPlayer);
         this.mChannel.get(Side.SERVER).writeAndFlush(aPacket);
     }
 
     @Override
     public void sendToAllAround(GT_Packet aPacket, NetworkRegistry.TargetPoint aPosition) {
-        this.mChannel
-                .get(Side.SERVER)
-                .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
                 .set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
-        this.mChannel
-                .get(Side.SERVER)
-                .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
-                .set(aPosition);
+        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPosition);
         this.mChannel.get(Side.SERVER).writeAndFlush(aPacket);
     }
 
     @Override
     public void sendToServer(GT_Packet aPacket) {
-        this.mChannel
-                .get(Side.CLIENT)
-                .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+        this.mChannel.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET)
                 .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         this.mChannel.get(Side.CLIENT).writeAndFlush(aPacket);
     }
@@ -138,8 +128,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
                 }
                 EntityPlayerMP tPlayer = (EntityPlayerMP) tObject;
                 Chunk tChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
-                if (tPlayer.getServerForPlayer()
-                        .getPlayerManager()
+                if (tPlayer.getServerForPlayer().getPlayerManager()
                         .isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
                     sendToPlayer(aPacket, tPlayer);
                 }
@@ -149,6 +138,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     @ChannelHandler.Sharable
     static final class HandlerShared extends SimpleChannelInboundHandler<GT_Packet> {
+
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, GT_Packet aPacket) {
             final EntityPlayer aPlayer = GT_Values.GT.getThePlayer();

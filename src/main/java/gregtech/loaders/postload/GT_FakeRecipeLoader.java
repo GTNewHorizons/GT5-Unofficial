@@ -5,6 +5,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 
 public class GT_FakeRecipeLoader implements Runnable {
+
     @Override
     public void run() {
         if (!GregTech_API.mIC2Classic) {

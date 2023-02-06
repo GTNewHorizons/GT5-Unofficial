@@ -1,12 +1,16 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.interfaces.IGuiScreen;
 import java.awt.Rectangle;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.interfaces.IGuiScreen;
+
 public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElement {
+
     public static final int DEFAULT_WIDTH = 16;
     public static final int DEFAULT_HEIGHT = 16;
 
@@ -43,8 +47,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
 
         if (this.visible) {
             // moused over
-            this.field_146123_n = mouseX >= this.xPosition
-                    && mouseY >= this.yPosition
+            this.field_146123_n = mouseX >= this.xPosition && mouseY >= this.yPosition
                     && mouseX < this.xPosition + width
                     && mouseY < this.yPosition + height;
 
@@ -57,7 +60,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
             int x = xPosition;
             int y = yPosition;
             if (!this.field_146123_n) {
-                //    GL11.glColor4f(200F/255F, 210F/255F, 1, 1);
+                // GL11.glColor4f(200F/255F, 210F/255F, 1, 1);
             } else GL11.glColor4f(1, 1, 1, 1);
 
             GT_GuiIcon.render(getButtonTexture(this.field_146123_n), x, y, width, height, 0, true);

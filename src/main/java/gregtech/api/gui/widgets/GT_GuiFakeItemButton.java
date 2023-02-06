@@ -1,15 +1,18 @@
 package gregtech.api.gui.widgets;
 
-import codechicken.lib.gui.GuiDraw;
-import gregtech.api.interfaces.IGuiScreen;
-import gregtech.api.util.GT_UtilityClient;
 import java.awt.*;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import codechicken.lib.gui.GuiDraw;
+import gregtech.api.interfaces.IGuiScreen;
+import gregtech.api.util.GT_UtilityClient;
 
 public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
 
@@ -19,6 +22,7 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
     private int xPosition, yPosition;
     private List<String> itemTooltips;
     private final GT_GuiTooltip tooltip = new GT_GuiTooltip(null) {
+
         @Override
         public List<String> getToolTipText() {
             return itemTooltips;
@@ -112,26 +116,24 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
                 GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             }
-            gui.getItemRenderer()
-                    .renderItemAndEffectIntoGUI(
-                            gui.getFontRenderer(),
-                            Minecraft.getMinecraft().getTextureManager(),
-                            item,
-                            xPosition,
-                            yPosition);
+            gui.getItemRenderer().renderItemAndEffectIntoGUI(
+                    gui.getFontRenderer(),
+                    Minecraft.getMinecraft().getTextureManager(),
+                    item,
+                    xPosition,
+                    yPosition);
 
             if (item.getItem() instanceof ItemBlock) GL11.glPopAttrib();
         }
 
-        if (getMimicSlot())
-            if (getBounds().contains(mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop())) {
-                GL11.glDisable(GL11.GL_LIGHTING);
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glColorMask(true, true, true, false);
-                GuiDraw.drawGradientRect(xPosition, yPosition, 16, 16, 0x80ffffff, 0x80ffffff);
-                GL11.glColorMask(true, true, true, true);
-                // no glEnable, state will be recovered by glPopAttrib
-            }
+        if (getMimicSlot()) if (getBounds().contains(mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop())) {
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GL11.glColorMask(true, true, true, false);
+            GuiDraw.drawGradientRect(xPosition, yPosition, 16, 16, 0x80ffffff, 0x80ffffff);
+            GL11.glColorMask(true, true, true, true);
+            // no glEnable, state will be recovered by glPopAttrib
+        }
 
         GL11.glPopAttrib();
     }

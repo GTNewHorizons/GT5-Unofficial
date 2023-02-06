@@ -1,11 +1,13 @@
 package gregtech.common.render;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
 public class GT_Renderer_Entity_Arrow extends RenderArrow {
+
     private final ResourceLocation mTexture;
 
     public GT_Renderer_Entity_Arrow(Class aArrowClass, String aTextureName) {

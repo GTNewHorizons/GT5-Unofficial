@@ -2,6 +2,12 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.HashMap;
+import java.util.NoSuchElementException;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
@@ -16,12 +22,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine {
+
     public static final HashMap<Materials, Long> MASS_OVERRIDES = new HashMap<>();
     public static final double EXPONENT = GregTech_API.sOPStuff.get("Replicator", "Nerf Exponent", 1.2D);
     private static int sHeaviestElementMass = 0;
@@ -49,73 +52,49 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
                 "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_REPLICATOR),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_REPLICATOR_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_REPLICATOR_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_REPLICATOR),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_REPLICATOR_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_REPLICATOR_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_REPLICATOR),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_REPLICATOR_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_REPLICATOR_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_REPLICATOR_GLOW)
-                                .glow()
-                                .build()));
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_REPLICATOR_GLOW).glow().build()));
     }
 
-    public GT_MetaTileEntity_Replicator(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GT_MetaTileEntity_Replicator(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
-    public GT_MetaTileEntity_Replicator(
-            String aName,
-            int aTier,
-            String[] aDescription,
-            ITexture[][][] aTextures,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_Replicator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Replicator(
-                this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
     public static long cubicFluidMultiplier(long amount) {
@@ -129,9 +108,7 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
             ItemStack tDataOrb = getSpecialSlot();
             if ((ItemList.Tool_DataOrb.isStackEqual(tDataOrb, false, true))
                     && (Behaviour_DataOrb.getDataTitle(tDataOrb).equals("Elemental-Scan"))) {
-                Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb))
-                        .mLinkedMaterials
-                        .get(0);
+                Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
                 long tMass = cubicFluidMultiplier(MASS_OVERRIDES.getOrDefault(tMaterial, tMaterial.getMass()));
                 if ((tFluid.amount >= tMass) && (tMass > 0L)) {
 
@@ -178,8 +155,8 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    protected boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
                 && ItemList.Cell_Empty.isStackEqual(aStack);
     }
@@ -193,8 +170,7 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     public int getCapacity() {
         if ((sHeaviestElementMass == 0) && (GregTech_API.sPostloadFinished)) {
             sHeaviestElementMass = Materials.getMaterialsMap().values().stream()
-                    .mapToInt(material -> (int) cubicFluidMultiplier((int) material.getMass()))
-                    .max()
+                    .mapToInt(material -> (int) cubicFluidMultiplier((int) material.getMass())).max()
                     .orElseThrow(NoSuchElementException::new);
             // Make the Number nicer =)
             sHeaviestElementMass = 1000 * (sHeaviestElementMass / 1000 + 1);

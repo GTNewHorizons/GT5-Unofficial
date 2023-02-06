@@ -2,12 +2,14 @@ package gregtech.api.interfaces.metatileentity;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
+import java.util.Map;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GT_Utility;
-import java.util.Map;
 
 public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
+
     /**
      * @return if this Pipe can still be used.
      */
@@ -36,9 +38,9 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
     boolean insertItemStackIntoTileEntity(Object aSender, byte aSide);
 
     /**
-     * Can be used to make flow control Pipes, like Redpowers Restriction Tubes.
-     * Every normal Pipe returns a Value of 32768, so you can easily insert lower Numbers to set Routing priorities.
-     * Negative Numbers to "suck" Items into a certain direction are also possible.
+     * Can be used to make flow control Pipes, like Redpowers Restriction Tubes. Every normal Pipe returns a Value of
+     * 32768, so you can easily insert lower Numbers to set Routing priorities. Negative Numbers to "suck" Items into a
+     * certain direction are also possible.
      */
     int getStepSize();
 
@@ -46,15 +48,12 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
      * Utility for the Item Network
      */
     class Util {
+
         /**
          * @return a List of connected Item Pipes
          */
-        public static Map<IMetaTileEntityItemPipe, Long> scanPipes(
-                IMetaTileEntityItemPipe aMetaTileEntity,
-                Map<IMetaTileEntityItemPipe, Long> aMap,
-                long aStep,
-                boolean aSuckItems,
-                boolean aIgnoreCapacity) {
+        public static Map<IMetaTileEntityItemPipe, Long> scanPipes(IMetaTileEntityItemPipe aMetaTileEntity,
+                Map<IMetaTileEntityItemPipe, Long> aMap, long aStep, boolean aSuckItems, boolean aIgnoreCapacity) {
             aStep += aMetaTileEntity.getStepSize();
             if (aIgnoreCapacity || aMetaTileEntity.pipeCapacityCheck())
                 if (aMap.get(aMetaTileEntity) == null || aMap.get(aMetaTileEntity) > aStep) {
@@ -63,12 +62,13 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                     byte oppositeSide;
                     for (byte side : ALL_VALID_SIDES) {
                         if (aMetaTileEntity instanceof IConnectable
-                                && !((IConnectable) aMetaTileEntity).isConnectedAtSide(side)) continue;
+                                && !((IConnectable) aMetaTileEntity).isConnectedAtSide(side))
+                            continue;
                         oppositeSide = GT_Utility.getOppositeSide(side);
                         if (aSuckItems) {
                             if (aBaseMetaTileEntity.getCoverInfoAtSide(side).letsItemsIn(-2)) {
-                                final IGregTechTileEntity tItemPipe =
-                                        aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+                                final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity
+                                        .getIGregTechTileEntityAtSide(side);
                                 if (aBaseMetaTileEntity.getColorization() >= 0) {
                                     final byte tColor = tItemPipe.getColorization();
                                     if (tColor >= 0 && tColor != aBaseMetaTileEntity.getColorization()) {
@@ -78,9 +78,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                                 if (tItemPipe instanceof BaseMetaPipeEntity) {
                                     final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                     if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
-                                            && tItemPipe
-                                                    .getCoverInfoAtSide(oppositeSide)
-                                                    .letsItemsOut(-2)) {
+                                            && tItemPipe.getCoverInfoAtSide(oppositeSide).letsItemsOut(-2)) {
                                         scanPipes(
                                                 (IMetaTileEntityItemPipe) tMetaTileEntity,
                                                 aMap,
@@ -92,8 +90,8 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                             }
                         } else {
                             if (aBaseMetaTileEntity.getCoverInfoAtSide(side).letsItemsOut(-2)) {
-                                final IGregTechTileEntity tItemPipe =
-                                        aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+                                final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity
+                                        .getIGregTechTileEntityAtSide(side);
                                 if (tItemPipe != null) {
                                     if (aBaseMetaTileEntity.getColorization() >= 0) {
                                         final byte tColor = tItemPipe.getColorization();
@@ -104,9 +102,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                                     if (tItemPipe instanceof BaseMetaPipeEntity) {
                                         final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                         if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
-                                                && tItemPipe
-                                                        .getCoverInfoAtSide(oppositeSide)
-                                                        .letsItemsIn(-2)) {
+                                                && tItemPipe.getCoverInfoAtSide(oppositeSide).letsItemsIn(-2)) {
                                             scanPipes(
                                                     (IMetaTileEntityItemPipe) tMetaTileEntity,
                                                     aMap,

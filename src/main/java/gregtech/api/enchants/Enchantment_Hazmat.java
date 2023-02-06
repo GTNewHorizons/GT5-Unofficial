@@ -1,14 +1,16 @@
 package gregtech.api.enchants;
 
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_LanguageManager;
+
 public class Enchantment_Hazmat extends Enchantment {
+
     public static Enchantment_Hazmat INSTANCE;
 
     public Enchantment_Hazmat() {

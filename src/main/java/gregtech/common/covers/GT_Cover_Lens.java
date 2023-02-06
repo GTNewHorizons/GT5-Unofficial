@@ -5,6 +5,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 
 public class GT_Cover_Lens extends GT_CoverBehavior {
+
     private final byte mColor;
 
     /**
@@ -21,8 +22,8 @@ public class GT_Cover_Lens extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         return false;
     }
 

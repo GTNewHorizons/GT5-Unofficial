@@ -1,17 +1,19 @@
 package gregtech.api.net;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.common.GT_Proxy;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 /**
  * Client -> Server: Request that the server opens a Gregtech GUI for us after providing us with the required data.
@@ -31,8 +33,8 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_GtTileEntityGuiRequest(
-            int mX, short mY, int mZ, int guiId, int dimID, int playerID, int parentGuiId) {
+    public GT_Packet_GtTileEntityGuiRequest(int mX, short mY, int mZ, int guiId, int dimID, int playerID,
+            int parentGuiId) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -90,11 +92,11 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
 
         final BaseTileEntity baseTile = ((BaseTileEntity) tile);
         final EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerId);
-        final CoverableTileEntity coverableTile =
-                (baseTile instanceof CoverableTileEntity) ? (CoverableTileEntity) baseTile : null;
-        // If the requested Gui ID corresponds to a cover, send the cover data  to the client so they can open it.
-        if (GT_Proxy.GUI_ID_COVER_SIDE_BASE <= guiId
-                && guiId < GT_Proxy.GUI_ID_COVER_SIDE_BASE + 6
+        final CoverableTileEntity coverableTile = (baseTile instanceof CoverableTileEntity)
+                ? (CoverableTileEntity) baseTile
+                : null;
+        // If the requested Gui ID corresponds to a cover, send the cover data to the client so they can open it.
+        if (GT_Proxy.GUI_ID_COVER_SIDE_BASE <= guiId && guiId < GT_Proxy.GUI_ID_COVER_SIDE_BASE + 6
                 && coverableTile != null) {
             final byte coverSide = (byte) (guiId - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
             final GT_Packet_TileEntityCoverGUI packet = new GT_Packet_TileEntityCoverGUI(

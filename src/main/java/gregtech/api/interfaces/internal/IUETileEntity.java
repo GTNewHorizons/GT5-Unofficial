@@ -1,5 +1,5 @@
 package gregtech.api.interfaces.internal;
 
-public interface IUETileEntity /*extends IElectrical*/ {
+public interface IUETileEntity /* extends IElectrical */ {
     //
 }

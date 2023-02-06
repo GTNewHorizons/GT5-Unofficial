@@ -3,13 +3,8 @@ package gregtech.common.render.items;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Chrome;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_RenderUtil;
-import gregtech.loaders.ExtraIcons;
 import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -18,14 +13,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.lwjgl.opengl.GL11;
+
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.render.GT_RenderUtil;
+import gregtech.loaders.ExtraIcons;
 
 public class GT_GeneratedItem_Renderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return type == ItemRenderType.EQUIPPED
-                || type == ItemRenderType.EQUIPPED_FIRST_PERSON
+        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
                 || type == ItemRenderType.INVENTORY
                 || type == ItemRenderType.ENTITY;
     }
@@ -56,8 +58,8 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
                     if (tCharge >= tStats[0]) {
                         tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][8];
                     } else {
-                        tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][
-                                (7 - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
+                        tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][(7
+                                - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
                     }
                 }
             } else {
@@ -107,8 +109,8 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
         return null;
     }
 
-    private static void renderLargeFluidCellExtraParts(
-            IItemRenderer.ItemRenderType type, ItemList item, ItemStack stack) {
+    private static void renderLargeFluidCellExtraParts(IItemRenderer.ItemRenderType type, ItemList item,
+            ItemStack stack) {
 
         IIcon inner;
         if (item == Large_Fluid_Cell_Steel) inner = ExtraIcons.steelLargeCellInner;

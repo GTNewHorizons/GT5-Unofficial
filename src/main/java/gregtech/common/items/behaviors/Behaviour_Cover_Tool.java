@@ -1,13 +1,8 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -18,27 +13,25 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.*;
+
 public class Behaviour_Cover_Tool extends Behaviour_None {
+
     public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Cover_Tool();
-    private final String mTooltip =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
+    private final String mTooltip = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
 
     private ISerializableObject mStoredData = GregTech_API.sNoBehavior.createDataObject();
     private int mCoverType;
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -90,38 +83,42 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    private void doCopy(
-            TileEntity aTileEntity,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ,
-            List aList) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void doCopy(TileEntity aTileEntity, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY,
+            float hitZ, List aList) {
         aList.add(
-                "----- X: " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aX) + EnumChatFormatting.RESET + " Y: "
-                        + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aY) + EnumChatFormatting.RESET + " Z: "
-                        + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aZ) + EnumChatFormatting.RESET + " D: "
-                        + EnumChatFormatting.AQUA + aWorld.provider.dimensionId + EnumChatFormatting.RESET + " -----");
+                "----- X: " + EnumChatFormatting.AQUA
+                        + GT_Utility.formatNumbers(aX)
+                        + EnumChatFormatting.RESET
+                        + " Y: "
+                        + EnumChatFormatting.AQUA
+                        + GT_Utility.formatNumbers(aY)
+                        + EnumChatFormatting.RESET
+                        + " Z: "
+                        + EnumChatFormatting.AQUA
+                        + GT_Utility.formatNumbers(aZ)
+                        + EnumChatFormatting.RESET
+                        + " D: "
+                        + EnumChatFormatting.AQUA
+                        + aWorld.provider.dimensionId
+                        + EnumChatFormatting.RESET
+                        + " -----");
         if (aTileEntity instanceof ICoverable) {
             ICoverable tCoverable = (ICoverable) aTileEntity;
-            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null
-                    ? aSide
+            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null ? aSide
                     : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ))
-                                    != null
-                            ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ)
-                            : -1;
+                            != null ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ) : -1;
             if (tSide != -1) {
                 mStoredData = tCoverable.getComplexCoverDataAtSide((byte) tSide);
                 mCoverType = tCoverable.getCoverIDAtSide((byte) tSide);
-                aList.add("Block Side: " + EnumChatFormatting.AQUA
-                        + ForgeDirection.getOrientation(tSide).name() + EnumChatFormatting.RESET);
-                aList.add("Cover Type: " + EnumChatFormatting.GREEN
-                        + tCoverable.getCoverItemAtSide((byte) tSide).getDisplayName() + EnumChatFormatting.RESET);
+                aList.add(
+                        "Block Side: " + EnumChatFormatting.AQUA
+                                + ForgeDirection.getOrientation(tSide).name()
+                                + EnumChatFormatting.RESET);
+                aList.add(
+                        "Cover Type: " + EnumChatFormatting.GREEN
+                                + tCoverable.getCoverItemAtSide((byte) tSide).getDisplayName()
+                                + EnumChatFormatting.RESET);
             } else {
                 mStoredData = GregTech_API.sNoBehavior.createDataObject();
                 mCoverType = 0;
@@ -141,12 +138,9 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                 GT_Utility.sendChatToPlayer(aPlayer, "Please Copy a Valid Cover First.");
                 return;
             }
-            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null
-                    ? aSide
+            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null ? aSide
                     : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ))
-                                    != null
-                            ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ)
-                            : -1;
+                            != null ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ) : -1;
             if (tSide != -1) {
                 int tCoverID = tCoverable.getCoverIDAtSide((byte) tSide);
                 if (tCoverID == mCoverType) {

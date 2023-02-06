@@ -2,14 +2,16 @@ package gregtech.api.util;
 
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+
 public class GT_ExoticEnergyInputHelper {
+
     /**
      * The Valid Types of TecTech Hatch List.
      */
@@ -21,9 +23,8 @@ public class GT_ExoticEnergyInputHelper {
     }
 
     public static void register(Class<? extends GT_MetaTileEntity_Hatch> clazz) {
-        if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz))
-            throw new IllegalArgumentException(
-                    clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
+        if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz)) throw new IllegalArgumentException(
+                clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
         sExoticEnergyHatchType.add(clazz);
     }
 
@@ -35,9 +36,8 @@ public class GT_ExoticEnergyInputHelper {
         } catch (ClassNotFoundException e) {
             return;
         }
-        if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz))
-            throw new IllegalArgumentException(
-                    clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
+        if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz)) throw new IllegalArgumentException(
+                clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
         sExoticEnergyHatchType.add((Class<? extends GT_MetaTileEntity_Hatch>) clazz);
     }
 
@@ -58,14 +58,16 @@ public class GT_ExoticEnergyInputHelper {
     }
 
     public static long getTotalEuMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
-        return getMaxWorkingInputAmpsMulti(hatches) * getAverageInputVoltageMulti(hatches);
+        long rEU = 0L;
+        for (GT_MetaTileEntity_Hatch tHatch : hatches) if (isValidMetaTileEntity(tHatch))
+            rEU += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.maxWorkingAmperesIn();
+        return rEU;
     }
 
     public static long getMaxInputVoltageMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
-            if (isValidMetaTileEntity(tHatch))
-                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+            if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
         return rVoltage;
     }
 
@@ -75,25 +77,22 @@ public class GT_ExoticEnergyInputHelper {
             return rVoltage;
         }
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
-            if (isValidMetaTileEntity(tHatch))
-                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+            if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
         return rVoltage / hatches.size();
     }
 
     public static long getMaxInputAmpsMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rAmp = 0;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
-            if (isValidMetaTileEntity(tHatch))
-                rAmp += tHatch.getBaseMetaTileEntity().getInputAmperage();
+            if (isValidMetaTileEntity(tHatch)) rAmp += tHatch.getBaseMetaTileEntity().getInputAmperage();
         return rAmp;
     }
 
     public static long getMaxWorkingInputAmpsMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rAmp = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : hatches)
-            if (isValidMetaTileEntity(tHatch)) {
-                rAmp += tHatch.maxWorkingAmperesIn();
-            }
+        for (GT_MetaTileEntity_Hatch tHatch : hatches) if (isValidMetaTileEntity(tHatch)) {
+            rAmp += tHatch.maxWorkingAmperesIn();
+        }
         return rAmp;
     }
 

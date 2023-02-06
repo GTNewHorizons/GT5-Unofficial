@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import java.util.Locale;
 
 public enum SteamVariant {
+
     BRONZE,
     STEEL,
     PRIMITIVE,

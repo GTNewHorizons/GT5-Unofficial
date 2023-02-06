@@ -1,10 +1,11 @@
 package gregtech.api.interfaces.fluid;
 
-import gregtech.api.enums.FluidState;
-import gregtech.api.enums.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+
+import gregtech.api.enums.FluidState;
+import gregtech.api.enums.Materials;
 
 public interface IGT_RegisteredFluid {
 
@@ -17,11 +18,12 @@ public interface IGT_RegisteredFluid {
      * @return The {@link IGT_RegisteredFluid} for call chaining
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
-    IGT_RegisteredFluid registerContainers(
-            final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize);
+    IGT_RegisteredFluid registerContainers(final ItemStack fullContainer, final ItemStack emptyContainer,
+            final int containerSize);
 
     /**
-     * Registers the bucket-sized 1000L containers in the {@link FluidContainerRegistry} for this {@link IGT_RegisteredFluid}
+     * Registers the bucket-sized 1000L containers in the {@link FluidContainerRegistry} for this
+     * {@link IGT_RegisteredFluid}
      *
      * @param fullContainer  The full container to associate with this {@link IGT_RegisteredFluid}
      * @param emptyContainer The empty container associate with this {@link IGT_RegisteredFluid}
@@ -31,7 +33,8 @@ public interface IGT_RegisteredFluid {
     IGT_RegisteredFluid registerBContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
     /**
-     * Registers the potion-sized 250L containers in the {@link FluidContainerRegistry} for this {@link IGT_RegisteredFluid}
+     * Registers the potion-sized 250L containers in the {@link FluidContainerRegistry} for this
+     * {@link IGT_RegisteredFluid}
      *
      * @param fullContainer  The full container to associate with this {@link IGT_RegisteredFluid}
      * @param emptyContainer The empty container associate with this {@link IGT_RegisteredFluid}
@@ -43,7 +46,8 @@ public interface IGT_RegisteredFluid {
     /**
      * Updates the {@link Materials}'s fluids from this {@link IGT_RegisteredFluid}'s state
      *
-     * @param material the {@link Materials} to configure based on this {@link IGT_RegisteredFluid} and {@link FluidState}
+     * @param material the {@link Materials} to configure based on this {@link IGT_RegisteredFluid} and
+     *                 {@link FluidState}
      * @return The {@link IGT_RegisteredFluid} for call chaining
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value

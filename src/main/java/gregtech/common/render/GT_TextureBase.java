@@ -1,11 +1,13 @@
 package gregtech.common.render;
 
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GT_UtilityClient;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.util.GT_UtilityClient;
+
 public abstract class GT_TextureBase implements ITexture {
+
     protected boolean isDrawing = false;
 
     @Override

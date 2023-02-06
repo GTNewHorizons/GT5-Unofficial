@@ -1,9 +1,10 @@
 package gregtech.common.gui.modularui.widget;
 
-import gregtech.api.gui.modularui.IDataFollowerWidget;
-import gregtech.api.util.ISerializableObject;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import gregtech.api.gui.modularui.IDataFollowerWidget;
+import gregtech.api.util.ISerializableObject;
 
 /**
  * Determines button state with cover data.

@@ -4,6 +4,7 @@ import com.google.common.collect.HashBiMap;
 import gregtech.api.enums.Materials;
 
 public class GT_PCBFactoryManager {
+
     private static final HashBiMap<Materials, Integer> mPlasticTiers = HashBiMap.create();
     public static int mTiersOfPlastics = 0;
 

@@ -2,10 +2,11 @@ package gregtech.api.gui;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Utility;
 
 public class GT_GUIContainer_BasicTank extends GT_GUIContainerMetaTile_Machine {
 
@@ -21,8 +22,8 @@ public class GT_GUIContainer_BasicTank extends GT_GUIContainerMetaTile_Machine {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj.drawString(
-                StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, textColorTitle);
+        fontRendererObj
+                .drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, textColorTitle);
         fontRendererObj.drawString(mName, 8, 6, textColorTitle);
         if (mContainer != null) {
             fontRendererObj.drawString("Liquid Amount", 10, 20, textColor);

@@ -1,24 +1,20 @@
 package gregtech.common.bees;
 
+import java.awt.*;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.IAlleleBeeSpeciesCustom;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IClassification;
 import forestry.apiculture.genetics.alleles.AlleleBeeSpecies;
-import java.awt.*;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class GT_AlleleBeeSpecies extends AlleleBeeSpecies {
-    public GT_AlleleBeeSpecies(
-            String uid,
-            boolean dominant,
-            String unlocalizedName,
-            String authority,
-            String unlocalizedDescription,
-            IClassification branch,
-            String binomial,
-            Color primaryColor,
+
+    public GT_AlleleBeeSpecies(String uid, boolean dominant, String unlocalizedName, String authority,
+            String unlocalizedDescription, IClassification branch, String binomial, Color primaryColor,
             Color secondaryColor) {
         super(
                 uid,

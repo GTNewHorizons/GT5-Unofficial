@@ -1,8 +1,18 @@
 package gregtech.common.covers.redstone;
 
+import java.util.Arrays;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -11,12 +21,6 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import java.util.Arrays;
-import java.util.UUID;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class GT_Cover_AdvancedRedstoneReceiverBase
         extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneReceiverBase.ReceiverData> {
@@ -66,26 +70,24 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             super.addUIWidgets(builder);
-            builder.widget(new TextWidget(GT_Utility.trans("335", "Gate Mode"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
+            builder.widget(
+                    new TextWidget(GT_Utility.trans("335", "Gate Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
         }
 
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIForDataController(CoverDataControllerWidget<ReceiverData> controller) {
             super.addUIForDataController(controller);
-            controller
-                    .addFollower(
-                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            coverData -> coverData.mode == GateMode.AND,
-                            (coverData, state) -> {
-                                coverData.mode = GateMode.AND;
-                                return coverData;
-                            },
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_AND)
-                                    .addTooltip(GT_Utility.trans("331", "AND Gate"))
-                                    .setPos(spaceX * 0, spaceY * 2))
+            controller.addFollower(
+                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                    coverData -> coverData.mode == GateMode.AND,
+                    (coverData, state) -> {
+                        coverData.mode = GateMode.AND;
+                        return coverData;
+                    },
+                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_AND)
+                            .addTooltip(GT_Utility.trans("331", "AND Gate")).setPos(spaceX * 0, spaceY * 2))
                     .addFollower(
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                             coverData -> coverData.mode == GateMode.NAND,
@@ -94,8 +96,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                                 return coverData;
                             },
                             widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NAND)
-                                    .addTooltip(GT_Utility.trans("332", "NAND Gate"))
-                                    .setPos(spaceX * 1, spaceY * 2))
+                                    .addTooltip(GT_Utility.trans("332", "NAND Gate")).setPos(spaceX * 1, spaceY * 2))
                     .addFollower(
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                             coverData -> coverData.mode == GateMode.OR,
@@ -104,8 +105,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                                 return coverData;
                             },
                             widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_OR)
-                                    .addTooltip(GT_Utility.trans("333", "OR Gate"))
-                                    .setPos(spaceX * 2, spaceY * 2))
+                                    .addTooltip(GT_Utility.trans("333", "OR Gate")).setPos(spaceX * 2, spaceY * 2))
                     .addFollower(
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                             coverData -> coverData.mode == GateMode.NOR,
@@ -114,8 +114,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                                 return coverData;
                             },
                             widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NOR)
-                                    .addTooltip(GT_Utility.trans("334", "NOR Gate"))
-                                    .setPos(spaceX * 3, spaceY * 2))
+                                    .addTooltip(GT_Utility.trans("334", "NOR Gate")).setPos(spaceX * 3, spaceY * 2))
                     .addFollower(
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                             coverData -> coverData.mode == GateMode.SINGLE_SOURCE,
@@ -124,10 +123,11 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                                 return coverData;
                             },
                             widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ANALOG)
-                                    .addTooltips(Arrays.asList(
-                                            "ANALOG Mode",
-                                            "Only use this mode with ONE transmitter in total,",
-                                            "no logic involved"))
+                                    .addTooltips(
+                                            Arrays.asList(
+                                                    "ANALOG Mode",
+                                                    "Only use this mode with ONE transmitter in total,",
+                                                    "no logic involved"))
                                     .setPos(spaceX * 4, spaceY * 2));
         }
     }
@@ -141,6 +141,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
     }
 
     public static class ReceiverData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
+
         private GateMode mode;
 
         public ReceiverData(int frequency, UUID uuid, GateMode mode) {

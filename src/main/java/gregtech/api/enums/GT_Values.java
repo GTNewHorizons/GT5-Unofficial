@@ -1,12 +1,8 @@
 package gregtech.api.enums;
 
-import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.internal.IGT_Mod;
-import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-import gregtech.api.net.IGT_NetworkHandler;
 import java.math.BigInteger;
 import java.util.*;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -15,12 +11,20 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
 
+import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.internal.IGT_Mod;
+import gregtech.api.interfaces.internal.IGT_RecipeAdder;
+import gregtech.api.net.IGT_NetworkHandler;
+
 /**
  * Made for static imports, this Class is just a Helper.
  * <p/>
- * I am doing this to have a better Table alike view on my Code, so I can change things faster using the Block Selection Mode of eclipse.
+ * I am doing this to have a better Table alike view on my Code, so I can change things faster using the Block Selection
+ * Mode of eclipse.
  * <p/>
- * Go to "Window > Preferences > Java > Editor > Content Assist > Favorites" to set static importable Constant Classes such as this one as AutoCompleteable.
+ * Go to "Window > Preferences > Java > Editor > Content Assist > Favorites" to set static importable Constant Classes
+ * such as this one as AutoCompleteable.
  */
 @SuppressWarnings("unused") // API Legitimately has unused fields and methods
 public class GT_Values {
@@ -39,31 +43,19 @@ public class GT_Values {
      * The first 32 Bits
      */
     @SuppressWarnings("PointlessBitwiseExpression") // Nicer source layout this way
-    public static final int[] B = new int[] {
-        1 << 0, 1 << 1, 1 << 2,
-        1 << 3, 1 << 4, 1 << 5,
-        1 << 6, 1 << 7, 1 << 8,
-        1 << 9, 1 << 10, 1 << 11,
-        1 << 12, 1 << 13, 1 << 14,
-        1 << 15, 1 << 16, 1 << 17,
-        1 << 18, 1 << 19, 1 << 20,
-        1 << 21, 1 << 22, 1 << 23,
-        1 << 24, 1 << 25, 1 << 26,
-        1 << 27, 1 << 28, 1 << 29,
-        1 << 30, 1 << 31
-    };
+    public static final int[] B = new int[] { 1 << 0, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8,
+            1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20,
+            1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31 };
 
     /**
      * Renamed from "MATERIAL_UNIT" to just "M"
      * <p/>
-     * This is worth exactly one normal Item.
-     * This Constant can be divided by many commonly used Numbers such as
-     * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 24, ... 64 or 81
-     * without losing precision and is for that reason used as Unit of Amount.
-     * But it is also small enough to be multiplied with larger Numbers.
+     * This is worth exactly one normal Item. This Constant can be divided by many commonly used Numbers such as 1, 2,
+     * 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 24, ... 64 or 81 without losing precision and is for that
+     * reason used as Unit of Amount. But it is also small enough to be multiplied with larger Numbers.
      * <p/>
-     * This is used to determine the amount of Material contained inside a prefixed Ore.
-     * For example Nugget = M / 9 as it contains out of 1/9 of an Ingot.
+     * This is used to determine the amount of Material contained inside a prefixed Ore. For example Nugget = M / 9 as
+     * it contains out of 1/9 of an Ingot.
      */
     public static final long M = 3628800;
 
@@ -82,26 +74,18 @@ public class GT_Values {
     /**
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
-    public static final long[] V = new long[] {
-        8L, 32L, 128L,
-        512L, 2048L, 8192L,
-        32_768L, 131_072L, 524_288L,
-        2_097_152L, 8_388_608L, 33_554_432L,
-        134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
-        // Error tier to prevent out of bounds errors. Not really a real tier (for now).
-        8_589_934_592L
-    };
+    public static final long[] V = new long[] { 8L, 32L, 128L, 512L, 2048L, 8192L, 32_768L, 131_072L, 524_288L,
+            2_097_152L, 8_388_608L, 33_554_432L, 134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
+            // Error tier to prevent out of bounds errors. Not really a real tier (for now).
+            8_589_934_592L };
 
     /**
-     * The Voltage Practical. These are recipe voltage you should use if you expect the recipe to use a full amp of
-     * that tier. These leave a bit of headroom for cable and transformer losses, but not enough to make it a great gain.
+     * The Voltage Practical. These are recipe voltage you should use if you expect the recipe to use a full amp of that
+     * tier. These leave a bit of headroom for cable and transformer losses, but not enough to make it a great gain.
      */
     // this will correctly map ULV to 7.
-    public static final long[] VP = Arrays.stream(V)
-            .map(i -> BigInteger.valueOf(i)
-                    .multiply(BigInteger.valueOf(30))
-                    .divide(BigInteger.valueOf(32))
-                    .longValueExact())
+    public static final long[] VP = Arrays.stream(V).map(
+            i -> BigInteger.valueOf(i).multiply(BigInteger.valueOf(30)).divide(BigInteger.valueOf(32)).longValueExact())
             .toArray();
     // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive
     // testing.
@@ -109,7 +93,7 @@ public class GT_Values {
     // TODO:tier 14,15 wires and transformers only (not even cables !!!)
     // TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
     // TODO:tier 10,11 the above + chargers and other machines, (cables would be nice)
-    // TODO:tier 9     machines and batteries
+    // TODO:tier 9 machines and batteries
 
     // TODO:AND ALL THE MATERIALS... for that
     // TODO:LIST OF MACHINES WITH POINTLESS TIERS (unless you implement some other tiering mechanism like reducing eu
@@ -118,140 +102,110 @@ public class GT_Values {
 
     /**
      * Array of Maximum Amperes at given Tier index
-     * <p>keeping Voltage*Amps < Integer.MAX_VALUE-7 for machines (and tier logic 4x EUt 2/ time)</p>
-     * <p>AMV[4]= max amps at tier 4</p>
+     * <p>
+     * keeping Voltage*Amps < Integer.MAX_VALUE-7 for machines (and tier logic 4x EUt 2/ time)
+     * </p>
+     * <p>
+     * AMV[4]= max amps at tier 4
+     * </p>
      */
-    public static final long[] AatV = new long[] {
-        268435455, 67108863, 16777215,
-        4194303, 1048575, 262143,
-        65535, 16383, 4095,
-        1023, 255, 63,
-        15, 3, 1,
-        1
-    };
+    public static final long[] AatV = new long[] { 268435455, 67108863, 16777215, 4194303, 1048575, 262143, 65535,
+            16383, 4095, 1023, 255, 63, 15, 3, 1, 1 };
     /**
      * The short Names for the Voltages
      */
-    public static final String[] VN = new String[] {
-        "ULV", // 0
-        "LV", // 1
-        "MV", // 2
-        "HV", // 3
-        "EV", // 4
-        "IV", // 5
-        "LuV", // 6
-        "ZPM", // 7
-        "UV", // 8
-        "UHV", // 9
-        "UEV", // 10
-        "UIV", // 11
-        "UMV", // 12
-        "UXV", // 13
-        "MAX", // 14
-        "ERROR VOLTAGE" // 15
+    public static final String[] VN = new String[] { "ULV", // 0
+            "LV", // 1
+            "MV", // 2
+            "HV", // 3
+            "EV", // 4
+            "IV", // 5
+            "LuV", // 6
+            "ZPM", // 7
+            "UV", // 8
+            "UHV", // 9
+            "UEV", // 10
+            "UIV", // 11
+            "UMV", // 12
+            "UXV", // 13
+            "MAX", // 14
+            "ERROR VOLTAGE" // 15
     };
 
     /**
      * The long Names for the Voltages
      */
-    public static final String[] VOLTAGE_NAMES = new String[] {
-        "Ultra Low Voltage", // 0
-        "Low Voltage", // 1
-        "Medium Voltage", // 2
-        "High Voltage", // 3
-        "Extreme Voltage", // 4
-        "Insane Voltage", // 5
-        "Ludicrous Voltage", // 6
-        "ZPM Voltage", // 7
-        "Ultimate Voltage", // 8
-        "Ultimate High Voltage", // 9
-        "Ultimate Extreme Voltage", // 10
-        "Ultimate Insane Voltage", // 11
-        "Ultimate Mega Voltage", // 12
-        "Ultimate Extended Mega Voltage", // 13
-        "Maximum Voltage", // 14
-        "Error Voltage, report this" // 15
+    public static final String[] VOLTAGE_NAMES = new String[] { "Ultra Low Voltage", // 0
+            "Low Voltage", // 1
+            "Medium Voltage", // 2
+            "High Voltage", // 3
+            "Extreme Voltage", // 4
+            "Insane Voltage", // 5
+            "Ludicrous Voltage", // 6
+            "ZPM Voltage", // 7
+            "Ultimate Voltage", // 8
+            "Ultimate High Voltage", // 9
+            "Ultimate Extreme Voltage", // 10
+            "Ultimate Insane Voltage", // 11
+            "Ultimate Mega Voltage", // 12
+            "Ultimate Extended Mega Voltage", // 13
+            "Maximum Voltage", // 14
+            "Error Voltage, report this" // 15
     };
 
-    public static final String[] TIER_COLORS = new String[] {
-        EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.GRAY.toString(), // LV,  1
-        EnumChatFormatting.GOLD.toString(), // MV,  2
-        EnumChatFormatting.YELLOW.toString(), // HV,  3
-        EnumChatFormatting.DARK_GRAY.toString(), // EV,  4
-        EnumChatFormatting.GREEN.toString(), // IV,  5
-        EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
-        EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString(), // UV,  8
-        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
-        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(), // UIV, 11
-        EnumChatFormatting.RED.toString()
-                + EnumChatFormatting.BOLD.toString()
-                + EnumChatFormatting.UNDERLINE.toString(), // UMV, 12
-        EnumChatFormatting.DARK_RED.toString()
-                + EnumChatFormatting.BOLD.toString()
-                + EnumChatFormatting.UNDERLINE.toString(), // UXV, 13
-        EnumChatFormatting.WHITE.toString()
-                + EnumChatFormatting.BOLD.toString()
-                + EnumChatFormatting.UNDERLINE.toString(), // MAX, 14
-        EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
+    public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
+            EnumChatFormatting.GRAY.toString(), // LV, 1
+            EnumChatFormatting.GOLD.toString(), // MV, 2
+            EnumChatFormatting.YELLOW.toString(), // HV, 3
+            EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
+            EnumChatFormatting.GREEN.toString(), // IV, 5
+            EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
+            EnumChatFormatting.AQUA.toString(), // ZPM, 7
+            EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
+            EnumChatFormatting.DARK_RED.toString(), // UHV, 9
+            EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
+            EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(), // UIV, 11
+            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD.toString()
+                    + EnumChatFormatting.UNDERLINE.toString(), // UMV, 12
+            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD.toString()
+                    + EnumChatFormatting.UNDERLINE.toString(), // UXV, 13
+            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD.toString()
+                    + EnumChatFormatting.UNDERLINE.toString(), // MAX, 14
+            EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
     };
 
     /**
-     * This way it is possible to have a Call Hierarchy of NullPointers in ItemStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
+     * This way it is possible to have a Call Hierarchy of NullPointers in ItemStack based Functions, and also because
+     * most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final ItemStack NI = null;
     /**
-     * This way it is possible to have a Call Hierarchy of NullPointers in FluidStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
+     * This way it is possible to have a Call Hierarchy of NullPointers in FluidStack based Functions, and also because
+     * most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
     /**
      * MOD ID Strings, since they are very common Parameters.
      */
-    public static final String MOD_ID = "gregtech",
-            MOD_ID_IC2 = "IC2",
-            MOD_ID_NC = "IC2NuclearControl",
-            MOD_ID_TC = "Thaumcraft",
-            MOD_ID_TF = "TwilightForest",
-            MOD_ID_RC = "Railcraft",
-            MOD_ID_TE = "ThermalExpansion",
-            MOD_ID_AE = "appliedenergistics2",
-            MOD_ID_TFC = "terrafirmacraft",
-            MOD_ID_PFAA = "PFAAGeologica",
-            MOD_ID_FR = "Forestry",
-            MOD_ID_HaC = "harvestcraft",
-            MOD_ID_APC = "AppleCore",
-            MOD_ID_MaCr = "magicalcrops",
-            MOD_ID_GaEn = "ganysend",
-            MOD_ID_GaSu = "ganyssurface",
-            MOD_ID_GaNe = "ganysnether",
-            MOD_ID_BC_SILICON = "BuildCraft|Silicon",
-            MOD_ID_BC_TRANSPORT = "BuildCraft|Transport",
-            MOD_ID_BC_FACTORY = "BuildCraft|Factory",
-            MOD_ID_BC_ENERGY = "BuildCraft|Energy",
-            MOD_ID_BC_BUILDERS = "BuildCraft|Builders",
-            MOD_ID_BC_CORE = "BuildCraft|Core",
-            MOD_ID_GC_CORE = "GalacticraftCore",
-            MOD_ID_GC_MARS = "GalacticraftMars",
-            MOD_ID_GC_PLANETS = "GalacticraftPlanets",
-            MOD_ID_DC = "dreamcraft",
+    public static final String MOD_ID = "gregtech", MOD_ID_IC2 = "IC2", MOD_ID_NC = "IC2NuclearControl",
+            MOD_ID_TC = "Thaumcraft", MOD_ID_TF = "TwilightForest", MOD_ID_RC = "Railcraft",
+            MOD_ID_TE = "ThermalExpansion", MOD_ID_AE = "appliedenergistics2", MOD_ID_TFC = "terrafirmacraft",
+            MOD_ID_PFAA = "PFAAGeologica", MOD_ID_FR = "Forestry", MOD_ID_HaC = "harvestcraft",
+            MOD_ID_APC = "AppleCore", MOD_ID_MaCr = "magicalcrops", MOD_ID_GaEn = "ganysend",
+            MOD_ID_GaSu = "ganyssurface", MOD_ID_GaNe = "ganysnether", MOD_ID_BC_SILICON = "BuildCraft|Silicon",
+            MOD_ID_BC_TRANSPORT = "BuildCraft|Transport", MOD_ID_BC_FACTORY = "BuildCraft|Factory",
+            MOD_ID_BC_ENERGY = "BuildCraft|Energy", MOD_ID_BC_BUILDERS = "BuildCraft|Builders",
+            MOD_ID_BC_CORE = "BuildCraft|Core", MOD_ID_GC_CORE = "GalacticraftCore",
+            MOD_ID_GC_MARS = "GalacticraftMars", MOD_ID_GC_PLANETS = "GalacticraftPlanets", MOD_ID_DC = "dreamcraft",
             MOD_ID_GTPP = "miscutils";
     /**
      * File Paths and Resource Paths
      */
-    public static final String TEX_DIR = "textures/",
-            TEX_DIR_GUI = TEX_DIR + "gui/",
-            TEX_DIR_ITEM = TEX_DIR + "items/",
-            TEX_DIR_BLOCK = TEX_DIR + "blocks/",
-            TEX_DIR_ENTITY = TEX_DIR + "entity/",
-            TEX_DIR_ASPECTS = TEX_DIR + "aspects/",
-            RES_PATH = MOD_ID + ":" + TEX_DIR,
-            RES_PATH_GUI = MOD_ID + ":" + TEX_DIR_GUI,
-            RES_PATH_ITEM = MOD_ID + ":",
-            RES_PATH_BLOCK = MOD_ID + ":",
-            RES_PATH_ENTITY = MOD_ID + ":" + TEX_DIR_ENTITY,
-            RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
+    public static final String TEX_DIR = "textures/", TEX_DIR_GUI = TEX_DIR + "gui/", TEX_DIR_ITEM = TEX_DIR + "items/",
+            TEX_DIR_BLOCK = TEX_DIR + "blocks/", TEX_DIR_ENTITY = TEX_DIR + "entity/",
+            TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = MOD_ID + ":" + TEX_DIR,
+            RES_PATH_GUI = MOD_ID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = MOD_ID + ":", RES_PATH_BLOCK = MOD_ID + ":",
+            RES_PATH_ENTITY = MOD_ID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
             RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":",
             RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
 
@@ -259,6 +213,7 @@ public class GT_Values {
      * NBT String Keys
      */
     public static final class NBT {
+
         public static final String COLOR = "gt.color", // Integer
                 COVERS = "gt.covers", // String
                 CUSTOM_NAME = "name", // String
@@ -287,10 +242,7 @@ public class GT_Values {
                 INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
 
                 // MultiBlock
-                STRUCTURE_OK = "gt.structure.ok",
-                ROTATION = "gt.eRotation",
-                FLIP = "gt.eFlip",
-                TARGET = "gt.target", // Boolean
+                STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
                 TARGET_X = "gt.target.x", // Number
                 TARGET_Y = "gt.target.y", // Number
                 TARGET_Z = "gt.target.z", // Number
@@ -300,66 +252,53 @@ public class GT_Values {
     }
 
     /** The Color White as RGB Short Array. */
-    public static final short[] UNCOLORED_RBGA = {255, 255, 255, 255};
+    public static final short[] UNCOLORED_RBGA = { 255, 255, 255, 255 };
     /** The Color White as simple Integer (0x00ffffff). */
     public static final int UNCOLORED = 0x00ffffff;
 
     /**
      * Sides
      */
-    public static final byte SIDE_BOTTOM = 0,
-            SIDE_DOWN = 0,
-            SIDE_TOP = 1,
-            SIDE_UP = 1,
-            SIDE_NORTH = 2, // Also a Side with a stupidly mirrored Texture
-            SIDE_SOUTH = 3,
-            SIDE_WEST = 4,
-            SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
-            SIDE_ANY = 6,
-            SIDE_UNKNOWN = 6,
-            SIDE_INVALID = 6,
-            SIDE_INSIDE = 6,
-            SIDE_UNDEFINED = 6;
+    public static final byte SIDE_BOTTOM = 0, SIDE_DOWN = 0, SIDE_TOP = 1, SIDE_UP = 1, SIDE_NORTH = 2, // Also a Side
+                                                                                                        // with a
+                                                                                                        // stupidly
+                                                                                                        // mirrored
+                                                                                                        // Texture
+            SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
+            SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
 
     /** Compass alike Array for the proper ordering of North, East, South and West. */
-    public static final byte[] COMPASS_DIRECTIONS = {SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST};
+    public static final byte[] COMPASS_DIRECTIONS = { SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST };
 
     /**
      * An Array containing all Sides which follow the Condition, in order to iterate over them for example.
      */
-    public static final byte[] ALL_SIDES = {0, 1, 2, 3, 4, 5, 6}, ALL_VALID_SIDES = {0, 1, 2, 3, 4, 5};
+    public static final byte[] ALL_SIDES = { 0, 1, 2, 3, 4, 5, 6 }, ALL_VALID_SIDES = { 0, 1, 2, 3, 4, 5 };
 
     /**
      * For Facing Checks.
      */
-    public static final boolean[] INVALID_SIDES = {false, false, false, false, false, false, true},
-            VALID_SIDES = {true, true, true, true, true, true, false};
+    public static final boolean[] INVALID_SIDES = { false, false, false, false, false, false, true },
+            VALID_SIDES = { true, true, true, true, true, true, false };
 
     /**
-     *  Side->Offset Mappings.
+     * Side->Offset Mappings.
      */
-    public static final byte[] OFFX = {0, 0, 0, 0, -1, +1, 0},
-            OFFY = {-1, +1, 0, 0, 0, 0, 0},
-            OFFZ = {0, 0, -1, +1, 0, 0, 0};
+    public static final byte[] OFFX = { 0, 0, 0, 0, -1, +1, 0 }, OFFY = { -1, +1, 0, 0, 0, 0, 0 },
+            OFFZ = { 0, 0, -1, +1, 0, 0, 0 };
 
     /**
-     *  Side->Opposite Mappings.
+     * Side->Opposite Mappings.
      **/
-    public static final byte[] OPOS = {1, 0, 3, 2, 5, 4, 6};
+    public static final byte[] OPOS = { 1, 0, 3, 2, 5, 4, 6 };
 
     /**
-     * [Facing,Side]->Side Mappings for Blocks, which don't face up- and downwards.
-     * 0 = bottom, 1 = top, 2 = left, 3 = front, 4 = right, 5 = back, 6 = undefined.
+     * [Facing,Side]->Side Mappings for Blocks, which don't face up- and downwards. 0 = bottom, 1 = top, 2 = left, 3 =
+     * front, 4 = right, 5 = back, 6 = undefined.
      */
-    public static final byte[][] FACING_ROTATIONS = {
-        {0, 1, 2, 3, 4, 5, 6},
-        {0, 1, 2, 3, 4, 5, 6},
-        {0, 1, 3, 5, 4, 2, 6},
-        {0, 1, 5, 3, 2, 4, 6},
-        {0, 1, 2, 4, 3, 5, 6},
-        {0, 1, 4, 2, 5, 3, 6},
-        {0, 1, 2, 3, 4, 5, 6}
-    };
+    public static final byte[][] FACING_ROTATIONS = { { 0, 1, 2, 3, 4, 5, 6 }, { 0, 1, 2, 3, 4, 5, 6 },
+            { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
+            { 0, 1, 2, 3, 4, 5, 6 } };
 
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
@@ -378,13 +317,15 @@ public class GT_Values {
      */
     public static int oreveinPercentage;
     /**
-     * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is cheap
+     * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is
+     * cheap
      */
     public static int oreveinAttempts;
     /**
      * Control number of attempts to place a valid ore vein.
-     * <p>If a vein wasn't placed due to height restrictions,
-     * completely in the water, etc, another attempt is tried.</p>
+     * <p>
+     * If a vein wasn't placed due to height restrictions, completely in the water, etc, another attempt is tried.
+     * </p>
      */
     public static int oreveinMaxPlacementAttempts;
     /**
@@ -396,7 +337,8 @@ public class GT_Values {
      */
     public static int oreveinPlacerOresMultiplier;
     /**
-     * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
+     * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug
+     * Mode)
      */
     public static boolean D1 = false, D2 = false;
     /**
@@ -440,7 +382,8 @@ public class GT_Values {
      */
     public static boolean debugWorldData = false;
     /**
-     * Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to mitigate lag and FPS drops.
+     * Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to
+     * mitigate lag and FPS drops.
      */
     public static int ticksBetweenSounds = 30;
     /**
@@ -473,7 +416,7 @@ public class GT_Values {
     public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
     /**
-     *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
+     * If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
     public static boolean disableDigitalChestsExternalAccess = false;
 
@@ -490,29 +433,66 @@ public class GT_Values {
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
-     *  Pretty formatting for author names.
+     * Pretty formatting for author names.
      */
     public static final String Colen = "" + EnumChatFormatting.DARK_RED
-            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C"
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "C"
             + EnumChatFormatting.GOLD
-            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o"
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "o"
             + EnumChatFormatting.GREEN
-            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "l"
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "l"
             + EnumChatFormatting.DARK_AQUA
-            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "e"
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "e"
             + EnumChatFormatting.DARK_PURPLE
-            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "n";
 
     public static final String AuthorColen = "Author: " + Colen;
-    public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + "k"
-            + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "u"
-            + EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + "b" + EnumChatFormatting.YELLOW
-            + EnumChatFormatting.BOLD + "a" + EnumChatFormatting.DARK_GREEN + EnumChatFormatting.BOLD + "6"
-            + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "0" + EnumChatFormatting.AQUA
-            + EnumChatFormatting.BOLD + "0" + EnumChatFormatting.DARK_AQUA + EnumChatFormatting.BOLD + "0";
+    public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED
+            + EnumChatFormatting.BOLD
+            + "k"
+            + EnumChatFormatting.RED
+            + EnumChatFormatting.BOLD
+            + "u"
+            + EnumChatFormatting.GOLD
+            + EnumChatFormatting.BOLD
+            + "b"
+            + EnumChatFormatting.YELLOW
+            + EnumChatFormatting.BOLD
+            + "a"
+            + EnumChatFormatting.DARK_GREEN
+            + EnumChatFormatting.BOLD
+            + "6"
+            + EnumChatFormatting.GREEN
+            + EnumChatFormatting.BOLD
+            + "0"
+            + EnumChatFormatting.AQUA
+            + EnumChatFormatting.BOLD
+            + "0"
+            + EnumChatFormatting.DARK_AQUA
+            + EnumChatFormatting.BOLD
+            + "0";
 
-    public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Blue"
-            + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + "Weabo";
+    public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
+            + EnumChatFormatting.BOLD
+            + "Blue"
+            + EnumChatFormatting.AQUA
+            + EnumChatFormatting.BOLD
+            + "Weabo";
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {

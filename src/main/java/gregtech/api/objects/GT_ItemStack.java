@@ -1,12 +1,14 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
+
 public class GT_ItemStack {
+
     public final Item mItem;
     public final byte mStackSize;
     public final short mMetaData;

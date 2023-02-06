@@ -1,14 +1,16 @@
 package gregtech.api.util;
 
-import gregtech.api.GregTech_API;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gregtech.api.GregTech_API;
 
 public class GT_GC_Compat {
 
@@ -27,8 +29,8 @@ public class GT_GC_Compat {
                     if (tReceived > 0) {
                         tSizeToReceive -= tReceived;
                         while (tSizeToReceive > 0) {
-                            tReceived =
-                                    ((IEnergyHandlerGC) tTileEntity).receiveEnergyGC(eSource, tSizeToReceive, false);
+                            tReceived = ((IEnergyHandlerGC) tTileEntity)
+                                    .receiveEnergyGC(eSource, tSizeToReceive, false);
                             if (tReceived < 1) break;
                             tSizeToReceive -= tReceived;
                         }
@@ -43,10 +45,10 @@ public class GT_GC_Compat {
 
     public static boolean canConnect(TileEntity tTileEntity, ForgeDirection tDirection) {
         // GC Compat
-        if (GregTech_API.mGalacticraft
-                && tTileEntity instanceof IEnergyHandlerGC
+        if (GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC
                 && (!(tTileEntity instanceof IConnector)
-                        || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER))) return true;
+                        || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER)))
+            return true;
         return false;
     }
 }

@@ -10,19 +10,20 @@ import gregtech.api.interfaces.IRedstoneCircuitBlock;
 /**
  * Redstone Circuit Control Code
  * <p/>
- * This should make everything possible what a Redstone Computer or BuildCraft Gate could do.
- * It is intended to use this similar to BC-Gates (for acquiring Data) and RP Logic Gates.
- * You could write an extremely specified and complex Logic Gate, which works only for you Setup, like
- * with ComputerCraft, but you would have to write an extra Mod to add that, as it doesn't work Ingame.
+ * This should make everything possible what a Redstone Computer or BuildCraft Gate could do. It is intended to use this
+ * similar to BC-Gates (for acquiring Data) and RP Logic Gates. You could write an extremely specified and complex Logic
+ * Gate, which works only for you Setup, like with ComputerCraft, but you would have to write an extra Mod to add that,
+ * as it doesn't work Ingame.
  * <p/>
- * One can make use of the fact, that ItemStacks can be stored as Integer, so that you can scan
- * Inventories for specific Items using that. Luckily the Buttons in the GUI enable Copy/Paste of
- * ItemID+MetaData to Integer, including the WildCard Damage Value when you use rightclick to place it.
- * You just need to use @GT_Utility.stackToInt(ItemStack aStack) to get it.
+ * One can make use of the fact, that ItemStacks can be stored as Integer, so that you can scan Inventories for specific
+ * Items using that. Luckily the Buttons in the GUI enable Copy/Paste of ItemID+MetaData to Integer, including the
+ * WildCard Damage Value when you use rightclick to place it. You just need to use @GT_Utility.stackToInt(ItemStack
+ * aStack) to get it.
  * <p/>
  * All Functions run usually in a seperate try/catch Block, so that failed Logic won't crash the TileEntity.
  */
 public abstract class GT_CircuitryBehavior {
+
     /**
      * @param aIndex 0 - 1023 are my own Indices, so use other Numbers!
      */
@@ -36,13 +37,11 @@ public abstract class GT_CircuitryBehavior {
     public static boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         for (byte side : ALL_VALID_SIDES) {
             if (side != aRedstoneCircuitBlock.getOutputFacing()
-                    && aRedstoneCircuitBlock
-                            .getCover(side)
-                            .letsRedstoneGoIn(
-                                    side,
-                                    aRedstoneCircuitBlock.getCoverID(side),
-                                    aRedstoneCircuitBlock.getCoverVariable(side),
-                                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn(
+                            side,
+                            aRedstoneCircuitBlock.getCoverID(side),
+                            aRedstoneCircuitBlock.getCoverVariable(side),
+                            aRedstoneCircuitBlock.getOwnTileEntity())) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     return true;
                 }
@@ -57,13 +56,11 @@ public abstract class GT_CircuitryBehavior {
     public static boolean getAllRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         for (byte side : ALL_VALID_SIDES) {
             if (side != aRedstoneCircuitBlock.getOutputFacing()
-                    && aRedstoneCircuitBlock
-                            .getCover(side)
-                            .letsRedstoneGoIn(
-                                    side,
-                                    aRedstoneCircuitBlock.getCoverID(side),
-                                    aRedstoneCircuitBlock.getCoverVariable(side),
-                                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn(
+                            side,
+                            aRedstoneCircuitBlock.getCoverID(side),
+                            aRedstoneCircuitBlock.getCoverVariable(side),
+                            aRedstoneCircuitBlock.getOwnTileEntity())) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) == 0) {
                     return false;
                 }
@@ -79,13 +76,11 @@ public abstract class GT_CircuitryBehavior {
         int tRedstoneAmount = 0;
         for (byte side : ALL_VALID_SIDES) {
             if (side != aRedstoneCircuitBlock.getOutputFacing()
-                    && aRedstoneCircuitBlock
-                            .getCover(side)
-                            .letsRedstoneGoIn(
-                                    side,
-                                    aRedstoneCircuitBlock.getCoverID(side),
-                                    aRedstoneCircuitBlock.getCoverVariable(side),
-                                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn(
+                            side,
+                            aRedstoneCircuitBlock.getCoverID(side),
+                            aRedstoneCircuitBlock.getCoverVariable(side),
+                            aRedstoneCircuitBlock.getOwnTileEntity())) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     tRedstoneAmount++;
                 }
@@ -101,13 +96,11 @@ public abstract class GT_CircuitryBehavior {
         byte tRedstoneAmount = 0;
         for (byte side : ALL_VALID_SIDES) {
             if (side != aRedstoneCircuitBlock.getOutputFacing()
-                    && aRedstoneCircuitBlock
-                            .getCover(side)
-                            .letsRedstoneGoIn(
-                                    side,
-                                    aRedstoneCircuitBlock.getCoverID(side),
-                                    aRedstoneCircuitBlock.getCoverVariable(side),
-                                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn(
+                            side,
+                            aRedstoneCircuitBlock.getCoverID(side),
+                            aRedstoneCircuitBlock.getCoverVariable(side),
+                            aRedstoneCircuitBlock.getOwnTileEntity())) {
                 tRedstoneAmount = (byte) Math.max(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
@@ -126,13 +119,11 @@ public abstract class GT_CircuitryBehavior {
         byte tRedstoneAmount = 15;
         for (byte side : ALL_VALID_SIDES) {
             if (side != aRedstoneCircuitBlock.getOutputFacing()
-                    && aRedstoneCircuitBlock
-                            .getCover(side)
-                            .letsRedstoneGoIn(
-                                    side,
-                                    aRedstoneCircuitBlock.getCoverID(side),
-                                    aRedstoneCircuitBlock.getCoverVariable(side),
-                                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn(
+                            side,
+                            aRedstoneCircuitBlock.getCoverID(side),
+                            aRedstoneCircuitBlock.getCoverVariable(side),
+                            aRedstoneCircuitBlock.getOwnTileEntity())) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0)
                     tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
@@ -148,13 +139,11 @@ public abstract class GT_CircuitryBehavior {
         byte tRedstoneAmount = 15;
         for (byte side : ALL_VALID_SIDES) {
             if (side != aRedstoneCircuitBlock.getOutputFacing()
-                    && aRedstoneCircuitBlock
-                            .getCover(side)
-                            .letsRedstoneGoIn(
-                                    side,
-                                    aRedstoneCircuitBlock.getCoverID(side),
-                                    aRedstoneCircuitBlock.getCoverVariable(side),
-                                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn(
+                            side,
+                            aRedstoneCircuitBlock.getCoverID(side),
+                            aRedstoneCircuitBlock.getCoverVariable(side),
+                            aRedstoneCircuitBlock.getOwnTileEntity())) {
                 tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
@@ -170,8 +159,8 @@ public abstract class GT_CircuitryBehavior {
     public abstract void initParameters(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock);
 
     /**
-     * Validates the Parameters of this Circuit when a value has been changed by the GUI
-     * Also called right after @initParameters and when the Chunk reloads
+     * Validates the Parameters of this Circuit when a value has been changed by the GUI Also called right
+     * after @initParameters and when the Chunk reloads
      *
      * @param aCircuitData,          The Data Storage you can use (8 Slots and only the first 4 are User definable)
      * @param aRedstoneCircuitBlock, The Circuit Block MetaTileEntity itself
@@ -193,8 +182,8 @@ public abstract class GT_CircuitryBehavior {
     /**
      * If the ItemStack should be displayed. Parameters are between 0 and 3.
      */
-    public abstract boolean displayItemStack(
-            int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex);
+    public abstract boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock,
+            int aIndex);
 
     /**
      * The Name of the Gate for the GUI
@@ -215,8 +204,7 @@ public abstract class GT_CircuitryBehavior {
     public abstract String getDataDescription(int[] aCircuitData, int aCircuitDataIndex);
 
     /**
-     * How the Integer should be displayed in the GUI.
-     * null means, that it just displays as regular Number.
+     * How the Integer should be displayed in the GUI. null means, that it just displays as regular Number.
      */
     @SideOnly(Side.CLIENT)
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {

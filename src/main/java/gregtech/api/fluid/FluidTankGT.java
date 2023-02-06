@@ -2,16 +2,19 @@ package gregtech.api.fluid;
 
 import static com.google.common.primitives.Ints.saturatedCast;
 
-import gregtech.api.util.GT_Utility;
 import java.util.Map;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
+import gregtech.api.util.GT_Utility;
+
 public class FluidTankGT implements IFluidTank {
-    public final FluidTankGT[] AS_ARRAY = new FluidTankGT[] {this};
+
+    public final FluidTankGT[] AS_ARRAY = new FluidTankGT[] { this };
     private FluidStack mFluid;
     private long mCapacity = 0, mAmount = 0;
     private boolean mPreventDraining = false, mVoidExcess = false, mChangedFluids = false;
@@ -191,18 +194,15 @@ public class FluidTankGT implements IFluidTank {
             return mVoidExcess ? aFluid.amount : (int) tFilled;
         }
         return saturatedCast(
-                isEmpty()
-                        ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid), aFluid.amount)
+                isEmpty() ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid), aFluid.amount)
                         : contains(aFluid)
                                 ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid) - mAmount, aFluid.amount)
                                 : 0);
     }
 
     public boolean canFillAll(FluidStack aFluid) {
-        return aFluid == null
-                || aFluid.amount <= 0
-                || (isEmpty()
-                        ? mVoidExcess || aFluid.amount <= capacity(aFluid)
+        return aFluid == null || aFluid.amount <= 0
+                || (isEmpty() ? mVoidExcess || aFluid.amount <= capacity(aFluid)
                         : contains(aFluid) && (mVoidExcess || mAmount + aFluid.amount <= capacity(aFluid)));
     }
 
@@ -263,6 +263,7 @@ public class FluidTankGT implements IFluidTank {
         }
         return false;
     }
+
     /** Resets Tank Contents entirely */
     public FluidTankGT setEmpty() {
         mFluid = null;
@@ -271,7 +272,7 @@ public class FluidTankGT implements IFluidTank {
         return this;
     }
 
-    /** Sets Fluid Content, taking Amount from the Fluid Parameter  */
+    /** Sets Fluid Content, taking Amount from the Fluid Parameter */
     public FluidTankGT setFluid(FluidStack aFluid) {
         mFluid = aFluid;
         mChangedFluids = true;
@@ -287,7 +288,7 @@ public class FluidTankGT implements IFluidTank {
         return this;
     }
 
-    /** Sets Fluid Content, taking Amount from the Tank Parameter  */
+    /** Sets Fluid Content, taking Amount from the Tank Parameter */
     public FluidTankGT setFluid(FluidTankGT aTank) {
         mFluid = new FluidStack(aTank.mFluid, saturatedCast(aTank.mAmount));
         mChangedFluids = true;
@@ -306,7 +307,8 @@ public class FluidTankGT implements IFluidTank {
         if (aCapacity >= 0) mCapacity = aCapacity;
         return this;
     }
-    /** Sets the Capacity Multiplier  */
+
+    /** Sets the Capacity Multiplier */
     public FluidTankGT setCapacityMultiplier(long aCapacityMultiplier) {
         if (aCapacityMultiplier >= 0) mAdjustableMultiplier = aCapacityMultiplier;
         return this;
@@ -363,8 +365,7 @@ public class FluidTankGT implements IFluidTank {
         if (mAdjustableCapacity == null || aFluid == null) return mCapacity;
 
         final Long tSize = mAdjustableCapacity.get(aFluid);
-        return tSize == null
-                ? Math.max(mAmount, mCapacity)
+        return tSize == null ? Math.max(mAmount, mCapacity)
                 : Math.max(tSize * mAdjustableMultiplier, Math.max(mAmount, mCapacity));
     }
 

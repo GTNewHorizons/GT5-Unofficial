@@ -2,14 +2,17 @@ package gregtech.api.multitileentity;
 
 import static gregtech.api.enums.GT_Values.NBT;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.multitileentity.base.BaseMultiTileEntity;
-import gregtech.api.util.GT_Util;
 import java.lang.ref.WeakReference;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.multitileentity.base.BaseMultiTileEntity;
+import gregtech.api.util.GT_Util;
+
 public class MultiTileEntityClassContainer {
+
     private final WeakReference<MultiTileEntityRegistry> mRegistry;
     private String mLocalized;
     private String mCategoryName;
@@ -25,8 +28,8 @@ public class MultiTileEntityClassContainer {
     public byte mStackSize = 64;
     public boolean mHidden = false;
 
-    public MultiTileEntityClassContainer(
-            MultiTileEntityRegistry aRegistry, int aID, Class<? extends BaseMultiTileEntity> aClass) {
+    public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID,
+            Class<? extends BaseMultiTileEntity> aClass) {
         /* Start the Builder */
         mRegistry = new WeakReference<>(aRegistry);
         mID = (short) aID;
@@ -38,11 +41,8 @@ public class MultiTileEntityClassContainer {
         /* End and register the Builder with the registry */
         final MultiTileEntityRegistry registry = mRegistry.get();
 
-        if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR))
-            mParameters.setInteger(
-                    NBT.COLOR,
-                    GT_Util.getRGBInt(
-                            Materials.get(mParameters.getString(NBT.MATERIAL)).getRGBA()));
+        if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR)) mParameters
+                .setInteger(NBT.COLOR, GT_Util.getRGBInt(Materials.get(mParameters.getString(NBT.MATERIAL)).getRGBA()));
 
         try {
             mCanonicalTileEntity = mClass.newInstance();
@@ -116,7 +116,10 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer setNBT(Tuple... aTags) {
-        /* Merge in arbitrary NBT tuples of (key, value).  Useful for anything for which a custom method has not yet been exposed */
+        /*
+         * Merge in arbitrary NBT tuples of (key, value). Useful for anything for which a custom method has not yet been
+         * exposed
+         */
         mParameters = GT_Util.fuseNBT(mParameters, GT_Util.makeNBT(aTags));
         return this;
     }

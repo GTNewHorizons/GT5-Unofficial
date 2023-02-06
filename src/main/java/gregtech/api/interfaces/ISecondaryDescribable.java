@@ -4,6 +4,7 @@ package gregtech.api.interfaces;
  * To get a tooltip with a secondary description
  */
 public interface ISecondaryDescribable extends IDescribable {
+
     /**
      * Convenient to call when overriding the `String[] getDescription()` method.
      */

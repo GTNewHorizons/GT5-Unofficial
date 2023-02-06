@@ -5,25 +5,15 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 public class GT_TooltipHandler {
 
     /*
-     * What you can do:
-     * - Add simple, unformatted text.
-     * - Add formatted text.
-     *   Note: you can chain formatting codes but the color must be used first:
-     *   e.g. BLACK + ITALIC will create black, italic text but ITALIC + BLACK will only create black text.
-     * - add animated text
-     * - chain multiple static and/or animated text together using chain()
-     *   (Although chaining only static text together is pointless, text() is already able to do that)
-     * - add multiple lines by using NEW_LINE (either as String or as Supplier<String>)
-     *   Note: formatting only applies for one line
-     *   Note: having a NEW_LINE in animated text results in "skipping" of one formatting since NEW_LINE
-     *         counts as character but is not displayed
-     *
-     * Note: adding a tooltip to an item multiple times also creates multiple lines (in the same order they were added)
-     *
-     * What you cannot do:
-     * - add a tooltip depending on NBT, tooltips are only mapped to name and meta
-     *
-     * This method is executed on postInit
+     * What you can do: - Add simple, unformatted text. - Add formatted text. Note: you can chain formatting codes but
+     * the color must be used first: e.g. BLACK + ITALIC will create black, italic text but ITALIC + BLACK will only
+     * create black text. - add animated text - chain multiple static and/or animated text together using chain()
+     * (Although chaining only static text together is pointless, text() is already able to do that) - add multiple
+     * lines by using NEW_LINE (either as String or as Supplier<String>) Note: formatting only applies for one line
+     * Note: having a NEW_LINE in animated text results in "skipping" of one formatting since NEW_LINE counts as
+     * character but is not displayed Note: adding a tooltip to an item multiple times also creates multiple lines (in
+     * the same order they were added) What you cannot do: - add a tooltip depending on NBT, tooltips are only mapped to
+     * name and meta This method is executed on postInit
      */
     public static void init() {
 
@@ -42,7 +32,8 @@ public class GT_TooltipHandler {
         addOredictTooltip("UIV", text(DARK_BLUE + BOLD + "UIV-Tier"));
         addOredictTooltip("UMV", text(RED + BOLD + UNDERLINE + "UMV-Tier"));
         addOredictTooltip(
-                "UXV", animatedText("UXV-Tier", 1, 100, DARK_PURPLE + BOLD + UNDERLINE, DARK_RED + UNDERLINE + BOLD));
+                "UXV",
+                animatedText("UXV-Tier", 1, 100, DARK_PURPLE + BOLD + UNDERLINE, DARK_RED + UNDERLINE + BOLD));
         addOredictTooltip(
                 "MAX",
                 chain(

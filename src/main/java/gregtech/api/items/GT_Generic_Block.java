@@ -2,13 +2,15 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.W;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_LanguageManager;
+
 public class GT_Generic_Block extends Block {
+
     protected final String mUnlocalizedName;
 
     protected GT_Generic_Block(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {

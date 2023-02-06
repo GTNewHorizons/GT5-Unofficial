@@ -1,11 +1,13 @@
 package gregtech.common.gui.modularui.widget;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
         implements IDataFollowerWidget<T, Boolean> {
@@ -77,7 +79,7 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
 
         @Override
         public IDrawable[] getBackground() {
-            if (!canClick()) return new IDrawable[] {GT_UITextures.BUTTON_COVER_NORMAL_DISABLED};
+            if (!canClick()) return new IDrawable[] { GT_UITextures.BUTTON_COVER_NORMAL_DISABLED };
             return super.getBackground();
         }
     }

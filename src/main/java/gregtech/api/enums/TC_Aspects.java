@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import java.util.List;
 
 public enum TC_Aspects {
+
     AER(1),
     ALIENIS(20),
     AQUA(3),
@@ -70,6 +71,7 @@ public enum TC_Aspects {
     }
 
     public static class TC_AspectStack {
+
         public TC_Aspects mAspect;
         public long mAmount;
 
@@ -88,24 +90,22 @@ public enum TC_Aspects {
 
         public List<TC_AspectStack> addToAspectList(List<TC_AspectStack> aList) {
             if (mAmount == 0) return aList;
-            for (TC_AspectStack tAspect : aList)
-                if (tAspect.mAspect == mAspect) {
-                    tAspect.mAmount += mAmount;
-                    return aList;
-                }
+            for (TC_AspectStack tAspect : aList) if (tAspect.mAspect == mAspect) {
+                tAspect.mAmount += mAmount;
+                return aList;
+            }
             aList.add(copy());
             return aList;
         }
 
         public boolean removeFromAspectList(List<TC_AspectStack> aList) {
-            for (TC_AspectStack tAspect : aList)
-                if (tAspect.mAspect == mAspect) {
-                    if (tAspect.mAmount >= mAmount) {
-                        tAspect.mAmount -= mAmount;
-                        if (tAspect.mAmount == 0) aList.remove(tAspect);
-                        return true;
-                    }
+            for (TC_AspectStack tAspect : aList) if (tAspect.mAspect == mAspect) {
+                if (tAspect.mAmount >= mAmount) {
+                    tAspect.mAmount -= mAmount;
+                    if (tAspect.mAmount == 0) aList.remove(tAspect);
+                    return true;
                 }
+            }
             return false;
         }
     }

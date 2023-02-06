@@ -1,31 +1,27 @@
 package gregtech.loaders.postload;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_BaseCrop;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class GT_CropLoader implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Register Crops to IC2.");
         try {
-            /*Tags:
-             * Vines = Tendrilly
-             * Edible = Food
-             *
+            /*
+             * Tags: Vines = Tendrilly Edible = Food
              */
-            ItemStack[] tI = {
-                ItemList.Crop_Drop_Indigo.get(4L),
-                ItemList.Crop_Drop_MilkWart.get(4L),
-                new ItemStack(Blocks.brown_mushroom, 4),
-                new ItemStack(Blocks.red_mushroom, 4)
-            };
+            ItemStack[] tI = { ItemList.Crop_Drop_Indigo.get(4L), ItemList.Crop_Drop_MilkWart.get(4L),
+                    new ItemStack(Blocks.brown_mushroom, 4), new ItemStack(Blocks.red_mushroom, 4) };
             new GT_BaseCrop(
                     124,
                     "Indigo",
@@ -41,7 +37,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     4,
                     0,
-                    new String[] {"Flower", "Blue", "Ingredient"},
+                    new String[] { "Flower", "Blue", "Ingredient" },
                     ItemList.Crop_Drop_Indigo.get(1L),
                     null);
             new GT_BaseCrop(
@@ -59,7 +55,7 @@ public class GT_CropLoader implements Runnable {
                     2,
                     0,
                     1,
-                    new String[] {"Silk", "Tendrilly", "Addictive"},
+                    new String[] { "Silk", "Tendrilly", "Addictive" },
                     new ItemStack(Items.string, 1),
                     null);
             new GT_BaseCrop(
@@ -77,7 +73,7 @@ public class GT_CropLoader implements Runnable {
                     2,
                     1,
                     12,
-                    new String[] {"Fire", "Dark", "Reed", "Rotten", "Coal", "Oil"},
+                    new String[] { "Fire", "Dark", "Reed", "Rotten", "Coal", "Oil" },
                     ItemList.Crop_Drop_OilBerry.get(1L),
                     null);
             new GT_BaseCrop(
@@ -95,10 +91,10 @@ public class GT_CropLoader implements Runnable {
                     8,
                     2,
                     9,
-                    new String[] {"Shiny", "Tendrilly", "Emerald", "Berylium", "Crystal"},
+                    new String[] { "Shiny", "Tendrilly", "Emerald", "Berylium", "Crystal" },
                     Materials.Emerald,
                     ItemList.Crop_Drop_BobsYerUncleRanks.get(1L),
-                    new ItemStack[] {new ItemStack(Items.emerald, 1)});
+                    new ItemStack[] { new ItemStack(Items.emerald, 1) });
             new GT_BaseCrop(
                     128,
                     "Diareed",
@@ -114,10 +110,10 @@ public class GT_CropLoader implements Runnable {
                     10,
                     2,
                     10,
-                    new String[] {"Fire", "Shiny", "Reed", "Coal", "Diamond", "Crystal"},
+                    new String[] { "Fire", "Shiny", "Reed", "Coal", "Diamond", "Crystal" },
                     Materials.Diamond,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
-                    new ItemStack[] {new ItemStack(Items.diamond, 1)});
+                    new ItemStack[] { new ItemStack(Items.diamond, 1) });
             new GT_BaseCrop(
                     129,
                     "Withereed",
@@ -133,10 +129,10 @@ public class GT_CropLoader implements Runnable {
                     4,
                     1,
                     3,
-                    new String[] {"Fire", "Undead", "Reed", "Coal", "Rotten", "Wither"},
+                    new String[] { "Fire", "Undead", "Reed", "Coal", "Rotten", "Wither" },
                     Materials.Coal,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
-                    new ItemStack[] {new ItemStack(Items.coal, 1), new ItemStack(Items.coal, 1)});
+                    new ItemStack[] { new ItemStack(Items.coal, 1), new ItemStack(Items.coal, 1) });
             new GT_BaseCrop(
                     130,
                     "Blazereed",
@@ -152,9 +148,9 @@ public class GT_CropLoader implements Runnable {
                     1,
                     0,
                     0,
-                    new String[] {"Fire", "Blaze", "Reed", "Sulfur"},
+                    new String[] { "Fire", "Blaze", "Reed", "Sulfur" },
                     new ItemStack(Items.blaze_powder, 1),
-                    new ItemStack[] {new ItemStack(Items.blaze_rod, 1)});
+                    new ItemStack[] { new ItemStack(Items.blaze_rod, 1) });
             new GT_BaseCrop(
                     131,
                     "Eggplant",
@@ -170,14 +166,10 @@ public class GT_CropLoader implements Runnable {
                     1,
                     0,
                     0,
-                    new String[] {"Chicken", "Egg", "Food", "Feather", "Flower", "Addictive"},
+                    new String[] { "Chicken", "Egg", "Food", "Feather", "Flower", "Addictive" },
                     new ItemStack(Items.egg, 1),
-                    new ItemStack[] {
-                        new ItemStack(Items.chicken, 1),
-                        new ItemStack(Items.feather, 1),
-                        new ItemStack(Items.feather, 1),
-                        new ItemStack(Items.feather, 1)
-                    });
+                    new ItemStack[] { new ItemStack(Items.chicken, 1), new ItemStack(Items.feather, 1),
+                            new ItemStack(Items.feather, 1), new ItemStack(Items.feather, 1) });
             new GT_BaseCrop(
                     132,
                     "Corium",
@@ -193,7 +185,7 @@ public class GT_CropLoader implements Runnable {
                     3,
                     1,
                     0,
-                    new String[] {"Cow", "Silk", "Tendrilly"},
+                    new String[] { "Cow", "Silk", "Tendrilly" },
                     new ItemStack(Items.leather, 1),
                     null);
             new GT_BaseCrop(
@@ -211,11 +203,10 @@ public class GT_CropLoader implements Runnable {
                     1,
                     0,
                     3,
-                    new String[] {"Toxic", "Undead", "Tendrilly", "Food", "Rotten"},
+                    new String[] { "Toxic", "Undead", "Tendrilly", "Food", "Rotten" },
                     new ItemStack(Items.rotten_flesh, 1),
-                    new ItemStack[] {
-                        ItemList.Dye_Bonemeal.get(1L), ItemList.Dye_Bonemeal.get(1L), new ItemStack(Items.bone, 1)
-                    });
+                    new ItemStack[] { ItemList.Dye_Bonemeal.get(1L), ItemList.Dye_Bonemeal.get(1L),
+                            new ItemStack(Items.bone, 1) });
             new GT_BaseCrop(
                     134,
                     "Creeperweed",
@@ -231,7 +222,7 @@ public class GT_CropLoader implements Runnable {
                     5,
                     1,
                     3,
-                    new String[] {"Creeper", "Tendrilly", "Explosive", "Fire", "Sulfur", "Saltpeter", "Coal"},
+                    new String[] { "Creeper", "Tendrilly", "Explosive", "Fire", "Sulfur", "Saltpeter", "Coal" },
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L),
                     null);
             new GT_BaseCrop(
@@ -249,13 +240,10 @@ public class GT_CropLoader implements Runnable {
                     2,
                     1,
                     6,
-                    new String[] {"Ender", "Flower", "Shiny"},
+                    new String[] { "Ender", "Flower", "Shiny" },
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1L),
-                    new ItemStack[] {
-                        new ItemStack(Items.ender_pearl, 1),
-                        new ItemStack(Items.ender_pearl, 1),
-                        new ItemStack(Items.ender_eye, 1)
-                    });
+                    new ItemStack[] { new ItemStack(Items.ender_pearl, 1), new ItemStack(Items.ender_pearl, 1),
+                            new ItemStack(Items.ender_eye, 1) });
             new GT_BaseCrop(
                     136,
                     "Meatrose",
@@ -271,14 +259,10 @@ public class GT_CropLoader implements Runnable {
                     1,
                     3,
                     0,
-                    new String[] {"Food", "Flower", "Cow", "Fish", "Chicken", "Pig"},
+                    new String[] { "Food", "Flower", "Cow", "Fish", "Chicken", "Pig" },
                     new ItemStack(Items.dye, 1, 9),
-                    new ItemStack[] {
-                        new ItemStack(Items.beef, 1),
-                        new ItemStack(Items.porkchop, 1),
-                        new ItemStack(Items.chicken, 1),
-                        new ItemStack(Items.fish, 1)
-                    });
+                    new ItemStack[] { new ItemStack(Items.beef, 1), new ItemStack(Items.porkchop, 1),
+                            new ItemStack(Items.chicken, 1), new ItemStack(Items.fish, 1) });
             new GT_BaseCrop(
                     137,
                     "Milkwart",
@@ -294,7 +278,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     1,
                     0,
-                    new String[] {"Food", "Milk", "Cow"},
+                    new String[] { "Food", "Milk", "Cow" },
                     ItemList.Crop_Drop_MilkWart.get(1L),
                     null);
             new GT_BaseCrop(
@@ -312,7 +296,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     0,
                     2,
-                    new String[] {"Slime", "Bouncy", "Sticky", "Bush"},
+                    new String[] { "Slime", "Bouncy", "Sticky", "Bush" },
                     new ItemStack(Items.slime_ball, 1),
                     null);
             new GT_BaseCrop(
@@ -330,9 +314,9 @@ public class GT_CropLoader implements Runnable {
                     4,
                     1,
                     3,
-                    new String[] {"Toxic", "Silk", "Spider", "Flower", "Ingredient", "Addictive"},
+                    new String[] { "Toxic", "Silk", "Spider", "Flower", "Ingredient", "Addictive" },
                     new ItemStack(Items.string, 1),
-                    new ItemStack[] {new ItemStack(Items.spider_eye, 1), new ItemStack(Blocks.web, 1)});
+                    new ItemStack[] { new ItemStack(Items.spider_eye, 1), new ItemStack(Blocks.web, 1) });
             new GT_BaseCrop(
                     140,
                     "Tearstalks",
@@ -348,7 +332,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     0,
                     0,
-                    new String[] {"Healing", "Nether", "Ingredient", "Reed", "Ghast"},
+                    new String[] { "Healing", "Nether", "Ingredient", "Reed", "Ghast" },
                     new ItemStack(Items.ghast_tear, 1),
                     null);
             new GT_BaseCrop(
@@ -366,7 +350,7 @@ public class GT_CropLoader implements Runnable {
                     3,
                     0,
                     0,
-                    new String[] {"Shiny", "Metal", "Pine", "Tin", "Bush"},
+                    new String[] { "Shiny", "Metal", "Pine", "Tin", "Bush" },
                     Materials.Tin,
                     ItemList.Crop_Drop_Tine.get(1L),
                     null);
@@ -385,7 +369,7 @@ public class GT_CropLoader implements Runnable {
                     1,
                     1,
                     1,
-                    new String[] {"Shiny", "Metal", "Cotton", "Copper", "Bush"},
+                    new String[] { "Shiny", "Metal", "Cotton", "Copper", "Bush" },
                     Materials.Copper,
                     ItemList.Crop_Drop_Coppon.get(1L),
                     null);
@@ -404,7 +388,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     0,
                     2,
-                    new String[] {"Food", "Mushroom", "Ingredient"},
+                    new String[] { "Food", "Mushroom", "Ingredient" },
                     new ItemStack(Blocks.brown_mushroom, 1),
                     null);
             new GT_BaseCrop(
@@ -422,7 +406,7 @@ public class GT_CropLoader implements Runnable {
                     3,
                     0,
                     2,
-                    new String[] {"Toxic", "Mushroom", "Ingredient"},
+                    new String[] { "Toxic", "Mushroom", "Ingredient" },
                     new ItemStack(Blocks.red_mushroom, 1),
                     null);
             new GT_BaseCrop(
@@ -440,7 +424,7 @@ public class GT_CropLoader implements Runnable {
                     1,
                     0,
                     0,
-                    new String[] {"Shiny", "Metal", "Silver", "Reed"},
+                    new String[] { "Shiny", "Metal", "Silver", "Reed" },
                     Materials.Silver,
                     ItemList.Crop_Drop_Argentia.get(1L),
                     null);
@@ -459,7 +443,7 @@ public class GT_CropLoader implements Runnable {
                     3,
                     1,
                     1,
-                    new String[] {"Heavy", "Metal", "Lead", "Reed"},
+                    new String[] { "Heavy", "Metal", "Lead", "Reed" },
                     Materials.Lead,
                     ItemList.Crop_Drop_Plumbilia.get(1L),
                     null);
@@ -478,9 +462,9 @@ public class GT_CropLoader implements Runnable {
                     7,
                     2,
                     8,
-                    new String[] {"Metal", "Tendrilly", "Iron"},
+                    new String[] { "Metal", "Tendrilly", "Iron" },
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steeleaf, 1L),
-                    new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steeleaf, 1L)});
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steeleaf, 1L) });
             new GT_BaseCrop(
                     148,
                     "Liveroots",
@@ -496,9 +480,9 @@ public class GT_CropLoader implements Runnable {
                     5,
                     2,
                     6,
-                    new String[] {"Wood", "Tendrilly"},
+                    new String[] { "Wood", "Tendrilly" },
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.LiveRoot, 1L),
-                    new ItemStack[] {ItemList.TF_LiveRoot.get(1L)});
+                    new ItemStack[] { ItemList.TF_LiveRoot.get(1L) });
             new GT_BaseCrop(
                     149,
                     "Trollplant",
@@ -514,13 +498,10 @@ public class GT_CropLoader implements Runnable {
                     5,
                     2,
                     8,
-                    new String[] {"Troll", "Bad", "Scrap"},
+                    new String[] { "Troll", "Bad", "Scrap" },
                     GT_OreDictUnificator.get(OrePrefixes.gem, Materials.FoolsRuby, 1L),
-                    new ItemStack[] {
-                        ItemList.IC2_Plantball.get(1),
-                        ItemList.IC2_Scrap.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 1L)
-                    });
+                    new ItemStack[] { ItemList.IC2_Plantball.get(1), ItemList.IC2_Scrap.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 1L) });
             new GT_BaseCrop(
                     150,
                     "Lazulia",
@@ -536,7 +517,7 @@ public class GT_CropLoader implements Runnable {
                     5,
                     7,
                     4,
-                    new String[] {"Shiny", "Bad", "Crystal", "Lapis"},
+                    new String[] { "Shiny", "Bad", "Crystal", "Lapis" },
                     Materials.Lapis,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L),
                     null);
@@ -555,7 +536,7 @@ public class GT_CropLoader implements Runnable {
                     3,
                     5,
                     4,
-                    new String[] {"Light", "Shiny", "Crystal"},
+                    new String[] { "Light", "Shiny", "Crystal" },
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
                     null);
             new GT_BaseCrop(
@@ -573,13 +554,11 @@ public class GT_CropLoader implements Runnable {
                     5,
                     4,
                     8,
-                    new String[] {"Growth", "Healing", "Flower"},
+                    new String[] { "Growth", "Healing", "Flower" },
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L),
-                    new ItemStack[] {
-                        ItemList.IC2_Fertilizer.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphate, 1L)
-                    });
+                    new ItemStack[] { ItemList.IC2_Fertilizer.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphate, 1L) });
             new GT_BaseCrop(
                     154,
                     "Bauxia",
@@ -595,7 +574,7 @@ public class GT_CropLoader implements Runnable {
                     2,
                     3,
                     3,
-                    new String[] {"Metal", "Aluminium", "Reed", "Aluminium"},
+                    new String[] { "Metal", "Aluminium", "Reed", "Aluminium" },
                     Materials.Aluminium,
                     ItemList.Crop_Drop_Bauxite.get(1),
                     null);
@@ -614,7 +593,7 @@ public class GT_CropLoader implements Runnable {
                     3,
                     3,
                     1,
-                    new String[] {"Metal", "Heavy", "Reed", "Titanium"},
+                    new String[] { "Metal", "Heavy", "Reed", "Titanium" },
                     Materials.Titanium,
                     ItemList.Crop_Drop_Ilmenite.get(1),
                     null);
@@ -633,10 +612,10 @@ public class GT_CropLoader implements Runnable {
                     1,
                     2,
                     1,
-                    new String[] {"Radioactive", "Metal", "Danger", "Uranium"},
+                    new String[] { "Radioactive", "Metal", "Danger", "Uranium" },
                     Materials.Uranium,
                     ItemList.Crop_Drop_Pitchblende.get(1),
-                    new ItemStack[] {ItemList.Crop_Drop_Uraninite.get(1)});
+                    new ItemStack[] { ItemList.Crop_Drop_Uraninite.get(1) });
             new GT_BaseCrop(
                     157,
                     "God of Thunder",
@@ -652,7 +631,7 @@ public class GT_CropLoader implements Runnable {
                     5,
                     1,
                     2,
-                    new String[] {"Radioactive", "Metal", "Coal", "Thorium"},
+                    new String[] { "Radioactive", "Metal", "Coal", "Thorium" },
                     Materials.Thorium,
                     ItemList.Crop_Drop_Thorium.get(1),
                     null);
@@ -671,15 +650,11 @@ public class GT_CropLoader implements Runnable {
                     1,
                     6,
                     1,
-                    new String[] {"Transform", "Coal", "Reed"},
+                    new String[] { "Transform", "Coal", "Reed" },
                     ItemList.Crop_Drop_UUABerry.get(1L),
-                    new ItemStack[] {
-                        ItemList.Crop_Drop_UUABerry.get(1L),
-                        ItemList.Crop_Drop_UUABerry.get(1L),
-                        ItemList.Crop_Drop_UUABerry.get(1L),
-                        ItemList.Crop_Drop_UUABerry.get(1L),
-                        ItemList.Crop_Drop_UUMBerry.get(1L)
-                    });
+                    new ItemStack[] { ItemList.Crop_Drop_UUABerry.get(1L), ItemList.Crop_Drop_UUABerry.get(1L),
+                            ItemList.Crop_Drop_UUABerry.get(1L), ItemList.Crop_Drop_UUABerry.get(1L),
+                            ItemList.Crop_Drop_UUMBerry.get(1L) });
             new GT_BaseCrop(
                     159,
                     "Starwart",
@@ -695,16 +670,13 @@ public class GT_CropLoader implements Runnable {
                     0,
                     1,
                     0,
-                    new String[] {"Wither", "Nether", "Undead", "Netherstar"},
+                    new String[] { "Wither", "Nether", "Undead", "Netherstar" },
                     Materials.NetherStar,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
-                    new ItemStack[] {
-                        GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L),
-                        new ItemStack(Items.skull, 1),
-                        new ItemStack(Items.skull, 1, 1),
-                        new ItemStack(Items.skull, 1, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1L)
-                    });
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L),
+                            new ItemStack(Items.skull, 1), new ItemStack(Items.skull, 1, 1),
+                            new ItemStack(Items.skull, 1, 1),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1L) });
             new GT_BaseCrop(
                     160,
                     "Zomplant",
@@ -720,7 +692,7 @@ public class GT_CropLoader implements Runnable {
                     4,
                     2,
                     6,
-                    new String[] {"Zombie", "Rotten", "Undead"},
+                    new String[] { "Zombie", "Rotten", "Undead" },
                     new ItemStack(Items.rotten_flesh),
                     null);
             new GT_BaseCrop(
@@ -738,7 +710,7 @@ public class GT_CropLoader implements Runnable {
                     1,
                     2,
                     2,
-                    new String[] {"Metal", "Fire", "Alloy"},
+                    new String[] { "Metal", "Fire", "Alloy" },
                     Materials.Nickel,
                     ItemList.Crop_Drop_Nickel.get(1),
                     null);
@@ -757,7 +729,7 @@ public class GT_CropLoader implements Runnable {
                     2,
                     2,
                     3,
-                    new String[] {"Metal", "Alloy", "Bush"},
+                    new String[] { "Metal", "Alloy", "Bush" },
                     Materials.Zinc,
                     ItemList.Crop_Drop_Zinc.get(1),
                     null);
@@ -776,12 +748,10 @@ public class GT_CropLoader implements Runnable {
                     2,
                     1,
                     3,
-                    new String[] {"Crystal", "Fire", "Nether"},
+                    new String[] { "Crystal", "Fire", "Nether" },
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L),
-                    new ItemStack[] {
-                        GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1L),
-                    });
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1L), });
             new GT_BaseCrop(
                     164,
                     "Olivia",
@@ -797,12 +767,10 @@ public class GT_CropLoader implements Runnable {
                     1,
                     4,
                     0,
-                    new String[] {"Crystal", "Shiny", "Processing", "Olivine"},
+                    new String[] { "Crystal", "Shiny", "Processing", "Olivine" },
                     Materials.Olivine,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 1L),
-                    new ItemStack[] {
-                        GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L),
-                    });
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L), });
             new GT_BaseCrop(
                     165,
                     "Sapphirum",
@@ -818,12 +786,10 @@ public class GT_CropLoader implements Runnable {
                     1,
                     5,
                     0,
-                    new String[] {"Crystal", "Shiny", "Metal", "Sapphire"},
+                    new String[] { "Crystal", "Shiny", "Metal", "Sapphire" },
                     Materials.Sapphire,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sapphire, 1L),
-                    new ItemStack[] {
-                        GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L),
-                    });
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L), });
             new GT_BaseCrop(
                     166,
                     "Pyrolusium",
@@ -839,7 +805,7 @@ public class GT_CropLoader implements Runnable {
                     1,
                     1,
                     0,
-                    new String[] {"Metal", "Clean", "Bush", "Manganese"},
+                    new String[] { "Metal", "Clean", "Bush", "Manganese" },
                     Materials.Manganese,
                     ItemList.Crop_Drop_Manganese.get(1),
                     null);
@@ -858,7 +824,7 @@ public class GT_CropLoader implements Runnable {
                     1,
                     1,
                     0,
-                    new String[] {"Metal", "Hard", "Bush", "Tungsten"},
+                    new String[] { "Metal", "Hard", "Bush", "Tungsten" },
                     Materials.Tungsten,
                     ItemList.Crop_Drop_Scheelite.get(1),
                     null);
@@ -877,7 +843,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     3,
                     0,
-                    new String[] {"Metal", "Shiny", "Reed", "Platinum"},
+                    new String[] { "Metal", "Shiny", "Reed", "Platinum" },
                     Materials.Platinum,
                     ItemList.Crop_Drop_Platinum.get(1),
                     null);
@@ -896,10 +862,10 @@ public class GT_CropLoader implements Runnable {
                     0,
                     1,
                     0,
-                    new String[] {"Metal", "Iridium", "Reed"},
+                    new String[] { "Metal", "Iridium", "Reed" },
                     Materials.Iridium,
                     ItemList.Crop_Drop_Iridium.get(1),
-                    new ItemStack[] {ItemList.Crop_Drop_Osmium.get(1)});
+                    new ItemStack[] { ItemList.Crop_Drop_Osmium.get(1) });
             new GT_BaseCrop(
                     170,
                     "Stargatium",
@@ -915,10 +881,10 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Metal", "Heavy", "Alien", "Naquadah"},
+                    new String[] { "Metal", "Heavy", "Alien", "Naquadah" },
                     Materials.Naquadah,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1L),
-                    new ItemStack[] {ItemList.Crop_Drop_Naquadah.get(1)});
+                    new ItemStack[] { ItemList.Crop_Drop_Naquadah.get(1) });
             new GT_BaseCrop(
                     171,
                     "Lemon",
@@ -934,7 +900,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Yellow", "Sour"},
+                    new String[] { "Food", "Yellow", "Sour" },
                     ItemList.Crop_Drop_Lemon.get(1),
                     null);
             new GT_BaseCrop(
@@ -952,7 +918,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Red", "Spicy"},
+                    new String[] { "Food", "Red", "Spicy" },
                     ItemList.Crop_Drop_Chilly.get(1),
                     null);
             new GT_BaseCrop(
@@ -970,9 +936,9 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Red"},
+                    new String[] { "Food", "Red" },
                     ItemList.Crop_Drop_Tomato.get(1),
-                    new ItemStack[] {ItemList.Crop_Drop_MTomato.get(1)});
+                    new ItemStack[] { ItemList.Crop_Drop_MTomato.get(1) });
             new GT_BaseCrop(
                     174,
                     "Grape",
@@ -988,7 +954,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Purple"},
+                    new String[] { "Food", "Purple" },
                     ItemList.Crop_Drop_Grapes.get(1),
                     null);
             new GT_BaseCrop(
@@ -1006,7 +972,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Brown"},
+                    new String[] { "Food", "Brown" },
                     ItemList.Crop_Drop_Onion.get(1),
                     null);
             new GT_BaseCrop(
@@ -1024,7 +990,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Green"},
+                    new String[] { "Food", "Green" },
                     ItemList.Crop_Drop_Cucumber.get(1),
                     null);
             new GT_BaseCrop(
@@ -1042,7 +1008,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Green", "Ingredient"},
+                    new String[] { "Food", "Green", "Ingredient" },
                     ItemList.Crop_Drop_TeaLeaf.get(1),
                     null);
             new GT_BaseCrop(
@@ -1060,7 +1026,7 @@ public class GT_CropLoader implements Runnable {
                     0,
                     2,
                     0,
-                    new String[] {"Food", "Yellow", "Oil"},
+                    new String[] { "Food", "Yellow", "Oil" },
                     ItemList.Crop_Drop_Rape.get(1),
                     null);
             new GT_BaseCrop(
@@ -1078,7 +1044,7 @@ public class GT_CropLoader implements Runnable {
                     3,
                     0,
                     0,
-                    new String[] {"Metal", "Pine", "Mica", "Bush"},
+                    new String[] { "Metal", "Pine", "Mica", "Bush" },
                     Materials.Mica,
                     ItemList.Crop_Drop_Mica.get(1L),
                     null);

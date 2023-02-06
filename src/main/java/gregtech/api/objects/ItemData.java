@@ -1,11 +1,14 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import java.util.*;
+
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+
 public class ItemData {
+
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
 
     public final List<Object> mExtraData = new GT_ArrayList<Object>(false, 1);
@@ -21,7 +24,7 @@ public class ItemData {
         mBlackListed = aBlackListed;
         mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
                 ? EMPTY_MATERIALSTACK_ARRAY
-                : new MaterialStack[] {aPrefix.mSecondaryMaterial.clone()};
+                : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
     }
 
     public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
@@ -35,12 +38,11 @@ public class ItemData {
         if (aByProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
-            MaterialStack[] tByProducts =
-                    aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY : new MaterialStack[aByProducts.length];
+            MaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY
+                    : new MaterialStack[aByProducts.length];
             int j = 0;
-            for (int i = 0; i < aByProducts.length; i++)
-                if (aByProducts[i] != null && aByProducts[i].mMaterial != null)
-                    tByProducts[j++] = aByProducts[i].clone();
+            for (int i = 0; i < aByProducts.length; i++) if (aByProducts[i] != null && aByProducts[i].mMaterial != null)
+                tByProducts[j++] = aByProducts[i].clone();
             mByProducts = j > 0 ? new MaterialStack[j] : EMPTY_MATERIALSTACK_ARRAY;
             for (int i = 0; i < mByProducts.length; i++) mByProducts[i] = tByProducts[i];
         }
@@ -60,25 +62,23 @@ public class ItemData {
 
         ArrayList<MaterialStack> aList = new ArrayList<MaterialStack>(), rList = new ArrayList<MaterialStack>();
 
-        for (ItemData tData : aData)
-            if (tData != null) {
-                if (tData.hasValidMaterialData() && tData.mMaterial.mAmount > 0) aList.add(tData.mMaterial.clone());
-                for (MaterialStack tMaterial : tData.mByProducts)
-                    if (tMaterial.mAmount > 0) aList.add(tMaterial.clone());
-            }
+        for (ItemData tData : aData) if (tData != null) {
+            if (tData.hasValidMaterialData() && tData.mMaterial.mAmount > 0) aList.add(tData.mMaterial.clone());
+            for (MaterialStack tMaterial : tData.mByProducts) if (tMaterial.mAmount > 0) aList.add(tMaterial.clone());
+        }
 
         for (MaterialStack aMaterial : aList) {
             boolean temp = true;
-            for (MaterialStack tMaterial : rList)
-                if (aMaterial.mMaterial == tMaterial.mMaterial) {
-                    tMaterial.mAmount += aMaterial.mAmount;
-                    temp = false;
-                    break;
-                }
+            for (MaterialStack tMaterial : rList) if (aMaterial.mMaterial == tMaterial.mMaterial) {
+                tMaterial.mAmount += aMaterial.mAmount;
+                temp = false;
+                break;
+            }
             if (temp) rList.add(aMaterial.clone());
         }
 
         Collections.sort(rList, new Comparator<MaterialStack>() {
+
             @Override
             public int compare(MaterialStack a, MaterialStack b) {
                 return a.mAmount == b.mAmount ? 0 : a.mAmount > b.mAmount ? -1 : +1;

@@ -1,5 +1,11 @@
 package gregtech.api.graphs;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.GregTech_API;
 import gregtech.api.graphs.consumers.ConsumerNode;
@@ -16,13 +22,10 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import ic2.api.energy.tile.IEnergySink;
-import java.util.ArrayList;
-import java.util.HashSet;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 // node map generator for power distribution
 public class GenerateNodeMapPower extends GenerateNodeMap {
+
     public GenerateNodeMapPower(BaseMetaPipeEntity aTileEntity) {
         generateNode(aTileEntity, null, 1, null, -1, new ArrayList<>(), new HashSet<>());
     }
@@ -34,8 +37,8 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     }
 
     @Override
-    protected boolean addConsumer(
-            TileEntity aTileEntity, byte aSide, int aNodeValue, ArrayList<ConsumerNode> aConsumers) {
+    protected boolean addConsumer(TileEntity aTileEntity, byte aSide, int aNodeValue,
+            ArrayList<ConsumerNode> aConsumers) {
         if (aTileEntity instanceof BaseMetaTileEntity) {
             BaseMetaTileEntity tBaseTileEntity = (BaseMetaTileEntity) aTileEntity;
             if (tBaseTileEntity.inputEnergyFrom(aSide, false)) {
@@ -63,14 +66,20 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
                 tNextTo = aTileEntity.getWorldObj().getTileEntity(dX, dY, dZ);
 
             if (((IEnergySink) aTileEntity).acceptsEnergyFrom(tNextTo, ForgeDirection.getOrientation(aSide))) {
-                ConsumerNode tConsumerNode =
-                        new NodeEnergySink(aNodeValue, (IEnergySink) aTileEntity, aSide, aConsumers);
+                ConsumerNode tConsumerNode = new NodeEnergySink(
+                        aNodeValue,
+                        (IEnergySink) aTileEntity,
+                        aSide,
+                        aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }
         } else if (GregTech_API.mOutputRF && aTileEntity instanceof IEnergyReceiver) {
-            ConsumerNode tConsumerNode =
-                    new NodeEnergyReceiver(aNodeValue, (IEnergyReceiver) aTileEntity, aSide, aConsumers);
+            ConsumerNode tConsumerNode = new NodeEnergyReceiver(
+                    aNodeValue,
+                    (IEnergyReceiver) aTileEntity,
+                    aSide,
+                    aConsumers);
             aConsumers.add(tConsumerNode);
             return true;
         }
@@ -84,8 +93,8 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
 
     // used to apply voltage on dead ends
     @Override
-    protected Node getEmptyNode(
-            int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
+    protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity,
+            ArrayList<ConsumerNode> aConsumers) {
         Node tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
         aConsumers.add((ConsumerNode) tNode);
         return tNode;

@@ -3,6 +3,19 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.ChunkPosition;
+import net.minecraftforge.common.util.FakePlayer;
+
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -10,6 +23,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -24,24 +38,14 @@ import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.misc.GT_DrillingLogicDelegate;
 import gregtech.common.misc.GT_IDrillingLogicDelegateOwner;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkPosition;
-import net.minecraftforge.common.util.FakePlayer;
 
 @SuppressWarnings("ObjectEquality")
 public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         implements GT_IDrillingLogicDelegateOwner, IAddUIWidgets {
-    static final int[] RADIUS = {8, 8, 16, 24, 32}; // Miner radius per tier
-    static final int[] SPEED = {160, 160, 80, 40, 20}; // Miner cycle time per tier
-    static final int[] ENERGY = {8, 8, 32, 128, 512}; // Miner energy consumption per tier
+
+    static final int[] RADIUS = { 8, 8, 16, 24, 32 }; // Miner radius per tier
+    static final int[] SPEED = { 160, 160, 80, 40, 20 }; // Miner cycle time per tier
+    static final int[] ENERGY = { 8, 8, 32, 128, 512 }; // Miner energy consumption per tier
 
     /** Miner configured radius */
     private int radiusConfig;
@@ -60,91 +64,71 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
                 aNameRegional,
                 aTier,
                 1,
-                new String[] {
-                    "Digging ore instead of you",
-                    "Use Screwdriver to regulate work area",
-                    "Use Soft Mallet to disable and retract the pipe",
-                    String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
-                    String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                    String.format("Fortune bonus of %d", aTier)
-                },
+                new String[] { "Digging ore instead of you", "Use Screwdriver to regulate work area",
+                        "Use Soft Mallet to disable and retract the pipe",
+                        String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
+                        String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
+                        String.format("Fortune bonus of %d", aTier) },
                 2,
                 2,
                 "Miner.png",
                 "",
                 TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
-                                .glow()
-                                .build()),
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
+                                .glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE")),
                         TextureFactory.builder()
                                 .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_GLOW"))
-                                .glow()
-                                .build()),
+                                .glow().build()),
                 TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
-                                .glow()
-                                .build()),
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
+                                .glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT")),
                         TextureFactory.builder()
                                 .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_GLOW"))
-                                .glow()
-                                .build()),
+                                .glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
+                                .glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP")),
                         TextureFactory.builder()
                                 .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_GLOW"))
-                                .glow()
-                                .build()),
+                                .glow().build()),
                 TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
-                                .glow()
-                                .build()),
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                                .glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM")),
                         TextureFactory.builder()
                                 .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
-                                .glow()
-                                .build()));
+                                .glow().build()));
         mSpeed = SPEED[aTier];
         radiusConfig = RADIUS[mTier];
     }
 
-    public GT_MetaTileEntity_Miner(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GT_MetaTileEntity_Miner(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
         mSpeed = SPEED[aTier];
         radiusConfig = RADIUS[mTier];
     }
 
-    public GT_MetaTileEntity_Miner(
-            String aName,
-            int aTier,
-            String[] aDescription,
-            ITexture[][][] aTextures,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_Miner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 2, 2, aGUIName, aNEIName);
         mSpeed = SPEED[aTier];
         radiusConfig = RADIUS[mTier];
@@ -162,8 +146,8 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    protected boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) //
                 && aStack.getItem() == GT_DrillingLogicDelegate.MINING_PIPE_STACK.getItem();
     }
@@ -241,8 +225,10 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         if (!aBaseMetaTileEntity.isUniversalEnergyStored((long) ENERGY[mTier] * (mSpeed - mProgresstime))) {
             mMaxProgresstime = 0;
             if (debugBlockMiner) {
-                GT_Log.out.println("MINER: Not enough energy yet, want " + (ENERGY[mTier] * mSpeed) + " have "
-                        + aBaseMetaTileEntity.getUniversalEnergyStored());
+                GT_Log.out.println(
+                        "MINER: Not enough energy yet, want " + (ENERGY[mTier] * mSpeed)
+                                + " have "
+                                + aBaseMetaTileEntity.getUniversalEnergyStored());
             }
             return;
         }
@@ -272,13 +258,12 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
                 boolean isOre;
                 do {
                     ChunkPosition oreBlockPos = oreBlockPositions.remove(0);
-                    oreBlock = aBaseMetaTileEntity.getBlockOffset(
-                            oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
+                    oreBlock = aBaseMetaTileEntity
+                            .getBlockOffset(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
                     x = aBaseMetaTileEntity.getXCoord() + oreBlockPos.chunkPosX;
                     y = aBaseMetaTileEntity.getYCoord() + oreBlockPos.chunkPosY;
                     z = aBaseMetaTileEntity.getZCoord() + oreBlockPos.chunkPosZ;
-                    isOre = GT_Utility.isOre(
-                            oreBlock, aBaseMetaTileEntity.getWorld().getBlockMetadata(x, y, z));
+                    isOre = GT_Utility.isOre(oreBlock, aBaseMetaTileEntity.getWorld().getBlockMetadata(x, y, z));
                 } // someone else might have removed the block
                 while (!isOre && !oreBlockPositions.isEmpty());
 
@@ -390,19 +375,18 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     @Override
     public String[] getInfoData() {
         return new String[] {
-            String.format(
-                    "%s%s%s",
-                    EnumChatFormatting.BLUE,
-                    StatCollector.translateToLocal("GT5U.machines.miner"),
-                    EnumChatFormatting.RESET),
-            String.format(
-                    "%s: %s%d%s %s",
-                    StatCollector.translateToLocal("GT5U.machines.workarea"),
-                    EnumChatFormatting.GREEN,
-                    (radiusConfig * 2 + 1),
-                    EnumChatFormatting.RESET,
-                    StatCollector.translateToLocal("GT5U.machines.blocks"))
-        };
+                String.format(
+                        "%s%s%s",
+                        EnumChatFormatting.BLUE,
+                        StatCollector.translateToLocal("GT5U.machines.miner"),
+                        EnumChatFormatting.RESET),
+                String.format(
+                        "%s: %s%d%s %s",
+                        StatCollector.translateToLocal("GT5U.machines.workarea"),
+                        EnumChatFormatting.GREEN,
+                        (radiusConfig * 2 + 1),
+                        EnumChatFormatting.RESET,
+                        StatCollector.translateToLocal("GT5U.machines.blocks")) };
     }
 
     @Override
@@ -415,7 +399,10 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         return mSpeed;
     }
 
-    /** @deprecated This method are obsolete, and may be removed in further updates. Please use 'this.getPipe().descent()' access! */
+    /**
+     * @deprecated This method are obsolete, and may be removed in further updates. Please use
+     *             'this.getPipe().descent()' access!
+     */
     @Deprecated
     public boolean moveOneDown(IGregTechTileEntity tileEntity) {
         boolean descends = pipe.descent(tileEntity);
@@ -425,7 +412,10 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         return descends;
     }
 
-    /** @deprecated This method are obsolete, and may be removed in further updates. Please use 'this.getPipe().getFakePlayer(te)' access! */
+    /**
+     * @deprecated This method are obsolete, and may be removed in further updates. Please use
+     *             'this.getPipe().getFakePlayer(te)' access!
+     */
     @Deprecated
     protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {
         return pipe.getFakePlayer(aBaseTile);
@@ -441,12 +431,18 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     }
 
     private static final FallbackableUITexture progressBarTexture = new FallbackableUITexture(
-            UITexture.fullImage("gregtech", "gui/progressbar/miner"), GT_UITextures.PROGRESSBAR_CANNER);
+            UITexture.fullImage("gregtech", "gui/progressbar/miner"),
+            GT_UITextures.PROGRESSBAR_CANNER);
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        builder.widget(createProgressBar(
-                progressBarTexture.get(), 20, ProgressBar.Direction.RIGHT, new Pos2d(78, 24), new Size(20, 18)));
+        builder.widget(
+                createProgressBar(
+                        progressBarTexture.get(),
+                        20,
+                        ProgressBar.Direction.RIGHT,
+                        new Pos2d(78, 24),
+                        new Size(20, 18)));
     }
 }

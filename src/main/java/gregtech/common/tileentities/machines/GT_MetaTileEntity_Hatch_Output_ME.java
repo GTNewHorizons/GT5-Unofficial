@@ -3,6 +3,18 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -35,23 +47,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 @Optional.Interface(iface = "appeng.api.implementations.IPowerChannelState", modid = "appliedenergistics2")
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
+
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    IItemList<IAEFluidStack> fluidCache =
-            GregTech_API.mAE2 ? AEApi.instance().storage().createFluidList() : null;
+    IItemList<IAEFluidStack> fluidCache = GregTech_API.mAE2 ? AEApi.instance().storage().createFluidList() : null;
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
@@ -63,9 +65,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 aName,
                 aNameRegional,
                 1,
-                new String[] {
-                    "Fluid Output for Multiblocks", "Stores directly into ME",
-                },
+                new String[] { "Fluid Output for Multiblocks", "Stores directly into ME", },
                 0);
     }
 
@@ -80,12 +80,12 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     /**
      * Attempt to store fluid in connected ME network. Returns how much fluid is accepted (if the network was down e.g.)
      *
-     * @param aFluid  input fluid
+     * @param aFluid input fluid
      * @return amount of fluid filled
      */
     @Optional.Method(modid = "appliedenergistics2")
@@ -154,7 +154,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
         infiniteCache = !infiniteCache;
         GT_Utility.sendChatToPlayer(
-                aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
     }
 
     @Override
@@ -163,12 +164,14 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                        (IGridProxyable) getBaseMetaTileEntity(), "proxy", ItemList.Hatch_Output_ME.get(1), true);
+                        (IGridProxyable) getBaseMetaTileEntity(),
+                        "proxy",
+                        ItemList.Hatch_Output_ME.get(1),
+                        true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                if (getBaseMetaTileEntity().getWorld() != null)
-                    gridProxy.setOwner(getBaseMetaTileEntity()
-                            .getWorld()
-                            .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
+                        getBaseMetaTileEntity().getWorld()
+                                .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
@@ -254,8 +257,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 for (int i = 0; i < l.tagCount(); ++i) {
                     NBTTagCompound tag = l.getCompoundTagAt(i);
                     NBTTagCompound tagFluidStack = tag.getCompoundTag("fluidStack");
-                    final IAEFluidStack s =
-                            AEApi.instance().storage().createFluidStack(GT_Utility.loadFluid(tagFluidStack));
+                    final IAEFluidStack s = AEApi.instance().storage()
+                            .createFluidStack(GT_Utility.loadFluid(tagFluidStack));
                     if (s != null) {
                         s.setStackSize(tag.getLong("size"));
                         fluidCache.add(s);
@@ -282,11 +285,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     public String[] getInfoData() {
         if (!GregTech_API.mAE2) return new String[] {};
         List<String> ss = new ArrayList<>();
-        ss.add("The hatch is "
-                + ((getProxy() != null && getProxy().isActive())
-                        ? EnumChatFormatting.GREEN + "online"
-                        : EnumChatFormatting.RED + "offline" + getAEDiagnostics())
-                + EnumChatFormatting.RESET);
+        ss.add(
+                "The hatch is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
+                        : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
         if (fluidCache.isEmpty()) {
             ss.add("The bus has no cached fluids");
         } else {
@@ -294,8 +295,12 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             ss.add(String.format("The hatch contains %d cached fluids: ", fluidCache.size()));
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
-                ss.add(s.getFluidStack().getLocalizedName() + ": " + EnumChatFormatting.GOLD
-                        + nc.toWideReadableForm(s.getStackSize()) + " mB" + EnumChatFormatting.RESET);
+                ss.add(
+                        s.getFluidStack().getLocalizedName() + ": "
+                                + EnumChatFormatting.GOLD
+                                + nc.toWideReadableForm(s.getStackSize())
+                                + " mB"
+                                + EnumChatFormatting.RESET);
                 if (++counter > 100) break;
             }
         }
@@ -303,11 +308,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Optional.Method(modid = "appliedenergistics2")
-    public static IAEFluidStack fluidAEInsert(
-            final IEnergySource energy,
-            final IMEInventory<IAEFluidStack> cell,
-            final IAEFluidStack input,
-            final BaseActionSource src) {
+    public static IAEFluidStack fluidAEInsert(final IEnergySource energy, final IMEInventory<IAEFluidStack> cell,
+            final IAEFluidStack input, final BaseActionSource src) {
         final IAEFluidStack possible = cell.injectItems(input.copy(), Actionable.SIMULATE, src);
 
         long stored = input.getStackSize();

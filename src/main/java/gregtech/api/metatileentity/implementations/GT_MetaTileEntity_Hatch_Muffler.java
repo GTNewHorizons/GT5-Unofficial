@@ -3,6 +3,13 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.Arrays;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -15,14 +22,10 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
-import java.util.Arrays;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
 public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
+
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.hatch.muffler.desc.format",
             "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
@@ -38,27 +41,21 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
-    public GT_MetaTileEntity_Hatch_Muffler(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aInvSlotCount,
-            String[] aDescription,
-            ITexture... aTextures) {
+    public GT_MetaTileEntity_Hatch_Muffler(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, new String[] {aDescription}, aTextures);
+        this(aName, aTier, new String[] { aDescription }, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         this(aName, aTier, 0, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_Muffler(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         setInValidFacings(ForgeDirection.DOWN);
     }
@@ -70,12 +67,12 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER) };
     }
 
     @Override
@@ -163,30 +160,25 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         }
 
         WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                .setIdentifier(name)
-                .setWorld(aWorld)
-                .setMotion(xSpd, ySpd, zSpd);
+                .setIdentifier(name).setWorld(aWorld).setMotion(xSpd, ySpd, zSpd);
 
         if (chk1) {
             events.setPosition(
-                            xPos + ran1 * 0.5F,
-                            yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                            zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                    .run();
+                    xPos + ran1 * 0.5F,
+                    yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
         }
         if (chk2) {
             events.setPosition(
-                            xPos + ran2 * 0.5F,
-                            yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                            zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                    .run();
+                    xPos + ran2 * 0.5F,
+                    yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
         }
         if (chk3) {
             events.setPosition(
-                            xPos + ran3 * 0.5F,
-                            yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                            zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                    .run();
+                    xPos + ran3 * 0.5F,
+                    yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
         }
     }
 
@@ -207,8 +199,8 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     /**
-     * @param mte The multi-block controller's {@link MetaTileEntity}
-     *            MetaTileEntity is passed so newer muffler hatches can do wacky things with the multis
+     * @param mte The multi-block controller's {@link MetaTileEntity} MetaTileEntity is passed so newer muffler hatches
+     *            can do wacky things with the multis
      * @return pollution success
      */
     public boolean polluteEnvironment(MetaTileEntity mte) {

@@ -2,19 +2,23 @@ package gregtech.common.fluid;
 
 import static gregtech.api.enums.GT_Values.MOD_ID;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.FluidState;
-import gregtech.api.interfaces.fluid.IGT_Fluid;
-import gregtech.api.interfaces.fluid.IGT_FluidBuilder;
-import gregtech.api.interfaces.fluid.IGT_RegisteredFluid;
 import java.util.Locale;
+
 import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.FluidState;
+import gregtech.api.interfaces.fluid.IGT_Fluid;
+import gregtech.api.interfaces.fluid.IGT_FluidBuilder;
+import gregtech.api.interfaces.fluid.IGT_RegisteredFluid;
+
 public class GT_FluidBuilder implements IGT_FluidBuilder {
+
     final String fluidName;
     String localizedName;
     ResourceLocation stillIconResourceLocation = null, flowingIconResourceLocation = null;
@@ -108,8 +112,8 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
      * @inheritDoc
      */
     @Override
-    public IGT_FluidBuilder withTextures(
-            final ResourceLocation stillIconResourceLocation, final ResourceLocation flowingIconResourceLocation) {
+    public IGT_FluidBuilder withTextures(final ResourceLocation stillIconResourceLocation,
+            final ResourceLocation flowingIconResourceLocation) {
         this.stillIconResourceLocation = stillIconResourceLocation;
         this.flowingIconResourceLocation = flowingIconResourceLocation;
         return this;

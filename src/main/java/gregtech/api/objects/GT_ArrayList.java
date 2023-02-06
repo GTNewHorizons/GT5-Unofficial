@@ -1,12 +1,14 @@
 package gregtech.api.objects;
 
-import com.google.common.collect.Collections2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
+import com.google.common.collect.Collections2;
+
 public class GT_ArrayList<E> extends ArrayList<E> {
+
     private static final long serialVersionUID = 1L;
     private int size_sS;
 
@@ -22,11 +24,10 @@ public class GT_ArrayList<E> extends ArrayList<E> {
         mAllowNulls = aAllowNulls;
         if (!mAllowNulls) {
             size_sS = size();
-            for (int i = 0; i < size_sS; i++)
-                if (get(i) == null) {
-                    remove(i--);
-                    size_sS = size();
-                }
+            for (int i = 0; i < size_sS; i++) if (get(i) == null) {
+                remove(i--);
+                size_sS = size();
+            }
         }
     }
 
@@ -35,11 +36,10 @@ public class GT_ArrayList<E> extends ArrayList<E> {
         mAllowNulls = aAllowNulls;
         if (!mAllowNulls) {
             size_sS = size();
-            for (int i = 0; i < size_sS; i++)
-                if (get(i) == null) {
-                    remove(i--);
-                    size_sS = size();
-                }
+            for (int i = 0; i < size_sS; i++) if (get(i) == null) {
+                remove(i--);
+                size_sS = size();
+            }
         }
     }
 

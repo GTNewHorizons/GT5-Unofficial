@@ -8,6 +8,7 @@ import gregtech.api.enums.Materials;
  * Not all Data might be reliable. This is just for Information sake.
  */
 public interface IEnergyConductor extends IEnergyConnected {
+
     /**
      * @return if this is actually a Cable. (you must check this)
      */

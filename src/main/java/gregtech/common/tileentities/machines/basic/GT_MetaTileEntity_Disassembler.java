@@ -3,7 +3,19 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.google.common.collect.ArrayListMultimap;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -25,15 +37,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 import ic2.api.item.IC2Items;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachine {
 
@@ -45,9 +48,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 aTier,
                 1,
                 new String[] {
-                    "Disassembles Machines up to " + GT_Values.TIER_COLORS[aTier] + GT_Values.VOLTAGE_NAMES[aTier],
-                    "Can also disassemble most assembler recipes!"
-                },
+                        "Disassembles Machines up to " + GT_Values.TIER_COLORS[aTier] + GT_Values.VOLTAGE_NAMES[aTier],
+                        "Can also disassemble most assembler recipes!" },
                 1,
                 9,
                 "Disassembler.png",
@@ -56,101 +58,65 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 // Textures
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_DISASSEMBLER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_DISASSEMBLER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_DISASSEMBLER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_DISASSEMBLER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_DISASSEMBLER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_DISASSEMBLER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_DISASSEMBLER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_DISASSEMBLER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_DISASSEMBLER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_DISASSEMBLER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_DISASSEMBLER_GLOW)
-                                .glow()
-                                .build()));
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_DISASSEMBLER_GLOW).glow().build()));
     }
 
-    public GT_MetaTileEntity_Disassembler(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GT_MetaTileEntity_Disassembler(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 9, aGUIName, aNEIName);
     }
 
-    public GT_MetaTileEntity_Disassembler(
-            String aName,
-            int aTier,
-            String[] aDescription,
-            ITexture[][][] aTextures,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_Disassembler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 9, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Disassembler(
-                this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
-    private static final ItemStack[][] alwaysReplace = {
-        {
+    private static final ItemStack[][] alwaysReplace = { {
             // ItemStack to look for
-            new ItemStack(Blocks.trapped_chest, 1, OreDictionary.WILDCARD_VALUE)
-        },
-        {
-            // ItemStack to replace
-            new ItemStack(Blocks.chest)
-        }
-    };
+            new ItemStack(Blocks.trapped_chest, 1, OreDictionary.WILDCARD_VALUE) },
+            {
+                    // ItemStack to replace
+                    new ItemStack(Blocks.chest) } };
 
-    private static final Object[][] OreDictionaryOverride = {
-        {
+    private static final Object[][] OreDictionaryOverride = { {
             // String to look for
-            "plankWood", "stoneCobble", "gemDiamond", "logWood", "stickWood", "treeSapling"
-        },
-        {
-            // ItemStack to replace
-            new ItemStack(Blocks.planks),
-            new ItemStack(Blocks.cobblestone),
-            new ItemStack(Items.diamond),
-            new ItemStack(Blocks.log),
-            new ItemStack(Items.stick),
-            new ItemStack(Blocks.sapling)
-        }
-    };
+            "plankWood", "stoneCobble", "gemDiamond", "logWood", "stickWood", "treeSapling" },
+            {
+                    // ItemStack to replace
+                    new ItemStack(Blocks.planks), new ItemStack(Blocks.cobblestone), new ItemStack(Items.diamond),
+                    new ItemStack(Blocks.log), new ItemStack(Items.stick), new ItemStack(Blocks.sapling) } };
 
     public static ArrayListMultimap<GT_ItemStack, ItemStack> getOutputHardOverrides() {
         return outputHardOverrides;
@@ -215,10 +181,10 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
         if (GT_Utility.isStackInvalid(is)) return DID_NOT_FIND_RECIPE;
 
-        if (is.getItem() instanceof GT_MetaGenerated_Tool
-                || isCircuit(is)
+        if (is.getItem() instanceof GT_MetaGenerated_Tool || isCircuit(is)
                 || blackList.stream().anyMatch(t -> GT_Utility.areStacksEqual(t.toStack(), is, true))
-                || compareToUnpacker(is)) return DID_NOT_FIND_RECIPE;
+                || compareToUnpacker(is))
+            return DID_NOT_FIND_RECIPE;
 
         Integer handleHardOverride = handleHardOverride(is);
         if (handleHardOverride != null) return handleHardOverride;
@@ -270,8 +236,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
 
-        return setOutputsAndTime(recipe.inputs, recipe.stackSize)
-                ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
+        return setOutputsAndTime(recipe.inputs, recipe.stackSize) ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
                 : FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
     }
 
@@ -283,8 +248,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private int checkRecipeMap() {
-        GT_Recipe gt_recipe = GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.findRecipe(
-                this.getBaseMetaTileEntity(), true, this.maxEUInput(), null, this.getAllInputs());
+        GT_Recipe gt_recipe = GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes
+                .findRecipe(this.getBaseMetaTileEntity(), true, this.maxEUInput(), null, this.getAllInputs());
         if (gt_recipe == null) return DID_NOT_FIND_RECIPE;
         if (gt_recipe.isRecipeInputEqual(false, null, this.getAllInputs())) {
             if (gt_recipe.mSpecialValue == -100) {
@@ -323,8 +288,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
         ItemStack[] output = new ItemStack[inputs.length];
         List<GT_Recipe> recipesColl = null;
-        if (recipes.size() > 1)
-            recipesColl = recipes.stream().skip(1).map(x -> x.recipe).collect(Collectors.toList());
+        if (recipes.size() > 1) recipesColl = recipes.stream().skip(1).map(x -> x.recipe).collect(Collectors.toList());
 
         handleRecipeTransformation(inputs, output, recipesColl);
 
@@ -335,8 +299,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 EUt);
     }
 
-    private static void handleRecipeTransformation(
-            ItemStack[] inputs, ItemStack[] output, List<? extends GT_Recipe> recipesColl) {
+    private static void handleRecipeTransformation(ItemStack[] inputs, ItemStack[] output,
+            List<? extends GT_Recipe> recipesColl) {
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++) {
             Set<ItemStack[]> inputsStacks = null;
             if (recipesColl != null)
@@ -349,15 +313,15 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     /**
      * Public Interface for ReverseRecipes, do not call inside of this class.
      */
-    public static void handleRecipeTransformation(
-            ItemStack[] inputs, ItemStack[] output, Set<ItemStack[]> inputsStacks) {
+    public static void handleRecipeTransformation(ItemStack[] inputs, ItemStack[] output,
+            Set<ItemStack[]> inputsStacks) {
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++)
             handleRecipeTransformationInternal(inputs, output, inputsStacks, i);
         addOthersAndHandleAlwaysReplace(inputs, output);
     }
 
-    private static void handleRecipeTransformationInternal(
-            ItemStack[] inputs, ItemStack[] output, Set<ItemStack[]> inputsStacks, int i) {
+    private static void handleRecipeTransformationInternal(ItemStack[] inputs, ItemStack[] output,
+            Set<ItemStack[]> inputsStacks, int i) {
         ItemStack input = inputs[i];
         ItemData data = GT_OreDictUnificator.getItemData(input);
         if (data == null || data.mMaterial == null || data.mMaterial.mMaterial == null || data.mPrefix == null) {
@@ -405,9 +369,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private static ItemStack handleWildcard(ItemStack stack) {
-        if (stack != null
-                && stack.getItemDamage() == OreDictionary.WILDCARD_VALUE
-                && !stack.getItem().isDamageable()) {
+        if (stack != null && stack.getItemDamage() == OreDictionary.WILDCARD_VALUE && !stack.getItem().isDamageable()) {
             stack.setItemDamage(0);
         }
         return stack;
@@ -420,8 +382,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         return stack;
     }
 
-    private static void handleReplacement(
-            Set<ItemStack[]> inputsStacks, ItemData data, ItemStack[] output, ItemStack input, int i) {
+    private static void handleReplacement(Set<ItemStack[]> inputsStacks, ItemData data, ItemStack[] output,
+            ItemStack input, int i) {
         AtomicReference<Materials> toRpl = new AtomicReference<>();
         Materials first = data.mMaterial.mMaterial;
         if (inputsStacks != null) {
@@ -440,17 +402,12 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         }
     }
 
-    private static void handleInputStacks(
-            Set<ItemStack[]> inputsStacks,
-            AtomicReference<? super Materials> toRpl,
-            ItemData data,
-            Materials first,
-            int i) {
+    private static void handleInputStacks(Set<ItemStack[]> inputsStacks, AtomicReference<? super Materials> toRpl,
+            ItemData data, Materials first, int i) {
         final int finalIndex = i;
         inputsStacks.forEach(stackArray -> {
             ItemData dataAgainst = GT_OreDictUnificator.getItemData(stackArray[finalIndex]);
-            if (dataAgainst == null
-                    || dataAgainst.mMaterial == null
+            if (dataAgainst == null || dataAgainst.mMaterial == null
                     || dataAgainst.mMaterial.mMaterial == null
                     || dataAgainst.mPrefix == null
                     || dataAgainst.mPrefix != data.mPrefix) {
@@ -473,8 +430,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             toRpl.set(Materials.Rubber);
     }
 
-    private static void handleDifferentMaterialsOnRecipes(
-            Materials first, Materials second, AtomicReference<? super Materials> toRpl) {
+    private static void handleDifferentMaterialsOnRecipes(Materials first, Materials second,
+            AtomicReference<? super Materials> toRpl) {
         if (!first.equals(second))
             if (first.equals(Materials.Aluminium) && second.equals(Materials.Iron)) toRpl.set(second);
             else if (first.equals(Materials.Steel) && second.equals(Materials.Iron)) toRpl.set(second);
@@ -488,7 +445,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             else if (first.equals(Materials.Polystyrene) && second.equals(Materials.Plastic)) toRpl.set(second);
             else if (first.equals(Materials.Silicone) && second.equals(Materials.Plastic)) toRpl.set(second);
             else if (first.equals(Materials.NetherQuartz)
-                    || first.equals(Materials.CertusQuartz) && second.equals(Materials.Quartzite)) toRpl.set(second);
+                    || first.equals(Materials.CertusQuartz) && second.equals(Materials.Quartzite))
+                toRpl.set(second);
             else if (first.equals(Materials.Plastic) && second.equals(Materials.Wood)) toRpl.set(second);
             else if (first.equals(Materials.Diamond) && second.equals(Materials.Glass)) toRpl.set(second);
     }
@@ -523,6 +481,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     static class DissassembleReference {
+
         final int stackSize;
         ItemStack[] inputs;
         final GT_Recipe recipe;
@@ -560,9 +519,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                     boolean isDone = GT_Utility.areStacksEqual(y, out, true) && y.stackSize <= is.stackSize;
                     if (isDone) stacksize.set(y.stackSize);
                     return isDone;
-                }))
-                .map(x -> new DissassembleReference(stacksize.get(), x.mInputs, x))
-                .collect(Collectors.toList());
+                })).map(x -> new DissassembleReference(stacksize.get(), x.mInputs, x)).collect(Collectors.toList());
 
         // Is there only one way to create it?
         if (possibleRecipes.size() == 1) return possibleRecipes;
@@ -575,21 +532,15 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private static double getCheaperInputs(GT_MetaTileEntity_Disassembler.DissassembleReference x) {
-        double fluidInputValueRaw = Arrays.stream(x.recipe.mFluidInputs)
-                .flatMapToInt(f -> IntStream.of(f.amount))
+        double fluidInputValueRaw = Arrays.stream(x.recipe.mFluidInputs).flatMapToInt(f -> IntStream.of(f.amount))
                 .sum();
         fluidInputValueRaw = fluidInputValueRaw > 0 ? fluidInputValueRaw : 144D;
-        double inputValue = Arrays.stream(x.inputs)
-                        .flatMapToInt(f -> IntStream.of(f.stackSize))
-                        .sum()
+        double inputValue = Arrays.stream(x.inputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum()
                 + (fluidInputValueRaw / 144D);
-        double fluidOutputValueRaw = Arrays.stream(x.recipe.mFluidOutputs)
-                .flatMapToInt(f -> IntStream.of(f.amount))
+        double fluidOutputValueRaw = Arrays.stream(x.recipe.mFluidOutputs).flatMapToInt(f -> IntStream.of(f.amount))
                 .sum();
         fluidOutputValueRaw = fluidOutputValueRaw > 0 ? fluidOutputValueRaw : 144D;
-        double outputValue = Arrays.stream(x.recipe.mOutputs)
-                        .flatMapToInt(f -> IntStream.of(f.stackSize))
-                        .sum()
+        double outputValue = Arrays.stream(x.recipe.mOutputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum()
                 + (fluidOutputValueRaw / 144D);
         return outputValue / inputValue;
     }
@@ -599,8 +550,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     @Override
-    protected boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
                 && aStack.getTagCompound() != null
                 && aStack.getTagCompound().getCompoundTag("GT.CraftingComponents") != null;

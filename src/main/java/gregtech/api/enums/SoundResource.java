@@ -2,20 +2,25 @@ package gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
 
-import com.google.common.collect.Maps;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import net.minecraft.util.ResourceLocation;
+
+import com.google.common.collect.Maps;
 
 /**
  * Enumerates known sounds with id and resource-location
  *
- * <p>Note that the id serve no specific purpose, if for legacy compatibility of
- * a plausible yet unimplemented network packet weight optimization.</p>
+ * <p>
+ * Note that the id serve no specific purpose, if for legacy compatibility of a plausible yet unimplemented network
+ * packet weight optimization.
+ * </p>
  */
 public enum SoundResource {
+
     RANDOM_BREAK(0, "random.break"),
     RANDOM_ANVIL_USE(1, "random.anvil_use"),
     RANDOM_ANVIL_BREAK(2, "random.anvil_break"),
@@ -291,9 +296,7 @@ public enum SoundResource {
     private static final Map<String, SoundResource> RESOURCE_STR_SOUND_MAP = new ConcurrentHashMap<>();
 
     static {
-        EnumSet.allOf(SoundResource.class).forEach(sound -> {
-            if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound);
-        });
+        EnumSet.allOf(SoundResource.class).forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
         EnumSet.allOf(SoundResource.class)
                 .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
     }
@@ -342,7 +345,9 @@ public enum SoundResource {
      *
      * @return The map for the deprecated {@link gregtech.api.GregTech_API#sSoundList}
      * @deprecated This method is planned for removal.
-     * <p>Use this {@link SoundResource} enum instead.</p>
+     *             <p>
+     *             Use this {@link SoundResource} enum instead.
+     *             </p>
      */
     @Deprecated
     public static Map<Integer, String> asSoundList() {

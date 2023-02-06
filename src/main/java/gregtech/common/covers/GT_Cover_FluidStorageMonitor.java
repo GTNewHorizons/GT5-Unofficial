@@ -16,19 +16,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_STORAGE_MONIT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_STORAGE_MONITOR8;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_STORAGE_MONITOR9;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.ITextureBuilder;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.ISerializableObject;
-import io.netty.buffer.ByteBuf;
 import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -45,28 +37,30 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.ITextureBuilder;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import io.netty.buffer.ByteBuf;
+
 /**
  * TODO: Implement overlay rendering only with
  * {@link GT_CoverBehaviorBase#getSpecialCoverFGTextureImpl(byte, int, ISerializableObject, ICoverable)}
  */
 public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_FluidStorageMonitor.FluidStorageData> {
-    private static final IIconContainer[] icons = new IIconContainer[] {
-        OVERLAY_FLUID_STORAGE_MONITOR0,
-        OVERLAY_FLUID_STORAGE_MONITOR1,
-        OVERLAY_FLUID_STORAGE_MONITOR2,
-        OVERLAY_FLUID_STORAGE_MONITOR3,
-        OVERLAY_FLUID_STORAGE_MONITOR4,
-        OVERLAY_FLUID_STORAGE_MONITOR5,
-        OVERLAY_FLUID_STORAGE_MONITOR6,
-        OVERLAY_FLUID_STORAGE_MONITOR7,
-        OVERLAY_FLUID_STORAGE_MONITOR8,
-        OVERLAY_FLUID_STORAGE_MONITOR9,
-        OVERLAY_FLUID_STORAGE_MONITOR10,
-        OVERLAY_FLUID_STORAGE_MONITOR11,
-        OVERLAY_FLUID_STORAGE_MONITOR12,
-        OVERLAY_FLUID_STORAGE_MONITOR13,
-        OVERLAY_FLUID_STORAGE_MONITOR14,
-    };
+
+    private static final IIconContainer[] icons = new IIconContainer[] { OVERLAY_FLUID_STORAGE_MONITOR0,
+            OVERLAY_FLUID_STORAGE_MONITOR1, OVERLAY_FLUID_STORAGE_MONITOR2, OVERLAY_FLUID_STORAGE_MONITOR3,
+            OVERLAY_FLUID_STORAGE_MONITOR4, OVERLAY_FLUID_STORAGE_MONITOR5, OVERLAY_FLUID_STORAGE_MONITOR6,
+            OVERLAY_FLUID_STORAGE_MONITOR7, OVERLAY_FLUID_STORAGE_MONITOR8, OVERLAY_FLUID_STORAGE_MONITOR9,
+            OVERLAY_FLUID_STORAGE_MONITOR10, OVERLAY_FLUID_STORAGE_MONITOR11, OVERLAY_FLUID_STORAGE_MONITOR12,
+            OVERLAY_FLUID_STORAGE_MONITOR13, OVERLAY_FLUID_STORAGE_MONITOR14, };
 
     public GT_Cover_FluidStorageMonitor() {
         super(FluidStorageData.class);
@@ -83,13 +77,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
-    protected FluidStorageData doCoverThingsImpl(
-            byte aSide,
-            byte aInputRedstone,
-            int aCoverID,
-            FluidStorageData aCoverVariable,
-            ICoverable aTileEntity,
-            long aTimer) {
+    protected FluidStorageData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+            FluidStorageData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final FluidTankInfo[] tanks = getValidFluidTankInfos(aTileEntity, aCoverVariable.side);
         if (tanks == null) {
             return aCoverVariable.disable().issueCoverUpdateIfNeeded(aTileEntity, aSide);
@@ -105,25 +94,24 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
             return aCoverVariable.setNullTank().issueCoverUpdateIfNeeded(aTileEntity, aSide);
         }
 
-        return aCoverVariable
-                .setFluid(tank.fluid)
-                .setScale(getTankScale(tank))
+        return aCoverVariable.setFluid(tank.fluid).setScale(getTankScale(tank))
                 .issueCoverUpdateIfNeeded(aTileEntity, aSide);
     }
 
     @Override
-    protected ITexture getSpecialCoverFGTextureImpl(
-            byte aSide, int aCoverID, FluidStorageData aCoverVariable, ICoverable aTileEntity) {
+    protected ITexture getSpecialCoverFGTextureImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+            ICoverable aTileEntity) {
         return getSpecialCoverTextureImpl(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected ITexture getSpecialCoverTextureImpl(
-            byte aSide, int aCoverID, FluidStorageData aCoverVariable, ICoverable aTileEntity) {
+    protected ITexture getSpecialCoverTextureImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+            ICoverable aTileEntity) {
         if (aCoverVariable.slot == -1 || aCoverVariable.fluid == null || aCoverVariable.scale == 0) {
             return TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0);
         }
         final IIconContainer fluidIcon = new IIconContainer() {
+
             @Override
             public IIcon getIcon() {
                 return aCoverVariable.fluid.getStillIcon();
@@ -141,22 +129,14 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         };
 
         final short[] fluidRGBA = colorToRGBA(aCoverVariable.fluid.getColor());
-        final ITextureBuilder fluidTextureBuilder =
-                TextureFactory.builder().addIcon(fluidIcon).setRGBA(fluidRGBA);
+        final ITextureBuilder fluidTextureBuilder = TextureFactory.builder().addIcon(fluidIcon).setRGBA(fluidRGBA);
         if (aCoverVariable.fluid.getLuminosity() > 0) fluidTextureBuilder.glow();
         return TextureFactory.of(fluidTextureBuilder.build(), TextureFactory.of(icons[aCoverVariable.scale]));
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(
-            byte aSide,
-            int aCoverID,
-            FluidStorageData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer == null || aPlayer.worldObj == null || aPlayer.worldObj.isRemote) {
             return false;
         }
@@ -196,8 +176,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         return false;
     }
 
-    protected static ItemStack fillToTank(
-            @Nonnull ItemStack container, @Nonnull IFluidHandler tank, ForgeDirection side) {
+    protected static ItemStack fillToTank(@Nonnull ItemStack container, @Nonnull IFluidHandler tank,
+            ForgeDirection side) {
         final FluidStack fluidToFill = GT_Utility.getFluidForFilledItem(container, true);
         if (fluidToFill == null || fluidToFill.getFluid() == null || fluidToFill.amount <= 0) {
             return null;
@@ -224,11 +204,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         }
     }
 
-    protected static ItemStack fillToContainer(
-            @Nonnull ItemStack container,
-            @Nonnull FluidTankInfo tankInfo,
-            @Nonnull IFluidHandler tank,
-            ForgeDirection side) {
+    protected static ItemStack fillToContainer(@Nonnull ItemStack container, @Nonnull FluidTankInfo tankInfo,
+            @Nonnull IFluidHandler tank, ForgeDirection side) {
         if (tankInfo.fluid == null || tankInfo.fluid.getFluid() == null || tankInfo.fluid.amount <= 0) {
             return null;
         }
@@ -239,13 +216,12 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         if (container.getItem() instanceof IFluidContainerItem) {
             final IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
             final int filled = Math.min(
-                    Optional.ofNullable(tank.drain(
+                    Optional.ofNullable(
+                            tank.drain(
                                     side,
                                     new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)),
                                     false))
-                            .filter(fs -> GT_Utility.areFluidsEqual(fs, tankInfo.fluid))
-                            .map(fs -> fs.amount)
-                            .orElse(0),
+                            .filter(fs -> GT_Utility.areFluidsEqual(fs, tankInfo.fluid)).map(fs -> fs.amount).orElse(0),
                     containerItem.fill(
                             container,
                             new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)),
@@ -266,9 +242,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
                 return null;
             }
             if (Optional.ofNullable(tank.drain(side, filledFluid, false))
-                            .filter(fs -> GT_Utility.areFluidsEqual(fs, filledFluid))
-                            .map(fs -> fs.amount)
-                            .orElse(0)
+                    .filter(fs -> GT_Utility.areFluidsEqual(fs, filledFluid)).map(fs -> fs.amount).orElse(0)
                     != filledFluid.amount) {
                 return null;
             }
@@ -277,28 +251,19 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         }
     }
 
-    protected static void replaceHeldItemStack(
-            @Nonnull EntityPlayer player, @Nonnull ItemStack heldItem, @Nonnull ItemStack result) {
+    protected static void replaceHeldItemStack(@Nonnull EntityPlayer player, @Nonnull ItemStack heldItem,
+            @Nonnull ItemStack result) {
         heldItem.stackSize--;
         GT_Utility.addItemToPlayerInventory(player, result);
         player.inventoryContainer.detectAndSendChanges();
     }
 
     @Override
-    protected FluidStorageData onCoverScrewdriverClickImpl(
-            byte aSide,
-            int aCoverID,
-            FluidStorageData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected FluidStorageData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            aCoverVariable
-                    .setSide(
-                            ForgeDirection.values()[
-                                    (aCoverVariable.side.ordinal() + 1) % ForgeDirection.values().length])
+            aCoverVariable.setSide(
+                    ForgeDirection.values()[(aCoverVariable.side.ordinal() + 1) % ForgeDirection.values().length])
                     .setSlot(0);
             GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("SIDE", "Side: ") + aCoverVariable.side.name());
             return aCoverVariable;
@@ -311,28 +276,28 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         if (aCoverVariable.slot < 0 || tanks.length <= aCoverVariable.slot) {
             aCoverVariable.setSlot(0);
         } else {
-            aCoverVariable.setSlot(
-                    (aCoverVariable.slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
+            aCoverVariable
+                    .setSlot((aCoverVariable.slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
         }
         GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + aCoverVariable.slot);
         return aCoverVariable;
     }
 
     @Override
-    protected boolean isDataNeededOnClientImpl(
-            byte aSide, int aCoverID, FluidStorageData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean isDataNeededOnClientImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(
-            byte aSide, int aCoverID, FluidStorageData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(
-            byte aSide, int aCoverID, FluidStorageData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return true;
     }
 
@@ -341,8 +306,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         return 10;
     }
 
-    protected static FluidTankInfo[] getValidFluidTankInfos(
-            @Nullable ICoverable tileEntity, @Nonnull ForgeDirection side) {
+    protected static FluidTankInfo[] getValidFluidTankInfos(@Nullable ICoverable tileEntity,
+            @Nonnull ForgeDirection side) {
         if (tileEntity instanceof IFluidHandler) {
             final FluidTankInfo[] tanks = ((IFluidHandler) tileEntity).getTankInfo(side);
             if (tanks != null && 0 < tanks.length) {
@@ -360,12 +325,12 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     protected short[] colorToRGBA(int color) {
-        return new short[] {
-            (short) (color >> 16 & 0xFF), (short) (color >> 8 & 0xFF), (short) (color & 0xFF), (short) (0xFF)
-        };
+        return new short[] { (short) (color >> 16 & 0xFF), (short) (color >> 8 & 0xFF), (short) (color & 0xFF),
+                (short) (0xFF) };
     }
 
     public static class FluidStorageData implements ISerializableObject {
+
         private ForgeDirection side;
         private int slot;
         private Fluid fluid;
@@ -390,8 +355,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         }
 
         /**
-         * @param slot
-         *     0-based index of the tank, -1 for no correct FluidTankInfo[] for the current side.
+         * @param slot 0-based index of the tank, -1 for no correct FluidTankInfo[] for the current side.
          */
         public FluidStorageData setSlot(int slot) {
             if (this.slot != slot) {
@@ -497,6 +461,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     protected static class Util {
+
         public static int getFluidID(@Nullable Fluid fluid) {
             return fluid == null ? -1 : fluid.getID();
         }

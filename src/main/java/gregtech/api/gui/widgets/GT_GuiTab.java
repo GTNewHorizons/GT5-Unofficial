@@ -1,19 +1,23 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
-import gregtech.api.gui.widgets.GT_GuiTabLine.GT_ITabRenderer;
-import gregtech.api.interfaces.IGuiIcon;
 import java.awt.Rectangle;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
+import gregtech.api.gui.widgets.GT_GuiTabLine.GT_ITabRenderer;
+import gregtech.api.interfaces.IGuiIcon;
 
 /**
  * A tab to be attached to a tab line
  */
 public class GT_GuiTab {
+
     private static final int SLOT_SIZE = 18;
 
     public boolean visible = true, mousedOver, enabled = true;
@@ -29,24 +33,17 @@ public class GT_GuiTab {
     /**
      * A tab to be attached to a tab line
      *
-     * @param gui IGregTechTileEntity the tab line this tab belongs to is attached to
-     * @param id both the ID and position in the tab line of this tab
-     * @param bounds bounds of this tab
-     * @param tabBackground set of background textures
-     * @param item item to draw atop the background texture, not colored
-     * @param overlay texture to draw atop the background texture, not colored
-     * @param tooltipText tooltip of this tab
+     * @param gui              IGregTechTileEntity the tab line this tab belongs to is attached to
+     * @param id               both the ID and position in the tab line of this tab
+     * @param bounds           bounds of this tab
+     * @param tabBackground    set of background textures
+     * @param item             item to draw atop the background texture, not colored
+     * @param overlay          texture to draw atop the background texture, not colored
+     * @param tooltipText      tooltip of this tab
      * @param flipHorizontally whether to draw this tab on the right side of the IGregTechTileEntity
      */
-    public GT_GuiTab(
-            GT_ITabRenderer gui,
-            int id,
-            Rectangle bounds,
-            GT_GuiTabIconSet tabBackground,
-            ItemStack item,
-            IGuiIcon overlay,
-            String[] tooltipText,
-            boolean flipHorizontally) {
+    public GT_GuiTab(GT_ITabRenderer gui, int id, Rectangle bounds, GT_GuiTabIconSet tabBackground, ItemStack item,
+            IGuiIcon overlay, String[] tooltipText, boolean flipHorizontally) {
         this.gui = gui;
         this.bounds = bounds;
         this.item = item;
@@ -133,13 +130,12 @@ public class GT_GuiTab {
                     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
                 }
                 int margin = (bounds.height - SLOT_SIZE);
-                gui.getItemRenderer()
-                        .renderItemAndEffectIntoGUI(
-                                gui.getFontRenderer(),
-                                Minecraft.getMinecraft().getTextureManager(),
-                                item,
-                                bounds.x + (this.flipHorizontally ? 0 : margin),
-                                bounds.y + margin);
+                gui.getItemRenderer().renderItemAndEffectIntoGUI(
+                        gui.getFontRenderer(),
+                        Minecraft.getMinecraft().getTextureManager(),
+                        item,
+                        bounds.x + (this.flipHorizontally ? 0 : margin),
+                        bounds.y + margin);
 
                 if (item.getItem() instanceof ItemBlock) GL11.glPopAttrib();
 

@@ -1,14 +1,19 @@
 package gregtech.nei;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.nbt.NBTTagCompound;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInterModComms;
+
 public class IMCForNEI {
+
     public static void IMCSender() {
         if (!Loader.isModLoaded("NotEnoughItems")) {
             return;
         }
+
+        sendHandler("gt.recipe.transcendentplasmamixerrecipes", "gregtech:gt.blockmachines:1006", 1);
+        sendCatalyst("gt.recipe.transcendentplasmamixerrecipes", "gregtech:gt.blockmachines:1006");
 
         sendHandler("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004", 1);
         sendCatalyst("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004");

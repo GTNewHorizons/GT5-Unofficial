@@ -1,13 +1,16 @@
 package gregtech.api.enums;
 
-import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.objects.GT_ArrayList;
-import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.objects.GT_ArrayList;
+import gregtech.api.util.GT_Utility;
+
 public enum Dyes implements IColorModulationContainer {
+
     /**
      * The valid Colors, see VALUES Array below
      */
@@ -38,24 +41,8 @@ public enum Dyes implements IColorModulationContainer {
     CONSTRUCTION_FOAM(-1, 64, 64, 64, "Construction Foam"),
     MACHINE_METAL(-1, 210, 220, 255, "Machine Metal");
 
-    public static final Dyes[] VALUES = {
-        dyeBlack,
-        dyeRed,
-        dyeGreen,
-        dyeBrown,
-        dyeBlue,
-        dyePurple,
-        dyeCyan,
-        dyeLightGray,
-        dyeGray,
-        dyePink,
-        dyeLime,
-        dyeYellow,
-        dyeLightBlue,
-        dyeMagenta,
-        dyeOrange,
-        dyeWhite
-    };
+    public static final Dyes[] VALUES = { dyeBlack, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan,
+            dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
 
     public final byte mIndex;
     public final String mName;
@@ -66,7 +53,7 @@ public enum Dyes implements IColorModulationContainer {
     Dyes(int aIndex, int aR, int aG, int aB, String aName) {
         mIndex = (byte) aIndex;
         mName = aName;
-        mRGBa = new short[] {(short) aR, (short) aG, (short) aB, 0};
+        mRGBa = new short[] { (short) aR, (short) aG, (short) aB, 0 };
         mOriginalRGBa = mRGBa.clone();
     }
 

@@ -1,9 +1,11 @@
 package gregtech.api.objects;
 
+import java.util.Random;
+
+import net.minecraftforge.common.config.ConfigCategory;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import java.util.Random;
-import net.minecraftforge.common.config.ConfigCategory;
 
 public class GT_UO_Dimension {
 
@@ -20,8 +22,7 @@ public class GT_UO_Dimension {
         maxChance = 0;
         // GT_FML_LOGGER.info("GT UO "+aConfigCategory.getName()+" Dimension:"+Dimension);
         for (int i = 0; i < aConfigCategory.getChildren().size(); i++) {
-            GT_UO_Fluid fluid = new GT_UO_Fluid(
-                    (ConfigCategory) aConfigCategory.getChildren().toArray()[i]);
+            GT_UO_Fluid fluid = new GT_UO_Fluid((ConfigCategory) aConfigCategory.getChildren().toArray()[i]);
             fFluids.put(fluid.Registry, fluid);
             maxChance += fluid.Chance;
         }

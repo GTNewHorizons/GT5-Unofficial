@@ -2,8 +2,13 @@ package gregtech.common.covers;
 
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.Fluid;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -14,11 +19,9 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_Conveyor extends GT_CoverBehavior {
+
     public final int mTickRate;
     private final int mMaxStacks;
 
@@ -45,14 +48,14 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(
-            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         if ((aCoverVariable % 6 > 1) && ((aTileEntity instanceof IMachineProgress))) {
             if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
                 return aCoverVariable;
@@ -81,15 +84,8 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 12;
         if (aCoverVariable < 0) {
             aCoverVariable = 11;
@@ -216,65 +212,80 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                                    this::getCoverData,
-                                    this::setCoverData,
-                                    GT_Cover_Conveyor.this,
-                                    (id, coverData) -> !getClickable(id, convert(coverData)),
-                                    (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                                            getNewCoverVariable(id, convert(coverData))))
-                            .addToggleButton(
-                                    0,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                                            .addTooltip(GT_Utility.trans("006", "Export"))
-                                            .setPos(spaceX * 0, spaceY * 0))
-                            .addToggleButton(
-                                    1,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
-                                            .addTooltip(GT_Utility.trans("007", "Import"))
-                                            .setPos(spaceX * 1, spaceY * 0))
-                            .addToggleButton(
-                                    2,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
-                                            .addTooltip(GT_Utility.trans("224", "Always On"))
-                                            .setPos(spaceX * 0, spaceY * 1))
-                            .addToggleButton(
-                                    3,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                            .addTooltip(GT_Utility.trans("225", "Active with Redstone Signal"))
-                                            .setPos(spaceX * 1, spaceY * 1))
-                            .addToggleButton(
-                                    4,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                            .addTooltip(GT_Utility.trans("226", "Inactive with Redstone Signal"))
-                                            .setPos(spaceX * 2, spaceY * 1))
-                            .addToggleButton(
-                                    5,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                                            .addTooltip(GT_Utility.trans("227", "Allow Input"))
-                                            .setPos(spaceX * 0, spaceY * 2))
-                            .addToggleButton(
-                                    6,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                                            .addTooltip(GT_Utility.trans("228", "Block Input"))
-                                            .setPos(spaceX * 1, spaceY * 2))
-                            .setPos(startX, startY))
-                    .widget(new TextWidget(GT_Utility.trans("229", "Import/Export"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 3, 3 + startY + spaceY * 0))
-                    .widget(new TextWidget(GT_Utility.trans("230", "Conditional"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 3, 3 + startY + spaceY * 1))
-                    .widget(new TextWidget(GT_Utility.trans("231", "Enable Input"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 3, 3 + startY + spaceY * 2));
+            builder.widget(
+                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_Conveyor.this,
+                            (id, coverData) -> !getClickable(id, convert(coverData)),
+                            (id, coverData) -> new ISerializableObject.LegacyCoverData(
+                                    getNewCoverVariable(id, convert(coverData)))).addToggleButton(
+                                            0,
+                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                                    .addTooltip(GT_Utility.trans("006", "Export"))
+                                                    .setPos(spaceX * 0, spaceY * 0))
+                                            .addToggleButton(
+                                                    1,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                                            .addTooltip(GT_Utility.trans("007", "Import"))
+                                                            .setPos(spaceX * 1, spaceY * 0))
+                                            .addToggleButton(
+                                                    2,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                                            .addTooltip(GT_Utility.trans("224", "Always On"))
+                                                            .setPos(spaceX * 0, spaceY * 1))
+                                            .addToggleButton(
+                                                    3,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                                            .addTooltip(
+                                                                    GT_Utility.trans(
+                                                                            "225",
+                                                                            "Active with Redstone Signal"))
+                                                            .setPos(spaceX * 1, spaceY * 1))
+                                            .addToggleButton(
+                                                    4,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                                            .addTooltip(
+                                                                    GT_Utility.trans(
+                                                                            "226",
+                                                                            "Inactive with Redstone Signal"))
+                                                            .setPos(spaceX * 2, spaceY * 1))
+                                            .addToggleButton(
+                                                    5,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
+                                                            .addTooltip(GT_Utility.trans("227", "Allow Input"))
+                                                            .setPos(spaceX * 0, spaceY * 2))
+                                            .addToggleButton(
+                                                    6,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
+                                                            .addTooltip(GT_Utility.trans("228", "Block Input"))
+                                                            .setPos(spaceX * 1, spaceY * 2))
+                                            .setPos(startX, startY))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("229", "Import/Export"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 0))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("230", "Conditional"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 1))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("231", "Enable Input"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 2));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {

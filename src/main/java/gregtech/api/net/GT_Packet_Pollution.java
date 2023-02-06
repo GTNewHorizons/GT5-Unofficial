@@ -1,12 +1,15 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.common.GT_Client;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.common.GT_Client;
+import io.netty.buffer.ByteBuf;
+
 public class GT_Packet_Pollution extends GT_Packet_New {
+
     private ChunkCoordIntPair chunk;
     private int pollution;
 

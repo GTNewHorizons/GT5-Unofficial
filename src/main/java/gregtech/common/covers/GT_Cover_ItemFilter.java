@@ -3,10 +3,25 @@ package gregtech.common.covers;
 import static gregtech.api.util.GT_Utility.intToStack;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.Fluid;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -19,17 +34,6 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_SlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilter.ItemFilterData> {
 
@@ -59,19 +63,14 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected ItemFilterData doCoverThingsImpl(
-            byte aSide,
-            byte aInputRedstone,
-            int aCoverID,
-            ItemFilterData aCoverVariable,
-            ICoverable aTileEntity,
-            long aTimer) {
+    protected ItemFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+            ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
         Object fromEntity = mExport ? aTileEntity : tTileEntity, toEntity = !mExport ? aTileEntity : tTileEntity;
         byte fromSide = !mExport ? GT_Utility.getOppositeSide(aSide) : aSide,
@@ -96,15 +95,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(
-            byte aSide,
-            int aCoverID,
-            ItemFilterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             aCoverVariable.mFilter = tStack;
@@ -117,75 +109,67 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected ItemFilterData onCoverScrewdriverClickImpl(
-            byte aSide,
-            int aCoverID,
-            ItemFilterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected ItemFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mWhitelist = !aCoverVariable.mWhitelist;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                aCoverVariable.mWhitelist
-                        ? GT_Utility.trans("125.1", "Whitelist Mode")
+                aCoverVariable.mWhitelist ? GT_Utility.trans("125.1", "Whitelist Mode")
                         : GT_Utility.trans("124.1", "Blacklist Mode"));
         return aCoverVariable;
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsRedstoneGoOutImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    protected boolean letsItemsInImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(
-            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 
@@ -229,8 +213,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
             if (getCoverData() != null) {
                 filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
             }
-            builder.widget(new CoverDataControllerWidget<>(
-                                    this::getCoverData, this::setCoverData, GT_Cover_ItemFilter.this)
+            builder.widget(
+                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_ItemFilter.this)
                             .addFollower(
                                     new CoverDataFollower_ToggleButtonWidget<>(),
                                     coverData -> coverData.mWhitelist,
@@ -238,7 +222,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                                         coverData.mWhitelist = state;
                                         return coverData;
                                     },
-                                    widget -> widget.setToggleTexture(
+                                    widget -> widget
+                                            .setToggleTexture(
                                                     GT_UITextures.OVERLAY_BUTTON_WHITELIST,
                                                     GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
                                             .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
@@ -254,12 +239,12 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                                     widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
                                             .setPos(spaceX * 0, spaceY * 2))
                             .setPos(startX, startY))
-                    .widget(new TextWidget(GT_Utility.trans("317", "Filter: "))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
-                    .widget(new TextWidget(GT_Utility.trans("318", "Check Mode"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
+                    .widget(
+                            new TextWidget(GT_Utility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
         }
 
         private ItemStack setStackSize1(ItemStack stack) {
@@ -271,6 +256,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     public static class ItemFilterData implements ISerializableObject {
+
         private boolean mWhitelist;
         private ItemStack mFilter;
 

@@ -1,14 +1,16 @@
 package gregtech.api.gui.modularui;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import gregtech.api.enums.SteamVariant;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.client.Minecraft;
+
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import gregtech.api.enums.SteamVariant;
 
 public class FallbackableSteamTexture {
 

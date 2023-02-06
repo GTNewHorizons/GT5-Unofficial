@@ -19,6 +19,29 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -32,6 +55,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -55,31 +79,12 @@ import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
- * This is the main construct for my Basic Machines such as the Automatic Extractor
- * Extend this class to make a simple Machine
+ * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
+ * Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank
         implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
@@ -87,20 +92,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     /**
      * return values for checkRecipe()
      */
-    protected static final int DID_NOT_FIND_RECIPE = 0,
-            FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
+    protected static final int DID_NOT_FIND_RECIPE = 0, FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
             FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
 
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount, mAmperage;
-    public boolean mAllowInputFromOutputSide = false,
-            mFluidTransfer = false,
-            mItemTransfer = false,
-            mHasBeenUpdated = false,
-            mStuttering = false,
-            mCharge = false,
-            mDecharge = false;
+    public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
+            mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mMainFacing = -1, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
@@ -109,40 +108,23 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     protected final Power mPower;
 
     /**
-     * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have been buffered
+     * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have
+     * been buffered
      */
     protected GT_Recipe mLastRecipe = null;
 
     private FluidStack mFluidOut;
 
     /**
-     * @param aOverlays 0 = SideFacingActive
-     *                  1 = SideFacingInactive
-     *                  2 = FrontFacingActive
-     *                  3 = FrontFacingInactive
-     *                  4 = TopFacingActive
-     *                  5 = TopFacingInactive
-     *                  6 = BottomFacingActive
-     *                  7 = BottomFacingInactive
-     *                  ----- Not all Array Elements have to be initialised, you can also just use 8 Parameters for the Default Pipe Texture Overlays -----
-     *                  8 = BottomFacingPipeActive
-     *                  9 = BottomFacingPipeInactive
-     *                  10 = TopFacingPipeActive
-     *                  11 = TopFacingPipeInactive
-     *                  12 = SideFacingPipeActive
-     *                  13 = SideFacingPipeInactive
+     * @param aOverlays 0 = SideFacingActive 1 = SideFacingInactive 2 = FrontFacingActive 3 = FrontFacingInactive 4 =
+     *                  TopFacingActive 5 = TopFacingInactive 6 = BottomFacingActive 7 = BottomFacingInactive ----- Not
+     *                  all Array Elements have to be initialised, you can also just use 8 Parameters for the Default
+     *                  Pipe Texture Overlays ----- 8 = BottomFacingPipeActive 9 = BottomFacingPipeInactive 10 =
+     *                  TopFacingPipeActive 11 = TopFacingPipeInactive 12 = SideFacingPipeActive 13 =
+     *                  SideFacingPipeInactive
      */
-    public GT_MetaTileEntity_BasicMachine(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aAmperage,
-            String aDescription,
-            int aInputSlotCount,
-            int aOutputSlotCount,
-            String aGUIName,
-            String aNEIName,
+    public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
+            String aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName,
             ITexture... aOverlays) {
         super(
                 aID,
@@ -160,17 +142,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mPower = buildPower();
     }
 
-    public GT_MetaTileEntity_BasicMachine(
-            int aID,
-            String aName,
-            String aNameRegional,
-            int aTier,
-            int aAmperage,
-            String[] aDescription,
-            int aInputSlotCount,
-            int aOutputSlotCount,
-            String aGUIName,
-            String aNEIName,
+    public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
+            String[] aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName,
             ITexture... aOverlays) {
         super(
                 aID,
@@ -188,16 +161,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mPower = buildPower();
     }
 
-    public GT_MetaTileEntity_BasicMachine(
-            String aName,
-            int aTier,
-            int aAmperage,
-            String aDescription,
-            ITexture[][][] aTextures,
-            int aInputSlotCount,
-            int aOutputSlotCount,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String aDescription,
+            ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
@@ -207,16 +172,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mPower = buildPower();
     }
 
-    public GT_MetaTileEntity_BasicMachine(
-            String aName,
-            int aTier,
-            int aAmperage,
-            String[] aDescription,
-            ITexture[][][] aTextures,
-            int aInputSlotCount,
-            int aOutputSlotCount,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
+            ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
@@ -253,12 +210,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         ITexture[][][] rTextures = new ITexture[14][17][];
         aTextures = Arrays.copyOf(aTextures, 14);
 
-        for (int i = 0; i < aTextures.length; i++)
-            if (aTextures[i] != null)
-                for (byte c = -1; c < 16; c++) {
-                    if (rTextures[i][c + 1] == null)
-                        rTextures[i][c + 1] = new ITexture[] {MACHINE_CASINGS[mTier][c + 1], aTextures[i]};
-                }
+        for (int i = 0; i < aTextures.length; i++) if (aTextures[i] != null) for (byte c = -1; c < 16; c++) {
+            if (rTextures[i][c + 1] == null)
+                rTextures[i][c + 1] = new ITexture[] { MACHINE_CASINGS[mTier][c + 1], aTextures[i] };
+        }
 
         for (byte c = -1; c < 16; c++) {
             if (rTextures[0][c + 1] == null) rTextures[0][c + 1] = getSideFacingActive(c);
@@ -280,28 +235,16 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return mTextures[
-                mMainFacing < 2
-                        ? aSide == aFacing
-                                ? aActive ? 2 : 3
-                                : aSide == 0 ? aActive ? 6 : 7 : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1
-                        : aSide == mMainFacing
-                                ? aActive ? 2 : 3
-                                : (showPipeFacing() && aSide == aFacing)
-                                        ? aSide == 0
-                                                ? aActive ? 8 : 9
-                                                : aSide == 1 ? aActive ? 10 : 11 : aActive ? 12 : 13
-                                        : aSide == 0
-                                                ? aActive ? 6 : 7
-                                                : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1][
-                aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return mTextures[mMainFacing < 2
+                ? aSide == aFacing ? aActive ? 2 : 3
+                        : aSide == 0 ? aActive ? 6 : 7 : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1
+                : aSide == mMainFacing ? aActive ? 2 : 3
+                        : (showPipeFacing() && aSide == aFacing)
+                                ? aSide == 0 ? aActive ? 8 : 9 : aSide == 1 ? aActive ? 10 : 11 : aActive ? 12 : 13
+                                : aSide == 0 ? aActive ? 6 : 7
+                                        : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1][aColorIndex + 1];
     }
 
     @Override
@@ -326,8 +269,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex > 0
-                && super.isValidSlot(aIndex)
+        return aIndex > 0 && super.isValidSlot(aIndex)
                 && aIndex != getCircuitSlot()
                 && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
     }
@@ -359,9 +301,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isLiquidInput(byte aSide) {
-        return aSide != mMainFacing
-                && (mAllowInputFromOutputSide
-                        || aSide != getBaseMetaTileEntity().getFrontFacing());
+        return aSide != mMainFacing && (mAllowInputFromOutputSide || aSide != getBaseMetaTileEntity().getFrontFacing());
     }
 
     @Override
@@ -456,8 +396,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return getFillableStack() != null
-                || (getRecipeList() != null && getRecipeList().containsInput(aFluid));
+        return getFillableStack() != null || (getRecipeList() != null && getRecipeList().containsInput(aFluid));
     }
 
     @Override
@@ -556,8 +495,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 aBaseMetaTileEntity,
                 getLocalName(),
                 mGUIName,
-                GT_Utility.isStringValid(mNEIName)
-                        ? mNEIName
+                GT_Utility.isStringValid(mNEIName) ? mNEIName
                         : getRecipeList() != null ? getRecipeList().mUnlocalizedName : "");
     }
 
@@ -565,8 +503,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public void initDefaultModes(NBTTagCompound aNBT) {
         mMainFacing = -1;
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(
-                    getBaseMetaTileEntity().getOwnerUuid());
+            GT_ClientPreference tPreference = GT_Mod.gregtechproxy
+                    .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) {
                 mDisableFilter = !tPreference.isSingleBlockInitialFilterEnabled();
                 mDisableMultiStack = !tPreference.isSingleBlockInitialMultiStackEnabled();
@@ -631,9 +569,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
-                            for (int j = 0; j < mOutputItems.length; j++)
-                                if (aBaseMetaTileEntity.addStackToSlot(
-                                        getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i])) break;
+                            for (int j = 0; j < mOutputItems.length; j++) if (aBaseMetaTileEntity
+                                    .addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
+                                break;
                         if (mOutputFluid != null)
                             if (getDrainableStack() == null) setDrainableStack(mOutputFluid.copy());
                             else if (mOutputFluid.isFluidEqual(getDrainableStack()))
@@ -666,8 +604,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
             boolean tRemovedOutputFluid = false;
 
-            if (doesAutoOutputFluids()
-                    && getDrainableStack() != null
+            if (doesAutoOutputFluids() && getDrainableStack() != null
                     && aBaseMetaTileEntity.getFrontFacing() != mMainFacing
                     && (tSucceeded || aTick % 20 == 0)) {
                 IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
@@ -675,22 +612,21 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                     FluidStack tDrained = drain(1000, false);
                     if (tDrained != null) {
                         int tFilledAmount = tTank.fill(
-                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
-                        if (tFilledAmount > 0)
-                            tTank.fill(
-                                    ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                                    drain(tFilledAmount, true),
-                                    true);
+                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                                tDrained,
+                                false);
+                        if (tFilledAmount > 0) tTank.fill(
+                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                                drain(tFilledAmount, true),
+                                true);
                     }
                 }
                 if (getDrainableStack() == null) tRemovedOutputFluid = true;
             }
 
-            if (doesAutoOutput()
-                    && !isOutputEmpty()
+            if (doesAutoOutput() && !isOutputEmpty()
                     && aBaseMetaTileEntity.getFrontFacing() != mMainFacing
-                    && (tSucceeded
-                            || mOutputBlocked % 300 == 1
+                    && (tSucceeded || mOutputBlocked % 300 == 1
                             || aBaseMetaTileEntity.hasInventoryBeenModified()
                             || aTick % 600 == 0)) {
                 TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
@@ -710,24 +646,21 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                         (byte) 64,
                         (byte) 1,
                         tMaxStacks);
-                //                for (int i = 0, tCosts = 1; i < mOutputItems.length && tCosts > 0 &&
+                // for (int i = 0, tCosts = 1; i < mOutputItems.length && tCosts > 0 &&
                 // aBaseMetaTileEntity.isUniversalEnergyStored(128); i++) {
-                //                    tCosts = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, tTileEntity2,
+                // tCosts = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, tTileEntity2,
                 // aBaseMetaTileEntity.getFrontFacing(), aBaseMetaTileEntity.getBackFacing(), null, false, (byte) 64,
                 // (byte) 1, (byte) 64, (byte) 1);
-                //                    if (tCosts > 0) aBaseMetaTileEntity.decreaseStoredEnergyUnits(tCosts, true);
-                //                }
+                // if (tCosts > 0) aBaseMetaTileEntity.decreaseStoredEnergyUnits(tCosts, true);
+                // }
             }
 
-            if (mOutputBlocked != 0)
-                if (isOutputEmpty()) mOutputBlocked = 0;
-                else mOutputBlocked++;
+            if (mOutputBlocked != 0) if (isOutputEmpty()) mOutputBlocked = 0;
+            else mOutputBlocked++;
 
             if (allowToCheckRecipe()) {
-                if (mMaxProgresstime <= 0
-                        && aBaseMetaTileEntity.isAllowedToWork()
-                        && (tRemovedOutputFluid
-                                || tSucceeded
+                if (mMaxProgresstime <= 0 && aBaseMetaTileEntity.isAllowedToWork()
+                        && (tRemovedOutputFluid || tSucceeded
                                 || aBaseMetaTileEntity.hasInventoryBeenModified()
                                 || aTick % 600 == 0
                                 || aBaseMetaTileEntity.hasWorkJustBeenEnabled())
@@ -764,11 +697,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
-        // Value | Class                                 | Field
-        // 1     | GT_MetaTileEntity_BasicMachine        | mStuttering
-        // 64    | GT_MetaTileEntity_BasicMachine_Bronze | mNeedsSteamVenting
-        aBaseMetaTileEntity.setErrorDisplayID(
-                (aBaseMetaTileEntity.getErrorDisplayID() & ~127)); // | (mStuttering ? 1 : 0));
+        // Value | Class | Field
+        // 1 | GT_MetaTileEntity_BasicMachine | mStuttering
+        // 64 | GT_MetaTileEntity_BasicMachine_Bronze | mNeedsSteamVenting
+        aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
+                                                                                                 // 0));
     }
 
     protected void doDisplayThings() {
@@ -798,8 +731,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 if (ItemList.Display_Fluid.isStackEqual(mInventory[tDisplayStackSlot], true, true))
                     mInventory[tDisplayStackSlot] = null;
             } else {
-                mInventory[tDisplayStackSlot] =
-                        GT_Utility.getFluidDisplayStack(getFillableStack(), true, !displaysStackSize());
+                mInventory[tDisplayStackSlot] = GT_Utility
+                        .getFluidDisplayStack(getFillableStack(), true, !displaysStackSize());
             }
         }
     }
@@ -818,8 +751,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     /**
      * Calcualtes overclocked ness using long integers
-     * @param aEUt          - recipe EUt
-     * @param aDuration     - recipe Duration
+     * 
+     * @param aEUt      - recipe EUt
+     * @param aDuration - recipe Duration
      */
     protected void calculateOverclockedNess(int aEUt, int aDuration) {
         mPower.computePowerUsageAndDuration(aEUt, aDuration);
@@ -842,32 +776,27 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected boolean canOutput(GT_Recipe aRecipe) {
-        return aRecipe != null
-                && (aRecipe.mNeedsEmptyOutput
-                        ? isOutputEmpty() && getDrainableStack() == null
-                        : canOutput(aRecipe.getFluidOutput(0)) && canOutput(aRecipe.mOutputs));
+        return aRecipe != null && (aRecipe.mNeedsEmptyOutput ? isOutputEmpty() && getDrainableStack() == null
+                : canOutput(aRecipe.getFluidOutput(0)) && canOutput(aRecipe.mOutputs));
     }
 
     protected boolean canOutput(ItemStack... aOutputs) {
         if (aOutputs == null) return true;
         ItemStack[] tOutputSlots = getAllOutputs();
         for (int i = 0; i < tOutputSlots.length && i < aOutputs.length; i++)
-            if (tOutputSlots[i] != null
-                    && aOutputs[i] != null
+            if (tOutputSlots[i] != null && aOutputs[i] != null
                     && (!GT_Utility.areStacksEqual(tOutputSlots[i], aOutputs[i], false)
                             || tOutputSlots[i].stackSize + aOutputs[i].stackSize > tOutputSlots[i].getMaxStackSize())) {
-                mOutputBlocked++;
-                return false;
-            }
+                                mOutputBlocked++;
+                                return false;
+                            }
         return true;
     }
 
     protected boolean canOutput(FluidStack aOutput) {
-        return getDrainableStack() == null
-                || aOutput == null
-                || (getDrainableStack().isFluidEqual(aOutput)
-                        && (getDrainableStack().amount <= 0
-                                || getDrainableStack().amount + aOutput.amount <= getCapacity()));
+        return getDrainableStack() == null || aOutput == null
+                || (getDrainableStack().isFluidEqual(aOutput) && (getDrainableStack().amount <= 0
+                        || getDrainableStack().amount + aOutput.amount <= getCapacity()));
     }
 
     protected ItemStack getInputAt(int aIndex) {
@@ -884,11 +813,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     protected boolean isOutputEmpty() {
         boolean rIsEmpty = true;
-        for (ItemStack tOutputSlotContent : getAllOutputs())
-            if (tOutputSlotContent != null) {
-                rIsEmpty = false;
-                break;
-            }
+        for (ItemStack tOutputSlotContent : getAllOutputs()) if (tOutputSlotContent != null) {
+            rIsEmpty = false;
+            break;
+        }
         return rIsEmpty;
     }
 
@@ -973,22 +901,30 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            EnumChatFormatting.BLUE + mNEIName + EnumChatFormatting.RESET,
-            "Progress:",
-            EnumChatFormatting.GREEN + GT_Utility.formatNumbers((mProgresstime / 20)) + EnumChatFormatting.RESET
-                    + " s / " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                    + EnumChatFormatting.RESET + " s",
-            "Stored Energy:",
-            EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(getBaseMetaTileEntity().getStoredEU()) + EnumChatFormatting.RESET
-                    + " EU / " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(getBaseMetaTileEntity().getEUCapacity()) + EnumChatFormatting.RESET
-                    + " EU",
-            "Probably uses: " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(mEUt) + EnumChatFormatting.RESET + " EU/t at " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET + " A"
-        };
+        return new String[] { EnumChatFormatting.BLUE + mNEIName + EnumChatFormatting.RESET, "Progress:",
+                EnumChatFormatting.GREEN + GT_Utility.formatNumbers((mProgresstime / 20))
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                "Stored Energy:",
+                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(getBaseMetaTileEntity().getStoredEU())
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(getBaseMetaTileEntity().getEUCapacity())
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                "Probably uses: " + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(mEUt)
+                        + EnumChatFormatting.RESET
+                        + " EU/t at "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(mEUt == 0 ? 0 : mAmperage)
+                        + EnumChatFormatting.RESET
+                        + " A" };
     }
 
     @Override
@@ -1002,28 +938,29 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;
                 GT_Utility.sendChatToPlayer(
-                        aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                        aPlayer,
+                        StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
-                        mAllowInputFromOutputSide
-                                ? GT_Utility.trans("095", "Input from Output Side allowed")
+                        mAllowInputFromOutputSide ? GT_Utility.trans("095", "Input from Output Side allowed")
                                 : GT_Utility.trans("096", "Input from Output Side forbidden"));
             }
         }
     }
 
     @Override
-    public boolean onSolderingToolRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (!aPlayer.isSneaking()) return false;
         boolean click = super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
         if (click) return true;
         if (aWrenchingSide != mMainFacing) return false;
         mDisableMultiStack = !mDisableMultiStack;
         GT_Utility.sendChatToPlayer(
-                aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
         return true;
     }
 
@@ -1045,10 +982,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (aSide == mMainFacing
-                || aIndex < getInputSlot()
+        if (aSide == mMainFacing || aIndex < getInputSlot()
                 || aIndex >= getInputSlot() + mInputSlotCount
-                || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing())) return false;
+                || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing()))
+            return false;
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
             if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack)
                 return i == aIndex;
@@ -1056,12 +993,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     /**
-     * Test if given stack can be inserted into specified slot.
-     * If mDisableMultiStack is false, before execution of this method it is ensured there is no such kind of item inside any input slots already.
-     * Otherwise, you don't need to check for it anyway.
+     * Test if given stack can be inserted into specified slot. If mDisableMultiStack is false, before execution of this
+     * method it is ensured there is no such kind of item inside any input slots already. Otherwise, you don't need to
+     * check for it anyway.
      */
-    protected boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
         return !mDisableMultiStack || mInventory[aIndex] == null;
     }
 
@@ -1105,7 +1042,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     /**
-     * Override this to check the Recipes yourself, super calls to this could be useful if you just want to add a special case
+     * Override this to check the Recipes yourself, super calls to this could be useful if you just want to add a
+     * special case
      * <p/>
      * I thought about Enum too, but Enum doesn't add support for people adding other return Systems.
      * <p/>
@@ -1129,8 +1067,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     /**
      *
      * @param skipOC disables OverclockedNess calculation and check - if you do you must implement your own method...
-     * @return DID_NOT_FIND_RECIPE = 0,
-     *         FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
+     * @return DID_NOT_FIND_RECIPE = 0, FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
      *         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
      */
     public int checkRecipe(boolean skipOC) {
@@ -1141,13 +1078,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 mLastRecipe,
                 false,
                 V[mTier],
-                new FluidStack[] {getFillableStack()},
+                new FluidStack[] { getFillableStack() },
                 getSpecialSlot(),
                 getAllInputs());
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
 
-        if (GT_Mod.gregtechproxy.mLowGravProcessing
-                && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
+        if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
                 && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
@@ -1156,26 +1092,25 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
         if (tRecipe.mSpecialValue == -200
-                && (getCallbackBase() == null
-                        || !(getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom)
+                && (getCallbackBase() == null || !(getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom)
                         || ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency == 0))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] {getFillableStack()}, getAllInputs()))
+        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         for (int i = 0; i < mOutputItems.length; i++)
             if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
                 mOutputItems[i] = tRecipe.getOutput(i);
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300)
             for (int i = 0; i < mOutputItems.length; i++)
-                if (mOutputItems[i] != null
-                        && getBaseMetaTileEntity().getRandomNumber(10000)
-                                > ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency) {
-                    if (debugCleanroom) {
-                        GT_Log.out.println("BasicMachine: Voiding output due to efficiency failure. mEfficiency = "
-                                + ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency);
-                    }
-                    mOutputItems[i] = null;
-                }
+                if (mOutputItems[i] != null && getBaseMetaTileEntity().getRandomNumber(10000)
+                        > ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency) {
+                            if (debugCleanroom) {
+                                GT_Log.out.println(
+                                        "BasicMachine: Voiding output due to efficiency failure. mEfficiency = "
+                                                + ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency);
+                            }
+                            mOutputItems[i] = null;
+                        }
         mOutputFluid = tRecipe.getFluidOutput(0);
         if (!skipOC) {
             calculateOverclockedNess(tRecipe);
@@ -1187,64 +1122,64 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     public ITexture[] getSideFacingActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getSideFacingInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getFrontFacingActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getFrontFacingInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getTopFacingActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getTopFacingInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getBottomFacingActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getBottomFacingInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1] };
     }
 
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getTopFacingPipeActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getSideFacingPipeActive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
-        return new ITexture[] {MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[] { MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
-    public void getWailaBody(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("stutteringSingleBlock")) {
@@ -1254,35 +1189,40 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             if (isActive) {
                 int mEUt = tag.getInteger("eut");
                 if (mEUt > 0) {
-                    currenttip.add(StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.use",
-                            GT_Utility.formatNumbers(mEUt),
-                            GT_Utility.getColoredTierNameFromVoltage(mEUt)));
+                    currenttip.add(
+                            StatCollector.translateToLocalFormatted(
+                                    "GT5U.waila.energy.use",
+                                    GT_Utility.formatNumbers(mEUt),
+                                    GT_Utility.getColoredTierNameFromVoltage(mEUt)));
                 } else if (mEUt < 0) {
-                    currenttip.add(StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.produce",
-                            GT_Utility.formatNumbers(-mEUt),
-                            GT_Utility.getColoredTierNameFromVoltage(-mEUt)));
+                    currenttip.add(
+                            StatCollector.translateToLocalFormatted(
+                                    "GT5U.waila.energy.produce",
+                                    GT_Utility.formatNumbers(-mEUt),
+                                    GT_Utility.getColoredTierNameFromVoltage(-mEUt)));
                 }
             }
-            currenttip.add(GT_Waila.getMachineProgressString(
-                    isActive, tag.getInteger("maxProgressSingleBlock"), tag.getInteger("progressSingleBlock")));
+            currenttip.add(
+                    GT_Waila.getMachineProgressString(
+                            isActive,
+                            tag.getInteger("maxProgressSingleBlock"),
+                            tag.getInteger("progressSingleBlock")));
         }
 
-        currenttip.add(String.format(
-                "Machine Facing: %s",
-                ForgeDirection.getOrientation(tag.getInteger("mainFacingSingleBlock"))
-                        .name()));
+        currenttip.add(
+                String.format(
+                        "Machine Facing: %s",
+                        ForgeDirection.getOrientation(tag.getInteger("mainFacingSingleBlock")).name()));
 
-        currenttip.add(String.format(
-                "Output Facing: %s",
-                ForgeDirection.getOrientation(tag.getInteger("outputFacingSingleBlock"))
-                        .name()));
+        currenttip.add(
+                String.format(
+                        "Output Facing: %s",
+                        ForgeDirection.getOrientation(tag.getInteger("outputFacingSingleBlock")).name()));
     }
 
     @Override
-    public void getWailaNBTData(
-            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         tag.setInteger("progressSingleBlock", mProgresstime);
@@ -1324,10 +1264,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (getRecipeList() != null) {
             getRecipeList().addGregTechLogoUI(builder, new Pos2d(0, 0));
         } else {
-            builder.widget(new DrawableWidget()
-                    .setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 63));
+            builder.widget(
+                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                            .setPos(152, 63));
         }
     }
 
@@ -1342,31 +1281,32 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
         builder.widget(createChargerSlot(79, 62));
         if (getRecipeList() != null) {
-            builder.widget(setNEITransferRect(
-                    createProgressBar(
-                            isSteampowered()
-                                    ? getRecipeList().getProgressBarTextureSteam(getSteamVariant())
-                                    : getRecipeList().getProgressBarTexture(),
-                            getRecipeList().getProgressBarImageSize(),
-                            getRecipeList().progressBarDirection,
-                            getRecipeList().progressBarPos,
-                            getRecipeList().progressBarSize),
-                    getRecipeList().mNEIName));
+            builder.widget(
+                    setNEITransferRect(
+                            createProgressBar(
+                                    isSteampowered() ? getRecipeList().getProgressBarTextureSteam(getSteamVariant())
+                                            : getRecipeList().getProgressBarTexture(),
+                                    getRecipeList().getProgressBarImageSize(),
+                                    getRecipeList().progressBarDirection,
+                                    getRecipeList().progressBarPos,
+                                    getRecipeList().progressBarSize),
+                            getRecipeList().mNEIName));
             addProgressBarSpecialTextures(builder);
         }
-        builder.widget(createErrorStatusArea(
-                builder,
-                isSteampowered() ? GT_UITextures.PICTURE_STALLED_STEAM : GT_UITextures.PICTURE_STALLED_ELECTRICITY));
+        builder.widget(
+                createErrorStatusArea(
+                        builder,
+                        isSteampowered() ? GT_UITextures.PICTURE_STALLED_STEAM
+                                : GT_UITextures.PICTURE_STALLED_ELECTRICITY));
     }
 
     /**
      * Adds item I/O, special item, and fluid I/O slots.
      */
     protected void addIOSlots(ModularWindow.Builder builder) {
-        final boolean hasFluidInput =
-                getRecipeList() != null ? (getRecipeList().hasFluidInputs()) : (getCapacity() != 0);
-        final boolean hasFluidOutput =
-                getRecipeList() != null && getRecipeList().hasFluidOutputs();
+        final boolean hasFluidInput = getRecipeList() != null ? (getRecipeList().hasFluidInputs())
+                : (getCapacity() != 0);
+        final boolean hasFluidOutput = getRecipeList() != null && getRecipeList().hasFluidOutputs();
         UIHelper.forEachSlots(
                 (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
@@ -1388,59 +1328,48 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      * Override this as needed instead of calling.
      */
     protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, getInputSlot() + index)
-                .setAccess(true, true)
-                .setBackground(backgrounds)
-                .setPos(pos);
+        return (SlotWidget) new SlotWidget(inventoryHandler, getInputSlot() + index).setAccess(true, true)
+                .setBackground(backgrounds).setPos(pos);
     }
 
     /**
      * Override this as needed instead of calling.
      */
     protected SlotWidget createItemOutputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, getOutputSlot() + index)
-                .setAccess(true, false)
-                .setBackground(backgrounds)
-                .setPos(pos);
+        return (SlotWidget) new SlotWidget(inventoryHandler, getOutputSlot() + index).setAccess(true, false)
+                .setBackground(backgrounds).setPos(pos);
     }
 
     /**
      * Override this as needed instead of calling.
      */
     protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, getSpecialSlotIndex())
-                .setAccess(true, true)
+        return (SlotWidget) new SlotWidget(inventoryHandler, getSpecialSlotIndex()).setAccess(true, true)
                 .disableShiftInsert()
-                .setGTTooltip(() -> mTooltipCache.getData(
-                        getRecipeList() != null && getRecipeList().usesSpecialSlot()
-                                ? SPECIAL_SLOT_TOOLTIP
-                                : UNUSED_SLOT_TOOLTIP))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(backgrounds)
-                .setPos(pos);
+                .setGTTooltip(
+                        () -> mTooltipCache.getData(
+                                getRecipeList() != null && getRecipeList().usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
+                                        : UNUSED_SLOT_TOOLTIP))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setBackground(backgrounds).setPos(pos);
     }
 
     protected FluidDisplaySlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return (FluidDisplaySlotWidget) new FluidDisplaySlotWidget(
-                        inventoryHandler, OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length)
-                .setFluidAccessConstructor(() -> constructFluidAccess(true))
-                .setIHasFluidDisplay(this)
-                .setCanDrain(true)
-                .setCanFill(true)
-                .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
-                .setBeforeRealClick((clickData, widget) -> {
-                    if (NetworkUtils.isClient()) {
-                        // propagate display item content to actual fluid stored in this tank
-                        setFillableStack(GT_Utility.getFluidFromDisplayStack(
-                                widget.getMcSlot().getStack()));
-                    }
-                    return true;
-                })
-                .setUpdateFluidDisplayItem(this::updateFluidInputDisplayItem)
-                .setGTTooltip(() -> mTooltipCache.getData(FLUID_INPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(backgrounds)
-                .setPos(pos);
+                inventoryHandler,
+                OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length)
+                        .setFluidAccessConstructor(() -> constructFluidAccess(true)).setIHasFluidDisplay(this)
+                        .setCanDrain(true).setCanFill(true).setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                        .setBeforeRealClick((clickData, widget) -> {
+                            if (NetworkUtils.isClient()) {
+                                // propagate display item content to actual fluid stored in this tank
+                                setFillableStack(GT_Utility.getFluidFromDisplayStack(widget.getMcSlot().getStack()));
+                            }
+                            return true;
+                        }).setUpdateFluidDisplayItem(this::updateFluidInputDisplayItem)
+                        .setGTTooltip(
+                                () -> mTooltipCache
+                                        .getData(FLUID_INPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setBackground(backgrounds).setPos(pos);
     }
 
     protected FluidDisplaySlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
@@ -1448,9 +1377,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 .setUpdateFluidDisplayItem(this::updateFluidOutputDisplayItem)
                 .setGTTooltip(
                         () -> mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(backgrounds)
-                .setPos(pos);
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setBackground(backgrounds).setPos(pos);
     }
 
     @Override
@@ -1464,35 +1391,26 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected CycleButtonWidget createItemAutoOutputButton() {
-        return (CycleButtonWidget) new CycleButtonWidget()
-                .setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
+        return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(25, 62)
-                .setSize(18, 18);
+                .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)).setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(25, 62).setSize(18, 18);
     }
 
     protected CycleButtonWidget createFluidAutoOutputButton() {
-        return (CycleButtonWidget) new CycleButtonWidget()
-                .setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
+        return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setGTTooltip(() -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(7, 62)
-                .setSize(18, 18);
+                .setGTTooltip(() -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)).setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(7, 62).setSize(18, 18);
     }
 
-    protected ProgressBar createProgressBar(
-            UITexture texture, int imageSize, ProgressBar.Direction direction, Pos2d pos, Size size) {
+    protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
+            Pos2d pos, Size size) {
         final ProgressBar ret = new ProgressBar();
         ret.setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
-                .setTexture(texture, imageSize)
-                .setDirection(direction)
-                .setPos(pos)
-                .setSize(size);
+                .setTexture(texture, imageSize).setDirection(direction).setPos(pos).setSize(size);
         return ret;
     }
 
@@ -1505,13 +1423,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             final Power powerInfo = getPower();
             final String transferRectTooltip;
             if (isSteampowered()) {
-                transferRectTooltip =
-                        StatCollector.translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
+                transferRectTooltip = StatCollector
+                        .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
             } else {
-                transferRectTooltip = StatCollector.translateToLocalFormatted(
-                        NEI_TRANSFER_VOLTAGE_TOOLTIP, powerInfo.getTierString());
+                transferRectTooltip = StatCollector
+                        .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, powerInfo.getTierString());
             }
-            widget.setNEITransferRect(transferRectID, new Object[] {powerInfo}, transferRectTooltip);
+            widget.setNEITransferRect(transferRectID, new Object[] { powerInfo }, transferRectTooltip);
         }
         return widget;
     }
@@ -1519,30 +1437,25 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     protected void addProgressBarSpecialTextures(ModularWindow.Builder builder) {
         if (isSteampowered()) {
             for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTexturesSteam) {
-                builder.widget(new DrawableWidget()
-                        .setDrawable(specialTexture.getLeft().get(getSteamVariant()))
-                        .setSize(specialTexture.getRight().getLeft())
-                        .setPos(specialTexture.getRight().getRight()));
+                builder.widget(
+                        new DrawableWidget().setDrawable(specialTexture.getLeft().get(getSteamVariant()))
+                                .setSize(specialTexture.getRight().getLeft())
+                                .setPos(specialTexture.getRight().getRight()));
             }
         } else {
             for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTextures) {
-                builder.widget(new DrawableWidget()
-                        .setDrawable(specialTexture.getLeft())
-                        .setSize(specialTexture.getRight().getLeft())
-                        .setPos(specialTexture.getRight().getRight()));
+                builder.widget(
+                        new DrawableWidget().setDrawable(specialTexture.getLeft())
+                                .setSize(specialTexture.getRight().getLeft())
+                                .setPos(specialTexture.getRight().getRight()));
             }
         }
     }
 
     protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
-        return (DrawableWidget) new DrawableWidget()
-                .setDrawable(picture)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setEnabled(widget -> !widget.getTooltip().isEmpty())
-                .dynamicTooltip(this::getErrorDescriptions)
-                .dynamicTooltipShift(this::getErrorDescriptionsShift)
-                .setPos(79, 44)
-                .setSize(18, 18)
+        return (DrawableWidget) new DrawableWidget().setDrawable(picture).setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setEnabled(widget -> !widget.getTooltip().isEmpty()).dynamicTooltip(this::getErrorDescriptions)
+                .dynamicTooltipShift(this::getErrorDescriptionsShift).setPos(79, 44).setSize(18, 18)
                 .attachSyncer(
                         new FakeSyncWidget.BooleanSyncer(() -> mStuttering, val -> mStuttering = val),
                         builder,

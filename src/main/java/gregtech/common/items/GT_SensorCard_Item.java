@@ -1,14 +1,10 @@
 package gregtech.common.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.util.GT_LanguageManager;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,9 +13,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+
 import shedar.mods.ic2.nuclearcontrol.api.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
+import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.util.GT_LanguageManager;
 
 public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor, IPanelDataSource {
+
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
 
     private int strCount;
@@ -38,8 +41,12 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
                 aList.add(transItem("014", "Missing Coodinates!"));
             } else {
                 aList.add(transItem("015", "Device at:"));
-                aList.add(String.format(
-                        "x: %d, y: %d, z: %d", tNBT.getInteger("x"), tNBT.getInteger("y"), tNBT.getInteger("z")));
+                aList.add(
+                        String.format(
+                                "x: %d, y: %d, z: %d",
+                                tNBT.getInteger("x"),
+                                tNBT.getInteger("y"),
+                                tNBT.getInteger("z")));
             }
         }
     }

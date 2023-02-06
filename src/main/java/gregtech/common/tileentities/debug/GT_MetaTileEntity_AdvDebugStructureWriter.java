@@ -3,6 +3,20 @@ package gregtech.common.tileentities.debug;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.HashMap;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -14,6 +28,7 @@ import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,34 +43,24 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import java.util.HashMap;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock
         implements IAddGregtechLogo, IAddUIWidgets {
-    private static final HashMap<GT_MetaTileEntity_AdvDebugStructureWriter, BoundHighlighter> bondingBoxes =
-            new HashMap<>(1);
+
+    private static final HashMap<GT_MetaTileEntity_AdvDebugStructureWriter, BoundHighlighter> bondingBoxes = new HashMap<>(
+            1);
     private final BoundHighlighter boundingBox = new BoundHighlighter();
     private final short[] numbers = new short[6];
     private boolean transpose = false;
     private boolean showHighlightBox = true;
-    private String[] result = new String[] {"Undefined"};
+    private String[] result = new String[] { "Undefined" };
 
     public GT_MetaTileEntity_AdvDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
-    public GT_MetaTileEntity_AdvDebugStructureWriter(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_AdvDebugStructureWriter(String aName, int aTier, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -65,25 +70,13 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-            aSide != aFacing
-                    ? TextureFactory.of(TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE)
-                            .glow()
-                            .build())
-                    : TextureFactory.of(TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.STRUCTURE_MARK)
-                            .glow()
-                            .build())
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+                aSide != aFacing ? TextureFactory.of(
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE).glow().build())
+                        : TextureFactory.of(
+                                TextureFactory.builder().addIcon(Textures.BlockIcons.STRUCTURE_MARK).glow().build()) };
     }
 
     @Override
@@ -133,8 +126,8 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            ExtendedFacing writerFacing =
-                    ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()));
+            ExtendedFacing writerFacing = ExtendedFacing
+                    .of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()));
             double[] abc = new double[3];
             double[] xyz = new double[3];
             boundingBox.dim = aBaseMetaTileEntity.getWorld().provider.dimensionId;
@@ -215,11 +208,10 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip"), // Scans Blocks Around
-            translateToLocal(
-                    "GT5U.machines.advdebugstructurewriter.tooltip.1"), // Prints Multiblock NonTE structure check code
-            translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip.2") // ABC axes aligned to machine front
+        return new String[] { translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip"), // Scans Blocks Around
+                translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip.1"), // Prints Multiblock NonTE
+                                                                                     // structure check code
+                translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip.2") // ABC axes aligned to machine front
         };
     }
 
@@ -240,76 +232,73 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setSize(90, 112)
-                        .setPos(43, 4))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> {
-                            if (getBaseMetaTileEntity().isServerSide()) {
-                                printStructure(widget.getContext().getPlayer());
-                            }
-                        })
-                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PRINT)
-                        .setSize(18, 18)
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 112).setPos(43, 4))
+                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (getBaseMetaTileEntity().isServerSide()) {
+                        printStructure(widget.getContext().getPlayer());
+                    }
+                }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PRINT).setSize(18, 18)
                         .setPos(11, 128)
                         .addTooltip(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.print.tooltip")))
-                .widget(new CycleButtonWidget()
-                        .setToggle(() -> transpose, aBoolean -> transpose = aBoolean)
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                        .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TRANSPOSE)
-                        .setSize(18, 18)
-                        .setPos(32, 128)
-                        .addTooltip(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip")))
-                .widget(new CycleButtonWidget()
-                        .setToggle(() -> showHighlightBox, aBoolean -> showHighlightBox = aBoolean)
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                        .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BOUNDING_BOX)
-                        .setSize(18, 18)
-                        .setPos(53, 128)
-                        .addTooltip(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip")))
-                .widget(new MultiChildWidget()
-                        .addChild(new TextWidget(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.origin"))
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 0))
-                        .addChild(TextWidget.dynamicString(() -> "A: " + numbers[0])
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 10))
-                        .addChild(TextWidget.dynamicString(() -> "B: " + numbers[1])
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 18))
-                        .addChild(TextWidget.dynamicString(() -> "C: " + numbers[2])
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 26))
-                        .addChild(new TextWidget(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.size"))
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 52))
-                        .addChild(TextWidget.dynamicString(() -> "A: " + numbers[3])
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 62))
-                        .addChild(TextWidget.dynamicString(() -> "B: " + numbers[4])
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 70))
-                        .addChild(TextWidget.dynamicString(() -> "C: " + numbers[5])
-                                .setDefaultColor(0xf0f0ff)
-                                .setPos(0, 78))
-                        .setPos(46, 8));
+                .widget(
+                        new CycleButtonWidget().setToggle(() -> transpose, aBoolean -> transpose = aBoolean)
+                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TRANSPOSE).setSize(18, 18)
+                                .setPos(32, 128).addTooltip(
+                                        translateToLocal(
+                                                "GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip")))
+                .widget(
+                        new CycleButtonWidget()
+                                .setToggle(() -> showHighlightBox, aBoolean -> showHighlightBox = aBoolean)
+                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BOUNDING_BOX).setSize(18, 18)
+                                .setPos(53, 128).addTooltip(
+                                        translateToLocal(
+                                                "GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip")))
+                .widget(
+                        new MultiChildWidget().addChild(
+                                new TextWidget(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.origin"))
+                                        .setDefaultColor(0xf0f0ff).setPos(0, 0))
+                                .addChild(
+                                        TextWidget.dynamicString(() -> "A: " + numbers[0]).setDefaultColor(0xf0f0ff)
+                                                .setPos(0, 10))
+                                .addChild(
+                                        TextWidget.dynamicString(() -> "B: " + numbers[1]).setDefaultColor(0xf0f0ff)
+                                                .setPos(0, 18))
+                                .addChild(
+                                        TextWidget.dynamicString(() -> "C: " + numbers[2]).setDefaultColor(0xf0f0ff)
+                                                .setPos(0, 26))
+                                .addChild(
+                                        new TextWidget(
+                                                translateToLocal("GT5U.machines.advdebugstructurewriter.gui.size"))
+                                                        .setDefaultColor(0xf0f0ff).setPos(0, 52))
+                                .addChild(
+                                        TextWidget.dynamicString(() -> "A: " + numbers[3]).setDefaultColor(0xf0f0ff)
+                                                .setPos(0, 62))
+                                .addChild(
+                                        TextWidget.dynamicString(() -> "B: " + numbers[4]).setDefaultColor(0xf0f0ff)
+                                                .setPos(0, 70))
+                                .addChild(
+                                        TextWidget.dynamicString(() -> "C: " + numbers[5]).setDefaultColor(0xf0f0ff)
+                                                .setPos(0, 78))
+                                .setPos(46, 8));
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
     }
 
-    private void addChangeNumberButtons(
-            ModularWindow.Builder builder, IDrawable overlay, int addNumberShift, int addNumber, int xPos) {
-        int[] yPos = new int[] {4, 22, 40, 62, 80, 98};
+    private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
+            int addNumber, int xPos) {
+        int[] yPos = new int[] { 4, 22, 40, 62, 80, 98 };
         for (int i = 0; i < yPos.length; i++) {
             final int index = i; // needed for lambda
-            builder.widget(new ButtonWidget()
-                    .setOnClick((clickData, widget) -> numbers[index] += clickData.shift ? addNumberShift : addNumber)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
-                    .setSize(18, 18)
-                    .setPos(xPos, yPos[index]));
+            builder.widget(
+                    new ButtonWidget().setOnClick(
+                            (clickData, widget) -> numbers[index] += clickData.shift ? addNumberShift : addNumber)
+                            .setBackground(GT_UITextures.BUTTON_STANDARD, overlay).setSize(18, 18)
+                            .setPos(xPos, yPos[index]));
         }
     }
 
@@ -320,10 +309,8 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(113, 96));
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(113, 96));
     }
 
     @Override
@@ -332,6 +319,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     public static class ForgeEventHandler {
+
         public ForgeEventHandler() {
             MinecraftForge.EVENT_BUS.register(this);
         }
@@ -347,6 +335,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     private static class BoundHighlighter {
+
         public Vec3Impl pos1;
         public Vec3Impl pos2;
         public boolean showHighlightBox;

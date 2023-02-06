@@ -1,14 +1,5 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,10 +8,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.gui.GT_GUICover;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
+import io.netty.buffer.ByteBuf;
+
 /**
  * Server -> Client: Show GUI
  */
 public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
+
     protected int mX;
     protected short mY;
     protected int mZ;
@@ -35,8 +38,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_TileEntityCoverGUI(
-            int mX, short mY, int mZ, byte coverSide, int coverID, int coverData, int dimID, int playerID) {
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID, int coverData, int dimID,
+            int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -51,15 +54,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = -1;
     }
 
-    public GT_Packet_TileEntityCoverGUI(
-            int mX,
-            short mY,
-            int mZ,
-            byte coverSide,
-            int coverID,
-            ISerializableObject coverData,
-            int dimID,
-            int playerID) {
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
+            ISerializableObject coverData, int dimID, int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -89,16 +85,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = parentGuiId;
     }
 
-    public GT_Packet_TileEntityCoverGUI(
-            int mX,
-            short mY,
-            int mZ,
-            byte coverSide,
-            int coverID,
-            ISerializableObject coverData,
-            int dimID,
-            int playerID,
-            int parentGuiId) {
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
+            ISerializableObject coverData, int dimID, int playerID, int parentGuiId) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -112,8 +100,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = parentGuiId;
     }
 
-    public GT_Packet_TileEntityCoverGUI(
-            byte side, int coverID, int coverData, ICoverable tile, EntityPlayerMP aPlayer) {
+    public GT_Packet_TileEntityCoverGUI(byte side, int coverID, int coverData, ICoverable tile,
+            EntityPlayerMP aPlayer) {
         super(false);
 
         this.mX = tile.getXCoord();
@@ -143,8 +131,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = -1;
     }
 
-    public GT_Packet_TileEntityCoverGUI(
-            byte side, int coverID, ISerializableObject coverData, ICoverable tile, EntityPlayerMP aPlayer) {
+    public GT_Packet_TileEntityCoverGUI(byte side, int coverID, ISerializableObject coverData, ICoverable tile,
+            EntityPlayerMP aPlayer) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();

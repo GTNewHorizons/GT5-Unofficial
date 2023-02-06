@@ -2,15 +2,17 @@ package gregtech.common.covers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.ISerializableObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+
 public class GT_Cover_SolarPanel extends GT_CoverBehavior {
+
     private final int mVoltage;
 
     public GT_Cover_SolarPanel(int aVoltage) {
@@ -18,14 +20,14 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(
-            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         if (aSide != 1) return 0;
         int coverState = aCoverVariable & 0x3;
         int coverNum = aCoverVariable >> 2;
@@ -61,15 +63,9 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(
-            byte aSide,
-            int aCoverID,
-            ISerializableObject.LegacyCoverData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
+            float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
             GT_Utility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable.get() >> 2) + "% dirt");
             aCoverVariable.set(aCoverVariable.get() & 0x3);
@@ -82,7 +78,8 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
                 aPlayer.inventory.mainInventory[i] = new ItemStack(Items.bucket);
                 if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
                 GT_Utility.sendChatToPlayer(
-                        aPlayer, "Cleaned solar panel from " + (aCoverVariable.get() >> 2) + "% dirt");
+                        aPlayer,
+                        "Cleaned solar panel from " + (aCoverVariable.get() >> 2) + "% dirt");
                 aCoverVariable.set(aCoverVariable.get() & 0x3);
                 return true;
             }
@@ -93,15 +90,8 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean onCoverRightclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
             GT_Utility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable >> 2) + "% dirt");
             aTileEntity.setCoverDataAtSide(aSide, (aCoverVariable & 0x3));

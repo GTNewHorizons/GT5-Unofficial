@@ -1,8 +1,10 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.enums.HeatingCoilLevel;
 import java.util.function.Consumer;
+
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.HeatingCoilLevel;
 
 public interface IHeatingCoil {
 

@@ -1,13 +1,15 @@
 package gregtech.api.graphs.paths;
 
+import net.minecraft.server.MinecraftServer;
+
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import net.minecraft.server.MinecraftServer;
 
 // path for cables
 // all calculations like amp and voltage happens here
 public class PowerNodePath extends NodePath {
+
     long mMaxAmps;
     long mAmps = 0;
     long mLoss;

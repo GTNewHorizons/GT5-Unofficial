@@ -24,9 +24,8 @@ public class NEIRecipeInfo {
     public final GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe;
 
     /**
-     * When user looks up usage for machine, NEI will show all the recipes that the machine can process,
-     * taking tier of the machine into consideration.
-     * This object can be used to show info around overclocked EU/t and duration.
+     * When user looks up usage for machine, NEI will show all the recipes that the machine can process, taking tier of
+     * the machine into consideration. This object can be used to show info around overclocked EU/t and duration.
      */
     public final Power power;
 
@@ -35,12 +34,8 @@ public class NEIRecipeInfo {
      */
     public int yPos;
 
-    public NEIRecipeInfo(
-            GT_Recipe recipe,
-            GT_Recipe.GT_Recipe_Map recipeMap,
-            GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe,
-            Power power,
-            int descriptionYOffset) {
+    public NEIRecipeInfo(GT_Recipe recipe, GT_Recipe.GT_Recipe_Map recipeMap,
+            GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe, Power power, int descriptionYOffset) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.neiCachedRecipe = neiCachedRecipe;

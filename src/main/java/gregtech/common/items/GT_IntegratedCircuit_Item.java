@@ -3,7 +3,31 @@ package gregtech.common.items;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.FakePlayer;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.gtnewhorizons.modularui.api.UIInfos;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -21,28 +45,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.FakePlayer;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetworkUpdatableItem {
+
     private static final String aTextEmptyRow = "   ";
     private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>();
     protected IIcon[] mIconDamage = new IIcon[25];
@@ -64,81 +69,105 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         GT_ModHandler.addShapelessCraftingRecipe(
                 ItemList.Circuit_Integrated.getWithDamage(1L, 0L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {OrePrefixes.circuit.get(Materials.Basic)});
+                new Object[] { OrePrefixes.circuit.get(Materials.Basic) });
         long bits = GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 1L), bits, new Object[] {
-            "d  ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 2L), bits, new Object[] {
-            " d ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 3L), bits, new Object[] {
-            "  d", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 4L), bits, new Object[] {
-            aTextEmptyRow, " Pd", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 5L), bits, new Object[] {
-            aTextEmptyRow, " P ", "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 6L), bits, new Object[] {
-            aTextEmptyRow, " P ", " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 7L), bits, new Object[] {
-            aTextEmptyRow, " P ", "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 8L), bits, new Object[] {
-            aTextEmptyRow, "dP ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 1L),
+                bits,
+                new Object[] { "d  ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 2L),
+                bits,
+                new Object[] { " d ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 3L),
+                bits,
+                new Object[] { "  d", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 4L),
+                bits,
+                new Object[] { aTextEmptyRow, " Pd", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 5L),
+                bits,
+                new Object[] { aTextEmptyRow, " P ", "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 6L),
+                bits,
+                new Object[] { aTextEmptyRow, " P ", " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 7L),
+                bits,
+                new Object[] { aTextEmptyRow, " P ", "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 8L),
+                bits,
+                new Object[] { aTextEmptyRow, "dP ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 9L), bits, new Object[] {
-            "P d", aTextEmptyRow, aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 10L), bits, new Object[] {
-            "P  ", "  d", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 11L), bits, new Object[] {
-            "P  ", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 12L), bits, new Object[] {
-            "P  ", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 13L), bits, new Object[] {
-            "  P", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 14L), bits, new Object[] {
-            "  P", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 15L), bits, new Object[] {
-            "  P", aTextEmptyRow, "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 16L), bits, new Object[] {
-            "  P", "d  ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 17L), bits, new Object[] {
-            aTextEmptyRow, aTextEmptyRow, "d P", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 18L), bits, new Object[] {
-            aTextEmptyRow, "d  ", "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 19L), bits, new Object[] {
-            "d  ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 20L), bits, new Object[] {
-            " d ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 21L), bits, new Object[] {
-            "d  ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 22L), bits, new Object[] {
-            " d ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 23L), bits, new Object[] {
-            "  d", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
-        GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 24L), bits, new Object[] {
-            aTextEmptyRow, "  d", "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)
-        });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 9L),
+                bits,
+                new Object[] { "P d", aTextEmptyRow, aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 10L),
+                bits,
+                new Object[] { "P  ", "  d", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 11L),
+                bits,
+                new Object[] { "P  ", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 12L),
+                bits,
+                new Object[] { "P  ", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 13L),
+                bits,
+                new Object[] { "  P", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 14L),
+                bits,
+                new Object[] { "  P", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 15L),
+                bits,
+                new Object[] { "  P", aTextEmptyRow, "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 16L),
+                bits,
+                new Object[] { "  P", "d  ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 17L),
+                bits,
+                new Object[] { aTextEmptyRow, aTextEmptyRow, "d P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 18L),
+                bits,
+                new Object[] { aTextEmptyRow, "d  ", "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 19L),
+                bits,
+                new Object[] { "d  ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 20L),
+                bits,
+                new Object[] { " d ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 21L),
+                bits,
+                new Object[] { "d  ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 22L),
+                bits,
+                new Object[] { " d ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 23L),
+                bits,
+                new Object[] { "  d", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Circuit_Integrated.getWithDamage(1L, 24L),
+                bits,
+                new Object[] { aTextEmptyRow, "  d", "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
     }
 
     private static String getModeString(int aMetaData) {
@@ -164,25 +193,18 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
-        aList.add(GT_LanguageManager.addStringLocalization(
-                        new StringBuilder()
-                                .append(getUnlocalizedName())
-                                .append(".configuration")
-                                .toString(),
-                        "Configuration: ")
-                + getConfigurationString(getDamage(aStack)));
-        aList.add(GT_LanguageManager.addStringLocalization(
-                new StringBuilder()
-                        .append(getUnlocalizedName())
-                        .append(".tooltip.0")
-                        .toString(),
-                "Right click to reconfigure"));
-        aList.add(GT_LanguageManager.addStringLocalization(
-                new StringBuilder()
-                        .append(getUnlocalizedName())
-                        .append(".tooltip.1")
-                        .toString(),
-                "Needs a screwdriver or circuit programming tool"));
+        aList.add(
+                GT_LanguageManager.addStringLocalization(
+                        new StringBuilder().append(getUnlocalizedName()).append(".configuration").toString(),
+                        "Configuration: ") + getConfigurationString(getDamage(aStack)));
+        aList.add(
+                GT_LanguageManager.addStringLocalization(
+                        new StringBuilder().append(getUnlocalizedName()).append(".tooltip.0").toString(),
+                        "Right click to reconfigure"));
+        aList.add(
+                GT_LanguageManager.addStringLocalization(
+                        new StringBuilder().append(getUnlocalizedName()).append(".tooltip.1").toString(),
+                        "Needs a screwdriver or circuit programming tool"));
     }
 
     @Override
@@ -201,8 +223,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     public void registerIcons(IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
         for (int i = 0; i < mIconDamage.length; i++) {
-            mIconDamage[i] = aIconRegister.registerIcon(
-                    RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            mIconDamage[i] = aIconRegister
+                    .registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
         if (GregTech_API.sPostloadFinished) {
             GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
@@ -259,13 +281,15 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
                     count = Integer.parseInt(
                             StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
                 } catch (NumberFormatException e) {
-                    player.addChatComponentMessage(new ChatComponentText(
-                            "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
-                                    + e.getMessage()));
+                    player.addChatComponentMessage(
+                            new ChatComponentText(
+                                    "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
+                                            + e.getMessage()));
                     count = 1;
                 }
-                player.addChatComponentMessage(new ChatComponentTranslation(
-                        "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
+                player.addChatComponentMessage(
+                        new ChatComponentTranslation(
+                                "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return stack;
             }
             configuratorStack = player.inventory.mainInventory[configurator.getKey()];
@@ -275,14 +299,15 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     }
 
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
-        UIInfos.openClientUI(player, buildContext -> new SelectItemUIFactory(
+        UIInfos.openClientUI(
+                player,
+                buildContext -> new SelectItemUIFactory(
                         StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
                         configurator,
                         GT_IntegratedCircuit_Item::onConfigured,
                         ALL_VARIANTS,
                         meta,
-                        true)
-                .createWindow(buildContext));
+                        true).createWindow(buildContext));
     }
 
     private static void onConfigured(ItemStack stack) {
@@ -299,8 +324,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
 
             if (!GT_Utility.isStackValid(toolStack)) continue;
 
-            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p :
-                    GregTech_API.sCircuitProgrammerList.entrySet())
+            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTech_API.sCircuitProgrammerList
+                    .entrySet())
                 if (p.getKey().test(toolStack)) return Pair.of(j, p.getValue());
         }
         return null;

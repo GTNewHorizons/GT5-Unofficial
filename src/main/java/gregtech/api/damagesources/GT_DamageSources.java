@@ -1,11 +1,13 @@
 package gregtech.api.damagesources;
 
 import javax.annotation.Nullable;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 
 public class GT_DamageSources {
+
     public static DamageSource getElectricDamage() {
         return ic2.api.info.Info.DMG_ELECTRIC;
     }
@@ -35,6 +37,7 @@ public class GT_DamageSources {
     }
 
     private static class DamageSourceCombat extends EntityDamageSource {
+
         private final IChatComponent mDeathMessage;
 
         public DamageSourceCombat(String aType, EntityLivingBase aPlayer, IChatComponent aDeathMessage) {
@@ -49,6 +52,7 @@ public class GT_DamageSources {
     }
 
     private static class DamageSourceFrost extends DamageSource {
+
         public DamageSourceFrost() {
             super("frost");
             setDifficultyScaled();
@@ -62,6 +66,7 @@ public class GT_DamageSources {
     }
 
     private static class DamageSourceHeat extends DamageSource {
+
         public DamageSourceHeat() {
             super("steam");
             setDifficultyScaled();
@@ -69,12 +74,15 @@ public class GT_DamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName()
-                    + EnumChatFormatting.WHITE + " was boiled alive");
+            return new ChatComponentText(
+                    EnumChatFormatting.RED + aTarget.getCommandSenderName()
+                            + EnumChatFormatting.WHITE
+                            + " was boiled alive");
         }
     }
 
     public static class DamageSourceHotItem extends DamageSourceHeat {
+
         @Nullable
         private final ItemStack stack;
 
@@ -89,6 +97,7 @@ public class GT_DamageSources {
     }
 
     public static class DamageSourceExploding extends DamageSource {
+
         public DamageSourceExploding() {
             super("exploded");
             setDamageAllowedInCreativeMode();

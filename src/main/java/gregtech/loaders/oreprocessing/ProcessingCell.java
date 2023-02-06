@@ -1,5 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -9,18 +13,17 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingCell implements IOreRecipeRegistrator {
+
     public ProcessingCell() {
         OrePrefixes.cell.add(this);
         OrePrefixes.cellPlasma.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         switch (aPrefix) {
             case cell:
                 if (aMaterial == Materials.Empty) {
@@ -44,10 +47,10 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             tAllAmount = (int) (tAllAmount + tMat2.mAmount);
                         }
                         long tItemAmount = 0L;
-                        long tCapsuleCount =
-                                GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack) * -tAllAmount;
-                        long tDensityMultiplier =
-                                aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L : 1L;
+                        long tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack)
+                                * -tAllAmount;
+                        long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L
+                                : 1L;
                         ArrayList<ItemStack> tList = new ArrayList<>();
                         for (MaterialStack tMat : aMaterial.mMaterialList) {
                             if (tMat.mAmount > 0L) {
@@ -57,8 +60,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 } else {
                                     tStack = GT_OreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
                                     if (tStack == null) {
-                                        tStack = GT_OreDictUnificator.get(
-                                                OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
+                                        tStack = GT_OreDictUnificator
+                                                .get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
                                     }
                                 }
                                 if (tItemAmount + tMat.mAmount * 3628800L
@@ -68,26 +71,20 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                         tStack.stackSize = ((int) (tStack.stackSize * tDensityMultiplier));
                                         while ((tStack.stackSize > 64)
                                                 && (tCapsuleCount
-                                                                        + GT_ModHandler.getCapsuleCellContainerCount(
-                                                                                        tStack)
-                                                                                * 64L
-                                                                < 0L
-                                                        ? tList.size() < 5
-                                                        : tList.size() < 6)
+                                                        + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L < 0L
+                                                                ? tList.size() < 5
+                                                                : tList.size() < 6)
                                                 && (tCapsuleCount
-                                                                + GT_ModHandler.getCapsuleCellContainerCount(tStack)
-                                                                        * 64L
+                                                        + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L
                                                         <= 64L)) {
                                             tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L;
                                             tList.add(GT_Utility.copyAmount(64L, tStack));
                                             tStack.stackSize -= 64;
                                         }
-                                        int tThisCapsuleCount =
-                                                GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(
-                                                        tStack);
+                                        int tThisCapsuleCount = GT_ModHandler
+                                                .getCapsuleCellContainerCountMultipliedWithStackSize(tStack);
                                         if (tStack.stackSize > 0 && tCapsuleCount + tThisCapsuleCount <= 64L) {
-                                            if (tCapsuleCount + tThisCapsuleCount < 0L
-                                                    ? tList.size() < 5
+                                            if (tCapsuleCount + tThisCapsuleCount < 0L ? tList.size() < 5
                                                     : tList.size() < 6) {
                                                 tCapsuleCount += tThisCapsuleCount;
                                                 tList.add(tStack);
@@ -110,8 +107,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                             tList.size() >= 3 ? tList.get(2) : null,
                                             tList.size() >= 4 ? tList.get(3) : null,
                                             tList.size() >= 5 ? tList.get(4) : null,
-                                            tCapsuleCount >= 0L
-                                                    ? tList.size() >= 6 ? tList.get(5) : null
+                                            tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
                                                     : ItemList.Cell_Empty.get(-tCapsuleCount),
                                             (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)),
                                             Math.min(4, tList.size()) * 30);
@@ -125,8 +121,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                             tList.size() >= 3 ? tList.get(2) : null,
                                             tList.size() >= 4 ? tList.get(3) : null,
                                             tList.size() >= 5 ? tList.get(4) : null,
-                                            tCapsuleCount >= 0L
-                                                    ? tList.size() >= 6 ? tList.get(5) : null
+                                            tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
                                                     : tCellBalance < 0 ? ItemList.Cell_Empty.get(-tCellBalance) : null,
                                             (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)),
                                             Math.min(4, tList.size()) * 30);
@@ -141,8 +136,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                         tList.size() >= 3 ? tList.get(2) : null,
                                         tList.size() >= 4 ? tList.get(3) : null,
                                         tList.size() >= 5 ? tList.get(4) : null,
-                                        tCapsuleCount >= 0L
-                                                ? tList.size() >= 6 ? tList.get(5) : null
+                                        tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
                                                 : ItemList.Cell_Empty.get(-tCapsuleCount),
                                         (int) Math.max(1L, Math.abs(aMaterial.getMass() * 2L * tItemAmount)));
                             }

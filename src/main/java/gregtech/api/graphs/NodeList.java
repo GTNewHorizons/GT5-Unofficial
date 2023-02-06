@@ -2,6 +2,7 @@ package gregtech.api.graphs;
 
 // keep track on which node is being looked for across the recursive functions
 public class NodeList {
+
     Node[] mNodes;
     int mCounter = 0;
 
