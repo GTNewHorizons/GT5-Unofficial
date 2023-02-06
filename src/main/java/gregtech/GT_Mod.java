@@ -24,6 +24,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.ModernMaterialsGenerator;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
@@ -219,38 +220,8 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
 
-        GregTech_API.sModernMaterialIDs = new GT_Config(new Configuration(
-                new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "ModerMaterialIDs.cfg")));
-        GregTech_API.mLastMaterialID = GregTech_API.sModernMaterialIDs
-                .mConfig
-                .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0)
-                .getInt();
-        ModernMaterial tIron = new ModernMaterial()
-                .setName("Iron")
-                .setColor(0, 255, 255, 255)
-                .addAllParts()
-                .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom))
-                .build();
-        ModernMaterial tin = new ModernMaterial()
-                .setName("Tin")
-                .setColor(190, 190, 190, 255)
-                .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom))
-                .build();
-        ModernMaterial copper = new ModernMaterial()
-                .setName("Copper")
-                .setColor(new Color(255, 0, 0, 255))
-                .addPartsCustom(
-                        new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
-                .build();
-        registerMaterial(tIron);
-        // registerMaterial(tin);
-        registerMaterial(copper);
+        new ModernMaterialsGenerator().run(aEvent);
 
-        registerAllMaterials();
-        GregTech_API.sModernMaterialIDs
-                .mConfig
-                .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0)
-                .set(GregTech_API.mLastMaterialID);
         Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {
             return;
