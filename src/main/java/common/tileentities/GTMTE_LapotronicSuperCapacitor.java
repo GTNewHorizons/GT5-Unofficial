@@ -5,7 +5,6 @@ import static common.itemBlocks.IB_LapotronicEnergyUnit.*;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTEClass;
-import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
@@ -70,6 +69,7 @@ public class GTMTE_LapotronicSuperCapacitor
     private final Queue<Long> energyOutputValues = new LinkedList<>();
 
     private long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
+    private long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
 
     private enum Capacitor {
         IV(2, BigInteger.valueOf(IV_cap_storage)),
@@ -78,7 +78,9 @@ public class GTMTE_LapotronicSuperCapacitor
         UV(5, BigInteger.valueOf(UV_cap_storage)),
         UHV(6, MAX_LONG),
         None(0, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(EV_cap_storage));
+        EV(1, BigInteger.valueOf(EV_cap_storage)),
+        UEV(7, MAX_LONG),
+        ;
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
@@ -300,7 +302,7 @@ public class GTMTE_LapotronicSuperCapacitor
      * Count the amount of capacitors of each tier in each slot.
      * Index = meta - 1
      */
-    private final int[] capacitors = new int[7];
+    private final int[] capacitors = new int[8];
 
     private BigInteger capacity = BigInteger.ZERO;
     private BigInteger stored = BigInteger.ZERO;
@@ -396,15 +398,22 @@ public class GTMTE_LapotronicSuperCapacitor
         return capacitors[4];
     }
 
+    private int getUEVCapacitorCount() {
+        return capacitors[7];
+    }
+
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Energy Storage")
-                .addInfo("Loses energy equal to 1% of the total capacity every 24 hours. Capped")
-                .addInfo("at " + EnumChatFormatting.RED
+                .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
+                .addInfo("Capped at " + EnumChatFormatting.RED
                         + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap) + EnumChatFormatting.GRAY
-                        + "EU/t passive loss per " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
-                        + EnumChatFormatting.GRAY + " capacitor.")
+                        + " EU/t passive loss per " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+                        + EnumChatFormatting.GRAY + " capacitor and ")
+                .addInfo(EnumChatFormatting.RED + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uev_cap)
+                        + EnumChatFormatting.GRAY + " EU/t passive loss per " + GT_Values.TIER_COLORS[10]
+                        + GT_Values.VN[10] + EnumChatFormatting.GRAY + " capacitor.")
                 .addInfo("Passive loss is multiplied by the number of maintenance issues present.")
                 .addSeparator()
                 .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
@@ -415,12 +424,18 @@ public class GTMTE_LapotronicSuperCapacitor
                 .addSeparator()
                 .addInfo("Wireless mode can be enabled by right clicking with a screwdriver.")
                 .addInfo("This mode can only be enabled if you have a " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+                        + EnumChatFormatting.GRAY + " or " + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
                         + EnumChatFormatting.GRAY + " capacitor in the multiblock.")
                 .addInfo("When enabled every " + EnumChatFormatting.BLUE
                         + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks)
                         + EnumChatFormatting.GRAY + " ticks the LSC will attempt to re-balance against your")
-                .addInfo("wireless EU network. If there is less than " + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(LSC_wireless_eu_cap) + EnumChatFormatting.GRAY + "EU in the LSC")
+                .addInfo("wireless EU network.")
+                .addInfo("If there is less than " + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(LSC_wireless_eu_cap) + EnumChatFormatting.GRAY + "("
+                        + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + ")" + " or "
+                        + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
+                        + EnumChatFormatting.GRAY + "(" + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
+                        + EnumChatFormatting.GRAY + ")" + " EU in the LSC")
                 .addInfo("it will withdraw from the network and add to the LSC. If there is more it will add")
                 .addInfo("the EU to the network and remove it from the LSC.")
                 .addSeparator()
@@ -432,6 +447,7 @@ public class GTMTE_LapotronicSuperCapacitor
                         "Lapotronic Capacitor (" + GT_Values.TIER_COLORS[4] + GT_Values.VN[4] + EnumChatFormatting.GRAY
                                 + "-" + GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY
                                 + "), Ultimate Capacitor (" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY + "-" + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
                                 + EnumChatFormatting.GRAY + ")",
                         "Center 3x(1-47)x3 above base (9-423 blocks)")
                 .addStructureInfo(
@@ -551,13 +567,14 @@ public class GTMTE_LapotronicSuperCapacitor
         }
 
         // Check if enough (more than 50%) non-empty caps
-        if (capacitors[5]
+        if (capacitors[6]
                 > capacitors[0]
                         + capacitors[1]
                         + capacitors[2]
                         + capacitors[3]
                         + getUHVCapacitorCount()
-                        + capacitors[6]) return false;
+                        + capacitors[6]
+                        + getUEVCapacitorCount()) return false;
 
         // Calculate total capacity
         capacity = BigInteger.ZERO;
@@ -684,7 +701,7 @@ public class GTMTE_LapotronicSuperCapacitor
             }
         }
 
-        if (getUHVCapacitorCount() <= 0) {
+        if (getUHVCapacitorCount() <= 0 && getUEVCapacitorCount() <= 0) {
             wireless_mode = false;
         }
 
@@ -697,7 +714,8 @@ public class GTMTE_LapotronicSuperCapacitor
 
             // Find difference.
             BigInteger transferred_eu =
-                    stored.subtract(LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())));
+                    stored.subtract((LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
+                            .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))));
 
             if (transferred_eu.signum() == 1) {
                 inputLastTick += transferred_eu.longValue();
@@ -708,7 +726,8 @@ public class GTMTE_LapotronicSuperCapacitor
             // If that difference can be added then do so.
             if (addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
                 // If it succeeds there was sufficient energy so set the internal capacity as such.
-                stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount()));
+                stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount()))
+                        .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount())));
             }
         }
 
@@ -758,13 +777,15 @@ public class GTMTE_LapotronicSuperCapacitor
         long temp_capacity_divided =
                 capacity.divide(BigInteger.valueOf(100L * 86400L * 20L)).longValue();
 
-        // Passive loss is multiplied by number of UHV caps. Minimum of 1 otherwise loss is 0 for non-UHV caps
+        // Passive loss is multiplied by number of UHV/UEV caps. Minimum of 1 otherwise loss is 0 for non-UHV/UEV caps
         // calculations.
-        long uhv_cap_multiplier =
-                min(temp_capacity_divided, max_passive_drain_eu_per_tick_per_uhv_cap * max(1, getUHVCapacitorCount()));
+        if (getUHVCapacitorCount() != 0 || getUEVCapacitorCount() != 0) {
+            temp_capacity_divided = getUHVCapacitorCount() * max_passive_drain_eu_per_tick_per_uhv_cap
+                    + getUEVCapacitorCount() * max_passive_drain_eu_per_tick_per_uev_cap;
+        }
 
         // Passive loss is multiplied by number of maintenance issues.
-        long total_passive_loss = uhv_cap_multiplier * (getIdealStatus() - repairStatus + 1);
+        long total_passive_loss = temp_capacity_divided * (getIdealStatus() - repairStatus + 1);
 
         // Maximum of 100,000 EU/t drained per UHV cell. The logic is 1% of EU capacity should be drained every 86400
         // seconds (1 day).
@@ -834,6 +855,8 @@ public class GTMTE_LapotronicSuperCapacitor
                         : EnumChatFormatting.RED + "disabled" + EnumChatFormatting.RESET));
         ll.add(GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.RESET + " Capacitors detected: "
                 + getUHVCapacitorCount());
+        ll.add(GT_Values.TIER_COLORS[10] + GT_Values.VN[10] + EnumChatFormatting.RESET + " Capacitors detected: "
+                + getUEVCapacitorCount());
         ll.add("Total wireless EU: " + EnumChatFormatting.RED
                 + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
         ll.add("---------------------------------------------");
@@ -936,13 +959,14 @@ public class GTMTE_LapotronicSuperCapacitor
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (getUHVCapacitorCount() != 0) {
+        if (getUHVCapacitorCount() != 0 || getUEVCapacitorCount() != 0) {
             wireless_mode = !wireless_mode;
             GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));
         } else {
             GT_Utility.sendChatToPlayer(
                     aPlayer,
                     "Wireless mode cannot be enabled without at least 1 " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+                            + EnumChatFormatting.RESET + " or " + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
                             + EnumChatFormatting.RESET + " capacitor.");
             wireless_mode = false;
         }
