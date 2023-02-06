@@ -25,25 +25,29 @@ public class ModernMaterialsGenerator {
             .mConfig
             .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0)
             .getInt();
+
         ModernMaterial tIron = new ModernMaterial()
             .setName("Iron")
             .setColor(0, 255, 255, 255)
             .addAllParts()
             .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom))
             .build();
+
         ModernMaterial tin = new ModernMaterial()
-            .setName("Tin")
-            .setColor(190, 190, 190, 255)
-            .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom))
+            .setName("Amazium")
+            .setColor(100, 0, 200, 255)
+            .addAllParts()
             .build();
+
         ModernMaterial copper = new ModernMaterial()
             .setName("Copper")
             .setColor(new Color(255, 0, 0, 255))
             .addPartsCustom(
                 new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
             .build();
+
         registerMaterial(tIron);
-        // registerMaterial(tin);
+         registerMaterial(tin);
         registerMaterial(copper);
 
         registerAllMaterials();
