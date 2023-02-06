@@ -75,9 +75,6 @@ public class GT_MetaTileEntity_DieselEngine
     protected int fuelValue = 0;
     protected int fuelRemaining = 0;
     protected boolean boostEu = false;
-    protected double boostedFuelValue = 0;
-    protected double boostedOutput = 0;
-    protected double extraFuelFraction = 0;
 
     public GT_MetaTileEntity_DieselEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -204,6 +201,9 @@ public class GT_MetaTileEntity_DieselEngine
 
         // fast track lookup
         if (!tFluids.isEmpty()) {
+            double boostedFuelValue = 0;
+            double boostedOutput = 0;
+            double extraFuelFraction = 0;
             for (FluidStack tFluid : tFluids) {
                 GT_Recipe tRecipe = getFuelMap().findFuel(tFluid);
                 if (tRecipe == null) continue;
