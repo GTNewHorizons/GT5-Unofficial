@@ -171,7 +171,7 @@ public class GregTech_API {
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
     /**
      * The List of all Sounds used in GT, indices are in the static Block at the bottom
-     * 
+     *
      * @deprecated Use {@link SoundResource}
      */
     @Deprecated
@@ -254,7 +254,8 @@ public class GregTech_API {
      * The Configuration Objects
      */
     public static GT_Config sRecipeFile = null, sMachineFile = null, sWorldgenFile = null, sMaterialProperties = null,
-            sMaterialComponents = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null;
+            sMaterialComponents = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null,
+            sModernMaterialIDs = null;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -282,6 +283,7 @@ public class GregTech_API {
             mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
+    public static int mLastMaterialID = 0;
 
     /**
      * Option to not use MACHINE_METAL mixing into colors
@@ -733,7 +735,7 @@ public class GregTech_API {
 
     /**
      * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     * 
+     *
      * @param minTier the minimal tier this circuit can be offered for free, e.g. normal configuration circuit is
      *                available in LV+ single blocks, GT++ breakthrough circuit is offered in HV+ single blocks
      */
@@ -841,7 +843,7 @@ public class GregTech_API {
 
     /**
      * returns a Cover behavior, guaranteed to not return null after preload
-     * 
+     *
      * @return The Cover behavior
      */
     public static GT_CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack aStack) {
@@ -982,7 +984,7 @@ public class GregTech_API {
 
     /**
      * Sets the {@link IIconRegister} for Block Icons
-     * 
+     *
      * @param aIconRegister The {@link IIconRegister} Icon Register
      */
     @SideOnly(Side.CLIENT)
@@ -992,7 +994,7 @@ public class GregTech_API {
 
     /**
      * Sets the {@link IIconRegister} for Items Icons
-     * 
+     *
      * @param aIconRegister The {@link IIconRegister} Icon Register
      */
     @SideOnly(Side.CLIENT)

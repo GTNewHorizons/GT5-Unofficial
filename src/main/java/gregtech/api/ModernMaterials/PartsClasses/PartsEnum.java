@@ -1,7 +1,6 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
 public enum PartsEnum {
-
     Ingot("% Ingot"),
 
     Gear("% Gear"),

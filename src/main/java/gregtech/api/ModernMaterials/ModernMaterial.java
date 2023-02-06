@@ -2,64 +2,95 @@ package gregtech.api.ModernMaterials;
 
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
-
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ModernMaterial {
 
-    public Color getMaterialColor() {
-        return materialColor;
+    private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
+    private Color mColor;
+    private int mID;
+    private String mName;
+
+    public ModernMaterial() {}
+
+    public ModernMaterial setColor(Color aColor) {
+        mColor = aColor;
+        return this;
     }
 
-    private final Color materialColor;
-
-    public int getMaterialID() {
-        return materialID;
+    public ModernMaterial setColor(int aRed, int aGreen, int aBlue, int aAlpha) {
+        mColor = new Color(aRed, aGreen, aBlue, aAlpha);
+        return this;
     }
 
-    public String getMaterialName() {
-        return materialName;
+    public ModernMaterial setColor(int aRed, int aGreen, int aBlue) {
+        mColor = new Color(aRed, aGreen, aBlue);
+        return this;
     }
 
-    private int materialID;
-    private static int materialIDTracker;
+    public ModernMaterial setName(String aName) {
+        mName = aName;
+        return this;
+    }
 
-    private String materialName;
+    public ModernMaterial addParts(final PartsEnum... aParts) {
+        for (PartsEnum aPart : aParts) {
+            existingPartsForMaterial.put(aPart, new CustomPartInfo(aPart));
+        }
+        return this;
+    }
 
-    public ModernMaterial addPart(final PartsEnum partsEnum) {
-        existingPartsForMaterial.put(partsEnum, new CustomPartInfo(partsEnum));
+    public ModernMaterial addPartsCustom(final CustomPartInfo... aCustomParts) {
+        for (CustomPartInfo aCustomPart : aCustomParts) {
+            existingPartsForMaterial.put(aCustomPart.mPart, aCustomPart);
+        }
+        return this;
+    }
+
+    public ModernMaterial build() {
+        return this;
+    }
+
+    public void setID(int aID) {
+        mID = aID;
+    }
+
+    public Color getColor() {
+        return mColor;
+    }
+
+    public int getID() {
+        return mID;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public ModernMaterial addPart(final PartsEnum aPart) {
+        existingPartsForMaterial.put(aPart, new CustomPartInfo(aPart));
         return this;
     }
 
     // This will override all existing parts settings and enable ALL possible parts. Be careful!
     public ModernMaterial addAllParts() {
-        for (PartsEnum partsEnum : PartsEnum.values()) {
-            existingPartsForMaterial.put(partsEnum, new CustomPartInfo(partsEnum));
+        for (PartsEnum tPart : PartsEnum.values()) {
+            existingPartsForMaterial.put(tPart, new CustomPartInfo(tPart));
         }
         return this;
     }
 
-    public ModernMaterial addPart(final CustomPartInfo customPartInfo) {
-        existingPartsForMaterial.put(customPartInfo.partsEnum, customPartInfo);
+    public ModernMaterial addPart(final CustomPartInfo aCustomPartInfo) {
+        existingPartsForMaterial.put(aCustomPartInfo.mPart, aCustomPartInfo);
         return this;
     }
 
-    public CustomPartInfo getPart(final PartsEnum partsEnum) {
-        return existingPartsForMaterial.get(partsEnum);
+    public CustomPartInfo getPart(final PartsEnum aPart) {
+        return existingPartsForMaterial.get(aPart);
     }
 
-    private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
-
-    public ModernMaterial(Color materialColor, final String materialName) {
-        this.materialColor = materialColor;
-        this.materialID = materialIDTracker++; // todo rework, obviously non-viable due to registration order.
-        this.materialName = materialName;
+    public boolean doesPartExist(PartsEnum aPart) {
+        return existingPartsForMaterial.containsKey(aPart);
     }
-
-    public boolean doesPartExist(PartsEnum partsEnum) {
-        return existingPartsForMaterial.containsKey(partsEnum);
-    }
-
 }
