@@ -2923,6 +2923,31 @@ public class DreamCraftRecipeLoader {
                 20000,
                 512_000_000);
 
+        // Transcendent Plasma Mixer - TPM.
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                CustomItemList.eM_energyTunnel7_UV.get(1),
+                32_000_000,
+                4096,
+                32_000_000,
+                1,
+                new Object[] { CustomItemList.eM_energyTunnel7_UV.get(32),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 32L },
+                        ItemList.Electric_Pump_UIV.get(16),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 64),
+
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TranscendentMetal, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 64),
+                        ItemList.EnergisedTesseract.get(32),
+
+                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L), },
+                new FluidStack[] { Materials.ExcitedDTCC.getFluid(2_048_000), Materials.ExcitedDTPC.getFluid(2_048_000),
+                        Materials.ExcitedDTRC.getFluid(2_048_000), Materials.ExcitedDTEC.getFluid(2_048_000), },
+                ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1),
+                36_000,
+                32_000_000);
+
         // Stargate Recipes
         if (Loader.isModLoaded("eternalsingularity") && Loader.isModLoaded("SGCraft")) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
