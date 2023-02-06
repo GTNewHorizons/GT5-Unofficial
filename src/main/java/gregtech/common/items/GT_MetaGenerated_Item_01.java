@@ -1856,6 +1856,19 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[12], 12L, -3L, true);
         OreDictionary.registerOre("UMV", ItemList.ZPM3.get(1));
 
+        // UXV Battery
+        ItemList.ZPM4.set(
+                addItem(
+                        tLastID = 594,
+                        "Extremely Ultimate Battery",
+                        "Fill this to be older",
+                        "batteryUXV",
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[13], 13L, -3L, true);
+        OreDictionary.registerOre("UXV", ItemList.ZPM4.get(1));
+
         // ZPM Cluster
         ItemList.Energy_Module.set(
                 addItem(
@@ -3530,6 +3543,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 .set(addItem(tLastID = 713, "Engraved Crystal Chip", "Needed for Circuits"));
         ItemList.Circuit_Parts_Crystal_Chip_Master
                 .set(addItem(tLastID = 714, "Engraved Lapotron Chip", "Needed for Circuits"));
+        ItemList.Circuit_Parts_Crystal_Chip_Wetware
+                .set(addItem(tLastID = 550, "Living Crystal Chip", "Needed for Circuits"));
         ItemList.Circuit_Parts_Advanced.set(addItem(tLastID = 715, "Diode", "Basic Electronic Component"));
         ItemList.Circuit_Parts_Diode.set(ItemList.Circuit_Parts_Advanced.get(1));
         ItemList.Circuit_Parts_Wiring_Basic.set(addItem(tLastID = 716, "Resistor", "Basic Electronic Component"));

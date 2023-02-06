@@ -1506,7 +1506,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 RES_PATH_GUI + "basicmachines/FluidHeater",
                 1,
                 0,
-                1,
+                0,
                 0,
                 1,
                 E,
@@ -1728,6 +1728,78 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .setUsualFluidInputCount(9).setUsualFluidOutputCount(9)
                         .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
+
+        public static final GT_Recipe_Map sTranscendentPlasmaMixerRecipes = new TranscendentPlasmaMixerRecipeMap(
+                new HashSet<>(20),
+                "gt.recipe.transcendentplasmamixerrecipes",
+                "Transcendent Plasma Mixer",
+                null,
+                RES_PATH_GUI + "basicmachines/PlasmaForge",
+                1,
+                0,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                false,
+                true);
+
+        public static class TranscendentPlasmaMixerRecipeMap extends GT_Recipe_Map {
+
+            public TranscendentPlasmaMixerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
+                    String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                    int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                    int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
+                    boolean aNEIAllowed) {
+                super(
+                        aRecipeList,
+                        aUnlocalizedName,
+                        aLocalName,
+                        aNEIName,
+                        aNEIGUIPath,
+                        aUsualInputCount,
+                        aUsualOutputCount,
+                        aMinimalInputItems,
+                        aMinimalInputFluids,
+                        aAmperage,
+                        aNEISpecialValuePre,
+                        aNEISpecialValueMultiplier,
+                        aNEISpecialValuePost,
+                        aShowVoltageAmperageInNEI,
+                        aNEIAllowed);
+                useModularUI(true);
+                setUsualFluidInputCount(16);
+                setUsualFluidOutputCount(1);
+                setProgressBarPos(86, 44);
+                setLogoPos(87, 81);
+                setNEIBackgroundSize(172, 100);
+            }
+
+            @Override
+            public List<Pos2d> getItemInputPositions(int itemInputCount) {
+                return UIHelper.getGridPositions(itemInputCount, 60, 8, 1);
+            }
+
+            @Override
+            public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+                return UIHelper.getGridPositions(fluidInputCount, 6, 26, 4);
+            }
+
+            @Override
+            public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+                return UIHelper.getGridPositions(fluidOutputCount, 114, 44, 1);
+            }
+
+            @Override
+            protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
+                Power power = recipeInfo.power;
+                drawNEIText(recipeInfo, GT_Utility.trans("152", "Total: ") + power.getTotalPowerString());
+                drawNEIText(recipeInfo, "Average: " + power.getPowerUsageString());
+            }
+        }
+
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
                 new HashSet<>(200),
                 "gt.recipe.primitiveblastfurnace",
@@ -3441,7 +3513,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Draws text on NEI recipe.
-         * 
+         *
          * @param yShift y position to shift after this text
          */
         @SuppressWarnings("SameParameterValue")
@@ -3451,7 +3523,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Draws text on NEI recipe.
-         * 
+         *
          * @param xStart x position to start drawing
          * @param yShift y position to shift after this text
          */
@@ -5220,7 +5292,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Add a breeder cell.
-         * 
+         *
          * @param input          raw stack. should be undamaged.
          * @param output         breed output
          * @param heatMultiplier bonus progress per neutron pulse per heat step

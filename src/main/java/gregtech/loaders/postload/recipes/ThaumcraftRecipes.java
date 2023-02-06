@@ -12,11 +12,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
@@ -931,6 +933,49 @@ public class ThaumcraftRecipes implements Runnable {
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 128L),
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 256L),
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 64L))) });
+
+                tKey = "GT_HAZMATENCH";
+                GT_LanguageManager.addStringLocalization(
+                        GT_MachineRecipeLoader.aTextTCGTPage + tKey,
+                        "You have discovered a way to magically enchant a mundane piece of armor with the protective properties of a Hazmat suite.");
+                GregTech_API.sThaumcraftCompat.addResearch(
+                        tKey,
+                        "Hazmat Protection",
+                        "Magical protection from physical hazards",
+                        new String[] { "INFUSIONENCHANTMENT" },
+                        "ARTIFICE",
+                        GT_ModHandler.getIC2Item("hazmatChestplate", 1),
+                        4,
+                        0,
+                        -7,
+                        13,
+                        Arrays.asList(
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.VITIUM, 1L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 1L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.RADIO, 1L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)),
+                        null,
+                        new Object[] { GT_MachineRecipeLoader.aTextTCGTPage + tKey,
+                                GregTech_API.sThaumcraftCompat.addInfusionEnchantmentRecipe(
+                                        tKey,
+                                        Enchantment_Hazmat.INSTANCE,
+                                        5,
+                                        Arrays.asList(
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.VITIUM, 8L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 16L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.RADIO, 16L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 16L)),
+                                        new ItemStack[] { getModItem(MOD_ID_TC, "ItemResource", 1L, 14),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
+                                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1),
+                                                getModItem(MOD_ID_TC, "ItemResource", 1L, 14),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
+                                                GT_OreDictUnificator
+                                                        .get(OrePrefixes.plateDense, Materials.Lead, 1) }) });
             }
         }
     }

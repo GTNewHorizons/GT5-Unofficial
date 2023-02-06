@@ -405,6 +405,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_Wiring_Elite,
     Circuit_Parts_Crystal_Chip_Elite,
     Circuit_Parts_Crystal_Chip_Master,
+    Circuit_Parts_Crystal_Chip_Wetware,
     Circuit_Primitive,
     Circuit_Basic,
     Circuit_Good,
@@ -1563,7 +1564,7 @@ public enum ItemList implements IItemContainer {
     Distillation_Tower,
     Energy_LapotronicOrb2,
     Ore_Processor,
-
+    ZPM4,
     ZPM3,
     ZPM2,
     Energy_Module,
@@ -2012,7 +2013,8 @@ public enum ItemList implements IItemContainer {
     BasicPhotolithographicFrameworkCasing,
     ReinforcedPhotolithographicFrameworkCasing,
     RadiationProofPhotolithographicFrameworkCasing,
-    InfinityCooledCasing;
+    InfinityCooledCasing,
+    Machine_Multi_TranscendentPlasmaMixer;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
             Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },
