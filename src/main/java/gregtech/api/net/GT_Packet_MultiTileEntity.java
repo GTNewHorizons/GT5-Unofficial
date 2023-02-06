@@ -19,7 +19,8 @@ import io.netty.buffer.ByteBuf;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
-    public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY = B[4];
+    public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
+            INVENTORY_NAME = B[5];
 
     private int features = 0;
 
@@ -30,7 +31,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private ChunkCoordinates mTargetPos = null;
     private int mLockedInventoryIndex;
     private String mInventoryName;
-    private int mInventoryLenght;
+    private int mInventoryLength;
 
     // MultiBlockPart
     private byte mMode;
@@ -83,9 +84,14 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         mTargetPos = new ChunkCoordinates(aX, aY, aZ);
     }
 
-    public void setInventoryIndex(int aInventoryIndex, String aInventoryName) {
-        features |= INVENTORY;
+    public void setInventoryIndex(int aInventoryIndex) {
+        features |= INVENTORY_INDEX;
         mLockedInventoryIndex = aInventoryIndex;
+
+    }
+
+    public void setInventoryName(String aInventoryName) {
+        features |= INVENTORY_NAME;
         mInventoryName = aInventoryName;
     }
 
@@ -123,18 +129,20 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             aOut.writeShort(mTargetPos.posY);
             aOut.writeInt(mTargetPos.posZ);
         }
-        if ((features & INVENTORY) == INVENTORY) {
+        if ((features & INVENTORY_INDEX) == INVENTORY_INDEX) {
+            aOut.writeInt(mLockedInventoryIndex);
+        }
+        if ((features & INVENTORY_NAME) == INVENTORY_NAME) {
             if (mInventoryName != null && mInventoryName.length() > 0) {
-                mInventoryLenght = mInventoryName.length();
-                aOut.writeInt(mInventoryLenght);
+                mInventoryLength = mInventoryName.length();
+                aOut.writeInt(mInventoryLength);
                 for (char tChar : mInventoryName.toCharArray()) {
                     aOut.writeChar(tChar);
                 }
             } else {
-                mInventoryLenght = 0;
-                aOut.writeInt(mInventoryLenght);
+                mInventoryLength = 0;
+                aOut.writeInt(mInventoryLength);
             }
-            aOut.writeInt(mLockedInventoryIndex);
         }
 
         if (false) {
@@ -178,7 +186,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((packetFeatures & CONTROLLER) == CONTROLLER) {
             packet.setTargetPos(aData.readInt(), aData.readShort(), aData.readInt());
         }
-        if ((packetFeatures & INVENTORY) == INVENTORY) {
+        if ((packetFeatures & INVENTORY_INDEX) == INVENTORY_INDEX) {
+            packet.setInventoryIndex(aData.readInt());
+        }
+        if ((packetFeatures & INVENTORY_NAME) == INVENTORY_NAME) {
             int tLength = aData.readInt();
             String tName = "";
             if (tLength > 0) {
@@ -188,7 +199,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             } else {
                 tName = null;
             }
-            packet.setInventoryIndex(aData.readInt(), tName);
+            packet.setInventoryName(tName);
         }
 
         return packet;
@@ -225,14 +236,16 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mtePart.setTargetPos(mTargetPos);
                 }
 
-                if ((features & INVENTORY) == INVENTORY && mte instanceof IMultiBlockPart) {
+                if ((features & INVENTORY_INDEX) == INVENTORY_INDEX && mte instanceof IMultiBlockPart) {
                     final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
                     mtePart.setLockedInventoryIndex(mLockedInventoryIndex);
-                    if (mtePart instanceof InventoryUpgrade) {
-                        final InventoryUpgrade invUpg = (InventoryUpgrade) mtePart;
-                        invUpg.setInventoryName(mInventoryName);
-                    }
                 }
+
+                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof InventoryUpgrade) {
+                    final InventoryUpgrade invUpg = (InventoryUpgrade) mte;
+                    invUpg.setInventoryName(mInventoryName);
+                }
+
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
