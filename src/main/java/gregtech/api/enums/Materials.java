@@ -887,7 +887,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUIV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 229,  88,   177,   0,   "SuperconductorUIV"  ,   "Superconductor UIV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 60)));
     public static Materials SuperconductorUMV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 181,  38,   205,   0,   "SuperconductorUMV"  ,   "Superconductor UMV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 66)));
 
-    public static Materials SuperCoolant = new MaterialBuilder( -1, TextureSet.SET_DULL,"Super Coolant").setRGB(2, 91, 111).addFluid().constructMaterial().setLiquidTemperature(1);
+    public static Materials SuperCoolant = new MaterialBuilder( 140, TextureSet.SET_DULL,"Super Coolant").setRGB(2, 91, 111).addCell().addFluid().constructMaterial().setLiquidTemperature(1);
 
     public static Materials DimensionallyTranscendentCrudeCatalyst           = new Materials( 748, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             , 10, 20,   20, 1,   "DimensionallyTranscendentCrudeCatalyst"           ,   "Dimensionally Transcendent Crude Catalyst"                ,    0,       0,         25_000_000,    1, false,  true,   1,   1,   1, Dyes.dyeCyan).setHasCorrespondingFluid(true);
     public static Materials DimensionallyTranscendentProsaicCatalyst         = new Materials( 747, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             , 10, 20,   20, 1,   "DimensionallyTranscendentProsaicCatalyst"           ,   "Dimensionally Transcendent Prosaic Catalyst"                ,    0,       0,         50_000_000,    1, false,  true,   1,   1,   1, Dyes.dyeGreen).setHasCorrespondingFluid(true);
@@ -934,7 +934,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * <p>
      * Internal name is now Superconductor while translated name is SuperconductorUHV.
      * </p>
-     * 
+     *
      * @deprecated Use {@link #SuperconductorUHV} instead
      */
     @Deprecated
@@ -3124,7 +3124,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     /**
      * Check that the material is a proper soldering fluid
-     ** 
+     **
      * @return true if Materials is a proper soldering fluid
      */
     public boolean isProperSolderingFluid() {
