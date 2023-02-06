@@ -1,4 +1,4 @@
-//version: 1675110695
+//version: 1675268365
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -66,7 +66,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.1.2'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.1.4'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -520,20 +520,20 @@ dependencies {
         annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
         annotationProcessor('com.google.guava:guava:24.1.1-jre')
         annotationProcessor('com.google.code.gson:gson:2.8.6')
-        annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.10:processor')
+        annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.12:processor')
         if (usesMixinDebug.toBoolean()) {
             runtimeOnlyNonPublishable('org.jetbrains:intellij-fernflower:1.2.1.16')
         }
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        implementation('com.gtnewhorizon:gtnhmixins:2.1.10')
+        implementation('com.gtnewhorizon:gtnhmixins:2.1.12')
     }
 }
 
 pluginManager.withPlugin('org.jetbrains.kotlin.kapt') {
     if (usesMixins.toBoolean()) {
         dependencies {
-            kapt('com.gtnewhorizon:gtnhmixins:2.1.10:processor')
+            kapt('com.gtnewhorizon:gtnhmixins:2.1.12:processor')
         }
     }
 }
@@ -633,6 +633,7 @@ tasks.named("processResources", ProcessResources).configure {
 
     if (usesMixins.toBoolean()) {
         from refMap
+        dependsOn("compileJava", "compileScala")
     }
 }
 
@@ -743,6 +744,7 @@ idea {
     module {
         downloadJavadoc = true
         downloadSources = true
+        inheritOutputDirs = true
     }
     project {
         settings {

@@ -2923,6 +2923,31 @@ public class DreamCraftRecipeLoader {
                 20000,
                 512_000_000);
 
+        // Transcendent Plasma Mixer - TPM.
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                CustomItemList.eM_energyTunnel7_UV.get(1),
+                32_000_000,
+                4096,
+                32_000_000,
+                1,
+                new Object[] { CustomItemList.eM_energyTunnel7_UV.get(32),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 32L },
+                        ItemList.Electric_Pump_UIV.get(16),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 64),
+
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TranscendentMetal, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 64),
+                        ItemList.EnergisedTesseract.get(32),
+
+                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L), },
+                new FluidStack[] { Materials.ExcitedDTCC.getFluid(2_048_000), Materials.ExcitedDTPC.getFluid(2_048_000),
+                        Materials.ExcitedDTRC.getFluid(2_048_000), Materials.ExcitedDTEC.getFluid(2_048_000), },
+                ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1),
+                36_000,
+                32_000_000);
+
         // Stargate Recipes
         if (Loader.isModLoaded("eternalsingularity") && Loader.isModLoaded("SGCraft")) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3140,6 +3165,33 @@ public class DreamCraftRecipeLoader {
                 500000);
 
         // Batteries
+        // Alternate Energy Module Recipe
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Energy_LapotronicOrb2.get(1L),
+                128_000,
+                64,
+                2_000_000,
+                16,
+                new Object[] { ItemList.Circuit_Board_Wetware_Extreme.get(1),
+                        new Object[] { OrePrefixes.foil.get(Materials.Bedrockium), 64L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L), ItemList.Circuit_Chip_UHPIC.get(64L),
+                        new ItemStack[] { ItemList.Circuit_Parts_DiodeASMD.get(64L),
+                                ItemList.Circuit_Parts_DiodeXSMD.get(8L) },
+                        new ItemStack[] { ItemList.Circuit_Parts_CapacitorASMD.get(64L),
+                                ItemList.Circuit_Parts_CapacitorXSMD.get(8L) },
+                        new ItemStack[] { ItemList.Circuit_Parts_ResistorASMD.get(64L),
+                                ItemList.Circuit_Parts_ResistorXSMD.get(8L) },
+                        new ItemStack[] { ItemList.Circuit_Parts_TransistorASMD.get(64L),
+                                ItemList.Circuit_Parts_TransistorXSMD.get(8L) },
+                        getModItem("miscutils", "itemFineWireHypogen", 48, 0) },
+                new FluidStack[] { new FluidStack(solderUEV, 720) },
+                ItemList.Energy_Module.get(1),
+                50 * 20,
+                320_000);
+
+        // Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Energy_Cluster.get(1L),
                 12000,
@@ -3160,7 +3212,7 @@ public class DreamCraftRecipeLoader {
                 ItemList.ZPM2.get(1),
                 3000,
                 400000);
-
+        // Really Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.ZPM2.get(1L),
                 24000,
@@ -3182,6 +3234,28 @@ public class DreamCraftRecipeLoader {
                 ItemList.ZPM3.get(1),
                 4000,
                 1600000);
+        // Extremely Ultimate Battery
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.ZPM3.get(1L),
+                1_200_000,
+                128,
+                8_000_000,
+                16,
+                new Object[] { GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L }, ItemList.ZPM3.get(8),
+                        ItemList.Field_Generator_UEV.get(4), ItemList.Circuit_Wafer_PPIC.get(64),
+                        ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64), },
+                new FluidStack[] { new FluidStack(solderUEV, 9216), Materials.Quantium.getMolten(18_432),
+                        Materials.Naquadria.getMolten(9_216 * 2), Materials.SuperCoolant.getFluid(64_000) },
+                ItemList.ZPM4.get(1),
+                250 * 20,
+                6_400_000);
 
         if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
             // MK4 Computer
@@ -3816,6 +3890,30 @@ public class DreamCraftRecipeLoader {
                 ItemList.Optically_Compatible_Memory.get(2),
                 20 * 20,
                 1_966_080,
+                false);
+        GT_Values.RA.addCircuitAssemblerRecipe(
+                new ItemStack[] { GT_ModHandler.getModItem("OpenComputers", "item", 4L, 39), // Memory tier 3.5
+                        ItemList.Circuit_Chip_Optical.get(1L), CustomItemList.DATApipe.get(16L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 16L),
+                        GT_ModHandler.getModItem("supersolarpanel", "solarsplitter", 4L, 0) // Solar Light Splitter
+                },
+                new FluidStack(solderUEV, 576),
+                ItemList.Optically_Compatible_Memory.get(8),
+                20 * 20,
+                7_864_320,
+                false);
+        GT_Values.RA.addCircuitAssemblerRecipe(
+                new ItemStack[] { GT_ModHandler.getModItem("OpenComputers", "item", 16L, 39), // Memory tier 3.5
+                        ItemList.Circuit_Chip_Optical.get(1L), CustomItemList.DATApipe.get(64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 32L),
+                        GT_ModHandler.getModItem("supersolarpanel", "solarsplitter", 16L, 0) // Solar Light Splitter
+                },
+                new FluidStack(solderUEV, 1152),
+                ItemList.Optically_Compatible_Memory.get(32),
+                20 * 20,
+                31_457_280,
                 false);
 
         // Optical Processor
@@ -4625,7 +4723,7 @@ public class DreamCraftRecipeLoader {
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L),
                         ItemList.Electric_Motor_UIV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TranscendentMetal, 16L),
-                        ItemList.Gravistar.get(32L), new Object[] { OrePrefixes.circuit.get(Materials.Nano), 4L },
+                        ItemList.Gravistar.get(32L), new Object[] { OrePrefixes.circuit.get(Materials.Optical), 4L },
                         getModItem("miscutils", "itemFoilArceusAlloy2B", 64, 0),
                         getModItem("miscutils", "itemFoilLafiumCompound", 64, 0),
                         getModItem("miscutils", "itemFoilCinobiteA243", 64, 0),
@@ -4649,7 +4747,7 @@ public class DreamCraftRecipeLoader {
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L),
                         ItemList.Electric_Motor_UIV.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 8L),
-                        ItemList.Gravistar.get(32), new Object[] { OrePrefixes.circuit.get(Materials.Nano), 4L },
+                        ItemList.Gravistar.get(32), new Object[] { OrePrefixes.circuit.get(Materials.Optical), 4L },
                         getModItem("miscutils", "itemFoilArceusAlloy2B", 64, 0),
                         getModItem("miscutils", "itemFoilLafiumCompound", 64, 0),
                         getModItem("miscutils", "itemFoilCinobiteA243", 64, 0),
