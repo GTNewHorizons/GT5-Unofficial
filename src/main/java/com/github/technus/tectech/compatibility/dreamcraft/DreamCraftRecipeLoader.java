@@ -2826,7 +2826,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Circuit_Parts_ResistorXSMD.get(20L), ItemList.Circuit_Chip_NOR.get(32L),
                         ItemList.Circuit_Chip_Ram.get(64L),
                         GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 24L, 10101), // Fine Lumiium
-                                                                                                         // Wire
+                        // Wire
                         new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L }, },
                 new FluidStack[] { new FluidStack(solderUEV, 1440), Materials.Radon.getPlasma(1440L),
                         Materials.SuperCoolant.getFluid(10_000L),
@@ -2847,7 +2847,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Circuit_Parts_CapacitorXSMD.get(24L), ItemList.Circuit_Parts_DiodeXSMD.get(24L),
                         ItemList.Circuit_Chip_NOR.get(64L), ItemList.Circuit_Chip_SoC2.get(32L),
                         GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 32L, 10101), // Fine Lumiium
-                                                                                                         // Wire
+                        // Wire
                         new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64), },
                 new FluidStack[] { new FluidStack(solderUEV, 1440 * 2), Materials.Radon.getPlasma(1440L * 2),
@@ -5027,28 +5027,21 @@ public class DreamCraftRecipeLoader {
                     2 * 16_384, // comp/s
                     (int) TierEU.RECIPE_MAX, // eu/t
                     64, // amperage
-                    new Object[] {
-                            CustomItemList.Machine_Multi_Transformer.get(1),
+                    new Object[] { CustomItemList.Machine_Multi_Transformer.get(1),
                             CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
                             CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
-                            CustomItemList.StabilisationFieldGeneratorTier0.get(0),
+                            CustomItemList.StabilisationFieldGeneratorTier0.get(1),
 
-                            CustomItemList.Machine_Multi_Computer.get(64),
-                            ItemList.Quantum_Tank_IV.get(64),
-                            ItemList.Quantum_Chest_IV.get(64),
-                            getModItem("bartworks", "gt.blockmachines", 12739), // VM 3
+                            CustomItemList.Machine_Multi_Computer.get(64), ItemList.Quantum_Tank_IV.get(64),
+                            ItemList.Quantum_Chest_IV.get(64), getModItem("bartworks", "gt.blockmachines", 12739), // VM
+                                                                                                                   // 3
 
-                            ItemList.Field_Generator_UMV.get(16),
-                            ItemList.Robot_Arm_UMV.get(16),
-                            ItemList.ZPM3.get(4),
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64)
-                    },
-                    new FluidStack[] {
-                            FluidUtils.getFluidStack("time", 144_000),
+                            ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM4.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+                    new FluidStack[] { FluidUtils.getFluidStack("time", 144_000),
                             FluidUtils.getFluidStack("space", 144_000),
                             FluidUtils.getFluidStack("molten.metastable oganesson", 144_000),
-                            FluidUtils.getFluidStack("molten.shirabon", 144_000),
-                    },
+                            FluidUtils.getFluidStack("molten.shirabon", 144_000), },
                     CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
                     50_000,
                     (int) TierEU.RECIPE_UMV);
@@ -5070,8 +5063,6 @@ public class DreamCraftRecipeLoader {
                             getModItem("miscutils", "itemGearHypogen", 16, 0), // Hypogen gears
                             GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 16L), // SpaceTime gears
                             GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 16L), // Trans
-                                                                                                            // metal
-                                                                                                            // gears
                             getModItem("eternalsingularity", "eternal_singularity", 16L), // Eternal singularities
                             getItemContainer("PikoCircuit").get(16L), // Pico Circuits
                             getModItem("GoodGenerator", "huiCircuit", 4, 4), // Paradox circuits
@@ -5088,8 +5079,8 @@ public class DreamCraftRecipeLoader {
         // EOH Spacetime Compression
         {
             final ItemStack ME_Singularity = getModItem("extracells", "storage.physical.advanced.singularity", 1); // ME
-                                                                                                                   // Digital
-                                                                                                                   // singularity.
+            // Digital
+            // singularity.
             final ItemStack baseCasing = CustomItemList.EOH_Reinforced_Spacetime_Casing.get(1);
 
             int baseCompPerSec = 16_384;
@@ -5126,10 +5117,10 @@ public class DreamCraftRecipeLoader {
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 8), // Spacetime ripper
                                 ME_Singularity,
                                 getModItem("bartworks", "gt.bwMetaGeneratedplateDense", (absoluteTier + 1) * 2, 10112),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("molten.shirabon", (int) (1_440 * pow(2L, absoluteTier))),
-                                new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
+                                new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))) },
                         CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5152,10 +5143,10 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.WhiteDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.WhiteDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
-                                new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
+                                new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))) },
                         CustomItemList.TimeAccelerationFieldGeneratorTier1.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5178,7 +5169,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.WhiteDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.WhiteDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5207,7 +5198,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.WhiteDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.WhiteDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5233,7 +5224,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5260,7 +5251,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5290,7 +5281,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5317,7 +5308,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5344,7 +5335,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.MagnetohydrodynamicallyConstrainedStarMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("space", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.MagnetohydrodynamicallyConstrainedStarMatter
                                         .getMolten((int) (1_440 * pow(2L, absoluteTier))),
@@ -5386,8 +5377,8 @@ public class DreamCraftRecipeLoader {
         // EOH Temporal Compression
         {
             final ItemStack ME_Singularity = getModItem("extracells", "storage.physical.advanced.singularity", 1); // ME
-                                                                                                                   // Digital
-                                                                                                                   // singularity.
+            // Digital
+            // singularity.
 
             int baseCompPerSec = 16_384;
 
@@ -5419,12 +5410,12 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 8), // Spacetime ripper
                                 ME_Singularity,
                                 getModItem("bartworks", "gt.bwMetaGeneratedplateDense", (absoluteTier + 1) * 2, 10112),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("molten.shirabon", (int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5443,7 +5434,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 8), // Spacetime ripper
                                 ME_Singularity, ME_Singularity,
@@ -5451,7 +5442,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.WhiteDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.WhiteDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5470,7 +5461,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 8), // Spacetime ripper
                                 ME_Singularity, ME_Singularity, ME_Singularity,
@@ -5478,7 +5469,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.WhiteDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.WhiteDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5500,7 +5491,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 9), // Spacetime ripper
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
@@ -5508,7 +5499,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.WhiteDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.WhiteDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5527,7 +5518,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 9), // Spacetime ripper
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
@@ -5535,7 +5526,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5554,7 +5545,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 9), // Spacetime ripper
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
@@ -5563,7 +5554,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5585,7 +5576,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 10), // Spacetime ripper
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
@@ -5594,7 +5585,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5613,7 +5604,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 10), // Spacetime ripper
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
@@ -5622,7 +5613,7 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.BlackDwarfMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.BlackDwarfMatter.getMolten((int) (1_440 * pow(2L, absoluteTier))),
                                 new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
@@ -5641,7 +5632,7 @@ public class DreamCraftRecipeLoader {
                         new Object[] { CustomItemList.EOH_Temporal_Boundary_Casing.get(1),
                                 getModItem("GoodGenerator", "yottaFluidTankCells", tier * 2, (6 + set)),
                                 getModItem("gregtech", "gt.blockmachines", pow(2L, set - 1) * 16, 11107), // time accel
-                                                                                                          // UV
+                                // UV
                                 getModItem("avaritiaddons", "InfinityChest", 4 * pow(2, set)), // Inf chest
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", 3 * tier, 10), // Spacetime ripper
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
@@ -5650,11 +5641,11 @@ public class DreamCraftRecipeLoader {
                                         OrePrefixes.plateDense,
                                         Materials.MagnetohydrodynamicallyConstrainedStarMatter,
                                         (absoluteTier + 1) * 2),
-                                getItemContainer("QuantumCircuit").get(absoluteTier + 1) },
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { FluidUtils.getFluidStack("time", (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.MagnetohydrodynamicallyConstrainedStarMatter
                                         .getMolten((int) (1_440 * pow(2L, absoluteTier))),
-                                new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))), },
+                                new FluidStack(solderUEV, (int) (1_440 * pow(2L, absoluteTier))) },
                         CustomItemList.TimeAccelerationFieldGeneratorTier8.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5670,33 +5661,25 @@ public class DreamCraftRecipeLoader {
                     2 * 16_384, // comp/s
                     (int) TierEU.RECIPE_MAX, // eu/t
                     64, // amperage
-                    new Object[] {
-                            CustomItemList.Machine_Multi_Transformer.get(1),
+                    new Object[] { CustomItemList.Machine_Multi_Transformer.get(1),
                             CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
                             CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
-                            CustomItemList.StabilisationFieldGeneratorTier0.get(0),
+                            CustomItemList.StabilisationFieldGeneratorTier0.get(1),
 
-                            CustomItemList.Machine_Multi_Computer.get(64),
-                            ItemList.Quantum_Tank_IV.get(64),
-                            ItemList.Quantum_Chest_IV.get(64),
-                            getModItem("bartworks", "gt.blockmachines", 12739), // VM 3
+                            CustomItemList.Machine_Multi_Computer.get(64), ItemList.Quantum_Tank_IV.get(64),
+                            ItemList.Quantum_Chest_IV.get(64), getModItem("bartworks", "gt.blockmachines", 12739), // VM
+                                                                                                                   // 3
 
-                            ItemList.Field_Generator_UMV.get(16),
-                            ItemList.Robot_Arm_UMV.get(16),
-                            ItemList.ZPM3.get(4),
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64)
-                    },
-                    new FluidStack[] {
-                            FluidUtils.getFluidStack("time", 144_000),
+                            ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM3.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+                    new FluidStack[] { FluidUtils.getFluidStack("time", 144_000),
                             FluidUtils.getFluidStack("space", 144_000),
                             FluidUtils.getFluidStack("molten.metastable oganesson", 144_000),
-                            FluidUtils.getFluidStack("molten.shirabon", 144_000),
-                    },
+                            FluidUtils.getFluidStack("molten.shirabon", 144_000), },
                     CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
                     50_000,
                     (int) TierEU.RECIPE_UMV);
         }
-
 
     }
 
@@ -5741,11 +5724,11 @@ public class DreamCraftRecipeLoader {
                 new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1L }, // UMV
                 new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1L }, // UXV
                 new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 4L }, // MAX (Technically not MAX, can be
-                                                                                 // changed once MAX circuits become
-                                                                                 // craftable)
+                // changed once MAX circuits become
+                // craftable)
                 new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 16L }, // MAX (Technically not MAX, can be
-                                                                                  // changed once MAX circuits become
-                                                                                  // craftable)
+                // changed once MAX circuits become
+                // craftable)
         };
 
         ItemStack[] wirelessHatches = { ItemList.Wireless_Hatch_Energy_ULV.get(1),
