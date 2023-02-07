@@ -1,6 +1,5 @@
 package common.blocks;
 
-import gregtech.api.GregTech_API;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -8,10 +7,11 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import gregtech.api.GregTech_API;
+
 /**
- * Any blocks that are used as structure parts for GregTech multi machines
- * have to inherit from this class. Otherwise the checkMachine() method
- * that verifies a machine's structure won't be called correctly.
+ * Any blocks that are used as structure parts for GregTech multi machines have to inherit from this class. Otherwise
+ * the checkMachine() method that verifies a machine's structure won't be called correctly.
  */
 public abstract class BaseGTUpdateableBlock extends Block {
 

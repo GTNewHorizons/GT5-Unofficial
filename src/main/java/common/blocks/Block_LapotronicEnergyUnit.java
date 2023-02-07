@@ -1,12 +1,7 @@
 package common.blocks;
 
-import common.itemBlocks.IB_LapotronicEnergyUnit;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,11 +12,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import common.itemBlocks.IB_LapotronicEnergyUnit;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
+
 public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 
     private static final Block_LapotronicEnergyUnit INSTANCE = new Block_LapotronicEnergyUnit();
 
     public enum IconBaseSide implements IIconContainer {
+
         INSTANCE;
 
         @Override
@@ -107,7 +111,7 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
     }
 
     @Override
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         // Multi casing
         par3List.add(new ItemStack(par1, 1, 0));

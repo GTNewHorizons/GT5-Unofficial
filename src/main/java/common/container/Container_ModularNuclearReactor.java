@@ -1,11 +1,12 @@
 package common.container;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import reactor.ButtonSlot;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class Container_ModularNuclearReactor extends Container {
 
@@ -23,8 +24,8 @@ public class Container_ModularNuclearReactor extends Container {
         // Add the reactor chamber
         for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 6; y++) {
-                REACTOR_SLOTS[nextSlotID] =
-                        super.addSlotToContainer(new Slot(te, getNextSlotID(), (16 + 67 * x), (16 + 67 * y)));
+                REACTOR_SLOTS[nextSlotID] = super.addSlotToContainer(
+                        new Slot(te, getNextSlotID(), (16 + 67 * x), (16 + 67 * y)));
             }
         }
         // Add the configuration slot

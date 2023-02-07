@@ -1,14 +1,9 @@
 package common.blocks;
 
-import common.itemBlocks.IB_IchorJar;
-import common.tileentities.TE_IchorJar;
-import common.tileentities.TE_IchorVoidJar;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.BlockJar;
@@ -26,6 +22,14 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ItemEssence;
 import thaumcraft.common.tiles.TileJarFillable;
+
+import common.itemBlocks.IB_IchorJar;
+import common.tileentities.TE_IchorJar;
+import common.tileentities.TE_IchorVoidJar;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Block_IchorJar extends BlockJar {
 
@@ -60,7 +64,7 @@ public class Block_IchorJar extends BlockJar {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0)); // Normal jar
         par3List.add(new ItemStack(par1, 1, 3)); // Void jar
@@ -76,8 +80,8 @@ public class Block_IchorJar extends BlockJar {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float f1, float f2, float f3) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float f1, float f2,
+            float f3) {
         // Call parent method to handle jar emptying, labels stuff etc
         super.onBlockActivated(world, x, y, z, player, side, f1, f2, f3);
         // Interact with Essentia Phials if the player holds one
@@ -96,16 +100,12 @@ public class Block_IchorJar extends BlockJar {
 
     /**
      * Handle compatibility with Essentia Phials
-     * @param world
-     * 			Pass through from onBlockActivated()
-     * @param player
-     * 			Pass through from onBlockActivated()
-     * @param x
-     * 			Pass through from onBlockActivated()
-     * @param y
-     * 			Pass through from onBlockActivated()
-     * @param z
-     * 			Pass through from onBlockActivated()
+     * 
+     * @param world  Pass through from onBlockActivated()
+     * @param player Pass through from onBlockActivated()
+     * @param x      Pass through from onBlockActivated()
+     * @param y      Pass through from onBlockActivated()
+     * @param z      Pass through from onBlockActivated()
      * @return Not sure tbh
      */
     private boolean dealWithPhial(World world, EntityPlayer player, int x, int y, int z) {
@@ -129,8 +129,13 @@ public class Block_IchorJar extends BlockJar {
                     ((ItemEssence) ConfigItems.itemEssence).setAspects(filledPhial, phialContent);
                     // Drop on ground if there's no inventory space
                     if (!player.inventory.addItemStackToInventory(filledPhial)) {
-                        world.spawnEntityInWorld(new EntityItem(
-                                world, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, filledPhial));
+                        world.spawnEntityInWorld(
+                                new EntityItem(
+                                        world,
+                                        (float) x + 0.5F,
+                                        (float) y + 0.5F,
+                                        (float) z + 0.5F,
+                                        filledPhial));
                     }
 
                     world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
@@ -154,12 +159,13 @@ public class Block_IchorJar extends BlockJar {
                         heldItem.stackSize--;
                         // Drop on ground if there's no inventory space
                         if (!player.inventory.addItemStackToInventory(new ItemStack(ConfigItems.itemEssence, 1, 0))) {
-                            world.spawnEntityInWorld(new EntityItem(
-                                    world,
-                                    (float) x + 0.5F,
-                                    (float) y + 0.5F,
-                                    (float) z + 0.5F,
-                                    new ItemStack(ConfigItems.itemEssence, 1, 0)));
+                            world.spawnEntityInWorld(
+                                    new EntityItem(
+                                            world,
+                                            (float) x + 0.5F,
+                                            (float) y + 0.5F,
+                                            (float) z + 0.5F,
+                                            new ItemStack(ConfigItems.itemEssence, 1, 0)));
                         }
 
                         world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
@@ -186,8 +192,8 @@ public class Block_IchorJar extends BlockJar {
         super.breakBlock(world, x, y, z, par5, par6);
     }
 
-    private void breakBlockWarpy(
-            World world, int x, int y, int z, int fillAmount, int iterations, float explosionStrength) {
+    private void breakBlockWarpy(World world, int x, int y, int z, int fillAmount, int iterations,
+            float explosionStrength) {
         if (fillAmount > 0) {
             // Create a decent explosion in the center of the block (TNT has strength 4.0F)
             world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, explosionStrength, false);
@@ -220,8 +226,8 @@ public class Block_IchorJar extends BlockJar {
     }
 
     @Override
-    public void onBlockHarvested(
-            World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {}
+    public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5,
+            EntityPlayer par6EntityPlayer) {}
 
     @Override
     public boolean canDropFromExplosion(Explosion e) {

@@ -1,17 +1,20 @@
 package client.renderer;
 
 import kekztech.KekzCore;
+
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 public class TESR_SETether extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation tetherBeamTexture =
-            new ResourceLocation(KekzCore.MODID, "textures/effects/Tether_beam.png");
+    private static final ResourceLocation tetherBeamTexture = new ResourceLocation(
+            KekzCore.MODID,
+            "textures/effects/Tether_beam.png");
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {

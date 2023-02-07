@@ -11,8 +11,7 @@ public class TE_ItemProxySource extends TileEntity implements IInventory {
     private String idCache = null;
 
     /**
-     * Builds a simple unique identifier for this TileEntity by appending
-     * the x, y, and z coordinates in a string.
+     * Builds a simple unique identifier for this TileEntity by appending the x, y, and z coordinates in a string.
      *
      * @return unique identifier for this TileEntity
      */

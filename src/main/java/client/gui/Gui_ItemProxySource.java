@@ -1,7 +1,7 @@
 package client.gui;
 
-import common.container.Container_ItemProxySource;
 import kekztech.KekzCore;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -10,7 +10,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import common.container.Container_ItemProxySource;
 
 public class Gui_ItemProxySource extends GuiContainer {
 

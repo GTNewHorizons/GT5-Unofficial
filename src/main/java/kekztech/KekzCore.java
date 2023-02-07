@@ -1,18 +1,21 @@
 package kekztech;
 
+import java.util.List;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.ImmutableSet;
 import common.CommonProxy;
 import common.tileentities.*;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import java.util.List;
-import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * My GT-Meta-IDs are: 13101 - 13500
@@ -23,8 +26,7 @@ import org.apache.logging.log4j.Logger;
         modid = KekzCore.MODID,
         name = KekzCore.NAME,
         version = KekzCore.VERSION,
-        dependencies = "required-after:IC2;"
-                + "required-after:gregtech;"
+        dependencies = "required-after:IC2;" + "required-after:gregtech;"
                 + "required-after:tectech;"
                 + "required-after:Thaumcraft;"
                 + "required-after:ThaumicTinkerer;"

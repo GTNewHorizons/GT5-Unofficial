@@ -1,13 +1,15 @@
 package client.renderer;
 
-import common.tileentities.TE_ItemProxyCable;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import common.tileentities.TE_ItemProxyCable;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ConduitRenderer implements ISimpleBlockRenderingHandler {
 
@@ -24,8 +26,8 @@ public class ConduitRenderer implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {}
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TE_ItemProxyCable) {
             final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
@@ -69,7 +71,12 @@ public class ConduitRenderer implements ISimpleBlockRenderingHandler {
             }
 
             block.setBlockBounds(
-                    xOffset, yOffset, zOffset, xOffset + xThickness, yOffset + yThickness, zOffset + zThickness);
+                    xOffset,
+                    yOffset,
+                    zOffset,
+                    xOffset + xThickness,
+                    yOffset + yThickness,
+                    zOffset + zThickness);
             renderer.setRenderBoundsFromBlock(block);
         }
 

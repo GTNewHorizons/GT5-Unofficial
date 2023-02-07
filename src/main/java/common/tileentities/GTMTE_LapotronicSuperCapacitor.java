@@ -7,6 +7,22 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTEClass;
 import static java.lang.Math.min;
 
+import java.math.BigInteger;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.function.Consumer;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
@@ -24,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
 import common.Blocks;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -37,24 +54,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
-import java.math.BigInteger;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.function.Consumer;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GTMTE_LapotronicSuperCapacitor
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor>
         implements IGlobalWirelessEnergy, ISurvivalConstructable {
+
     private enum TopState {
         MayBeTop,
         Top,
@@ -72,6 +76,7 @@ public class GTMTE_LapotronicSuperCapacitor
     private long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
 
     private enum Capacitor {
+
         IV(2, BigInteger.valueOf(IV_cap_storage)),
         LuV(3, BigInteger.valueOf(LuV_cap_storage)),
         ZPM(4, BigInteger.valueOf(ZPM_cap_storage)),
@@ -79,15 +84,13 @@ public class GTMTE_LapotronicSuperCapacitor
         UHV(6, MAX_LONG),
         None(0, BigInteger.ZERO),
         EV(1, BigInteger.valueOf(EV_cap_storage)),
-        UEV(7, MAX_LONG),
-        ;
+        UEV(7, MAX_LONG),;
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
         static final Capacitor[] VALUES = values();
         static final Capacitor[] VALUES_BY_TIER = Arrays.stream(values())
-                .sorted(Comparator.comparingInt(Capacitor::getMinimalGlassTier))
-                .toArray(Capacitor[]::new);
+                .sorted(Comparator.comparingInt(Capacitor::getMinimalGlassTier)).toArray(Capacitor[]::new);
 
         Capacitor(int minimalGlassTier, BigInteger providedCapacity) {
             this.minimalGlassTier = minimalGlassTier;
@@ -128,169 +131,128 @@ public class GTMTE_LapotronicSuperCapacitor
     // height channel for height.
     // glass channel for glass
     // capacitor channel for capacitor, but it really just pick whatever capacitor it can find in survival
-    private static final IStructureDefinition<GTMTE_LapotronicSuperCapacitor> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GTMTE_LapotronicSuperCapacitor>builder()
-                    .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] {
-                        {
-                            "bbbbb", "bbbbb", "bbbbb", "bbbbb", "bbbbb",
-                        },
-                        {
-                            "bb~bb", "bbbbb", "bbbbb", "bbbbb", "bbbbb",
-                        },
-                    }))
-                    .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] {
-                        {
-                            "ggggg", "gcccg", "gcccg", "gcccg", "ggggg",
-                        },
-                    }))
-                    .addShape(STRUCTURE_PIECE_TOP, transpose(new String[][] {
-                        {
-                            "ggggg", "ggggg", "ggggg", "ggggg", "ggggg",
-                        },
-                    }))
-                    .addShape(STRUCTURE_PIECE_MID, transpose(new String[][] {
-                        {
-                            "ggggg", "gCCCg", "gCCCg", "gCCCg", "ggggg",
-                        },
-                    }))
-                    .addElement(
-                            'b',
-                            buildHatchAdder(GTMTE_LapotronicSuperCapacitor.class)
-                                    .atLeast(LSCHatchElement.Energy, LSCHatchElement.Dynamo, Maintenance)
-                                    .hatchItemFilterAnd((t, h) -> ChannelDataAccessor.getChannelData(h, "glass") < 6
-                                            ? filterByMTEClass(ImmutableList.of(
+    private static final IStructureDefinition<GTMTE_LapotronicSuperCapacitor> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GTMTE_LapotronicSuperCapacitor>builder()
+            .addShape(
+                    STRUCTURE_PIECE_BASE,
+                    transpose(
+                            new String[][] { { "bbbbb", "bbbbb", "bbbbb", "bbbbb", "bbbbb", },
+                                    { "bb~bb", "bbbbb", "bbbbb", "bbbbb", "bbbbb", }, }))
+            .addShape(
+                    STRUCTURE_PIECE_LAYER,
+                    transpose(new String[][] { { "ggggg", "gcccg", "gcccg", "gcccg", "ggggg", }, }))
+            .addShape(
+                    STRUCTURE_PIECE_TOP,
+                    transpose(new String[][] { { "ggggg", "ggggg", "ggggg", "ggggg", "ggggg", }, }))
+            .addShape(
+                    STRUCTURE_PIECE_MID,
+                    transpose(new String[][] { { "ggggg", "gCCCg", "gCCCg", "gCCCg", "ggggg", }, }))
+            .addElement(
+                    'b',
+                    buildHatchAdder(GTMTE_LapotronicSuperCapacitor.class)
+                            .atLeast(LSCHatchElement.Energy, LSCHatchElement.Dynamo, Maintenance)
+                            .hatchItemFilterAnd(
+                                    (t, h) -> ChannelDataAccessor.getChannelData(h, "glass") < 6
+                                            ? filterByMTEClass(
+                                                    ImmutableList.of(
                                                             GT_MetaTileEntity_Hatch_EnergyTunnel.class,
-                                                            GT_MetaTileEntity_Hatch_DynamoTunnel.class))
-                                                    .negate()
+                                                            GT_MetaTileEntity_Hatch_DynamoTunnel.class)).negate()
                                             : s -> true)
-                                    .casingIndex(CASING_TEXTURE_ID)
-                                    .dot(1)
-                                    .buildAndChain(
-                                            onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))))
-                    .addElement(
-                            'g',
-                            withChannel(
-                                    "glass",
-                                    BorosilicateGlass.ofBoroGlass(
-                                            (byte) GLASS_TIER_UNSET, (te, t) -> te.glassTier = t, te -> te.glassTier)))
-                    .addElement(
-                            'c',
-                            ofChain(
-                                    onlyIf(
-                                            te -> te.topState != TopState.NotTop,
-                                            onElementPass(
-                                                    te -> te.topState = TopState.Top,
-                                                    withChannel(
-                                                            "glass",
-                                                            BorosilicateGlass.ofBoroGlass(
-                                                                    (byte) GLASS_TIER_UNSET,
-                                                                    (te, t) -> te.glassTier = t,
-                                                                    te -> te.glassTier)))),
-                                    onlyIf(
-                                            te -> te.topState != TopState.Top,
-                                            onElementPass(
-                                                    te -> te.topState = TopState.NotTop,
-                                                    new IStructureElement<GTMTE_LapotronicSuperCapacitor>() {
-                                                        @Override
-                                                        public boolean check(
-                                                                GTMTE_LapotronicSuperCapacitor t,
-                                                                World world,
-                                                                int x,
-                                                                int y,
-                                                                int z) {
-                                                            Block worldBlock = world.getBlock(x, y, z);
-                                                            int meta = worldBlock.getDamageValue(world, x, y, z);
-                                                            if (LSC_PART != worldBlock || meta == 0) return false;
-                                                            t.capacitors[meta - 1]++;
-                                                            return true;
-                                                        }
+                            .casingIndex(CASING_TEXTURE_ID).dot(1)
+                            .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))))
+            .addElement(
+                    'g',
+                    withChannel(
+                            "glass",
+                            BorosilicateGlass.ofBoroGlass(
+                                    (byte) GLASS_TIER_UNSET,
+                                    (te, t) -> te.glassTier = t,
+                                    te -> te.glassTier)))
+            .addElement(
+                    'c',
+                    ofChain(
+                            onlyIf(
+                                    te -> te.topState != TopState.NotTop,
+                                    onElementPass(
+                                            te -> te.topState = TopState.Top,
+                                            withChannel(
+                                                    "glass",
+                                                    BorosilicateGlass.ofBoroGlass(
+                                                            (byte) GLASS_TIER_UNSET,
+                                                            (te, t) -> te.glassTier = t,
+                                                            te -> te.glassTier)))),
+                            onlyIf(
+                                    te -> te.topState != TopState.Top,
+                                    onElementPass(
+                                            te -> te.topState = TopState.NotTop,
+                                            new IStructureElement<GTMTE_LapotronicSuperCapacitor>() {
 
-                                                        private int getHint(ItemStack stack) {
-                                                            return Capacitor.VALUES_BY_TIER[
-                                                                            Math.min(
-                                                                                            Capacitor.VALUES_BY_TIER
-                                                                                                    .length,
-                                                                                            ChannelDataAccessor
-                                                                                                    .getChannelData(
-                                                                                                            stack,
-                                                                                                            "capacitor"))
-                                                                                    - 1]
-                                                                            .getMinimalGlassTier()
-                                                                    + 1;
-                                                        }
+                                                @Override
+                                                public boolean check(GTMTE_LapotronicSuperCapacitor t, World world,
+                                                        int x, int y, int z) {
+                                                    Block worldBlock = world.getBlock(x, y, z);
+                                                    int meta = worldBlock.getDamageValue(world, x, y, z);
+                                                    if (LSC_PART != worldBlock || meta == 0) return false;
+                                                    t.capacitors[meta - 1]++;
+                                                    return true;
+                                                }
 
-                                                        @Override
-                                                        public boolean spawnHint(
-                                                                GTMTE_LapotronicSuperCapacitor t,
-                                                                World world,
-                                                                int x,
-                                                                int y,
-                                                                int z,
-                                                                ItemStack trigger) {
-                                                            StructureLibAPI.hintParticle(
-                                                                    world, x, y, z, LSC_PART, getHint(trigger));
-                                                            return true;
-                                                        }
+                                                private int getHint(ItemStack stack) {
+                                                    return Capacitor.VALUES_BY_TIER[Math.min(
+                                                            Capacitor.VALUES_BY_TIER.length,
+                                                            ChannelDataAccessor.getChannelData(stack, "capacitor")) - 1]
+                                                                    .getMinimalGlassTier()
+                                                            + 1;
+                                                }
 
-                                                        @Override
-                                                        public boolean placeBlock(
-                                                                GTMTE_LapotronicSuperCapacitor t,
-                                                                World world,
-                                                                int x,
-                                                                int y,
-                                                                int z,
-                                                                ItemStack trigger) {
-                                                            world.setBlock(x, y, z, LSC_PART, getHint(trigger), 3);
-                                                            return true;
-                                                        }
+                                                @Override
+                                                public boolean spawnHint(GTMTE_LapotronicSuperCapacitor t, World world,
+                                                        int x, int y, int z, ItemStack trigger) {
+                                                    StructureLibAPI
+                                                            .hintParticle(world, x, y, z, LSC_PART, getHint(trigger));
+                                                    return true;
+                                                }
 
-                                                        @Override
-                                                        public PlaceResult survivalPlaceBlock(
-                                                                GTMTE_LapotronicSuperCapacitor t,
-                                                                World world,
-                                                                int x,
-                                                                int y,
-                                                                int z,
-                                                                ItemStack trigger,
-                                                                IItemSource source,
-                                                                EntityPlayerMP actor,
-                                                                Consumer<IChatComponent> chatter) {
-                                                            if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                                                            int glassTier =
-                                                                    ChannelDataAccessor.getChannelData(trigger, "glass")
-                                                                            + 2;
-                                                            ItemStack targetStack = source.takeOne(
-                                                                    s -> s != null
-                                                                            && s.stackSize >= 0
-                                                                            && s.getItem() == LSC_PART_ITEM
-                                                                            && Capacitor.VALUES[
-                                                                                            Math.min(
-                                                                                                            s
-                                                                                                                    .getItemDamage(),
-                                                                                                            Capacitor
-                                                                                                                    .VALUES
-                                                                                                                    .length)
-                                                                                                    - 1]
-                                                                                            .getMinimalGlassTier()
-                                                                                    > glassTier,
-                                                                    true);
-                                                            if (targetStack == null) return PlaceResult.REJECT;
-                                                            return StructureUtility.survivalPlaceBlock(
-                                                                    targetStack,
-                                                                    NBTMode.EXACT,
-                                                                    targetStack.stackTagCompound,
-                                                                    true,
-                                                                    world,
-                                                                    x,
-                                                                    y,
-                                                                    z,
-                                                                    source,
-                                                                    actor,
-                                                                    chatter);
-                                                        }
-                                                    }))))
-                    .addElement('C', ofBlock(LSC_PART, 1))
-                    .build();
+                                                @Override
+                                                public boolean placeBlock(GTMTE_LapotronicSuperCapacitor t, World world,
+                                                        int x, int y, int z, ItemStack trigger) {
+                                                    world.setBlock(x, y, z, LSC_PART, getHint(trigger), 3);
+                                                    return true;
+                                                }
+
+                                                @Override
+                                                public PlaceResult survivalPlaceBlock(GTMTE_LapotronicSuperCapacitor t,
+                                                        World world, int x, int y, int z, ItemStack trigger,
+                                                        IItemSource source, EntityPlayerMP actor,
+                                                        Consumer<IChatComponent> chatter) {
+                                                    if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+                                                    int glassTier = ChannelDataAccessor.getChannelData(trigger, "glass")
+                                                            + 2;
+                                                    ItemStack targetStack = source.takeOne(
+                                                            s -> s != null && s.stackSize >= 0
+                                                                    && s.getItem() == LSC_PART_ITEM
+                                                                    && Capacitor.VALUES[Math.min(
+                                                                            s.getItemDamage(),
+                                                                            Capacitor.VALUES.length) - 1]
+                                                                                    .getMinimalGlassTier()
+                                                                            > glassTier,
+                                                            true);
+                                                    if (targetStack == null) return PlaceResult.REJECT;
+                                                    return StructureUtility.survivalPlaceBlock(
+                                                            targetStack,
+                                                            NBTMode.EXACT,
+                                                            targetStack.stackTagCompound,
+                                                            true,
+                                                            world,
+                                                            x,
+                                                            y,
+                                                            z,
+                                                            source,
+                                                            actor,
+                                                            chatter);
+                                                }
+                                            }))))
+            .addElement('C', ofBlock(LSC_PART, 1)).build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
 
@@ -299,8 +261,7 @@ public class GTMTE_LapotronicSuperCapacitor
     private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
     private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
     /**
-     * Count the amount of capacitors of each tier in each slot.
-     * Index = meta - 1
+     * Count the amount of capacitors of each tier in each slot. Index = meta - 1
      */
     private final int[] capacitors = new int[8];
 
@@ -357,8 +318,8 @@ public class GTMTE_LapotronicSuperCapacitor
         if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return GTMTE_LapotronicSuperCapacitor.this.mMaintenanceHatches.add(
-                    (GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+            return GTMTE_LapotronicSuperCapacitor.this.mMaintenanceHatches
+                    .add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
             // Add GT hatches
             final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
@@ -366,8 +327,7 @@ public class GTMTE_LapotronicSuperCapacitor
             return mEnergyHatches.add(tHatch);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyTunnel) {
             // Add TT Laser hatches
-            final GT_MetaTileEntity_Hatch_EnergyTunnel tHatch =
-                    ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity);
+            final GT_MetaTileEntity_Hatch_EnergyTunnel tHatch = ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity);
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyTunnelsTT.add(tHatch);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
@@ -405,85 +365,121 @@ public class GTMTE_LapotronicSuperCapacitor
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Energy Storage")
-                .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
-                .addInfo("Capped at " + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap) + EnumChatFormatting.GRAY
-                        + " EU/t passive loss per " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
-                        + EnumChatFormatting.GRAY + " capacitor and ")
-                .addInfo(EnumChatFormatting.RED + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uev_cap)
-                        + EnumChatFormatting.GRAY + " EU/t passive loss per " + GT_Values.TIER_COLORS[10]
-                        + GT_Values.VN[10] + EnumChatFormatting.GRAY + " capacitor.")
-                .addInfo("Passive loss is multiplied by the number of maintenance issues present.")
-                .addSeparator()
+        tt.addMachineType("Energy Storage").addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
+                .addInfo(
+                        "Capped at " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap)
+                                + EnumChatFormatting.GRAY
+                                + " EU/t passive loss per "
+                                + GT_Values.TIER_COLORS[9]
+                                + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY
+                                + " capacitor and ")
+                .addInfo(
+                        EnumChatFormatting.RED + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uev_cap)
+                                + EnumChatFormatting.GRAY
+                                + " EU/t passive loss per "
+                                + GT_Values.TIER_COLORS[10]
+                                + GT_Values.VN[10]
+                                + EnumChatFormatting.GRAY
+                                + " capacitor.")
+                .addInfo("Passive loss is multiplied by the number of maintenance issues present.").addSeparator()
                 .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
-                .addInfo(GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY
-                        + "-tier glass required for " + EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE
-                        + "Tech" + EnumChatFormatting.GRAY + " Laser Hatches.")
-                .addInfo("Add more or better capacitors to increase capacity.")
-                .addSeparator()
+                .addInfo(
+                        GT_Values.TIER_COLORS[8] + GT_Values.VN[8]
+                                + EnumChatFormatting.GRAY
+                                + "-tier glass required for "
+                                + EnumChatFormatting.BLUE
+                                + "Tec"
+                                + EnumChatFormatting.DARK_BLUE
+                                + "Tech"
+                                + EnumChatFormatting.GRAY
+                                + " Laser Hatches.")
+                .addInfo("Add more or better capacitors to increase capacity.").addSeparator()
                 .addInfo("Wireless mode can be enabled by right clicking with a screwdriver.")
-                .addInfo("This mode can only be enabled if you have a " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
-                        + EnumChatFormatting.GRAY + " or " + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
-                        + EnumChatFormatting.GRAY + " capacitor in the multiblock.")
-                .addInfo("When enabled every " + EnumChatFormatting.BLUE
-                        + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks)
-                        + EnumChatFormatting.GRAY + " ticks the LSC will attempt to re-balance against your")
+                .addInfo(
+                        "This mode can only be enabled if you have a " + GT_Values.TIER_COLORS[9]
+                                + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY
+                                + " or "
+                                + GT_Values.TIER_COLORS[10]
+                                + GT_Values.VN[10]
+                                + EnumChatFormatting.GRAY
+                                + " capacitor in the multiblock.")
+                .addInfo(
+                        "When enabled every " + EnumChatFormatting.BLUE
+                                + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks)
+                                + EnumChatFormatting.GRAY
+                                + " ticks the LSC will attempt to re-balance against your")
                 .addInfo("wireless EU network.")
-                .addInfo("If there is less than " + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(LSC_wireless_eu_cap) + EnumChatFormatting.GRAY + "("
-                        + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + ")" + " or "
-                        + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
-                        + EnumChatFormatting.GRAY + "(" + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
-                        + EnumChatFormatting.GRAY + ")" + " EU in the LSC")
+                .addInfo(
+                        "If there is less than " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(LSC_wireless_eu_cap)
+                                + EnumChatFormatting.GRAY
+                                + "("
+                                + GT_Values.TIER_COLORS[9]
+                                + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY
+                                + ")"
+                                + " or "
+                                + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
+                                + EnumChatFormatting.GRAY
+                                + "("
+                                + GT_Values.TIER_COLORS[10]
+                                + GT_Values.VN[10]
+                                + EnumChatFormatting.GRAY
+                                + ")"
+                                + " EU in the LSC")
                 .addInfo("it will withdraw from the network and add to the LSC. If there is more it will add")
-                .addInfo("the EU to the network and remove it from the LSC.")
-                .addSeparator()
+                .addInfo("the EU to the network and remove it from the LSC.").addSeparator()
                 .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
-                .addStructureInfo("Modular height of 4-50 blocks.")
-                .addController("Front center bottom")
+                .addStructureInfo("Modular height of 4-50 blocks.").addController("Front center bottom")
                 .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
                 .addOtherStructurePart(
-                        "Lapotronic Capacitor (" + GT_Values.TIER_COLORS[4] + GT_Values.VN[4] + EnumChatFormatting.GRAY
-                                + "-" + GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY
-                                + "), Ultimate Capacitor (" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
-                                + EnumChatFormatting.GRAY + "-" + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
-                                + EnumChatFormatting.GRAY + ")",
+                        "Lapotronic Capacitor (" + GT_Values.TIER_COLORS[4]
+                                + GT_Values.VN[4]
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + GT_Values.TIER_COLORS[8]
+                                + GT_Values.VN[8]
+                                + EnumChatFormatting.GRAY
+                                + "), Ultimate Capacitor ("
+                                + GT_Values.TIER_COLORS[9]
+                                + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + GT_Values.TIER_COLORS[10]
+                                + GT_Values.VN[10]
+                                + EnumChatFormatting.GRAY
+                                + ")",
                         "Center 3x(1-47)x3 above base (9-423 blocks)")
                 .addStructureInfo(
                         "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
                 .addOtherStructurePart("Borosilicate Glass (any)", "41-265x, Encase capacitor pillar")
-                .addEnergyHatch("Any casing")
-                .addDynamoHatch("Any casing")
+                .addEnergyHatch("Any casing").addDynamoHatch("Any casing")
                 .addOtherStructurePart(
                         "Laser Target/Source Hatches",
-                        "Any casing, must be using " + GT_Values.TIER_COLORS[8] + GT_Values.VN[8]
-                                + EnumChatFormatting.GRAY + "-tier glass")
+                        "Any casing, must be using " + GT_Values.TIER_COLORS[8]
+                                + GT_Values.VN[8]
+                                + EnumChatFormatting.GRAY
+                                + "-tier glass")
                 .addStructureInfo("You can have several I/O Hatches")
                 .addSubChannelUsage("glass", "Borosilicate Glass Tier")
                 .addSubChannelUsage("capacitor", "Maximum Capacitor Tier")
-                .addSubChannelUsage("height", "Height of structure")
-                .addMaintenanceHatch("Any casing")
+                .addSubChannelUsage("height", "Height of structure").addMaintenanceHatch("Any casing")
                 .toolTipFinisher("KekzTech");
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         ITexture[] sTexture = new ITexture[] {
-            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
-        };
+                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         if (aSide == aFacing && aActive) {
-            sTexture = new ITexture[] {
-                TextureFactory.of(
-                        BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
-            };
+            sTexture = new ITexture[] { TextureFactory
+                    .of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         }
         return sTexture;
     }
@@ -567,14 +563,13 @@ public class GTMTE_LapotronicSuperCapacitor
         }
 
         // Check if enough (more than 50%) non-empty caps
-        if (capacitors[6]
-                > capacitors[0]
-                        + capacitors[1]
-                        + capacitors[2]
-                        + capacitors[3]
-                        + getUHVCapacitorCount()
-                        + capacitors[6]
-                        + getUEVCapacitorCount()) return false;
+        if (capacitors[6] > capacitors[0] + capacitors[1]
+                + capacitors[2]
+                + capacitors[3]
+                + getUHVCapacitorCount()
+                + capacitors[6]
+                + getUEVCapacitorCount())
+            return false;
 
         // Calculate total capacity
         capacity = BigInteger.ZERO;
@@ -601,14 +596,40 @@ public class GTMTE_LapotronicSuperCapacitor
         int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 50);
         int built;
         built = survivialBuildPiece(
-                STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
+                STRUCTURE_PIECE_BASE,
+                stackSize,
+                2,
+                1,
+                0,
+                elementBudget,
+                source,
+                actor,
+                false,
+                true);
         if (built >= 0) return built;
-        for (int i = 2; i < layer - 1; i++)
-            built = survivialBuildPiece(
-                    STRUCTURE_PIECE_MID, stackSize, 2, i, 0, elementBudget, source, actor, false, true);
+        for (int i = 2; i < layer - 1; i++) built = survivialBuildPiece(
+                STRUCTURE_PIECE_MID,
+                stackSize,
+                2,
+                i,
+                0,
+                elementBudget,
+                source,
+                actor,
+                false,
+                true);
         if (built >= 0) return built;
         return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP, stackSize, 2, layer - 1, 0, elementBudget, source, actor, false, true);
+                STRUCTURE_PIECE_TOP,
+                stackSize,
+                2,
+                layer - 1,
+                0,
+                elementBudget,
+                source,
+                actor,
+                false,
+                true);
     }
 
     @Override
@@ -660,8 +681,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Output energy to TT hatches
         for (GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesTT) {
-            if (eDynamo == null
-                    || eDynamo.getBaseMetaTileEntity() == null
+            if (eDynamo == null || eDynamo.getBaseMetaTileEntity() == null
                     || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
                 continue;
             }
@@ -713,8 +733,8 @@ public class GTMTE_LapotronicSuperCapacitor
             counter = 1;
 
             // Find difference.
-            BigInteger transferred_eu =
-                    stored.subtract((LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
+            BigInteger transferred_eu = stored.subtract(
+                    (LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
                             .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))));
 
             if (transferred_eu.signum() == 1) {
@@ -766,16 +786,15 @@ public class GTMTE_LapotronicSuperCapacitor
 
     /**
      * To be called whenever the maintenance status changes or the capacity was recalculated
-     * @param repairStatus
-     * 		This machine's repair status
+     * 
+     * @param repairStatus This machine's repair status
      * @return new BigInteger instance for passiveDischargeAmount
      */
     private long recalculateLossWithMaintenance(int repairStatus) {
         repairStatusCache = repairStatus;
 
         // This cannot overflow because there is a 135 capacitor maximum per LSC.
-        long temp_capacity_divided =
-                capacity.divide(BigInteger.valueOf(100L * 86400L * 20L)).longValue();
+        long temp_capacity_divided = capacity.divide(BigInteger.valueOf(100L * 86400L * 20L)).longValue();
 
         // Passive loss is multiplied by number of UHV/UEV caps. Minimum of 1 otherwise loss is 0 for non-UHV/UEV caps
         // calculations.
@@ -794,8 +813,8 @@ public class GTMTE_LapotronicSuperCapacitor
 
     /**
      * Calculate how much EU to draw from an Energy Hatch
-     * @param hatchWatts
-     * 		Hatch amperage * voltage
+     * 
+     * @param hatchWatts Hatch amperage * voltage
      * @return EU amount
      */
     private long getPowerToDraw(long hatchWatts) {
@@ -806,8 +825,8 @@ public class GTMTE_LapotronicSuperCapacitor
 
     /**
      * Calculate how much EU to push into a Dynamo Hatch
-     * @param hatchWatts
-     * 		Hatch amperage * voltage
+     * 
+     * @param hatchWatts Hatch amperage * voltage
      * @return EU amount
      */
     private long getPowerToPush(long hatchWatts) {
@@ -845,20 +864,26 @@ public class GTMTE_LapotronicSuperCapacitor
         ll.add("EU OUT: " + GT_Utility.formatNumbers(outputLastTick) + "EU/t");
         ll.add("Avg EU IN: " + nf.format(getAvgIn()) + " (last " + secInterval + " seconds)");
         ll.add("Avg EU OUT: " + nf.format(getAvgOut()) + " (last " + secInterval + " seconds)");
-        ll.add("Maintenance Status: "
-                + ((super.getRepairStatus() == super.getIdealStatus())
+        ll.add(
+                "Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
                         ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
                         : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
-        ll.add("Wireless mode: "
-                + (wireless_mode
-                        ? EnumChatFormatting.GREEN + "enabled" + EnumChatFormatting.RESET
+        ll.add(
+                "Wireless mode: " + (wireless_mode ? EnumChatFormatting.GREEN + "enabled" + EnumChatFormatting.RESET
                         : EnumChatFormatting.RED + "disabled" + EnumChatFormatting.RESET));
-        ll.add(GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.RESET + " Capacitors detected: "
-                + getUHVCapacitorCount());
-        ll.add(GT_Values.TIER_COLORS[10] + GT_Values.VN[10] + EnumChatFormatting.RESET + " Capacitors detected: "
-                + getUEVCapacitorCount());
-        ll.add("Total wireless EU: " + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
+        ll.add(
+                GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+                        + EnumChatFormatting.RESET
+                        + " Capacitors detected: "
+                        + getUHVCapacitorCount());
+        ll.add(
+                GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
+                        + EnumChatFormatting.RESET
+                        + " Capacitors detected: "
+                        + getUEVCapacitorCount());
+        ll.add(
+                "Total wireless EU: " + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
         ll.add("---------------------------------------------");
 
         final String[] a = new String[ll.size()];
@@ -924,9 +949,9 @@ public class GTMTE_LapotronicSuperCapacitor
         return stored.longValue();
     }
 
-    /*  all of these are needed for the injectEnergyUnits() and drainEnergyUnits()
-       in IGregTechTileEntity
-    */
+    /*
+     * all of these are needed for the injectEnergyUnits() and drainEnergyUnits() in IGregTechTileEntity
+     */
     @Override
     public long maxEUInput() {
         return mMaxEUIn;
@@ -965,27 +990,34 @@ public class GTMTE_LapotronicSuperCapacitor
         } else {
             GT_Utility.sendChatToPlayer(
                     aPlayer,
-                    "Wireless mode cannot be enabled without at least 1 " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
-                            + EnumChatFormatting.RESET + " or " + GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
-                            + EnumChatFormatting.RESET + " capacitor.");
+                    "Wireless mode cannot be enabled without at least 1 " + GT_Values.TIER_COLORS[9]
+                            + GT_Values.VN[9]
+                            + EnumChatFormatting.RESET
+                            + " or "
+                            + GT_Values.TIER_COLORS[10]
+                            + GT_Values.VN[10]
+                            + EnumChatFormatting.RESET
+                            + " capacitor.");
             wireless_mode = false;
         }
     }
 
     private enum LSCHatchElement implements IHatchElement<GTMTE_LapotronicSuperCapacitor> {
+
         Energy(GT_MetaTileEntity_Hatch_EnergyMulti.class, GT_MetaTileEntity_Hatch_Energy.class) {
+
             @Override
             public long count(GTMTE_LapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
         Dynamo(GT_MetaTileEntity_Hatch_DynamoMulti.class, GT_MetaTileEntity_Hatch_Dynamo.class) {
+
             @Override
             public long count(GTMTE_LapotronicSuperCapacitor t) {
                 return t.mDynamoHatches.size() + t.mDynamoHatchesTT.size() + t.mDynamoTunnelsTT.size();
             }
-        },
-        ;
+        },;
 
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 

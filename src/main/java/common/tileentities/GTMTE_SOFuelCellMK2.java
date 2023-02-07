@@ -6,8 +6,17 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import common.Blocks;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -21,12 +30,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SOFuelCellMK2> {
 
@@ -51,25 +54,23 @@ public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBas
 
     private static final int CASING_TEXTURE_ID = 48;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GTMTE_SOFuelCellMK2> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GTMTE_SOFuelCellMK2>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-                        {"ccc", "ccc", "ccc", "ccc", "ccc"},
-                        {"c~c", "geg", "geg", "geg", "cdc"},
-                        {"ccc", "ccc", "ccc", "ccc", "ccc"}
-                    }))
-                    .addElement(
-                            'c',
-                            ofChain(
-                                    onElementPass(te -> te.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 0)),
-                                    ofHatchAdder(GTMTE_SOFuelCellMK2::addInputToMachineList, CASING_TEXTURE_ID, 1),
-                                    ofHatchAdder(
-                                            GTMTE_SOFuelCellMK2::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
-                                    ofHatchAdder(GTMTE_SOFuelCellMK2::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
-                    .addElement('d', ofHatchAdder(GTMTE_SOFuelCellMK2::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
-                    .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
-                    .addElement('e', ofBlockAnyMeta(Blocks.gdcUnit))
-                    .build();
+    private static final IStructureDefinition<GTMTE_SOFuelCellMK2> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GTMTE_SOFuelCellMK2>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { "ccc", "ccc", "ccc", "ccc", "ccc" },
+                                    { "c~c", "geg", "geg", "geg", "cdc" }, { "ccc", "ccc", "ccc", "ccc", "ccc" } }))
+            .addElement(
+                    'c',
+                    ofChain(
+                            onElementPass(te -> te.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 0)),
+                            ofHatchAdder(GTMTE_SOFuelCellMK2::addInputToMachineList, CASING_TEXTURE_ID, 1),
+                            ofHatchAdder(GTMTE_SOFuelCellMK2::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
+                            ofHatchAdder(GTMTE_SOFuelCellMK2::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
+            .addElement('d', ofHatchAdder(GTMTE_SOFuelCellMK2::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
+            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+            .addElement('e', ofBlockAnyMeta(Blocks.gdcUnit)).build();
 
     @Override
     public IStructureDefinition<GTMTE_SOFuelCellMK2> getStructureDefinition() {
@@ -81,63 +82,36 @@ public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBas
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Turbine")
                 .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-                .addInfo("Consumes up to" + (EU_PER_TICK * 20)
-                        + "EU worth of fuel with up to 100% efficiency each second")
+                .addInfo(
+                        "Consumes up to" + (EU_PER_TICK * 20)
+                                + "EU worth of fuel with up to 100% efficiency each second")
                 .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
                 .addInfo("Steam production requires the SOFC to heat up completely first")
                 .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
-                .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-                .addSeparator()
-                .beginStructureBlock(3, 3, 5, false)
-                .addController("Front center")
+                .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas").addSeparator()
+                .beginStructureBlock(3, 3, 5, false).addController("Front center")
                 .addCasingInfo("Robust Tungstensteel Machine Casing", 12)
                 .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
                 .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-                .addDynamoHatch("Back center", 1)
-                .addMaintenanceHatch("Any casing")
-                .addInputHatch("Fuel, any casing")
-                .addInputHatch("Oxygen, any casing")
-                .addOutputHatch("Superheated Steam, any casing")
+                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Any casing").addInputHatch("Fuel, any casing")
+                .addInputHatch("Oxygen, any casing").addOutputHatch("Superheated Steam, any casing")
                 .toolTipFinisher("KekzTech");
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build() };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID) };
     }
 
     @Override

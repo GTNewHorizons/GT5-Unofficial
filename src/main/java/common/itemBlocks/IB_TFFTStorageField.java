@@ -1,14 +1,16 @@
 package common.itemBlocks;
 
-import common.tileentities.GTMTE_TFFT;
 import java.text.NumberFormat;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import common.tileentities.GTMTE_TFFT;
 
 public class IB_TFFTStorageField extends ItemBlock {
 
@@ -37,11 +39,16 @@ public class IB_TFFTStorageField extends ItemBlock {
         int meta = stack.getItemDamage();
         if (meta > 0) {
             lines.add(StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.desc"));
-            lines.add("Capacity: " + EnumChatFormatting.BLUE
-                    + NumberFormat.getNumberInstance().format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity())
-                    + EnumChatFormatting.GRAY + " L");
-            lines.add("Power Draw: " + EnumChatFormatting.BLUE + GTMTE_TFFT.Field.VALUES[meta - 1].getCost()
-                    + EnumChatFormatting.GRAY + " EU/t");
+            lines.add(
+                    "Capacity: " + EnumChatFormatting.BLUE
+                            + NumberFormat.getNumberInstance().format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity())
+                            + EnumChatFormatting.GRAY
+                            + " L");
+            lines.add(
+                    "Power Draw: " + EnumChatFormatting.BLUE
+                            + GTMTE_TFFT.Field.VALUES[meta - 1].getCost()
+                            + EnumChatFormatting.GRAY
+                            + " EU/t");
         }
     }
 }

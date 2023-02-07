@@ -1,6 +1,19 @@
 package common.tileentities;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import util.Vector3i;
+import util.Vector3ic;
+
 import common.Blocks;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -8,15 +21,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import java.util.ArrayList;
-import java.util.HashSet;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-import util.Vector3i;
-import util.Vector3ic;
 
 public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -31,10 +35,10 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     // Scan positions for capacitor banks
     // Start with top left bank, clockwise
     // Start with top middle pillar within bank, clockwise, middle last
-    private static final int[] bankOffsetsX = {-7, 5, 5, -7};
-    private static final int[] bankOffsetsY = {-7, -7, 5, 5};
-    private static final int[] scanOffsetsX = {1, 2, 1, 0, 1};
-    private static final int[] scanOffsetsY = {0, 1, 2, 1, 1};
+    private static final int[] bankOffsetsX = { -7, 5, 5, -7 };
+    private static final int[] bankOffsetsY = { -7, -7, 5, 5 };
+    private static final int[] scanOffsetsX = { 1, 2, 1, 0, 1 };
+    private static final int[] scanOffsetsY = { 0, 1, 2, 1, 1 };
 
     private final HashSet<TE_SpaceElevatorCapacitor> capacitors = new HashSet<>();
     private long lastLaunchEUCost = 0;
@@ -54,49 +58,35 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
-        return new String[] {"Disabled"};
+        return new String[] { "Disabled" };
         /*
-        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-        b.addInfo("Access for your Space Station!")
-                .addInfo("Check out the wiki on my github if you are having trouble with the structure")
-                .addInfo("Regenerative Breaking will recover up to X% of the energy spent on launch")
-                .addInfo("Energy recovered depends on coil tier: +10% per coil tier, up to 90%")
-                .addSeparator()
-                .beginStructureBlock(15, 11, 15)
-                .addController("Bottom Center")
-                .addEnergyHatch("Instead of any casing in the bottom floor")
-                .addMaintenanceHatch("Instead of any casing in the bottom floor")
-                .addCasingInfo("Solid Steel Machine Casing", 320)
-                .addOtherStructurePart("Any EBF coil", "40x, have to be all the same")
-                .addOtherStructurePart("Space Elevator Tether", "4x")
-                .addOtherStructurePart("Space Elevator Cabin Block", "42x")
-                .addOtherStructurePart("Space Elevator Cabin Guide", "8x")
-                .signAndFinalize("Kekzdealer");
-        if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return b.getInformation();
-        } else {
-            return b.getStructureInformation();
-        }*/
+         * final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+         * b.addInfo("Access for your Space Station!")
+         * .addInfo("Check out the wiki on my github if you are having trouble with the structure")
+         * .addInfo("Regenerative Breaking will recover up to X% of the energy spent on launch")
+         * .addInfo("Energy recovered depends on coil tier: +10% per coil tier, up to 90%") .addSeparator()
+         * .beginStructureBlock(15, 11, 15) .addController("Bottom Center")
+         * .addEnergyHatch("Instead of any casing in the bottom floor")
+         * .addMaintenanceHatch("Instead of any casing in the bottom floor")
+         * .addCasingInfo("Solid Steel Machine Casing", 320) .addOtherStructurePart("Any EBF coil",
+         * "40x, have to be all the same") .addOtherStructurePart("Space Elevator Tether", "4x")
+         * .addOtherStructurePart("Space Elevator Cabin Block", "42x")
+         * .addOtherStructurePart("Space Elevator Cabin Guide", "8x") .signAndFinalize("Kekzdealer");
+         * if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) { return b.getInformation(); } else { return
+         * b.getStructureInformation(); }
+         */
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        ITexture[] sTexture = new ITexture[] {
-            new GT_RenderedTexture(
-                    Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
-        };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        ITexture[] sTexture = new ITexture[] { new GT_RenderedTexture(
+                Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+                Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         if (aSide == aFacing && aActive) {
-            sTexture = new ITexture[] {
-                new GT_RenderedTexture(
-                        Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW,
-                        Dyes.getModulation(-1, Dyes._NULL.mRGBa))
-            };
+            sTexture = new ITexture[] { new GT_RenderedTexture(
+                    Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW,
+                    Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         }
         return sTexture;
     }
@@ -152,8 +142,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
                 }
 
                 final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
-                final IGregTechTileEntity currentTE =
-                        thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+                final IGregTechTileEntity currentTE = thisController
+                        .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
                 // Tries to add TE as either of those kinds of hatches.
                 // The number is the texture index number for the texture that needs to be painted over the hatch
@@ -193,8 +183,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
                     } else {
                         if (scan == 4) {
                             // Check for capacitors
-                            final TileEntity te =
-                                    thisController.getTileEntityOffset(offset.x(), offset.y(), offset.z());
+                            final TileEntity te = thisController
+                                    .getTileEntityOffset(offset.x(), offset.y(), offset.z());
                             if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CAP_BLOCK
                                     && te instanceof TE_SpaceElevatorCapacitor) {
                                 capacitors.add((TE_SpaceElevatorCapacitor) te);
@@ -203,9 +193,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
                             }
                         } else {
                             // Check for Glass
-                            if (!thisController
-                                    .getBlockOffset(offset.x(), offset.y(), offset.z())
-                                    .getUnlocalizedName()
+                            if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
                                     .equals(glassNameBorosilicate)) {
                                 formationChecklist = false;
                             }
@@ -236,8 +224,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 
-        ll.add("Maintenance Status: "
-                + ((super.getRepairStatus() == super.getIdealStatus())
+        ll.add(
+                "Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
                         ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
                         : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
         ll.add("---------------------------------------------");

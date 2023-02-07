@@ -2,16 +2,18 @@ package common.itemBlocks;
 
 import static com.google.common.math.LongMath.pow;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
 import java.math.BigInteger;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
 
 public class IB_LapotronicEnergyUnit extends ItemBlock {
 
@@ -41,15 +43,15 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
     public static BigInteger LSC_wireless_eu_cap = BigInteger.valueOf(60 * pow(10, 12));
 
     // 10 Billion EU/t
-    private static BigInteger UHV_cap_eu_per_tick =
-            LSC_wireless_eu_cap.divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+    private static BigInteger UHV_cap_eu_per_tick = LSC_wireless_eu_cap
+            .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     // 6 Quadrillion EU.
     public static BigInteger UEV_wireless_eu_cap = BigInteger.valueOf(100 * 60 * pow(10, 12));
 
     // 1 Trillion EU/t
-    private static BigInteger UEV_cap_eu_per_tick =
-            UEV_wireless_eu_cap.divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+    private static BigInteger UEV_cap_eu_per_tick = UEV_wireless_eu_cap
+            .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     public static long EV_cap_storage = 60_000_000L;
     public static long IV_cap_storage = 600_000_000L;
@@ -65,41 +67,74 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
         lines.add(StatCollector.translateToLocal("tile.kekztech_lapotronicenergyunit_block.desc"));
         switch (stack.getItemDamage()) {
             case 1:
-                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(IV_cap_storage)
-                        + EnumChatFormatting.GRAY + "EU");
+                lines.add(
+                        "Capacity: " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(IV_cap_storage)
+                                + EnumChatFormatting.GRAY
+                                + "EU");
                 break;
             case 2:
-                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(LuV_cap_storage)
-                        + EnumChatFormatting.GRAY + "EU");
+                lines.add(
+                        "Capacity: " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(LuV_cap_storage)
+                                + EnumChatFormatting.GRAY
+                                + "EU");
                 break;
             case 3:
-                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ZPM_cap_storage)
-                        + EnumChatFormatting.GRAY + "EU");
+                lines.add(
+                        "Capacity: " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(ZPM_cap_storage)
+                                + EnumChatFormatting.GRAY
+                                + "EU");
                 break;
             case 4:
-                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UV_cap_storage)
-                        + EnumChatFormatting.GRAY + "EU");
+                lines.add(
+                        "Capacity: " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(UV_cap_storage)
+                                + EnumChatFormatting.GRAY
+                                + "EU");
                 break;
             case 5:
-                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UHV_cap_storage)
-                        + EnumChatFormatting.GRAY + "EU");
-                lines.add("Supports up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UHV_cap_eu_per_tick)
-                        + EnumChatFormatting.GRAY + "EU/t of wireless transfer per " + GT_Values.TIER_COLORS[9]
-                        + GT_Values.VN[9] + EnumChatFormatting.GRAY + " capacitor.");
+                lines.add(
+                        "Capacity: " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(UHV_cap_storage)
+                                + EnumChatFormatting.GRAY
+                                + "EU");
+                lines.add(
+                        "Supports up to " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(UHV_cap_eu_per_tick)
+                                + EnumChatFormatting.GRAY
+                                + "EU/t of wireless transfer per "
+                                + GT_Values.TIER_COLORS[9]
+                                + GT_Values.VN[9]
+                                + EnumChatFormatting.GRAY
+                                + " capacitor.");
                 break;
             case 6:
                 lines.add("Capacity: None");
                 break;
             case 7:
-                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(EV_cap_storage)
-                        + EnumChatFormatting.GRAY + " EU");
+                lines.add(
+                        "Capacity: " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(EV_cap_storage)
+                                + EnumChatFormatting.GRAY
+                                + " EU");
                 break;
             case 8:
-                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_cap_storage)
-                        + EnumChatFormatting.GRAY + "EU");
-                lines.add("Supports up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UEV_cap_eu_per_tick)
-                        + EnumChatFormatting.GRAY + "EU/t of wireless transfer per " + GT_Values.TIER_COLORS[10]
-                        + GT_Values.VN[10] + EnumChatFormatting.GRAY + " capacitor.");
+                lines.add(
+                        "Capacity: " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(UEV_cap_storage)
+                                + EnumChatFormatting.GRAY
+                                + "EU");
+                lines.add(
+                        "Supports up to " + EnumChatFormatting.RED
+                                + GT_Utility.formatNumbers(UEV_cap_eu_per_tick)
+                                + EnumChatFormatting.GRAY
+                                + "EU/t of wireless transfer per "
+                                + GT_Values.TIER_COLORS[10]
+                                + GT_Values.VN[10]
+                                + EnumChatFormatting.GRAY
+                                + " capacitor.");
                 break;
         }
     }

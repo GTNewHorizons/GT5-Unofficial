@@ -1,7 +1,9 @@
 package common.items;
 
 import java.util.List;
+
 import kekztech.KekzCore;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+
 import org.lwjgl.input.Keyboard;
+
 import reactor.items.CoolantCell;
 import reactor.items.FuelRod;
 import reactor.items.HeatExchanger;
@@ -65,7 +69,7 @@ public class MetaItem_ReactorComponent extends Item {
         return icons[meta];
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < icons.length; i++) {
@@ -78,15 +82,19 @@ public class MetaItem_ReactorComponent extends Item {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             list.add("Property = 1");
         } else {
             list.add("Part for the Modular Nuclear Reactor");
-            list.add("Hold " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY
-                    + " to display properties");
+            list.add(
+                    "Hold " + EnumChatFormatting.BOLD
+                            + "[LSHIFT]"
+                            + EnumChatFormatting.RESET
+                            + EnumChatFormatting.GRAY
+                            + " to display properties");
         }
     }
 

@@ -1,8 +1,7 @@
 package common.blocks;
 
-import common.itemBlocks.IB_SpaceElevator;
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +9,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import common.itemBlocks.IB_SpaceElevator;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_SpaceElevator extends BaseGTUpdateableBlock {
 
@@ -42,7 +44,7 @@ public class Block_SpaceElevator extends BaseGTUpdateableBlock {
     }
 
     @Override
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

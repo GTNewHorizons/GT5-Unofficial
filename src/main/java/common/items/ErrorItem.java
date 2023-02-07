@@ -1,13 +1,16 @@
 package common.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.List;
+
 import kekztech.KekzCore;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ErrorItem extends Item {
 
@@ -29,7 +32,7 @@ public class ErrorItem extends Item {
         GameRegistry.registerItem(getInstance(), unlocalizedName);
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
         list.add("REMINDER: KekzTech recipes are only tested to work in GTNH!");

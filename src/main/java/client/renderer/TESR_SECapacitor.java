@@ -1,16 +1,19 @@
 package client.renderer;
 
-import common.tileentities.TE_SpaceElevatorCapacitor;
 import kekztech.KekzCore;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import common.tileentities.TE_SpaceElevatorCapacitor;
+
 public class TESR_SECapacitor extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation capSide =
-            new ResourceLocation(KekzCore.MODID, "textures/blocks/SpaceElevatorCapacitor_side_renderbase.png");
+    private static final ResourceLocation capSide = new ResourceLocation(
+            KekzCore.MODID,
+            "textures/blocks/SpaceElevatorCapacitor_side_renderbase.png");
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {

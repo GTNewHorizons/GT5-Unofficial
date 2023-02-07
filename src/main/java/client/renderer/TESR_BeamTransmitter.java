@@ -1,19 +1,23 @@
 package client.renderer;
 
-import common.tileentities.TE_BeamTransmitter;
 import kekztech.KekzCore;
+
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import common.tileentities.TE_BeamTransmitter;
 
 public class TESR_BeamTransmitter extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation beamTexture =
-            new ResourceLocation(KekzCore.MODID, "textures/effects/Tether_beam.png");
+    private static final ResourceLocation beamTexture = new ResourceLocation(
+            KekzCore.MODID,
+            "textures/effects/Tether_beam.png");
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
@@ -43,8 +47,8 @@ public class TESR_BeamTransmitter extends TileEntitySpecialRenderer {
         final double height = beamTransmitter.getDistanceFromTarget();
         final double uv_x1 = 0.0D;
         final double uv_x2 = 1.0D;
-        final double uv_y1 = -1.0D
-                - streamTextureOffset; // This makes the beam stream upwards if you subtract a time sensitive number
+        final double uv_y1 = -1.0D - streamTextureOffset; // This makes the beam stream upwards if you subtract a time
+                                                          // sensitive number
         // from it
         final double uv_y2 = height * (0.5D / (halfBeamWidth * 2)) + uv_y1;
         // Construct mesh with texture

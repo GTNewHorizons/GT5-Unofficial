@@ -1,16 +1,18 @@
 package common.blocks;
 
-import common.itemBlocks.IB_ItemProxyEndpoint;
-import common.tileentities.TE_ItemProxyEndpoint;
-import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.GuiHandler;
 import kekztech.KekzCore;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import common.itemBlocks.IB_ItemProxyEndpoint;
+import common.tileentities.TE_ItemProxyEndpoint;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_ItemProxyEndpoint extends Block {
 
@@ -34,8 +36,8 @@ public class Block_ItemProxyEndpoint extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly, float lz) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly,
+            float lz) {
         if (world.isRemote) {
             return true;
         }

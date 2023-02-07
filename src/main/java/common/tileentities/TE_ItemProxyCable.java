@@ -16,9 +16,10 @@ public class TE_ItemProxyCable extends TileEntity {
     public void updateEntity() {
         // Check all 6 sides and connect the conduit if it is allowed to
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final TileEntity te = super.getWorldObj()
-                    .getTileEntity(
-                            super.xCoord + side.offsetX, super.yCoord + side.offsetY, super.zCoord + side.offsetZ);
+            final TileEntity te = super.getWorldObj().getTileEntity(
+                    super.xCoord + side.offsetX,
+                    super.yCoord + side.offsetY,
+                    super.zCoord + side.offsetZ);
             if (te instanceof TE_ItemProxyCable) {
                 final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
                 setConnection(side, cable.isConnectionAllowed(side.getOpposite()));
@@ -33,8 +34,7 @@ public class TE_ItemProxyCable extends TileEntity {
     }
 
     /**
-     * Builds a simple unique identifier for this TileEntity by appending
-     * the x, y, and z coordinates in a string.
+     * Builds a simple unique identifier for this TileEntity by appending the x, y, and z coordinates in a string.
      *
      * @return unique identifier for this TileEntity
      */
@@ -48,20 +48,17 @@ public class TE_ItemProxyCable extends TileEntity {
     }
 
     /**
-     * 0 0 0 0 0 0 0 0 = 0     -> no connection </br>
-     * 0 0 0 0 0 0 0 1 = 1     -> down  </br>
-     * 0 0 0 0 0 0 1 0 = 2     -> up  </br>
-     * 0 0 0 0 0 1 0 0 = 4     -> north  </br>
-     * 0 0 0 0 1 0 0 0 = 8     -> south  </br>
-     * 0 0 0 1 0 0 0 0 = 16    -> west  </br>
-     * 0 0 1 0 0 0 0 0 = 32    -> east  </br>
+     * 0 0 0 0 0 0 0 0 = 0 -> no connection </br>
+     * 0 0 0 0 0 0 0 1 = 1 -> down </br>
+     * 0 0 0 0 0 0 1 0 = 2 -> up </br>
+     * 0 0 0 0 0 1 0 0 = 4 -> north </br>
+     * 0 0 0 0 1 0 0 0 = 8 -> south </br>
+     * 0 0 0 1 0 0 0 0 = 16 -> west </br>
+     * 0 0 1 0 0 0 0 0 = 32 -> east </br>
      *
-     * @param side
-     * 			The side for which to set the connection status.
-     * @param connected
-     * 			Whether this side should be connected or not
-     * @return
-     * 			True if the connection was allowed
+     * @param side      The side for which to set the connection status.
+     * @param connected Whether this side should be connected or not
+     * @return True if the connection was allowed
      */
     public boolean setConnection(ForgeDirection side, boolean connected) {
         if (isConnectionAllowed(side)) {

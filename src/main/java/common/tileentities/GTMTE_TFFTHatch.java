@@ -1,5 +1,12 @@
 package common.tileentities;
 
+import java.util.HashMap;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -18,11 +25,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
-import java.util.HashMap;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
 public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonitor<IAEFluidStack> {
@@ -36,15 +38,14 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
         @Override
         @Optional.Method(modid = "appliedenergistics2")
         public boolean canHandle(TileEntity te, ForgeDirection d, StorageChannel channel, BaseActionSource mySrc) {
-            return channel == StorageChannel.FLUIDS
-                    && te instanceof BaseMetaTileEntity
+            return channel == StorageChannel.FLUIDS && te instanceof BaseMetaTileEntity
                     && ((BaseMetaTileEntity) te).getMetaTileEntity() instanceof GTMTE_TFFTHatch;
         }
 
         @Override
         @Optional.Method(modid = "appliedenergistics2")
-        public IMEInventory getInventory(
-                TileEntity te, ForgeDirection d, StorageChannel channel, BaseActionSource src) {
+        public IMEInventory getInventory(TileEntity te, ForgeDirection d, StorageChannel channel,
+                BaseActionSource src) {
             if (channel == StorageChannel.FLUIDS) {
                 return ((GTMTE_TFFTHatch) (((BaseMetaTileEntity) te).getMetaTileEntity()));
             }
@@ -52,8 +53,8 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
         }
     }
 
-    private static final Textures.BlockIcons.CustomIcon TEXTURE_TFFT_HATCH =
-            new Textures.BlockIcons.CustomIcon("iconsets/TFFT_HATCH");
+    private static final Textures.BlockIcons.CustomIcon TEXTURE_TFFT_HATCH = new Textures.BlockIcons.CustomIcon(
+            "iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private GTMTE_TFFT controller;
@@ -72,32 +73,21 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         return super.getTexture(aBaseMetaTileEntity, aSide, aFacing, aColorIndex, aActive, aRedstone);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {
-            aBaseTexture,
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN),
-            TextureFactory.builder().addIcon(TEXTURE_TFFT_HATCH).extFacing().build()
-        };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN),
+                TextureFactory.builder().addIcon(TEXTURE_TFFT_HATCH).extFacing().build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {
-            aBaseTexture,
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN),
-            TextureFactory.builder().addIcon(TEXTURE_TFFT_HATCH).extFacing().build()
-        };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN),
+                TextureFactory.builder().addIcon(TEXTURE_TFFT_HATCH).extFacing().build() };
     }
 
     @Override

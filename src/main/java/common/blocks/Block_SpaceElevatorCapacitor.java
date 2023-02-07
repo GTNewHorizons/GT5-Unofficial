@@ -1,10 +1,5 @@
 package common.blocks;
 
-import common.itemBlocks.IB_SpaceElevatorCapacitor;
-import common.tileentities.TE_SpaceElevatorCapacitor;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,6 +8,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import common.itemBlocks.IB_SpaceElevatorCapacitor;
+import common.tileentities.TE_SpaceElevatorCapacitor;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Block_SpaceElevatorCapacitor extends BaseGTUpdateableBlock {
 

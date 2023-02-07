@@ -1,8 +1,10 @@
 package common;
 
-import common.blocks.*;
 import kekztech.KekzCore;
+
 import net.minecraft.block.Block;
+
+import common.blocks.*;
 
 public class Blocks {
 
@@ -59,17 +61,13 @@ public class Blocks {
         tfftStorageField = Block_TFFTStorageField.registerBlock();
     }
 
-    /*private static void registerBlocks_Nuclear() {
-    	reactorChamberOFF = Block_ReactorChamber_OFF.registerBlock();
-    	reactorChamberON = Block_ReactorChamber_ON.registerBlock();
-    	reactorControlRod = Block_ControlRod.registerBlock();
-    }
-
-    private static void registerBlocks_ItemProxy() {
-    	itemProxyCable = Block_ItemProxyCable.registerBlock();
-    	itemProxySource = Block_ItemProxySource.registerBlock();
-    	itemProxyEndpoint = Block_ItemProxyEndpoint.registerBlock();
-    }*/
+    /*
+     * private static void registerBlocks_Nuclear() { reactorChamberOFF = Block_ReactorChamber_OFF.registerBlock();
+     * reactorChamberON = Block_ReactorChamber_ON.registerBlock(); reactorControlRod = Block_ControlRod.registerBlock();
+     * } private static void registerBlocks_ItemProxy() { itemProxyCable = Block_ItemProxyCable.registerBlock();
+     * itemProxySource = Block_ItemProxySource.registerBlock(); itemProxyEndpoint =
+     * Block_ItemProxyEndpoint.registerBlock(); }
+     */
 
     private static void registerBlocks_Jars() {
         jarThaumiumReinforced = Block_ThaumiumReinforcedJar.registerBlock();
@@ -81,11 +79,11 @@ public class Blocks {
         // beamTransmitter = Block_BeamTransmitter.registerBlock();
     }
 
-    /*private static void registerBlocks_SpaceElevator() {
-    	spaceElevatorStructure = Block_SpaceElevator.registerBlock();
-    	spaceElevatorCapacitor = Block_SpaceElevatorCapacitor.registerBlock();
-    	spaceElevatorTether = Block_SpaceElevatorTether.registerBlock();
-    }*/
+    /*
+     * private static void registerBlocks_SpaceElevator() { spaceElevatorStructure =
+     * Block_SpaceElevator.registerBlock(); spaceElevatorCapacitor = Block_SpaceElevatorCapacitor.registerBlock();
+     * spaceElevatorTether = Block_SpaceElevatorTether.registerBlock(); }
+     */
 
     private static void registerBlocks_Cosmetics() {
         largeHexPlate = Block_LargeHexPlate.registerBlock();

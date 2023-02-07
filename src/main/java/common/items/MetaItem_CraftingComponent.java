@@ -1,14 +1,17 @@
 package common.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.List;
+
 import kekztech.KekzCore;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class MetaItem_CraftingComponent extends Item {
 
@@ -34,17 +37,16 @@ public class MetaItem_CraftingComponent extends Item {
     public void registerIcons(IIconRegister reg) {
         int counter = 9;
         // Raw heat pipes
-        /*icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "CopperHeatPipe");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "SilverHeatPipe");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideHeatPipe");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "DiamondHeatPipe");
-        // Dust
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideDust");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondDust");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "AmineCarbamateDust");
-        // Crystal
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideCrystal");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondCrystal");*/
+        /*
+         * icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "CopperHeatPipe"); icons[counter++] =
+         * reg.registerIcon(KekzCore.MODID + ":" + "SilverHeatPipe"); icons[counter++] = reg.registerIcon(KekzCore.MODID
+         * + ":" + "BoronArsenideHeatPipe"); icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" +
+         * "DiamondHeatPipe"); // Dust icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideDust");
+         * icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondDust"); icons[counter++] =
+         * reg.registerIcon(KekzCore.MODID + ":" + "AmineCarbamateDust"); // Crystal icons[counter++] =
+         * reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideCrystal"); icons[counter++] =
+         * reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondCrystal");
+         */
         // Ceramics
         icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "YSZCeramicDust");
         icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "GDCCeramicDust");
@@ -60,7 +62,7 @@ public class MetaItem_CraftingComponent extends Item {
         return icons[meta];
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 9; i < icons.length; i++) {
@@ -73,7 +75,7 @@ public class MetaItem_CraftingComponent extends Item {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
         list.add("Crafting component for KekzTech things");

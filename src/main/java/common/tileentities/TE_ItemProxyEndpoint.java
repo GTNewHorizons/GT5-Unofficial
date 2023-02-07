@@ -1,6 +1,7 @@
 package common.tileentities;
 
 import java.util.HashSet;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -43,9 +44,10 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
         final HashSet<String> visited = new HashSet<>();
 
         for (ForgeDirection next : ForgeDirection.VALID_DIRECTIONS) {
-            final TileEntity te = super.getWorldObj()
-                    .getTileEntity(
-                            super.xCoord + next.offsetX, super.yCoord + next.offsetY, super.zCoord + next.offsetZ);
+            final TileEntity te = super.getWorldObj().getTileEntity(
+                    super.xCoord + next.offsetX,
+                    super.yCoord + next.offsetY,
+                    super.zCoord + next.offsetZ);
             if (te instanceof TE_ItemProxyCable) {
                 final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
                 if (cable.isConnected(next.getOpposite())) {
@@ -61,22 +63,18 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
         }
     }
 
-    private void searchSourceRecursive(
-            HashSet<TE_ItemProxySource> sources,
-            HashSet<String> visited,
-            ForgeDirection from,
-            TE_ItemProxyCable nextTarget) {
+    private void searchSourceRecursive(HashSet<TE_ItemProxySource> sources, HashSet<String> visited,
+            ForgeDirection from, TE_ItemProxyCable nextTarget) {
 
         if (!visited.contains(nextTarget.getIdentifier())) {
             visited.add(nextTarget.getIdentifier());
 
             for (ForgeDirection next : ForgeDirection.VALID_DIRECTIONS) {
                 if (next != from) {
-                    final TileEntity te = super.getWorldObj()
-                            .getTileEntity(
-                                    nextTarget.xCoord + next.offsetX,
-                                    nextTarget.yCoord + next.offsetY,
-                                    nextTarget.zCoord + next.offsetZ);
+                    final TileEntity te = super.getWorldObj().getTileEntity(
+                            nextTarget.xCoord + next.offsetX,
+                            nextTarget.yCoord + next.offsetY,
+                            nextTarget.zCoord + next.offsetZ);
                     if (te instanceof TE_ItemProxyCable) {
                         final TE_ItemProxyCable cable = (TE_ItemProxyCable) te;
                         if (cable.isConnected(next.getOpposite())) {
@@ -162,7 +160,7 @@ public class TE_ItemProxyEndpoint extends TileEntity implements ISidedInventory 
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[] {0};
+        return new int[] { 0 };
     }
 
     @Override

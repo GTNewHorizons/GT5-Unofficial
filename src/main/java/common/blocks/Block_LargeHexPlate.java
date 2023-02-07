@@ -1,12 +1,13 @@
 package common.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_LargeHexPlate extends Block {
 
@@ -41,12 +42,12 @@ public class Block_LargeHexPlate extends Block {
 
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        final int xMod =
-                x >= 0 ? Math.abs(x % BATCH_SIZE) : Math.abs((Math.abs(x) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
-        final int yMod =
-                y >= 0 ? Math.abs(y % BATCH_SIZE) : Math.abs((Math.abs(y) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
-        final int zMod =
-                z >= 0 ? Math.abs(z % BATCH_SIZE) : Math.abs((Math.abs(z) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+        final int xMod = x >= 0 ? Math.abs(x % BATCH_SIZE)
+                : Math.abs((Math.abs(x) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+        final int yMod = y >= 0 ? Math.abs(y % BATCH_SIZE)
+                : Math.abs((Math.abs(y) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+        final int zMod = z >= 0 ? Math.abs(z % BATCH_SIZE)
+                : Math.abs((Math.abs(z) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
 
         if (side == 0 || side == 1) {
             return parts[xMod][zMod];

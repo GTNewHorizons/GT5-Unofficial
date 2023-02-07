@@ -1,10 +1,12 @@
 package common.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_GDCUnit extends BaseGTUpdateableBlock {
 

@@ -1,6 +1,13 @@
 package common.tileentities;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.joml.Vector3i;
+
 import common.Blocks;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -8,10 +15,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.joml.Vector3i;
 
 public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -40,56 +43,38 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 
     @Override
     public String[] getDescription() {
-        return new String[] {"Disabled"};
+        return new String[] { "Disabled" };
         /*
-        final MultiBlockTooltipBuilder b =  new MultiBlockTooltipBuilder();
-        b.addInfo("Can be built, BUT DOES NOT WORK")
-        		.addInfo("Converts fissile material and outputs power or heat")
-        		.addSeparator()
-        		.addInfo("EU-MODE:")
-        		.addInfo("   Directly outputs electricity depending on inserted fuel rods")
-        		.addSeparator()
-        		.addInfo("COOLANT-MODE:")
-        		.addInfo("   Requires coolant to be pumped into the reactor.")
-        		.addInfo("   Coolant is heated and should be drained and converted to electricity by other means.")
-        		.addSeparator()
-        		.addInfo("NOTES:")
-        		.addInfo("  Does NOT use Industrialcraft 2 reactor components!")
-        		.addInfo("  Consult controller GUI on how to arrange the outer casings.")
-        		.addSeparator()
-        		.beginStructureBlock(7, 6, 7)
-        		.addController("Front bottom Center")
-        		.addCasingInfo("Radiation Proof Machine Casing", 100)
-        		.addOtherStructurePart("Control Rods", "Four pillars, four blocks high each. Diagonal to the inner edges of the shell")
-        		.addOtherStructurePart("Nuclear Reactor Chamber", "17 of them to fill out the rest of the floor inside the shell")
-        		.addDynamoHatch("ONLY in EU-mode, at least one")
-        		.addOtherStructurePart("Input Bus, Output Bus", "Optional but required for automation")
-        		.addOtherStructurePart("Input Hatch, Output Hatch", "ONLY in Coolant-Mode, at least one each")
-        		.signAndFinalize("Kekzdealer");
-        if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-        	return b.getInformation();
-        } else {
-        	return b.getStructureInformation();
-        }*/
+         * final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+         * b.addInfo("Can be built, BUT DOES NOT WORK") .addInfo("Converts fissile material and outputs power or heat")
+         * .addSeparator() .addInfo("EU-MODE:")
+         * .addInfo("   Directly outputs electricity depending on inserted fuel rods") .addSeparator()
+         * .addInfo("COOLANT-MODE:") .addInfo("   Requires coolant to be pumped into the reactor.")
+         * .addInfo("   Coolant is heated and should be drained and converted to electricity by other means.")
+         * .addSeparator() .addInfo("NOTES:") .addInfo("  Does NOT use Industrialcraft 2 reactor components!")
+         * .addInfo("  Consult controller GUI on how to arrange the outer casings.") .addSeparator()
+         * .beginStructureBlock(7, 6, 7) .addController("Front bottom Center")
+         * .addCasingInfo("Radiation Proof Machine Casing", 100) .addOtherStructurePart("Control Rods",
+         * "Four pillars, four blocks high each. Diagonal to the inner edges of the shell")
+         * .addOtherStructurePart("Nuclear Reactor Chamber",
+         * "17 of them to fill out the rest of the floor inside the shell")
+         * .addDynamoHatch("ONLY in EU-mode, at least one") .addOtherStructurePart("Input Bus, Output Bus",
+         * "Optional but required for automation") .addOtherStructurePart("Input Hatch, Output Hatch",
+         * "ONLY in Coolant-Mode, at least one each") .signAndFinalize("Kekzdealer");
+         * if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) { return b.getInformation(); } else { return
+         * b.getStructureInformation(); }
+         */
     }
 
     @Override
-    public ITexture[] getTexture(
-            final IGregTechTileEntity aBaseMetaTileEntity,
-            final byte aSide,
-            final byte aFacing,
-            final byte aColorIndex,
-            final boolean aActive,
-            final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return aSide == aFacing
-                ? new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
-                    new GT_RenderedTexture(
-                            aActive
-                                    ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE
-                                    : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)
-                }
-                : new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
+                ? new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
+                        new GT_RenderedTexture(
+                                aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE
+                                        : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER) }
+                : new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID) };
     }
 
     @Override
@@ -123,51 +108,50 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
 
         // Determine the ground level center of the structure
         final Vector3i center = new Vector3i(
-                        thisController.getXCoord(), thisController.getYCoord(), thisController.getZCoord())
-                .add(dirX * 3, 0, dirZ * 3);
+                thisController.getXCoord(),
+                thisController.getYCoord(),
+                thisController.getZCoord()).add(dirX * 3, 0, dirZ * 3);
         // Scan for outer tube
-        //	- Scan sides
+        // - Scan sides
         for (int x = -3; x <= 3; x++) {
             for (int z = -3; z <= 3; z++) {
                 // Only scan the three wide even sides, skip rest
                 if ((Math.abs(x) <= 1 && Math.abs(z) == 3) || (Math.abs(z) <= 1 && Math.abs(x) == 3)) {
                     for (int h = 0; h < 6; h++) {
                         final Vector3i pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
-                        if (h == 0
-                                && pos.x() == thisController.getXCoord()
+                        if (h == 0 && pos.x() == thisController.getXCoord()
                                 && pos.y() == thisController.getYCoord()
                                 && pos.z() == thisController.getZCoord()) {
                             // Ignore controller
                             continue;
                         } else if (thisController.getBlock(pos.x(), pos.y(), pos.z()) == CASING
                                 && thisController.getMetaID(pos.x(), pos.y(), pos.z()) == CASING_META) {
-                            minCasingAmount--;
-                        } else {
-                            checklist = false;
-                        }
+                                    minCasingAmount--;
+                                } else {
+                                    checklist = false;
+                                }
                     }
                 }
             }
         }
-        // 	- Scan corners of tube
+        // - Scan corners of tube
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
                 // Only scan the four corners, skip rest
                 if (Math.abs(x) + Math.abs(z) == 4) {
                     for (int h = 0; h < 6; h++) {
                         final Vector3i pos = new Vector3i(center.x() + x, center.y() + h, center.z() + z);
-                        if (h == 0
-                                && pos.x() == thisController.getXCoord()
+                        if (h == 0 && pos.x() == thisController.getXCoord()
                                 && pos.y() == thisController.getYCoord()
                                 && pos.z() == thisController.getZCoord()) {
                             // Ignore controller
                             continue;
                         } else if (thisController.getBlock(pos.x(), pos.y(), pos.z()) == CASING
                                 && thisController.getMetaID(pos.x(), pos.y(), pos.z()) == CASING_META) {
-                            minCasingAmount--;
-                        } else {
-                            checklist = false;
-                        }
+                                    minCasingAmount--;
+                                } else {
+                                    checklist = false;
+                                }
                     }
                 }
             }

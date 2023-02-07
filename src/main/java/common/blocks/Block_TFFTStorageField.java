@@ -1,14 +1,9 @@
 package common.blocks;
 
-import common.itemBlocks.IB_TFFTStorageField;
-import common.tileentities.GTMTE_TFFT;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import kekztech.KekzCore;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,6 +14,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import common.itemBlocks.IB_TFFTStorageField;
+import common.tileentities.GTMTE_TFFT;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
+
 public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
 
     private static final Block_TFFTStorageField INSTANCE = new Block_TFFTStorageField();
@@ -26,6 +30,7 @@ public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
     private static final IIcon[] textures = new IIcon[SUB_BLOCK_COUNT];
 
     public enum TFFTCasingIcon implements IIconContainer {
+
         INSTANCE;
 
         @Override
@@ -48,7 +53,9 @@ public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
     static {
         GT_Utility.addTexturePage((byte) 12);
         Textures.BlockIcons.setCasingTexture(
-                (byte) 12, (byte) 127, TextureFactory.of(Block_TFFTStorageField.TFFTCasingIcon.INSTANCE));
+                (byte) 12,
+                (byte) 127,
+                TextureFactory.of(Block_TFFTStorageField.TFFTCasingIcon.INSTANCE));
     }
 
     private Block_TFFTStorageField() {

@@ -1,12 +1,14 @@
 package util;
 
-import common.items.ErrorItem;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import common.items.ErrorItem;
 
 public class Util {
 

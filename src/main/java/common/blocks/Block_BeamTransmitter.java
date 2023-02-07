@@ -1,13 +1,15 @@
 package common.blocks;
 
-import common.tileentities.TE_BeamTransmitter;
-import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import common.tileentities.TE_BeamTransmitter;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_BeamTransmitter extends Block {
 
