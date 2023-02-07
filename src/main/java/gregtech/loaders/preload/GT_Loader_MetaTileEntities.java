@@ -8744,7 +8744,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 new GT_MetaTileEntity_TranscendentPlasmaMixer(
                         1006,
                         "multimachine.transcendentplasmamixer",
-                        "Transcedent Plasma Mixer").getStackForm(1));
+                        "Transcendent Plasma Mixer").getStackForm(1));
 
         ItemList.LargePlasmaTurbine.set(
                 new GT_MetaTileEntity_LargeTurbine_Plasma(
