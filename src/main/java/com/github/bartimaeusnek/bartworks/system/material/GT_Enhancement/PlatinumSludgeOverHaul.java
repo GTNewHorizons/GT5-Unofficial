@@ -182,7 +182,13 @@ public class PlatinumSludgeOverHaul {
                 Materials.Empty.getCells(1),
                 null,
                 15);
-
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack[] { Materials.Ammonia.getGas(64000), Materials.HydrochloricAcid.getFluid(64000) },
+                new FluidStack[] { AmmoniumChloride.getFluidOrGas(64000) },
+                null,
+                60,
+                480);
         // base sollution
         for (Werkstoff w : Werkstoff.werkstoffHashSet) if (w.containsStuff(Materials.Sulfur)
                 && (w.containsStuff(Materials.Copper) || w.containsStuff(Materials.Nickel))) {
