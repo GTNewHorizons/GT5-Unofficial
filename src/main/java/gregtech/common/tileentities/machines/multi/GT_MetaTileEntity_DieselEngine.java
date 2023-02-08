@@ -167,28 +167,50 @@ public class GT_MetaTileEntity_DieselEngine extends
 
         // fast track lookup
         if (!tFluids.isEmpty()) {
+            double boostedFuelValue = 0;
+            double boostedOutput = 0;
+            double extraFuelFraction = 0;
             for (FluidStack tFluid : tFluids) {
                 GT_Recipe tRecipe = getFuelMap().findFuel(tFluid);
                 if (tRecipe == null) continue;
+                fuelValue = tRecipe.mSpecialValue;
 
                 FluidStack tLiquid = tFluid.copy();
-                fuelConsumption = tLiquid.amount = boostEu
-                        ? (getBoostFactor() * getNominalOutput() / tRecipe.mSpecialValue)
-                        : (getNominalOutput() / tRecipe.mSpecialValue); // Calc fuel consumption
+                if (boostEu) {
+                    boostedFuelValue = GT_Utility.safeInt((long) (fuelValue * 1.5));
+                    boostedOutput = getNominalOutput() * 3;
+
+                    fuelConsumption = tLiquid.amount = getBoostFactor() * getNominalOutput() / fuelValue;
+
+                    // HOG consumption rate is normally 1 L/t, when it's supposed to be around 1.64 L/t
+                    // This code increases fuel consumption by 1 at random, but with a weighted chance
+                    if (boostedFuelValue * 2 > boostedOutput) {
+                        extraFuelFraction = boostedOutput / boostedFuelValue;
+                        extraFuelFraction = extraFuelFraction - (int) extraFuelFraction;
+                        double rand = Math.random();
+                        if (rand < extraFuelFraction) {
+                            tLiquid.amount += 1;
+                        }
+                    }
+
+                } else {
+                    fuelConsumption = tLiquid.amount = getNominalOutput() / fuelValue;
+                }
+
                 // Deplete that amount
                 if (!depleteInput(tLiquid)) return false;
                 boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+
+                // Check to prevent burning HOG without consuming it, if not boosted
+                if (!boostEu && fuelValue > getNominalOutput()) {
+                    return false;
+                }
 
                 // Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
                 if ((mRuntime % 72 == 0 || mRuntime == 0)
                         && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
                     return false;
 
-                fuelValue = tRecipe.mSpecialValue;
-                // Check to prevent burning HOG without consuming it, if not boosted
-                if (!boostEu && fuelValue > getNominalOutput()) {
-                    return false;
-                }
                 fuelRemaining = tFluid.amount; // Record available fuel
                 this.mEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%
                 this.mProgresstime = 1;

@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Coke Oven").addInfo("Controller block for the Pyrolyse Oven")
                 .addInfo("Industrial Charcoal producer").addInfo("Processing speed scales linearly with Coil tier:")
-                .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, Fe50CW: 200%, etc.")
+                .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
                 .addInfo("EU/t is not affected by Coil tier").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(5, 4, 5, true).addController("Front center")
                 .addCasingInfo("Pyrolyse Oven Casing", 60)

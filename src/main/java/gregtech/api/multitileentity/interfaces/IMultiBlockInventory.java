@@ -53,4 +53,6 @@ public interface IMultiBlockInventory {
     IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart);
 
     List<String> getInventoryNames(MultiBlockPart aPart);
+
+    List<String> getInventoryIDs(MultiBlockPart aPart);
 }

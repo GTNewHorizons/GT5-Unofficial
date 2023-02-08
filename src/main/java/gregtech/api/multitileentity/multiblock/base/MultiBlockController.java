@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -43,6 +44,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
 import com.gtnewhorizons.modularui.api.screen.*;
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -72,6 +74,8 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
+import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -81,13 +85,15 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         IMultiBlockFluidHandler, IMultiBlockInventory, IMTE_AddToolTips {
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
-
+    private final List<AdvancedCasing> mUpgradeCasings = new ArrayList<AdvancedCasing>();
     protected BuildState buildState = new BuildState();
 
+    protected Map<String, String> multiBlockInputInventoryNames = new LinkedHashMap<>();
+    protected Map<String, String> multiBlockOutputInventoryNames = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
-    private int mMaxProgresstime = 0, mProgresstime = 0;
+    private int mMaxProgressTime = 0, mProgressTime = 0;
     private boolean mStructureOkay = false, mStructureChanged = false;
     private boolean mWorks = true, mWorkUpdate = false, mWasShutdown = false, mActive = false;
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
@@ -124,6 +130,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      * IStructureDefinition is expected to be evaluated against current instance only, and should not be used against
      * other instances, even for those of the same class.
      */
+    @Override
     public abstract IStructureDefinition<T> getStructureDefinition();
 
     /**
@@ -145,6 +152,35 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         aNBT.setBoolean(NBT.STRUCTURE_OK, mStructureOkay);
         aNBT.setByte(NBT.ROTATION, (byte) mExtendedFacing.getRotation().getIndex());
         aNBT.setByte(NBT.FLIP, (byte) mExtendedFacing.getFlip().getIndex());
+
+        saveUpgradeInventoriesToNBT(aNBT);
+    }
+
+    private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {
+        final NBTTagList tListInputInvs = new NBTTagList();
+        multiBlockInputInventory.forEach((tID, tInv) -> {
+            if (tID.equals("controller")) {} else {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, tID);
+                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockInputInventoryNames.get(tID));
+                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, tInv.getSlots());
+                writeInventory(tTag, tInv, NBT.INV_INPUT_LIST);
+                tListInputInvs.appendTag(tTag);
+            }
+        });
+        final NBTTagList tListOutputInvs = new NBTTagList();
+        multiBlockOutputInventory.forEach((tID, tInv) -> {
+            if (tID.equals("controller")) {} else {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, tID);
+                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockOutputInventoryNames.get(tID));
+                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, tInv.getSlots());
+                writeInventory(tTag, tInv, NBT.INV_OUTPUT_LIST);
+                tListOutputInvs.appendTag(tTag);
+            }
+        });
+        aNBT.setTag(NBT.UPGRADE_INVENTORIES_INPUT, tListInputInvs);
+        aNBT.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, tListOutputInvs);
     }
 
     @Override
@@ -152,8 +188,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         super.readMultiTileNBT(aNBT);
 
         // Multiblock inventories are a collection of inventories. The first inventory is the default internal
-        // inventory,
-        // and the others are added by inventory extending blocks.
+        // inventory, and the others are added by inventory extending blocks.
         if (mInputInventory != null) multiBlockInputInventory.put("controller", mInputInventory);
         if (mOutputInventory != null) multiBlockOutputInventory.put("controller", mOutputInventory);
 
@@ -162,6 +197,33 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 ForgeDirection.getOrientation(getFrontFacing()),
                 Rotation.byIndex(aNBT.getByte(NBT.ROTATION)),
                 Flip.byIndex(aNBT.getByte(NBT.FLIP)));
+
+        loadUpgradeInventoriesFromNBT(aNBT);
+    }
+
+    private void loadUpgradeInventoriesFromNBT(NBTTagCompound aNBT) {
+        final NBTTagList tListInput = aNBT.getTagList(NBT.UPGRADE_INVENTORIES_INPUT, 10);
+        for (int i = 0; i < tListInput.tagCount(); i++) {
+            final NBTTagCompound tNBT = tListInput.getCompoundTagAt(i);
+            String invUUID = tNBT.getString(NBT.UPGRADE_INVENTORY_UUID);
+            String invName = tNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
+            int tInvSize = tNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+            IItemHandlerModifiable tInv = new ItemStackHandler(tInvSize);
+            loadInventory(tNBT, tInv, NBT.INV_INPUT_LIST);
+            multiBlockInputInventory.put(invUUID, tInv);
+            multiBlockInputInventoryNames.put(invUUID, invName);
+        }
+        final NBTTagList tListOutput = aNBT.getTagList(NBT.UPGRADE_INVENTORIES_OUTPUT, 10);
+        for (int i = 0; i < tListOutput.tagCount(); i++) {
+            final NBTTagCompound tNBT = tListOutput.getCompoundTagAt(i);
+            String invUUID = tNBT.getString(NBT.UPGRADE_INVENTORY_UUID);
+            String invName = tNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
+            int tInvSize = tNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+            IItemHandlerModifiable tInv = new ItemStackHandler(tInvSize);
+            loadInventory(tNBT, tInv, NBT.INV_OUTPUT_LIST);
+            multiBlockOutputInventory.put(invUUID, tInv);
+            multiBlockOutputInventoryNames.put(invUUID, invName);
+        }
     }
 
     @Override
@@ -332,8 +394,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public void onFirstTick(boolean aIsServerSide) {
         super.onFirstTick(aIsServerSide);
-        if (aIsServerSide) checkStructure(true);
-        else StructureLibAPI.queryAlignment(this);
+        if (aIsServerSide) {
+            checkStructure(true);
+        } else {
+            StructureLibAPI.queryAlignment(this);
+        }
     }
 
     private boolean tickCovers() {
@@ -366,10 +431,15 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public void onPostTick(long aTick, boolean aIsServerSide) {
         if (aIsServerSide) {
             if (aTick % 600 == 5) {
+                clearSpecialLists();
                 // Recheck the structure every 30 seconds or so
                 if (!checkStructure(false)) checkStructure(true);
             }
         }
+    }
+
+    protected void clearSpecialLists() {
+        mUpgradeCasings.clear();
     }
 
     @Override
@@ -405,12 +475,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     // IMachineProgress
     @Override
     public int getProgress() {
-        return mProgresstime;
+        return mProgressTime;
     }
 
     @Override
     public int getMaxProgress() {
-        return mMaxProgresstime;
+        return mMaxProgressTime;
     }
 
     @Override
@@ -551,6 +621,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 if (tTarget != null && tTarget != MultiBlockController.this) return false;
 
                 part.setTarget(MultiBlockController.this, aModes);
+
+                if (part instanceof AdvancedCasing) {
+                    mUpgradeCasings.add((AdvancedCasing) part);
+                }
                 return true;
             }
 
@@ -587,6 +661,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
                     tContainer.setMultiTile(world, x, y, z);
                     ((MultiBlockPart) te).setTarget(MultiBlockController.this, aModes);
+
+                    registerSpecialCasings((MultiBlockPart) te);
                 }
 
                 return false;
@@ -596,6 +672,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 return TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon();
             }
         };
+    }
+
+    protected void registerSpecialCasings(MultiBlockPart aPart) {
+        if (aPart instanceof AdvancedCasing) {
+            mUpgradeCasings.add((AdvancedCasing) aPart);
+        }
     }
 
     /**
@@ -777,10 +859,44 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     /**
      * Item - MultiBlock related Item behaviour.
      */
-    protected boolean registerInventory(String invName, IItemHandlerModifiable inventory) {
-        if (multiBlockInputInventory.containsKey(invName)) return false;
-        multiBlockInputInventory.put(invName, inventory);
-        return true;
+    @Override
+    public void registerInventory(String aName, String aID, int aInventorySize, int aType) {
+        if (aType == InventoryUpgrade.INPUT || aType == InventoryUpgrade.BOTH) {
+            if (multiBlockInputInventory.containsKey(aID)) return;
+            multiBlockInputInventory.put(aID, new ItemStackHandler(aInventorySize));
+            multiBlockInputInventoryNames.put(aID, aName);
+        }
+        if (aType == InventoryUpgrade.OUTPUT || aType == InventoryUpgrade.BOTH) {
+            if (multiBlockOutputInventory.containsKey(aID)) return;
+            multiBlockOutputInventory.put(aID, new ItemStackHandler(aInventorySize));
+            multiBlockOutputInventoryNames.put(aID, aName);
+        }
+    }
+
+    @Override
+    public void unregisterInventory(String aName, String aID, int aType) {
+        if ((aType == InventoryUpgrade.INPUT || aType == InventoryUpgrade.BOTH)
+                && multiBlockInputInventory.containsKey(aID)) {
+            multiBlockInputInventory.remove(aID, multiBlockInputInventory.get(aID));
+            multiBlockInputInventoryNames.remove(aID, aName);
+        }
+        if ((aType == InventoryUpgrade.OUTPUT || aType == InventoryUpgrade.BOTH)
+                && multiBlockOutputInventory.containsKey(aID)) {
+            multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
+            multiBlockOutputInventoryNames.remove(aID, aName);
+        }
+    }
+
+    @Override
+    public void changeInventoryName(String aName, String aID, int aType) {
+        if ((aType == InventoryUpgrade.INPUT || aType == InventoryUpgrade.BOTH)
+                && multiBlockInputInventoryNames.containsKey(aID)) {
+            multiBlockInputInventoryNames.put(aID, aName);
+        }
+        if ((aType == InventoryUpgrade.OUTPUT || aType == InventoryUpgrade.BOTH)
+                && multiBlockOutputInventoryNames.containsKey(aID)) {
+            multiBlockOutputInventoryNames.put(aID, aName);
+        }
     }
 
     @Override
@@ -798,6 +914,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
+        if (isServerSide()) {
+            for (AdvancedCasing tPart : mUpgradeCasings) {
+                if (!(tPart instanceof InventoryUpgrade)) continue;
+                tPart.issueClientUpdate();
+            }
+        }
         final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
         if (multiBlockInventory == null) return null;
 
@@ -823,6 +945,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     protected Map<String, IItemHandlerModifiable> getMultiBlockInventory(MultiBlockPart aPart) {
         if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventory;
         else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventory;
+        return null;
+    }
+
+    protected Map<String, String> getMultiBlockInventoryNames(MultiBlockPart aPart) {
+        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventoryNames;
+        else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventoryNames;
         return null;
     }
 
@@ -965,8 +1093,17 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public List<String> getInventoryNames(MultiBlockPart aPart) {
         final List<String> inventoryNames = new ArrayList<>();
         inventoryNames.add("all");
-        inventoryNames.addAll(getMultiBlockInventory(aPart).keySet());
+        inventoryNames.add("controller");
+        inventoryNames.addAll(getMultiBlockInventoryNames(aPart).values());
         return inventoryNames;
+    }
+
+    @Override
+    public List<String> getInventoryIDs(MultiBlockPart aPart) {
+        final List<String> tInventoryIDs = new ArrayList<>();
+        tInventoryIDs.add("all");
+        tInventoryIDs.addAll(getMultiBlockInventory(aPart).keySet());
+        return tInventoryIDs;
     }
 
     @Override
@@ -977,6 +1114,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             str.append(" Input");
         } else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) {
             str.append(" Output");
+            String a;
         } else {
             str.append(" Unknown");
         }
@@ -1059,6 +1197,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (isServerSide()) {
+            for (AdvancedCasing tPart : mUpgradeCasings) {
+                if (!(tPart instanceof InventoryUpgrade)) continue;
+                tPart.issueClientUpdate();
+            }
+        }
         builder.widget(
                 new TabContainer()
                         .setButtonSize(

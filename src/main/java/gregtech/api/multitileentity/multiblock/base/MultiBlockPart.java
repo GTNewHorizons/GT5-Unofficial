@@ -60,7 +60,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
 
-public class MultiBlockPart extends BaseNontickableMultiTileEntity
+public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes {
 
     public static final int NOTHING = 0, ENERGY_IN = B[0], ENERGY_OUT = B[1], FLUID_IN = B[2], FLUID_OUT = B[3],
@@ -87,6 +87,14 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     }
 
     public String getLockedInventory() {
+        issueClientUpdate();
+        IMultiBlockController controller = getTarget(false);
+        if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
+            mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
+            if (mLockedInventory.equals("all")) {
+                mLockedInventory = "";
+            }
+        }
         return mLockedInventory.equals("") ? null : mLockedInventory;
     }
 
@@ -211,8 +219,20 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     }
 
     @Override
+    public void setLockedInventoryIndex(int aIndex) {
+        mLockedInventoryIndex = aIndex;
+    }
+
+    @Override
+    public int getLockedInventoryIndex() {
+        return mLockedInventoryIndex;
+    }
+
+    @Override
     public void setTargetPos(ChunkCoordinates aTargetPos) {
         mTargetPos = aTargetPos;
+        IMultiBlockController mTarget = getTarget(false);
+        setTarget(mTarget, mAllowedModes);
     }
 
     @Override
@@ -754,25 +774,28 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 18));
         DropDownWidget dropDown = new DropDownWidget();
+        dropDown.addDropDownItemsSimple(
+                controller.getInventoryNames(this),
+                (buttonWidget, index, label, setSelected) -> {
+                    buttonWidget.setOnClick((clickData, widget) -> {
+                        if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
+                            mLockedInventory = GT_Values.E;
+                            mLockedInventoryIndex = 0;
+                        } else {
+                            mLockedInventory = getNameOfInventoryFromIndex(controller, index);
+                            mLockedInventoryIndex = index;
+                        }
+                        setSelected.run();
+                    });
+                },
+                true);
         builder.widget(
-                dropDown.addDropDownItemsSimple(
-                        controller.getInventoryNames(this),
-                        (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                            if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
-                                mLockedInventory = GT_Values.E;
-                                mLockedInventoryIndex = 0;
-                            } else {
-                                mLockedInventory = getNameOfInventoryFromIndex(controller, index);
-                                mLockedInventoryIndex = index;
-                            }
-                            setSelected.run();
-                        }),
-                        true).setSelected(mLockedInventoryIndex).setExpandedMaxHeight(60)
+                dropDown.setSelected(mLockedInventoryIndex).setExpandedMaxHeight(60)
                         .setDirection(DropDownWidget.Direction.DOWN).setPos(53, 5).setSize(70, 11));
     }
 
     protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
-        final List<String> invNames = controller.getInventoryNames(this);
+        final List<String> invNames = controller.getInventoryIDs(this);
         if (index > invNames.size()) {
             return invNames.get(0);
         }

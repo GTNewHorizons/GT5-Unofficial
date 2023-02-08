@@ -59,6 +59,7 @@ import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_New;
 import gregtech.api.objects.GT_ItemStack;
@@ -1009,6 +1010,11 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 final ChunkCoordinates aTarget = mtePart.getTargetPos();
                 packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
             }
+            packet.setInventoryIndex(mtePart.getLockedInventoryIndex());
+        }
+        if (this instanceof InventoryUpgrade) {
+            String tName = ((InventoryUpgrade) this).getInventoryName();
+            packet.setInventoryName(tName);
         }
 
         return packet;
