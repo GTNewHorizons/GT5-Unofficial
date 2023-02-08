@@ -14,7 +14,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.preloader.CORE_Preloader;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class Core_SulfuricChemistry implements IPlugin {
 
@@ -214,7 +213,7 @@ public class Core_SulfuricChemistry implements IPlugin {
         }
 
         // Multi Block Recipes
-        recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+        recipe: for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
             for (ItemStack i : r.mOutputs) {
                 i.stackSize = 1;
                 if (ItemStack
@@ -274,7 +273,7 @@ public class Core_SulfuricChemistry implements IPlugin {
         }
 
         // Multi Block Recipes
-        recipe: for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+        recipe: for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
             for (ItemStack i : r.mOutputs) {
                 i.stackSize = 1;
                 if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {

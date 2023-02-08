@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -9,7 +10,6 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class GregtechHiAmpTransformer {
 
@@ -89,12 +89,9 @@ public class GregtechHiAmpTransformer {
         ItemStack mItem_2;
         ItemStack mItem_3;
 
-        mItem_1 = ItemUtils
-                .simpleMetaStack(ItemUtils.getSimpleStack(StaticFields59.getBlockCasings5()).getItem(), 3, 1);
-        mItem_2 = ItemUtils
-                .simpleMetaStack(ItemUtils.getSimpleStack(StaticFields59.getBlockCasings5()).getItem(), 4, 1);
-        mItem_3 = ItemUtils
-                .simpleMetaStack(ItemUtils.getSimpleStack(StaticFields59.getBlockCasings5()).getItem(), 9, 1);
+        mItem_1 = ItemUtils.simpleMetaStack(ItemUtils.getSimpleStack(GregTech_API.sBlockCasings5).getItem(), 3, 1);
+        mItem_2 = ItemUtils.simpleMetaStack(ItemUtils.getSimpleStack(GregTech_API.sBlockCasings5).getItem(), 4, 1);
+        mItem_3 = ItemUtils.simpleMetaStack(ItemUtils.getSimpleStack(GregTech_API.sBlockCasings5).getItem(), 9, 1);
 
         GT_ModHandler.addCraftingRecipe(
                 GregtechItemList.Transformer_HA_LV_ULV.get(1L, new Object[0]),

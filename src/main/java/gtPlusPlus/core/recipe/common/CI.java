@@ -1,10 +1,10 @@
 package gtPlusPlus.core.recipe.common;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -21,7 +21,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import ic2.core.Ic2Items;
 
 public class CI {
@@ -388,8 +387,7 @@ public class CI {
 
     public static void init() {
         // Set Explosives
-        explosivePowderKeg = ItemUtils
-                .getValueOfItemList("Block_Powderbarrel", 1, ItemUtils.getSimpleStack(Items.gunpowder, 16));
+        explosivePowderKeg = ItemList.Block_Powderbarrel.get(1);
         explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt).copy();
         explosiveITNT = Ic2Items.industrialTnt.copy();
 
@@ -974,7 +972,7 @@ public class CI {
         if (i > 8) {
             i = 8;
         }
-        return ItemUtils.simpleMetaStack(StaticFields59.getBlockCasings5(), i, 1);
+        return ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings5, i, 1);
     }
 
     public static ItemStack getNumberedBioCircuit(int i) {

@@ -507,10 +507,8 @@ public class GregtechComponentAssembler {
             else if (tier == 5) mWT = "16";
             else mWT = "01";
 
-            ItemStack eyeQuantum = ItemUtils
-                    .getValueOfItemList("QuantumEye", 1, ItemUtils.getSimpleStack(Items.ender_eye, 4));
-            ItemStack starQuantum = ItemUtils
-                    .getValueOfItemList("QuantumStar", 1, ItemUtils.getSimpleStack(Items.nether_star, 4));
+            ItemStack eyeQuantum = ItemList.QuantumEye.get(1);
+            ItemStack starQuantum = ItemList.QuantumStar.get(1);
 
             if (tier == 1) gem = ItemUtils.getSimpleStack(Items.ender_pearl);
             else if (tier == 2) gem = ItemUtils.getSimpleStack(Items.ender_eye);

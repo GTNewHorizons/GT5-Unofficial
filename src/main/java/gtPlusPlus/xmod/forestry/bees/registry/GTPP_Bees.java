@@ -7,7 +7,6 @@ import java.util.HashMap;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.*;
@@ -34,13 +33,6 @@ public class GTPP_Bees {
 
     public GTPP_Bees() {
         if (Loader.isModLoaded(MOD_ID_FR) && GT_Mod.gregtechproxy.mGTBees) {
-
-            if (!ReflectionUtils.doesClassExist("gregtech.loaders.misc.GT_BeeDefinition")) {
-                CORE.crash("Missing gregtech.loaders.misc.GT_BeeDefinition.");
-            } else {
-                Logger.BEES("Loading GT++ Bees!");
-            }
-
             Logger.BEES("Creating required items.");
             propolis = new GTPP_Propolis();
             pollen = new GTPP_Pollen();

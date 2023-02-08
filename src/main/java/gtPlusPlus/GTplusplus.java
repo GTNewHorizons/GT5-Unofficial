@@ -14,7 +14,13 @@ import net.minecraft.launchwrapper.Launch;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
@@ -55,7 +61,6 @@ import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.GregtechMTE_ChemicalPlant;
-import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
@@ -105,12 +110,6 @@ public class GTplusplus implements ActionListener {
     @Mod.Instance(CORE.MODID)
     public static GTplusplus instance;
 
-    // Material Loader
-    public static GT_Material_Loader mGregMatLoader;
-
-    // GT_Proxy instance
-    protected static Meta_GT_Proxy mGregProxy;
-
     // GT++ Proxy Instances
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
     public static CommonProxy proxy;
@@ -156,7 +155,6 @@ public class GTplusplus implements ActionListener {
         // Give this a go mate.
         // initAnalytics();
         setupMaterialBlacklist();
-        // setupMaterialWhitelist();
 
         // Handle GT++ Config
         ConfigHandler.handleConfigFile(event);
@@ -376,15 +374,6 @@ public class GTplusplus implements ActionListener {
             return true;
         }
         return false;
-    }
-
-    @SuppressWarnings("unused")
-    private void setupMaterialWhitelist() {
-
-        mGregMatLoader = new GT_Material_Loader();
-
-        // Force - Alloying
-        mGregMatLoader.enableMaterial(Materials.Force);
     }
 
     private static final HashMap<String, Item> sMissingItemMappings = new HashMap<String, Item>();

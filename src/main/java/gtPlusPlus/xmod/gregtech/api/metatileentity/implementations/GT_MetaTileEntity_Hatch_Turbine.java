@@ -29,7 +29,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 
 @SuppressWarnings("deprecation")
@@ -126,7 +125,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Turbine(mName, mTier, StaticFields59.getDescriptionArray(this), mTextures);
+        return new GT_MetaTileEntity_Hatch_Turbine(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

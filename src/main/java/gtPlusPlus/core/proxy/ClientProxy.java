@@ -43,7 +43,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.render.*;
 import ic2.core.item.ItemFluidCell;
 
@@ -97,9 +96,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
         new CustomItemBlockRenderer();
         new GTPP_Render_MachineBlock();
 
-        if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
-            new GTPP_FlaskRenderer();
-        }
+        new GTPP_FlaskRenderer();
 
         super.init(e);
     }

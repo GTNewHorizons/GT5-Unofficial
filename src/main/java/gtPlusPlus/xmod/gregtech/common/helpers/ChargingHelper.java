@@ -18,6 +18,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
@@ -26,7 +27,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -322,10 +322,9 @@ public class ChargingHelper {
                     if (mTemp.getItem() instanceof GT_MetaGenerated_Tool_01
                             || mTemp.getItem() instanceof GT_MetaGenerated_Item_01
                             || mTemp.getItem() instanceof GT_MetaGenerated_Item_02
-                            || ReflectionUtils.getClass("gregtech.common.items.GT_MetaGenerated_Item_03")
-                                    .isInstance(mTemp.getItem())
-                            || mTemp.getItem().getClass().getName().toLowerCase()
-                                    .equals(("gregtech.common.items.GT_MetaGenerated_Tool_01").toLowerCase())) {
+                            || mTemp.getItem() instanceof GT_MetaGenerated_Item_03
+                            || mTemp.getItem().getClass().getName()
+                                    .equalsIgnoreCase(GT_MetaGenerated_Tool_01.class.getName())) {
                         if (!NBTUtils.hasKey(mTemp, "GT.ItemCharge")) {
                             if (!mTemp.getDisplayName().toLowerCase().contains("battery")) {
                                 if (!GT_ModHandler.isElectricItem(mTemp)) {

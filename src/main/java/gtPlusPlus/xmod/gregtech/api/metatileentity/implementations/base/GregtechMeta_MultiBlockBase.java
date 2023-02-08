@@ -89,41 +89,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
-    static {
-        Method a08 = findRecipe08 = ReflectionUtils.getMethod(
-                GT_Recipe_Map.class,
-                "findRecipe",
-                IHasWorldObjectAndCoords.class,
-                GT_Recipe.class,
-                boolean.class,
-                long.class,
-                FluidStack[].class,
-                ItemStack.class,
-                ItemStack[].class);
-        Method a09 = findRecipe09 = ReflectionUtils.getMethod(
-                GT_Recipe_Map.class,
-                "findRecipe",
-                IHasWorldObjectAndCoords.class,
-                GT_Recipe.class,
-                boolean.class,
-                boolean.class,
-                long.class,
-                FluidStack[].class,
-                ItemStack.class,
-                ItemStack[].class);
-        Logger.MACHINE_INFO("Found .08 findRecipe method? " + (a08 != null));
-        Logger.MACHINE_INFO("Found .09 findRecipe method? " + (a09 != null));
-
-        try {
-            calculatePollutionReduction = GT_MetaTileEntity_Hatch_Muffler.class
-                    .getDeclaredMethod("calculatePollutionReduction", int.class);
-        } catch (NoSuchMethodException | SecurityException e) {}
-    }
-
-    // Find Recipe Methods
-    private static final Method findRecipe08;
-    private static final Method findRecipe09;
-
     public GT_Recipe mLastRecipe;
     private boolean mInternalCircuit = false;
     protected long mTotalRunTime = 0;
@@ -1885,21 +1850,15 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                     "Invalid recipe, Fallback lookup. " + this.getRecipeMap().mRecipeList.size()
                             + " | "
                             + this.getRecipeMap().mNEIName);
-            try {
-                return (GT_Recipe) findRecipe09.invoke(
-                        getRecipeMap(),
-                        aTileEntity,
-                        aRecipe,
-                        aNotUnificated,
-                        aDontCheckStackSizes,
-                        aVoltage,
-                        aFluids,
-                        aSpecialSlot,
-                        aInputs);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                e.printStackTrace();
-                return null;
-            }
+            return getRecipeMap().findRecipe(
+                    aTileEntity,
+                    aRecipe,
+                    aNotUnificated,
+                    aDontCheckStackSizes,
+                    aVoltage,
+                    aFluids,
+                    aSpecialSlot,
+                    aInputs);
         } else {
             return mRecipeResult;
         }

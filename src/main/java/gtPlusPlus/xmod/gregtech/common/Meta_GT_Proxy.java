@@ -47,11 +47,6 @@ import ic2.core.init.InternalName;
 
 public class Meta_GT_Proxy {
 
-    static {
-        Logger.INFO("GT_PROXY - initialized.");
-        sDoesVolumetricFlaskExist = ReflectionUtils.doesClassExist("gregtech.common.items.GT_VolumetricFlask");
-    }
-
     public static List<Runnable> GT_BlockIconload = new ArrayList<>();
     public static List<Runnable> GT_ItemIconload = new ArrayList<>();
 
@@ -63,11 +58,6 @@ public class Meta_GT_Proxy {
     public static AchievementHandler mAssemblyAchievements;
 
     public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
-
-    /**
-     * Does this feature exist within GT? Saves loading useless content if not.
-     */
-    public static final boolean sDoesVolumetricFlaskExist;
 
     @SideOnly(Side.CLIENT)
     public static IIconRegister sBlockIcons, sItemIcons;
@@ -92,15 +82,6 @@ public class Meta_GT_Proxy {
                     "GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
             CORE.crash(
                     "GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
-        }
-
-        // Gotta set it here so that we don't try call gregtech too early.
-        // Must set on the correct side
-
-        if (ReflectionUtils.doesFieldExist(GT_Proxy.class, "gt6Pipe")) {
-            StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");
-        } else {
-            StaticFields59.mGT6StylePipes = false;
         }
 
         GT_Log.out.println("GT++ Mod: Registering custom BaseMetaTileEntities.");
@@ -393,13 +374,6 @@ public class Meta_GT_Proxy {
     }
 
     static GT_Proxy[] mProxies = new GT_Proxy[2];
-
-    /**
-     * @deprecated Use {@link StaticFields59#getFieldFromGregtechProxy(boolean,String)} instead
-     */
-    public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
-        return StaticFields59.getFieldFromGregtechProxy(client, fieldName);
-    }
 
     public static void setCustomGregtechTooltip(String aNbtTagName, FormattedTooltipString aData) {
         mCustomGregtechMetaTooltips.put(aNbtTagName, aData);

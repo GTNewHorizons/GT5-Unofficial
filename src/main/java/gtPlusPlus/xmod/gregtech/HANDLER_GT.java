@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
@@ -46,7 +47,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -54,7 +54,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputerCube_Setup;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
@@ -71,7 +70,6 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_MolecularTransformer;
 import gtPlusPlus.xmod.gregtech.recipes.RecipesToRemove;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
 
 public class HANDLER_GT {
 
@@ -122,10 +120,6 @@ public class HANDLER_GT {
         new ProcessingElectricSnips().run();
         new ProcessingElectricButcherKnife().run();
         new ProcessingElectricLighter().run();
-
-        if (CORE.ConfigSwitches.enableNitroFix) {
-            GregtechNitroDieselFix.run();
-        }
 
         // Register custom singles to the PA
         AddCustomMachineToPA.register();
@@ -233,18 +227,13 @@ public class HANDLER_GT {
     }
 
     private static void convertPyroToCokeOven() {
-        if (ReflectionUtils.doesFieldExist(GT_Recipe.GT_Recipe_Map.class, "sPyrolyseRecipes")) {
-            int aCount = 0;
-            GT_Recipe_Map aMap = StaticFields59.getPyrolyseRecipeMap();
-            if (aMap != null) {
-                for (GT_Recipe g : aMap.mRecipeList) {
-                    if (AddGregtechRecipe.importPyroRecipe(g)) {
-                        aCount++;
-                    }
-                }
-                Logger.INFO("Converted " + aCount + " Pyrolyse recipes into Industrial Coke Oven recipes.");
+        int aCount = 0;
+        for (GT_Recipe g : GT_Recipe_Map.sPyrolyseRecipes.mRecipeList) {
+            if (AddGregtechRecipe.importPyroRecipe(g)) {
+                aCount++;
             }
         }
+        Logger.INFO("Converted " + aCount + " Pyrolyse recipes into Industrial Coke Oven recipes.");
     }
 
     private static GT_Recipe replaceItemInRecipeWithAnother(GT_Recipe aRecipe, ItemStack aExisting,
@@ -281,16 +270,6 @@ public class HANDLER_GT {
     }
 
     private static void removeOldHighTierCasingRecipes() {
-
-        Logger.INFO("Trying to appropriately retier GT Machine Hulls/Casings from LuV+");
-        final Object aHardCasingsTest = StaticFields59.getFieldFromGregtechProxy("mHardMachineCasings");
-
-        boolean aHardCasings = aHardCasingsTest != null ? (boolean) aHardCasingsTest : false;
-
-        Logger.INFO(
-                "Are Hard casings/hulls enabled within GT? "
-                        + (aHardCasingsTest == null ? "Version does not support config option" : aHardCasings));
-
         // Static objects to save memory
         ItemStack aCasing_LUV = CI.machineCasing_LuV;
         ItemStack aCasing_ZPM = CI.machineCasing_ZPM;
@@ -445,7 +424,7 @@ public class HANDLER_GT {
                 bits,
                 new Object[] { "PPP", "PwP", "PPP", 'P', CI.getPlate(aTier_UV, 1) });
 
-        if (!aHardCasings) {
+        if (!GT_Mod.gregtechproxy.mHardMachineCasings) {
             Logger.INFO("Adding new easy Shaped recipes for Hulls.");
             GT_ModHandler.addCraftingRecipe(
                     ItemList.Hull_LuV.get(1),

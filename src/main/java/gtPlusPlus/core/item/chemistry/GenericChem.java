@@ -18,7 +18,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -31,7 +30,6 @@ public class GenericChem extends ItemPackage {
     private static boolean usingGregtechNitricOxide = false;
 
     private static boolean usingGregtechNitrogenDioxide = false;
-    private static boolean usingGregtechHydricSulfur = false;
 
     /**
      * Materials
@@ -85,7 +83,6 @@ public class GenericChem extends ItemPackage {
     public static Fluid Nitric_Oxide;
     public static Fluid Nitrogen_Dioxide;
     public static Fluid Carbon_Disulfide;
-    public static Fluid Hydrogen_Sulfide;
 
     /**
      * Items
@@ -339,31 +336,6 @@ public class GenericChem extends ItemPackage {
 
         Carbon_Disulfide = FluidUtils
                 .generateFluidNoPrefix("CarbonDisulfide", "Carbon Disulfide", 350, new short[] { 175, 175, 175, 100 });
-
-        if (FluidRegistry.isFluidRegistered("fluid.liquid_hydricsulfur")
-                || MaterialUtils.doesMaterialExist("HydricSulfide")) {
-            usingGregtechHydricSulfur = true;
-            Fluid aFluid = null;
-            if (ItemUtils.doesItemListEntryExist("sHydricSulfur")) {
-                ItemStack aListItem = ItemUtils.getValueOfItemList("sHydricSulfur", 1, (ItemList) null);
-                if (aListItem != null) {
-                    FluidStack aFluidStack = FluidContainerRegistry.getFluidForFilledItem(aListItem);
-                    if (aFluidStack != null) {
-                        aFluid = aFluidStack.getFluid();
-                    }
-                }
-            }
-            if (aFluid == null) {
-                aFluid = FluidUtils.getWildcardFluidStack("liquid_hydricsulfur", 1000).getFluid();
-            }
-            Hydrogen_Sulfide = aFluid;
-        } else {
-            Hydrogen_Sulfide = FluidUtils.generateFluidNoPrefix(
-                    "HydrogenSulfide",
-                    "Hydrogen Sulfide",
-                    446,
-                    new short[] { 240, 130, 30, 100 });
-        }
     }
 
     @Override
@@ -406,9 +378,6 @@ public class GenericChem extends ItemPackage {
         }
         if (!usingGregtechNitrogenDioxide) {
             recipeNitrogenDioxide();
-        }
-        if (!usingGregtechHydricSulfur) {
-            recipeHydricSulfur();
         }
 
         // Add recipes if we are not using GT's fluid.
@@ -476,29 +445,6 @@ public class GenericChem extends ItemPackage {
                 20 * 60,
                 120,
                 4);
-    }
-
-    // The follow is using alk science, ignore them
-    private void recipeHydricSulfur() {
-
-        ItemStack aCellHydricSulfide = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenSulfide", 1);
-        GT_Values.RA.addChemicalRecipe(
-                ELEMENT.getInstance().SULFUR.getDust(1),
-                GT_Utility.getIntegratedCircuit(1),
-                ELEMENT.getInstance().HYDROGEN.getFluidStack(2000),
-                FluidUtils.getFluidStack(Hydrogen_Sulfide, 3000),
-                GT_Values.NI,
-                60,
-                8);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                ELEMENT.getInstance().SULFUR.getDust(1),
-                CI.emptyCells(3),
-                ELEMENT.getInstance().HYDROGEN.getFluidStack(2000),
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(aCellHydricSulfide, 3),
-                GT_Values.NI,
-                60,
-                8);
     }
 
     private void recipeCarbonDisulfide() {

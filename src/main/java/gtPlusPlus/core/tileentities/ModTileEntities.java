@@ -47,9 +47,7 @@ public class ModTileEntities {
         GameRegistry.registerTileEntity(TileEntityRoundRobinator.class, "TileEntityRoundRobinator");
         GameRegistry.registerTileEntity(TileEntityEggBox.class, "TileEggBox");
 
-        if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
-            GameRegistry.registerTileEntity(TileEntityVolumetricFlaskSetter.class, "TileEntityVolumetricFlaskSetter");
-        }
+        GameRegistry.registerTileEntity(TileEntityVolumetricFlaskSetter.class, "TileEntityVolumetricFlaskSetter");
 
         // Mod TEs
         if (LoadedMods.Thaumcraft) {}

@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -8,8 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -187,7 +184,7 @@ public class ItemCustomComb extends Item {
     }
 
     public void addProcess(ItemStack tComb, Materials aMaterial, int chance) {
-        if (tryGetNerfBoolean()) {
+        if (GT_Mod.gregtechproxy.mNerfedCombs) {
             GT_Values.RA.addChemicalRecipe(
                     GT_Utility.copyAmount(9, tComb),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1),
@@ -224,7 +221,7 @@ public class ItemCustomComb extends Item {
     }
 
     public void addProcess(ItemStack tComb, Materials aInMaterial, Materials aOutMaterial, int chance) {
-        if (tryGetNerfBoolean()) {
+        if (GT_Mod.gregtechproxy.mNerfedCombs) {
             GT_Values.RA.addChemicalRecipe(
                     GT_Utility.copyAmount(9, tComb),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, aInMaterial, 1),
@@ -257,17 +254,6 @@ public class ItemCustomComb extends Item {
             // RecipeManagers.centrifugeManager.addRecipe(40, tComb,
             // ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aOutMaterial, 1), chance * 0.01f,
             // ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-        }
-    }
-
-    private static boolean tryGetNerfBoolean() {
-        try {
-            Class mProxy = Class.forName("gregtech.GT_Mod.gregtechproxy");
-            Field mNerf = FieldUtils.getDeclaredField(mProxy, "mNerfedCombs", true);
-            boolean returnValue = (boolean) mNerf.get(GT_Mod.gregtechproxy);
-            return returnValue;
-        } catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException e) {
-            return false;
         }
     }
 }

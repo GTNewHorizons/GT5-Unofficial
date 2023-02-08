@@ -17,6 +17,7 @@ import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.apiculture.genetics.*;
 import forestry.core.genetics.alleles.AlleleHelper;
+import gregtech.loaders.misc.GT_BeeDefinition;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -575,16 +576,14 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     }
 
     public static IAlleleBeeSpecies getGregtechBeeType(String name) {
-        Class<?> gtBees;
         try {
-            Class gtBeeTypes = Class.forName("gregtech.loaders.misc.GT_BeeDefinition");
-            Enum gtBeeEnumObject = Enum.valueOf(gtBeeTypes, name);
-            Field gtBeesField = FieldUtils.getDeclaredField(gtBeeTypes, "species", true);
+            Enum<GT_BeeDefinition> gtBeeEnumObject = Enum.valueOf(GT_BeeDefinition.class, name);
+            Field gtBeesField = FieldUtils.getDeclaredField(GT_BeeDefinition.class, "species", true);
             gtBeesField.setAccessible(true);
             ReflectionUtils.makeFieldAccessible(gtBeesField);
             Object beeType = gtBeesField.get(gtBeeEnumObject);
             return (IAlleleBeeSpecies) beeType;
-        } catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;

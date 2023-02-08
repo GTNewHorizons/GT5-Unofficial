@@ -97,8 +97,6 @@ public class ConfigHandler {
                 "Adds Custom GT Shovels and Pickaxes which mine in a 3x3 style. One of each whill be generated for each Gregtech Material which has Dense Plates and Long Rods available.");
 
         // GT-Fixes
-        enableNitroFix = config
-                .getBoolean("enableNitroFix", "gregtech", false, "Restores the old Nitro-Diesel recipes.");
         enableSulfuricAcidFix = config.getBoolean(
                 "enableSulfuricAcidFix",
                 "gregtech",

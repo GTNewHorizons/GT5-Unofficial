@@ -16,11 +16,9 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class RecipeGen_Extruder extends RecipeGen_Base {
 
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
-    private static boolean mRotorShapeEnabled = false;
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
-        mRotorShapeEnabled = ItemUtils.doesItemListEntryExist("Shape_Extruder_Rotor");
     }
 
     public RecipeGen_Extruder(final Material M) {
@@ -145,11 +143,11 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
         // Rotor Recipe
         // Shape_Extruder_Rotor
-        if (mRotorShapeEnabled && ItemUtils.checkForInvalidItems(material.getIngot(1))
+        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
                 && ItemUtils.checkForInvalidItems(material.getRotor(1)))
             if (GT_Values.RA.addExtruderRecipe(
                     material.getIngot(5),
-                    ItemUtils.getValueOfItemList("Shape_Extruder_Rotor", 0, ItemUtils.getErrorStack(1)),
+                    ItemList.Shape_Extruder_Rotor.get(0),
                     material.getRotor(1),
                     200,
                     60)) {

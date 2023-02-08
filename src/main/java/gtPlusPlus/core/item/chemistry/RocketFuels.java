@@ -27,7 +27,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class RocketFuels extends ItemPackage {
 
@@ -666,110 +665,6 @@ public class RocketFuels extends ItemPackage {
     public boolean onLoadComplete(FMLLoadCompleteEvent event) {
 
         Logger.INFO("Trying to remove GT recipes for '1,1dimethylhydrazine' && 'rocket_fuel' if they exist.");
-        /*
-         * if (FluidRegistry.isFluidRegistered("1,1dimethylhydrazine")) { // Try Remove recipes for GT/EIO Rocket Fuel
-         * Cells if (FluidRegistry.isFluidRegistered("rocket_fuel")) { // Old Recipe if
-         * (MaterialUtils.doesMaterialExist("NitrogenDioxide")) { GT_Recipe aOldRecipe = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellNitrogenDioxide", 1),
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 3), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("air", 500) }, 388); boolean aDidRemove = removeRecipe(aOldRecipe,
-         * GT_Recipe_Map.sChemicalRecipes); Logger.INFO("Removed Old Recipe for Rocket Fuel: "+aDidRemove); } // Simple
-         * Recipes if (MaterialUtils.doesMaterialExist("Ammonia") && MaterialUtils.doesMaterialExist("Methanol")) {
-         * GT_Recipe aSimpleRecipe1 = getHalfBakedRecipe( new ItemStack[] {
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 3),
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellMethanol", 4), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("chlorine", 1000) }, 480); GT_Recipe aSimpleRecipe2 = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellChlorine", 1),
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellMethanol", 4), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("ammonia", 3000) }, 480); GT_Recipe aSimpleRecipe3 = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 3),
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellChlorine", 1), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("methanol", 4000) }, 480); boolean aDidRemove1 = removeRecipe(aSimpleRecipe1,
-         * GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove2 = removeRecipe(aSimpleRecipe2,
-         * GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove3 = removeRecipe(aSimpleRecipe3,
-         * GT_Recipe_Map.sChemicalRecipes); Logger.INFO("Removed Simple Recipe 1 for Rocket Fuel: "+aDidRemove1);
-         * Logger.INFO("Removed Simple Recipe 2 for Rocket Fuel: "+aDidRemove2);
-         * Logger.INFO("Removed Simple Recipe 3 for Rocket Fuel: "+aDidRemove3); } // Complex Recipes I if
-         * (MaterialUtils.doesMaterialExist("Dimethylhydrazine") &&
-         * MaterialUtils.doesMaterialExist("DinitrogenTetroxide")) { GT_Recipe aAdvRecipe1 = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylhydrazine", 1), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("dinitrogentetroxide", 1000) }, 16); GT_Recipe aAdvRecipe2 = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDinitrogenTetroxide", 1), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("dimethylhydrazine", 1000) }, 16); GT_Recipe aAdvRecipe3 = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylhydrazine", 2), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("oxygen", 1000) }, 16); GT_Recipe aAdvRecipe4 = getHalfBakedRecipe( new ItemStack[]
-         * { ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("dimethylhydrazine", 2000) }, 16); boolean aDidRemove1 = removeRecipe(aAdvRecipe1,
-         * GT_Recipe_Map.sMixerRecipes); boolean aDidRemove2 = removeRecipe(aAdvRecipe2, GT_Recipe_Map.sMixerRecipes);
-         * boolean aDidRemove3 = removeRecipe(aAdvRecipe3, GT_Recipe_Map.sMixerRecipes); boolean aDidRemove4 =
-         * removeRecipe(aAdvRecipe4, GT_Recipe_Map.sMixerRecipes);
-         * Logger.INFO("Removed Complex Recipe 1 for Rocket Fuel: "+aDidRemove1);
-         * Logger.INFO("Removed Complex Recipe 2 for Rocket Fuel: "+aDidRemove2);
-         * Logger.INFO("Removed Complex Recipe 3 for Rocket Fuel: "+aDidRemove3);
-         * Logger.INFO("Removed Complex Recipe 4 for Rocket Fuel: "+aDidRemove4); } } // Complex Recipes II if
-         * (MaterialUtils.doesMaterialExist("Dimethylhydrazine")) { GT_Recipe aAdvRecipe1 = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylhydrazine", 2), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("oxygen", 1000) }, 16); GT_Recipe aAdvRecipe2 = getHalfBakedRecipe( new ItemStack[]
-         * { ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("dimethylhydrazine", 2000) }, 16); boolean aDidRemove1 = removeRecipe(aAdvRecipe1,
-         * GT_Recipe_Map.sMixerRecipes); boolean aDidRemove2 = removeRecipe(aAdvRecipe2, GT_Recipe_Map.sMixerRecipes);
-         * Logger.INFO("Removed Complex Recipe 5 for Rocket Fuel: "+aDidRemove1);
-         * Logger.INFO("Removed Complex Recipe 6 for Rocket Fuel: "+aDidRemove2); } if
-         * (MaterialUtils.doesMaterialExist("Chloramine") && MaterialUtils.doesMaterialExist("Dimethylamine")) {
-         * GT_Recipe aSimpleRecipe1 = getHalfBakedRecipe( new ItemStack[] {
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellChloramine", 2), GT_Utility.getIntegratedCircuit(1) }, new
-         * FluidStack[] { FluidUtils.getFluidStack("dimethylamine", 5000) }, 480); GT_Recipe aSimpleRecipe2 =
-         * getHalfBakedRecipe( new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylamine", 5),
-         * GT_Utility.getIntegratedCircuit(1) }, new FluidStack[] { FluidUtils.getFluidStack("chloramine", 2000) }, 16);
-         * GT_Recipe aAdvRecipe1 = getHalfBakedRecipe( new ItemStack[] {
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellChloramine", 2), CI.emptyCells(4) }, new FluidStack[] {
-         * FluidUtils.getFluidStack("dimethylamine", 5000) }, 480); GT_Recipe aAdvRecipe2 = getHalfBakedRecipe( new
-         * ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylamine", 5), CI.emptyCells(1) }, new
-         * FluidStack[] { FluidUtils.getFluidStack("chloramine", 2000) }, 16); GT_Recipe aAdvRecipe3 =
-         * getHalfBakedRecipe( new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellChloramine", 2),
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylamine", 5), }, new FluidStack[] {
-         * FluidUtils.getFluidStack("chloramine", 2000) }, 480); boolean aDidRemove1 = removeRecipe(aSimpleRecipe1,
-         * GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove2 = removeRecipe(aSimpleRecipe2,
-         * GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove3 = removeRecipe(aAdvRecipe1,
-         * GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove4 = removeRecipe(aAdvRecipe2,
-         * GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove5 = removeRecipe(aAdvRecipe3,
-         * GT_Recipe_Map.sChemicalRecipes);
-         * Logger.INFO("Removed Complex Recipe 1 for 1,1dimethylhydrazine: "+aDidRemove1);
-         * Logger.INFO("Removed Complex Recipe 2 for 1,1dimethylhydrazine: "+aDidRemove2);
-         * Logger.INFO("Removed Complex Recipe 3 for 1,1dimethylhydrazine: "+aDidRemove3);
-         * Logger.INFO("Removed Complex Recipe 4 for 1,1dimethylhydrazine: "+aDidRemove4);
-         * Logger.INFO("Removed Complex Recipe 5 for 1,1dimethylhydrazine: "+aDidRemove5); } if
-         * (MaterialUtils.doesMaterialExist("Chloramine") && MaterialUtils.doesMaterialExist("Dimethylamine")) {
-         * GT_Recipe aSimpleRecipe1 = getHalfBakedRecipe( new ItemStack[] {
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellChloramine", 1), GT_Utility.getIntegratedCircuit(1) }, new
-         * FluidStack[] { FluidUtils.getFluidStack("dimethylamine", 1000) }, 480); GT_Recipe aSimpleRecipe2 =
-         * getHalfBakedRecipe( new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylamine", 1),
-         * GT_Utility.getIntegratedCircuit(1) }, new FluidStack[] { FluidUtils.getFluidStack("chloramine", 1000) }, 16);
-         * GT_Recipe aAdvRecipe1 = getHalfBakedRecipe( new ItemStack[] {
-         * ItemUtils.getItemStackOfAmountFromOreDict("cellChloramine", 1), GT_Utility.getIntegratedCircuit(11) }, new
-         * FluidStack[] { FluidUtils.getFluidStack("dimethylamine", 1000) }, 480); GT_Recipe aAdvRecipe2 =
-         * getHalfBakedRecipe( new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellDimethylamine", 1),
-         * GT_Utility.getIntegratedCircuit(11) }, new FluidStack[] { FluidUtils.getFluidStack("chloramine", 1000) },
-         * 16); boolean aDidRemove1 = removeRecipe(aSimpleRecipe1, GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove2
-         * = removeRecipe(aSimpleRecipe2, GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove3 =
-         * removeRecipe(aAdvRecipe1, GT_Recipe_Map.sChemicalRecipes); boolean aDidRemove4 = removeRecipe(aAdvRecipe2,
-         * GT_Recipe_Map.sChemicalRecipes);
-         * Logger.INFO("Removed Complex Recipe 5 for 1,1dimethylhydrazine: "+aDidRemove1);
-         * Logger.INFO("Removed Complex Recipe 6 for 1,1dimethylhydrazine: "+aDidRemove2);
-         * Logger.INFO("Removed Complex Recipe 7 for 1,1dimethylhydrazine: "+aDidRemove3);
-         * Logger.INFO("Removed Complex Recipe 8 for 1,1dimethylhydrazine: "+aDidRemove4); } if
-         * (MaterialUtils.doesMaterialExist("HypochlorousAcid") && MaterialUtils.doesMaterialExist("Ammonia") &&
-         * MaterialUtils.doesMaterialExist("Methanol")) { GT_Recipe aAdvRecipe1 = getHalfBakedRecipe( new ItemStack[] {
-         * GT_Utility.getIntegratedCircuit(24), }, new FluidStack[] { FluidUtils.getFluidStack("hypochlorousacid",
-         * 3000), FluidUtils.getFluidStack("ammonia", 8000), FluidUtils.getFluidStack("methanol", 12000) }, 480);
-         * GT_Recipe aAdvRecipe2 = getHalfBakedRecipe( new ItemStack[] { GT_Utility.getIntegratedCircuit(24), }, new
-         * FluidStack[] { FluidUtils.getFluidStack("hypochlorousacid", 1000), FluidUtils.getFluidStack("ammonia", 1000),
-         * FluidUtils.getFluidStack("methanol", 2000) }, 480); boolean aDidRemove1 = removeRecipe(aAdvRecipe1,
-         * StaticFields59.getLargeChemicalReactorRecipeMap()); boolean aDidRemove2 = removeRecipe(aAdvRecipe2,
-         * StaticFields59.getLargeChemicalReactorRecipeMap());
-         * Logger.INFO("Removed Complex Recipe 9 for 1,1dimethylhydrazine: "+aDidRemove1);
-         * Logger.INFO("Removed Complex Recipe 10 for 1,1dimethylhydrazine: "+aDidRemove2); } }
-         */
 
         // Try Butcher recipes manually
 
@@ -803,7 +698,7 @@ public class RocketFuels extends ItemPackage {
             }
             // Handle Multi Also
             AutoMap<GT_Recipe> aToRemoveMulti = new AutoMap<GT_Recipe>();
-            recipe: for (GT_Recipe aRecipeSingleBlock : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+            recipe: for (GT_Recipe aRecipeSingleBlock : GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
                 if (aRecipeSingleBlock != null && aRecipeSingleBlock.mEnabled) {
                     if (aRecipeSingleBlock.mOutputs != null && aRecipeSingleBlock.mOutputs.length > 0) {
                         for (ItemStack aOutputItem : aRecipeSingleBlock.mOutputs) {
@@ -834,7 +729,7 @@ public class RocketFuels extends ItemPackage {
             if (!aToRemoveMulti.isEmpty()) {
                 Logger.INFO("Found " + aToRemoveSingle.size() + " multiblock recipes, removing by force.");
                 for (GT_Recipe remove : aToRemoveMulti) {
-                    StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList.remove(remove);
+                    GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.remove(remove);
                 }
             }
         }
@@ -878,7 +773,7 @@ public class RocketFuels extends ItemPackage {
             }
             // Handle Multi Also
             AutoMap<GT_Recipe> aToRemoveMulti = new AutoMap<GT_Recipe>();
-            recipe: for (GT_Recipe aRecipeSingleBlock : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
+            recipe: for (GT_Recipe aRecipeSingleBlock : GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
                 if (aRecipeSingleBlock != null && aRecipeSingleBlock.mEnabled) {
                     if (aRecipeSingleBlock.mFluidOutputs != null && aRecipeSingleBlock.mFluidOutputs.length > 0) {
                         for (FluidStack aOutput : aRecipeSingleBlock.mFluidOutputs) {
@@ -899,7 +794,7 @@ public class RocketFuels extends ItemPackage {
             if (!aToRemoveMulti.isEmpty()) {
                 Logger.INFO("Found " + aToRemoveSingle.size() + " multiblock recipes, removing by force.");
                 for (GT_Recipe remove : aToRemoveMulti) {
-                    StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList.remove(remove);
+                    GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.remove(remove);
                 }
             }
         }
@@ -926,7 +821,7 @@ public class RocketFuels extends ItemPackage {
         } else {
             GT_Recipe aFoundRecipe = aMap
                     .findRecipe(null, false, true, aRecipe.mEUt, aRecipe.mFluidInputs, aRecipe.mInputs);
-            GT_Recipe aFoundRecipe2 = StaticFields59.getLargeChemicalReactorRecipeMap()
+            GT_Recipe aFoundRecipe2 = GT_Recipe_Map.sMultiblockChemicalRecipes
                     .findRecipe(null, false, true, aRecipe.mEUt, aRecipe.mFluidInputs, aRecipe.mInputs);
             boolean aSingle = false;
             boolean aMulti = false;
@@ -937,7 +832,7 @@ public class RocketFuels extends ItemPackage {
             }
             if (aFoundRecipe2 != null) {
                 Logger.INFO("Found Multiblock Recipe, removing.");
-                aMulti = StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList.remove(aFoundRecipe2);
+                aMulti = GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.remove(aFoundRecipe2);
                 Logger.INFO("Success? " + aSingle);
             }
             return aSingle && aMulti;

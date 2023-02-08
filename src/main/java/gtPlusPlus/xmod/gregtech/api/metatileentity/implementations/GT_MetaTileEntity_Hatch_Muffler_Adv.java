@@ -9,6 +9,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -24,7 +25,6 @@ import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch_Muffler implements IAddGregtechLogo {
@@ -35,8 +35,8 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     public void onConfigLoad(GT_Config aConfig) {
         super.onConfigLoad(aConfig);
         try {
-            Integer a1 = (int) StaticFields59.getFieldFromGregtechProxy("mPollutionSmogLimit");
-            if (a1 != null && a1 > 0) {
+            int a1 = GT_Mod.gregtechproxy.mPollutionSmogLimit;
+            if (a1 > 0) {
                 mPollutionSmogLimit = a1;
             }
         } catch (Throwable t) {
@@ -56,17 +56,17 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     }
 
     public String[] getDescription() {
-        String[] mDescArray = StaticFields59.getDescriptionArray(this);
-        String[] desc = new String[mDescArray.length + 7];
-        System.arraycopy(mDescArray, 0, desc, 0, mDescArray.length);
-        desc[mDescArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
-        desc[mDescArray.length + 1] = "Requires 3 Air on the exhaust face";
-        desc[mDescArray.length + 2] = "Requires Air Filters";
-        desc[mDescArray.length + 3] = "Mufflers require T2 Filters from IV-" + GT_Values.VN[9];
-        desc[mDescArray.length + 4] = "Reduces Pollution to " + this.calculatePollutionReductionForTooltip(100) + "%";
-        desc[mDescArray.length + 5] = "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100))
+        String[] desc = new String[mDescriptionArray.length + 7];
+        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
+        desc[mDescriptionArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
+        desc[mDescriptionArray.length + 1] = "Requires 3 Air on the exhaust face";
+        desc[mDescriptionArray.length + 2] = "Requires Air Filters";
+        desc[mDescriptionArray.length + 3] = "Mufflers require T2 Filters from IV-" + GT_Values.VN[9];
+        desc[mDescriptionArray.length + 4] = "Reduces Pollution to " + this.calculatePollutionReductionForTooltip(100)
+                + "%";
+        desc[mDescriptionArray.length + 5] = "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100))
                 + "% of CO2/CO/SO2";
-        desc[mDescArray.length + 6] = CORE.GT_Tooltip.get();
+        desc[mDescriptionArray.length + 6] = CORE.GT_Tooltip.get();
         return desc;
     }
 
@@ -83,11 +83,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     }
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Muffler_Adv(
-                this.mName,
-                this.mTier,
-                StaticFields59.getDescriptionArray(this),
-                this.mTextures);
+        return new GT_MetaTileEntity_Hatch_Muffler_Adv(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
 
     @Override

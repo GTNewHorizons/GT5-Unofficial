@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
-import java.lang.reflect.Constructor;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -22,8 +20,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileEntity_Hatch
         implements IAddGregtechLogo {
@@ -86,21 +82,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     }
 
     @Override
-    public final MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        Constructor<?> aConstructor = ReflectionUtils.getConstructor(
-                getHatchEntityClass(),
-                new Class[] { String.class, String[].class, ITexture[][][].class });
-        GT_MetaTileEntity_Hatch_NbtConsumable aInstance = ReflectionUtils.createNewInstanceFromConstructor(
-                aConstructor,
-                new Object[] { mName, StaticFields59.getDescriptionArray(this), mTextures });
-        if (aInstance instanceof GT_MetaTileEntity_Hatch_NbtConsumable) {
-            GT_MetaTileEntity_Hatch_NbtConsumable aMetaTile = (GT_MetaTileEntity_Hatch_NbtConsumable) aInstance;
-            return aMetaTile;
-        }
-        return null;
-    }
-
-    public abstract Class<? extends GT_MetaTileEntity_Hatch_NbtConsumable> getHatchEntityClass();
+    public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
     public final boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {

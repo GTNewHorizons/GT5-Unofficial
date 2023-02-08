@@ -37,7 +37,6 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaCustomCoverItem;
@@ -1058,15 +1057,9 @@ public class RECIPES_Machines {
                 20 * 30,
                 30);
 
-        ItemStack aFluidRegulator1 = ItemUtils.getValueOfItemList("FluidRegulator_MV", 2, ItemList.Electric_Pump_HV);
-        ItemStack aFluidRegulator2 = ItemUtils.getValueOfItemList(
-                "FluidRegulator_IV",
-                2,
-                ItemUtils.getValueOfItemList("Electric_Pump_LuV", 4, ItemList.Electric_Pump_IV));
-
         // Poo Collector
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.machineHull_MV, aFluidRegulator1,
+                new ItemStack[] { CI.machineHull_MV, ItemList.FluidRegulator_MV.get(2),
                         CI.getTieredComponent(OrePrefixes.pipeMedium, 2, 2), ALLOY.EGLIN_STEEL.getPlate(4),
                         ALLOY.POTIN.getScrew(6) },
                 ALLOY.TUMBAGA.getFluidStack(144 * 4),
@@ -1077,7 +1070,7 @@ public class RECIPES_Machines {
         // Adv. Poo Collector
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getTieredMachineHull(-1), ItemUtils.getSimpleStack(ModBlocks.blockPooCollector),
-                        aFluidRegulator2, CI.getTieredComponent(OrePrefixes.pipeHuge, 6, 4),
+                        ItemList.FluidRegulator_IV.get(2), CI.getTieredComponent(OrePrefixes.pipeHuge, 6, 4),
                         CI.getTieredComponent(OrePrefixes.screw, 6, 16) },
                 CI.getAlternativeTieredFluid(5, 144 * 9),
                 ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 8, 1),
@@ -1230,17 +1223,15 @@ public class RECIPES_Machines {
                 480);
 
         // Flask Configurator
-        if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
-            CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { CI.getNumberedAdvancedCircuit(8), CI.getTieredMachineHull(2),
-                            ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
-                            VolumetricFlaskHelper.getVolumetricFlask(8),
-                            CI.getTieredComponent(OrePrefixes.pipeSmall, 2, 2), CI.getPlate(2, 4) },
-                    CI.getAlternativeTieredFluid(1, 144 * 8),
-                    ItemUtils.getSimpleStack(ModBlocks.blockVolumetricFlaskSetter, 1),
-                    20 * 60,
-                    120);
-        }
+        CORE.RA.addSixSlotAssemblingRecipe(
+                new ItemStack[] { CI.getNumberedAdvancedCircuit(8), CI.getTieredMachineHull(2),
+                        ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
+                        VolumetricFlaskHelper.getVolumetricFlask(8), CI.getTieredComponent(OrePrefixes.pipeSmall, 2, 2),
+                        CI.getPlate(2, 4) },
+                CI.getAlternativeTieredFluid(1, 144 * 8),
+                ItemUtils.getSimpleStack(ModBlocks.blockVolumetricFlaskSetter, 1),
+                20 * 60,
+                120);
 
         if (CORE.ConfigSwitches.enableMultiblock_IronBlastFurnace) {
 
@@ -2282,8 +2273,6 @@ public class RECIPES_Machines {
         }
 
         // Air Intake Hatch
-        ItemList FluidRegulator_IV = ItemUtils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV);
-        ItemStack aTieredFluidRegulator = FluidRegulator_IV.get(1);
         RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[6],
                 ItemList.Casing_Grate.get(1),
@@ -2635,16 +2624,9 @@ public class RECIPES_Machines {
         }
 
         if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter) {
-
-            ItemStack aCoreBlock = ItemUtils.getValueOfItemList(
-                    "Block_IridiumTungstensteel",
-                    1,
-                    ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1));
-
-            aCoreBlock.stackSize = 1;
-
             CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), 1), aCoreBlock,
+                    new ItemStack[] { ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), 1),
+                            ItemList.Block_IridiumTungstensteel.get(1),
                             CI.getTieredComponent(OrePrefixes.circuit, 2, 16),
                             CI.getTieredComponent(OrePrefixes.screw, 5, 32),
                             CI.getTieredComponent(OrePrefixes.bolt, 5, 12),
@@ -2887,8 +2869,6 @@ public class RECIPES_Machines {
             cell1 = CI.conveyorModule_LuV;
             cell2 = CI.electricMotor_LuV;
             ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
-            ItemStack aTieredUnboxinator = ItemUtils
-                    .getValueOfItemList("Machine_LuV_Unboxinator", 1, ItemList.Machine_IV_Unboxinator.get(1));
 
             RecipeUtils.addShapedRecipe(
                     plate,
@@ -2916,7 +2896,7 @@ public class RECIPES_Machines {
                     CI.getTieredCircuit(7),
                     casingAmazon,
                     CI.robotArm_LuV,
-                    aTieredUnboxinator,
+                    ItemList.Machine_LuV_Unboxinator.get(1),
                     CI.robotArm_LuV,
                     CI.conveyorModule_LuV,
                     GregtechItemList.Gregtech_Computer_Cube.get(1),

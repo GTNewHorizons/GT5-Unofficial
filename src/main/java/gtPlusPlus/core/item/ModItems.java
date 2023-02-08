@@ -59,7 +59,6 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.cofh.HANDLER_COFH;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 
@@ -1051,14 +1050,11 @@ public final class ModItems {
         itemIonParticleBase = new IonParticles();
         itemStandarParticleBase = new StandardBaseParticles();
 
-        if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
-            Item a8kFlask = VolumetricFlaskHelper
-                    .generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
-            Item a64kFlask = VolumetricFlaskHelper
-                    .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
-            GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
-            GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
-        }
+        Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
+        Item a64kFlask = VolumetricFlaskHelper
+                .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
+        GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
+        GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
 
         itemBoilerChassis = new ItemBoilerChassis();
         itemDehydratorCoilWire = new ItemDehydratorCoilWire();

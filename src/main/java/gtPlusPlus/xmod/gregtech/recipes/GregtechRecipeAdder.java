@@ -2,9 +2,6 @@ package gtPlusPlus.xmod.gregtech.recipes;
 
 import static gregtech.api.enums.GT_Values.RA;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -27,7 +24,6 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
@@ -748,12 +744,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
      */
     @Override
     public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput) {
-        Method m = StaticFields59.mAddFurnaceRecipe;
-        try {
-            return (boolean) m.invoke(null, aDust, aOutput, true);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            return false;
-        }
+        return GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, true);
     }
 
     @Override

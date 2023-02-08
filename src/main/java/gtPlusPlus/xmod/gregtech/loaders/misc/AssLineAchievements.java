@@ -18,7 +18,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class AssLineAchievements {
 
@@ -42,12 +41,7 @@ public class AssLineAchievements {
     private static void init() {
         if (!ready) {
             active = GT_Mod.gregtechproxy.mAchievements;
-            try {
-                recipeTotal = ((GT_Recipe.GT_Recipe_Map) StaticFields59.mAssLineVisualMapNEI.get(null)).mRecipeList
-                        .size();
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                recipeTotal = 0;
-            }
+            recipeTotal = GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList.size();
             mAchievementMap = new ConcurrentHashMap<String, Achievement>();
             mIssuedAchievementMap = new ConcurrentHashMap<String, Boolean>();
             ready = true;
@@ -151,19 +145,15 @@ public class AssLineAchievements {
             return;
         }
 
-        if (StaticFields59.sAssemblylineVisualRecipes == null) {
-            return;
-        }
-
         Logger.INFO("Trying to check for achievements");
         // Debug scanner unlocks all AL recipes in creative
         if (player.capabilities.isCreativeMode && aPickupUnlocalSafe.equals("gt.metaitem.01.32761")) {
-            for (GT_Recipe recipe : StaticFields59.sAssemblylineVisualRecipes.mRecipeList) {
+            for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
                 issueAchievement(player, recipe.getOutput(0).getUnlocalizedName());
                 recipe.mHidden = false;
             }
         }
-        for (GT_Recipe recipe : StaticFields59.sAssemblylineVisualRecipes.mRecipeList) {
+        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
 
             String aSafeUnlocalName;
             if (recipe.getOutput(0) == null) {

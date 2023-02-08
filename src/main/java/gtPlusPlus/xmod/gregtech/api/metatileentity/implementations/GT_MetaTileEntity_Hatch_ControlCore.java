@@ -19,7 +19,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.general.ItemControlCore;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch {
@@ -84,11 +83,7 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_ControlCore(
-                mName,
-                mTier,
-                StaticFields59.getDescriptionArray(this),
-                mTextures);
+        return new GT_MetaTileEntity_Hatch_ControlCore(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

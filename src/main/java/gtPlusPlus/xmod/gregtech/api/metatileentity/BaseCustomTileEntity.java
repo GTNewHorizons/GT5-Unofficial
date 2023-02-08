@@ -18,7 +18,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.IBaseCustomMetaTileEntity;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import ic2.api.Direction;
 
 public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCustomMetaTileEntity {
@@ -109,13 +108,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
             this.mMetaTileEntity.onExplosion();
             int i;
 
-            boolean aExplosionDropItem = false;
-            Object aProxyField = StaticFields59.getFieldFromGregtechProxy(false, "mExplosionItemDrop");
-            if (boolean.class.isInstance(aProxyField) || Boolean.class.isInstance(aProxyField)) {
-                aExplosionDropItem = (boolean) aProxyField;
-            }
-
-            if (aExplosionDropItem) {
+            if (GT_Mod.gregtechproxy.mExplosionItemDrop) {
                 for (i = 0; i < this.getSizeInventory(); ++i) {
                     ItemStack tItem = this.getStackInSlot(i);
                     if (tItem != null && tItem.stackSize > 0 && this.isValidSlot(i)) {

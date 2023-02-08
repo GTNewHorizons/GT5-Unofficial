@@ -153,7 +153,6 @@ public class CORE {
         public static boolean hideUniversalCells = true;
 
         // GT Fixes
-        public static boolean enableNitroFix = false;
         public static boolean enableSulfuricAcidFix = false;
         public static boolean enableHarderRecipesForHighTierCasings = true;
 

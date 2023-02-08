@@ -17,6 +17,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
@@ -235,7 +236,7 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
         for (ItemStack o : aTile.mInventory) {
             if (o != null) {
                 for (ItemStack i : mFuelInstanceMap.values()) {
-                    if (ItemUtils.areItemsEqual(o, i)) {
+                    if (GT_Utility.areStacksEqual(o, i)) {
                         return true;
                     }
                 }
@@ -264,7 +265,7 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
         for (ItemStack o : aTile.mInventory) {
             if (o != null) {
                 for (ItemStack i : mFuelInstanceMap.values()) {
-                    if (ItemUtils.areItemsEqual(o, i)) {
+                    if (GT_Utility.areStacksEqual(o, i)) {
                         return o;
                     }
                 }

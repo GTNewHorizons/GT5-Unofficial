@@ -21,17 +21,6 @@ public class FuelRod extends ReactorItem {
     private final int rodCount;
     private final boolean moxStyle;
 
-    private static boolean GT509behavior = false;
-    private static boolean GTNHbehavior = false;
-
-    public static void setGT509Behavior(boolean value) {
-        GT509behavior = value;
-    }
-
-    public static void setGTNHBehavior(boolean value) {
-        GTNHbehavior = value;
-    }
-
     public FuelRod(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage,
             final double maxHeat, final String sourceMod, final int energyMult, final double heatMult,
             final int rodCount, final boolean moxStyle) {
@@ -125,12 +114,12 @@ public class FuelRod extends ReactorItem {
     public double generateEnergy() {
         int pulses = countNeutronNeighbors() + (rodCount == 1 ? 1 : (rodCount == 2) ? 2 : 3);
         double energy = energyMult * pulses;
-        if (GT509behavior || "GT5".equals(sourceMod)) {
+        if ("GT5".equals(sourceMod)) {
             energy *= 2; // EUx2 if from GT5.09 or in GT5.09 mode
             if (moxStyle) {
                 energy *= (1 + 1.5 * parent.getCurrentHeat() / parent.getMaxHeat());
             }
-        } else if (GTNHbehavior || "GTNH".equals(sourceMod)) {
+        } else if ("GTNH".equals(sourceMod)) {
             energy *= 10; // EUx10 if from GTNH or in GTNH mode
             if (moxStyle) {
                 energy *= (1 + 1.5 * parent.getCurrentHeat() / parent.getMaxHeat());

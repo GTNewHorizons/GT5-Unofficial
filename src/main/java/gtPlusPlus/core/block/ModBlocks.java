@@ -33,7 +33,6 @@ import gtPlusPlus.core.block.machine.VolumetricFlaskSetter;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 
 public final class ModBlocks {
 
@@ -167,9 +166,7 @@ public final class ModBlocks {
 
         blockRoundRobinator = new Machine_RoundRobinator();
 
-        if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
-            blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
-        }
+        blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
 
         new BlockGenericRedstoneDetector();
         new BlockGenericRedstoneTest();

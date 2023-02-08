@@ -18,22 +18,6 @@ public class ClassesToTransform {
     public static final String GALACTICRAFT_TILE_ENTITY_FUEL_LOADER = "micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader";
     public static final String GALACTICRAFT_ENTITY_AUTO_ROCKET = "micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket";
 
-    public static final String GT_UTILITY = "gregtech.api.util.GT_Utility";
-    public static final String GT_ACHIEVEMENTS = "gregtech.loaders.misc.GT_Achievements";
-    public static final String GT_CLIENT_PROXY = "gregtech.common.GT_Client";
-    public static final String GT_PACKET_TILE_ENTITY = "gregtech.api.net.GT_Packet_TileEntity";
-    public static final String GT_BASE_META_TILE_ENTITY = "gregtech.api.metatileentity.BaseMetaTileEntity";
-    public static final String GT_MTE_CHARCOAL_PIT = "gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pit";
-    public static final String GT_ITEM_MACHINES = "gregtech.common.blocks.GT_Item_Machines";
-    public static final String GT_METAGENERATED_TOOL = "gregtech.api.items.GT_MetaGenerated_Tool";
-    public static final String GT_BLOCK_MACHINES = "gregtech.common.blocks.GT_Block_Machines";
-    public static final String GT_MTE_HATCH_ENERGY = "gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy";
-    public static final String GT_METAPIPE_ITEM = "gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item";
-    public static final String GT_METAPIPE_FLUID = "gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid";
-    public static final String GT_METAPIPE_FRAME = "gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame";
-
-    public static final String GTPP_MTE_HATCH_RTG = "gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG";
-
     public static final String THAUMCRAFT_ITEM_WISP_ESSENCE = "thaumcraft.common.items.ItemWispEssence";
     public static final String THAUMCRAFT_CRAFTING_MANAGER = "thaumcraft.common.lib.crafting.ThaumcraftCraftingManager";
     public static final String THAUMCRAFT_TILE_ALCHEMY_FURNACE = "thaumcraft.common.tiles.TileAlchemyFurnace";

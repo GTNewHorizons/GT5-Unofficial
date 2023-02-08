@@ -331,8 +331,8 @@ public class MaterialUtils {
     }
 
     public static Materials getMaterial(String aMaterialName) {
-        Materials m = gtPlusPlus.xmod.gregtech.common.StaticFields59.getMaterial(aMaterialName);
-        if (m == null) {
+        Materials m = Materials.get(aMaterialName);
+        if (m == Materials._NULL) {
             m = getMaterialByName(aMaterialName);
         }
         if (m == null) {
@@ -429,15 +429,6 @@ public class MaterialUtils {
             aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
             aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
         }
-    }
-
-    public static boolean doesMaterialExist(String aMatName) {
-        for (Materials m : Materials.values()) {
-            if (m.name().toLowerCase().equals(aMatName.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {

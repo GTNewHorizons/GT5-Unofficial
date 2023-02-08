@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -44,8 +46,8 @@ public class GT_MetaTileEntity_Hatch_MillingBalls extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public Class<? extends GT_MetaTileEntity_Hatch_NbtConsumable> getHatchEntityClass() {
-        return GT_MetaTileEntity_Hatch_MillingBalls.class;
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Hatch_MillingBalls(mName, mDescriptionArray, mTextures);
     }
 
     @Override

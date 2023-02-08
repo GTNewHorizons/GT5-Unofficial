@@ -1232,13 +1232,9 @@ public class RECIPES_GREGTECH {
                 30 * 20,
                 500);
 
-        ItemStack aFluidReg1 = ItemUtils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
-        ItemStack aFluidReg2 = ItemUtils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
-        ItemStack aFluidReg3 = ItemUtils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
-        ItemStack aFluidReg4 = ItemUtils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
-
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { aFluidReg1, CI.electricMotor_LV, CI.getTieredComponent(OrePrefixes.bolt, 1, 8),
+                new ItemStack[] { CI.fluidRegulator_LV, CI.electricMotor_LV,
+                        CI.getTieredComponent(OrePrefixes.bolt, 1, 8),
                         ItemUtils.getItemStackOfAmountFromOreDict("ringBrass", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("stickBrass", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("plateSteel", 2) },
@@ -1247,7 +1243,8 @@ public class RECIPES_GREGTECH {
                 10 * 20,
                 30);
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { aFluidReg2, CI.electricMotor_MV, CI.getTieredComponent(OrePrefixes.bolt, 2, 8),
+                new ItemStack[] { CI.fluidRegulator_MV, CI.electricMotor_MV,
+                        CI.getTieredComponent(OrePrefixes.bolt, 2, 8),
                         ItemUtils.getItemStackOfAmountFromOreDict("ringInvar", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("stickInvar", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("plateAluminium", 2) },
@@ -1256,7 +1253,8 @@ public class RECIPES_GREGTECH {
                 10 * 20 * 2,
                 120);
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { aFluidReg3, CI.electricMotor_HV, CI.getTieredComponent(OrePrefixes.bolt, 3, 8),
+                new ItemStack[] { CI.fluidRegulator_HV, CI.electricMotor_HV,
+                        CI.getTieredComponent(OrePrefixes.bolt, 3, 8),
                         ItemUtils.getItemStackOfAmountFromOreDict("ringChrome", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("stickChrome", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("plateStainlessSteel", 2) },
@@ -1266,7 +1264,8 @@ public class RECIPES_GREGTECH {
                 480);
 
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { aFluidReg4, CI.electricMotor_EV, CI.getTieredComponent(OrePrefixes.bolt, 4, 8),
+                new ItemStack[] { CI.fluidRegulator_EV, CI.electricMotor_EV,
+                        CI.getTieredComponent(OrePrefixes.bolt, 4, 8),
                         ItemUtils.getItemStackOfAmountFromOreDict("ringTitanium", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("stickTitanium", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 2) },

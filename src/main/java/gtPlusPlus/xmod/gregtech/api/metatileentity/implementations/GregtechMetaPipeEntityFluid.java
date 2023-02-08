@@ -11,18 +11,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 
-    public static final boolean mGt6Pipe;
-
-    static {
-        mGt6Pipe = StaticFields59.mGT6StylePipes;
-    }
-
     public final GT_Materials mMaterial;
-    private boolean mCheckConnections;
 
     public GregtechMetaPipeEntityFluid(int aID, String aName, String aNameRegional, float aThickNess,
             GT_Materials aMaterial, int aCapacity, int aHeatResistance, boolean aGasProof) {
@@ -39,7 +31,6 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
         super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
-        this.mCheckConnections = !mGt6Pipe;
         this.mMaterial = aMaterial;
     }
 
@@ -48,7 +39,6 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
         super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
-        this.mCheckConnections = !mGt6Pipe;
         this.mMaterial = aMaterial;
     }
 

@@ -75,7 +75,6 @@ public class GTPP_Bees {
 
     private void setCustomItems() {
         dropForceGem = new BaseItemMisc("Force", new short[] { 250, 250, 20 }, 64, MiscTypes.GEM, null);
-        // mGregMatLoader.enableMaterial(Materials.Force);
         // MaterialUtils.tryEnableMaterial(Materials.Force);
         // MaterialUtils.tryEnableMaterialPart(OrePrefixes.dust, Materials.Force);
         // MaterialUtils.tryEnableMaterialPart(OrePrefixes.ingot, Materials.Force);
@@ -85,8 +84,6 @@ public class GTPP_Bees {
         // Nikolite may not exist, so lets make it.
         dropNikoliteDust = ItemUtils
                 .generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
-        // mGregMatLoader.enableMaterial(Materials.BlueAlloy);
-        // mGregMatLoader.enableMaterial(Materials.Nikolite);
         // MaterialUtils.tryEnableMaterial(Materials.Nikolite);
         // MaterialUtils.tryEnableMaterialPart(OrePrefixes.dust, Materials.Nikolite);
         // MaterialUtils.tryEnableMaterialPart(OrePrefixes.ingot, Materials.Nikolite);

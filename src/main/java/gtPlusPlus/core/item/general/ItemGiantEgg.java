@@ -7,13 +7,13 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.entity.item.ItemEntityGiantEgg;
@@ -81,11 +81,7 @@ public class ItemGiantEgg extends BaseItemTickable {
 
     private static ItemStack getStemCellStack() {
         if (mCorrectStemCells == null) {
-            ItemStack xl = ItemUtils
-                    .getValueOfItemList("Circuit_Chip_Stemcell", 1, ItemUtils.getSimpleStack(Items.egg, 2));
-            if (xl != null) {
-                mCorrectStemCells = xl.copy();
-            }
+            mCorrectStemCells = ItemList.Circuit_Chip_Stemcell.get(1);
         }
         return mCorrectStemCells;
     }
