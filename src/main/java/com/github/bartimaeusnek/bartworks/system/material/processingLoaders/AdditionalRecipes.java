@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -395,6 +396,16 @@ public class AdditionalRecipes {
                 50,
                 120);
 
+        // Magneto Resonatic Circuits
+
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
+                ? FluidRegistry.getFluid("molten.indalloy140")
+                : FluidRegistry.getFluid("molten.solderingalloy");
+
+        Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
+                ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
+                : FluidRegistry.getFluid("molten.solderingalloy");
+        // ULV
         GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
                 new BWRecipes.DynamicGTRecipe(
                         false,
@@ -410,7 +421,8 @@ public class AdditionalRecipes {
                         750,
                         BW_Util.getMachineVoltageFromTier(1),
                         CLEANROOM));
-        for (int i = 1; i <= 6; i++) {
+        // LV-EV
+        for (int i = 1; i <= 4; i++) {
             GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
                     new BWRecipes.DynamicGTRecipe(
                             false,
@@ -429,20 +441,77 @@ public class AdditionalRecipes {
                             BW_Util.getMachineVoltageFromTier((i + 1)),
                             CLEANROOM));
         }
-        for (int i = 7; i <= 10; i++) {
+        // IV-LuV
+        for (int i = 5; i <= 6; i++) {
+            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
+                    new BWRecipes.DynamicGTRecipe(
+                            false,
+                            new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
+                                    WerkstoffLoader.MagnetoResonaticDust.get(gem),
+                                    BW_Meta_Items.getNEWCIRCUITS().getStack(i + 3),
+                                    ItemList.Circuit_Parts_DiodeASMD.get((i + 1) * 4),
+                                    ItemList.Circuit_Parts_CapacitorASMD.get((i + 1) * 4),
+                                    ItemList.Circuit_Parts_TransistorASMD.get((i + 1) * 4) },
+                            new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(i + 4) },
+                            null,
+                            null,
+                            new FluidStack[] { new FluidStack(solderIndalloy, (i + 1) * 36) },
+                            null,
+                            (i + 1) * 750,
+                            BW_Util.getMachineVoltageFromTier((i + 1)),
+                            CLEANROOM));
+        }
+        // ZPM
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
+                new BWRecipes.DynamicGTRecipe(
+                        false,
+                        new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
+                                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (1)),
+                                BW_Meta_Items.getNEWCIRCUITS().getStack(7 + 3),
+                                ItemList.Circuit_Parts_DiodeASMD.get((7 + 6) * 4),
+                                ItemList.Circuit_Parts_CapacitorASMD.get((7 + 6) * 4),
+                                ItemList.Circuit_Parts_TransistorASMD.get((7 + 6) * 4) },
+                        new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(7 + 4) },
+                        null,
+                        null,
+                        new FluidStack[] { new FluidStack(solderIndalloy, (7 + 1) * 36) },
+                        null,
+                        (7 + 1) * 1500,
+                        BW_Util.getMachineVoltageFromTier(7 + 1),
+                        CLEANROOM));
+        // UV
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
+                new BWRecipes.DynamicGTRecipe(
+                        false,
+                        new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
+                                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (1)),
+                                BW_Meta_Items.getNEWCIRCUITS().getStack(8 + 3),
+                                ItemList.Circuit_Parts_DiodeASMD.get((8 + 6) * 4),
+                                ItemList.Circuit_Parts_CapacitorASMD.get((8 + 6) * 4),
+                                ItemList.Circuit_Parts_TransistorASMD.get((8 + 6) * 4) },
+                        new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(8 + 4) },
+                        null,
+                        null,
+                        new FluidStack[] { new FluidStack(solderUEV, (8 + 1) * 36) },
+                        null,
+                        (8 + 1) * 1500,
+                        BW_Util.getMachineVoltageFromTier(8 + 1),
+                        CLEANROOM));
+        // UHV-UEV
+        for (int i = 9; i <= 10; i++) {
             GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
                     new BWRecipes.DynamicGTRecipe(
                             false,
                             new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
                                     WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (1)),
                                     BW_Meta_Items.getNEWCIRCUITS().getStack(i + 3),
-                                    ItemList.Circuit_Parts_DiodeSMD.get((i + 6) * 4),
-                                    ItemList.Circuit_Parts_CapacitorSMD.get((i + 6) * 4),
-                                    ItemList.Circuit_Parts_TransistorSMD.get((i + 6) * 4) },
+                                    ItemList.Circuit_Parts_DiodeXSMD.get((i + 6) * 4),
+                                    ItemList.Circuit_Parts_CapacitorXSMD.get((i + 6) * 4),
+                                    ItemList.Circuit_Parts_TransistorXSMD.get((i + 6) * 4) },
                             new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(i + 4) },
                             null,
                             null,
-                            new FluidStack[] { Materials.SolderingAlloy.getMolten((i + 1) * 144) },
+                            new FluidStack[] { new FluidStack(solderUEV, (i + 1) * 36) },
                             null,
                             (i + 1) * 1500,
                             BW_Util.getMachineVoltageFromTier(i + 1),
