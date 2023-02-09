@@ -1,15 +1,15 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.util.GT_ModHandler.getModItem;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.dreammaster.gthandler.GT_CoreModSupport;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 
 import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.CombType;
@@ -60,7 +60,7 @@ public class RecipeLoader_ChemicalSkips {
                         WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64) },
                 new int[] { 1667, 1667, 1667, 1667, 1667, 1667 },
                 20 * 20,
-                (int) GT_Values.VP[8],
+                (int) TierEU.RECIPE_UV,
                 1);
 
         // Early Plastics
@@ -76,7 +76,7 @@ public class RecipeLoader_ChemicalSkips {
                 null,
                 new int[] { 2000, 2000, 2000, 2000, 2000, 2000 },
                 20 * 20,
-                (int) GT_Values.VP[7],
+                (int) TierEU.RECIPE_ZPM,
                 1);
 
         // Early Rubbers/Cable Materials
@@ -91,7 +91,7 @@ public class RecipeLoader_ChemicalSkips {
                 null,
                 new int[] { 2500, 2500, 2500, 2500 },
                 20 * 20,
-                (int) GT_Values.VP[7],
+                (int) TierEU.RECIPE_ZPM,
                 1);
 
         // Glues and Solders
@@ -105,7 +105,7 @@ public class RecipeLoader_ChemicalSkips {
                 new ItemStack[] { ItemList.StableAdhesive.get(1) },
                 new int[] { 2000, 2000, 2000, 2000, 2000 },
                 20 * 20,
-                (int) GT_Values.VP[8],
+                (int) TierEU.RECIPE_UV,
                 1);
 
         // Titanium, Tungsten, Indium
@@ -119,7 +119,7 @@ public class RecipeLoader_ChemicalSkips {
                         Materials.TungstenCarbide.getDust(64), Materials.Indium.getDust(64) },
                 new int[] { 2500, 2500, 2500, 2500 },
                 20 * 20,
-                (int) GT_Values.VP[8],
+                (int) TierEU.RECIPE_UV,
                 1);
 
         // Thorium, Uranium, Plutonium
@@ -134,7 +134,7 @@ public class RecipeLoader_ChemicalSkips {
                         Materials.Plutonium241.getDust(64) },
                 new int[] { 1667, 1667, 1667, 1667, 1667, 1667 },
                 20 * 20,
-                (int) GT_Values.VP[8],
+                (int) TierEU.RECIPE_UV,
                 1);
 
         // Monaline
@@ -144,13 +144,12 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] {},
                 new FluidStack[] {},
                 new ItemStack[] { Materials.Cerium.getDust(64), Materials.Gadolinium.getDust(64),
-                        Materials.Samarium.getDust(64),
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGenerateddust", 64L, 11002), // Hafnia
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGenerateddust", 64L, 11007), // Zirconium
+                        Materials.Samarium.getDust(64), getModItem("bartworks", "gt.bwMetaGenerateddust", 64L, 11002), // Hafnia
+                        getModItem("bartworks", "gt.bwMetaGenerateddust", 64L, 11007), // Zirconium
                         ItemList.SuperconductorComposite.get(1) },
                 new int[] { 1667, 1667, 1667, 1667, 1667, 1667 },
                 20 * 20,
-                (int) GT_Values.VP[9],
+                (int) TierEU.RECIPE_UHV,
                 2);
 
         // Bastline
@@ -164,13 +163,13 @@ public class RecipeLoader_ChemicalSkips {
                         Materials.Lanthanum.getDust(64) },
                 new int[] { 2000, 2000, 2000, 2000, 2000 },
                 20 * 20,
-                (int) GT_Values.VP[9],
+                (int) TierEU.RECIPE_UHV,
                 2);
 
         // Stem Cells
         CORE.RA.addQuantumTransformerRecipe(
                 new ItemStack[] { Materials.Calcium.getDust(32), Materials.MeatRaw.getDust(32),
-                        GT_ModHandler.getModItem("dreamcraft", "GTNHBioItems", 32, 2),
+                        getModItem("dreamcraft", "GTNHBioItems", 32, 2),
                         ItemUtils.getSimpleStack(GenericChem.mRawIntelligenceCatalyst, 0) },
                 new FluidStack[] {},
                 new FluidStack[] { Materials.GrowthMediumRaw.getFluid(1000 * 1024),
@@ -178,7 +177,7 @@ public class RecipeLoader_ChemicalSkips {
                 new ItemStack[] { stemcells },
                 new int[] { 3333, 3333, 3333 },
                 20 * 20,
-                (int) GT_Values.VP[10],
+                (int) TierEU.RECIPE_UEV,
                 3);
 
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
@@ -186,13 +185,13 @@ public class RecipeLoader_ChemicalSkips {
                 new ItemStack[] { Materials.Carbon.getDust(64), Materials.Osmium.getDust(24),
                         ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 0) },
                 new FluidStack[] { Materials.Hydrogen.getGas(1000 * 16), Materials.Nitrogen.getGas(1000 * 16) },
-                new FluidStack[] { GT_CoreModSupport.Xenoxene.getFluid(1000 * 16),
-                        GT_CoreModSupport.RadoxPolymer.getMolten(144 * 64),
-                        GT_CoreModSupport.RadoxHeavy.getFluid(1000 * 16), MaterialsKevlar.Kevlar.getMolten(144 * 64) },
+                new FluidStack[] { FluidUtils.getFluidStack("xenoxene", 1000 * 16),
+                        FluidUtils.getFluidStack("molten.radoxpoly", 144 * 64),
+                        FluidUtils.getFluidStack("heavyradox", 1000 * 16), MaterialsKevlar.Kevlar.getMolten(144 * 64) },
                 new ItemStack[] {},
                 new int[] { 2500, 2500, 2500, 2500 },
                 20 * 20,
-                (int) GT_Values.VP[11],
+                (int) TierEU.RECIPE_UIV,
                 4);
 
         // Lategame Kevlar using Kevlar bee comb
@@ -206,7 +205,7 @@ public class RecipeLoader_ChemicalSkips {
                 new ItemStack[] {},
                 new int[] { 2500, 2500, 2500, 2500 },
                 20 * 20,
-                (int) GT_Values.VP[11],
+                (int) TierEU.RECIPE_UIV,
                 4);
 
         // Bio Cells and Mutated Solder
@@ -220,7 +219,7 @@ public class RecipeLoader_ChemicalSkips {
                 new ItemStack[] { biocells },
                 new int[] { 2500, 2500, 2500, 2500 },
                 20 * 20,
-                (int) GT_Values.VP[11],
+                (int) TierEU.RECIPE_UIV,
                 4);
     }
 
@@ -229,26 +228,26 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] { Materials.Radon.getPlasma(100), Materials.Nitrogen.getPlasma(100) },
                 new FluidStack[] { new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 100) },
                 30 * 20,
-                (int) GT_Values.VP[8],
-                1000000000);
+                (int) TierEU.RECIPE_UHV,
+                1_000_000_000);
 
         GT_Values.RA.addFusionReactorRecipe(
                 new FluidStack[] { Materials.Americium.getPlasma(100), Materials.Boron.getPlasma(100) },
                 new FluidStack[] { new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 100) },
                 30 * 20,
-                (int) GT_Values.VP[8],
-                1000000000);
+                (int) TierEU.RECIPE_UHV,
+                1_000_000_000);
     }
 
     private static void catalystRecipes() {
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGenerateddust", 64L, 88),
-                        Materials.Osmiridium.getDust(64), Materials.Carbon.getNanite(64) },
+                        getModItem("bartworks", "gt.bwMetaGenerateddust", 64L, 88), Materials.Osmiridium.getDust(64),
+                        Materials.Carbon.getNanite(64) },
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[9]);
+                (int) TierEU.RECIPE_UEV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
@@ -257,7 +256,7 @@ public class RecipeLoader_ChemicalSkips {
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[9]);
+                (int) TierEU.RECIPE_UEV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), Materials.Silicone.getDust(64),
@@ -265,7 +264,7 @@ public class RecipeLoader_ChemicalSkips {
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mRubberPolymerCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[9]);
+                (int) TierEU.RECIPE_UEV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), ALLOY.INDALLOY_140.getDust(64),
@@ -273,7 +272,7 @@ public class RecipeLoader_ChemicalSkips {
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[9]);
+                (int) TierEU.RECIPE_UHV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
@@ -282,7 +281,7 @@ public class RecipeLoader_ChemicalSkips {
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[9]);
+                (int) TierEU.RECIPE_UHV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
@@ -291,7 +290,7 @@ public class RecipeLoader_ChemicalSkips {
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[9]);
+                (int) TierEU.RECIPE_UHV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), Materials.Samarium.getDust(64),
@@ -299,7 +298,7 @@ public class RecipeLoader_ChemicalSkips {
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216),
                 ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[10]);
+                (int) TierEU.RECIPE_UEV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), Materials.Naquadah.getDust(64),
@@ -307,7 +306,7 @@ public class RecipeLoader_ChemicalSkips {
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216),
                 ItemUtils.getSimpleStack(GenericChem.mSimpleNaquadahCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[10]);
+                (int) TierEU.RECIPE_UEV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), Materials.Naquadria.getDust(64),
@@ -315,7 +314,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.SpaceTime.getMolten(9216L),
                 ItemUtils.getSimpleStack(GenericChem.mAdvancedNaquadahCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[11]);
+                (int) TierEU.RECIPE_UIV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
@@ -323,7 +322,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.SpaceTime.getMolten(9216L),
                 ItemUtils.getSimpleStack(GenericChem.mRawIntelligenceCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[11]);
+                (int) TierEU.RECIPE_UIV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), MaterialsKevlar.Kevlar.getDust(64),
@@ -331,7 +330,7 @@ public class RecipeLoader_ChemicalSkips {
                 FluidUtils.getFluidStack("molten.shirabon", 92160),
                 ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[12]);
+                (int) TierEU.RECIPE_UMV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
@@ -339,7 +338,7 @@ public class RecipeLoader_ChemicalSkips {
                 FluidUtils.getFluidStack("molten.shirabon", 92160),
                 ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 1),
                 60 * 20,
-                (int) GT_Values.VP[12]);
+                (int) TierEU.RECIPE_UMV);
     }
 
     private static void tieredCasingRecipes() {
@@ -347,81 +346,81 @@ public class RecipeLoader_ChemicalSkips {
                 GregtechItemList.ForceFieldGlass.get(1),
                 1024 * 30 * 20,
                 1024,
-                (int) GT_Values.VP[7],
+                (int) TierEU.RECIPE_ZPM,
                 32,
                 new ItemStack[] { GregtechItemList.ForceFieldGlass.get(1), Materials.Carbon.getNanite(4),
                         ItemList.Emitter_UV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 8),
                         GregtechItemList.Laser_Lens_Special.get(1),
-                        GT_ModHandler.getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 2) },
+                        getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 2) },
                 new FluidStack[] { Materials.Thulium.getMolten(144 * 10), Materials.ExcitedDTCC.getFluid(5000),
                         new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 500),
                         new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 500) },
                 GregtechItemList.NeutronPulseManipulator.get(1),
                 60 * 20,
-                (int) GT_Values.VP[10]);
+                (int) TierEU.RECIPE_UEV);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GregtechItemList.NeutronPulseManipulator.get(1),
                 2048 * 30 * 20,
                 2048,
-                (int) GT_Values.VP[8],
+                (int) TierEU.RECIPE_UV,
                 32,
                 new ItemStack[] { GregtechItemList.ForceFieldGlass.get(2), Materials.Carbon.getNanite(8),
                         ItemList.Emitter_UEV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 8),
                         GregtechItemList.Laser_Lens_Special.get(1),
-                        GT_ModHandler.getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 4),
+                        getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 4),
                         ItemList.StableAdhesive.get(4) },
                 new FluidStack[] { Materials.Thulium.getMolten(144 * 12), Materials.ExcitedDTPC.getFluid(5000),
                         new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 2500),
                         new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 2500) },
                 GregtechItemList.CosmicFabricManipulator.get(1),
                 75 * 20,
-                (int) GT_Values.VP[11]);
+                (int) TierEU.RECIPE_UIV);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GregtechItemList.CosmicFabricManipulator.get(1),
                 4096 * 30 * 20,
                 4096,
-                (int) GT_Values.VP[7],
+                (int) TierEU.RECIPE_ZPM,
                 32,
                 new ItemStack[] { GregtechItemList.ForceFieldGlass.get(4), Materials.Carbon.getNanite(16),
                         ItemList.Emitter_UIV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 8),
                         GregtechItemList.Laser_Lens_Special.get(1),
-                        GT_ModHandler.getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 8),
+                        getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 8),
                         ItemList.SuperconductorComposite.get(4) },
                 new FluidStack[] { Materials.Thulium.getMolten(144 * 15), Materials.ExcitedDTRC.getFluid(5000),
                         new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 1000 * 10),
                         new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 1000 * 10) },
                 GregtechItemList.InfinityInfusedManipulator.get(1),
                 90 * 20,
-                (int) GT_Values.VP[12]);
+                (int) TierEU.RECIPE_UMV);
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GregtechItemList.InfinityInfusedManipulator.get(1),
                 1024 * 30 * 20,
                 1024,
-                (int) GT_Values.VP[7],
+                (int) TierEU.RECIPE_ZPM,
                 32,
                 new ItemStack[] { GregtechItemList.ForceFieldGlass.get(8), Materials.Carbon.getNanite(32),
                         ItemList.Emitter_UMV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 8),
                         GregtechItemList.Laser_Lens_Special.get(1),
-                        GT_ModHandler.getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 16),
+                        getModItem("GoodGenerator", "advancedRadiationProtectionPlate", 16),
                         ItemList.NaquadriaSupersolid.get(4) },
                 new FluidStack[] { Materials.Thulium.getMolten(144 * 20), Materials.ExcitedDTEC.getFluid(5000),
                         new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 2000 * 10),
                         new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 2000 * 10) },
                 GregtechItemList.SpaceTimeContinuumRipper.get(1),
                 60 * 20,
-                (int) GT_Values.VP[13]);
+                (int) TierEU.RECIPE_UXV);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_AdvancedRadiationProof.get(1),
                 1024 * 30 * 20,
                 1024,
-                (int) GT_Values.VP[7],
+                (int) TierEU.RECIPE_ZPM,
                 32,
                 new ItemStack[] { ALLOY.QUANTUM.getFrameBox(1),
                         GT_OreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
@@ -430,30 +429,31 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 10), },
                 GregtechItemList.NeutronShieldingCore.get(1),
                 60 * 20,
-                (int) GT_Values.VP[10]);
+                (int) TierEU.RECIPE_UEV);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GregtechItemList.NeutronShieldingCore.get(1),
                 2048 * 30 * 20,
                 2048,
-                (int) GT_Values.VP[8],
+                (int) TierEU.RECIPE_UV,
                 32,
                 new ItemStack[] { ALLOY.QUANTUM.getFrameBox(2),
                         GT_OreDictUnificator.get("plateDenseEnrichedNaquadahAlloy", 4),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
                         ItemList.Field_Generator_UEV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, GT_CoreModSupport.RadoxPolymer, 16),
+                        // Radox polymer screw.
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.get("RadoxPoly"), 16),
                         ItemList.StableAdhesive.get(4) },
                 new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 20), },
                 GregtechItemList.CosmicFabricShieldingCore.get(1),
                 75 * 20,
-                (int) GT_Values.VP[11]);
+                (int) TierEU.RECIPE_UIV);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GregtechItemList.CosmicFabricShieldingCore.get(1),
                 4096 * 30 * 20,
                 4096,
-                (int) GT_Values.VP[9],
+                (int) TierEU.RECIPE_UHV,
                 32,
                 new ItemStack[] { ALLOY.QUANTUM.getFrameBox(4), ELEMENT.STANDALONE.HYPOGEN.getPlateDense(4),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 16),
@@ -462,13 +462,13 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 40), },
                 GregtechItemList.InfinityInfusedShieldingCore.get(1),
                 90 * 20,
-                (int) GT_Values.VP[12]);
+                (int) TierEU.RECIPE_UMV);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GregtechItemList.InfinityInfusedShieldingCore.get(1),
                 8192 * 30 * 20,
                 8192,
-                (int) GT_Values.VP[10],
+                (int) TierEU.RECIPE_UEV,
                 32,
                 new ItemStack[] { ALLOY.QUANTUM.getFrameBox(8), GT_OreDictUnificator.get("plateDenseShirabon", 4),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 16),
@@ -478,7 +478,7 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 80), },
                 GregtechItemList.SpaceTimeBendingCore.get(1),
                 120 * 20,
-                (int) GT_Values.VP[13]);
+                (int) TierEU.RECIPE_UXV);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { new ItemStack(QuantumGlassBlock.INSTANCE, 1), ItemList.Field_Generator_ZPM.get(1),
@@ -487,6 +487,6 @@ public class RecipeLoader_ChemicalSkips {
                 ALLOY.QUANTUM.getFluidStack(144 * 6),
                 GregtechItemList.ForceFieldGlass.get(1),
                 10 * 20,
-                (int) GT_Values.VP[10]);
+                (int) TierEU.RECIPE_UEV);
     }
 }
