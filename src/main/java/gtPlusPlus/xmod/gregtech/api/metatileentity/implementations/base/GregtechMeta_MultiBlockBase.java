@@ -494,62 +494,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                 null);
     }
 
-    /*
-     * public boolean checkRecipeGeneric( ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-     * int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) { // Based on the Processing
-     * Array. A bit overkill, but very flexible. if (this.doesMachineBoostOutput()) { log("Boosting."); return
-     * checkRecipeBoostedOutputs(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent,
-     * aOutputChanceRoll, aRecipe); } //Control Core to control the Multiblocks behaviour. int aControlCoreTier =
-     * getControlCoreTier(); //If no core, return false; if (aControlCoreTier > 0) { log("Control core found."); } //
-     * Reset outputs and progress stats this.lEUt = 0; this.mMaxProgresstime = 0; this.mOutputItems = new ItemStack[]{};
-     * this.mOutputFluids = new FluidStack[]{}; long tVoltage = getMaxInputVoltage(); byte tTier = (byte) Math.max(1,
-     * GT_Utility.getTier(tVoltage)); log("Running checkRecipeGeneric(0)"); //Check to see if Voltage Tier > Control
-     * Core Tier if (tTier > aControlCoreTier) { log("Control core found is lower tier than power tier. OK"); tTier =
-     * (byte) aControlCoreTier; } tTier = (byte) MathUtils.getValueWithinRange(tTier, 0, 9); GT_Recipe tRecipe = aRecipe
-     * != null ? aRecipe : findRecipe( getBaseMetaTileEntity(), mLastRecipe, false,
-     * gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs); log("Running checkRecipeGeneric(1)"); //
-     * Remember last recipe - an optimization for findRecipe() this.mLastRecipe = tRecipe; if (tRecipe == null) {
-     * log("BAD RETURN - 1"); return false; } if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
-     * log("BAD RETURN - 2"); return false; } // EU discount float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-     * float tTotalEUt = 0.0f; int parallelRecipes = 0; log("parallelRecipes: "+parallelRecipes);
-     * log("aMaxParallelRecipes: "+aMaxParallelRecipes); log("tTotalEUt: "+tTotalEUt); log("tVoltage: "+tVoltage);
-     * log("tRecipeEUt: "+tRecipeEUt); log("EU1: "+tRecipeEUt); // Count recipes to do in parallel, consuming input
-     * items and fluids and considering input voltage limits for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt <
-     * (tVoltage - tRecipeEUt); parallelRecipes++) { if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-     * log("Broke at "+parallelRecipes+"."); break; }
-     * log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+"."); tTotalEUt += tRecipeEUt;
-     * log("EU2: "+tTotalEUt); } if (parallelRecipes == 0) { log("BAD RETURN - 3"); return false; }
-     * log("EU3: "+tTotalEUt); // -- Try not to fail after this point - inputs have already been consumed! -- // Convert
-     * speed bonus to duration multiplier // e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-     * aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent); float tTimeFactor = 100.0f / (100.0f +
-     * aSpeedBonusPercent); this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor * 10000); int aTempEu = (int)
-     * Math.floor(tTotalEUt); log("EU4: "+aTempEu); this.lEUt = (long) aTempEu; this.mEfficiency = (10000 -
-     * (getIdealStatus() - getRepairStatus()) * 1000); this.mEfficiencyIncrease = 10000; // Overclock if (this.lEUt <=
-     * 16) { this.lEUt = (this.lEUt * (1 << tTier - 1) * (1 << tTier - 1)); this.mMaxProgresstime =
-     * (this.mMaxProgresstime / (1 << tTier - 1)); } else { while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier -
-     * 1)]) { this.lEUt *= 4; this.mMaxProgresstime /= 2; } } if (this.lEUt > 0) { this.lEUt = (-this.lEUt); }
-     * this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime); // Collect fluid outputs FluidStack[] tOutputFluids =
-     * new FluidStack[tRecipe.mFluidOutputs.length]; for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) { if
-     * (tRecipe.getFluidOutput(h) != null) { tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
-     * tOutputFluids[h].amount *= parallelRecipes; } } // Collect output item types ItemStack[] tOutputItems = new
-     * ItemStack[tRecipe.mOutputs.length]; for (int h = 0; h < tRecipe.mOutputs.length; h++) { if (tRecipe.getOutput(h)
-     * != null) { tOutputItems[h] = tRecipe.getOutput(h).copy(); tOutputItems[h].stackSize = 0; } } // Set output item
-     * stack sizes (taking output chance into account) for (int f = 0; f < tOutputItems.length; f++) { if
-     * (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) { for (int g = 0; g < parallelRecipes; g++) { if
-     * (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
-     * tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize; } } } tOutputItems = removeNulls(tOutputItems); //
-     * Sanitize item stack size, splitting any stacks greater than max stack size List<ItemStack> splitStacks = new
-     * ArrayList<ItemStack>(); for (ItemStack tItem : tOutputItems) { while (tItem.getMaxStackSize() < tItem.stackSize)
-     * { ItemStack tmp = tItem.copy(); tmp.stackSize = tmp.getMaxStackSize(); tItem.stackSize = tItem.stackSize -
-     * tItem.getMaxStackSize(); splitStacks.add(tmp); } } if (splitStacks.size() > 0) { ItemStack[] tmp = new
-     * ItemStack[splitStacks.size()]; tmp = splitStacks.toArray(tmp); tOutputItems = ArrayUtils.addAll(tOutputItems,
-     * tmp); } // Strip empty stacks List<ItemStack> tSList = new ArrayList<ItemStack>(); for (ItemStack tS :
-     * tOutputItems) { if (tS.stackSize > 0) tSList.add(tS); } tOutputItems = tSList.toArray(new
-     * ItemStack[tSList.size()]); // Commit outputs this.mOutputItems = tOutputItems; this.mOutputFluids =
-     * tOutputFluids; updateSlots(); // Play sounds (GT++ addition - GT multiblocks play no sounds) startProcess();
-     * log("GOOD RETURN - 1"); return true; }
-     */
-
     public long getMaxInputEnergy() {
         long rEnergy = 0;
         if (mEnergyHatches.size() == 1) // so it only takes 1 amp is only 1 hatch is present so it works like most gt

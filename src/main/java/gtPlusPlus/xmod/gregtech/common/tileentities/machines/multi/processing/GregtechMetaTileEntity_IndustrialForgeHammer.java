@@ -7,14 +7,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -27,7 +25,6 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -37,6 +34,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialForgeHammer> implements ISurvivalConstructable {
 
@@ -90,7 +88,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialForgeHammer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            Map<Block, Integer> aBlockMap = new HashMap<Block, Integer>();
+            Map<Block, Integer> aBlockMap = new HashMap<>();
             aBlockMap.put(sAnvil, 0);
             if (LoadedMods.Railcraft) {
                 aBlockMap.put(sSteelAnvil, 0);
@@ -169,25 +167,13 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         if (aAnvil != null) {
             int aAnvilTier = getAnvilTier(aAnvil);
             if (aAnvilTier > 0) {
-                for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                    ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-                    tBus.mRecipeMap = getRecipeMap();
-                    if (isValidMetaTileEntity(tBus)) {
-                        for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                            if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                                tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-                        }
-                    }
-                    if (checkRecipeGeneric(
-                            tBusItems.toArray(new ItemStack[] {}),
-                            new FluidStack[] {},
-                            getMaxParallelRecipes() * aAnvilTier,
-                            100,
-                            100,
-                            10000)) {
-                        return true;
-                    }
-                }
+                return checkRecipeGeneric(
+                        getCompactedInputs(),
+                        getCompactedFluids(),
+                        getMaxParallelRecipes() * aAnvilTier,
+                        100,
+                        100,
+                        10000);
             }
         }
         return false;
@@ -266,9 +252,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
             }
         }
         if (LoadedMods.ThaumicBases) {
-            if (sThaumiumAnvil == aBlock || sVoidAnvil == aBlock) {
-                return true;
-            }
+            return sThaumiumAnvil == aBlock || sVoidAnvil == aBlock;
         }
         return false;
     }
