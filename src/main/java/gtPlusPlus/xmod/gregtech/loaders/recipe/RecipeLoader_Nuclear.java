@@ -538,15 +538,13 @@ public class RecipeLoader_Nuclear {
         // Radium
         GT_Values.RA.addSifterRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedThorium", 1),
-                new ItemStack[] {
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1)
-                },
-                new int[] {10000, 500, 300, 200, 100, 100},
+                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
+                new int[] { 10000, 500, 300, 200, 100, 100 },
                 20 * 30,
                 500);
 

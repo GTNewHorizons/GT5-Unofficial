@@ -81,8 +81,9 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         }
         tt.addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front Center").addCasingInfo("Forge Casing", 10).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -110,7 +111,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialForgeHammer.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                                     .casingIndex(TAE.getIndexFromPage(1, 11)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 6))))
                     .addElement('A', onElementPass(x -> ++x.mAnvil, ofBlocksFlat(aBlockMap, sAnvil, 0))).build();
