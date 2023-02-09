@@ -3,8 +3,10 @@ package gregtech.common.tileentities.machines.multiblock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
@@ -13,15 +15,21 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_O
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> {
 
@@ -135,12 +143,51 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
                     // Base Texture
                     MACHINE_CASINGS[1][0],
                     // Active
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
+                    isActive()
+                            ? TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing()
+                                    .build()
+                            : TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing()
+                                    .build(),
                     // Active Glow
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
+                    isActive()
+                            ? TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                                    .extFacing().glow().build()
+                            : TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing()
+                                    .glow().build() };
         }
         // Base Texture
         return new ITexture[] { MACHINE_CASINGS[1][0] };
+    }
+
+    @Override
+    public boolean checkRecipe(ItemStack aStack) {
+        if (isSeparateInputs()) {
+            for (Pair<ItemStack[], String> tItemInputs : getItemInputsForEachInventory()) {
+                if (processRecipe(aStack, tItemInputs.getLeft(), tItemInputs.getRight())) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            ItemStack[] tItemInputs = getInventoriesForInput().getStacks().toArray(new ItemStack[0]);
+            return processRecipe(aStack, tItemInputs, null);
+        }
+    }
+
+    private boolean processRecipe(ItemStack aStack, ItemStack[] aItemInputs, String aInventory) {
+        GT_Recipe_Map tRecipeMap = GT_Recipe_Map.sMaceratorRecipes;
+        GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
+        if (tRecipe == null) {
+            return false;
+        }
+
+        if (!tRecipe.isRecipeInputEqual(true, false, 1, null, aItemInputs)) {
+            return false;
+        }
+
+        mMaxProgressTime = tRecipe.mDuration;
+
+        setItemOutputs(tRecipe.mOutputs, aInventory);
+        return true;
     }
 }
