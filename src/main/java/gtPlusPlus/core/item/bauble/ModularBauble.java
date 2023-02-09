@@ -386,7 +386,7 @@ public class ModularBauble extends BaseBauble {
             this.SetBaubleType(BT.TYPE_RING);
         }
         if (PlayerUtils.isPlayerOP((EntityPlayer) arg1)) {
-            return true; // Let OPs wear other peoples shit.
+            return true; // Let OPs wear other peoples stuff.
         }
 
         String mOwner;

@@ -49,7 +49,7 @@ public class COMPAT_IC2 {
 
         if (ConfigSwitches.disableIC2Recipes) {
 
-            // Fuck these right off.
+            // Remove these.
             RemoveRecipeQueue.add("IC2:itemCable");
             RemoveRecipeQueue.add("IC2:itemCable:1");
             RemoveRecipeQueue.add("IC2:itemCable:2");

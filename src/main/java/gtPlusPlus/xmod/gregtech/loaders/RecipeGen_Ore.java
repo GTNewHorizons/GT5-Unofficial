@@ -125,11 +125,11 @@ public class RecipeGen_Ore extends RecipeGen_Base {
             bonusB = amJ.get(1);
         }
 
-        // Default out if it's made of fluids or some shit.
+        // Default out if it's made of fluids or some stuff.
         if (bonusA == null) {
             bonusA = tVoltageMultiplier > 100 ? material : mStone;
         }
-        // Default out if it's made of fluids or some shit.
+        // Default out if it's made of fluids or some stuff.
         if (allFailed || bonusB == null) {
             bonusB = tVoltageMultiplier > 100 ? material : mStone;
         }

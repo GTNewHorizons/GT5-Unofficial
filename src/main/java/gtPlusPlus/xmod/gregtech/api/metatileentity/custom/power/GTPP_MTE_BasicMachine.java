@@ -26,7 +26,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.random.XSTR;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -448,7 +447,7 @@ public abstract class GTPP_MTE_BasicMachine extends GTPP_MTE_BasicTank {
                             if (getDrainableStack() == null) setDrainableStack(mOutputFluid.copy());
                             else if (mOutputFluid.isFluidEqual(getDrainableStack()))
                                 getDrainableStack().amount += mOutputFluid.amount;
-                        for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = null;
+                        Arrays.fill(mOutputItems, null);
                         mOutputFluid = null;
                         mEUt = 0;
                         mProgresstime = 0;
@@ -458,12 +457,6 @@ public abstract class GTPP_MTE_BasicMachine extends GTPP_MTE_BasicTank {
                         endProcess();
                     }
                     if (mProgresstime > 5) mStuttering = false;
-                    XSTR aXSTR = new XSTR();
-                    // Dumb April Fools Shit
-                    // if(GT_Mod.gregtechproxy.mAprilFool &&
-                    // aXSTR.nextInt(5000)==0)GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(),
-                    // GregTech_API.sSoundList.get(5), 10.0F, -1.0F, aBaseMetaTileEntity.getXCoord(),
-                    // aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord());
                 } else {
                     if (!mStuttering) {
                         stutterProcess();

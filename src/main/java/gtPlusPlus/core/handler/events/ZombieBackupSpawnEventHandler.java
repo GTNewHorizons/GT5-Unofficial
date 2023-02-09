@@ -15,8 +15,7 @@ public class ZombieBackupSpawnEventHandler {
 
     /**
      *
-     * Do we really need this pathetic mechanic to exist when it doesn't work properly at all? Or , well, maybe you
-     * enjoy Zombies spawning IN YOUR FUCKING FACE?!
+     * Do we really need this pathetic mechanic to exist when it doesn't work properly at all?
      *
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)

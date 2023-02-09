@@ -1208,7 +1208,7 @@ public final class ModItems {
                     MaterialEIO.CONDUCTIVE_IRON.getRgbAsHex(),
                     0);
 
-            // Register dumb naming conventions - Who chose fucking phased Iron/Gold?
+            // Register odd naming conventions.
             GT_OreDictUnificator.registerOre("dustPhasedGold", ItemUtils.getSimpleStack(itemDustVibrantAlloy));
             GT_OreDictUnificator.registerOre("platePhasedGold", ItemUtils.getSimpleStack(itemPlateVibrantAlloy));
             GT_OreDictUnificator.registerOre("dustPhasedIron", ItemUtils.getSimpleStack(itemDustPulsatingIron));

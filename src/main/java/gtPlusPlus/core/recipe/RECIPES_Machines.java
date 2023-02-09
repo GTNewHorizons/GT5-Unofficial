@@ -868,7 +868,7 @@ public class RECIPES_Machines {
 
     private static void algaeFarm() {
 
-        // Give the shitty algae a use :)
+        // Give the bad algae a use.
         CORE.RA.addDistilleryRecipe(
                 ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 32),
                 null,

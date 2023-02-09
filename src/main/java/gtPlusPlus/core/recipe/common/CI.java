@@ -665,7 +665,7 @@ public class CI {
                     m = aMaster[2][aTier];
                     aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
 
-                    // All Invalid? Ok, shit.
+                    // All Invalid?
                     // Let's add a special error ingot.
                     if (!ItemUtils.checkForInvalidItems(aReturn)) {
                         aReturn = ItemUtils

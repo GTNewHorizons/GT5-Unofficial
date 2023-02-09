@@ -120,15 +120,11 @@ public class CommonProxy {
         // Handles Magic Feather
         Utils.registerEvent(ModItems.itemMagicFeather);
 
-        if (CORE.DEVENV) {
-            Utils.registerEvent(new StopAnnoyingFuckingAchievements());
-        }
-
         Utils.registerEvent(new EnderDragonDeathHandler());
         Utils.registerEvent(new EntityDeathHandler());
 
         if (ConfigSwitches.disableZombieReinforcement) {
-            // Make Zombie reinforcements fuck off.
+            // Make Zombie reinforcements stop showing up.
             Utils.registerEvent(new ZombieBackupSpawnEventHandler());
         }
 

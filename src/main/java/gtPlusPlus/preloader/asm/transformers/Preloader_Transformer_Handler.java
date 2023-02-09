@@ -77,7 +77,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
     }
 
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        // Is this environment obfuscated? (Extra checks just in case some weird shit happens during the check)
+        // Is this environment obfuscated? (Extra checks just in case some weird stuff happens during the check)
         final boolean obfuscated = checkObfuscated();
 
         // Fix LWJGL index array out of bounds on keybinding IDs
@@ -144,7 +144,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             }
         }
 
-        // Fix Thaumcraft Shit
+        // Fix Thaumcraft stuff
         // Patching ItemWispEssence to allow invalid item handling
         if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {
             Preloader_Logger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);

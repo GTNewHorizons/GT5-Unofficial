@@ -63,8 +63,8 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
             final boolean doTest = true;
             tMaterial = M.getComposites();
 
-            // This Bad boy here is what dictates unique recipes. Fuck life, right?
-            ItemStack circuitGT = ItemUtils.getGregtechCircuit(0);
+            // This Bad boy here is what dictates unique recipes.
+            ItemStack circuitGT;
 
             // Set a duration - OLD
             /*
@@ -103,7 +103,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
             Logger.WARNING("[BAS] Size: " + mMaterialListSize);
 
-            // Make a simple one Material Materialstack[] and log it for validity.
+            // Make a simple one Material MaterialStack[] and log it for validity.
             circuitGT = ItemUtils.getGregtechCircuit(1);
             final ItemStack[] tItemStackTest = new ItemStack[] { circuitGT, tStack };
             inputStackCount = 1;

@@ -157,7 +157,6 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // fuck
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 

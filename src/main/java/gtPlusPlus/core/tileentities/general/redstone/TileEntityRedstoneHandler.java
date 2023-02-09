@@ -327,7 +327,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
     }
 
     /*
-     * Alk's Simplified Redstone Handling functions (Fuck redstone)
+     * GT++ Simplified Redstone Handling functions.
      */
 
     /**

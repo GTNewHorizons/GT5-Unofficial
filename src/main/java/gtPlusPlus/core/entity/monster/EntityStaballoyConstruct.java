@@ -422,9 +422,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     }
 
     @Override
-    public void knockBack(Entity p_70653_1_, float p_70653_2_, double p_70653_3_, double p_70653_5_) {
-        // Do Nothing because he weighs metric shittonnes.
-    }
+    public void knockBack(Entity p_70653_1_, float p_70653_2_, double p_70653_3_, double p_70653_5_) {}
 
     @Override
     protected void setOnFireFromLava() {
