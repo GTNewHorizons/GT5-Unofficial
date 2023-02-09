@@ -41,6 +41,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import com.cricketcraft.chisel.api.IFacade;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -74,6 +75,7 @@ import gregtech.common.render.IRenderedBlock;
 /*
  * MultiTileEntityBlock ported from GT6
  */
+@Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
 public class MultiTileEntityBlock extends Block
         implements IDebugableBlock, ITileEntityProvider, IRenderedBlock, IFacade {
 
