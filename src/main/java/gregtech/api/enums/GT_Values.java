@@ -232,6 +232,7 @@ public class GT_Values {
                 // Machines
                 ACTIVE = "gt.active", // Boolean
                 FLUID_OUT = "gt.fluidout", // Output Fluid
+                ITEM_OUT = "gt,itemout", // Output Item
                 PARALLEL = "gt.parallel", // Number
                 TANK_CAPACITY = "gt.tankcap", // Number
                 TANK_IN = "gt.tank.in.", // FluidStack

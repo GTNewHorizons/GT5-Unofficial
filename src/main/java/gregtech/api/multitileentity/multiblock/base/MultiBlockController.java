@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -157,6 +158,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         aNBT.setByte(NBT.FLIP, (byte) mExtendedFacing.getFlip().getIndex());
 
         saveUpgradeInventoriesToNBT(aNBT);
+        saveItemsToOutput(aNBT);
     }
 
     private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {
@@ -186,6 +188,20 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         aNBT.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, tListOutputInvs);
     }
 
+    private void saveItemsToOutput(NBTTagCompound aNBT) {
+        final NBTTagList tList = new NBTTagList();
+        for (int tSlot = 0; tSlot < mItemsToOutput.length; tSlot++) {
+            final ItemStack tStack = mItemsToOutput[tSlot];
+            if (tStack != null) {
+                final NBTTagCompound tag = new NBTTagCompound();
+                tag.setByte("s", (byte) tSlot);
+                tStack.writeToNBT(tag);
+                tList.appendTag(tag);
+            }
+        }
+        aNBT.setTag(NBT.ITEM_OUT, tList);
+    }
+
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
@@ -202,6 +218,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 Flip.byIndex(aNBT.getByte(NBT.FLIP)));
 
         loadUpgradeInventoriesFromNBT(aNBT);
+        loadItemsToOutput(aNBT);
     }
 
     private void loadUpgradeInventoriesFromNBT(NBTTagCompound aNBT) {
@@ -226,6 +243,16 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             loadInventory(tNBT, tInv, NBT.INV_OUTPUT_LIST);
             multiBlockOutputInventory.put(invUUID, tInv);
             multiBlockOutputInventoryNames.put(invUUID, invName);
+        }
+    }
+
+    private void loadItemsToOutput(NBTTagCompound aNBT) {
+        final NBTTagList tList = aNBT.getTagList(NBT.ITEM_OUT, 10);
+        mItemsToOutput = new ItemStack[tList.tagCount()];
+        for (int i = 0; i < tList.tagCount(); i++) {
+            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+            final int tSlot = tNBT.getShort("s");
+            if (tSlot >= 0 && tSlot < mItemsToOutput.length) mItemsToOutput[tSlot] = GT_Utility.loadItem(tNBT);
         }
     }
 
@@ -1218,34 +1245,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     protected Iterable<Pair<ItemStack[], String>> getItemInputsForEachInventory() {
-        Iterable<Pair<ItemStack[], String>> tIterator = new Iterable<Pair<ItemStack[], String>>() {
-
-            @Override
-            public Iterator<Pair<ItemStack[], String>> iterator() {
-                return new Iterator<Pair<ItemStack[], String>>() {
-
-                    int i = 0;
-
-                    @Override
-                    public boolean hasNext() {
-                        if (i >= multiBlockInputInventory.values().size()) {
-                            return false;
-                        }
-                        return true;
-                    }
-
-                    @Override
-                    public Pair<ItemStack[], String> next() {
-                        return Pair.of(
-                                multiBlockInputInventory.values().toArray(new IItemHandlerModifiable[0])[i].getStacks()
-                                        .toArray(new ItemStack[0]),
-                                multiBlockInputInventory.keySet().toArray(new String[0])[i++]);
-                    }
-                };
-            }
-
-        };
-        return tIterator;
+        return multiBlockInputInventory.entrySet().stream()
+                .map((entry) -> Pair.of(entry.getValue().getStacks().toArray(new ItemStack[0]), entry.getKey()))
+                .collect(Collectors.toList());
     }
 
     protected void setItemOutputs(ItemStack[] aItemOutputs, String aInventory) {
