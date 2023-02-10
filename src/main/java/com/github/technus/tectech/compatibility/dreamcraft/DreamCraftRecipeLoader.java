@@ -5353,9 +5353,10 @@ public class DreamCraftRecipeLoader {
 
         // EOH Temporal Compression
         {
-            final ItemStack ME_Singularity = getModItem("extracells", "storage.physical.advanced.singularity", 1); // ME
-                                                                                                                   // Digital
-                                                                                                                   // singularity.
+            final ItemStack ME_Singularity = getModItem(
+                    "appliedenergistics2",
+                    "item.ItemExtremeStorageCell.Singularity",
+                    1); // ME
 
             int baseCompPerSec = 16_384;
 
