@@ -36,7 +36,6 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.ReadableNumberConverter;
-import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -48,7 +47,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-@Optional.Interface(iface = "appeng.api.implementations.IPowerChannelState", modid = "appliedenergistics2")
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
 
     private BaseActionSource requestSource = null;
@@ -111,21 +109,18 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
      * @param aFluid input fluid
      * @return amount of fluid filled
      */
-    @Optional.Method(modid = "appliedenergistics2")
     public int tryFillAE(final FluidStack aFluid) {
         if ((!infiniteCache && lastOutputFailed) || aFluid == null) return 0;
         fluidCache.add(AEApi.instance().storage().createFluidStack(aFluid));
         return aFluid.amount;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private BaseActionSource getRequest() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return isOutputFacing((byte) forgeDirection.ordinal()) ? AECableType.SMART : AECableType.NONE;
     }
@@ -159,7 +154,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
@@ -178,10 +172,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
 
-    @Optional.Method(modid = "appliedenergistics2")
     private void flushCachedStack() {
         lastOutputFailed = false;
         AENetworkProxy proxy = getProxy();
@@ -208,13 +200,11 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public boolean isPowered() {
         return getProxy() != null && getProxy().isPowered();
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public boolean isActive() {
         return getProxy() != null && getProxy().isActive();
     }
@@ -307,7 +297,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         return ss.toArray(new String[fluidCache.size() + 2]);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     public static IAEFluidStack fluidAEInsert(final IEnergySource energy, final IMEInventory<IAEFluidStack> cell,
             final IAEFluidStack input, final BaseActionSource src) {
         final IAEFluidStack possible = cell.injectItems(input.copy(), Actionable.SIMULATE, src);

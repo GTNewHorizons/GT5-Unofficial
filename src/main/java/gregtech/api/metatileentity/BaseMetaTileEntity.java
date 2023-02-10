@@ -49,7 +49,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructableProvider;
 
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -80,16 +79,6 @@ import ic2.api.Direction;
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
-@Optional.InterfaceList(
-        value = {
-                @Optional.Interface(
-                        iface = "appeng.api.networking.security.IActionHost",
-                        modid = "appliedenergistics2",
-                        striprefs = true),
-                @Optional.Interface(
-                        iface = "appeng.me.helpers.IGridProxyable",
-                        modid = "appliedenergistics2",
-                        striprefs = true) })
 public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTechTileEntity, IActionHost,
         IGridProxyable, IAlignmentProvider, IConstructableProvider, IDebugableTileEntity, IGregtechWailaProvider {
 
@@ -2329,7 +2318,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
         if (mFacing != forgeDirection.ordinal()) return null;
         final AENetworkProxy gp = getProxy();
@@ -2337,61 +2325,51 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return mMetaTileEntity == null ? AECableType.NONE : mMetaTileEntity.getCableConnectionType(forgeDirection);
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void securityBreak() {}
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public IGridNode getActionableNode() {
         final AENetworkProxy gp = getProxy();
         return gp != null ? gp.getNode() : null;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         return mMetaTileEntity == null ? null : mMetaTileEntity.getProxy();
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public DimensionalCoord getLocation() {
         return new DimensionalCoord(this);
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {
         if (mMetaTileEntity != null) mMetaTileEntity.gridChanged();
     }
 
     @TileEvent(TileEventType.WORLD_NBT_READ)
-    @Optional.Method(modid = "appliedenergistics2")
     public void readFromNBT_AENetwork(final NBTTagCompound data) {
         final AENetworkProxy gp = getProxy();
         if (gp != null) getProxy().readFromNBT(data);
     }
 
     @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    @Optional.Method(modid = "appliedenergistics2")
     public void writeToNBT_AENetwork(final NBTTagCompound data) {
         final AENetworkProxy gp = getProxy();
         if (gp != null) gp.writeToNBT(data);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     void onChunkUnloadAE() {
         final AENetworkProxy gp = getProxy();
         if (gp != null) gp.onChunkUnload();
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     void invalidateAE() {
         final AENetworkProxy gp = getProxy();
         if (gp != null) gp.invalidate();

@@ -2,7 +2,6 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_TC;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isAE2Loaded;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 
 import java.util.Arrays;
@@ -553,41 +552,39 @@ public class ThaumcraftRecipes implements Runnable {
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L),
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L))) });
 
-                if (isAE2Loaded) {
-                    tKey = "GT_TRANSSKYSTONE";
-                    GT_LanguageManager.addStringLocalization(
-                            GT_MachineRecipeLoader.aTextTCGTPage + tKey,
-                            "You have discovered a way to convert obsidian to skystone.<BR><BR>Not sure why you'd want to do this, unless skystone is somehow unavailable in your world.");
-                    GregTech_API.sThaumcraftCompat.addResearch(
-                            tKey,
-                            "Skystone Transmutation",
-                            "Transformation of obsidian into skystone",
-                            new String[] { "GT_ADVANCEDMETALLURGY" },
-                            "ALCHEMY",
-                            getModItem("appliedenergistics2", "tile.BlockSkyStone", 1),
-                            4,
-                            0,
-                            19,
-                            15,
-                            Arrays.asList(
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 3L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 3L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 3L)),
-                            null,
-                            new Object[] { GT_MachineRecipeLoader.aTextTCGTPage + tKey,
-                                    GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
-                                            tKey,
-                                            new ItemStack(Blocks.obsidian),
-                                            getModItem("appliedenergistics2", "tile.BlockSkyStone", 1),
-                                            Arrays.asList(
-                                                    new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 2L),
-                                                    new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L),
-                                                    new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L),
-                                                    new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 2L),
-                                                    new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 1L))) });
-                }
+                tKey = "GT_TRANSSKYSTONE";
+                GT_LanguageManager.addStringLocalization(
+                        GT_MachineRecipeLoader.aTextTCGTPage + tKey,
+                        "You have discovered a way to convert obsidian to skystone.<BR><BR>Not sure why you'd want to do this, unless skystone is somehow unavailable in your world.");
+                GregTech_API.sThaumcraftCompat.addResearch(
+                        tKey,
+                        "Skystone Transmutation",
+                        "Transformation of obsidian into skystone",
+                        new String[] { "GT_ADVANCEDMETALLURGY" },
+                        "ALCHEMY",
+                        getModItem("appliedenergistics2", "tile.BlockSkyStone", 1),
+                        4,
+                        0,
+                        19,
+                        15,
+                        Arrays.asList(
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 3L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 3L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 3L)),
+                        null,
+                        new Object[] { GT_MachineRecipeLoader.aTextTCGTPage + tKey,
+                                GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
+                                        tKey,
+                                        new ItemStack(Blocks.obsidian),
+                                        getModItem("appliedenergistics2", "tile.BlockSkyStone", 1),
+                                        Arrays.asList(
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 2L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 2L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 1L))) });
 
                 tKey = "GT_TRANSMINERAL";
                 GT_LanguageManager.addStringLocalization(
