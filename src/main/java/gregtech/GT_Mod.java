@@ -111,7 +111,7 @@ import ic2.api.recipe.RecipeOutput;
                 + " after:PFAAGeologica;"
                 + " after:Thaumcraft;"
                 + " after:Railcraft;"
-                + " after:appliedenergistics2;"
+                + " required-after:appliedenergistics2;"
                 + " after:ThermalExpansion;"
                 + " after:TwilightForest;"
                 + " after:harvestcraft;"

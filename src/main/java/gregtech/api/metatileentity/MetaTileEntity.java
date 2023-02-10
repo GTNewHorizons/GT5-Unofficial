@@ -39,8 +39,6 @@ import appeng.me.helpers.AENetworkProxy;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
@@ -151,7 +149,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     /**
      * This method will only be called on client side
-     * 
+     *
      * @return whether the secondary description should be display. default is false
      */
     @Deprecated
@@ -1164,17 +1162,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     // === AE2 compat ===
 
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return AECableType.NONE;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         return null;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
 
     // === Waila compat ===
@@ -1187,7 +1182,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                         "Facing: %s",
                         ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing()).name()));
 
-        if (Loader.isModLoaded("appliedenergistics2") && this instanceof IPowerChannelState) {
+        if (this instanceof IPowerChannelState) {
             // adapted from PowerStateWailaDataProvider
             final IPowerChannelState state = (IPowerChannelState) this;
             NBTTagCompound tag = accessor.getNBTData();
@@ -1210,7 +1205,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
             int z) {
-        if (Loader.isModLoaded("appliedenergistics2") && this instanceof IPowerChannelState) {
+        if (this instanceof IPowerChannelState) {
             // adapted from PowerStateWailaDataProvider
             final IPowerChannelState state = (IPowerChannelState) this;
             final boolean isActive = state.isActive();
@@ -1222,7 +1217,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         }
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     protected String getAEDiagnostics() {
         try {
             if (getProxy() == null) return "(proxy)";

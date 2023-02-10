@@ -31,7 +31,6 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
-import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -43,7 +42,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-@Optional.Interface(iface = "appeng.api.implementations.IPowerChannelState", modid = "appliedenergistics2")
 public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus
         implements IPowerChannelState {
 
@@ -104,21 +102,18 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      * @param stack input stack
      * @return amount of items left over
      */
-    @Optional.Method(modid = "appliedenergistics2")
     public int store(final ItemStack stack) {
         if (!infiniteCache && lastOutputFailed) return stack.stackSize;
         itemCache.add(AEApi.instance().storage().createItemStack(stack));
         return 0;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private BaseActionSource getRequest() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return isOutputFacing((byte) forgeDirection.ordinal()) ? AECableType.SMART : AECableType.NONE;
     }
@@ -137,7 +132,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
@@ -156,10 +150,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
 
-    @Optional.Method(modid = "appliedenergistics2")
     private void flushCachedStack() {
         lastOutputFailed = false;
         AENetworkProxy proxy = getProxy();
@@ -186,13 +178,11 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public boolean isPowered() {
         return getProxy() != null && getProxy().isPowered();
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public boolean isActive() {
         return getProxy() != null && getProxy().isActive();
     }
