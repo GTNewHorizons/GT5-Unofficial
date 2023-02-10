@@ -1,11 +1,14 @@
 package gregtech.common.misc.spaceprojects.interfaces;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
+import gregtech.common.misc.spaceprojects.enums.StarType;
 import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
 
 public interface ISpaceProject {
@@ -32,9 +35,13 @@ public interface ISpaceProject {
 
     ItemStack[] getItemCostPerStage();
 
+    ItemStack[] getCurrentItemProgress();
+
     ItemStack[] getTotalItemCost();
 
     FluidStack[] getFluidCostPerStage();
+
+    FluidStack[] getCurrentFluidProgress();
 
     FluidStack[] getTotalFluidCost();
 
@@ -52,11 +59,17 @@ public interface ISpaceProject {
 
     ISpaceProject copy();
 
+    int getCurrentStage();
+
+    boolean meetsRequirements(UUID aTeam, ISpaceBody aLocation);
+
     public interface ISP_Upgrade {
 
         String getUpgradeName();
 
         String getUnlocalizedName();
+
+        String getLocalizedName();
 
         ItemStack[] getItemCost();
 
@@ -76,10 +89,19 @@ public interface ISpaceProject {
 
         UpgradeStatus getStatus();
 
-        List<ISP_Upgrade> getRequiredUpgrades();
+        ISP_Requirements getUpgradeRequirements();
+
+        boolean meetsRequirements();
     }
 
-    public interface ISP_Requirement {
+    public interface ISP_Requirements {
 
+        SpaceBodyType getBodyType();
+
+        StarType getStarType();
+
+        List<ISpaceProject> getProjects();
+
+        List<ISP_Upgrade> getUpgrades();
     }
 }
