@@ -5052,9 +5052,12 @@ public class DreamCraftRecipeLoader {
 
         // EOH Spacetime Compression
         {
-            final ItemStack ME_Singularity = getModItem("appliedenergistics2", "item.ItemExtremeStorageCell.Singularity", 1); // ME
-                                                                                                                   // Digital
-                                                                                                                   // singularity.
+            final ItemStack ME_Singularity = getModItem(
+                    "appliedenergistics2",
+                    "item.ItemExtremeStorageCell.Singularity",
+                    1); // ME
+            // Digital
+            // singularity.
             final ItemStack baseCasing = CustomItemList.EOH_Reinforced_Spacetime_Casing.get(1);
 
             int baseCompPerSec = 16_384;
