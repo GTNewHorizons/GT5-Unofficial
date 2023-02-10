@@ -35,21 +35,34 @@ public class SpaceProjectManager {
 
     public static boolean addTeamProject(UUID aTeam, ISpaceBody aLocation, String aProjectName,
             ISpaceProject aProject) {
-        if (!mSpaceTeamProjects.containsKey(aTeam)) {
+        if (!mSpaceTeamProjects.containsKey(getLeader(aTeam)) || mSpaceTeamProjects.get(getLeader(aTeam)) == null) {
             mSpaceTeamProjects.put(getLeader(aTeam), new HashMap<Pair<ISpaceBody, String>, ISpaceProject>());
         }
-        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(aTeam);
+        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
         if (tMap.containsKey(Pair.of(aLocation, aProjectName))) return false;
         tMap.put(Pair.of(aLocation, aProjectName), aProject);
         return true;
+    }
+
+    public static boolean teamHasProject(UUID aTeam, ISpaceProject aProject) {
+        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
+        if (tMap == null) {
+            return false;
+        }
+        return tMap.containsValue(aProject);
     }
 
     public static void addProject(ISpaceProject aProject) {
         mSpaceProjects.put(aProject.getProjectName(), aProject);
     }
 
+    /**
+     * @param aProjectName Internal name of the project
+     * @return a copy of the stored project
+     */
     public static ISpaceProject getProject(String aProjectName) {
-        return mSpaceProjects.get(aProjectName).copy();
+        ISpaceProject tProject = mSpaceProjects.get(aProjectName);
+        return tProject != null ? tProject.copy() : null;
     }
 
     /**
@@ -79,5 +92,12 @@ public class SpaceProjectManager {
 
     public static UUID getLeader(UUID aTeamMember) {
         return mSpaceTeams.get(aTeamMember);
+    }
+
+    public static void checkOrCreateTeam(UUID aTeamMember) {
+        if (mSpaceTeams.containsKey(aTeamMember)) {
+            return;
+        }
+        mSpaceTeams.put(aTeamMember, aTeamMember);
     }
 }
