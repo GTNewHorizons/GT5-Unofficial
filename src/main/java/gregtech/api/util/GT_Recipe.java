@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.awt.*;
@@ -1794,9 +1795,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             @Override
             protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
-                Power power = recipeInfo.power;
-                drawNEIText(recipeInfo, GT_Utility.trans("152", "Total: ") + power.getTotalPowerString());
-                drawNEIText(recipeInfo, "Average: " + power.getPowerUsageString());
+                // These look odd because recipeInfo.recipe.mEUt is actually the EU per litre of fluid processed, not
+                // the EU/t.
+                drawNEIText(
+                        recipeInfo,
+                        GT_Utility.trans("152", "Total: ") + formatNumbers(1000L * recipeInfo.recipe.mEUt) + " EU");
+                // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
+                drawNEIText(recipeInfo, "Average: " + formatNumbers(10L * recipeInfo.recipe.mEUt) + " EU/t");
             }
         }
 
@@ -3472,7 +3477,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         protected String formatSpecialValue(int specialValue) {
-            return mNEISpecialValuePre + GT_Utility.formatNumbers((long) specialValue * mNEISpecialValueMultiplier)
+            return mNEISpecialValuePre + formatNumbers((long) specialValue * mNEISpecialValueMultiplier)
                     + mNEISpecialValuePost;
         }
 
