@@ -67,4 +67,9 @@ public enum SolarSystem implements ISpaceBody {
     public SpaceBodyType getType() {
         return mType;
     }
+
+    @Override
+    public String getName() {
+        return name();
+    }
 }
