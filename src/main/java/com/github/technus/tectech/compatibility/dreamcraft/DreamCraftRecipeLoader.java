@@ -5458,14 +5458,14 @@ public class DreamCraftRecipeLoader {
 
             final ItemStack[] researchStuff = new ItemStack[] { baseCasing,
                     CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1) };
+                    CustomItemList.StabilisationFieldGeneratorTier1.get(1),
+                    CustomItemList.StabilisationFieldGeneratorTier2.get(1),
+                    CustomItemList.StabilisationFieldGeneratorTier3.get(1),
+                    CustomItemList.StabilisationFieldGeneratorTier4.get(1),
+                    CustomItemList.StabilisationFieldGeneratorTier5.get(1),
+                    CustomItemList.StabilisationFieldGeneratorTier6.get(1),
+                    CustomItemList.StabilisationFieldGeneratorTier7.get(1),
+                    CustomItemList.StabilisationFieldGeneratorTier8.get(1) };
 
             final ItemStack[] timeCasings = new ItemStack[] { CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
                     CustomItemList.TimeAccelerationFieldGeneratorTier1.get(1),
