@@ -1,5 +1,6 @@
 package gregtech.common.misc.spaceprojects;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,8 +24,13 @@ public class SpaceProjectManager {
      */
     public static Map<UUID, UUID> mSpaceTeams = new HashMap<>();
 
+    private static final HashMap<String, ISpaceBody> mSpaceLocations = new HashMap<>();
+
     private static final Map<String, ISpaceProject> mSpaceProjects = new HashMap<>();
 
+    /*
+     * Team Section
+     */
     public static ISpaceProject getTeamProject(UUID aTeam, ISpaceBody aLocation, String aProjectName) {
         Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(aTeam);
         if (tMap == null) {
@@ -52,6 +58,30 @@ public class SpaceProjectManager {
         return tMap.containsValue(aProject);
     }
 
+    public static void putInTeam(UUID aTeamMember, UUID aTeamLeader) {
+        if (aTeamMember.equals(aTeamLeader)) {
+            mSpaceTeams.put(aTeamMember, aTeamLeader);
+        } else if (!mSpaceTeams.get(aTeamLeader).equals(aTeamLeader)) {
+            putInTeam(aTeamMember, mSpaceTeams.get(aTeamLeader));
+        } else {
+            mSpaceTeams.put(aTeamMember, aTeamLeader);
+        }
+    }
+
+    public static UUID getLeader(UUID aTeamMember) {
+        return mSpaceTeams.get(aTeamMember);
+    }
+
+    public static void checkOrCreateTeam(UUID aTeamMember) {
+        if (mSpaceTeams.containsKey(aTeamMember)) {
+            return;
+        }
+        mSpaceTeams.put(aTeamMember, aTeamMember);
+    }
+
+    /*
+     * General Project Helpers
+     */
     public static void addProject(ISpaceProject aProject) {
         mSpaceProjects.put(aProject.getProjectName(), aProject);
     }
@@ -72,32 +102,33 @@ public class SpaceProjectManager {
         return mSpaceProjects;
     }
 
+    public static Collection<ISpaceProject> getProjects() {
+        return mSpaceProjects.values();
+    }
+
+    /*
+     * Location Helper
+     */
+    public static void addLocation(ISpaceBody aLocation) {
+        mSpaceLocations.put(aLocation.getName(), aLocation);
+    }
+
+    public static Collection<ISpaceBody> getLocations() {
+        return mSpaceLocations.values();
+    }
+
+    public static ISpaceBody getLocation(String aLocationName) {
+        return mSpaceLocations.get(aLocationName);
+    }
+
+    /*
+     * Helpers
+     */
     public static UUID getPlayerUUIDFromName(String aPlayerName) {
         return MinecraftServer.getServer().func_152358_ax().func_152655_a(aPlayerName).getId();
     }
 
     public static String getPlayerNameFromUUID(UUID aPlayerUUID) {
         return MinecraftServer.getServer().func_152358_ax().func_152652_a(aPlayerUUID).getName();
-    }
-
-    public static void putInTeam(UUID aTeamMember, UUID aTeamLeader) {
-        if (aTeamMember.equals(aTeamLeader)) {
-            mSpaceTeams.put(aTeamMember, aTeamLeader);
-        } else if (!mSpaceTeams.get(aTeamLeader).equals(aTeamLeader)) {
-            putInTeam(aTeamMember, mSpaceTeams.get(aTeamLeader));
-        } else {
-            mSpaceTeams.put(aTeamMember, aTeamLeader);
-        }
-    }
-
-    public static UUID getLeader(UUID aTeamMember) {
-        return mSpaceTeams.get(aTeamMember);
-    }
-
-    public static void checkOrCreateTeam(UUID aTeamMember) {
-        if (mSpaceTeams.containsKey(aTeamMember)) {
-            return;
-        }
-        mSpaceTeams.put(aTeamMember, aTeamMember);
     }
 }
