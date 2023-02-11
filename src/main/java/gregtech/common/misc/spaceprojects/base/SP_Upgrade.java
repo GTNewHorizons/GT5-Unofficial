@@ -47,7 +47,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public ItemStack getItemCostPerStage(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex > mItemsCost.length) {
+        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
             return null;
         }
 
@@ -69,7 +69,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public ItemStack getCurrentItemProgress(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex > mItemsCost.length) {
+        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
             return null;
         }
 
@@ -93,7 +93,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public ItemStack getTotalItemCost(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex > mItemsCost.length) {
+        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
             return null;
         }
 
@@ -109,7 +109,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public FluidStack getFluidCostPerStage(int aIndex) {
-        if (mFluidsCost == null || aIndex < 0 || aIndex > mFluidsCost.length) {
+        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
             return null;
         }
 
@@ -135,7 +135,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public FluidStack getCurrentFluidProgress(int aIndex) {
-        if (mFluidsCost == null || aIndex < 0 || aIndex > mFluidsCost.length) {
+        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
             return null;
         }
 
@@ -163,7 +163,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public FluidStack getTotalFluidCost(int aIndex) {
-        if (mFluidsCost == null || aIndex < 0 || aIndex > mFluidsCost.length) {
+        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
             return null;
         }
 
