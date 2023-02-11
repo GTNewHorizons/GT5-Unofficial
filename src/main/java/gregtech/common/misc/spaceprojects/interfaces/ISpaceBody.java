@@ -8,4 +8,6 @@ public interface ISpaceBody {
     StarType getStarType();
 
     SpaceBodyType getType();
+
+    String getName();
 }
