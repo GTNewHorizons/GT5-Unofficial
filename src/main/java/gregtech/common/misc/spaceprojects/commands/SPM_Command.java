@@ -2,6 +2,7 @@ package gregtech.common.misc.spaceprojects.commands;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -110,6 +111,24 @@ public class SPM_Command extends CommandBase {
 
     private String[] getPlayers() {
         return MinecraftServer.getServer().getAllUsernames();
+    }
+
+    private String[] getLocations() {
+        return SpaceProjectManager.getLocations().stream().map(body -> body.getName()).collect(Collectors.toList())
+                .toArray(new String[0]);
+    }
+
+    private String[] getProjects() {
+        return SpaceProjectManager.getProjects().stream().map(project -> project.getProjectName())
+                .collect(Collectors.toList()).toArray(new String[0]);
+    }
+
+    private String[] getSubCommands() {
+        return new String[] { RESET, COPY, UNLOCK, LOCK, LIST };
+    }
+
+    private String[] getListArguments() {
+        return new String[] { ALL, AVAILABLE, UNLOCKED };
     }
 
     private void processReset(ICommandSender aSender, String aPlayerName) {
