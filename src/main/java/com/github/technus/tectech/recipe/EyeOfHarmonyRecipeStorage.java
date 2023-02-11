@@ -71,7 +71,7 @@ public class EyeOfHarmonyRecipeStorage {
                                         BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                         timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
                                         blockDimensionDisplay.getDimensionRocketTier(),
-                                        1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
+                                        1.0 - 0.05 * blockDimensionDisplay.getDimensionRocketTier()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

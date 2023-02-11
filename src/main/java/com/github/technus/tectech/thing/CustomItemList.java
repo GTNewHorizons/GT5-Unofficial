@@ -309,9 +309,9 @@ public enum CustomItemList implements IItemContainer {
 
     tM_TeslaBase,
     tM_TeslaToroid,
-    EOH_Temporal_Boundary_Casing,
-    EOH_Reinforced_Spacetime_Casing,
-    EOH_INFINITE,
+    EOH_Reinforced_Temporal_Casing,
+    EOH_Reinforced_Spatial_Casing,
+    EOH_Infinite_Energy_Casing,
     tM_TeslaSecondary,
     tM_TeslaPrimary_0,
     tM_TeslaPrimary_1,

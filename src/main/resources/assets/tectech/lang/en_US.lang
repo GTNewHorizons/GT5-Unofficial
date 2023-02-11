@@ -4,6 +4,7 @@ itemGroup.EM=TecTech Elemental Matter
 
 #Blocks
 tile.quantumStuff.name=Quantum Stuff
+tile.Eye of Harmony Renderer.name=Eye of Harmony Renderer
 
 tile.quantumGlass.name=Quantum Glass
 tile.quantumGlass.desc.0=Dense yet transparent
