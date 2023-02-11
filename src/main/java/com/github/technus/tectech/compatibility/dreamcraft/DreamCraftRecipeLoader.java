@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -5021,9 +5020,9 @@ public class DreamCraftRecipeLoader {
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
         ItemStack largeShirabonPlate = getModItem("TGregworks", "tGregToolPartLargePlate", 1, 1735);
-        NBTTagCompound tag = largeShirabonPlate.getTagCompound();
-        tag.setString("material", "Shirabon");
-        largeShirabonPlate.writeToNBT(tag);
+        // NBTTagCompound tag = largeShirabonPlate.getTagCompound();
+        // tag.setString("material", "Shirabon");
+        // largeShirabonPlate.writeToNBT(tag);
 
         final FluidStack[] specialFluid = new FluidStack[] { FluidUtils.getFluidStack("molten.shirabon", 1_440),
                 Materials.WhiteDwarfMatter.getMolten(1_440), Materials.WhiteDwarfMatter.getMolten(1_440 * 4),
@@ -5508,7 +5507,7 @@ public class DreamCraftRecipeLoader {
                                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 4 * (absoluteTier + 1)),
                                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 4 * (absoluteTier + 1)),
                                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUEVBase, 4 * (absoluteTier + 1)),
-                                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Superconductor, 4 * (absoluteTier + 1)),
+                                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Longasssuperconductornameforuhvwire, 4 * (absoluteTier + 1)),
 
                                 // Gravitation Engine
                                 getModItem("GraviSuite", "itemSimpleItem", 64, 3),
@@ -5519,9 +5518,8 @@ public class DreamCraftRecipeLoader {
                                 plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(2 * (absoluteTier + 1)),
                                 GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, absoluteTier + 1),
-                                GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, absoluteTier + 1),
+                                GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, absoluteTier + 1)
 
-                                plateList[absoluteTier]
 
                         },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
