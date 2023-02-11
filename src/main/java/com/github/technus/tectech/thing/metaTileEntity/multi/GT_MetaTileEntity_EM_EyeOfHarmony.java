@@ -50,8 +50,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -694,8 +692,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addElement(
                     'H',
                     buildHatchAdder(GT_MetaTileEntity_EM_EyeOfHarmony.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance).casingIndex(texturePage << 7)
-                            .dot(1).buildAndChain(sBlockCasingsBA0, 12))
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance)
+                            .casingIndex(texturePage << 7).dot(1).buildAndChain(sBlockCasingsBA0, 12))
             .addElement(
                     'E',
                     ofBlocksTiered(
