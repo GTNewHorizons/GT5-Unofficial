@@ -1,10 +1,10 @@
 package gregtech.common.misc.spaceprojects.interfaces;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
@@ -23,33 +23,43 @@ public interface ISpaceProject {
 
     int getProjectBuildTime();
 
-    int getProjectCurrentProgress();
+    float getProjectCurrentProgress();
 
     int getProjectTier();
+
+    int getCurrentStage();
 
     int getTotalStages();
 
     List<ISP_Upgrade> getUpgradesAvailable();
 
-    int getProgressForUpgrade();
+    Map<String, ISP_Upgrade> getUpgradesBuilt();
 
-    ItemStack[] getItemCostPerStage();
+    ItemStack[] getItemsCostPerStage();
 
-    ItemStack[] getCurrentItemProgress();
+    ItemStack getItemCostPerStage(int aIndex);
 
-    ItemStack[] getTotalItemCost();
+    ItemStack[] getCurrentItemsProgress();
 
-    FluidStack[] getFluidCostPerStage();
+    ItemStack getCurrentItemProgress(int aIndex);
 
-    FluidStack[] getCurrentFluidProgress();
+    ItemStack[] getTotalItemsCost();
 
-    FluidStack[] getTotalFluidCost();
+    ItemStack getTotalItemCost(int aIndex);
+
+    FluidStack[] getFluidsCostPerStage();
+
+    FluidStack getFluidCostPerStage(int aIndex);
+
+    FluidStack[] getCurrentFluidsProgress();
+
+    FluidStack getCurrentFluidProgress(int aIndex);
+
+    FluidStack[] getTotalFluidsCost();
+
+    FluidStack getTotalFluidCost(int aIndex);
 
     ISP_Upgrade getUpgradeBeingBuilt();
-
-    void saveExtraSavedWorldData(NBTTagCompound aNBT);
-
-    void loadExtraSavedWorldData(NBTTagCompound aNBT);
 
     void setProjectStage(int aStage);
 
@@ -58,8 +68,6 @@ public interface ISpaceProject {
     void goToNextStage();
 
     ISpaceProject copy();
-
-    int getCurrentStage();
 
     boolean meetsRequirements(UUID aTeam, ISpaceBody aLocation);
 
@@ -71,19 +79,37 @@ public interface ISpaceProject {
 
         String getLocalizedName();
 
-        ItemStack[] getItemCost();
+        ItemStack[] getItemsCostPerStage();
 
-        ItemStack[] getTotalItemCost();
+        ItemStack getItemCostPerStage(int aIndex);
 
-        FluidStack[] getFluidCost();
+        ItemStack[] getCurrentItemsProgress();
 
-        FluidStack[] getTotalFLuidCost();
+        ItemStack getCurrentItemProgress(int aIndex);
+
+        ItemStack[] getTotalItemsCost();
+
+        ItemStack getTotalItemCost(int aIndex);
+
+        FluidStack[] getFluidsCostPerStage();
+
+        FluidStack getFluidCostPerStage(int aIndex);
+
+        FluidStack[] getCurrentFluidsProgress();
+
+        FluidStack getCurrentFluidProgress(int aIndex);
+
+        FluidStack[] getTotalFluidsCost();
+
+        FluidStack getTotalFluidCost(int aIndex);
 
         int getTotalStages();
 
         int getTotalBuildTime();
 
         int getCurrentStage();
+
+        float getCurrentProgress();
 
         long getVoltage();
 
@@ -92,6 +118,10 @@ public interface ISpaceProject {
         ISP_Requirements getUpgradeRequirements();
 
         boolean meetsRequirements();
+
+        ISP_Upgrade copy();
+
+        void goToNextStage();
     }
 
     public interface ISP_Requirements {
