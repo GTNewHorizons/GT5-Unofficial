@@ -1,22 +1,24 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksFlat;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -39,7 +41,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialForgeHammer> implements ISurvivalConstructable {
 
     private int mCasing;
-    private int mAnvil;
+    private int mAnvilTier = 0;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialForgeHammer> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialForgeHammer(final int aID, final String aName, final String aNameRegional) {
@@ -52,7 +54,6 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        setAnvilBlocks();
         return new GregtechMetaTileEntity_IndustrialForgeHammer(this.mName);
     }
 
@@ -66,7 +67,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Forge Hammer")
                 .addInfo("Speed: +100% | EU Usage: 100% | Parallel: Tier x Anvil Tier x 8")
-                .addInfo("T1 - Vanilla Anvil").addInfo("Anvil goes in Middle 3x3x3 Structure");
+                .addInfo("T1 - Vanilla Anvil");
         if (LoadedMods.Railcraft) {
             tt.addInfo("T2 - Steel Anvil");
         }
@@ -74,13 +75,15 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
             tt.addInfo("T3 - Dark Steel Anvil");
         }
         if (LoadedMods.ThaumicBases) {
-            tt.addInfo("T3 - Thaumic Anvil");
-            tt.addInfo("T4 - Void Anvil");
+            tt.addInfo("T3 - Thaumium Anvil");
+            tt.addInfo("T4 - Void Metal Anvil");
         }
+
         tt.addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front Center").addCasingInfo("Forge Casing", 10).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .addOtherStructurePart("Anvil", "In the center of 3x3x3 structure", 2)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
@@ -88,18 +91,23 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialForgeHammer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            Map<Block, Integer> aBlockMap = new HashMap<>();
-            aBlockMap.put(sAnvil, 0);
+            Map<Block, Integer> anvilTiers = new HashMap<>();
+
+            anvilTiers.put(Blocks.anvil, 1);
+
             if (LoadedMods.Railcraft) {
-                aBlockMap.put(sSteelAnvil, 0);
+                anvilTiers.put(GameRegistry.findBlock("Railcraft", "anvil"), 2);
             }
+
             if (LoadedMods.EnderIO) {
-                aBlockMap.put(sDarkSteelAnvil, 0);
+                anvilTiers.put(GameRegistry.findBlock("EnderIO", "blockDarkSteelAnvil"), 3);
             }
+
             if (LoadedMods.ThaumicBases) {
-                aBlockMap.put(sThaumiumAnvil, 0);
-                aBlockMap.put(sVoidAnvil, 0);
+                anvilTiers.put(GameRegistry.findBlock("thaumicbases", "thaumicAnvil"), 3);
+                anvilTiers.put(GameRegistry.findBlock("thaumicbases", "voidAnvil"), 4);
             }
+
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialForgeHammer>builder()
                     .addShape(
                             mName,
@@ -112,14 +120,29 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
                                     .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                                     .casingIndex(TAE.getIndexFromPage(1, 11)).dot(1).buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 6))))
-                    .addElement('A', onElementPass(x -> ++x.mAnvil, ofBlocksFlat(aBlockMap, sAnvil, 0))).build();
+                    .addElement(
+                            'A',
+                            ofBlocksTiered(
+                                    anvilTierConverter(anvilTiers),
+                                    getAllAnvilTiers(anvilTiers),
+                                    0,
+                                    GregtechMetaTileEntity_IndustrialForgeHammer::setAnvilTier,
+                                    GregtechMetaTileEntity_IndustrialForgeHammer::getAnvilTier))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
+    private static List<Pair<Block, Integer>> getAllAnvilTiers(Map<Block, Integer> anvilTiers) {
+        return anvilTiers.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList());
+    }
+
+    private static ITierConverter<Integer> anvilTierConverter(Map<Block, Integer> anvilTiers) {
+        return (block, meta) -> block == null ? 0 : anvilTiers.getOrDefault(block, 0);
+    }
+
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        setAnvilBlocks();
         buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
     }
 
@@ -131,7 +154,6 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        setAnvilBlocks();
         mCasing = 0;
         return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
     }
@@ -163,25 +185,22 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
 
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
-        Block aAnvil = this.getBaseMetaTileEntity().getBlockAtSide(this.getBaseMetaTileEntity().getBackFacing());
-        if (aAnvil != null) {
-            int aAnvilTier = getAnvilTier(aAnvil);
-            if (aAnvilTier > 0) {
-                return checkRecipeGeneric(
-                        getCompactedInputs(),
-                        getCompactedFluids(),
-                        getMaxParallelRecipes() * aAnvilTier,
-                        100,
-                        100,
-                        10000);
-            }
+        if (getAnvilTier() > 0) {
+            return checkRecipeGeneric(
+                    getStoredInputs().toArray(new ItemStack[0]),
+                    getCompactedFluids(),
+                    getMaxParallelRecipes(),
+                    100,
+                    100,
+                    10000);
         }
+
         return false;
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return (8 * getAnvilTier() * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -214,79 +233,11 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         return false;
     }
 
-    private static Block sAnvil;
-    private static Block sSteelAnvil;
-    private static Block sDarkSteelAnvil;
-    private static Block sThaumiumAnvil;
-    private static Block sVoidAnvil;
-
-    private static void setAnvilBlocks() {
-        if (sAnvil == null) {
-            sAnvil = Blocks.anvil;
-            if (LoadedMods.Railcraft) {
-                sSteelAnvil = GameRegistry.findBlock("Railcraft", "anvil");
-            }
-            if (LoadedMods.EnderIO) {
-                sDarkSteelAnvil = GameRegistry.findBlock("EnderIO", "blockDarkSteelAnvil");
-            }
-            if (LoadedMods.ThaumicBases) {
-                sThaumiumAnvil = GameRegistry.findBlock("thaumicbases", "thaumicAnvil");
-                sVoidAnvil = GameRegistry.findBlock("thaumicbases", "voidAnvil");
-            }
-        }
+    private void setAnvilTier(int tier) {
+        mAnvilTier = tier;
     }
 
-    public static boolean isBlockAnvil(Block aBlock) {
-        setAnvilBlocks();
-        if (sAnvil == aBlock) {
-            return true;
-        }
-        if (LoadedMods.Railcraft) {
-            if (sSteelAnvil == aBlock) {
-                return true;
-            }
-        }
-        if (LoadedMods.EnderIO) {
-            if (sDarkSteelAnvil == aBlock) {
-                return true;
-            }
-        }
-        if (LoadedMods.ThaumicBases) {
-            return sThaumiumAnvil == aBlock || sVoidAnvil == aBlock;
-        }
-        return false;
-    }
-
-    public static int getAnvilTier(Block aBlock) {
-        if (isBlockAnvil(aBlock)) {
-            if (sAnvil == aBlock) {
-                return 1;
-            }
-            if (LoadedMods.Railcraft) {
-                if (sSteelAnvil == aBlock) {
-                    return 2;
-                }
-            }
-            if (LoadedMods.EnderIO) {
-                if (sDarkSteelAnvil == aBlock) {
-                    return 3;
-                }
-            }
-            if (LoadedMods.ThaumicBases) {
-                if (sThaumiumAnvil == aBlock) {
-                    return 3;
-                }
-                if (sVoidAnvil == aBlock) {
-                    return 4;
-                }
-            }
-        }
-        return 0;
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        setAnvilBlocks();
-        super.onFirstTick(aBaseMetaTileEntity);
+    private int getAnvilTier() {
+        return mAnvilTier;
     }
 }
