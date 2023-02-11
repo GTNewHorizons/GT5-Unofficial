@@ -827,6 +827,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             }
         }
 
+        // Check there is 1 input bus.
+        if (mInputBusses.size() != 1) {
+            return false;
+        }
+
         // Make sure there are no energy hatches.
         {
             if (mEnergyHatches.size() > 0) {
@@ -903,9 +908,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(
                         "is avaliable the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("Recipes that fail will return a random amount of the fluid back from the recipe and some")
-                .addInfo("exotic material that rejects conventional physics.").addSeparator()
-                .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
+                .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
+                .addInfo(
+                        "E.g. A circuit of 1 will provide 1 OC, 4x EU consumed and 0.5x the time. All outputs are equal.")
+                .addSeparator().addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "896"
                                 + EnumChatFormatting.GRAY
@@ -928,9 +934,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addStructureInfo(
                         "Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
                 .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + "+ ME output hatch.")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input busses.")
+                        "Requires " + EnumChatFormatting.GOLD + "1-18" + EnumChatFormatting.GRAY + " ME output hatch.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
                 .addStructureInfo(
                         "Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
                 .addStructureInfo("--------------------------------------------").beginStructureBlock(33, 33, 33, false)
@@ -994,6 +999,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     // Check for recipe every recipeCheckInterval ticks.
     private static final long RECIPE_CHECK_INTERVAL = 3 * 20;
+    private long currentCircuitMultiplier = 0;
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
@@ -1008,6 +1014,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
             currentRecipe = eyeOfHarmonyRecipeStorage.recipeLookUp(aStack);
             if (processRecipe(currentRecipe)) {
+                // Get circuit damage, clamp it and then use it later for overclocking.
+                ItemStack circuit = mInputBusses.get(0).getStackInSlot(0);
+                if (circuit != null) {
+                    currentCircuitMultiplier = Math.max(0, Math.min(circuit.getItemDamage(), 24));
+                } else {
+                    currentCircuitMultiplier = 0;
+                }
+
                 return true;
             }
 
@@ -1044,13 +1058,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         // Remove EU from the users network.
-        if (!addEUToGlobalEnergyMap(userUUID, -recipeObject.getEUStartCost())) {
+        if (!addEUToGlobalEnergyMap(
+                userUUID,
+                (long) (-recipeObject.getEUStartCost() * pow(4, currentCircuitMultiplier)))) {
             return false;
         }
 
         mMaxProgresstime = recipeProcessTimeCalculator(
                 recipeObject.getRecipeTimeInTicks(),
                 recipeObject.getSpacetimeCasingTierRequired());
+        mMaxProgresstime /= pow(2, currentCircuitMultiplier);
 
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(),
@@ -1282,6 +1299,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String RECIPE_RUNNING_NBT_TAG = EYE_OF_HARMONY + "recipeRunning";
     private static final String RECIPE_EU_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "euOutput";
     private static final String RECIPE_SUCCESS_CHANCE_NBT_TAG = EYE_OF_HARMONY + "recipeSuccessChance";
+    private static final String CURRENT_CIRCUIT_MULTIPLIER_TAG = EYE_OF_HARMONY + "currentCircuitMultiplier";
 
     // Sub tags, less specific names required.
     private static final String STACK_SIZE = "stackSize";
@@ -1295,6 +1313,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         aNBT.setBoolean(RECIPE_RUNNING_NBT_TAG, recipeRunning);
         aNBT.setLong(RECIPE_EU_OUTPUT_NBT_TAG, euOutput);
         aNBT.setDouble(RECIPE_SUCCESS_CHANCE_NBT_TAG, successChance);
+        aNBT.setLong(CURRENT_CIRCUIT_MULTIPLIER_TAG, currentCircuitMultiplier);
 
         // Store damage values/stack sizes of GT items being outputted.
         NBTTagCompound itemStackListNBTTag = new NBTTagCompound();
