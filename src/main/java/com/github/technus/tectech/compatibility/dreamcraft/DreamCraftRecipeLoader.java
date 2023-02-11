@@ -5033,7 +5033,7 @@ public class DreamCraftRecipeLoader {
 
         final ItemStack[] plateList = new ItemStack[] {
                 // Dense Shirabon plate.
-                getModItem("bartworks", "gt.bwMetaGeneratedplateDense", 1, 10112),
+                GT_OreDictUnificator.get("plateDenseShirabon", 1),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.WhiteDwarfMatter, 1),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.WhiteDwarfMatter, 4),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.WhiteDwarfMatter, 16),
@@ -5152,12 +5152,16 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), // Cosmic fabric
-                                // manipulator
-                                ME_Singularity, plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                        new Object[] { baseCasing,
+                                // T7 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Cosmic fabric manipulator
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), ME_Singularity,
+                                plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("space", 1_440 * (absoluteTier + 1)),
                                 specialFluid[absoluteTier] },
@@ -5173,10 +5177,15 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), // Cosmic fabric
+                        new Object[] { baseCasing,
+                                // T7 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Cosmic fabric manipulator
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), ME_Singularity,
                                 // manipulator
                                 ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
@@ -5195,10 +5204,15 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), // Cosmic fabric
+                        new Object[] { baseCasing,
+                                // T7 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Cosmic fabric manipulator
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), ME_Singularity,
                                 // manipulator
                                 ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
@@ -5220,12 +5234,16 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 9), // Infinity infused
-                                // manipulator
-                                ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
+                        new Object[] { baseCasing,
+                                // T8 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Infinity infused manipulator
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 9), ME_Singularity,
+                                ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("space", 1_440 * (absoluteTier + 1)),
@@ -5242,13 +5260,17 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 9), // Infinity infused
-                                // manipulator
-                                ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                                plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                        new Object[] { baseCasing,
+                                // T8 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Infinity infused manipulator
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 9), ME_Singularity,
+                                ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
+                                getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("space", 1_440 * (absoluteTier + 1)),
                                 specialFluid[absoluteTier], },
@@ -5264,13 +5286,17 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 9), // Infinity infused
-                                // manipulator
+                        new Object[] { baseCasing,
+                                // T8 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Infinity infused manipulator
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 9), ME_Singularity,
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                                ME_Singularity, plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                                plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("space", 1_440 * (absoluteTier + 1)),
                                 specialFluid[absoluteTier], },
@@ -5289,14 +5315,17 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 10), // Spacetime continuum
-                                // ripper
+                        new Object[] { baseCasing,
+                                // T9 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Spacetime continuum ripper
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 10), ME_Singularity,
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                                ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                                getItemContainer("QuantumCircuit").get(set) },
+                                ME_Singularity, plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("space", 1_440 * (absoluteTier + 1)),
                                 specialFluid[absoluteTier], },
@@ -5312,13 +5341,17 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 10), // Spacetime continuum
-                                // ripper
+                        new Object[] { baseCasing,
+                                // T9 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Spacetime continuum ripper
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 10), ME_Singularity,
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                                ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
+                                ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("space", 1_440 * (absoluteTier + 1)),
@@ -5335,13 +5368,17 @@ public class DreamCraftRecipeLoader {
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
                         (int) TierEU.RECIPE_MAX, // eu/t
                         (absoluteTier + 1) * 8, // amperage
-                        new Object[] { baseCasing, getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
-                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)), // quantum tank V (max tier)
-                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1), // Inf chest
-                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 10), // Spacetime continuum
-                                // ripper
+                        new Object[] { baseCasing,
+                                // T9 Yotta cell.
+                                getModItem("GoodGenerator", "yottaFluidTankCells", tier, (5 + set)),
+                                // quantum tank V (max tier)
+                                ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
+                                // Inf chest
+                                getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
+                                // Spacetime continuum ripper
+                                getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 10), ME_Singularity,
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                                ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
+                                ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 FluidUtils.getFluidStack("space", 1_440 * (absoluteTier + 1)),
@@ -5596,13 +5633,13 @@ public class DreamCraftRecipeLoader {
                             getModItem("dreamcraft", "item.HighEnergyFlowCircuit", 64, 0),
 
                             // Metastable Oganesson Plate.
-                            getModItem("bartworks", "gt.bwMetaGeneratedplate", 6, 10111),
+                            GT_OreDictUnificator.get("plateMetastableOganesson", 6),
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueTopaz, 6),
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CallistoIce, 6),
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ledox, 6),
 
                             // Metastable Oganesson Screw.
-                            getModItem("bartworks", "gt.bwMetaGeneratedscrew", 6, 10111),
+                            GT_OreDictUnificator.get("screwMetastableOganesson", 6),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueTopaz, 6),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CallistoIce, 6),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Ledox, 6), },
