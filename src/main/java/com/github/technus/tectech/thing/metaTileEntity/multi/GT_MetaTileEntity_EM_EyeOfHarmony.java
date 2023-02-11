@@ -694,7 +694,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addElement(
                     'H',
                     buildHatchAdder(GT_MetaTileEntity_EM_EyeOfHarmony.class)
-                            .atLeast(InputHatch, OutputHatch, OutputBus, Maintenance).casingIndex(texturePage << 7)
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance).casingIndex(texturePage << 7)
                             .dot(1).buildAndChain(sBlockCasingsBA0, 12))
             .addElement(
                     'E',
@@ -807,23 +807,19 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 return false;
             }
 
-            for (GT_MetaTileEntity_Hatch_OutputBus hatch : mOutputBusses) {
-                if (!(hatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
-                    return false;
-                }
+            if (!(mOutputBusses.get(0) instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+                return false;
             }
         }
 
-        // Check if there is 1+ output hatch, and they are ME output hatches.
+        // Check if there is 1 output hatch, and they are ME output hatches.
         {
-            if ((mOutputHatches.size() == 0) || (mOutputHatches.size() > 18)) {
+            if (mOutputHatches.size() != 1) {
                 return false;
             }
 
-            for (GT_MetaTileEntity_Hatch_Output hatch : mOutputHatches) {
-                if (!(hatch instanceof GT_MetaTileEntity_Hatch_Output_ME)) {
-                    return false;
-                }
+            if (!(mOutputHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Output_ME)) {
+                return false;
             }
         }
 
@@ -934,7 +930,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addStructureInfo(
                         "Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
                 .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD + "1-18" + EnumChatFormatting.GRAY + " ME output hatch.")
+                        "Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
                 .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
                 .addStructureInfo(
                         "Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
@@ -1067,7 +1063,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         mMaxProgresstime = recipeProcessTimeCalculator(
                 recipeObject.getRecipeTimeInTicks(),
                 recipeObject.getSpacetimeCasingTierRequired());
-        mMaxProgresstime /= pow(2, currentCircuitMultiplier);
+        mMaxProgresstime /= max(1, pow(2, currentCircuitMultiplier));
 
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(),
@@ -1346,6 +1342,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         recipeRunning = aNBT.getBoolean(RECIPE_RUNNING_NBT_TAG);
         euOutput = aNBT.getLong(RECIPE_EU_OUTPUT_NBT_TAG);
         successChance = aNBT.getDouble(RECIPE_SUCCESS_CHANCE_NBT_TAG);
+        currentCircuitMultiplier = aNBT.getLong(CURRENT_CIRCUIT_MULTIPLIER_TAG);
 
         // Load damage values/stack sizes of GT items being outputted and convert back to items.
         NBTTagCompound tempItemTag = aNBT.getCompoundTag(ITEM_OUTPUT_NBT_TAG);
