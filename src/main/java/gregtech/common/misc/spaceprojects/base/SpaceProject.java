@@ -113,7 +113,7 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public ItemStack getItemCostPerStage(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex > mItemsCost.length) {
+        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
             return null;
         }
 
@@ -147,7 +147,7 @@ public class SpaceProject implements ISpaceProject {
             return mCurrentUpgrade.getCurrentItemProgress(aIndex);
         }
 
-        if (mItemsCost == null || aIndex < 0 || aIndex > mItemsCost.length) {
+        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
             return null;
         }
 
@@ -179,7 +179,7 @@ public class SpaceProject implements ISpaceProject {
             return mCurrentUpgrade.getTotalItemCost(aIndex);
         }
 
-        if (mItemsCost == null || aIndex < 0 || aIndex > mItemsCost.length) {
+        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
             return null;
         }
 
@@ -203,7 +203,7 @@ public class SpaceProject implements ISpaceProject {
             return mCurrentUpgrade.getFluidCostPerStage(aIndex);
         }
 
-        if (mFluidsCost == null || aIndex < 0 || aIndex > mFluidsCost.length) {
+        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
             return null;
         }
 
@@ -237,7 +237,7 @@ public class SpaceProject implements ISpaceProject {
             return mCurrentUpgrade.getCurrentFluidProgress(aIndex);
         }
 
-        if (mFluidsCost == null || aIndex < 0 || aIndex > mFluidsCost.length) {
+        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
             return null;
         }
 
@@ -273,7 +273,7 @@ public class SpaceProject implements ISpaceProject {
             return mCurrentUpgrade.getTotalFluidCost(aIndex);
         }
 
-        if (mFluidsCost == null || aIndex < 0 || aIndex > mFluidsCost.length) {
+        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
             return null;
         }
 
