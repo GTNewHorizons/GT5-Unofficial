@@ -801,9 +801,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             return false;
         }
 
-        // Check if there is 1+ output bus, and they are ME output busses.
+        // Check if there is 1 output bus, and it is a ME output bus.
         {
-            if (mOutputBusses.size() == 0) {
+            if (mOutputBusses.size() != 1) {
                 return false;
             }
 
@@ -816,7 +816,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Check if there is 1+ output hatch, and they are ME output hatches.
         {
-            if (mOutputHatches.size() == 0) {
+            if ((mOutputHatches.size() == 0) || (mOutputHatches.size() > 18)) {
                 return false;
             }
 
