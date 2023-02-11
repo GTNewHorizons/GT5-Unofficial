@@ -729,6 +729,66 @@ gt.blockmachines.multimachine.em.blackholegenerator.hint.1=2 - Elemental Hatches
 gt.blockmachines.multimachine.em.blackholegenerator.desc.0=Controller block of the Black Hole Generator
 gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Uses a black hole to generate power
 
+# Eye of Harmony
+achievement.gt.blockmachines.multimachine.em.eye_of_harmony=Eye of Harmony Controller
+achievement.gt.blockcasingsBA0.12=Infinite Spacetime Energy Boundary Casing
+achievement.gt.blockcasingsBA0.11=Reinforced Spatial Structure Casing
+achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
+
+achievement.gt.spacetime_compression_field_generator.0=Crude Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.1=Primitive Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.2=Stable Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.3=Advanced Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.4=Superb Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.5=Exotic Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.6=Perfect Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.7=Tipler Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.8=Gallifreyan Spacetime Compression Field Generator
+
+achievement.gt.time_acceleration_field_generator.0=Crude Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.1=Primitive Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.2=Stable Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.3=Advanced Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.4=Superb Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.5=Exotic Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.6=Perfect Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.7=Tipler Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.8=Gallifreyan Time Dilation Field Generator
+
+achievement.gt.stabilisation_field_generator.0=Crude Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.1=Primitive Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.2=Stable Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.3=Advanced Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.4=Superb Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.5=Exotic Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.6=Perfect Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.7=Tipler Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.8=Gallifreyan Stabilisation Field Generator
+
+# Optical Circuits
+achievement.gt.metaitem.03.32155=Optical Assembly
+achievement.gt.metaitem.03.32156=Optical Computer
+achievement.gt.metaitem.03.32157=Optical Mainframe
+
+# Parts
+achievement.gt.metaitem.01.32017=Electric Motor UIV
+achievement.gt.metaitem.01.32021=Electric Piston UIV
+achievement.gt.metaitem.01.32025=Electric Pump UIV
+achievement.gt.metaitem.01.32029=Conveyor Module UIV
+achievement.gt.metaitem.01.32033=Robot Arm UIV
+achievement.gt.metaitem.01.32037=Emitter UIV
+achievement.gt.metaitem.01.32041=Sensor UIV
+achievement.gt.metaitem.01.32045=Field Generator UIV
+
+achievement.gt.metaitem.01.32018=Electric Motor UMV
+achievement.gt.metaitem.01.32022=Electric Piston UMV
+achievement.gt.metaitem.01.32026=Electric Pump UMV
+achievement.gt.metaitem.01.32030=Conveyor Module UMV
+achievement.gt.metaitem.01.32034=Robot Arm UMV
+achievement.gt.metaitem.01.32038=Emitter UMV
+achievement.gt.metaitem.01.32042=Sensor UMV
+achievement.gt.metaitem.01.32046=Field Generator UMV
+
 #Pipes
 gt.blockmachines.pipe.elementalmatter.name=Quantum "Tunnel"
 gt.blockmachines.pipe.elementalmatter.desc.0=Quantum tunneling device.
