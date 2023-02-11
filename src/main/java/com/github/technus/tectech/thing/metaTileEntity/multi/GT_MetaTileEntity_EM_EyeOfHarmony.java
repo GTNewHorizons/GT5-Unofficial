@@ -909,11 +909,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "896"
                                 + EnumChatFormatting.GRAY
-                                + " Reinforced Spacetime Structure Casing.")
+                                + " Reinforced Spatial Structure Casing.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "534"
                                 + EnumChatFormatting.GRAY
-                                + " Ultimate Temporal Boundary Casing.")
+                                + " Reinforced Temporal Structure Casing.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "680" + EnumChatFormatting.GRAY + " Time Dilation Field Generator.")
                 .addStructureInfo(
