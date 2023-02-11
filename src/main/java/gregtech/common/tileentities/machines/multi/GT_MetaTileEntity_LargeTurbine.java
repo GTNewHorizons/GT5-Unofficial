@@ -168,9 +168,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
                 GT_RenderUtil.renderBlockIcon(
                         aRenderer,
                         tBlock,
-                        tX + tDirection.offsetX * 0.001,
-                        tY + tDirection.offsetY * 0.001,
-                        tZ + tDirection.offsetZ * 0.001,
+                        tX + tDirection.offsetX * 0.01,
+                        tY + tDirection.offsetY * 0.01,
+                        tZ + tDirection.offsetZ * 0.01,
                         tTextures[i].getIcon(),
                         tFacing);
             }
