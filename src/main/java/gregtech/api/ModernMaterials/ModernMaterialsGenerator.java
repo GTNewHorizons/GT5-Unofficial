@@ -4,14 +4,14 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Config;
 import net.minecraftforge.common.config.Configuration;
 
-import java.awt.*;
 import java.io.File;
 
-import static gregtech.api.ModernMaterials.ModernMaterials.registerAllMaterials;
-import static gregtech.api.ModernMaterials.ModernMaterials.registerMaterial;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterials;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Custom;
 import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.Gear;
 
@@ -37,11 +37,13 @@ public class ModernMaterialsGenerator {
             .setName("Amazium")
             .setColor(100, 0, 200, 255)
             .addAllParts()
+            .setMaterialTier(TierEU.UXV)
+            .setMaterialTimeMultiplier(2.5)
             .build();
 
         ModernMaterial copper = new ModernMaterial()
             .setName("Copper")
-            .setColor(new Color(255, 0, 0, 255))
+            .setColor(255, 0, 0, 255)
             .addPartsCustom(
                 new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
             .build();

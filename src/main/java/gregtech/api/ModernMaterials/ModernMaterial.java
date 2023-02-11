@@ -11,6 +11,8 @@ public class ModernMaterial {
     private Color mColor;
     private int mID;
     private String mName;
+    private long materialTier;
+    private double materialTimeMultiplier;
 
     public ModernMaterial() {}
 
@@ -31,6 +33,11 @@ public class ModernMaterial {
 
     public ModernMaterial setName(String aName) {
         mName = aName;
+        return this;
+    }
+
+    public ModernMaterial setMaterialTimeMultiplier(double materialTimeMultiplier) {
+        this.materialTimeMultiplier = materialTimeMultiplier;
         return this;
     }
 
@@ -68,6 +75,14 @@ public class ModernMaterial {
         return mName;
     }
 
+    public double getMaterialTimeMultiplier() {
+        return materialTimeMultiplier;
+    }
+
+    public long getMaterialTier() {
+        return materialTier;
+    }
+
     public ModernMaterial addPart(final PartsEnum aPart) {
         existingPartsForMaterial.put(aPart, new CustomPartInfo(aPart));
         return this;
@@ -78,6 +93,11 @@ public class ModernMaterial {
         for (PartsEnum tPart : PartsEnum.values()) {
             existingPartsForMaterial.put(tPart, new CustomPartInfo(tPart));
         }
+        return this;
+    }
+
+    public ModernMaterial setMaterialTier(final long tier) {
+        this.materialTier = tier;
         return this;
     }
 

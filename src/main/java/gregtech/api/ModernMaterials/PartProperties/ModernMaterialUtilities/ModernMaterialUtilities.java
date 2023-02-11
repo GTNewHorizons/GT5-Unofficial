@@ -1,6 +1,6 @@
 package gregtech.api.ModernMaterials.PartProperties.ModernMaterialUtilities;
 
-import static gregtech.api.ModernMaterials.ModernMaterials.*;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.item.ItemStack;

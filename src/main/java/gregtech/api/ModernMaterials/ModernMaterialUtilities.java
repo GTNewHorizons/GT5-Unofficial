@@ -5,14 +5,18 @@ import static gregtech.api.enums.ConfigCategories.ModernMaterials.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialRenderer;
+import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-public class ModernMaterials {
+public class ModernMaterialUtilities {
 
     private static final List<ModernMaterial> mNewMaterials = new ArrayList<>();
     public static final HashMap<Integer, ModernMaterial> materialIdToMaterial = new HashMap<>();
@@ -44,6 +48,7 @@ public class ModernMaterials {
                     .set(GregTech_API.mLastMaterialID);
             materialIdToMaterial.put(GregTech_API.mLastMaterialID, tMaterial);
         }
+
         for (PartsEnum tPart : PartsEnum.values()) {
             MaterialPart materialPart = new MaterialPart(tPart);
             materialPart.setUnlocalizedName(tPart.partName);
@@ -54,5 +59,19 @@ public class ModernMaterials {
             // Registers the renderer which allows for part colouring.
             MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialRenderer());
         }
+
+        // Register all material parts.
+        for(ModernMaterial material : materialIdToMaterial.values()) {
+            registerAllMaterialPartRecipes(material);
+        }
+
+    }
+
+    private static void registerAllMaterialPartRecipes(ModernMaterial material) {
+        new ModernMaterialsPlateRecipeGenerator().run(material);
+    }
+
+    public static ItemStack getPart(ModernMaterial material, PartsEnum part) {
+        return new MaterialPart(mNameMaterialMap.get("test"), 1);
     }
 }

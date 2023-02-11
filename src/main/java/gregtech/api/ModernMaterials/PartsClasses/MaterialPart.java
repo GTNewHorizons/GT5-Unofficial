@@ -1,6 +1,6 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
-import static gregtech.api.ModernMaterials.ModernMaterials.materialIdToMaterial;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIdToMaterial;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Custom;
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
@@ -33,6 +33,7 @@ public class MaterialPart extends Item {
             if (material.doesPartExist(mPart)) {
                 ItemStack itemStack = new ItemStack(aItem, 1, materialID);
                 lst.add(itemStack);
+
             }
         });
     }
