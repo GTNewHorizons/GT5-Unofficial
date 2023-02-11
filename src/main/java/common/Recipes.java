@@ -537,7 +537,7 @@ public class Recipes {
 
         // Controller
         final Object[] lsc_recipe = { "LPL", "CBC", "LPL", 'L',
-                ItemList.IC2_LapotronCrystal.getWithCharge(1L, 10000000), 'P', ItemList.Circuit_Chip_PIC.get(1L), 'C',
+                ItemList.IC2_LapotronCrystal.getWildcard(1L), 'P', ItemList.Circuit_Chip_PIC.get(1L), 'C',
                 OrePrefixes.circuit.get(Materials.Master), 'B', new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), };
         GT_ModHandler.addCraftingRecipe(TileEntities.lsc.getStackForm(1), lsc_recipe);
 
