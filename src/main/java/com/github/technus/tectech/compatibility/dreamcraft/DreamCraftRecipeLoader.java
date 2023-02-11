@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -5020,9 +5021,9 @@ public class DreamCraftRecipeLoader {
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
         ItemStack largeShirabonPlate = getModItem("TGregworks", "tGregToolPartLargePlate", 1, 1735);
-        // NBTTagCompound tag = largeShirabonPlate.getTagCompound();
-        // tag.setString("material", "Shirabon");
-        // largeShirabonPlate.writeToNBT(tag);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("material", "Shirabon");
+        largeShirabonPlate.stackTagCompound = tag;
 
         final FluidStack[] specialFluid = new FluidStack[] { FluidUtils.getFluidStack("molten.shirabon", 1_440),
                 Materials.WhiteDwarfMatter.getMolten(1_440), Materials.WhiteDwarfMatter.getMolten(1_440 * 4),
@@ -5081,7 +5082,8 @@ public class DreamCraftRecipeLoader {
         // EOH Spatial Individual Casing
         {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.Quantum_Chest_IV.get(1),
+                    // Dyson Swarm Module Deployment Unit Base Casing
+                    getModItem("GalaxySpace", "dysonswarmparts", 1, 2),
                     256_000_000, // total comp
                     16_384, // comp/s
                     (int) TierEU.RECIPE_MAX, // eu/t
@@ -5186,7 +5188,6 @@ public class DreamCraftRecipeLoader {
                                 getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
                                 // Cosmic fabric manipulator
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), ME_Singularity,
-                                // manipulator
                                 ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
@@ -5213,7 +5214,6 @@ public class DreamCraftRecipeLoader {
                                 getModItem("avaritiaddons", "InfinityChest", absoluteTier + 1),
                                 // Cosmic fabric manipulator
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), ME_Singularity,
-                                // manipulator
                                 ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
