@@ -1800,8 +1800,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 drawNEIText(
                         recipeInfo,
                         GT_Utility.trans("152", "Total: ") + formatNumbers(1000L * recipeInfo.recipe.mEUt) + " EU");
-                // 1000 / (20 ticks * 5 seconds) = 100L/t. 100L/t * x EU/L = 100 * x EU/t.
-                drawNEIText(recipeInfo, "Average: " + formatNumbers(100L * recipeInfo.recipe.mEUt) + " EU/t");
+                // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
+                drawNEIText(recipeInfo, "Average: " + formatNumbers(10L * recipeInfo.recipe.mEUt) + " EU/t");
             }
         }
 
