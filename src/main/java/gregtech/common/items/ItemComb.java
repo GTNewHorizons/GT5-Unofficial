@@ -1272,10 +1272,10 @@ public class ItemComb extends Item {
                 new int[] { 30 * 100, (int) (7.5 * 100), 20 * 100 },
                 Voltage.IV);
         // Walrus Recipe
-        if (Loader.isModLoaded("extracells")) {
+        if (Loader.isModLoaded("ae2fc")) {
             addCentrifugeToItemStack(
                     CombType.WALRUS,
-                    new ItemStack[] { GT_ModHandler.getModItem("extracells", "walrus", 1L, 0) },
+                    new ItemStack[] { GT_ModHandler.getModItem("ae2fc", "walrus", 1L, 0) },
                     new int[] { 100 * 100 },
                     Voltage.LV);
         }
