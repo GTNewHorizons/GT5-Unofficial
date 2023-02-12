@@ -55,7 +55,7 @@ public class SPM_Command extends CommandBase {
                             new ChatComponentText("You don't have the permissions to execute this command"));
                     return;
                 }
-                processReset(aSender, aArguments.length >= 2 ? aArguments[1] : null);
+                processReset(aSender, aArguments.length >= 2 ? aArguments[1] : aSender.getCommandSenderName());
                 break;
             case UNLOCK:
                 if (!aSender.canCommandSenderUseCommand(4, getCommandName())) {
