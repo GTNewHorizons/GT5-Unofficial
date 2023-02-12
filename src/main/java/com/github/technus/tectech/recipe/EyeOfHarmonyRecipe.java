@@ -145,12 +145,12 @@ public class EyeOfHarmonyRecipe {
         // Tier 8 - 576 Universium
         // Tier 9 - 2304 Universium
 
-        if (rocketTierOfRecipe <= 3) {
+        if (rocketTierOfRecipe <= 2) {
             fluidStackArrayList.add(Materials.WhiteDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe)));
         }
 
-        if ((4 <= rocketTierOfRecipe) && (rocketTierOfRecipe <= 7)) {
-            fluidStackArrayList.add(Materials.BlackDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe - 4)));
+        if ((3 <= rocketTierOfRecipe) && (rocketTierOfRecipe <= 7)) {
+            fluidStackArrayList.add(Materials.BlackDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe - 3)));
         }
 
         if (rocketTierOfRecipe >= 8) {

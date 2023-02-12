@@ -58,7 +58,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
-    private static final boolean EOH_DEBUG_MODE = false;
+    private static final boolean EOH_DEBUG_MODE = true;
     private boolean disableAnimation = false;
 
     // Region variables.
@@ -1008,14 +1008,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
             currentRecipe = eyeOfHarmonyRecipeStorage.recipeLookUp(aStack);
             if (processRecipe(currentRecipe)) {
-                // Get circuit damage, clamp it and then use it later for overclocking.
-                ItemStack circuit = mInputBusses.get(0).getStackInSlot(0);
-                if (circuit != null) {
-                    currentCircuitMultiplier = Math.max(0, Math.min(circuit.getItemDamage(), 24));
-                } else {
-                    currentCircuitMultiplier = 0;
-                }
-
                 return true;
             }
 
@@ -1033,6 +1025,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
+
+        // Get circuit damage, clamp it and then use it later for overclocking.
+        ItemStack circuit = mInputBusses.get(0).getStackInSlot(0);
+        if (circuit != null) {
+            currentCircuitMultiplier = (long) clamp(circuit.getItemDamage(), 0, 24);
+        } else {
+            currentCircuitMultiplier = 0;
+        }
 
         // Debug mode, overwrites the required fluids to initiate the recipe to 100L of each.
         if (EOH_DEBUG_MODE) {
