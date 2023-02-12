@@ -79,6 +79,11 @@ public class SpaceProjectManager {
         mSpaceTeams.put(aTeamMember, aTeamMember);
     }
 
+    public static Collection<ISpaceProject> getTeamSpaceProjects(UUID aTeam) {
+        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
+        return tMap.values();
+    }
+
     /*
      * General Project Helpers
      */
