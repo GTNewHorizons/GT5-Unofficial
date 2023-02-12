@@ -12,9 +12,9 @@ dependencies {
     compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
     compile('com.github.GTNewHorizons:GTNEIOrePlugin:1.0.26:dev')
 
-    // todo To remove, for testing only.
-    compile('com.github.GTNewHorizons:ExtraCells2:2.5.31:dev')
-    compile('com.github.GTNewHorizons:AE2FluidCraft-Rework:1.0.60-gtnh:dev')
+    compileOnly("com.github.GTNewHorizons:TinkersGregworks:master-SNAPSHOT:dev") {
+        transitive = false
+    }
 
     compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.8.0.9-GTNH:dev') {transitive=false}
