@@ -14,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 public class SPM_Command extends CommandBase {
@@ -113,6 +114,7 @@ public class SPM_Command extends CommandBase {
                     return;
                 }
                 processCopy(aSender, aArguments[1], aArguments[2]);
+                break;
         }
     }
 
