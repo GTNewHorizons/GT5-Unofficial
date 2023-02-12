@@ -38,6 +38,10 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         super(DATA_NAME);
     }
 
+    public SpaceProjectWorldSavedData(String aName) {
+        super(aName);
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         try {
