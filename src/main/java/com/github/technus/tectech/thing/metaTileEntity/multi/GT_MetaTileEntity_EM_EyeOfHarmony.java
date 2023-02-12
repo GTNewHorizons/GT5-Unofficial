@@ -58,7 +58,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
-    private static final boolean EOH_DEBUG_MODE = true;
+    private static final boolean EOH_DEBUG_MODE = false;
     private boolean disableAnimation = false;
 
     // Region variables.
