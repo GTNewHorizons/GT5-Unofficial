@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -84,6 +85,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMachineProgress,
         IMultiBlockFluidHandler, IMultiBlockInventory, IMTE_AddToolTips {
 
+    private static final int TICKS_BETWEEN_RECIPE_CHECKS = 100;
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
     private final List<AdvancedCasing> mUpgradeCasings = new ArrayList<AdvancedCasing>();
     protected BuildState buildState = new BuildState();
@@ -93,11 +95,14 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
-    private int mMaxProgressTime = 0, mProgressTime = 0;
+    protected int mMaxProgressTime = 0;
+    private int mProgressTime = 0;
     private boolean mStructureOkay = false, mStructureChanged = false;
-    private boolean mWorks = true, mWorkUpdate = false, mWasShutdown = false, mActive = false;
+    private boolean mWorks = true, mWorkUpdate = false, mWasShutdown = false, mActive = false, mSeparateInputs = true;
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
+    private ItemStack[] mItemsToOutput;
+    private String mInventory;
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
@@ -154,6 +159,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         aNBT.setByte(NBT.FLIP, (byte) mExtendedFacing.getFlip().getIndex());
 
         saveUpgradeInventoriesToNBT(aNBT);
+        saveItemsToOutput(aNBT);
     }
 
     private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {
@@ -183,6 +189,20 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         aNBT.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, tListOutputInvs);
     }
 
+    private void saveItemsToOutput(NBTTagCompound aNBT) {
+        final NBTTagList tList = new NBTTagList();
+        for (int tSlot = 0; tSlot < mItemsToOutput.length; tSlot++) {
+            final ItemStack tStack = mItemsToOutput[tSlot];
+            if (tStack != null) {
+                final NBTTagCompound tag = new NBTTagCompound();
+                tag.setByte("s", (byte) tSlot);
+                tStack.writeToNBT(tag);
+                tList.appendTag(tag);
+            }
+        }
+        aNBT.setTag(NBT.ITEM_OUT, tList);
+    }
+
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
@@ -199,6 +219,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 Flip.byIndex(aNBT.getByte(NBT.FLIP)));
 
         loadUpgradeInventoriesFromNBT(aNBT);
+        loadItemsToOutput(aNBT);
     }
 
     private void loadUpgradeInventoriesFromNBT(NBTTagCompound aNBT) {
@@ -223,6 +244,16 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             loadInventory(tNBT, tInv, NBT.INV_OUTPUT_LIST);
             multiBlockOutputInventory.put(invUUID, tInv);
             multiBlockOutputInventoryNames.put(invUUID, invName);
+        }
+    }
+
+    private void loadItemsToOutput(NBTTagCompound aNBT) {
+        final NBTTagList tList = aNBT.getTagList(NBT.ITEM_OUT, 10);
+        mItemsToOutput = new ItemStack[tList.tagCount()];
+        for (int i = 0; i < tList.tagCount(); i++) {
+            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+            final int tSlot = tNBT.getByte("s");
+            if (tSlot >= 0 && tSlot < mItemsToOutput.length) mItemsToOutput[tSlot] = GT_Utility.loadItem(tNBT);
         }
     }
 
@@ -435,7 +466,38 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 // Recheck the structure every 30 seconds or so
                 if (!checkStructure(false)) checkStructure(true);
             }
+            if (mStructureOkay) {
+                runMachine(aTick);
+            } else {
+                stopMachine();
+            }
         }
+    }
+
+    protected void runMachine(long aTick) {
+        if (mMaxProgressTime > 0) {
+            markDirty();
+            if (mMaxProgressTime > 0 && ++mProgressTime >= mMaxProgressTime) {
+                mProgressTime = 0;
+                mMaxProgressTime = 0;
+                outputItems();
+                if (isAllowedToWork()) {
+                    checkRecipe();
+                }
+            }
+        } else {
+            if (aTick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
+                if (isAllowedToWork()) {
+                    if (checkRecipe()) {
+                        markDirty();
+                    }
+                }
+            }
+        }
+    }
+
+    protected boolean checkRecipe() {
+        return checkRecipe(null);
     }
 
     protected void clearSpecialLists() {
@@ -536,6 +598,14 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public void setActive(boolean aActive) {
         mActive = aActive;
+    }
+
+    public boolean isSeparateInputs() {
+        return mSeparateInputs;
+    }
+
+    public void setSeparateInputs(boolean aSeparateInputs) {
+        mSeparateInputs = aSeparateInputs;
     }
 
     @Override
@@ -1165,7 +1235,44 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return isItemValidForSlot(aSlot, aStack);
     }
 
-    /**
+    /*
+     * Helper Methods For Recipe checking
+     */
+
+    protected ItemStack[] getAllItemInputs() {
+        return getInventoriesForInput().getStacks().toArray(new ItemStack[0]);
+    }
+
+    protected Iterable<Pair<ItemStack[], String>> getItemInputsForEachInventory() {
+        return multiBlockInputInventory.entrySet().stream()
+                .map((entry) -> Pair.of(entry.getValue().getStacks().toArray(new ItemStack[0]), entry.getKey()))
+                .collect(Collectors.toList());
+    }
+
+    protected void setItemOutputs(ItemStack[] aItemOutputs, String aInventory) {
+        mItemsToOutput = aItemOutputs;
+        mInventory = aInventory;
+    }
+
+    private void outputItems() {
+        int index = 0;
+        if (mItemsToOutput == null) {
+            return;
+        }
+        if (mInventory != null) {
+            for (ItemStack tItem : mItemsToOutput) {
+                multiBlockOutputInventory.getOrDefault(mInventory, getInventoriesForOutput())
+                        .insertItem(index++, tItem.copy(), false);
+            }
+        } else {
+            for (ItemStack tItem : mItemsToOutput) {
+                getInventoriesForOutput().insertItem(index++, tItem.copy(), false);
+            }
+        }
+        mItemsToOutput = null;
+    }
+
+    /*
      * GUI Work - Multiblock GUI related methods
      */
     @Override
