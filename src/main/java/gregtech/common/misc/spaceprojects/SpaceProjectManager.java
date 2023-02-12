@@ -47,6 +47,7 @@ public class SpaceProjectManager {
         Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
         if (tMap.containsKey(Pair.of(aLocation, aProjectName))) return false;
         tMap.put(Pair.of(aLocation, aProjectName), aProject);
+        SpaceProjectWorldSavedData.INSTANCE.markDirty();
         return true;
     }
 
@@ -66,6 +67,7 @@ public class SpaceProjectManager {
         } else {
             mSpaceTeams.put(aTeamMember, aTeamLeader);
         }
+        SpaceProjectWorldSavedData.INSTANCE.markDirty();
     }
 
     public static UUID getLeader(UUID aTeamMember) {
@@ -77,10 +79,14 @@ public class SpaceProjectManager {
             return;
         }
         mSpaceTeams.put(aTeamMember, aTeamMember);
+        SpaceProjectWorldSavedData.INSTANCE.markDirty();
     }
 
     public static Collection<ISpaceProject> getTeamSpaceProjects(UUID aTeam) {
         Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
+        if (tMap == null) {
+            return null;
+        }
         return tMap.values();
     }
 
