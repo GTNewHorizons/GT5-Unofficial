@@ -85,6 +85,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMachineProgress,
         IMultiBlockFluidHandler, IMultiBlockInventory, IMTE_AddToolTips {
 
+    private static final int TICKS_BETWEEN_RECIPE_CHECKS = 100;
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
     private final List<AdvancedCasing> mUpgradeCasings = new ArrayList<AdvancedCasing>();
     protected BuildState buildState = new BuildState();
@@ -251,7 +252,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         mItemsToOutput = new ItemStack[tList.tagCount()];
         for (int i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final int tSlot = tNBT.getShort("s");
+            final int tSlot = tNBT.getByte("s");
             if (tSlot >= 0 && tSlot < mItemsToOutput.length) mItemsToOutput[tSlot] = GT_Utility.loadItem(tNBT);
         }
     }
@@ -485,8 +486,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 }
             }
         } else {
-            if (aTick % 100 == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
-
+            if (aTick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
                 if (isAllowedToWork()) {
                     if (checkRecipe()) {
                         markDirty();
@@ -497,8 +497,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     protected boolean checkRecipe() {
-        boolean result = checkRecipe(null);
-        return result;
+        return checkRecipe(null);
     }
 
     protected void clearSpecialLists() {
