@@ -12,8 +12,8 @@ public class SP_Requirements implements ISP_Requirements {
 
     // #region Variables
 
-    private SpaceBodyType mSpaceBodyType;
-    private StarType mStarType;
+    private SpaceBodyType mSpaceBodyType = SpaceBodyType.NONE;
+    private StarType mStarType = StarType.NotAStar;
     private List<ISpaceProject> mSpaceProjects;
     private List<ISP_Upgrade> mUpgrades;
 
@@ -39,6 +39,34 @@ public class SP_Requirements implements ISP_Requirements {
     @Override
     public List<ISP_Upgrade> getUpgrades() {
         return mUpgrades;
+    }
+
+    // #endregion
+
+    // #region Setters/Builder
+
+    public SP_Requirements setSpaceBodyType(SpaceBodyType aSpaceBodyType) {
+        mSpaceBodyType = aSpaceBodyType;
+        return this;
+    }
+
+    public SP_Requirements setStarType(StarType aStarType) {
+        mStarType = aStarType;
+        return this;
+    }
+
+    public SP_Requirements setUpgrades(ISP_Upgrade... aUpgrades) {
+        for (ISP_Upgrade tUpgrade : aUpgrades) {
+            mUpgrades.add(tUpgrade);
+        }
+        return this;
+    }
+
+    public SP_Requirements setSpaceProjects(ISpaceProject... aSpaceProjects) {
+        for (ISpaceProject aSpaceProject : aSpaceProjects) {
+            mSpaceProjects.add(aSpaceProject);
+        }
+        return this;
     }
 
     // #endregion
