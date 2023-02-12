@@ -1,5 +1,9 @@
 package gregtech.common.misc.spaceprojects.commands;
 
+import static gregtech.common.misc.spaceprojects.SpaceProjectManager.getLocation;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -10,7 +14,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 public class SPM_Command extends CommandBase {
@@ -60,13 +63,16 @@ public class SPM_Command extends CommandBase {
                             new ChatComponentText("You don't have the permissions to execute this command"));
                     return;
                 }
-                if (aArguments.length < 2) {
+                if (aArguments.length < 3) {
+                    aSender.addChatMessage(
+                            new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
                     return;
                 }
                 processUnlock(
                         aSender,
                         aArguments[1],
-                        aArguments.length >= 3 ? aArguments[2] : aSender.getCommandSenderName());
+                        aArguments[2],
+                        aArguments.length >= 4 ? aArguments[3] : aSender.getCommandSenderName());
                 break;
             case LOCK:
                 if (!aSender.canCommandSenderUseCommand(4, getCommandName())) {
@@ -74,10 +80,16 @@ public class SPM_Command extends CommandBase {
                             new ChatComponentText("You don't have the permissions to execute this command"));
                     return;
                 }
+                if (aArguments.length < 3) {
+                    aSender.addChatMessage(
+                            new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
+                    return;
+                }
                 processLock(
                         aSender,
                         aArguments[1],
-                        aArguments.length >= 3 ? aArguments[2] : aSender.getCommandSenderName());
+                        aArguments[2],
+                        aArguments.length >= 4 ? aArguments[3] : aSender.getCommandSenderName());
             case LIST:
                 if (aArguments.length < 2) {
                     aSender.addChatMessage(
@@ -106,7 +118,34 @@ public class SPM_Command extends CommandBase {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender aSender, String[] aArguments) {
-        return null;
+        List<String> tAutoComplete = new ArrayList<>();
+        switch (aArguments.length) {
+            case 1:
+                tAutoComplete.addAll(Arrays.asList(getSubCommands()));
+                break;
+            case 2:
+                if (aArguments[0].equals(LIST)) {
+                    tAutoComplete.addAll(Arrays.asList(getListArguments()));
+                } else if (aArguments[0].equals(COPY) || aArguments[0].equals(RESET)) {
+                    tAutoComplete.addAll(Arrays.asList(getPlayers()));
+                } else {
+                    tAutoComplete.addAll(Arrays.asList(getProjects()));
+                }
+                break;
+            case 3:
+                if (aArguments[1].equals(ALL)) {
+                    break;
+                } else if (aArguments[0].equals(LIST)) {
+                    tAutoComplete.addAll(Arrays.asList(getPlayers()));
+                } else {
+                    tAutoComplete.addAll(Arrays.asList(getLocations()));
+                }
+                break;
+            case 4:
+                tAutoComplete.addAll(Arrays.asList(getPlayers()));
+                break;
+        }
+        return tAutoComplete;
     }
 
     private String[] getPlayers() {
@@ -136,23 +175,24 @@ public class SPM_Command extends CommandBase {
         SpaceProjectManager.mSpaceTeamProjects.put(tID, null);
     }
 
-    private void processLock(ICommandSender aSender, String aProjectName, String aPlayerName) {
+    private void processLock(ICommandSender aSender, String aProjectName, String aLocation, String aPlayerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(aPlayerName);
-        SpaceProjectManager.addTeamProject(tID, SolarSystem.Overworld, aProjectName, null);
+        SpaceProjectManager.addTeamProject(tID, getLocation(aLocation), aProjectName, null);
     }
 
-    private void processUnlock(ICommandSender aSender, String aProjectName, String aPlayerName) {
+    private void processUnlock(ICommandSender aSender, String aProjectName, String aLocation, String aPlayerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(aPlayerName);
         ISpaceProject tProject = SpaceProjectManager.getProject(aProjectName);
         if (tProject != null) {
             tProject.setProjectStage(tProject.getTotalStages());
-            SpaceProjectManager.addTeamProject(tID, SolarSystem.Overworld, aProjectName, tProject);
+            SpaceProjectManager.addTeamProject(tID, getLocation(aLocation), aProjectName, tProject);
         } else {
             aSender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
         }
     }
 
     private void processList(ICommandSender aSender, String aArgument, String aPlayerName) {
+        UUID tID = SpaceProjectManager.getPlayerUUIDFromName(aPlayerName);
         switch (aArgument) {
             case ALL:
                 for (String tProject : SpaceProjectManager.getAllProjects().keySet()) {
@@ -163,7 +203,10 @@ public class SPM_Command extends CommandBase {
                 // Needs more thought
                 break;
             case UNLOCKED:
-                // Need more time
+                for (ISpaceProject tProject : SpaceProjectManager.getTeamSpaceProjects(tID)) {
+                    aSender.addChatMessage(new ChatComponentText(tProject.getProjectName()));
+                }
+                break;
         }
     }
 
