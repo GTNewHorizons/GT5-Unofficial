@@ -5023,9 +5023,6 @@ public class DreamCraftRecipeLoader {
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
         ItemStack largeShirabonPlate = TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1);
-        // NBTTagCompound tag = new NBTTagCompound();
-        // tag.setString("material", "Shirabon");
-        // largeShirabonPlate.stackTagCompound = tag;
 
         final FluidStack[] specialFluid = new FluidStack[] { FluidUtils.getFluidStack("molten.shirabon", 1_440),
                 Materials.WhiteDwarfMatter.getMolten(1_440), Materials.WhiteDwarfMatter.getMolten(1_440 * 4),
