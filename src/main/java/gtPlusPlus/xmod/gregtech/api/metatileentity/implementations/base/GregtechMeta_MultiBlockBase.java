@@ -564,7 +564,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                         break;
                     }
                 }
-                // Try prevent needless iteration loops if we don't have the required inputs at all.
+                // Try to prevent needless iteration loops if we don't have the required inputs at all.
                 if (aDidFindMatch) {
                     // Iterate all special behaviour items, to see if we need to utilise one.
                     for (SpecialMultiBehaviour aBehaviours : mCustomBehviours.values()) {

@@ -51,6 +51,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class GregtechMetaTileEntity_QuantumForceTransformer
         extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GregtechMetaTileEntity_QuantumForceTransformer>
         implements ISurvivalConstructable {
@@ -288,11 +289,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             }
         }
 
-        if (mEnergyHatches.size() > 2) {
-            return false;
-        }
-
-        return true;
+        return mEnergyHatches.size() <= 2;
     }
 
     @Override
@@ -387,7 +384,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(208));
+        return GregTech_API.sSoundList.get(208);
     }
 
     protected IIconContainer getActiveOverlay() {
@@ -412,7 +409,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         return true;
     }
 
-    private static int mMaxParallel = 64;
     private int mCurrentParallel = 0;
 
     @Override
@@ -426,7 +422,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         doNeptunium = false;
         FluidStack[] tFluidList = getStoredFluids().toArray(new FluidStack[0]);
         if (mSeparateInputBusses) {
-            ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> tInputList = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
                     if (tBus.getStackInSlot(i) != null) {
@@ -472,6 +468,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             }
 
             int mCurrentMaxParallel = 0;
+            int mMaxParallel = 64;
             for (ItemStack tItem : aItemInputs) {
                 if (ItemUtils.isCatalyst(tItem) && tItem.isItemEqual(aRecipeCatalyst)) {
                     mCurrentMaxParallel += tItem.stackSize;
@@ -484,12 +481,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             }
 
             if (mFermiumHatch != null && tRecipe.mSpecialValue <= getFocusingTier()) {
-                if (mFermiumHatch.getFluid() != null
-                        && mFermiumHatch.getFluid().isFluidEqual(new FluidStack(mFermium, 1))) {
-                    doFermium = true;
-                } else {
-                    doFermium = false;
-                }
+                doFermium = mFermiumHatch.getFluid() != null
+                        && mFermiumHatch.getFluid().isFluidEqual(new FluidStack(mFermium, 1));
             } else {
                 doFermium = false;
             }
@@ -535,8 +528,9 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 tChances = GetChanceOutputs(tRecipe, aStack.getItemDamage() - 1);
             }
 
-            ArrayList<ItemStack> tItemOutputs = new ArrayList<ItemStack>();
-            ArrayList<FluidStack> tFluidOutputs = new ArrayList<FluidStack>();
+            ArrayList<ItemStack> tItemOutputs = new ArrayList<>();
+            ArrayList<FluidStack> tFluidOutputs = new ArrayList<>();
+            mCurrentParallel = helper.getCurrentParallel();
 
             if (mFluidMode) {
                 for (int i = 0; i < tChances.length; i++) {
@@ -547,19 +541,21 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                             if (mat != null) {
                                 if (mat.getMolten(0) != null) {
                                     tFluidOutputs.add(
-                                            mat.getMolten(tRecipe.getOutput(i).stackSize * 144 * mCurrentParallel));
+                                            mat.getMolten(tRecipe.getOutput(i).stackSize * 144L * mCurrentParallel));
                                 } else if (mat.getFluid(0) != null) {
                                     tFluidOutputs.add(
-                                            mat.getFluid(tRecipe.getOutput(i).stackSize * 1000 * mCurrentParallel));
+                                            mat.getFluid(tRecipe.getOutput(i).stackSize * 1000L * mCurrentParallel));
                                 } else {
                                     ItemStack aItem = tRecipe.getOutput(i);
                                     tItemOutputs.add(
-                                            GT_Utility.copyAmountUnsafe(aItem.stackSize * mCurrentParallel, aItem));
+                                            GT_Utility.copyAmountUnsafe(
+                                                    (long) aItem.stackSize * mCurrentParallel,
+                                                    aItem));
                                 }
                             } else {
                                 ItemStack aItem = tRecipe.getOutput(i);
-                                tItemOutputs
-                                        .add(GT_Utility.copyAmountUnsafe(aItem.stackSize * mCurrentParallel, aItem));
+                                tItemOutputs.add(
+                                        GT_Utility.copyAmountUnsafe((long) aItem.stackSize * mCurrentParallel, aItem));
                             }
                         } else {
                             FluidStack aFluid = tRecipe.getFluidOutput(i - tRecipe.mOutputs.length);
