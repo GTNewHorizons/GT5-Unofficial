@@ -3,6 +3,7 @@ package gregtech.common.misc.spaceprojects.enums;
 import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.*;
 import static gregtech.common.misc.spaceprojects.enums.StarType.*;
 
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 
 public enum SolarSystem implements ISpaceBody {
@@ -56,6 +57,7 @@ public enum SolarSystem implements ISpaceBody {
     SolarSystem(SpaceBodyType aType, StarType aStarType) {
         mStarType = aStarType;
         mType = aType;
+        SpaceProjectManager.addLocation(this);
     }
 
     @Override
