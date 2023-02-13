@@ -173,8 +173,8 @@ public class SPM_Command extends CommandBase {
     }
 
     private void processReset(ICommandSender aSender, String aPlayerName) {
-        UUID tID = SpaceProjectManager.getPlayerUUIDFromName(aPlayerName);
-        SpaceProjectManager.mSpaceTeamProjects.put(tID, null);
+        SpaceProjectManager.mSpaceTeamProjects.clear();
+        SpaceProjectWorldSavedData.INSTANCE.markDirty();
     }
 
     private void processLock(ICommandSender aSender, String aProjectName, String aLocation, String aPlayerName) {
