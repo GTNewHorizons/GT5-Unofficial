@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -58,8 +59,14 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     public void readFromNBT(NBTTagCompound aNBT) {
         Type tTeamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>>() {}.getType();
         mSpaceTeamProjects = GSON.fromJson(aNBT.getString(SPACE_TEAM_PROJECTS), tTeamProjectsType);
+        if (mSpaceTeamProjects == null) {
+            mSpaceTeamProjects = new HashMap<>();
+        }
         Type tTeamsType = new TypeToken<Map<UUID, UUID>>() {}.getType();
         mSpaceTeams = GSON.fromJson(aNBT.getString(SPACE_TEAMS), tTeamsType);
+        if (mSpaceTeams == null) {
+            mSpaceTeams = new HashMap<>();
+        }
     }
 
     @Override
