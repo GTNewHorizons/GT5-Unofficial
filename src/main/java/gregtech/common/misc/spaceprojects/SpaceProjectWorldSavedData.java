@@ -42,9 +42,11 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     public static SpaceProjectWorldSavedData INSTANCE;
 
-    private static final Gson GSON_READER = new GsonBuilder().registerTypeAdapter(EnumRarity.class, new EnumRarityDeserializer()).create();
+    private static final Gson GSON_READER = new GsonBuilder()
+            .registerTypeAdapter(EnumRarity.class, new EnumRarityDeserializer()).create();
 
-    private static final Gson GSON_WRITER = new GsonBuilder().registerTypeAdapter(EnumRarity.class, new EnumRaritySerializer()).create();
+    private static final Gson GSON_WRITER = new GsonBuilder()
+            .registerTypeAdapter(EnumRarity.class, new EnumRaritySerializer()).create();
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
 
@@ -58,7 +60,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     private static final Map<EnumRarity, String> rarityToName = new HashMap<>();
 
     private static final Map<String, EnumRarity> nameToRarity = new HashMap<>();
-    
+
     private static World mWorld;
 
     public SpaceProjectWorldSavedData() {
@@ -148,10 +150,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             loadInstance(aEvent.world);
         }
     }
-    
 
     private static class EnumRaritySerializer implements JsonSerializer<EnumRarity> {
-        
+
         @Override
         public JsonElement serialize(EnumRarity src, Type typeOfSrc, JsonSerializationContext context) {
             nameToRarity.put(src.name(), src);
