@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -151,7 +152,7 @@ public class GT_NaniteChain {
                         getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
-                        FluidRegistry.getFluidStack("spatialFluid", 720), },
+                    Materials.Space.getMolten(720), },
                 new ItemStack[] { Materials.WhiteDwarfMatter.getNanite(4) },
                 null,
                 null,
@@ -169,7 +170,7 @@ public class GT_NaniteChain {
                         getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
-                        FluidRegistry.getFluidStack("temporalFluid", 720), },
+                        Materials.Time.getMolten(720), },
                 new ItemStack[] { Materials.BlackDwarfMatter.getNanite(4) },
                 null,
                 null,
