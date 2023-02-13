@@ -2891,7 +2891,7 @@ public class DreamCraftRecipeLoader {
                 1024,
                 4000000,
                 64,
-                new Object[] { ItemList.Circuit_Board_Bio_Ultra.get(1L), getItemContainer("PicoWafer").get(4L),
+                new Object[] { ItemList.Circuit_Board_Optical.get(1L), getItemContainer("PicoWafer").get(4L),
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 2L },
                         ItemList.Circuit_Parts_TransistorXSMD.get(48L), ItemList.Circuit_Parts_ResistorXSMD.get(48L),
                         ItemList.Circuit_Parts_CapacitorXSMD.get(48L), ItemList.Circuit_Parts_DiodeXSMD.get(48L),
