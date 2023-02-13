@@ -252,5 +252,234 @@ public class FluidSolidifierRecipes implements Runnable {
                 getModItem(MOD_ID_RC, "tile.railcraft.anvil", 1L, 0),
                 128,
                 16);
+
+        final int whiteDwarfShapeSolidifierTime = 10 * 20;
+        final int fluidPerShapeSolidifierRecipe = 576;
+        {
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Bottle.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Bottle.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Plate.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Plate.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Cell.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Cell.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Ring.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Ring.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Rod.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Rod.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Bolt.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Bolt.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Ingot.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Ingot.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Wire.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Wire.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Casing.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Casing.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Pipe_Tiny.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Pipe_Small.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Pipe_Small.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Pipe_Medium.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Pipe_Large.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Pipe_Large.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Pipe_Huge.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Block.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Block.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Sword.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Sword.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Pickaxe.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Pickaxe.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Shovel.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Shovel.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Axe.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Axe.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Hoe.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Hoe.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Hammer.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Hammer.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_File.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_File.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Saw.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Saw.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Gear.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Gear.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Rotor.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Rotor.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Turbine_Blade.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_Small_Gear.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_Small_Gear.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack[] { ItemList.Shape_Extruder_ToolHeadDrill.get(1) },
+                    new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe) },
+                    new ItemStack[] { ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill.get(1) },
+                    new FluidStack[] { GT_Values.NF },
+                    (int) TierEU.RECIPE_UMV,
+                    whiteDwarfShapeSolidifierTime);
+
+        }
     }
 }
