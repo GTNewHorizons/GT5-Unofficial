@@ -71,6 +71,8 @@ public interface ISpaceProject {
 
     boolean meetsRequirements(UUID aTeam, ISpaceBody aLocation);
 
+    boolean isFinished();
+
     public interface ISP_Upgrade {
 
         String getUpgradeName();
