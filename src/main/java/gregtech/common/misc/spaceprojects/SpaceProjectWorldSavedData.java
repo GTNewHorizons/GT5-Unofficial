@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
@@ -22,6 +23,14 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonWriter;
 
@@ -33,7 +42,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     public static SpaceProjectWorldSavedData INSTANCE;
 
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON_READER = new GsonBuilder().registerTypeAdapter(EnumRarity.class, new EnumRarityDeserializer()).create();
+
+    private static final Gson GSON_WRITER = new GsonBuilder().registerTypeAdapter(EnumRarity.class, new EnumRaritySerializer()).create();
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
 
@@ -44,7 +55,10 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     private static final String SPACE_TEAM_PROJECTS_JSON = "spaceTeamProject.json";
 
     private static final String SPACE_TEAMS_JSON = "spaceTeams.json";
+    private static final Map<EnumRarity, String> rarityToName = new HashMap<>();
 
+    private static final Map<String, EnumRarity> nameToRarity = new HashMap<>();
+    
     private static World mWorld;
 
     public SpaceProjectWorldSavedData() {
@@ -58,12 +72,12 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         Type tTeamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>>() {}.getType();
-        mSpaceTeamProjects = GSON.fromJson(aNBT.getString(SPACE_TEAM_PROJECTS), tTeamProjectsType);
+        mSpaceTeamProjects = GSON_READER.fromJson(aNBT.getString(SPACE_TEAM_PROJECTS), tTeamProjectsType);
         if (mSpaceTeamProjects == null) {
             mSpaceTeamProjects = new HashMap<>();
         }
         Type tTeamsType = new TypeToken<Map<UUID, UUID>>() {}.getType();
-        mSpaceTeams = GSON.fromJson(aNBT.getString(SPACE_TEAMS), tTeamsType);
+        mSpaceTeams = GSON_READER.fromJson(aNBT.getString(SPACE_TEAMS), tTeamsType);
         if (mSpaceTeams == null) {
             mSpaceTeams = new HashMap<>();
         }
@@ -73,7 +87,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     public void writeToNBT(NBTTagCompound aNBT) {
         File tTeamProjectsFile = new File(mWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAM_PROJECTS_JSON);
         try (JsonWriter writer = new JsonWriter(new FileWriter(tTeamProjectsFile))) {
-            GSON.toJson(mSpaceTeamProjects, mSpaceTeamProjects.getClass(), writer);
+            GSON_WRITER.toJson(mSpaceTeamProjects, mSpaceTeamProjects.getClass(), writer);
         } catch (IOException ex) {
             System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
             ex.printStackTrace();
@@ -93,7 +107,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
         File tSpaceTeamsFile = new File(mWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAMS_JSON);
         try (JsonWriter writer = new JsonWriter(new FileWriter(tTeamProjectsFile))) {
-            GSON.toJson(mSpaceTeams, mSpaceTeams.getClass(), writer);
+            GSON_WRITER.toJson(mSpaceTeams, mSpaceTeams.getClass(), writer);
         } catch (IOException ex) {
             System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
             ex.printStackTrace();
@@ -133,5 +147,27 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         if (!aEvent.world.isRemote && aEvent.world.provider.dimensionId == 0) {
             loadInstance(aEvent.world);
         }
+    }
+    
+
+    private static class EnumRaritySerializer implements JsonSerializer<EnumRarity> {
+        
+        @Override
+        public JsonElement serialize(EnumRarity src, Type typeOfSrc, JsonSerializationContext context) {
+            nameToRarity.put(src.name(), src);
+            rarityToName.put(src, src.name());
+            return new JsonPrimitive("a");
+        }
+
+    }
+
+    private static class EnumRarityDeserializer implements JsonDeserializer<EnumRarity> {
+
+        @Override
+        public EnumRarity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            return nameToRarity.get(json.getAsString());
+        }
+
     }
 }
