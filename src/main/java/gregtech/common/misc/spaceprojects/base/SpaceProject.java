@@ -419,5 +419,10 @@ public class SpaceProject implements ISpaceProject {
         return getProjectName().equals(((ISpaceProject) obj).getProjectName());
     }
 
+    @Override
+    public boolean isFinished() {
+        return mCurrentStage == mTotalStages;
+    }
+
     // #endregion
 }
