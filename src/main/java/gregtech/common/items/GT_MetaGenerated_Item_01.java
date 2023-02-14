@@ -3544,7 +3544,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Parts_Crystal_Chip_Master
                 .set(addItem(tLastID = 714, "Engraved Lapotron Chip", "Needed for Circuits"));
         ItemList.Circuit_Parts_Crystal_Chip_Wetware
-                .set(addItem(tLastID = 550, "Living Crystal Chip", "Needed for Circuits"));
+                .set(addItem(tLastID = 668, "Living Crystal Chip", "Needed for Circuits"));
         ItemList.Circuit_Parts_Advanced.set(addItem(tLastID = 715, "Diode", "Basic Electronic Component"));
         ItemList.Circuit_Parts_Diode.set(ItemList.Circuit_Parts_Advanced.get(1));
         ItemList.Circuit_Parts_Wiring_Basic.set(addItem(tLastID = 716, "Resistor", "Basic Electronic Component"));

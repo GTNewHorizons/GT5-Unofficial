@@ -111,6 +111,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         if (aToolTip == null) aToolTip = "";
         if (aID >= 0 && aID < mItemAmount) {
             ItemStack rStack = new ItemStack(this, 1, mOffset + aID);
+            if (mEnabledItems.get(aID)) {
+                throw new IllegalArgumentException(
+                        String.format("ID %s is already reserved for %s!", aID, rStack.getDisplayName()));
+            }
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
