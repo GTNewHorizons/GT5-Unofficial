@@ -20,6 +20,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.nei.dumper.MaterialDumper;
 import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 
@@ -69,6 +70,7 @@ public class NEI_GT_Config implements IConfigureNEI {
             API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
 
             API.addOption(new MetaTileEntityDumper());
+            API.addOption(new MaterialDumper());
             API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_01.INSTANCE, "metaitem01"));
             API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_02.INSTANCE, "metaitem02"));
             API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_03.INSTANCE, "metaitem03"));
