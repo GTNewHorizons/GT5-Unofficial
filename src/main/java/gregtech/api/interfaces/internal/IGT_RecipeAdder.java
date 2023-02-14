@@ -649,6 +649,13 @@ public interface IGT_RecipeAdder {
     boolean addFluidSolidifierRecipe(ItemStack aMold, FluidStack aInput, ItemStack aOutput, int aDuration, int aEUt);
 
     /**
+     * Adds a Recipe for the Fluid Solidifier
+     */
+    boolean addFluidSolidifierRecipe(final ItemStack[] itemInputs, final FluidStack[] fluidInputs,
+            final ItemStack[] itemOutputs, final FluidStack[] fluidOutputs, final int EUPerTick,
+            final int aDurationInTicks);
+
+    /**
      * Adds a Recipe for Fluid Smelting
      */
     boolean addFluidSmelterRecipe(ItemStack aInput, ItemStack aRemains, FluidStack aOutput, int aChance, int aDuration,
@@ -926,7 +933,7 @@ public interface IGT_RecipeAdder {
 
     /**
      * Add a breeder cell.
-     * 
+     *
      * @param input          raw stack. should be undamaged.
      * @param output         breed output
      * @param heatMultiplier bonus progress per neutron pulse per heat step
@@ -940,7 +947,7 @@ public interface IGT_RecipeAdder {
 
     /**
      * Add a fuel cell.
-     * 
+     *
      * @param input   raw stack. should be undamaged.
      * @param output  depleted stack
      * @param aMox    true if has mox behavior, false if uranium behavior.

@@ -1981,6 +1981,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 Mercassium,
                 MeteoricIron,
                 BloodInfusedIron,
+                Universium,
+                MagnetohydrodynamicallyConstrainedStarMatter,
                 MeteoricSteel,
                 Naquadah,
                 NaquadahAlloy,

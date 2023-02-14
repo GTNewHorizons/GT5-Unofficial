@@ -9864,15 +9864,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 gregtech.api.enums.GT_Values.V[11],
                 false,
                 false);
-        makeWires(
-                Materials.SuperconductorUMVBase,
-                2072,
-                2L,
-                1048576L,
-                32L,
-                gregtech.api.enums.GT_Values.V[12],
-                false,
-                false);
+        makeWires(Materials.SuperconductorUMVBase, 2072, 2L, 1048576L, 32L, GT_Values.V[12], false, false);
 
         // Actual superconductors.
         makeWires(Materials.SuperconductorMV, 2320, 0L, 0L, 4L, gregtech.api.enums.GT_Values.V[2], false, true);
