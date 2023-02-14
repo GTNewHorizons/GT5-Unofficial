@@ -179,22 +179,21 @@ public class GT_NaniteChain {
 
         // Universium nanites.
         GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUMVTierLens,
-                // Quantum Anomaly, couldn't find any better naming.
-                getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105), Materials.Universium.getBlocks(8),
+                new ItemStack[] { aUMVTierLens,
+                        // Quantum Anomaly, couldn't find any better naming.
+                        getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105), Materials.Universium.getBlocks(8),
 
-                ItemList.Optically_Perfected_CPU.get(16), ItemList.Optically_Compatible_Memory.get(16),
-                getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
-            },
-            new FluidStack[] { Materials.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
-                Materials.UUMatter.getFluid(1_000_000), },
-            new ItemStack[] { Materials.Universium.getNanite(2) },
-            null,
-            null,
-            750 * 20,
-            2_000_000_000,
-            3);
-
+                        ItemList.Optically_Perfected_CPU.get(16), ItemList.Optically_Compatible_Memory.get(16),
+                        getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
+                },
+                new FluidStack[] { Materials.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
+                        Materials.UUMatter.getFluid(1_000_000), },
+                new ItemStack[] { Materials.Universium.getNanite(2) },
+                null,
+                null,
+                750 * 20,
+                2_000_000_000,
+                3);
 
     }
 }
