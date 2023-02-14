@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import gregtech.api.util.GT_Utility;
+
 /**
  * Interface for internal Code, which is mainly used for independent Energy conversion.
  */
@@ -78,6 +80,22 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
      * returns the amount of electricity containable in this Block, in EU units!
      */
     long getEUCapacity();
+
+    /**
+     * Returns the amount of electricity contained in this block, represented as String. You can override this to show
+     * BigInteger EU on GUI.
+     */
+    default String getStoredEUDisplay() {
+        return GT_Utility.formatNumbers(getStoredEU());
+    }
+
+    /**
+     * Returns the amount of electricity containable in this block, represented as String. You can override this to show
+     * BigInteger EU on GUI.
+     */
+    default String getEUCapacityDisplay() {
+        return GT_Utility.formatNumbers(getEUCapacity());
+    }
 
     /**
      * returns the amount of Steam contained in this Block, in EU units!

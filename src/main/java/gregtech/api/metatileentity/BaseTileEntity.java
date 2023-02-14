@@ -42,9 +42,11 @@ import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -53,12 +55,15 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.gui.modularui.ISidebarWidget;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
 import gregtech.api.interfaces.modularui.IGetGUITextureSet;
+import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -69,6 +74,7 @@ import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.widget.SidebarTab;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 
@@ -602,9 +608,11 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         if (doesBindPlayerInventory()) {
             bindPlayerInventoryUI(builder, buildContext);
         }
+        addSidebars(builder, buildContext);
         addUIWidgets(builder, buildContext);
         addTitleToUI(builder);
-        addCoverTabs(builder, buildContext);
+        // todo
+        // addCoverTabs(builder, buildContext);
         final IConfigurationCircuitSupport csc = getConfigurationCircuitSupport();
         if (csc != null && csc.allowSelectCircuit()) {
             addConfigurationCircuitSlot(builder);
@@ -657,6 +665,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+
+    private DynamicPositionedColumn sidebarInfoColumn, sidebarConfigColumn;
 
     // Tooltip localization keys
     public static final String BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
@@ -817,6 +827,84 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         builder.widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).background(background)
                         .build().setPos(52, 7));
+    }
+
+    private void addSidebars(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        sidebarInfoColumn = new DynamicPositionedColumn();
+        sidebarConfigColumn = new DynamicPositionedColumn();
+
+        sidebarInfoColumn.setPos(-SidebarTab.DEFAULT_SIZE, 0);
+        sidebarConfigColumn.setPos(getGUIWidth(), 0);
+
+        addSidebarInfoWidgets(buildContext);
+        addSidebarConfigWidgets(buildContext);
+
+        builder.widget(sidebarInfoColumn).widget(sidebarConfigColumn);
+    }
+
+    @SuppressWarnings("unused")
+    protected void addSidebarInfoWidgets(UIBuildContext buildContext) {
+        IDrawable batteryIcon = new ItemDrawable(ItemList.Battery_RE_LV_Lithium.get(1)).withFixedSize(16, 16, 2, 2);
+        IDrawable steamIcon = new ItemDrawable(ItemList.Steam_Valve_LV.get(1)).withFixedSize(16, 16, 2, 2);
+        if (this instanceof IBasicEnergyContainer) {
+            IBasicEnergyContainer energyContainer = (IBasicEnergyContainer) this;
+            SidebarTab energyInfoTab = new SidebarTab("energy") {
+
+                @Override
+                public String getDescription() {
+                    // show "energy" on config screen when this machine accepts neither of energy nor steam
+                    String transKey = energyContainer.getEUCapacity() > 0 || energyContainer.getSteamCapacity() <= 0
+                            ? "energy"
+                            : "steam";
+                    return StatCollector
+                            .translateToLocal(String.format("GT5U.machines.sidebar.%s.description", transKey));
+                }
+            };
+            energyInfoTab.setIcon(
+                    () -> energyContainer.getEUCapacity() > 0 || energyContainer.getSteamCapacity() <= 0 ? batteryIcon
+                            : steamIcon)
+                    .addChild(TextWidget.dynamicString(() -> {
+                        if (energyContainer.getEUCapacity() > 0) {
+                            return "Energy:";
+                        } else if (energyContainer.getSteamCapacity() > 0) {
+                            return "Steam:";
+                        } else {
+                            return "";
+                        }
+                    }).setSynced(false).setPos(5, 5)).addChild(TextWidget.dynamicString(() -> {
+                        if (energyContainer.getEUCapacity() > 0) {
+                            return energyContainer.getStoredEUDisplay() + " EU";
+                        } else if (energyContainer.getSteamCapacity() > 0) {
+                            return energyContainer.getStoredSteam() + " Steam";
+                        } else {
+                            return "";
+                        }
+                    }).setPos(5, 15)).addChild(TextWidget.dynamicString(() -> {
+                        if (energyContainer.getEUCapacity() > 0) {
+                            return "/ " + energyContainer.getEUCapacityDisplay() + " EU";
+                        } else if (energyContainer.getSteamCapacity() > 0) {
+                            return "/ " + energyContainer.getSteamCapacity() + " Steam";
+                        } else {
+                            return "";
+                        }
+                    }).setPos(10, 25)).setEnabled(
+                            widget -> energyContainer.getEUCapacity() > 0 || energyContainer.getSteamCapacity() > 0);
+
+            addToSidebarInfo(energyInfoTab);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    protected void addSidebarConfigWidgets(UIBuildContext buildContext) {}
+
+    protected <T extends Widget & ISidebarWidget> void addToSidebarInfo(T widget) {
+        sidebarInfoColumn.addChild(widget);
+        // todo registration
+    }
+
+    protected <T extends Widget & ISidebarWidget> void addToSidebarConfig(T widget) {
+        sidebarConfigColumn.addChild(widget);
+        // todo registration
     }
 
     public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {

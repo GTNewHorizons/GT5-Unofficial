@@ -456,6 +456,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
+     * @return The amount of EU, represented as string. You can override this to show BigInteger EU on GUI.
+     */
+    public String getMaxEUStoreDisplay() {
+        return GT_Utility.formatNumbers(maxEUStore());
+    }
+
+    /**
      * @return the amount of EU/t, which can be accepted by this Device before it explodes.
      */
     public long maxEUInput() {
@@ -535,6 +542,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     public long getEUVar() {
         return ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy;
+    }
+
+    /**
+     * Used to show stored energy as string. You can override this to show BigInteger EU on GUI.
+     */
+    public String getEUVarDisplay() {
+        return GT_Utility.formatNumbers(getEUVar());
     }
 
     /**

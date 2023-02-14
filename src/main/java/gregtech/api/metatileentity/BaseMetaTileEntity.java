@@ -1188,6 +1188,18 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
+    public String getStoredEUDisplay() {
+        if (canAccessData()) return mMetaTileEntity.getEUVarDisplay();
+        return super.getStoredEUDisplay();
+    }
+
+    @Override
+    public String getEUCapacityDisplay() {
+        if (canAccessData()) return mMetaTileEntity.getMaxEUStoreDisplay();
+        return super.getEUCapacityDisplay();
+    }
+
+    @Override
     public long getStoredSteam() {
         if (canAccessData()) return Math.min(mMetaTileEntity.getSteamVar(), getSteamCapacity());
         return 0;
