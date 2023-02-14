@@ -16,6 +16,8 @@ import java.util.*;
 
 import javax.xml.bind.DatatypeConverter;
 
+import kubatech.kubatech;
+
 import net.minecraft.launchwrapper.Launch;
 
 import cpw.mods.fml.common.Loader;
@@ -34,7 +36,14 @@ public class ModUtils {
             classNamesToModIDs.put("net.minecraft", "Minecraft");
             Loader.instance().getActiveModList().forEach(m -> {
                 Object Mod = m.getMod();
-                if (Mod != null) classNamesToModIDs.put(Mod.getClass().getPackage().getName(), m.getName());
+                if (Mod != null) {
+                    Package modPackage = Mod.getClass().getPackage();
+                    if (modPackage == null) { // HOW CAN THIS EVEN HAPPEN ?!
+                        kubatech.warn("Mod " + m.getModId() + " package is not loaded yet!");
+                        return;
+                    }
+                    classNamesToModIDs.put(modPackage.getName(), m.getName());
+                }
             });
         }
         return classNamesToModIDs.entrySet().stream().filter(e -> classname.startsWith(e.getKey())).findAny()
