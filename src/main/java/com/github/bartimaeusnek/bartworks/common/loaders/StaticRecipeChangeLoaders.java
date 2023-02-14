@@ -42,7 +42,6 @@ import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gregtech.api.enums.*;
@@ -317,7 +316,7 @@ public class StaticRecipeChangeLoaders {
 
     /**
      * Constructs a list of recipes to change by scanning all EBF recipes for uses of noble gases.
-     * 
+     *
      * @param GasTags list of gas tags to look out for in EBF recipes
      * @return A multimap from the gas tag (noble and/or anaerobic) to all the recipes containing a gas with that tag
      */
@@ -343,7 +342,7 @@ public class StaticRecipeChangeLoaders {
 
     /**
      * Scans EBF recipes for no-gas variants of the recipes present in base. Adds these recipes to the base multimap.
-     * 
+     *
      * @param base The recipe multimap to scan and modify
      * @return Set of item outputs (recipe.mOutputs[0]) of the no-gas recipes
      */
@@ -602,7 +601,7 @@ public class StaticRecipeChangeLoaders {
                     "Electric Implosion Compressor",
                     (String) null,
                     "gregtech:textures/gui/basicmachines/Default",
-                    2,
+                    6,
                     2,
                     0,
                     0,
@@ -625,73 +624,11 @@ public class StaticRecipeChangeLoaders {
                             1,
                             BW_Util.getMachineVoltageFromTier(10),
                             0));
+
+            // Custom EIC recipes.
+            new ElectricImplosionCompressorRecipes().run();
         }
 
-        // Custom electric implosion compressor recipe. Cannot be overclocked.
-        if (Loader.isModLoaded("eternalsingularity")) {
-
-            // 72L SpaceTime -> 1 Eternal singularity.
-            eicMap.addRecipe(
-                    false,
-                    new ItemStack[] { GT_Values.NI },
-                    new ItemStack[] { GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 1L) },
-                    null,
-                    new FluidStack[] { Materials.SpaceTime.getMolten(72L) },
-                    new FluidStack[] { GT_Values.NF },
-                    100 * 20,
-                    128_000_000,
-                    1); // aSpecialVaue has no meaning here.
-        }
-
-        if (Loader.isModLoaded("universalsingularities")) {
-
-            // Raw Exposed Optical Chip
-            eicMap.addRecipe(
-                    false,
-                    new ItemStack[] { ItemList.Circuit_Silicon_Wafer7.get(1L),
-                            GT_ModHandler
-                                    .getModItem("universalsingularities", "universal.general.singularity", 1L, 20) },
-                    new ItemStack[] { ItemList.Circuit_Chip_Optical.get(16L) },
-                    null,
-                    new FluidStack[] { GT_Values.NF },
-                    new FluidStack[] { GT_Values.NF },
-                    5 * 20,
-                    125_829_120,
-                    1);
-        }
-
-        eicMap.addRecipe(
-                false,
-                new ItemStack[] { GT_ModHandler.getModItem("GoodGenerator", "highDensityPlutoniumNugget", 5L) },
-                new ItemStack[] { GT_ModHandler.getModItem("GoodGenerator", "highDensityPlutonium", 1L) },
-                null,
-                new FluidStack[] { Materials.Infinity.getMolten(9L) },
-                new FluidStack[] { GT_Values.NF },
-                1,
-                7_864_320,
-                1);
-
-        eicMap.addRecipe(
-                false,
-                new ItemStack[] { GT_ModHandler.getModItem("GoodGenerator", "highDensityUraniumNugget", 5L) },
-                new ItemStack[] { GT_ModHandler.getModItem("GoodGenerator", "highDensityUranium", 1L) },
-                null,
-                new FluidStack[] { Materials.Infinity.getMolten(9L) },
-                new FluidStack[] { GT_Values.NF },
-                1,
-                7_864_320,
-                1);
-
-        eicMap.addRecipe(
-                false,
-                new ItemStack[] { GT_ModHandler.getModItem("GoodGenerator", "highDensityThoriumNugget", 5L) },
-                new ItemStack[] { GT_ModHandler.getModItem("GoodGenerator", "highDensityThorium", 1L) },
-                null,
-                new FluidStack[] { Materials.Infinity.getMolten(9L) },
-                new FluidStack[] { GT_Values.NF },
-                1,
-                7_864_320,
-                1);
     }
 
     private static boolean checkForExplosives(ItemStack input) {
