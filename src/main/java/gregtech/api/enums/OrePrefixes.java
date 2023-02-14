@@ -1369,7 +1369,9 @@ public enum OrePrefixes {
                         || aMaterial == Materials.Graphene
                         || aMaterial == Materials.NiobiumTitanium
                         || aMaterial == Materials.YttriumBariumCuprate
-                        || aMaterial == Materials.BloodInfusedIron))
+                        || aMaterial == Materials.BloodInfusedIron
+                        || aMaterial == Materials.Universium
+                        || aMaterial == Materials.MagnetohydrodynamicallyConstrainedStarMatter))
                     wireFine.mDisabledItems.add(aMaterial);
                 // Gears
                 if (!enableUnusedGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium
