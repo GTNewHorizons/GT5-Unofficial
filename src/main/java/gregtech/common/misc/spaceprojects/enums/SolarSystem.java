@@ -47,27 +47,27 @@ public enum SolarSystem implements ISpaceBody {
     KuiperBelt(AsteroidBelt),
     NONE(SpaceBodyType.NONE);
 
-    private SpaceBodyType mType;
-    private StarType mStarType;
+    private SpaceBodyType spaceBody;
+    private StarType star;
 
     SolarSystem(SpaceBodyType aType) {
         this(aType, NotAStar);
     }
 
     SolarSystem(SpaceBodyType aType, StarType aStarType) {
-        mStarType = aStarType;
-        mType = aType;
+        star = aStarType;
+        spaceBody = aType;
         SpaceProjectManager.addLocation(this);
     }
 
     @Override
     public StarType getStarType() {
-        return mStarType;
+        return star;
     }
 
     @Override
     public SpaceBodyType getType() {
-        return mType;
+        return spaceBody;
     }
 
     @Override
