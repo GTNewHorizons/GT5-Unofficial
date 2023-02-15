@@ -16,9 +16,9 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class SP_Command extends CommandBase {
 
-    private static Set<Pair<EntityPlayerMP, EntityPlayerMP>> mInvite = Collections
+    private static Set<Pair<EntityPlayerMP, EntityPlayerMP>> invite = Collections
             .newSetFromMap(new WeakHashMap<Pair<EntityPlayerMP, EntityPlayerMP>, Boolean>());
-    private static Set<EntityPlayerMP> mConfirm = Collections.newSetFromMap(new WeakHashMap<EntityPlayerMP, Boolean>());
+    private static Set<EntityPlayerMP> confirm = Collections.newSetFromMap(new WeakHashMap<EntityPlayerMP, Boolean>());
 
     private static final String INVITE = "invite";
     private static final String ACCEPT = "accept";
@@ -36,77 +36,77 @@ public class SP_Command extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender aSender) {
+    public String getCommandUsage(ICommandSender sender) {
         return "/" + getCommandName() + "<subCommand> [PlayerName]";
     }
 
     @Override
-    public void processCommand(ICommandSender aSender, String[] aArguments) {
-        if (aArguments.length < 1) {
+    public void processCommand(ICommandSender sender, String[] arguments) {
+        if (arguments.length < 1) {
             return;
         }
-        switch (aArguments[0]) {
+        switch (arguments[0]) {
             case INVITE:
-                if (aArguments.length < 2) {
+                if (arguments.length < 2) {
                     return;
                 }
-                processInvite(aSender, aArguments[1]);
+                processInvite(sender, arguments[1]);
                 break;
             case ACCEPT:
-                if (aArguments.length < 2) {
+                if (arguments.length < 2) {
                     return;
                 }
-                processAccept(aSender, aArguments[1]);
+                processAccept(sender, arguments[1]);
                 break;
             case LEAVE:
-                processLeave(aSender);
+                processLeave(sender);
                 break;
             case CONFIRM:
-                processConfirm(aSender);
+                processConfirm(sender);
                 break;
         }
     }
 
-    private void processInvite(ICommandSender aSender, String aPlayerInvited) {
-        EntityPlayerMP tTeamLeader = getCommandSenderAsPlayer(aSender);
-        EntityPlayerMP tTeamMember = getPlayer(aSender, aPlayerInvited);
-        mInvite.add(Pair.of(tTeamMember, tTeamLeader));
-        String tMessage = EnumChatFormatting.GOLD + tTeamLeader.getCommandSenderName()
+    private void processInvite(ICommandSender sender, String playerInvited) {
+        EntityPlayerMP teamLeader = getCommandSenderAsPlayer(sender);
+        EntityPlayerMP teamMember = getPlayer(sender, playerInvited);
+        invite.add(Pair.of(teamMember, teamLeader));
+        String message = EnumChatFormatting.GOLD + teamLeader.getCommandSenderName()
                 + EnumChatFormatting.RESET
                 + " has sent you an invite to join their team. Accept it with"
                 + EnumChatFormatting.GOLD
-                + "/sp accept "
-                + tTeamLeader.getCommandSenderName();
-        GT_Utility.sendChatToPlayer(tTeamMember, tMessage);
+                + " /sp accept "
+                + teamLeader.getCommandSenderName();
+        GT_Utility.sendChatToPlayer(teamMember, message);
     }
 
-    private void processAccept(ICommandSender aSender, String aPLayerInviter) {
-        EntityPlayerMP tTeamMember = getCommandSenderAsPlayer(aSender);
-        EntityPlayerMP tTeamLeader = getPlayer(aSender, aPLayerInviter);
-        if (mInvite.contains(Pair.of(tTeamMember, tTeamLeader))) {
-            String tMessage = EnumChatFormatting.GOLD + tTeamMember.getCommandSenderName()
+    private void processAccept(ICommandSender sender, String playerInviter) {
+        EntityPlayerMP teamMember = getCommandSenderAsPlayer(sender);
+        EntityPlayerMP teamLeader = getPlayer(sender, playerInviter);
+        if (invite.contains(Pair.of(teamMember, teamLeader))) {
+            String message = EnumChatFormatting.GOLD + teamMember.getCommandSenderName()
                     + EnumChatFormatting.RESET
                     + " has accepted the invite.";
-            SpaceProjectManager.putInTeam(tTeamMember.getUniqueID(), tTeamLeader.getUniqueID());
-            GT_Utility.sendChatToPlayer(tTeamLeader, tMessage);
-            mInvite.remove(Pair.of(tTeamMember, tTeamLeader));
+            SpaceProjectManager.putInTeam(teamMember.getUniqueID(), teamLeader.getUniqueID());
+            GT_Utility.sendChatToPlayer(teamLeader, message);
+            invite.remove(Pair.of(teamMember, teamLeader));
         }
     }
 
-    private void processLeave(ICommandSender aSender) {
-        EntityPlayerMP tPlayer = getCommandSenderAsPlayer(aSender);
-        String tMessage = "Are you sure you want to leave the team. You will lose all progress. Use /sp confirm to confirm this. This does nothing if you are the team leader.";
-        GT_Utility.sendChatToPlayer(tPlayer, tMessage);
-        mConfirm.add(tPlayer);
+    private void processLeave(ICommandSender sender) {
+        EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+        String message = "Are you sure you want to leave the team. You will lose all progress. Use /sp confirm to confirm this. This does nothing if you are the team leader.";
+        GT_Utility.sendChatToPlayer(player, message);
+        confirm.add(player);
     }
 
-    private void processConfirm(ICommandSender aSender) {
-        EntityPlayerMP tPlayer = getCommandSenderAsPlayer(aSender);
-        if (mConfirm.contains(tPlayer)) {
-            String tMessage = "Successfully left the team.";
-            SpaceProjectManager.putInTeam(tPlayer.getUniqueID(), tPlayer.getUniqueID());
-            GT_Utility.sendChatToPlayer(tPlayer, tMessage);
-            mConfirm.remove(tPlayer);
+    private void processConfirm(ICommandSender sender) {
+        EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+        if (confirm.contains(player)) {
+            String message = "Successfully left the team.";
+            SpaceProjectManager.putInTeam(player.getUniqueID(), player.getUniqueID());
+            GT_Utility.sendChatToPlayer(player, message);
+            confirm.remove(player);
         }
     }
 

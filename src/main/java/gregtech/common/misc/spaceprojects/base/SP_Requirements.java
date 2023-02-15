@@ -11,10 +11,10 @@ public class SP_Requirements implements ISP_Requirements {
 
     // #region Variables
 
-    private SpaceBodyType mSpaceBodyType = SpaceBodyType.NONE;
-    private StarType mStarType = StarType.NotAStar;
-    private List<SpaceProject> mSpaceProjects;
-    private List<ISP_Upgrade> mUpgrades;
+    private SpaceBodyType spaceBody = SpaceBodyType.NONE;
+    private StarType star = StarType.NotAStar;
+    private List<SpaceProject> spaceProjects;
+    private List<ISP_Upgrade> upgrades;
 
     // #endregion
 
@@ -22,48 +22,48 @@ public class SP_Requirements implements ISP_Requirements {
 
     @Override
     public SpaceBodyType getBodyType() {
-        return mSpaceBodyType;
+        return spaceBody;
     }
 
     @Override
     public StarType getStarType() {
-        return mStarType;
+        return star;
     }
 
     @Override
     public List<SpaceProject> getProjects() {
-        return mSpaceProjects;
+        return spaceProjects;
     }
 
     @Override
     public List<ISP_Upgrade> getUpgrades() {
-        return mUpgrades;
+        return upgrades;
     }
 
     // #endregion
 
     // #region Setters/Builder
 
-    public SP_Requirements setSpaceBodyType(SpaceBodyType aSpaceBodyType) {
-        mSpaceBodyType = aSpaceBodyType;
+    public SP_Requirements setSpaceBodyType(SpaceBodyType spaceBodyType) {
+        spaceBody = spaceBodyType;
         return this;
     }
 
-    public SP_Requirements setStarType(StarType aStarType) {
-        mStarType = aStarType;
+    public SP_Requirements setStarType(StarType starType) {
+        star = starType;
         return this;
     }
 
-    public SP_Requirements setUpgrades(ISP_Upgrade... aUpgrades) {
-        for (ISP_Upgrade tUpgrade : aUpgrades) {
-            mUpgrades.add(tUpgrade);
+    public SP_Requirements setUpgrades(ISP_Upgrade... requirementUpgrades) {
+        for (ISP_Upgrade upgrade : requirementUpgrades) {
+            upgrades.add(upgrade);
         }
         return this;
     }
 
-    public SP_Requirements setSpaceProjects(SpaceProject... aSpaceProjects) {
-        for (SpaceProject aSpaceProject : aSpaceProjects) {
-            mSpaceProjects.add(aSpaceProject);
+    public SP_Requirements setSpaceProjects(SpaceProject... requirementProjects) {
+        for (SpaceProject project : requirementProjects) {
+            spaceProjects.add(project);
         }
         return this;
     }
