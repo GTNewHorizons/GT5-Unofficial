@@ -5069,8 +5069,7 @@ public class DreamCraftRecipeLoader {
 
                             ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM4.get(4),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
-                    new FluidStack[] { FluidUtils.getFluidStack("temporalFluid", 144_000),
-                            Materials.Space.getMolten(144_000),
+                    new FluidStack[] { Materials.Time.getMolten(144_000), Materials.Space.getMolten(144_000),
                             FluidUtils.getFluidStack("molten.metastable oganesson", 144 * 256 * 4),
                             FluidUtils.getFluidStack("molten.shirabon", 144 * 256 * 4), },
                     CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
@@ -5458,8 +5457,7 @@ public class DreamCraftRecipeLoader {
 
                         },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("temporalFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier] },
+                                Materials.Time.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                         researchStuff[absoluteTier + 1],
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5550,7 +5548,7 @@ public class DreamCraftRecipeLoader {
 
                         },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("temporalFluid", 1_440 * (absoluteTier + 1)),
+                                Materials.Time.getMolten(1_440 * (absoluteTier + 1)),
                                 Materials.Space.getMolten(1_440 * (absoluteTier + 1)),
                                 specialFluid[absoluteTier] },
                         researchStuff[absoluteTier + 1],
