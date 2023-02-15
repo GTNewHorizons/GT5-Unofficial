@@ -3,7 +3,6 @@ package gregtech.common.misc.spaceprojects;
 import static gregtech.common.misc.spaceprojects.SpaceProjectManager.mSpaceTeamProjects;
 import static gregtech.common.misc.spaceprojects.SpaceProjectManager.mSpaceTeams;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,87 +12,56 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.InstanceCreator;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.OrePrefixes;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
-import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     public static SpaceProjectWorldSavedData INSTANCE;
 
     private static final Gson GSON_READER = new GsonBuilder().serializeNulls()
-            .registerTypeAdapter(EnumRarity.class, new EnumRarityDeserializer())
-            .registerTypeAdapter(OrePrefixes.class, new OrePrefixesDeserializer())
             .registerTypeAdapter(Pair.class, new PairDeserializer())
-            .setExclusionStrategies(
-                    new CustomExclusion(CreativeTabs.class),
-                    new CustomExclusion(IIcon.class),
-                    new CustomExclusion(ResourceLocation.class),
-                    new CustomExclusion(Item.class),
-                    new CustomExclusion(Block.class),
-                    new CustomExclusion(Fluid.class))
-            .create();
+            .registerTypeAdapter(ItemStack.class, new ItemStackDeserializer())
+            .registerTypeAdapter(FluidStack.class, new FluidStackDeserializer()).create();
 
     private static final Gson GSON_WRITER = new GsonBuilder().serializeNulls()
-            .registerTypeAdapter(EnumRarity.class, new EnumRaritySerializer())
-            .registerTypeAdapter(OrePrefixes.class, new OrePrefixesSerializer())
             .registerTypeAdapter(Pair.class, new PairSerializer())
-            .setExclusionStrategies(
-                    new CustomExclusion(CreativeTabs.class),
-                    new CustomExclusion(IIcon.class),
-                    new CustomExclusion(ResourceLocation.class),
-                    new CustomExclusion(Item.class),
-                    new CustomExclusion(Block.class),
-                    new CustomExclusion(Fluid.class))
-            .create();
+            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
+            .registerTypeAdapter(FluidStack.class, new FluidStackSerializer()).create();
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
-
-    private static final String SPACE_TEAM_PROJECTS = "GT_SpaceTeamProjectsNBT";
-
-    private static final String SPACE_TEAMS = "GT_SpaceTeamsNBT";
 
     private static final String SPACE_TEAM_PROJECTS_JSON = "spaceTeamProject.json";
 
     private static final String SPACE_TEAMS_JSON = "spaceTeams.json";
-
-    private static final Map<String, String> rarityMap = new HashMap<>();
-    private static final Map<String, String> orePrefixMap = new HashMap<>();
 
     private static File mSpaceTeamsFile;
     private static File mTeamProjectsFile;
@@ -109,12 +77,22 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         Type tTeamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, SpaceProject>>>() {}.getType();
-        mSpaceTeamProjects = GSON_READER.fromJson(aNBT.getString(SPACE_TEAM_PROJECTS), tTeamProjectsType);
+        try (JsonReader reader = new JsonReader(new FileReader(mTeamProjectsFile))) {
+            mSpaceTeamProjects = GSON_READER.fromJson(reader, tTeamProjectsType);
+        } catch (IOException e) {
+            System.out.print("FAILED TO LOAD: " + SPACE_TEAM_PROJECTS_JSON);
+            e.printStackTrace();
+        }
         if (mSpaceTeamProjects == null) {
             mSpaceTeamProjects = new HashMap<>();
         }
         Type tTeamsType = new TypeToken<Map<UUID, UUID>>() {}.getType();
-        mSpaceTeams = GSON_READER.fromJson(aNBT.getString(SPACE_TEAMS), tTeamsType);
+        try (JsonReader reader = new JsonReader(new FileReader(mSpaceTeamsFile))) {
+            mSpaceTeams = GSON_READER.fromJson(reader, tTeamsType);
+        } catch (IOException e) {
+            System.out.print("FAILED TO LOAD: " + SPACE_TEAMS_JSON);
+            e.printStackTrace();
+        }
         if (mSpaceTeams == null) {
             mSpaceTeams = new HashMap<>();
         }
@@ -122,7 +100,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
-        
+
         try (JsonWriter writer = new JsonWriter(new FileWriter(mTeamProjectsFile))) {
             GSON_WRITER.toJson(mSpaceTeamProjects, mSpaceTeamProjects.getClass(), writer);
         } catch (IOException ex) {
@@ -130,38 +108,12 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             ex.printStackTrace();
         }
 
-        String tSpaceTeamProjectsJsonString = "";
-        try (FileReader reader = new FileReader(mTeamProjectsFile); BufferedReader br = new BufferedReader(reader)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                tSpaceTeamProjectsJsonString += line;
-            }
-        } catch (IOException e) {
-            System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
-            e.printStackTrace();
-        }
-        aNBT.setString(SPACE_TEAM_PROJECTS, tSpaceTeamProjectsJsonString);
-
-        
         try (JsonWriter writer = new JsonWriter(new FileWriter(mSpaceTeamsFile))) {
             GSON_WRITER.toJson(mSpaceTeams, mSpaceTeams.getClass(), writer);
         } catch (IOException ex) {
             System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
             ex.printStackTrace();
         }
-
-        String tSpaceTeamsJsonString = "";
-        try (FileReader reader = new FileReader(mSpaceTeamsFile); BufferedReader br = new BufferedReader(reader)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                tSpaceTeamsJsonString += line;
-            }
-        } catch (IOException e) {
-            System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
-            e.printStackTrace();
-        }
-
-        aNBT.setString(SPACE_TEAMS, tSpaceTeamsJsonString);
     }
 
     private static void loadInstance(World aWorld) {
@@ -185,42 +137,6 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         }
     }
 
-    private static class EnumRaritySerializer implements JsonSerializer<EnumRarity> {
-
-        @Override
-        public JsonElement serialize(EnumRarity src, Type typeOfSrc, JsonSerializationContext context) {
-            rarityMap.put(src.name(), src.toString());
-            return new JsonPrimitive(src.name());
-        }
-    }
-
-    private static class EnumRarityDeserializer implements JsonDeserializer<EnumRarity> {
-
-        @Override
-        public EnumRarity deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            return EnumRarity.valueOf(rarityMap.get(json.getAsString()));
-        }
-    }
-
-    private static class OrePrefixesSerializer implements JsonSerializer<OrePrefixes> {
-
-        @Override
-        public JsonElement serialize(OrePrefixes src, Type typeOfSrc, JsonSerializationContext context) {
-            orePrefixMap.put(src.name(), src.toString());
-            return new JsonPrimitive(src.name());
-        }
-    }
-
-    private static class OrePrefixesDeserializer implements JsonDeserializer<OrePrefixes> {
-
-        @Override
-        public OrePrefixes deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            return OrePrefixes.valueOf(orePrefixMap.get(json.getAsString()));
-        }
-    }
-
     private static class PairSerializer implements JsonSerializer<Pair<ISpaceBody, String>> {
 
         @Override
@@ -238,7 +154,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         public Pair<ISpaceBody, String> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
             Pair<ISpaceBody, String> pair = null;
-            if (json instanceof JsonObject) {
+            if (json.isJsonObject()) {
                 JsonObject obj = json.getAsJsonObject();
                 pair = Pair.of(
                         SpaceProjectManager.getLocation(obj.get("left").getAsString()),
@@ -248,24 +164,62 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         }
     }
 
-    
-
-    private static class CustomExclusion implements ExclusionStrategy {
-
-        private final Class<?> typeToExclude;
-
-        private CustomExclusion(Class<?> typeToSkip) {
-            this.typeToExclude = typeToSkip;
-        }
+    private static class ItemStackSerializer implements JsonSerializer<ItemStack> {
 
         @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return false;
+        public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
+            UniqueIdentifier identification = GameRegistry.findUniqueIdentifierFor(src.getItem());
+            JsonObject itemStack = new JsonObject();
+            itemStack.addProperty("modId", identification.modId);
+            itemStack.addProperty("itemName", identification.name);
+            itemStack.addProperty("stackSize", src.stackSize);
+            itemStack.addProperty("meta", src.getItemDamage());
+            return itemStack;
         }
+    }
+
+    private static class ItemStackDeserializer implements JsonDeserializer<ItemStack> {
 
         @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return (clazz == typeToExclude);
+        public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            ItemStack itemStack = null;
+            if (json.isJsonObject()) {
+                JsonObject obj = json.getAsJsonObject();
+                itemStack = GT_ModHandler.getModItem(
+                        obj.get("modId").getAsString(),
+                        obj.get("itemName").getAsString(),
+                        obj.get("stackSize").getAsLong(),
+                        obj.get("meta").getAsInt());
+            }
+            return itemStack;
+        }
+    }
+
+    private static class FluidStackSerializer implements JsonSerializer<FluidStack> {
+
+        @Override
+        public JsonElement serialize(FluidStack src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject fluidStack = new JsonObject();
+            fluidStack.addProperty("fluidName", src.getFluid().getName());
+            fluidStack.addProperty("amount", src.amount);
+            return fluidStack;
+        }
+    }
+
+    private static class FluidStackDeserializer implements JsonDeserializer<FluidStack> {
+
+        @Override
+        public FluidStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            FluidStack fluidStack = null;
+            if (json.isJsonObject()) {
+                JsonObject obj = json.getAsJsonObject();
+                fluidStack = new FluidStack(
+                        FluidRegistry.getFluid(obj.get("fluidName").getAsString()),
+                        obj.get("amount").getAsInt());
+            }
+            return fluidStack;
         }
     }
 }
