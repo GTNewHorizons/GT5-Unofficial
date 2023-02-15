@@ -5069,8 +5069,7 @@ public class DreamCraftRecipeLoader {
 
                             ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM4.get(4),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
-                    new FluidStack[] { FluidUtils.getFluidStack("temporalFluid", 144_000),
-                            FluidUtils.getFluidStack("spatialFluid", 144_000),
+                    new FluidStack[] { Materials.Time.getMolten(144_000), Materials.Space.getMolten(144_000),
                             FluidUtils.getFluidStack("molten.metastable oganesson", 144 * 256 * 4),
                             FluidUtils.getFluidStack("molten.shirabon", 144 * 256 * 4), },
                     CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
@@ -5111,7 +5110,7 @@ public class DreamCraftRecipeLoader {
 
                     new FluidStack[] { Materials.Neutronium.getMolten(144 * 256 * 4),
                             Materials.CosmicNeutronium.getMolten(144 * 256 * 4),
-                            new FluidStack(solderUEV, 144 * 256 * 2), FluidUtils.getFluidStack("spatialFluid", 1440) },
+                            new FluidStack(solderUEV, 144 * 256 * 2), Materials.Space.getMolten(1_440) },
                     CustomItemList.EOH_Reinforced_Spatial_Casing.get(4),
                     10_000,
                     (int) TierEU.RECIPE_UMV);
@@ -5164,8 +5163,7 @@ public class DreamCraftRecipeLoader {
                                 getModItem("miscutils", "gtplusplus.blockcasings.5", tier, 8), ME_Singularity,
                                 plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier] },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5190,8 +5188,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier] },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier1.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5216,8 +5213,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier], },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier2.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5245,8 +5241,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier], },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier3.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5271,8 +5266,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier], },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier4.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5297,8 +5291,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
                                 plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier], },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier5.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5326,8 +5319,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
                                 ME_Singularity, plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier], },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier6.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5353,8 +5345,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier], },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier7.get(1),
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5380,8 +5371,7 @@ public class DreamCraftRecipeLoader {
                                 ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                                 getItemContainer("QuantumCircuit").get(set) },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier], },
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
                         set * 16_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5467,8 +5457,7 @@ public class DreamCraftRecipeLoader {
 
                         },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("temporalFluid", 1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier] },
+                                Materials.Time.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                         researchStuff[absoluteTier + 1],
                         (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
@@ -5559,8 +5548,8 @@ public class DreamCraftRecipeLoader {
 
                         },
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
-                                FluidUtils.getFluidStack("temporalFluid", 1_440 * (absoluteTier + 1)),
-                                FluidUtils.getFluidStack("spatialFluid", 1_440 * (absoluteTier + 1)),
+                                Materials.Time.getMolten(1_440 * (absoluteTier + 1)),
+                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)),
                                 specialFluid[absoluteTier] },
                         researchStuff[absoluteTier + 1],
                         (absoluteTier + 1) * 4_000 * 20,
@@ -5605,7 +5594,7 @@ public class DreamCraftRecipeLoader {
 
                     new FluidStack[] { Materials.Neutronium.getMolten(144 * 256 * 4),
                             Materials.CosmicNeutronium.getMolten(144 * 256 * 4),
-                            new FluidStack(solderUEV, 144 * 256 * 2), FluidUtils.getFluidStack("spatialFluid", 1440) },
+                            new FluidStack(solderUEV, 144 * 256 * 2), Materials.Space.getMolten(1_440) },
                     CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
                     10_000,
                     (int) TierEU.RECIPE_UMV);
