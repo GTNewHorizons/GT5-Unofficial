@@ -14,7 +14,6 @@ import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
 import java.util.ArrayList;
 
-import gregtech.common.power.FusionPower;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,6 +51,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.power.FusionPower;
 import gregtech.common.power.Power;
 
 public abstract class GT_MetaTileEntity_FusionComputer
