@@ -7,6 +7,7 @@ public abstract class Power {
     protected final byte tier;
     protected int recipeEuPerTick;
     protected int recipeDuration;
+    protected int specialValue;
 
     public Power(byte tier) {
         this.tier = tier;
@@ -22,6 +23,10 @@ public abstract class Power {
      * This method should be called prior to usage of any value except the power tier.
      */
     public abstract void computePowerUsageAndDuration(int euPerTick, int duration);
+
+    public void computePowerUsageAndDuration(int euPerTick, int duration, int specialValue) {
+        computePowerUsageAndDuration(euPerTick, duration);
+    }
 
     public int getEuPerTick() {
         return recipeEuPerTick;
@@ -53,4 +58,15 @@ public abstract class Power {
     public abstract String getVoltageString();
 
     public abstract String getAmperageString();
+
+    public boolean useComparator() {
+        return false;
+    }
+
+    public int compareTo(byte tier, int specialValue) {
+        if (this.tier != tier) {
+            return this.tier - tier;
+        }
+        return this.specialValue - specialValue;
+    }
 }

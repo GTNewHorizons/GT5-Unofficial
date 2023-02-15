@@ -751,7 +751,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     /**
      * Calcualtes overclocked ness using long integers
-     * 
+     *
      * @param aEUt      - recipe EUt
      * @param aDuration - recipe Duration
      */
@@ -1238,6 +1238,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         }
     }
 
+    @Override
     public Power getPower() {
         return mPower;
     }
