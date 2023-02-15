@@ -4,7 +4,6 @@ import java.util.List;
 
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.StarType;
-import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Requirements;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 
