@@ -53,7 +53,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
             return;
         }
         GT_MetaGenerated_Tool aItem = (GT_MetaGenerated_Tool) aStack.getItem();
-        GL11.glEnable(3042);
+        GL11.glEnable(GL11.GL_BLEND);
         if (aType == IItemRenderer.ItemRenderType.ENTITY) {
             if (RenderItem.renderInFrame) {
                 GL11.glScalef(0.85F, 0.85F, 0.85F);
@@ -73,7 +73,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                 IIcon tOverlay = aIcon.getOverlayIcon();
                 if (tIcon != null) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                    GL11.glBlendFunc(770, 771);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     short[] tModulation = tToolStats.getRGBa(false, aStack);
                     GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
@@ -93,7 +93,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                 }
                 if (tOverlay != null) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                    GL11.glBlendFunc(770, 771);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
@@ -115,7 +115,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                 IIcon tOverlay = aIcon.getOverlayIcon();
                 if (tIcon != null) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                    GL11.glBlendFunc(770, 771);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     short[] tModulation = tToolStats.getRGBa(true, aStack);
                     GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
@@ -135,7 +135,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                 }
                 if (tOverlay != null) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                    GL11.glBlendFunc(770, 771);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
@@ -168,7 +168,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     IIcon tOverlay = aIcon.getOverlayIcon();
                     if (tIcon != null) {
                         Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                        GL11.glBlendFunc(770, 771);
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                         if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                             GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         } else {
@@ -185,7 +185,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     }
                     if (tOverlay != null) {
                         Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                        GL11.glBlendFunc(770, 771);
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                         if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                             GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         } else {
@@ -220,7 +220,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     IIcon tOverlay = aIcon.getOverlayIcon();
                     if (tIcon != null) {
                         Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                        GL11.glBlendFunc(770, 771);
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                         if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                             GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         } else {
@@ -237,7 +237,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     }
                     if (tOverlay != null) {
                         Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                        GL11.glBlendFunc(770, 771);
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                         if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                             GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         } else {
@@ -255,6 +255,6 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                 }
             }
         }
-        GL11.glDisable(3042);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }
