@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
+import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.StarType;
 import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
@@ -132,7 +132,7 @@ public interface ISpaceProject {
 
         StarType getStarType();
 
-        List<ISpaceProject> getProjects();
+        List<SpaceProject> getProjects();
 
         List<ISP_Upgrade> getUpgrades();
     }
