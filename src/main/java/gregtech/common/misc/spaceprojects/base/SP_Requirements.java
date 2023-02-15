@@ -14,7 +14,7 @@ public class SP_Requirements implements ISP_Requirements {
 
     private SpaceBodyType mSpaceBodyType = SpaceBodyType.NONE;
     private StarType mStarType = StarType.NotAStar;
-    private List<ISpaceProject> mSpaceProjects;
+    private List<SpaceProject> mSpaceProjects;
     private List<ISP_Upgrade> mUpgrades;
 
     // #endregion
@@ -32,7 +32,7 @@ public class SP_Requirements implements ISP_Requirements {
     }
 
     @Override
-    public List<ISpaceProject> getProjects() {
+    public List<SpaceProject> getProjects() {
         return mSpaceProjects;
     }
 
@@ -62,8 +62,8 @@ public class SP_Requirements implements ISP_Requirements {
         return this;
     }
 
-    public SP_Requirements setSpaceProjects(ISpaceProject... aSpaceProjects) {
-        for (ISpaceProject aSpaceProject : aSpaceProjects) {
+    public SP_Requirements setSpaceProjects(SpaceProject... aSpaceProjects) {
+        for (SpaceProject aSpaceProject : aSpaceProjects) {
             mSpaceProjects.add(aSpaceProject);
         }
         return this;
