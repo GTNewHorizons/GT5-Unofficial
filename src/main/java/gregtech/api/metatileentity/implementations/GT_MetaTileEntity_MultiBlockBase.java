@@ -5,6 +5,7 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1340,6 +1341,32 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public boolean useModularUI() {
         return true;
+    }
+
+    @Override
+    public BigInteger getEUVarDisplay() {
+        BigInteger ret = BigInteger.ZERO;
+        for (GT_MetaTileEntity_Hatch hatch : getEnergyHatchesForDisplay()) {
+            if (hatch.getBaseMetaTileEntity() != null) {
+                ret = ret.add(BigInteger.valueOf(hatch.getBaseMetaTileEntity().getStoredEU()));
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public BigInteger getMaxEUStoreDisplay() {
+        BigInteger ret = BigInteger.ZERO;
+        for (GT_MetaTileEntity_Hatch hatch : getEnergyHatchesForDisplay()) {
+            if (hatch.getBaseMetaTileEntity() != null) {
+                ret = ret.add(BigInteger.valueOf(hatch.getBaseMetaTileEntity().getEUCapacity()));
+            }
+        }
+        return ret;
+    }
+
+    protected List<? extends GT_MetaTileEntity_Hatch> getEnergyHatchesForDisplay() {
+        return mEnergyHatches;
     }
 
     @Override

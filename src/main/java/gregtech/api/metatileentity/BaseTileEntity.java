@@ -7,6 +7,7 @@ import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.SIDE_DOWN;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -846,6 +847,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     protected void addSidebarInfoWidgets(UIBuildContext buildContext) {
         IDrawable batteryIcon = new ItemDrawable(ItemList.Battery_RE_LV_Lithium.get(1)).withFixedSize(16, 16, 2, 2);
         IDrawable steamIcon = new ItemDrawable(ItemList.Steam_Valve_LV.get(1)).withFixedSize(16, 16, 2, 2);
+
         if (this instanceof IBasicEnergyContainer) {
             IBasicEnergyContainer energyContainer = (IBasicEnergyContainer) this;
             SidebarTab energyInfoTab = new SidebarTab("energy") {
@@ -853,45 +855,49 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                 @Override
                 public String getDescription() {
                     // show "energy" on config screen when this machine accepts neither of energy nor steam
-                    String transKey = energyContainer.getEUCapacity() > 0 || energyContainer.getSteamCapacity() <= 0
-                            ? "energy"
-                            : "steam";
+                    String transKey = hasEUStorage() || !hasSteamStorage() ? "energy" : "steam";
                     return StatCollector
                             .translateToLocal(String.format("GT5U.machines.sidebar.%s.description", transKey));
                 }
             };
-            energyInfoTab.setIcon(
-                    () -> energyContainer.getEUCapacity() > 0 || energyContainer.getSteamCapacity() <= 0 ? batteryIcon
-                            : steamIcon)
+            energyInfoTab.setIcon(() -> hasEUStorage() || !hasSteamStorage() ? batteryIcon : steamIcon)
+                    .addChild(TextWidget.localised("GT5U.machines.sidebar.energy.stored").setPos(5, 5))
                     .addChild(TextWidget.dynamicString(() -> {
-                        if (energyContainer.getEUCapacity() > 0) {
-                            return "Energy:";
-                        } else if (energyContainer.getSteamCapacity() > 0) {
-                            return "Steam:";
-                        } else {
-                            return "";
-                        }
-                    }).setSynced(false).setPos(5, 5)).addChild(TextWidget.dynamicString(() -> {
-                        if (energyContainer.getEUCapacity() > 0) {
-                            return energyContainer.getStoredEUDisplay() + " EU";
-                        } else if (energyContainer.getSteamCapacity() > 0) {
-                            return energyContainer.getStoredSteam() + " Steam";
+                        if (hasEUStorage()) {
+                            return GT_Utility.formatNumbers(energyContainer.getStoredEUDisplay()) + " EU";
+                        } else if (hasSteamStorage()) {
+                            return GT_Utility.formatNumbers(energyContainer.getStoredSteam()) + " Steam";
                         } else {
                             return "";
                         }
                     }).setPos(5, 15)).addChild(TextWidget.dynamicString(() -> {
-                        if (energyContainer.getEUCapacity() > 0) {
-                            return "/ " + energyContainer.getEUCapacityDisplay() + " EU";
-                        } else if (energyContainer.getSteamCapacity() > 0) {
-                            return "/ " + energyContainer.getSteamCapacity() + " Steam";
+                        if (hasEUStorage()) {
+                            return "/ " + GT_Utility.formatNumbers(energyContainer.getEUCapacityDisplay()) + " EU";
+                        } else if (hasSteamStorage()) {
+                            return "/ " + GT_Utility.formatNumbers(energyContainer.getSteamCapacity()) + " Steam";
                         } else {
                             return "";
                         }
-                    }).setPos(10, 25)).setEnabled(
-                            widget -> energyContainer.getEUCapacity() > 0 || energyContainer.getSteamCapacity() > 0);
+                    }).setPos(10, 25)).setEnabled(widget -> hasEUStorage() || hasSteamStorage());
 
             addToSidebarInfo(energyInfoTab);
         }
+    }
+
+    private boolean hasEUStorage() {
+        if (this instanceof IBasicEnergyContainer) {
+            IBasicEnergyContainer energyContainer = (IBasicEnergyContainer) this;
+            return energyContainer.getEUCapacityDisplay().compareTo(BigInteger.ZERO) > 0;
+        }
+        return false;
+    }
+
+    private boolean hasSteamStorage() {
+        if (this instanceof IBasicEnergyContainer) {
+            IBasicEnergyContainer energyContainer = (IBasicEnergyContainer) this;
+            return energyContainer.getSteamCapacity() > 0;
+        }
+        return false;
     }
 
     @SuppressWarnings("unused")

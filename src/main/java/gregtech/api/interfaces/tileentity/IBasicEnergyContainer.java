@@ -1,6 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
-import gregtech.api.util.GT_Utility;
+import java.math.BigInteger;
 
 /**
  * Interface for internal Code, which is mainly used for independent Energy conversion.
@@ -82,19 +82,19 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
     long getEUCapacity();
 
     /**
-     * Returns the amount of electricity contained in this block, represented as String. You can override this to show
-     * BigInteger EU on GUI.
+     * Returns the amount of electricity contained in this block, represented as BigInteger. You can override this to
+     * show BigInteger EU or energy proxied from other blocks on GUI.
      */
-    default String getStoredEUDisplay() {
-        return GT_Utility.formatNumbers(getStoredEU());
+    default BigInteger getStoredEUDisplay() {
+        return BigInteger.valueOf(getStoredEU());
     }
 
     /**
-     * Returns the amount of electricity containable in this block, represented as String. You can override this to show
-     * BigInteger EU on GUI.
+     * Returns the amount of electricity containable in this block, represented as BigInteger. You can override this to
+     * show BigInteger EU or energy proxied from other blocks on GUI.
      */
-    default String getEUCapacityDisplay() {
-        return GT_Utility.formatNumbers(getEUCapacity());
+    default BigInteger getEUCapacityDisplay() {
+        return BigInteger.valueOf(getEUCapacity());
     }
 
     /**

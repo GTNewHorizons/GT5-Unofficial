@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import static gregtech.api.enums.GT_Values.V;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -456,10 +457,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * @return The amount of EU, represented as string. You can override this to show BigInteger EU on GUI.
+     * Returns the amount of electricity containable in this block, represented as BigInteger. You can override this to
+     * show BigInteger EU or energy proxied from other blocks on GUI.
      */
-    public String getMaxEUStoreDisplay() {
-        return GT_Utility.formatNumbers(maxEUStore());
+    public BigInteger getMaxEUStoreDisplay() {
+        if (getBaseMetaTileEntity() != null) {
+            return BigInteger.valueOf(getBaseMetaTileEntity().getEUCapacity());
+        }
+        return BigInteger.ZERO;
     }
 
     /**
@@ -545,10 +550,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * Used to show stored energy as string. You can override this to show BigInteger EU on GUI.
+     * Returns the amount of electricity contained in this block, represented as BigInteger. You can override this to
+     * show BigInteger EU or energy proxied from other blocks on GUI.
      */
-    public String getEUVarDisplay() {
-        return GT_Utility.formatNumbers(getEUVar());
+    public BigInteger getEUVarDisplay() {
+        if (getBaseMetaTileEntity() != null) {
+            return BigInteger.valueOf(getBaseMetaTileEntity().getStoredEU());
+        }
+        return BigInteger.ZERO;
     }
 
     /**

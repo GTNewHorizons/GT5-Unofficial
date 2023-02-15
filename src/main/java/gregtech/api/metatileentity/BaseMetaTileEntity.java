@@ -7,6 +7,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.*;
 
 import javax.annotation.Nullable;
@@ -1188,13 +1189,13 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public String getStoredEUDisplay() {
+    public BigInteger getStoredEUDisplay() {
         if (canAccessData()) return mMetaTileEntity.getEUVarDisplay();
         return super.getStoredEUDisplay();
     }
 
     @Override
-    public String getEUCapacityDisplay() {
+    public BigInteger getEUCapacityDisplay() {
         if (canAccessData()) return mMetaTileEntity.getMaxEUStoreDisplay();
         return super.getEUCapacityDisplay();
     }

@@ -221,4 +221,9 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         super.clearHatches();
         mExoticEnergyHatches.clear();
     }
+
+    @Override
+    protected List<? extends GT_MetaTileEntity_Hatch> getEnergyHatchesForDisplay() {
+        return getExoticAndNormalEnergyHatchList();
+    }
 }
