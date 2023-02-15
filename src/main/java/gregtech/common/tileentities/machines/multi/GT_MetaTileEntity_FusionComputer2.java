@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.common.power.FusionPower;
 
 public class GT_MetaTileEntity_FusionComputer2 extends GT_MetaTileEntity_FusionComputer {
 
@@ -19,11 +20,13 @@ public class GT_MetaTileEntity_FusionComputer2 extends GT_MetaTileEntity_FusionC
             TextureFactory.builder().addIcon(OVERLAY_FUSION2_GLOW).extFacing().glow().build());
 
     public GT_MetaTileEntity_FusionComputer2(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6);
+        super(aID, aName, aNameRegional, 7);
+        power = new FusionPower((byte) 7, 1, 320_000_000);
     }
 
     public GT_MetaTileEntity_FusionComputer2(String aName) {
         super(aName);
+        power = new FusionPower((byte) 7, 1, 320_000_000);
     }
 
     @Override

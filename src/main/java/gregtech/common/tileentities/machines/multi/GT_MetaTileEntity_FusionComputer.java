@@ -14,6 +14,7 @@ import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
 import java.util.ArrayList;
 
+import gregtech.common.power.FusionPower;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,10 +52,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.power.Power;
 
 public abstract class GT_MetaTileEntity_FusionComputer
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
         implements ISurvivalConstructable, IAddUIWidgets {
+
+    protected FusionPower power;
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>>() {
@@ -128,6 +132,11 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     public GT_MetaTileEntity_FusionComputer(String aName) {
         super(aName);
+    }
+
+    @Override
+    public Power getPower() {
+        return power;
     }
 
     public abstract int tier();
