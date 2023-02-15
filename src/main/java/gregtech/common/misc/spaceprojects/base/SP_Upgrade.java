@@ -12,14 +12,14 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     // #region Variables
 
-    private String mUpgradeName;
-    private String mUpgradeUnlocalizedName;
-    private ItemStack[] mItemsCost;
-    private FluidStack[] mFluidsCost;
-    private int mTotalStages;
-    private int mCurrentStage;
-    private int mBuildTime;
-    private long mVoltage;
+    private String name;
+    private String unlocalizedName;
+    private ItemStack[] itemsCost;
+    private FluidStack[] fluidsCost;
+    private int totalStages;
+    private int currentStage;
+    private int buildTime;
+    private long voltage;
 
     // #endregion
 
@@ -27,174 +27,174 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public String getUpgradeName() {
-        return mUpgradeName;
+        return name;
     }
 
     @Override
     public String getUnlocalizedName() {
-        return mUpgradeUnlocalizedName;
+        return unlocalizedName;
     }
 
     @Override
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(mUpgradeUnlocalizedName);
+        return StatCollector.translateToLocal(unlocalizedName);
     }
 
     @Override
     public ItemStack[] getItemsCostPerStage() {
-        return mItemsCost;
+        return itemsCost;
     }
 
     @Override
-    public ItemStack getItemCostPerStage(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
+    public ItemStack getItemCostPerStage(int index) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
 
-        return mItemsCost[aIndex];
+        return itemsCost[index];
     }
 
     @Override
     public ItemStack[] getCurrentItemsProgress() {
-        ItemStack[] tCurrentItemProgress = new ItemStack[mItemsCost.length];
+        ItemStack[] currentItemsProgress = new ItemStack[itemsCost.length];
         int index = 0;
-        for (ItemStack tItem : mItemsCost) {
-            ItemStack tCopy = tItem.copy();
-            tCopy.stackSize *= getCurrentStage();
-            tCurrentItemProgress[index++] = tCopy;
+        for (ItemStack item : itemsCost) {
+            ItemStack copy = item.copy();
+            copy.stackSize *= getCurrentStage();
+            currentItemsProgress[index++] = copy;
         }
 
-        return tCurrentItemProgress;
+        return currentItemsProgress;
     }
 
     @Override
-    public ItemStack getCurrentItemProgress(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
+    public ItemStack getCurrentItemProgress(int index) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
 
-        ItemStack tItem = mItemsCost[aIndex].copy();
-        tItem.stackSize *= getCurrentStage();
-        return tItem;
+        ItemStack item = itemsCost[index].copy();
+        item.stackSize *= getCurrentStage();
+        return item;
     }
 
     @Override
     public ItemStack[] getTotalItemsCost() {
-        ItemStack[] tTotalItemCost = new ItemStack[mItemsCost.length];
+        ItemStack[] totalItemsCost = new ItemStack[itemsCost.length];
         int index = 0;
-        for (ItemStack tItem : mItemsCost) {
-            ItemStack tCopy = tItem.copy();
-            tCopy.stackSize *= getTotalStages();
-            tTotalItemCost[index++] = tCopy;
+        for (ItemStack item : itemsCost) {
+            ItemStack copy = item.copy();
+            copy.stackSize *= getTotalStages();
+            totalItemsCost[index++] = copy;
         }
 
-        return tTotalItemCost;
+        return totalItemsCost;
     }
 
     @Override
-    public ItemStack getTotalItemCost(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
+    public ItemStack getTotalItemCost(int index) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
 
-        ItemStack tItem = mItemsCost[aIndex].copy();
-        tItem.stackSize *= getTotalStages();
-        return tItem;
+        ItemStack item = itemsCost[index].copy();
+        item.stackSize *= getTotalStages();
+        return item;
     }
 
     @Override
     public FluidStack[] getFluidsCostPerStage() {
-        return mFluidsCost;
+        return fluidsCost;
     }
 
     @Override
-    public FluidStack getFluidCostPerStage(int aIndex) {
-        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
+    public FluidStack getFluidCostPerStage(int index) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
 
-        return mFluidsCost[aIndex];
+        return fluidsCost[index];
     }
 
     @Override
     public FluidStack[] getCurrentFluidsProgress() {
-        if (mFluidsCost == null) {
+        if (fluidsCost == null) {
             return null;
         }
 
-        FluidStack[] tCurrentFluidProgress = new FluidStack[mFluidsCost.length];
+        FluidStack[] currentFluidsProgress = new FluidStack[fluidsCost.length];
         int index = 0;
-        for (FluidStack tFluid : mFluidsCost) {
-            FluidStack tCopy = tFluid.copy();
-            tCopy.amount *= getCurrentStage();
-            tCurrentFluidProgress[index++] = tCopy;
+        for (FluidStack fluid : fluidsCost) {
+            FluidStack copy = fluid.copy();
+            copy.amount *= getCurrentStage();
+            currentFluidsProgress[index++] = copy;
         }
 
-        return tCurrentFluidProgress;
+        return currentFluidsProgress;
     }
 
     @Override
-    public FluidStack getCurrentFluidProgress(int aIndex) {
-        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
+    public FluidStack getCurrentFluidProgress(int index) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
 
-        FluidStack tFluid = mFluidsCost[aIndex].copy();
-        tFluid.amount *= getCurrentStage();
-        return tFluid;
+        FluidStack fluid = fluidsCost[index].copy();
+        fluid.amount *= getCurrentStage();
+        return fluid;
     }
 
     @Override
     public FluidStack[] getTotalFluidsCost() {
-        if (mFluidsCost == null) {
+        if (fluidsCost == null) {
             return null;
         }
 
-        FluidStack[] tTotalFluidCost = new FluidStack[mFluidsCost.length];
+        FluidStack[] totalFluidsCost = new FluidStack[fluidsCost.length];
         int index = 0;
-        for (FluidStack tFluid : mFluidsCost) {
-            FluidStack tCopy = tFluid.copy();
-            tCopy.amount *= getTotalStages();
-            tTotalFluidCost[index++] = tCopy;
+        for (FluidStack fluid : fluidsCost) {
+            FluidStack copy = fluid.copy();
+            copy.amount *= getTotalStages();
+            totalFluidsCost[index++] = copy;
         }
 
-        return tTotalFluidCost;
+        return totalFluidsCost;
     }
 
     @Override
-    public FluidStack getTotalFluidCost(int aIndex) {
-        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
+    public FluidStack getTotalFluidCost(int index) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
 
-        FluidStack tFluid = mFluidsCost[aIndex].copy();
-        tFluid.amount *= getTotalStages();
-        return tFluid;
+        FluidStack fluid = fluidsCost[index].copy();
+        fluid.amount *= getTotalStages();
+        return fluid;
     }
 
     @Override
     public int getTotalStages() {
-        return mTotalStages;
+        return totalStages;
     }
 
     @Override
     public int getTotalBuildTime() {
-        return mBuildTime;
+        return buildTime;
     }
 
     @Override
     public int getCurrentStage() {
-        return mCurrentStage;
+        return currentStage;
     }
 
     @Override
     public float getCurrentProgress() {
-        return mCurrentStage / mTotalStages * 100.0f;
+        return currentStage / totalStages * 100.0f;
     }
 
     @Override
     public long getVoltage() {
-        return mVoltage;
+        return voltage;
     }
 
     @Override
@@ -228,7 +228,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public void goToNextStage() {
-        mCurrentStage++;
+        currentStage++;
     }
 
     // #endregion

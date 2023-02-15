@@ -38,39 +38,41 @@ public interface ISpaceProject {
 
     ItemStack[] getItemsCostPerStage();
 
-    ItemStack getItemCostPerStage(int aIndex);
+    ItemStack getItemCostPerStage(int index);
 
     ItemStack[] getCurrentItemsProgress();
 
-    ItemStack getCurrentItemProgress(int aIndex);
+    ItemStack getCurrentItemProgress(int index);
 
     ItemStack[] getTotalItemsCost();
 
-    ItemStack getTotalItemCost(int aIndex);
+    ItemStack getTotalItemCost(int index);
 
     FluidStack[] getFluidsCostPerStage();
 
-    FluidStack getFluidCostPerStage(int aIndex);
+    FluidStack getFluidCostPerStage(int index);
 
     FluidStack[] getCurrentFluidsProgress();
 
-    FluidStack getCurrentFluidProgress(int aIndex);
+    FluidStack getCurrentFluidProgress(int index);
 
     FluidStack[] getTotalFluidsCost();
 
-    FluidStack getTotalFluidCost(int aIndex);
+    FluidStack getTotalFluidCost(int index);
 
     ISP_Upgrade getUpgradeBeingBuilt();
 
-    void setProjectStage(int aStage);
+    void setProjectStage(int stage);
 
-    void setCurrentUpgradeBeingBuilt(ISP_Upgrade aUpgrade);
+    void setCurrentUpgradeBeingBuilt(ISP_Upgrade upgrade);
+
+    void setProjectLocation(ISpaceBody newLocation);
 
     void goToNextStage();
 
     ISpaceProject copy();
 
-    boolean meetsRequirements(UUID aTeam, ISpaceBody aLocation);
+    boolean meetsRequirements(UUID team, ISpaceBody location);
 
     boolean isFinished();
 
@@ -84,27 +86,27 @@ public interface ISpaceProject {
 
         ItemStack[] getItemsCostPerStage();
 
-        ItemStack getItemCostPerStage(int aIndex);
+        ItemStack getItemCostPerStage(int index);
 
         ItemStack[] getCurrentItemsProgress();
 
-        ItemStack getCurrentItemProgress(int aIndex);
+        ItemStack getCurrentItemProgress(int index);
 
         ItemStack[] getTotalItemsCost();
 
-        ItemStack getTotalItemCost(int aIndex);
+        ItemStack getTotalItemCost(int index);
 
         FluidStack[] getFluidsCostPerStage();
 
-        FluidStack getFluidCostPerStage(int aIndex);
+        FluidStack getFluidCostPerStage(int index);
 
         FluidStack[] getCurrentFluidsProgress();
 
-        FluidStack getCurrentFluidProgress(int aIndex);
+        FluidStack getCurrentFluidProgress(int index);
 
         FluidStack[] getTotalFluidsCost();
 
-        FluidStack getTotalFluidCost(int aIndex);
+        FluidStack getTotalFluidCost(int index);
 
         int getTotalStages();
 
