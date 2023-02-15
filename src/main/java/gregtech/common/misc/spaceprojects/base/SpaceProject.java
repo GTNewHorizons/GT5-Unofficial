@@ -350,7 +350,7 @@ public class SpaceProject implements ISpaceProject {
     // #region Other
 
     @Override
-    public ISpaceProject copy() {
+    public SpaceProject copy() {
         SpaceProject aCopy = new SpaceProject().setProjectName(mSpaceProjectName)
                 .setProjectUnlocalizedName(mSpaceProjectUnlocalizedName).setProjectVoltage(mVoltage)
                 .setProjectBuildTime(mBuildTime).setItemCosts(mItemsCost).setFluidCosts(mFluidsCost)
@@ -401,7 +401,7 @@ public class SpaceProject implements ISpaceProject {
         }
 
         if (mRequirements.getProjects() != null) {
-            for (ISpaceProject tProject : mRequirements.getProjects()) {
+            for (SpaceProject tProject : mRequirements.getProjects()) {
                 if (!SpaceProjectManager.teamHasProject(aTeam, tProject)) {
                     return false;
                 }
@@ -413,10 +413,10 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ISpaceProject)) {
+        if (!(obj instanceof SpaceProject)) {
             return false;
         }
-        return getProjectName().equals(((ISpaceProject) obj).getProjectName());
+        return getProjectName().equals(((SpaceProject) obj).getProjectName());
     }
 
     @Override

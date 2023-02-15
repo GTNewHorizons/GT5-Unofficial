@@ -15,6 +15,7 @@ import net.minecraft.util.ChatComponentText;
 
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 public class SPM_Command extends CommandBase {
@@ -184,7 +185,7 @@ public class SPM_Command extends CommandBase {
 
     private void processUnlock(ICommandSender aSender, String aProjectName, String aLocation, String aPlayerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(aPlayerName);
-        ISpaceProject tProject = SpaceProjectManager.getProject(aProjectName);
+        SpaceProject tProject = SpaceProjectManager.getProject(aProjectName);
         if (tProject != null) {
             tProject.setProjectStage(tProject.getTotalStages());
             SpaceProjectManager.addTeamProject(tID, getLocation(aLocation), aProjectName, tProject);

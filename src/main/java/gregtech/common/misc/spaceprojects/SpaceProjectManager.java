@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -17,7 +18,7 @@ public class SpaceProjectManager {
     /**
      * Do not use! Only meant to be used in SpaceProjectWorldSavedData.java
      */
-    public static Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> mSpaceTeamProjects = new HashMap<>();
+    public static Map<UUID, Map<Pair<ISpaceBody, String>, SpaceProject>> mSpaceTeamProjects = new HashMap<>();
     /**
      * Do not use! Only meant to be used in SpaceProjectWorldSavedData.java Stores a Players UUID to the Leader UUID,
      * players in lone groups give back their own UUID.
@@ -26,13 +27,13 @@ public class SpaceProjectManager {
 
     private static final HashMap<String, ISpaceBody> mSpaceLocations = new HashMap<>();
 
-    private static final Map<String, ISpaceProject> mSpaceProjects = new HashMap<>();
+    private static final Map<String, SpaceProject> mSpaceProjects = new HashMap<>();
 
     /*
      * Team Section
      */
-    public static ISpaceProject getTeamProject(UUID aTeam, ISpaceBody aLocation, String aProjectName) {
-        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(aTeam);
+    public static SpaceProject getTeamProject(UUID aTeam, ISpaceBody aLocation, String aProjectName) {
+        Map<Pair<ISpaceBody, String>, SpaceProject> tMap = mSpaceTeamProjects.get(aTeam);
         if (tMap == null) {
             return null;
         }
@@ -40,19 +41,19 @@ public class SpaceProjectManager {
     }
 
     public static boolean addTeamProject(UUID aTeam, ISpaceBody aLocation, String aProjectName,
-            ISpaceProject aProject) {
+            SpaceProject aProject) {
         if (!mSpaceTeamProjects.containsKey(getLeader(aTeam)) || mSpaceTeamProjects.get(getLeader(aTeam)) == null) {
-            mSpaceTeamProjects.put(getLeader(aTeam), new HashMap<Pair<ISpaceBody, String>, ISpaceProject>());
+            mSpaceTeamProjects.put(getLeader(aTeam), new HashMap<Pair<ISpaceBody, String>, SpaceProject>());
         }
-        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
+        Map<Pair<ISpaceBody, String>, SpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
         if (tMap.containsKey(Pair.of(aLocation, aProjectName))) return false;
         tMap.put(Pair.of(aLocation, aProjectName), aProject);
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
         return true;
     }
 
-    public static boolean teamHasProject(UUID aTeam, ISpaceProject aProject) {
-        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
+    public static boolean teamHasProject(UUID aTeam, SpaceProject aProject) {
+        Map<Pair<ISpaceBody, String>, SpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
         if (tMap == null) {
             return false;
         }
@@ -82,8 +83,8 @@ public class SpaceProjectManager {
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
     }
 
-    public static Collection<ISpaceProject> getTeamSpaceProjects(UUID aTeam) {
-        Map<Pair<ISpaceBody, String>, ISpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
+    public static Collection<SpaceProject> getTeamSpaceProjects(UUID aTeam) {
+        Map<Pair<ISpaceBody, String>, SpaceProject> tMap = mSpaceTeamProjects.get(getLeader(aTeam));
         if (tMap == null) {
             return null;
         }
@@ -93,7 +94,7 @@ public class SpaceProjectManager {
     /*
      * General Project Helpers
      */
-    public static void addProject(ISpaceProject aProject) {
+    public static void addProject(SpaceProject aProject) {
         mSpaceProjects.put(aProject.getProjectName(), aProject);
     }
 
@@ -101,19 +102,19 @@ public class SpaceProjectManager {
      * @param aProjectName Internal name of the project
      * @return a copy of the stored project
      */
-    public static ISpaceProject getProject(String aProjectName) {
-        ISpaceProject tProject = mSpaceProjects.get(aProjectName);
+    public static SpaceProject getProject(String aProjectName) {
+        SpaceProject tProject = mSpaceProjects.get(aProjectName);
         return tProject != null ? tProject.copy() : null;
     }
 
     /**
      * Should only be used for GUIs!
      */
-    public static Map<String, ISpaceProject> getAllProjects() {
+    public static Map<String, SpaceProject> getAllProjects() {
         return mSpaceProjects;
     }
 
-    public static Collection<ISpaceProject> getProjects() {
+    public static Collection<SpaceProject> getProjects() {
         return mSpaceProjects.values();
     }
 
