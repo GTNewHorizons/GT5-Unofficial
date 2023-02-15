@@ -1,7 +1,7 @@
 package gregtech.common.misc.spaceprojects;
 
-import static gregtech.common.misc.spaceprojects.SpaceProjectManager.mSpaceTeamProjects;
-import static gregtech.common.misc.spaceprojects.SpaceProjectManager.mSpaceTeams;
+import static gregtech.common.misc.spaceprojects.SpaceProjectManager.spaceTeamProjects;
+import static gregtech.common.misc.spaceprojects.SpaceProjectManager.spaceTeams;
 
 import java.io.File;
 import java.io.FileReader;
@@ -63,8 +63,8 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     private static final String SPACE_TEAMS_JSON = "spaceTeams.json";
 
-    private static File mSpaceTeamsFile;
-    private static File mTeamProjectsFile;
+    private static File spaceTeamsFile;
+    private static File teamProjectsFile;
 
     public SpaceProjectWorldSavedData() {
         super(DATA_NAME);
@@ -76,40 +76,42 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
-        Type tTeamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, SpaceProject>>>() {}.getType();
-        try (JsonReader reader = new JsonReader(new FileReader(mTeamProjectsFile))) {
-            mSpaceTeamProjects = GSON_READER.fromJson(reader, tTeamProjectsType);
+        Type teamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, SpaceProject>>>() {}.getType();
+        try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
+            spaceTeamProjects = GSON_READER.fromJson(reader, teamProjectsType);
         } catch (IOException e) {
             System.out.print("FAILED TO LOAD: " + SPACE_TEAM_PROJECTS_JSON);
             e.printStackTrace();
         }
-        if (mSpaceTeamProjects == null) {
-            mSpaceTeamProjects = new HashMap<>();
+
+        if (spaceTeamProjects == null) {
+            spaceTeamProjects = new HashMap<>();
         }
-        Type tTeamsType = new TypeToken<Map<UUID, UUID>>() {}.getType();
-        try (JsonReader reader = new JsonReader(new FileReader(mSpaceTeamsFile))) {
-            mSpaceTeams = GSON_READER.fromJson(reader, tTeamsType);
+
+        Type spaceTeamsType = new TypeToken<Map<UUID, UUID>>() {}.getType();
+        try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
+            spaceTeams = GSON_READER.fromJson(reader, spaceTeamsType);
         } catch (IOException e) {
             System.out.print("FAILED TO LOAD: " + SPACE_TEAMS_JSON);
             e.printStackTrace();
         }
-        if (mSpaceTeams == null) {
-            mSpaceTeams = new HashMap<>();
+
+        if (spaceTeams == null) {
+            spaceTeams = new HashMap<>();
         }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
-
-        try (JsonWriter writer = new JsonWriter(new FileWriter(mTeamProjectsFile))) {
-            GSON_WRITER.toJson(mSpaceTeamProjects, mSpaceTeamProjects.getClass(), writer);
+        try (JsonWriter writer = new JsonWriter(new FileWriter(teamProjectsFile))) {
+            GSON_WRITER.toJson(spaceTeamProjects, spaceTeamProjects.getClass(), writer);
         } catch (IOException ex) {
             System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
             ex.printStackTrace();
         }
 
-        try (JsonWriter writer = new JsonWriter(new FileWriter(mSpaceTeamsFile))) {
-            GSON_WRITER.toJson(mSpaceTeams, mSpaceTeams.getClass(), writer);
+        try (JsonWriter writer = new JsonWriter(new FileWriter(spaceTeamsFile))) {
+            GSON_WRITER.toJson(spaceTeams, spaceTeams.getClass(), writer);
         } catch (IOException ex) {
             System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
             ex.printStackTrace();
@@ -117,10 +119,10 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     }
 
     private static void loadInstance(World aWorld) {
-        mSpaceTeamProjects.clear();
-        mSpaceTeams.clear();
-        mSpaceTeamsFile = new File(aWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAMS_JSON);
-        mTeamProjectsFile = new File(aWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAM_PROJECTS_JSON);
+        spaceTeamProjects.clear();
+        spaceTeams.clear();
+        spaceTeamsFile = new File(aWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAMS_JSON);
+        teamProjectsFile = new File(aWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAM_PROJECTS_JSON);
         MapStorage tStorage = aWorld.mapStorage;
         INSTANCE = (SpaceProjectWorldSavedData) tStorage.loadData(SpaceProjectWorldSavedData.class, DATA_NAME);
         if (INSTANCE == null) {

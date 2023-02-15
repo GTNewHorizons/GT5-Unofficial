@@ -18,20 +18,20 @@ public class SpaceProject implements ISpaceProject {
 
     // #region Variables
 
-    protected String mSpaceProjectName;
-    protected String mSpaceProjectUnlocalizedName;
-    protected long mVoltage;
-    protected int mBuildTime;
-    protected int mProjectTier;
-    protected int mCurrentStage;
-    protected int mTotalStages;
-    protected Map<String, ISP_Upgrade> mUpgradesAvailable;
-    protected Map<String, ISP_Upgrade> mUpgradesInstalled;
-    protected ISP_Requirements mRequirements;
-    protected ISP_Upgrade mCurrentUpgrade;
-    protected ItemStack[] mItemsCost;
-    protected FluidStack[] mFluidsCost;
-    protected ISpaceBody mLocation;
+    protected String name;
+    protected String unlocalizedName;
+    protected long voltage;
+    protected int buildTime;
+    protected int projectTier;
+    protected int currentStage;
+    protected int totalStage;
+    protected Map<String, ISP_Upgrade> upgradesAvailable;
+    protected Map<String, ISP_Upgrade> upgradesInstalled;
+    protected ISP_Requirements requirements;
+    protected ISP_Upgrade currentUpgrade;
+    protected ItemStack[] itemsCost;
+    protected FluidStack[] fluidsCost;
+    protected ISpaceBody location;
 
     // #endregion
 
@@ -39,310 +39,315 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public String getProjectName() {
-        return mSpaceProjectName;
+        return name;
     }
 
     @Override
     public String getUnlocalizedName() {
-        return mSpaceProjectUnlocalizedName;
+        return unlocalizedName;
     }
 
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(mSpaceProjectUnlocalizedName);
+        return StatCollector.translateToLocal(unlocalizedName);
     }
 
     @Override
     public long getProjectVoltage() {
-        return mVoltage;
+        return voltage;
     }
 
     @Override
     public int getProjectBuildTime() {
-        return mBuildTime;
+        return buildTime;
     }
 
     @Override
     public float getProjectCurrentProgress() {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getCurrentProgress();
+        if (currentUpgrade != null) {
+            return currentUpgrade.getCurrentProgress();
         }
 
-        return mCurrentStage / mTotalStages * 100.0f;
+        return currentStage / totalStage * 100.0f;
     }
 
     @Override
     public int getProjectTier() {
-        return mProjectTier;
+        return projectTier;
     }
 
     @Override
     public int getCurrentStage() {
-        return mCurrentStage;
+        return currentStage;
     }
 
     @Override
     public int getTotalStages() {
-        return mTotalStages;
+        return totalStage;
     }
 
     @Override
     public List<ISP_Upgrade> getUpgradesAvailable() {
-        List<ISP_Upgrade> tUpgrades = new ArrayList<>();
-        for (ISP_Upgrade tUpgrade : mUpgradesAvailable.values()) {
-            if (tUpgrade.getStatus() == UpgradeStatus.Unlocked) {
-                tUpgrades.add(tUpgrade);
+        List<ISP_Upgrade> upgrades = new ArrayList<>();
+        for (ISP_Upgrade upgrade : upgradesAvailable.values()) {
+            if (upgrade.getStatus() == UpgradeStatus.Unlocked) {
+                upgrades.add(upgrade);
             }
         }
 
-        return tUpgrades;
+        return upgrades;
     }
 
     @Override
     public Map<String, ISP_Upgrade> getUpgradesBuilt() {
-        return mUpgradesInstalled;
+        return upgradesInstalled;
     }
 
     @Override
     public ItemStack[] getItemsCostPerStage() {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getItemsCostPerStage();
+        if (currentUpgrade != null) {
+            return currentUpgrade.getItemsCostPerStage();
         }
 
-        return mItemsCost;
+        return itemsCost;
     }
 
     @Override
-    public ItemStack getItemCostPerStage(int aIndex) {
-        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
+    public ItemStack getItemCostPerStage(int index) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
 
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getItemCostPerStage(aIndex);
+        if (currentUpgrade != null) {
+            return currentUpgrade.getItemCostPerStage(index);
         }
 
-        return mItemsCost[aIndex];
+        return itemsCost[index];
     }
 
     @Override
     public ItemStack[] getCurrentItemsProgress() {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getCurrentItemsProgress();
+        if (currentUpgrade != null) {
+            return currentUpgrade.getCurrentItemsProgress();
         }
 
-        ItemStack[] tCurrentItemProgress = new ItemStack[mItemsCost.length];
+        ItemStack[] currentItemsProgress = new ItemStack[itemsCost.length];
         int index = 0;
-        for (ItemStack tItem : mItemsCost) {
-            ItemStack tCopy = tItem.copy();
-            tCopy.stackSize *= getCurrentStage();
-            tCurrentItemProgress[index++] = tCopy;
+        for (ItemStack item : itemsCost) {
+            ItemStack copy = item.copy();
+            copy.stackSize *= getCurrentStage();
+            currentItemsProgress[index++] = copy;
         }
 
-        return tCurrentItemProgress;
+        return currentItemsProgress;
     }
 
     @Override
-    public ItemStack getCurrentItemProgress(int aIndex) {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getCurrentItemProgress(aIndex);
+    public ItemStack getCurrentItemProgress(int index) {
+        if (currentUpgrade != null) {
+            return currentUpgrade.getCurrentItemProgress(index);
         }
 
-        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
 
-        ItemStack tItem = mItemsCost[aIndex].copy();
-        tItem.stackSize *= getCurrentStage();
-        return tItem;
+        ItemStack item = itemsCost[index].copy();
+        item.stackSize *= getCurrentStage();
+        return item;
     }
 
     @Override
     public ItemStack[] getTotalItemsCost() {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getTotalItemsCost();
+        if (currentUpgrade != null) {
+            return currentUpgrade.getTotalItemsCost();
         }
 
-        ItemStack[] tTotalItemCost = new ItemStack[mItemsCost.length];
+        ItemStack[] totalItemsCost = new ItemStack[itemsCost.length];
         int index = 0;
-        for (ItemStack tItem : mItemsCost) {
-            ItemStack tCopy = tItem.copy();
-            tCopy.stackSize *= getTotalStages();
-            tTotalItemCost[index++] = tCopy;
+        for (ItemStack item : itemsCost) {
+            ItemStack copy = item.copy();
+            copy.stackSize *= getTotalStages();
+            totalItemsCost[index++] = copy;
         }
 
-        return tTotalItemCost;
+        return totalItemsCost;
     }
 
     @Override
-    public ItemStack getTotalItemCost(int aIndex) {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getTotalItemCost(aIndex);
+    public ItemStack getTotalItemCost(int index) {
+        if (currentUpgrade != null) {
+            return currentUpgrade.getTotalItemCost(index);
         }
 
-        if (mItemsCost == null || aIndex < 0 || aIndex >= mItemsCost.length) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
 
-        ItemStack tItem = mItemsCost[aIndex].copy();
-        tItem.stackSize *= getTotalStages();
-        return tItem;
+        ItemStack item = itemsCost[index].copy();
+        item.stackSize *= getTotalStages();
+        return item;
     }
 
     @Override
     public FluidStack[] getFluidsCostPerStage() {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getFluidsCostPerStage();
+        if (currentUpgrade != null) {
+            return currentUpgrade.getFluidsCostPerStage();
         }
 
-        return mFluidsCost;
+        return fluidsCost;
     }
 
     @Override
-    public FluidStack getFluidCostPerStage(int aIndex) {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getFluidCostPerStage(aIndex);
+    public FluidStack getFluidCostPerStage(int index) {
+        if (currentUpgrade != null) {
+            return currentUpgrade.getFluidCostPerStage(index);
         }
 
-        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
 
-        return mFluidsCost[aIndex];
+        return fluidsCost[index];
     }
 
     @Override
     public FluidStack[] getCurrentFluidsProgress() {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getCurrentFluidsProgress();
+        if (currentUpgrade != null) {
+            return currentUpgrade.getCurrentFluidsProgress();
         }
 
-        if (mFluidsCost == null) {
+        if (fluidsCost == null) {
             return null;
         }
 
-        FluidStack[] tCurrentFluidProgress = new FluidStack[mFluidsCost.length];
+        FluidStack[] currentFluidsProgress = new FluidStack[fluidsCost.length];
         int index = 0;
-        for (FluidStack tFluid : mFluidsCost) {
-            FluidStack tCopy = tFluid.copy();
-            tCopy.amount *= getCurrentStage();
-            tCurrentFluidProgress[index++] = tCopy;
+        for (FluidStack tFluid : fluidsCost) {
+            FluidStack copy = tFluid.copy();
+            copy.amount *= getCurrentStage();
+            currentFluidsProgress[index++] = copy;
         }
 
-        return tCurrentFluidProgress;
+        return currentFluidsProgress;
     }
 
     @Override
-    public FluidStack getCurrentFluidProgress(int aIndex) {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getCurrentFluidProgress(aIndex);
+    public FluidStack getCurrentFluidProgress(int index) {
+        if (currentUpgrade != null) {
+            return currentUpgrade.getCurrentFluidProgress(index);
         }
 
-        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
 
-        FluidStack tFluid = mFluidsCost[aIndex].copy();
-        tFluid.amount *= getCurrentStage();
-        return tFluid;
+        FluidStack fluid = fluidsCost[index].copy();
+        fluid.amount *= getCurrentStage();
+        return fluid;
     }
 
     @Override
     public FluidStack[] getTotalFluidsCost() {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getTotalFluidsCost();
+        if (currentUpgrade != null) {
+            return currentUpgrade.getTotalFluidsCost();
         }
 
-        if (mFluidsCost == null) {
+        if (fluidsCost == null) {
             return null;
         }
 
-        FluidStack[] tTotalFluidCost = new FluidStack[mFluidsCost.length];
+        FluidStack[] totalFluidsCost = new FluidStack[fluidsCost.length];
         int index = 0;
-        for (FluidStack tFluid : mFluidsCost) {
-            FluidStack tCopy = tFluid.copy();
-            tCopy.amount *= getTotalStages();
-            tTotalFluidCost[index++] = tCopy;
+        for (FluidStack fluid : fluidsCost) {
+            FluidStack copy = fluid.copy();
+            copy.amount *= getTotalStages();
+            totalFluidsCost[index++] = copy;
         }
 
-        return tTotalFluidCost;
+        return totalFluidsCost;
     }
 
     @Override
-    public FluidStack getTotalFluidCost(int aIndex) {
-        if (mCurrentUpgrade != null) {
-            return mCurrentUpgrade.getTotalFluidCost(aIndex);
+    public FluidStack getTotalFluidCost(int index) {
+        if (currentUpgrade != null) {
+            return currentUpgrade.getTotalFluidCost(index);
         }
 
-        if (mFluidsCost == null || aIndex < 0 || aIndex >= mFluidsCost.length) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
 
-        FluidStack tFluid = mFluidsCost[aIndex].copy();
-        tFluid.amount *= getTotalStages();
-        return tFluid;
+        FluidStack fluid = fluidsCost[index].copy();
+        fluid.amount *= getTotalStages();
+        return fluid;
     }
 
     @Override
     public ISP_Upgrade getUpgradeBeingBuilt() {
-        return mCurrentUpgrade;
+        return currentUpgrade;
     }
 
     // #endregion
 
     // #region Setter/Builder
 
-    public SpaceProject setProjectName(String aSpaceProjectName) {
-        mSpaceProjectName = aSpaceProjectName;
+    public SpaceProject setProjectName(String spaceProjectName) {
+        name = spaceProjectName;
         return this;
     }
 
-    public SpaceProject setProjectUnlocalizedName(String aSpaceProjectUnlocalizedName) {
-        mSpaceProjectUnlocalizedName = aSpaceProjectUnlocalizedName;
+    public SpaceProject setProjectUnlocalizedName(String spaceProjectUnlocalizedName) {
+        unlocalizedName = spaceProjectUnlocalizedName;
         return this;
     }
 
-    public SpaceProject setProjectVoltage(long aSpaceProjectVoltage) {
-        mVoltage = aSpaceProjectVoltage;
+    public SpaceProject setProjectVoltage(long spaceProjectVoltage) {
+        voltage = spaceProjectVoltage;
         return this;
     }
 
-    public SpaceProject setProjectBuildTime(int aSpaceProjectBuildTime) {
-        mBuildTime = aSpaceProjectBuildTime;
+    public SpaceProject setProjectBuildTime(int spaceProjectBuildTime) {
+        buildTime = spaceProjectBuildTime;
         return this;
     }
 
-    public SpaceProject setTotalStages(int aSpaceProjectTotalStages) {
-        mTotalStages = aSpaceProjectTotalStages;
+    public SpaceProject setTotalStages(int spaceProjectTotalStages) {
+        totalStage = spaceProjectTotalStages;
         return this;
     }
 
-    public SpaceProject setItemCosts(ItemStack... aItemCosts) {
-        mItemsCost = aItemCosts;
+    public SpaceProject setItemCosts(ItemStack... spaceProjectItemsCost) {
+        itemsCost = spaceProjectItemsCost;
         return this;
     }
 
-    public SpaceProject setFluidCosts(FluidStack... aFluidCosts) {
-        mFluidsCost = aFluidCosts;
+    public SpaceProject setFluidCosts(FluidStack... spaceProjectFluidsCost) {
+        fluidsCost = spaceProjectFluidsCost;
         return this;
     }
 
-    public SpaceProject setUpgrades(ISP_Upgrade... aUpgrades) {
-        for (ISP_Upgrade tUpgrade : aUpgrades) {
-            mUpgradesAvailable.put(tUpgrade.getUpgradeName(), tUpgrade);
+    public SpaceProject setUpgrades(ISP_Upgrade... spaceProjectUpgrades) {
+        for (ISP_Upgrade upgrade : spaceProjectUpgrades) {
+            upgradesAvailable.put(upgrade.getUpgradeName(), upgrade);
         }
         return this;
     }
 
     @Override
-    public void setCurrentUpgradeBeingBuilt(ISP_Upgrade aCurrentUpgrade) {
-        if (mTotalStages == mCurrentStage) {
-            mCurrentUpgrade = aCurrentUpgrade;
+    public void setCurrentUpgradeBeingBuilt(ISP_Upgrade newCurrentUpgrade) {
+        if (totalStage == currentStage) {
+            currentUpgrade = newCurrentUpgrade;
         }
     }
 
     @Override
     public void setProjectStage(int aStage) {
-        mCurrentStage = aStage;
+        currentStage = aStage;
+    }
+
+    @Override
+    public void setProjectLocation(ISpaceBody newLocation) {
+        location = newLocation;
     }
 
     // #endregion
@@ -351,14 +356,13 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public SpaceProject copy() {
-        SpaceProject aCopy = new SpaceProject().setProjectName(mSpaceProjectName)
-                .setProjectUnlocalizedName(mSpaceProjectUnlocalizedName).setProjectVoltage(mVoltage)
-                .setProjectBuildTime(mBuildTime).setItemCosts(mItemsCost).setFluidCosts(mFluidsCost)
-                .setTotalStages(mTotalStages);
-        if (mUpgradesAvailable != null) {
-            ISP_Upgrade[] tUpgrades = new ISP_Upgrade[mUpgradesAvailable.size()];
+        SpaceProject aCopy = new SpaceProject().setProjectName(name).setProjectUnlocalizedName(unlocalizedName)
+                .setProjectVoltage(voltage).setProjectBuildTime(buildTime).setItemCosts(itemsCost)
+                .setFluidCosts(fluidsCost).setTotalStages(totalStage);
+        if (upgradesAvailable != null) {
+            ISP_Upgrade[] tUpgrades = new ISP_Upgrade[upgradesAvailable.size()];
             int tIndex = 0;
-            for (ISP_Upgrade tUpgrade : mUpgradesAvailable.values()) {
+            for (ISP_Upgrade tUpgrade : upgradesAvailable.values()) {
                 tUpgrades[tIndex++] = tUpgrade.copy();
             }
             aCopy.setUpgrades(tUpgrades);
@@ -369,39 +373,39 @@ public class SpaceProject implements ISpaceProject {
     @Override
     public void goToNextStage() {
         if (getCurrentStage() == getTotalStages()) {
-            if (mCurrentUpgrade != null) {
-                mUpgradesInstalled.put(mCurrentUpgrade.getUpgradeName(), mCurrentUpgrade);
-                mCurrentUpgrade = null;
+            if (currentUpgrade != null) {
+                upgradesInstalled.put(currentUpgrade.getUpgradeName(), currentUpgrade);
+                currentUpgrade = null;
             }
             return;
         }
-        if (mCurrentUpgrade != null) {
-            mCurrentUpgrade.goToNextStage();
+        if (currentUpgrade != null) {
+            currentUpgrade.goToNextStage();
             return;
         }
-        mCurrentStage++;
+        currentStage++;
     }
 
     @Override
     public boolean meetsRequirements(UUID aTeam, ISpaceBody aLocation) {
-        if (mRequirements == null) {
+        if (requirements == null) {
             return true;
         }
 
-        if (mRequirements.getBodyType() != null) {
-            if (!mRequirements.getBodyType().equals(mLocation.getType())) {
+        if (requirements.getBodyType() != null) {
+            if (!requirements.getBodyType().equals(location.getType())) {
                 return false;
             }
         }
 
-        if (mRequirements.getStarType() != null) {
-            if (!mRequirements.getStarType().equals(mLocation.getStarType())) {
+        if (requirements.getStarType() != null) {
+            if (!requirements.getStarType().equals(location.getStarType())) {
                 return false;
             }
         }
 
-        if (mRequirements.getProjects() != null) {
-            for (SpaceProject tProject : mRequirements.getProjects()) {
+        if (requirements.getProjects() != null) {
+            for (SpaceProject tProject : requirements.getProjects()) {
                 if (!SpaceProjectManager.teamHasProject(aTeam, tProject)) {
                     return false;
                 }
@@ -421,7 +425,7 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public boolean isFinished() {
-        return mCurrentStage == mTotalStages;
+        return currentStage == totalStage;
     }
 
     // #endregion
