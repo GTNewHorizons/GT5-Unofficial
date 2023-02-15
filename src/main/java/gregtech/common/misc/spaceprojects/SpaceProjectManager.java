@@ -11,7 +11,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
-import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 public class SpaceProjectManager {
 
@@ -40,8 +39,7 @@ public class SpaceProjectManager {
         return tMap.get(Pair.of(aLocation, aProjectName));
     }
 
-    public static boolean addTeamProject(UUID aTeam, ISpaceBody aLocation, String aProjectName,
-            SpaceProject aProject) {
+    public static boolean addTeamProject(UUID aTeam, ISpaceBody aLocation, String aProjectName, SpaceProject aProject) {
         if (!mSpaceTeamProjects.containsKey(getLeader(aTeam)) || mSpaceTeamProjects.get(getLeader(aTeam)) == null) {
             mSpaceTeamProjects.put(getLeader(aTeam), new HashMap<Pair<ISpaceBody, String>, SpaceProject>());
         }
