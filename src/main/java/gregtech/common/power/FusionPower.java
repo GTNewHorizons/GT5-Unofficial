@@ -40,9 +40,4 @@ public class FusionPower extends BasicMachineEUPower {
         }
         wasOverclocked = checkIfOverclocked();
     }
-
-    @Override
-    public boolean useComparator() {
-        return true;
-    }
 }
