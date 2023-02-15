@@ -13,6 +13,11 @@ public abstract class Power {
         this.tier = tier;
     }
 
+    public Power(byte tier, int specialValue) {
+        this.tier = tier;
+        this.specialValue = specialValue;
+    }
+
     public byte getTier() {
         return tier;
     }
