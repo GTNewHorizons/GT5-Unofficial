@@ -1014,6 +1014,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             // No item in multi gui slot.
 
             currentRecipe = eyeOfHarmonyRecipeStorage.recipeLookUp(aStack);
+            if (currentRecipe == null) {
+                return false;
+            }
             if (processRecipe(currentRecipe)) {
                 return true;
             }
