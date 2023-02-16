@@ -188,7 +188,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 }
                 if (tResults.stream().anyMatch(stack -> recipe.contains(recipe.mOutputs, stack))) arecipes.add(recipe);
             }
-        // Else use default loading
+            // Else use default loading
         } else {
             ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
 
@@ -196,7 +196,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             tResults.add(aResult);
             tResults.add(GT_OreDictUnificator.get(true, aResult));
             if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed)
-                && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
+                    && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
                 for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                     tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
                 }
