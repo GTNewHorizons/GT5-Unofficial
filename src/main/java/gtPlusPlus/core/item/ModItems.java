@@ -1026,7 +1026,7 @@ public final class ModItems {
                 "dustTechnetium99",
                 ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(),
                 164500,
-                new String[] { "" + StringUtils.superscript("99Mo"),
+                new String[] { "" + StringUtils.superscript("99Tc"),
                         "Result: Ruthenium 99(" + StringUtils.superscript("99Ru") + ")" },
                 ELEMENT.getInstance().RUTHENIUM.getDust(1).getItem(),
                 4);
