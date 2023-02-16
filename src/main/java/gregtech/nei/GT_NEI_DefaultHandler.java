@@ -267,7 +267,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     power = null;
                 }
                 handler.loadCraftingRecipes(getOverlayIdentifier(), power);
-                }
                 return handler;
             }
         }
