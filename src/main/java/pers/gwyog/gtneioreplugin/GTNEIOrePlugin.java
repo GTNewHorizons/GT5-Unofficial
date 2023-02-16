@@ -85,10 +85,10 @@ public class GTNEIOrePlugin {
 
     @EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
+        new GT5OreLayerHelper();
+        new GT5OreSmallHelper();
+        new GT5UndergroundFluidHelper();
         if (event.getSide() == Side.CLIENT) {
-            new GT5OreLayerHelper();
-            new GT5OreSmallHelper();
-            new GT5UndergroundFluidHelper();
             new GuiRecipeHelper();
             if (csv) {
                 new pers.gwyog.gtneioreplugin.util.CSVMaker().run();
