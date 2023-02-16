@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 
@@ -86,10 +87,10 @@ public class GT5OreLayerHelper {
         public short randomWeight, size, density;
         public List<Integer> Weight = new ArrayList<>();
 
-        public Materials mPrimaryVeinMaterial;
-        public Materials mSecondaryMaterial;
-        public Materials mBetweenMaterial;
-        public Materials mSporadicMaterial;
+        public final Materials mPrimaryVeinMaterial;
+        public final Materials mSecondaryMaterial;
+        public final Materials mBetweenMaterial;
+        public final Materials mSporadicMaterial;
 
         public OreLayerWrapper(GT_Worldgen_GT_Ore_Layer worldGen) {
             this.veinName = worldGen.mWorldGenName;
@@ -99,16 +100,18 @@ public class GT5OreLayerHelper {
             this.Meta[3] = worldGen.mSporadicMeta;
 
             // Black magic, don't ask me how it works, I have no idea.
-            try {
-                this.mPrimaryVeinMaterial = GT_OreDictUnificator.getAssociation(
-                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta)).mMaterial.mMaterial;
-                this.mSecondaryMaterial = GT_OreDictUnificator.getAssociation(
-                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta)).mMaterial.mMaterial;
-                this.mBetweenMaterial = GT_OreDictUnificator.getAssociation(
-                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta)).mMaterial.mMaterial;
-                this.mSporadicMaterial = GT_OreDictUnificator.getAssociation(
-                        new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta)).mMaterial.mMaterial;
-            } catch (Exception ignored) {}
+            ItemData primaryVeinData = GT_OreDictUnificator
+                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta));
+            this.mPrimaryVeinMaterial = primaryVeinData != null ? primaryVeinData.mMaterial.mMaterial : null;
+            ItemData secondaryVeinData = GT_OreDictUnificator
+                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta));
+            this.mSecondaryMaterial = secondaryVeinData != null ? secondaryVeinData.mMaterial.mMaterial : null;
+            ItemData betweenVeinData = GT_OreDictUnificator
+                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta));
+            this.mBetweenMaterial = betweenVeinData != null ? betweenVeinData.mMaterial.mMaterial : null;
+            ItemData sporadicVeinData = GT_OreDictUnificator
+                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta));
+            this.mSporadicMaterial = sporadicVeinData != null ? sporadicVeinData.mMaterial.mMaterial : null;
 
             this.size = worldGen.mSize;
             this.density = worldGen.mDensity;

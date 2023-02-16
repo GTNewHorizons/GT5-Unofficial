@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
@@ -179,19 +180,16 @@ public class GT5OreSmallHelper {
             return oreMaterial;
         }
 
-        private Materials oreMaterial = null;
+        private final Materials oreMaterial;
 
         public OreSmallWrapper(GT_Worldgen_GT_Ore_SmallPieces worldGen) {
             this.oreGenName = worldGen.mWorldGenName;
             this.oreMeta = worldGen.mMeta;
             this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
             this.amountPerChunk = worldGen.mAmount;
-            try {
-                this.oreMaterial = GT_OreDictUnificator
-                        .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mMeta)).mMaterial.mMaterial;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            ItemData oreData = GT_OreDictUnificator
+                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mMeta));
+            this.oreMaterial = oreData != null ? oreData.mMaterial.mMaterial : null;
         }
 
         public List<ItemStack> getMaterialDrops(int maximumIndex) {
