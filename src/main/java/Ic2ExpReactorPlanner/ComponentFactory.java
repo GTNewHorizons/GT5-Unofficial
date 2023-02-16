@@ -17,13 +17,14 @@ import Ic2ExpReactorPlanner.components.Plating;
 import Ic2ExpReactorPlanner.components.ReactorItem;
 import Ic2ExpReactorPlanner.components.Reflector;
 import Ic2ExpReactorPlanner.components.Vent;
+
+import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.bartworks.BW_Utils;
-import gtPlusPlus.xmod.bartworks.BW_Utils.NonMeta_MaterialItem;
 import gtPlusPlus.xmod.goodgenerator.GG_Utils;
 import gtPlusPlus.xmod.goodgenerator.GG_Utils.GG_Fuel_Rod;
 
@@ -563,8 +564,7 @@ public class ComponentFactory {
                     new FuelRod(
                             51,
                             "fuelRodTiberium",
-                            new GT_ItemStack(
-                                    BW_Utils.getBW_NonMeta_MaterialItems(NonMeta_MaterialItem.TiberiumCell_1, 1)),
+                            new GT_ItemStack(BW_NonMeta_MaterialItems.TiberiumCell_1.get(1)),
                             50e3,
                             1,
                             "Bartworks",
@@ -577,8 +577,7 @@ public class ComponentFactory {
                     new FuelRod(
                             52,
                             "dualFuelRodTiberium",
-                            new GT_ItemStack(
-                                    BW_Utils.getBW_NonMeta_MaterialItems(NonMeta_MaterialItem.TiberiumCell_2, 1)),
+                            new GT_ItemStack(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1)),
                             50e3,
                             1,
                             "Bartworks",
@@ -591,8 +590,7 @@ public class ComponentFactory {
                     new FuelRod(
                             53,
                             "quadFuelRodTiberium",
-                            new GT_ItemStack(
-                                    BW_Utils.getBW_NonMeta_MaterialItems(NonMeta_MaterialItem.TiberiumCell_4, 1)),
+                            new GT_ItemStack(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1)),
                             50e3,
                             1,
                             "Bartworks",
@@ -605,7 +603,7 @@ public class ComponentFactory {
                     new FuelRod(
                             54,
                             "fuelRodTheCore",
-                            new GT_ItemStack(BW_Utils.getBW_NonMeta_MaterialItems(NonMeta_MaterialItem.TheCoreCell, 1)),
+                            new GT_ItemStack(BW_NonMeta_MaterialItems.TheCoreCell.get(1)),
                             100e3,
                             1,
                             "Bartworks",
