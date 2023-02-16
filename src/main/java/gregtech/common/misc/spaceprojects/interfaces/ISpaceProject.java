@@ -7,6 +7,7 @@ import java.util.UUID;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.common.misc.spaceprojects.base.SP_Upgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.StarType;
@@ -34,7 +35,7 @@ public interface ISpaceProject {
 
     List<ISP_Upgrade> getUpgradesAvailable();
 
-    Map<String, ISP_Upgrade> getUpgradesBuilt();
+    Map<String, SP_Upgrade> getUpgradesBuilt();
 
     ItemStack[] getItemsCostPerStage();
 
@@ -62,9 +63,11 @@ public interface ISpaceProject {
 
     ISP_Upgrade getUpgradeBeingBuilt();
 
+    ISpaceBody getProjectLocation();
+
     void setProjectStage(int stage);
 
-    void setCurrentUpgradeBeingBuilt(ISP_Upgrade upgrade);
+    void setCurrentUpgradeBeingBuilt(SP_Upgrade upgrade);
 
     void setProjectLocation(ISpaceBody newLocation);
 
@@ -72,9 +75,11 @@ public interface ISpaceProject {
 
     ISpaceProject copy();
 
-    boolean meetsRequirements(UUID team, ISpaceBody location);
+    boolean meetsRequirements(UUID team);
 
     boolean isFinished();
+
+    boolean hasUpgrade(String upgradeName);
 
     public interface ISP_Upgrade {
 
@@ -122,11 +127,15 @@ public interface ISpaceProject {
 
         ISP_Requirements getUpgradeRequirements();
 
-        boolean meetsRequirements();
+        void setUpgradeProject(SpaceProject project);
 
-        ISP_Upgrade copy();
+        boolean meetsRequirements(UUID team);
+
+        SP_Upgrade copy();
 
         void goToNextStage();
+
+        boolean isFinished();
     }
 
     public interface ISP_Requirements {
@@ -137,6 +146,6 @@ public interface ISpaceProject {
 
         List<SpaceProject> getProjects();
 
-        List<ISP_Upgrade> getUpgrades();
+        List<SP_Upgrade> getUpgrades();
     }
 }
