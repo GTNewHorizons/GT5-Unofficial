@@ -345,6 +345,7 @@ public class GT_OreDictUnificator {
         setItemData(aStack, new ItemData(aPrefix, aMaterial, aBlackListed));
     }
 
+    @Nullable
     public static ItemData getItemData(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData rData = sItemStack2DataMap.get(new GT_ItemStack2(aStack));
@@ -352,6 +353,7 @@ public class GT_OreDictUnificator {
         return rData;
     }
 
+    @Nullable
     public static ItemData getAssociation(ItemStack aStack) {
         ItemData rData = getItemData(aStack);
         return rData != null && rData.hasValidPrefixMaterialData() ? rData : null;
