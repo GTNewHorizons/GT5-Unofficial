@@ -65,7 +65,7 @@ public abstract class Power {
     public abstract String getAmperageString();
 
     public int compareTo(byte tier, int specialValue) {
-        if (this.tier != tier) {
+        if (this.tier < tier) {
             return this.tier - tier;
         }
         return this.specialValue - specialValue;
