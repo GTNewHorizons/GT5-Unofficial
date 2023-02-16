@@ -260,11 +260,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) newInstance();
             if (RecipeCatalysts.containsCatalyst(handler, candidate)) {
                 IMetaTileEntity gtTileEntity = GT_Item_Machines.getMetaTileEntity(candidate);
+                Power power;
                 if (gtTileEntity != null) {
-                    Power power = gtTileEntity.getPower();
-                    handler.loadCraftingRecipes(getOverlayIdentifier(), power);
+                    power = gtTileEntity.getPower();
                 } else {
-                    handler.loadCraftingRecipes(getOverlayIdentifier(), (Object) null);
+                    power = null;
+                }
+                handler.loadCraftingRecipes(getOverlayIdentifier(), power);
                 }
                 return handler;
             }
