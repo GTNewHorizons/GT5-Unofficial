@@ -692,8 +692,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addElement(
                     'H',
                     buildHatchAdder(GT_MetaTileEntity_EM_EyeOfHarmony.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
-                            .casingIndex(texturePage << 7).dot(1).buildAndChain(sBlockCasingsBA0, 12))
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus).casingIndex(texturePage << 7).dot(1)
+                            .buildAndChain(sBlockCasingsBA0, 12))
             .addElement(
                     'E',
                     ofBlocksTiered(

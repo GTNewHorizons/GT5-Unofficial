@@ -7,11 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
