@@ -99,10 +99,7 @@ public class SPM_Command extends CommandBase {
                                     "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked"));
                     return;
                 }
-                processList(
-                        sender,
-                        arguments[1],
-                        arguments.length >= 3 ? arguments[2] : sender.getCommandSenderName());
+                processList(sender, arguments[1], arguments.length >= 3 ? arguments[2] : sender.getCommandSenderName());
                 break;
             case COPY:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {

@@ -25,10 +25,10 @@ public class SpaceProject implements ISpaceProject {
     protected int projectTier;
     protected int currentStage;
     protected int totalStage;
-    protected Map<String, ISP_Upgrade> upgradesAvailable;
-    protected Map<String, ISP_Upgrade> upgradesInstalled;
-    protected ISP_Requirements requirements;
-    protected ISP_Upgrade currentUpgrade;
+    protected Map<String, SP_Upgrade> upgradesAvailable;
+    protected Map<String, SP_Upgrade> upgradesInstalled;
+    protected SP_Requirements requirements;
+    protected SP_Upgrade currentUpgrade;
     protected ItemStack[] itemsCost;
     protected FluidStack[] fluidsCost;
     protected ISpaceBody location;
@@ -98,7 +98,7 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public Map<String, ISP_Upgrade> getUpgradesBuilt() {
+    public Map<String, SP_Upgrade> getUpgradesBuilt() {
         return upgradesInstalled;
     }
 
@@ -287,6 +287,11 @@ public class SpaceProject implements ISpaceProject {
         return currentUpgrade;
     }
 
+    @Override
+    public ISpaceBody getProjectLocation() {
+        return location;
+    }
+
     // #endregion
 
     // #region Setter/Builder
@@ -326,17 +331,18 @@ public class SpaceProject implements ISpaceProject {
         return this;
     }
 
-    public SpaceProject setUpgrades(ISP_Upgrade... spaceProjectUpgrades) {
-        for (ISP_Upgrade upgrade : spaceProjectUpgrades) {
+    public SpaceProject setUpgrades(SP_Upgrade... spaceProjectUpgrades) {
+        for (SP_Upgrade upgrade : spaceProjectUpgrades) {
             upgradesAvailable.put(upgrade.getUpgradeName(), upgrade);
         }
         return this;
     }
 
     @Override
-    public void setCurrentUpgradeBeingBuilt(ISP_Upgrade newCurrentUpgrade) {
+    public void setCurrentUpgradeBeingBuilt(SP_Upgrade newCurrentUpgrade) {
         if (totalStage == currentStage) {
-            currentUpgrade = newCurrentUpgrade;
+            currentUpgrade = newCurrentUpgrade.copy();
+            currentUpgrade.setUpgradeProject(this);
         }
     }
 
@@ -356,18 +362,18 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public SpaceProject copy() {
-        SpaceProject aCopy = new SpaceProject().setProjectName(name).setProjectUnlocalizedName(unlocalizedName)
+        SpaceProject copy = new SpaceProject().setProjectName(name).setProjectUnlocalizedName(unlocalizedName)
                 .setProjectVoltage(voltage).setProjectBuildTime(buildTime).setItemCosts(itemsCost)
                 .setFluidCosts(fluidsCost).setTotalStages(totalStage);
         if (upgradesAvailable != null) {
-            ISP_Upgrade[] tUpgrades = new ISP_Upgrade[upgradesAvailable.size()];
-            int tIndex = 0;
-            for (ISP_Upgrade tUpgrade : upgradesAvailable.values()) {
-                tUpgrades[tIndex++] = tUpgrade.copy();
+            SP_Upgrade[] upgrades = new SP_Upgrade[upgradesAvailable.size()];
+            int index = 0;
+            for (SP_Upgrade upgrade : upgradesAvailable.values()) {
+                upgrades[index++] = upgrade.copy();
             }
-            aCopy.setUpgrades(tUpgrades);
+            copy.setUpgrades(upgrades);
         }
-        return aCopy;
+        return copy;
     }
 
     @Override
@@ -387,7 +393,7 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public boolean meetsRequirements(UUID aTeam, ISpaceBody aLocation) {
+    public boolean meetsRequirements(UUID team) {
         if (requirements == null) {
             return true;
         }
@@ -405,8 +411,8 @@ public class SpaceProject implements ISpaceProject {
         }
 
         if (requirements.getProjects() != null) {
-            for (SpaceProject tProject : requirements.getProjects()) {
-                if (!SpaceProjectManager.teamHasProject(aTeam, tProject)) {
+            for (SpaceProject project : requirements.getProjects()) {
+                if (!SpaceProjectManager.teamHasProject(team, project)) {
                     return false;
                 }
             }
@@ -426,6 +432,11 @@ public class SpaceProject implements ISpaceProject {
     @Override
     public boolean isFinished() {
         return currentStage == totalStage;
+    }
+
+    @Override
+    public boolean hasUpgrade(String upgradeName) {
+        return upgradesInstalled.containsKey(upgradeName);
     }
 
     // #endregion
