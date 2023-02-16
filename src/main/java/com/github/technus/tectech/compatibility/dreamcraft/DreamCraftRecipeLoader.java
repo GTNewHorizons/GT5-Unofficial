@@ -2957,6 +2957,9 @@ public class DreamCraftRecipeLoader {
 
         // Stargate Recipes
         if (Loader.isModLoaded("eternalsingularity") && Loader.isModLoaded("SGCraft")) {
+
+            final int baseStargateTime = 125_000 * 20;
+
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                     GT_OreDictUnificator
                             .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L),
@@ -2964,8 +2967,10 @@ public class DreamCraftRecipeLoader {
                     32768,
                     (int) TierEU.RECIPE_UXV,
                     64,
-                    new ItemStack[] { CustomItemList.StabilisationFieldGeneratorTier8.get(64),
-                            ItemList.Casing_Dim_Bridge.get(64), GT_OreDictUnificator.get("blockShirabon", 64L),
+                    new ItemStack[] {
+                            ItemList.Casing_Dim_Bridge.get(64),
+                            CustomItemList.StabilisationFieldGeneratorTier8.get(64),
+                            GT_OreDictUnificator.get("blockShirabon", 64L),
                             GT_OreDictUnificator.get("blockShirabon", 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.SpaceTime, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 16L),
@@ -2975,13 +2980,14 @@ public class DreamCraftRecipeLoader {
                             GT_OreDictUnificator.get("plateDenseShirabon", 8L), ItemList.Sensor_UXV.get(16L),
                             ItemList.Emitter_UXV.get(16L), getModItem("eternalsingularity", "eternal_singularity", 16L),
                             Materials.Universium.getNanite(16), Materials.BlackDwarfMatter.getNanite(16),
-                            Materials.WhiteDwarfMatter.getNanite(16), },
+                            Materials.WhiteDwarfMatter.getNanite(16)
+                    },
                     new FluidStack[] { Materials.Neutronium.getMolten(32_768_000L),
                             Materials.SpaceTime.getMolten(4 * 36864L),
                             Materials.SuperconductorUMVBase.getMolten(4 * 36864L),
                             Materials.ExcitedDTEC.getFluid(4 * 36864L) },
                     getItemContainer("StargateShieldingFoil").get(1L),
-                    500_000 * 20,
+                    baseStargateTime,
                     (int) TierEU.RECIPE_UMV);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3019,7 +3025,7 @@ public class DreamCraftRecipeLoader {
                             Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(36864L),
                             Materials.ExcitedDTEC.getFluid(4 * 36864L) },
                     getItemContainer("StargateChevron").get(1L),
-                    500_000 * 20,
+                    baseStargateTime,
                     (int) TierEU.RECIPE_UMV);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3054,7 +3060,7 @@ public class DreamCraftRecipeLoader {
                             Materials.SpaceTime.getMolten(4 * 36864L), Materials.Universium.getMolten(4 * 36864L),
                             Materials.ExcitedDTEC.getFluid(4 * 36864L) },
                     getItemContainer("StargateFramePart").get(1L),
-                    500_000 * 20,
+                    baseStargateTime,
                     (int) TierEU.RECIPE_UMV);
         }
 
@@ -5334,24 +5340,23 @@ public class DreamCraftRecipeLoader {
 
         ItemStack largeShirabonPlate = TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1);
 
-        final FluidStack[] specialFluid = new FluidStack[] { FluidUtils.getFluidStack("molten.shirabon", 1_440),
-                Materials.WhiteDwarfMatter.getMolten(1_440), Materials.WhiteDwarfMatter.getMolten(1_440 * 4),
-                Materials.WhiteDwarfMatter.getMolten(1_440 * 16), Materials.BlackDwarfMatter.getMolten(1_440),
-                Materials.BlackDwarfMatter.getMolten(1_440 * 4), Materials.BlackDwarfMatter.getMolten(1_440 * 16),
-                Materials.BlackDwarfMatter.getMolten(1_440 * 64),
-                Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1_440) };
+        final FluidStack[] specialFluid = new FluidStack[] { Materials.SpaceTime.getMolten(1_440),
+                Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440),
+                Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440),
+                Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440),
+                Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440) };
 
         final ItemStack[] plateList = new ItemStack[] {
                 // Dense Shirabon plate.
                 GT_OreDictUnificator.get("plateDenseShirabon", 1),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.WhiteDwarfMatter, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.WhiteDwarfMatter, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.WhiteDwarfMatter, 16),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackDwarfMatter, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackDwarfMatter, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackDwarfMatter, 16),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackDwarfMatter, 64), GT_OreDictUnificator
-                        .get(OrePrefixes.plateDense, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1) };
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 2),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 8),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 32),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 2),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 8),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 32),
+                GT_OreDictUnificator.get(OrePrefixes.rod, Materials.BlackDwarfMatter, 32),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2) };
 
         // EOH Controller Recipe.
         {
