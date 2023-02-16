@@ -45,6 +45,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.power.FusionPower;
 
 public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -54,6 +55,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     public GT_Recipe mLastRecipe;
     public int para;
     public int mEUStore;
+    protected FusionPower power;
     private static final ClassValue<IStructureDefinition<LargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<LargeFusionComputer>>() {
 
         @Override
@@ -96,6 +98,11 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
     public LargeFusionComputer(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    @Override
+    public FusionPower getPower() {
+        return power;
     }
 
     @Override

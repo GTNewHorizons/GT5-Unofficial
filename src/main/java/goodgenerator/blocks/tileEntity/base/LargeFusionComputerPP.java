@@ -42,6 +42,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.AdvFusionPower;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -54,6 +55,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     public GT_Recipe mLastRecipe;
     public int para;
     public long mEUStore;
+    protected AdvFusionPower power;
     private static final ClassValue<IStructureDefinition<LargeFusionComputerPP>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<LargeFusionComputerPP>>() {
 
         @Override
@@ -97,6 +99,11 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
 
     public LargeFusionComputerPP(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    @Override
+    public AdvFusionPower getPower() {
+        return power;
     }
 
     @Override

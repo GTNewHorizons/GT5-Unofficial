@@ -25,6 +25,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.AdvFusionPower;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -34,10 +35,13 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
 
     public LargeFusionComputer4(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        // Theoretically the reactor has a higher startup value but special recipe value is limited to int
+        power = new AdvFusionPower((byte) 9, Integer.MAX_VALUE);
     }
 
     public LargeFusionComputer4(String name) {
         super(name);
+        power = new AdvFusionPower((byte) 9, Integer.MAX_VALUE);
     }
 
     // Some hacky shit

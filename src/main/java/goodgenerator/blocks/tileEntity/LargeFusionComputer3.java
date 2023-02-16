@@ -21,6 +21,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.power.FusionPower;
 
 public class LargeFusionComputer3 extends LargeFusionComputer {
 
@@ -30,10 +31,12 @@ public class LargeFusionComputer3 extends LargeFusionComputer {
 
     public LargeFusionComputer3(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        power = new FusionPower((byte) 8, 640_000_000);
     }
 
     public LargeFusionComputer3(String name) {
         super(name);
+        power = new FusionPower((byte) 8, 640_000_000);
     }
 
     @Override
