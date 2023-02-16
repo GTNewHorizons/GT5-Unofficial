@@ -4,7 +4,7 @@ dependencies {
     shadowImplementation('com.github.GTNewHorizons:AVRcore:1.0.1')
     api("com.github.GTNewHorizons:GT5-Unofficial:5.09.41.275:dev")
     api('com.github.GTNewHorizons:Yamcl:0.5.84:dev')
-    implementation('com.github.GTNewHorizons:GTNEIOrePlugin:99.99.99:dev')
+    implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.0.27:dev')
 
     compileOnly("com.github.GTNewHorizons:TinkersGregworks:master-SNAPSHOT:dev") {transitive = false}
 
