@@ -2920,10 +2920,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get("foilShirabon", 64),
                         GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 64),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 8),
-                        GT_OreDictUnificator.get(
-                                OrePrefixes.wireFine,
-                                Materials.MagnetohydrodynamicallyConstrainedStarMatter,
-                                16) },
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 16) },
                 new FluidStack[] { new FluidStack(solderUEV, 3744), Materials.UUMatter.getFluid(24000L),
                         Materials.Osmium.getMolten(2304L) },
                 getItemContainer("QuantumCircuit").get(1L),
