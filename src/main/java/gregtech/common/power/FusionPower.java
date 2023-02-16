@@ -2,13 +2,15 @@ package gregtech.common.power;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import net.minecraft.util.EnumChatFormatting;
+
+import gregtech.api.enums.GT_Values;
 import gregtech.nei.FusionSpecialValueFormatter;
 
 public class FusionPower extends BasicMachineEUPower {
 
-    public FusionPower(byte tier, int amperage, int startupPower) {
-        super(tier, amperage);
-        specialValue = startupPower;
+    public FusionPower(byte tier, int startupPower) {
+        super(tier, 1, startupPower);
     }
 
     @Override
@@ -39,5 +41,12 @@ public class FusionPower extends BasicMachineEUPower {
             }
         }
         wasOverclocked = checkIfOverclocked();
+    }
+
+    @Override
+    public String getTierString() {
+        return GT_Values.TIER_COLORS[tier] + "MK "
+                + FusionSpecialValueFormatter.getFusionTier(specialValue, recipeEuPerTick)
+                + EnumChatFormatting.RESET;
     }
 }

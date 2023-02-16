@@ -164,7 +164,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (outputId.equals(getOverlayIdentifier())) {
             if (results.length > 0 && results[0] instanceof Power) {
                 mPower = (Power) results[0];
-                if (mRecipeMap.useComparatorForNei) {
+                if (mRecipeMap.useComparatorForNEI) {
                     loadTieredCraftingRecipesWithPower(mPower);
                 } else {
                     loadTieredCraftingRecipesUpTo(mPower.getTier());

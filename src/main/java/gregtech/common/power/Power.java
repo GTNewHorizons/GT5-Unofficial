@@ -7,10 +7,10 @@ public abstract class Power {
     protected final byte tier;
     protected int recipeEuPerTick;
     protected int recipeDuration;
-    protected int specialValue;
+    protected final int specialValue;
 
     public Power(byte tier) {
-        this.tier = tier;
+        this(tier, 0);
     }
 
     public Power(byte tier, int specialValue) {

@@ -21,12 +21,12 @@ public class GT_MetaTileEntity_FusionComputer2 extends GT_MetaTileEntity_FusionC
 
     public GT_MetaTileEntity_FusionComputer2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 7);
-        power = new FusionPower((byte) 7, 1, 320_000_000);
+        power = new FusionPower((byte) 7, 320_000_000);
     }
 
     public GT_MetaTileEntity_FusionComputer2(String aName) {
         super(aName);
-        power = new FusionPower((byte) 7, 1, 320_000_000);
+        power = new FusionPower((byte) 7, 320_000_000);
     }
 
     @Override

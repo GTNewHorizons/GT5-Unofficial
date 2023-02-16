@@ -20,7 +20,7 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         return Collections.singletonList(applyPrefixAndSuffix.apply(euToStart) + " (MK " + tier + ")");
     }
 
-    static public int getFusionTier(int startupPower, long voltage) {
+    public static int getFusionTier(int startupPower, long voltage) {
         int tier;
         if (startupPower <= 10 * M * 16) {
             tier = 1;

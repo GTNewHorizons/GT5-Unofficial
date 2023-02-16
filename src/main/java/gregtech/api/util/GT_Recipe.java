@@ -1636,7 +1636,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 " EU",
                 true,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                        .useComparatorForNei(true).setUsualFluidInputCount(2)
+                        .useComparatorForNEI(true).setUsualFluidInputCount(2)
                         .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
                 new HashSet<>(50),
@@ -2621,10 +2621,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * Flag if a comparator should be used to search the recipe in NEI (which is defined in {@link Power}). Else
          * only the voltage will be used to find recipes
          */
-        public boolean useComparatorForNei;
+        public boolean useComparatorForNEI;
 
         /**
-         * Initialises a new type of Recipe Handler.
+         * s Initialises a new type of Recipe Handler.
          *
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a
          *                                   pre-initialised Size.
@@ -2707,8 +2707,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return this;
         }
 
-        public GT_Recipe_Map useComparatorForNei(boolean use) {
-            this.useComparatorForNei = use;
+        public GT_Recipe_Map useComparatorForNEI(boolean use) {
+            this.useComparatorForNEI = use;
             return this;
         }
 
