@@ -1,5 +1,6 @@
 package gregtech.common.misc.spaceprojects.interfaces;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,9 +34,11 @@ public interface ISpaceProject {
 
     int getTotalStages();
 
-    List<ISP_Upgrade> getUpgradesAvailable();
+    Collection<SP_Upgrade> getAllUpgrades();
 
     Map<String, SP_Upgrade> getUpgradesBuilt();
+
+    ISP_Upgrade getUpgrade(String upgradeName);
 
     ItemStack[] getItemsCostPerStage();
 
