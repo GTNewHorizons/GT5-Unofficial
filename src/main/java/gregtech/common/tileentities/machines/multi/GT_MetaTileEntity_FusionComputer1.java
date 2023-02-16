@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.common.power.FusionPower;
 
 public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionComputer {
 
@@ -20,10 +21,12 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
 
     public GT_MetaTileEntity_FusionComputer1(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 6);
+        power = new FusionPower((byte) 6, 160_000_000);
     }
 
     public GT_MetaTileEntity_FusionComputer1(String aName) {
         super(aName);
+        power = new FusionPower((byte) 6, 160_000_000);
     }
 
     @Override

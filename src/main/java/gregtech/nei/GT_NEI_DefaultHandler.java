@@ -58,7 +58,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
@@ -165,7 +164,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (outputId.equals(getOverlayIdentifier())) {
             if (results.length > 0 && results[0] instanceof Power) {
                 mPower = (Power) results[0];
-                loadTieredCraftingRecipesUpTo(mPower.getTier());
+                if (mRecipeMap.useComparatorForNEI) {
+                    loadTieredCraftingRecipesWithPower(mPower);
+                } else {
+                    loadTieredCraftingRecipesUpTo(mPower.getTier());
+                }
             } else {
                 arecipes.addAll(getCache());
             }
@@ -205,6 +208,21 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
     }
 
+    private void loadTieredCraftingRecipesWithPower(Power power) {
+        arecipes.addAll(getTieredRecipes(power));
+    }
+
+    private List<CachedDefaultRecipe> getTieredRecipes(Power power) {
+        List<CachedDefaultRecipe> recipes = getCache();
+        if (recipes.size() > 0) {
+            recipes = recipes.stream().filter(
+                    recipe -> power.compareTo(GT_Utility.getTier(recipe.mRecipe.mEUt), recipe.mRecipe.mSpecialValue)
+                            >= 0)
+                    .collect(Collectors.toList());
+        }
+        return recipes;
+    }
+
     private void loadTieredCraftingRecipesUpTo(byte upperTier) {
         arecipes.addAll(getTieredRecipes(upperTier));
     }
@@ -242,12 +260,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) newInstance();
             if (RecipeCatalysts.containsCatalyst(handler, candidate)) {
                 IMetaTileEntity gtTileEntity = GT_Item_Machines.getMetaTileEntity(candidate);
-                if (gtTileEntity instanceof GT_MetaTileEntity_BasicMachine) {
-                    Power power = ((GT_MetaTileEntity_BasicMachine) gtTileEntity).getPower();
-                    handler.loadCraftingRecipes(getOverlayIdentifier(), power);
+                Power power;
+                if (gtTileEntity != null) {
+                    power = gtTileEntity.getPower();
                 } else {
-                    handler.loadCraftingRecipes(getOverlayIdentifier(), (Object) null);
+                    power = null;
                 }
+                handler.loadCraftingRecipes(getOverlayIdentifier(), power);
                 return handler;
             }
         }
@@ -386,7 +405,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (mPower == null) {
             mPower = mRecipeMap.getPowerFromRecipeMap();
         }
-        mPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
+        mPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration, recipe.mSpecialValue);
 
         mRecipeMap.drawNEIDescription(
                 new NEIRecipeInfo(recipe, mRecipeMap, cachedRecipe, mPower, getDescriptionYOffset()));
