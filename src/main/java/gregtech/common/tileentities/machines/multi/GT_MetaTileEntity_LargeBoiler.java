@@ -14,10 +14,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -33,47 +42,41 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
-public abstract class GT_MetaTileEntity_LargeBoiler
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler>
-        implements ISurvivalConstructable {
+public abstract class GT_MetaTileEntity_LargeBoiler extends
+        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> implements ISurvivalConstructable {
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>> STRUCTURE_DEFINITION =
-            new ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>>() {
-                @Override
-                protected IStructureDefinition<GT_MetaTileEntity_LargeBoiler> computeValue(Class<?> type) {
-                    return StructureDefinition.<GT_MetaTileEntity_LargeBoiler>builder()
-                            .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-                                {"ccc", "ccc", "ccc"},
-                                {"ccc", "cPc", "ccc"},
-                                {"ccc", "cPc", "ccc"},
-                                {"ccc", "cPc", "ccc"},
-                                {"f~f", "fff", "fff"},
-                            }))
-                            .addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta())))
-                            .addElement('c', lazy(t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class)
-                                    .atLeast(OutputHatch)
-                                    .casingIndex(t.getCasingTextureIndex())
-                                    .dot(2)
-                                    .buildAndChain(onElementPass(
-                                            GT_MetaTileEntity_LargeBoiler::onCasingAdded,
-                                            ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
-                            .addElement('f', lazy(t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class)
-                                    .atLeast(Maintenance, InputHatch, InputBus, Muffler)
-                                    .casingIndex(t.getFireboxTextureIndex())
-                                    .dot(1)
-                                    .buildAndChain(onElementPass(
-                                            GT_MetaTileEntity_LargeBoiler::onFireboxAdded,
-                                            ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))))
-                            .build();
-                }
-            };
+    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>>() {
+
+        @Override
+        protected IStructureDefinition<GT_MetaTileEntity_LargeBoiler> computeValue(Class<?> type) {
+            return StructureDefinition.<GT_MetaTileEntity_LargeBoiler>builder().addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { "ccc", "ccc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
+                                    { "ccc", "cPc", "ccc" }, { "f~f", "fff", "fff" }, }))
+                    .addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta())))
+                    .addElement(
+                            'c',
+                            lazy(
+                                    t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class).atLeast(OutputHatch)
+                                            .casingIndex(t.getCasingTextureIndex()).dot(2).buildAndChain(
+                                                    onElementPass(
+                                                            GT_MetaTileEntity_LargeBoiler::onCasingAdded,
+                                                            ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
+                    .addElement(
+                            'f',
+                            lazy(
+                                    t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class)
+                                            .atLeast(Maintenance, InputHatch, InputBus, Muffler)
+                                            .casingIndex(t.getFireboxTextureIndex()).dot(1).buildAndChain(
+                                                    onElementPass(
+                                                            GT_MetaTileEntity_LargeBoiler::onFireboxAdded,
+                                                            ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))))
+                    .build();
+        }
+    };
     private boolean firstRun = true;
     private int mSuperEfficencyIncrease = 0;
     private int integratedCircuitConfig = 0; // Steam output is reduced by 1000L per config
@@ -100,7 +103,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
-            tt.addInfo("Produces " + formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
+            tt.addInfo(
+                    "Produces " + formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
                             + "L of Superheated Steam with 1 Coal at "
                             + formatNumbers((getEUt() * 40L) / superToNormalSteam)
                             + "L/s") // ?
@@ -108,29 +112,27 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                     .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
                     .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
         } else {
-            tt.addInfo("Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
-                            + "L of Steam with 1 Coal at " + formatNumbers(getEUt() * 40) + "L/s") // ?
+            tt.addInfo(
+                    "Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
+                            + "L of Steam with 1 Coal at "
+                            + formatNumbers(getEUt() * 40)
+                            + "L/s") // ?
                     .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                     .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
-        tt.addInfo(String.format(
+        tt.addInfo(
+                String.format(
                         "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
                         formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 5, 3, false)
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 5, 3, false)
                 .addController("Front bottom")
                 .addCasingInfo(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24) // ?
                 .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
                 .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
-                .addMaintenanceHatch("Any firebox", 1)
-                .addMufflerHatch("Any firebox", 1)
-                .addInputBus("Solid fuel, Any firebox", 1)
-                .addInputHatch("Liquid fuel, Any firebox", 1)
-                .addStructureInfo("You can use either, or both")
-                .addInputHatch("Water, Any firebox", 1)
-                .addOutputHatch("Steam, any casing", 2)
-                .toolTipFinisher("Gregtech");
+                .addMaintenanceHatch("Any firebox", 1).addMufflerHatch("Any firebox", 1)
+                .addInputBus("Solid fuel, Any firebox", 1).addInputHatch("Liquid fuel, Any firebox", 1)
+                .addStructureInfo("You can use either, or both").addInputHatch("Water, Any firebox", 1)
+                .addOutputHatch("Steam, any casing", 2).toolTipFinisher("Gregtech");
 
         return tt;
     }
@@ -166,46 +168,25 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         // allows for 0 pollution if circuit throttle is too high
-        return Math.max(0, (int) (pollutionPerSecond
-                * (1 - GT_Mod.gregtechproxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
+        return Math.max(
+                0,
+                (int) (pollutionPerSecond
+                        * (1 - GT_Mod.gregtechproxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
-                    BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_LARGE_BOILER)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_LARGE_BOILER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+            if (aActive) return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER_GLOW).extFacing().glow().build() };
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex())};
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
 
     @Override
@@ -262,8 +243,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                 if (tFluid != null) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        this.mMaxProgresstime =
-                                adjustBurnTimeForConfig(Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(
+                                Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEUt = adjustEUtForConfig(getEUt());
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         return true;
@@ -285,7 +266,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
                             this.mEUt = adjustEUtForConfig(getEUt());
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                            this.mOutputItems = new ItemStack[] {GT_Utility.getContainerItem(tInput, true)};
+                            this.mOutputItems = new ItemStack[] { GT_Utility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
@@ -311,7 +292,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
                             this.mEUt = adjustEUtForConfig(getEUt());
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                            this.mOutputItems = new ItemStack[] {GT_Utility.getContainerItem(tInput, true)};
+                            this.mOutputItems = new ItemStack[] { GT_Utility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
@@ -338,12 +319,11 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
-            if (this.mSuperEfficencyIncrease > 0)
-                mEfficiency = Math.max(
-                        0,
-                        Math.min(
-                                mEfficiency + mSuperEfficencyIncrease,
-                                getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+            if (this.mSuperEfficencyIncrease > 0) mEfficiency = Math.max(
+                    0,
+                    Math.min(
+                            mEfficiency + mSuperEfficencyIncrease,
+                            getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + STEAM_PER_WATER) / STEAM_PER_WATER;
@@ -422,8 +402,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mFireboxAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)
-                && mCasingAmount >= 24
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0) && mCasingAmount >= 24
                 && mFireboxAmount >= 3
                 && mMaintenanceHatches.size() == 1
                 && !mMufflerHatches.isEmpty();

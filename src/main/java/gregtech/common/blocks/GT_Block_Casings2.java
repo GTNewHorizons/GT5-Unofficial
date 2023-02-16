@@ -1,10 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -13,7 +8,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_LanguageManager;
+
 public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
+
     public GT_Block_Casings2() {
         super(GT_Item_Casings2.class, "gt.blockcasings2", GT_Material_Casings.INSTANCE, 96);
         // Special handler for Pyrolyse Oven Casing on hatches...
@@ -102,10 +104,9 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity aTNT, World aWorld, int aX, int aY, int aZ, double eX, double eY, double eZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) == 8
-                ? Blocks.bedrock.getExplosionResistance(aTNT)
+    public float getExplosionResistance(Entity aTNT, World aWorld, int aX, int aY, int aZ, double eX, double eY,
+            double eZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ) == 8 ? Blocks.bedrock.getExplosionResistance(aTNT)
                 : super.getExplosionResistance(aTNT, aWorld, aX, aY, aZ, eX, eY, eZ);
     }
 }

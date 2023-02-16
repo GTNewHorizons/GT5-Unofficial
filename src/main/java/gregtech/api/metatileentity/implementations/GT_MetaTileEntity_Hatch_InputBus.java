@@ -2,8 +2,18 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -17,16 +27,10 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         implements IConfigurationCircuitSupport, IAddUIWidgets {
+
     public GT_Recipe_Map mRecipeMap = null;
     public boolean disableSort;
     public boolean disableFilter = true;
@@ -36,8 +40,8 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         this(id, name, nameRegional, tier, getSlots(tier) + 1);
     }
 
-    protected GT_MetaTileEntity_Hatch_InputBus(
-            int id, String name, String nameRegional, int tier, int slots, String[] description) {
+    protected GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier, int slots,
+            String[] description) {
         super(id, name, nameRegional, tier, slots, description);
     }
 
@@ -65,23 +69,23 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         this(aName, aTier, getSlots(aTier) + 1, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_InputBus(
-            String aName, int aTier, int aSlots, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_InputBus(String aName, int aTier, int aSlots, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN)}
-                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN)}
-                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
@@ -128,8 +132,8 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(
-                    getBaseMetaTileEntity().getOwnerUuid());
+            GT_ClientPreference tPreference = GT_Mod.gregtechproxy
+                    .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) disableFilter = !tPreference.isInputBusInitialFilterEnabled();
         }
     }
@@ -197,13 +201,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
-                .isGUIClickable(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                        getBaseMetaTileEntity())) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             if (disableSort) {
                 disableSort = false;
@@ -222,7 +220,8 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         } else {
             disableFilter = !disableFilter;
             GT_Utility.sendChatToPlayer(
-                    aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
         }
     }
 
@@ -234,8 +233,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing()
-                && aIndex != getCircuitSlot()
+        return aSide == getBaseMetaTileEntity().getFrontFacing() && aIndex != getCircuitSlot()
                 && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack))
                 && (disableLimited || limitedAllowPutStack(aIndex, aStack));
     }

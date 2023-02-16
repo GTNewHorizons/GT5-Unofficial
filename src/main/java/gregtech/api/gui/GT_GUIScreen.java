@@ -1,14 +1,8 @@
 package gregtech.api.gui;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
-import gregtech.api.gui.widgets.GT_GuiTooltip;
-import gregtech.api.gui.widgets.GT_GuiTooltipManager;
-import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
-import gregtech.api.interfaces.IGuiScreen;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,9 +10,18 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import gregtech.api.enums.Dyes;
+import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
+import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.gui.widgets.GT_GuiTooltip;
+import gregtech.api.gui.widgets.GT_GuiTooltipManager;
+import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
+import gregtech.api.interfaces.IGuiScreen;
 
 @Deprecated
 public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRenderer, IGuiScreen {
@@ -48,7 +51,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
         this.header = header;
         this.headerIcon = new GT_GuiFakeItemButton(this, 5, 5, null);
         this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
-        this.colorOverride = new GT_GUIColorOverride(guiTexturePath);
+        this.colorOverride = GT_GUIColorOverride.get(guiTexturePath);
         this.textColor = getTextColorOrDefault("title", 0xFF222222);
     }
 
@@ -161,7 +164,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
             if (tBox.isEnabled() || hadFocus) tBox.mouseClicked(x, y, button);
 
             if (tBox.isFocused() && button == 1 && tBox.isEnabled()) // rightclick -> lcear it
-            tBox.setText("0");
+                tBox.setText("0");
             else if (hadFocus && !tBox.isFocused()) applyTextBox(tBox);
         }
         super.mouseClicked(x, y, button);

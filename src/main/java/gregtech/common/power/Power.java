@@ -3,6 +3,7 @@ package gregtech.common.power;
 import gregtech.api.util.GT_Utility;
 
 public abstract class Power {
+
     protected final byte tier;
     protected int recipeEuPerTick;
     protected int recipeDuration;

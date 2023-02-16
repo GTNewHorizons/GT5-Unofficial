@@ -3,22 +3,23 @@ package gregtech.api.enums;
 import net.minecraft.util.StatCollector;
 
 public enum HeatingCoilLevel {
-    None, //                       0
-    ULV, // Not implemented      901
-    LV, // Cupronickel         1801
-    MV, // KANTHAL             2701
-    HV, // NICHROME            3601
-    EV, // TPVALLOY            4501
-    IV, // HSSG                5401
-    LuV, // HSSS                6301
-    ZPM, // NAQUADAH            7201
-    UV, // NAQUADAHALLOY       8101
-    UHV, // TRINIUM             9001
-    UEV, // ELECTRUMFLUX        9901
-    UIV, // AWAKENEDDRACONIUM  10801
-    UMV, // INFINITY		   11701
-    UXV, // HYPOGEN 		   12601
-    MAX, // ETERNAL			   13501
+
+    None, // 0
+    ULV, // Not implemented 901
+    LV, // Cupronickel 1801
+    MV, // KANTHAL 2701
+    HV, // NICHROME 3601
+    EV, // TPVALLOY 4501
+    IV, // HSSG 5401
+    LuV, // HSSS 6301
+    ZPM, // NAQUADAH 7201
+    UV, // NAQUADAHALLOY 8101
+    UHV, // TRINIUM 9001
+    UEV, // ELECTRUMFLUX 9901
+    UIV, // AWAKENEDDRACONIUM 10801
+    UMV, // INFINITY 11701
+    UXV, // HYPOGEN 12601
+    MAX, // ETERNAL 13501
     ;
 
     private static final HeatingCoilLevel[] VALUES = values();

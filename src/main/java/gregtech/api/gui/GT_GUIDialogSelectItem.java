@@ -1,19 +1,22 @@
 package gregtech.api.gui;
 
-import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
-import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
+import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiIconButton;
+import gregtech.api.util.GT_Utility;
+
 @Deprecated
 public class GT_GUIDialogSelectItem extends GT_GUIScreen {
+
     public static final int UNSELECTED = -1;
     private static final int cols = 9;
     private static final int rows = 3;
@@ -25,51 +28,40 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
     // all slots not including btnCurrent
     private final List<GT_GuiFakeItemButton> slots = new ArrayList<>();
     // the currently selected slot content
-    private final GT_GuiFakeItemButton btnCurrent =
-            new GT_GuiFakeItemButton(this, 8, 25, GT_GuiIcon.SLOT_DARKGRAY).setMimicSlot(true);
+    private final GT_GuiFakeItemButton btnCurrent = new GT_GuiFakeItemButton(this, 8, 25, GT_GuiIcon.SLOT_DARKGRAY)
+            .setMimicSlot(true);
     private final boolean noDeselect;
     private int selected;
     private int scroll = 0;
     private GT_GuiIconButton btnUp;
     private GT_GuiIconButton btnDown;
 
-    public GT_GUIDialogSelectItem(
-            String header,
-            ItemStack headerItem,
-            GuiScreen parent,
-            Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks) {
+    public GT_GUIDialogSelectItem(String header, ItemStack headerItem, GuiScreen parent,
+            Consumer<ItemStack> selectedCallback, List<ItemStack> stacks) {
         this(header, headerItem, parent, selectedCallback, stacks, UNSELECTED);
     }
 
-    public GT_GUIDialogSelectItem(
-            String header,
-            ItemStack headerItem,
-            GuiScreen parent,
-            Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks,
-            int selected) {
+    public GT_GUIDialogSelectItem(String header, ItemStack headerItem, GuiScreen parent,
+            Consumer<ItemStack> selectedCallback, List<ItemStack> stacks, int selected) {
         this(header, headerItem, parent, selectedCallback, stacks, selected, false);
     }
 
     /**
-     * Open a dialog to select an item from given list. Given callback may be called zero or more times depending on user action.
-     *  @param header           Header text
+     * Open a dialog to select an item from given list. Given callback may be called zero or more times depending on
+     * user action.
+     * 
+     * @param header           Header text
      * @param headerItem       ItemStack to use as Dialog icon
      * @param parent           open which GUIScreen when this dialog is closed. use null if it has no parent.
      * @param selectedCallback callback upon selected
      * @param stacks           list to choose from
-     * @param selected         preselected item. Use {@link #UNSELECTED} for unselected. Invalid selected will be clamped to 0 or highest index
-     * @param noDeselect	   true if player cannot deselect, false otherwise. If this is set to true, selectedCallback is guaranteed to be called with a nonnull stack
+     * @param selected         preselected item. Use {@link #UNSELECTED} for unselected. Invalid selected will be
+     *                         clamped to 0 or highest index
+     * @param noDeselect       true if player cannot deselect, false otherwise. If this is set to true, selectedCallback
+     *                         is guaranteed to be called with a nonnull stack
      */
-    public GT_GUIDialogSelectItem(
-            String header,
-            ItemStack headerItem,
-            GuiScreen parent,
-            Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks,
-            int selected,
-            boolean noDeselect) {
+    public GT_GUIDialogSelectItem(String header, ItemStack headerItem, GuiScreen parent,
+            Consumer<ItemStack> selectedCallback, List<ItemStack> stacks, int selected, boolean noDeselect) {
         super(176, 107, header);
         this.noDeselect = noDeselect;
         if (headerItem != null) this.headerIcon.setItem(headerItem);
@@ -84,8 +76,9 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                slots.add(new GT_GuiFakeItemButton(this, 8 + 18 * j, 44 + 18 * i, GT_GuiIcon.SLOT_GRAY)
-                        .setMimicSlot(true));
+                slots.add(
+                        new GT_GuiFakeItemButton(this, 8 + 18 * j, 44 + 18 * i, GT_GuiIcon.SLOT_GRAY)
+                                .setMimicSlot(true));
             }
         }
 
@@ -163,8 +156,7 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
 
     private void fillSlots() {
         for (int i = 0, j = scroll * cols; i < slots.size(); i++, j++) {
-            slots.get(i)
-                    .setItem(getCandidate(j))
+            slots.get(i).setItem(getCandidate(j))
                     .setBgIcon(j == getSelected() ? GT_GuiIcon.SLOT_DARKGRAY : GT_GuiIcon.SLOT_GRAY);
         }
     }

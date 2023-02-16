@@ -3,9 +3,11 @@ package gregtech.globalenergymap;
 import static gregtech.common.misc.GlobalVariableStorage.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import java.math.BigInteger;
+
 import org.junit.jupiter.api.Test;
+
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 
 class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
 

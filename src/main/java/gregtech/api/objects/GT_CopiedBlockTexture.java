@@ -1,14 +1,16 @@
 package gregtech.api.objects;
 
+import net.minecraft.block.Block;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
-import net.minecraft.block.Block;
 
 /**
  * @deprecated Replaced by the {@link gregtech.api.render.TextureFactory} API.
  */
 @Deprecated
 public class GT_CopiedBlockTexture extends gregtech.common.render.GT_CopiedBlockTexture implements ITexture {
+
     // Backwards Compat
     @Deprecated
     public short[] mRGBa;

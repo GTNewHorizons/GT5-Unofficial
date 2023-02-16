@@ -3,8 +3,15 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
@@ -16,12 +23,13 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import cpw.mods.fml.common.Optional;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -35,14 +43,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
-        implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
+        implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState {
+
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
@@ -51,14 +55,19 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private boolean processingRecipe = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 1, SLOT_COUNT * 2 + 1, new String[] {
-            "Advanced item input for Multiblocks", "Retrieves directly from ME", "Keeps 16 item types in stock"
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                1,
+                SLOT_COUNT * 2 + 1,
+                new String[] { "Advanced item input for Multiblocks", "Retrieves directly from ME",
+                        "Keeps 16 item types in stock" });
         disableSort = true;
     }
 
-    public GT_MetaTileEntity_Hatch_InputBus_ME(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_InputBus_ME(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, SLOT_COUNT * 2 + 1, aDescription, aTextures);
         disableSort = true;
     }
@@ -70,12 +79,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH_ACTIVE)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH) };
     }
 
     @Override
@@ -85,31 +94,40 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return isOutputFacing((byte) forgeDirection.ordinal()) ? AECableType.SMART : AECableType.NONE;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                        (IGridProxyable) getBaseMetaTileEntity(), "proxy", ItemList.Hatch_Output_Bus_ME.get(1), true);
+                        (IGridProxyable) getBaseMetaTileEntity(),
+                        "proxy",
+                        ItemList.Hatch_Output_Bus_ME.get(1),
+                        true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                if (getBaseMetaTileEntity().getWorld() != null)
-                    gridProxy.setOwner(getBaseMetaTileEntity()
-                            .getWorld()
-                            .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
+                        getBaseMetaTileEntity().getWorld()
+                                .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
+
+    @Override
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -151,12 +169,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     public String[] getInfoData() {
         if (GregTech_API.mAE2) {
             return new String[] {
-                "The bus is "
-                        + ((getProxy() != null && getProxy().isActive())
-                                ? EnumChatFormatting.GREEN + "online"
-                                : EnumChatFormatting.RED + "offline" + getAEDiagnostics())
-                        + EnumChatFormatting.RESET
-            };
+                    "The bus is "
+                            + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
+                                    : EnumChatFormatting.RED + "offline" + getAEDiagnostics())
+                            + EnumChatFormatting.RESET };
         } else return new String[] {};
     }
 
@@ -224,8 +240,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     this.setInventorySlotContents(aIndex + SLOT_COUNT, null);
                     return null;
                 }
-            } catch (final GridAccessException ignored) {
-            }
+            } catch (final GridAccessException ignored) {}
             return null;
         } else {
             // AE available but no items requested
@@ -234,7 +249,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return mInventory[aIndex];
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private BaseActionSource getRequestSource() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
@@ -265,12 +279,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             IAEItemStack request = AEItemStack.create(mInventory[i]);
                             request.setStackSize(savedStackSizes[i] - (oldStack == null ? 0 : oldStack.stackSize));
                             sg.extractItems(request, Actionable.MODULATE, getRequestSource());
-                            proxy.getEnergy()
-                                    .extractAEPower(
-                                            request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
+                            proxy.getEnergy().extractAEPower(
+                                    request.getStackSize(),
+                                    Actionable.MODULATE,
+                                    PowerMultiplier.CONFIG);
                             setInventorySlotContents(i + SLOT_COUNT, oldStack);
-                        } catch (final GridAccessException ignored) {
-                        }
+                        } catch (final GridAccessException ignored) {}
                     }
                     savedStackSizes[i] = 0;
                     shadowInventory[i] = null;
@@ -298,8 +312,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     ItemStack s = (result != null) ? result.getItemStack() : null;
                     setInventorySlotContents(aIndex + SLOT_COUNT, s);
                     return s;
-                } catch (final GridAccessException ignored) {
-                }
+                } catch (final GridAccessException ignored) {}
             }
         }
         return null;
@@ -313,12 +326,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(0)
-                        .endAtSlot(15)
-                        .phantom(true)
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).phantom(true)
                         .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
                         .widgetCreator(slot -> new SlotWidget(slot) {
+
                             @Override
                             protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
                                 if (clickData.mouseButton != 0) return;
@@ -331,9 +343,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                                 }
                                 if (getBaseMetaTileEntity().isServerSide()) {
                                     final ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
-                                    aeSlotWidgets[getMcSlot().getSlotIndex()]
-                                            .getMcSlot()
-                                            .putStack(newInfo);
+                                    aeSlotWidgets[getMcSlot().getSlotIndex()].getMcSlot().putStack(newInfo);
                                 }
                             }
 
@@ -343,29 +353,22 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                                 }
                                 return false;
                             }
-                        })
-                        .build()
-                        .setPos(7, 9))
-                .widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(16)
-                        .endAtSlot(31)
-                        .phantom(true)
-                        .background(GT_UITextures.SLOT_DARK_GRAY)
-                        .widgetCreator(slot ->
-                                aeSlotWidgets[slot.getSlotIndex() - 16] = new AESlotWidget(slot).disableInteraction())
-                        .build()
-                        .setPos(97, 9))
-                .widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
-                        .setPos(82, 40)
-                        .setSize(12, 12));
+                        }).build().setPos(7, 9))
+                .widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(16).endAtSlot(31).phantom(true)
+                                .background(GT_UITextures.SLOT_DARK_GRAY)
+                                .widgetCreator(
+                                        slot -> aeSlotWidgets[slot.getSlotIndex() - 16] = new AESlotWidget(slot)
+                                                .disableInteraction())
+                                .build().setPos(97, 9))
+                .widget(
+                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE).setPos(82, 40)
+                                .setSize(12, 12));
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(80, 63));
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(80, 63));
     }
 }

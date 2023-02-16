@@ -4,6 +4,16 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.ArrayList;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
@@ -20,30 +30,20 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.power.Power;
 import gregtech.common.power.SteamPower;
-import java.util.ArrayList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
- * This is the main construct for my Basic Machines such as the Automatic Extractor
- * Extend this class to make a simple Machine
+ * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
+ * Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
+
     private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(
-            int aID,
-            String aName,
-            String aNameRegional,
-            String aDescription,
-            int aInputSlotCount,
-            int aOutputSlotCount,
-            boolean aHighPressure) {
+    public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String aName, String aNameRegional, String aDescription,
+            int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
         super(
                 aID,
                 aName,
@@ -57,23 +57,13 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
                 "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(
-            String aName,
-            String aDescription,
-            ITexture[][][] aTextures,
-            int aInputSlotCount,
-            int aOutputSlotCount,
-            boolean aHighPressure) {
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures,
+            int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
         super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(
-            String aName,
-            String[] aDescription,
-            ITexture[][][] aTextures,
-            int aInputSlotCount,
-            int aOutputSlotCount,
-            boolean aHighPressure) {
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures,
+            int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
         super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
@@ -171,51 +161,27 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     public boolean allowToCheckRecipe() {
         if (mNeedsSteamVenting
-                && getBaseMetaTileEntity()
-                                .getCoverIDAtSide(getBaseMetaTileEntity().getFrontFacing())
-                        == 0
+                && getBaseMetaTileEntity().getCoverIDAtSide(getBaseMetaTileEntity().getFrontFacing()) == 0
                 && !GT_Utility.hasBlockHitBox(
                         getBaseMetaTileEntity().getWorld(),
-                        getBaseMetaTileEntity()
-                                .getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1),
-                        getBaseMetaTileEntity()
-                                .getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1),
-                        getBaseMetaTileEntity()
-                                .getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1))) {
+                        getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1),
+                        getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1),
+                        getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1))) {
             sendSound((byte) 9);
             mNeedsSteamVenting = false;
             try {
-                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity()
-                        .getWorld()
+                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                                 EntityLivingBase.class,
                                 AxisAlignedBB.getBoundingBox(
-                                        getBaseMetaTileEntity()
-                                                .getOffsetX(
-                                                        getBaseMetaTileEntity().getFrontFacing(), 1),
-                                        getBaseMetaTileEntity()
-                                                .getOffsetY(
-                                                        getBaseMetaTileEntity().getFrontFacing(), 1),
-                                        getBaseMetaTileEntity()
-                                                .getOffsetZ(
-                                                        getBaseMetaTileEntity().getFrontFacing(), 1),
-                                        getBaseMetaTileEntity()
-                                                        .getOffsetX(
-                                                                getBaseMetaTileEntity()
-                                                                        .getFrontFacing(),
-                                                                1)
+                                        getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1),
+                                        getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1),
+                                        getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1),
+                                        getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1)
                                                 + 1,
-                                        getBaseMetaTileEntity()
-                                                        .getOffsetY(
-                                                                getBaseMetaTileEntity()
-                                                                        .getFrontFacing(),
-                                                                1)
+                                        getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1)
                                                 + 1,
-                                        getBaseMetaTileEntity()
-                                                        .getOffsetZ(
-                                                                getBaseMetaTileEntity()
-                                                                        .getFrontFacing(),
-                                                                1)
+                                        getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1)
                                                 + 1))) {
                     GT_Utility.applyHeatDamage(tLiving, getSteamDamage());
                 }
@@ -228,11 +194,13 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = getRecipeList()
-                .findRecipe(
-                        getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[mTier], null, getAllInputs());
-        if ((tRecipe != null)
-                && (canOutput(tRecipe.mOutputs))
+        GT_Recipe tRecipe = getRecipeList().findRecipe(
+                getBaseMetaTileEntity(),
+                false,
+                gregtech.api.enums.GT_Values.V[mTier],
+                null,
+                getAllInputs());
+        if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
                 && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
             calculateOverclockedNess(tRecipe);
@@ -259,27 +227,17 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         if (aIndex == 9) {
             GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 5, 1.0F, aX, aY, aZ);
 
-            new ParticleEventBuilder()
-                    .setIdentifier(ParticleFX.CLOUD)
-                    .setWorld(getBaseMetaTileEntity().getWorld())
+            new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD).setWorld(getBaseMetaTileEntity().getWorld())
                     .setMotion(
-                            ForgeDirection.getOrientation(
-                                                    getBaseMetaTileEntity().getFrontFacing())
-                                            .offsetX
-                                    / 5.0,
-                            ForgeDirection.getOrientation(
-                                                    getBaseMetaTileEntity().getFrontFacing())
-                                            .offsetY
-                                    / 5.0,
-                            ForgeDirection.getOrientation(
-                                                    getBaseMetaTileEntity().getFrontFacing())
-                                            .offsetZ
-                                    / 5.0)
-                    .<ParticleEventBuilder>times(8, x -> x.setPosition(
+                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
+                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
+                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0)
+                    .<ParticleEventBuilder>times(
+                            8,
+                            x -> x.setPosition(
                                     aX - 0.5 + XSTR_INSTANCE.nextFloat(),
                                     aY - 0.5 + XSTR_INSTANCE.nextFloat(),
-                                    aZ - 0.5 + XSTR_INSTANCE.nextFloat())
-                            .run());
+                                    aZ - 0.5 + XSTR_INSTANCE.nextFloat()).run());
         }
     }
 
@@ -300,134 +258,100 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public ITexture[] getSideFacingActive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa))
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)) };
     }
 
     @Override
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
-            TextureFactory.of(OVERLAY_PIPE_OUT)
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
-            TextureFactory.of(OVERLAY_PIPE_OUT)
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTopFacingPipeActive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
-            TextureFactory.of(OVERLAY_PIPE_OUT)
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
-            TextureFactory.of(OVERLAY_PIPE_OUT)
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getSideFacingPipeActive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
-            TextureFactory.of(OVERLAY_PIPE_OUT)
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
-        return new ITexture[] {
-            TextureFactory.of(
-                    isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
-                    Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
-            TextureFactory.of(OVERLAY_PIPE_OUT)
-        };
+        return new ITexture[] { TextureFactory.of(
+                isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE,
+                Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
@@ -438,5 +362,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     public GUITextureSet getGUITextureSet() {
         return GUITextureSet.STEAM.apply(getSteamVariant());
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(152, 63));
     }
 }

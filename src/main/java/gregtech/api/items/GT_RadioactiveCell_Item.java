@@ -2,16 +2,19 @@ package gregtech.api.items;
 
 import static gregtech.api.util.GT_Utility.formatNumbers;
 
-import gregtech.common.items.GT_DepletetCell_Item;
-import ic2.api.item.IBoxable;
-import ic2.core.util.StackUtil;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.common.items.GT_DepletetCell_Item;
+import ic2.api.item.IBoxable;
+import ic2.core.util.StackUtil;
+
 public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable {
+
     protected int cellCount;
     protected int maxDmg;
     protected int dura;
@@ -150,10 +153,10 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
                 color2 = EnumChatFormatting.DARK_GRAY;
                 break;
         }
-        EnumChatFormatting color1 =
-                this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY : EnumChatFormatting.WHITE;
-        aList.add(color1
-                + String.format(
+        EnumChatFormatting color1 = this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY
+                : EnumChatFormatting.WHITE;
+        aList.add(
+                color1 + String.format(
                         transItem("001", "Durability: %s/%s"),
                         "" + color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
                         "" + formatNumbers(this.maxDmg)));

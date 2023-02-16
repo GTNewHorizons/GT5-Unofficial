@@ -1,5 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
+import java.util.Locale;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -8,19 +14,16 @@ import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import java.util.Locale;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class ProcessingDye implements IOreRecipeRegistrator {
+
     public ProcessingDye() {
         OrePrefixes.dye.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         Dyes aDye = Dyes.get(aOreDictName);
         if ((aDye.mIndex >= 0) && (aDye.mIndex < 16) && (GT_Utility.getContainerItem(aStack, true) == null)) {
             GT_ModHandler.addAlloySmelterRecipe(

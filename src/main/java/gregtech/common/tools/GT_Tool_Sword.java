@@ -1,16 +1,18 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ToolHarvestHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ToolHarvestHelper;
+
 public class GT_Tool_Sword extends GT_Tool {
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 200;
@@ -107,16 +109,14 @@ public class GT_Tool_Sword extends GT_Tool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack)
-                        .mIconSet
-                        .mTextures[gregtech.api.enums.OrePrefixes.toolHeadSword.mTextureIndex]
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSword.mTextureIndex]
                 : Textures.ItemIcons.HANDLE_SWORD;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
                 : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 

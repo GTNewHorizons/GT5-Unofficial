@@ -2,24 +2,10 @@ package gregtech.common.blocks;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ISecondaryDescribable;
-import gregtech.api.interfaces.metatileentity.IConnectable;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
-import gregtech.api.util.GT_ItsNotMyFaultException;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.storage.*;
 import java.util.List;
+
 import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,7 +20,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.ISecondaryDescribable;
+import gregtech.api.interfaces.metatileentity.IConnectable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
+import gregtech.api.util.GT_ItsNotMyFaultException;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.storage.*;
+
 public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
+
     public GT_Item_Machines(Block block) {
         super(block);
         setMaxDamage(0);
@@ -62,82 +65,113 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 final IGregTechTileEntity tTileEntity = GregTech_API.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
                 if (!GregTech_API.sPostloadFinished
                         && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription =
-                            ((ISecondaryDescribable) tTileEntity.getMetaTileEntity()).getSecondaryDescription();
+                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
+                            .getSecondaryDescription();
                     addDescription(null, tSecondaryDescription, tDamage, "_Secondary", true);
                 }
                 {
                     final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
                     final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                                    && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription())
-                            ? "_Secondary"
-                            : "";
+                            && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
+                                    : "";
                     addDescription(
-                            aList, tTileEntity.getDescription(), tDamage, tSuffix, !GregTech_API.sPostloadFinished);
+                            aList,
+                            tTileEntity.getDescription(),
+                            tDamage,
+                            tSuffix,
+                            !GregTech_API.sPostloadFinished);
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
-                        final int inputTier = GT_Utility.getTier(tTileEntity.getInputVoltage());
-                        aList.add(GT_LanguageManager.addStringLocalization(
-                                        "TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished)
-                                + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tTileEntity.getInputVoltage())
-                                + " (" + GT_Values.TIER_COLORS[inputTier] + GT_Values.VN[inputTier]
-                                + EnumChatFormatting.GREEN + ")" + EnumChatFormatting.GRAY);
+                        final byte inputTier = GT_Utility.getTier(tTileEntity.getInputVoltage());
+                        aList.add(
+                                GT_LanguageManager.addStringLocalization(
+                                        "TileEntity_EUp_IN",
+                                        "Voltage IN: ",
+                                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                                        + GT_Utility.formatNumbers(tTileEntity.getInputVoltage())
+                                        + " ("
+                                        + GT_Utility.getColoredTierNameFromTier(inputTier)
+                                        + EnumChatFormatting.GREEN
+                                        + ")"
+                                        + EnumChatFormatting.GRAY);
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
-                        final int outputTier = GT_Utility.getTier(tTileEntity.getOutputVoltage());
-                        aList.add(GT_LanguageManager.addStringLocalization(
-                                        "TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished)
-                                + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tTileEntity.getOutputVoltage())
-                                + " (" + GT_Values.TIER_COLORS[outputTier] + GT_Values.VN[outputTier]
-                                + EnumChatFormatting.GREEN + ")" + EnumChatFormatting.GRAY);
+                        final byte outputTier = GT_Utility.getTier(tTileEntity.getOutputVoltage());
+                        aList.add(
+                                GT_LanguageManager.addStringLocalization(
+                                        "TileEntity_EUp_OUT",
+                                        "Voltage OUT: ",
+                                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                                        + GT_Utility.formatNumbers(tTileEntity.getOutputVoltage())
+                                        + " ("
+                                        + GT_Utility.getColoredTierNameFromTier(outputTier)
+                                        + EnumChatFormatting.GREEN
+                                        + ")"
+                                        + EnumChatFormatting.GRAY);
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
-                        aList.add(GT_LanguageManager.addStringLocalization(
-                                        "TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished)
-                                + EnumChatFormatting.YELLOW
-                                + GT_Utility.formatNumbers(tTileEntity.getOutputAmperage())
-                                + EnumChatFormatting.GRAY);
+                        aList.add(
+                                GT_LanguageManager.addStringLocalization(
+                                        "TileEntity_EUp_AMOUNT",
+                                        "Amperage: ",
+                                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                                        + GT_Utility.formatNumbers(tTileEntity.getOutputAmperage())
+                                        + EnumChatFormatting.GRAY);
                     }
-                    aList.add(GT_LanguageManager.addStringLocalization(
-                                    "TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished)
-                            + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(tTileEntity.getEUCapacity())
-                            + EnumChatFormatting.GRAY + " EU");
+                    aList.add(
+                            GT_LanguageManager.addStringLocalization(
+                                    "TileEntity_EUp_STORE",
+                                    "Capacity: ",
+                                    !GregTech_API.sPostloadFinished) + EnumChatFormatting.BLUE
+                                    + GT_Utility.formatNumbers(tTileEntity.getEUCapacity())
+                                    + EnumChatFormatting.GRAY
+                                    + " EU");
                 }
                 if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank
                         || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperTank) {
                     if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mFluid")) {
-                        final FluidStack tContents =
-                                FluidStack.loadFluidStackFromNBT(aStack.stackTagCompound.getCompoundTag("mFluid"));
+                        final FluidStack tContents = FluidStack
+                                .loadFluidStackFromNBT(aStack.stackTagCompound.getCompoundTag("mFluid"));
                         if (tContents != null && tContents.amount > 0) {
-                            aList.add(GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_TANK_INFO", "Contains Fluid: ", !GregTech_API.sPostloadFinished)
-                                    + EnumChatFormatting.YELLOW
-                                    + tContents.getLocalizedName()
-                                    + EnumChatFormatting.GRAY);
-                            aList.add(GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_TANK_AMOUNT", "Fluid Amount: ", !GregTech_API.sPostloadFinished)
-                                    + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tContents.amount) + " L"
-                                    + EnumChatFormatting.GRAY);
+                            aList.add(
+                                    GT_LanguageManager.addStringLocalization(
+                                            "TileEntity_TANK_INFO",
+                                            "Contains Fluid: ",
+                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                                            + tContents.getLocalizedName()
+                                            + EnumChatFormatting.GRAY);
+                            aList.add(
+                                    GT_LanguageManager.addStringLocalization(
+                                            "TileEntity_TANK_AMOUNT",
+                                            "Fluid Amount: ",
+                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                                            + GT_Utility.formatNumbers(tContents.amount)
+                                            + " L"
+                                            + EnumChatFormatting.GRAY);
                         }
                     }
                 }
                 if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_DigitalChestBase) {
                     if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mItemStack")) {
-                        final ItemStack tContents =
-                                ItemStack.loadItemStackFromNBT(aStack.stackTagCompound.getCompoundTag("mItemStack"));
+                        final ItemStack tContents = ItemStack
+                                .loadItemStackFromNBT(aStack.stackTagCompound.getCompoundTag("mItemStack"));
                         final int tSize = aStack.stackTagCompound.getInteger("mItemCount");
                         if (tContents != null && tSize > 0) {
-                            aList.add(GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_CHEST_INFO", "Contains Item: ", !GregTech_API.sPostloadFinished)
-                                    + EnumChatFormatting.YELLOW
-                                    + tContents.getDisplayName()
-                                    + EnumChatFormatting.GRAY);
-                            aList.add(GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_CHEST_AMOUNT", "Item Amount: ", !GregTech_API.sPostloadFinished)
-                                    + EnumChatFormatting.GREEN
-                                    + GT_Utility.formatNumbers(tSize)
-                                    + EnumChatFormatting.GRAY);
+                            aList.add(
+                                    GT_LanguageManager.addStringLocalization(
+                                            "TileEntity_CHEST_INFO",
+                                            "Contains Item: ",
+                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                                            + tContents.getDisplayName()
+                                            + EnumChatFormatting.GRAY);
+                            aList.add(
+                                    GT_LanguageManager.addStringLocalization(
+                                            "TileEntity_CHEST_AMOUNT",
+                                            "Item Amount: ",
+                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                                            + GT_Utility.formatNumbers(tSize)
+                                            + EnumChatFormatting.GRAY);
                         }
                     }
                 }
@@ -145,20 +179,27 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
             final NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(GT_LanguageManager.addStringLocalization(
-                            "GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished));
+                    aList.add(
+                            GT_LanguageManager.addStringLocalization(
+                                    "GT_TileEntity_MUFFLER",
+                                    "has Muffler Upgrade",
+                                    !GregTech_API.sPostloadFinished));
                 }
                 if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(GT_LanguageManager.addStringLocalization(
-                            "GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished));
+                    aList.add(
+                            GT_LanguageManager.addStringLocalization(
+                                    "GT_TileEntity_STEAMCONVERTER",
+                                    "has Steam Upgrade",
+                                    !GregTech_API.sPostloadFinished));
                 }
                 int tAmount = 0;
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(tAmount + " "
-                            + GT_LanguageManager.addStringLocalization(
-                                    "GT_TileEntity_STEAMTANKS",
-                                    "Steam Tank Upgrades",
-                                    !GregTech_API.sPostloadFinished));
+                    aList.add(
+                            tAmount + " "
+                                    + GT_LanguageManager.addStringLocalization(
+                                            "GT_TileEntity_STEAMTANKS",
+                                            "Steam Tank Upgrades",
+                                            !GregTech_API.sPostloadFinished));
                 }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
@@ -168,12 +209,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         }
     }
 
-    private void addDescription(
-            @Nullable List<String> aList,
-            @Nullable String[] aDescription,
-            int aDamage,
-            String aSuffix,
-            boolean aWriteIntoLangFile) {
+    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription, int aDamage,
+            String aSuffix, boolean aWriteIntoLangFile) {
         if (aDescription == null) return;
         for (int i = 0, tLength = aDescription.length; i < tLength; i++) {
             String tDescLine = aDescription[i];
@@ -184,12 +221,11 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 final String[] tSplitStrings = tDescLine.split("%%%");
                 final StringBuilder tBuffer = new StringBuilder();
                 final String[] tRep = new String[tSplitStrings.length / 2];
-                for (int j = 0; j < tSplitStrings.length; j++)
-                    if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
-                    else {
-                        tBuffer.append(" %s");
-                        tRep[j / 2] = tSplitStrings[j];
-                    }
+                for (int j = 0; j < tSplitStrings.length; j++) if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
+                else {
+                    tBuffer.append(" %s");
+                    tRep[j / 2] = tSplitStrings[j];
+                }
                 final String tTranslated = String.format(
                         GT_LanguageManager.addStringLocalization(tKey, tBuffer.toString(), aWriteIntoLangFile),
                         (Object[]) tRep);
@@ -202,17 +238,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
         return false;
     }
 
@@ -232,8 +259,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
-        if (aDamage >= 0
-                && aDamage < GregTech_API.METATILEENTITIES.length
+        if (aDamage >= 0 && aDamage < GregTech_API.METATILEENTITIES.length
                 && GregTech_API.METATILEENTITIES[aDamage] != null) {
             Materials aMaterial = null;
             if (GregTech_API.METATILEENTITIES[aDamage] instanceof GT_MetaPipeEntity_Item) {
@@ -256,26 +282,15 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         super.onCreated(aStack, aWorld, aPlayer);
         final short tDamage = (short) getDamage(aStack);
-        if ((tDamage < 0)
-                || ((tDamage >= GregTech_API.METATILEENTITIES.length)
-                        && (GregTech_API.METATILEENTITIES[tDamage] != null))) {
+        if ((tDamage < 0) || ((tDamage >= GregTech_API.METATILEENTITIES.length)
+                && (GregTech_API.METATILEENTITIES[tDamage] != null))) {
             GregTech_API.METATILEENTITIES[tDamage].onCreated(aStack, aWorld, aPlayer);
         }
     }
 
     @Override
-    public boolean placeBlockAt(
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ,
-            int aMeta) {
+    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
+            float hitX, float hitY, float hitZ, int aMeta) {
         final short tDamage = (short) getDamage(aStack);
         if (tDamage > 0) {
             if (GregTech_API.METATILEENTITIES[tDamage] == null) {
@@ -337,9 +352,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 aStack.setTagCompound(null);
                 return;
             }
-            if ((tNBT.hasKey("mItemCount") && tNBT.getInteger("mItemCount") > 0)
-                    || (tNBT.hasKey("mFluid")
-                            && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
+            if ((tNBT.hasKey("mItemCount") && tNBT.getInteger("mItemCount") > 0) || (tNBT.hasKey("mFluid")
+                    && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
                 final FluidStack tFluid = FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid"));
                 int tEffectDuration = 1200;
                 if (tFluid != null) {

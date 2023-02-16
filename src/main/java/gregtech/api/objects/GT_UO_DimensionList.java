@@ -1,10 +1,11 @@
 package gregtech.api.objects;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class GT_UO_DimensionList {
 
@@ -37,15 +38,8 @@ public class GT_UO_DimensionList {
         }
     }
 
-    public void SetConfigValues(
-            String aDimensionName,
-            String aDimension,
-            String aName,
-            String aRegistry,
-            int aMinAmount,
-            int aMaxAmount,
-            int aChance,
-            int aDecreasePerOperationAmount) {
+    public void SetConfigValues(String aDimensionName, String aDimension, String aName, String aRegistry,
+            int aMinAmount, int aMaxAmount, int aChance, int aDecreasePerOperationAmount) {
         String Category = fCategory + "." + aDimensionName;
         fConfig.get(Category, "Dimension", aDimension).getString();
         Category += "." + aName;
@@ -74,18 +68,18 @@ public class GT_UO_DimensionList {
 
         fConfig.setCategoryComment(fCategory, "Config Underground Fluids (Delete this Category for regenerate)");
         fConfig.setCategoryComment(
-                fCategory + ".Default", "Set Default Generating (Use this Category for Default settings)");
+                fCategory + ".Default",
+                "Set Default Generating (Use this Category for Default settings)");
         fConfig.setCategoryComment(fCategory + ".Overworld", "Set Overworld Generating");
         fConfig.setCategoryComment(fCategory + ".Moon", "Set Moon Generating");
 
-        blackList = new int[] {-1, 1};
-        blackList = aConfig.get(fCategory, "DimBlackList", blackList, "Dimension IDs Black List")
-                .getIntList();
+        blackList = new int[] { -1, 1 };
+        blackList = aConfig.get(fCategory, "DimBlackList", blackList, "Dimension IDs Black List").getIntList();
         java.util.Arrays.sort(blackList);
 
         for (int i = 0; i < fConfig.getCategory(fCategory).getChildren().size(); i++) {
-            GT_UO_Dimension Dimension = new GT_UO_Dimension((ConfigCategory)
-                    fConfig.getCategory(fCategory).getChildren().toArray()[i]);
+            GT_UO_Dimension Dimension = new GT_UO_Dimension(
+                    (ConfigCategory) fConfig.getCategory(fCategory).getChildren().toArray()[i]);
             fDimensionList.put(Dimension.Dimension, Dimension);
         }
     }

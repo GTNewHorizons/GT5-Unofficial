@@ -2,6 +2,12 @@ package gregtech.api.gui;
 
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IFluidAccess;
@@ -10,11 +16,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -223,7 +224,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                     }
                     IFluidAccess tFillableAccess = constructFluidAccess(tTank, true);
                     GT_Recipe_Map recipes = machine.getRecipeList();
-                    // If the  machine has recipes but no fluid inputs, disallow filling this slot with fluids.
+                    // If the machine has recipes but no fluid inputs, disallow filling this slot with fluids.
                     ItemStack tToken = handleFluidSlotClick(
                             tFillableAccess,
                             aPlayer,

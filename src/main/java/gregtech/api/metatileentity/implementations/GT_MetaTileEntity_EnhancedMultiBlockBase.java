@@ -1,5 +1,11 @@
 package gregtech.api.metatileentity.implementations;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -11,25 +17,22 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link GT_MetaTileEntity_MultiBlockBase}
  * <p>
- * 1. TecTech style declarative structure check utilizing StructureLib.
- * 2. Arbitrarily rotating the whole structure, if allowed to.
+ * 1. TecTech style declarative structure check utilizing StructureLib. 2. Arbitrarily rotating the whole structure, if
+ * allowed to.
  *
  * @param <T> type of this
  */
 public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>>
         extends GT_MetaTileEntity_TooltipMultiBlockBase implements IAlignment, IConstructable {
+
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 
@@ -76,8 +79,8 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     }
 
     @Override
-    public boolean onWrenchRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (aWrenchingSide != getBaseMetaTileEntity().getFrontFacing())
             return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
@@ -106,9 +109,9 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     }
 
     /**
-     * Due to limitation of Java type system, you might need to do an unchecked cast.
-     * HOWEVER, the returned IStructureDefinition is expected to be evaluated against current instance only, and should
-     * not be used against other instances, even for those of the same class.
+     * Due to limitation of Java type system, you might need to do an unchecked cast. HOWEVER, the returned
+     * IStructureDefinition is expected to be evaluated against current instance only, and should not be used against
+     * other instances, even for those of the same class.
      */
     public abstract IStructureDefinition<T> getStructureDefinition();
 
@@ -149,142 +152,118 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
      *
      * Imagine you stand in front of the controller, with controller facing towards you not rotated or flipped.
      *
-     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller itself.
-     * The verticalOffset would be the number of blocks on the top side of the controller, not counting controller itself.
-     * The depthOffset would be the number of blocks between you and controller, not counting controller itself.
+     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller
+     * itself. The verticalOffset would be the number of blocks on the top side of the controller, not counting
+     * controller itself. The depthOffset would be the number of blocks between you and controller, not counting
+     * controller itself.
      *
      * All these offsets can be negative.
      */
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        return getCastedStructureDefinition()
-                .check(
-                        this,
-                        piece,
-                        tTile.getWorld(),
-                        getExtendedFacing(),
-                        tTile.getXCoord(),
-                        tTile.getYCoord(),
-                        tTile.getZCoord(),
-                        horizontalOffset,
-                        verticalOffset,
-                        depthOffset,
-                        !mMachine);
+        return getCastedStructureDefinition().check(
+                this,
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                !mMachine);
     }
 
-    protected final boolean buildPiece(
-            String piece,
-            ItemStack trigger,
-            boolean hintOnly,
-            int horizontalOffset,
-            int verticalOffset,
-            int depthOffset) {
+    protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
+            int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        return getCastedStructureDefinition()
-                .buildOrHints(
-                        this,
-                        trigger,
-                        piece,
-                        tTile.getWorld(),
-                        getExtendedFacing(),
-                        tTile.getXCoord(),
-                        tTile.getYCoord(),
-                        tTile.getZCoord(),
-                        horizontalOffset,
-                        verticalOffset,
-                        depthOffset,
-                        hintOnly);
+        return getCastedStructureDefinition().buildOrHints(
+                this,
+                trigger,
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                hintOnly);
     }
 
     @Deprecated
-    protected final int survivialBuildPiece(
-            String piece,
-            ItemStack trigger,
-            int horizontalOffset,
-            int verticalOffset,
-            int depthOffset,
-            int elementsBudget,
-            IItemSource source,
-            EntityPlayerMP actor,
-            boolean check) {
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        return getCastedStructureDefinition()
-                .survivalBuild(
-                        this,
-                        trigger,
-                        piece,
-                        tTile.getWorld(),
-                        getExtendedFacing(),
-                        tTile.getXCoord(),
-                        tTile.getYCoord(),
-                        tTile.getZCoord(),
-                        horizontalOffset,
-                        verticalOffset,
-                        depthOffset,
-                        elementsBudget,
-                        source,
-                        actor,
-                        check);
+        return getCastedStructureDefinition().survivalBuild(
+                this,
+                trigger,
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                elementsBudget,
+                source,
+                actor,
+                check);
     }
 
-    protected final int survivialBuildPiece(
-            String piece,
-            ItemStack trigger,
-            int horizontalOffset,
-            int verticalOffset,
-            int depthOffset,
-            int elementsBudget,
-            ISurvivalBuildEnvironment env,
-            boolean check) {
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        return getCastedStructureDefinition()
-                .survivalBuild(
-                        this,
-                        trigger,
-                        piece,
-                        tTile.getWorld(),
-                        getExtendedFacing(),
-                        tTile.getXCoord(),
-                        tTile.getYCoord(),
-                        tTile.getZCoord(),
-                        horizontalOffset,
-                        verticalOffset,
-                        depthOffset,
-                        elementsBudget,
-                        env,
-                        check);
+        return getCastedStructureDefinition().survivalBuild(
+                this,
+                trigger,
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                elementsBudget,
+                env,
+                check);
     }
 
     @Deprecated
-    protected final int survivialBuildPiece(
-            String piece,
-            ItemStack trigger,
-            int horizontalOffset,
-            int verticalOffset,
-            int depthOffset,
-            int elementsBudget,
-            IItemSource source,
-            EntityPlayerMP actor,
-            boolean check,
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
             boolean checkIfPlaced) {
         int built = survivialBuildPiece(
-                piece, trigger, horizontalOffset, verticalOffset, depthOffset, elementsBudget, source, actor, check);
+                piece,
+                trigger,
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                elementsBudget,
+                source,
+                actor,
+                check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
     }
 
-    protected final int survivialBuildPiece(
-            String piece,
-            ItemStack trigger,
-            int horizontalOffset,
-            int verticalOffset,
-            int depthOffset,
-            int elementsBudget,
-            ISurvivalBuildEnvironment env,
-            boolean check,
-            boolean checkIfPlaced) {
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
         int built = survivialBuildPiece(
-                piece, trigger, horizontalOffset, verticalOffset, depthOffset, elementsBudget, env, check);
+                piece,
+                trigger,
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                elementsBudget,
+                env,
+                check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
     }

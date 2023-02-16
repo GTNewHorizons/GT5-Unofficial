@@ -1,9 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -11,7 +7,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+
 public class GT_Tool_Mortar extends GT_Tool {
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
@@ -108,7 +110,11 @@ public class GT_Tool_Mortar extends GT_Tool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was grounded by "
-                        + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " was grounded by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 }

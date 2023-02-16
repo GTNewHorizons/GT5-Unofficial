@@ -1,18 +1,12 @@
 package gregtech.common.gui.modularui.widget;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import gregtech.GT_Mod;
-import gregtech.api.interfaces.IFluidAccess;
-import gregtech.api.interfaces.IHasFluidDisplayItem;
-import gregtech.api.interfaces.metatileentity.IFluidLockable;
-import gregtech.api.util.GT_Utility;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -21,12 +15,23 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
+import gregtech.GT_Mod;
+import gregtech.api.interfaces.IFluidAccess;
+import gregtech.api.interfaces.IHasFluidDisplayItem;
+import gregtech.api.interfaces.metatileentity.IFluidLockable;
+import gregtech.api.util.GT_Utility;
+
 public class FluidDisplaySlotWidget extends SlotWidget {
 
     private IHasFluidDisplayItem iHasFluidDisplay;
     private Supplier<IFluidAccess> fluidAccessConstructor;
     private Supplier<Boolean> canDrainGetter;
     private Supplier<Boolean> canFillGetter;
+    private Predicate<Fluid> canFillFilter;
     private Action actionRealClick = Action.NONE;
     private Action actionDragAndDrop = Action.NONE;
     private BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeRealClick;
@@ -55,11 +60,10 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         if (interactionDisabled) return ClickResult.REJECT;
 
         /*
-         * While a logical client don't really need to process fluid cells upon click (it could have just wait
-         * for server side to send the result), doing so would result in every fluid interaction having a
-         * noticeable delay between clicking and changes happening even on single player.
-         * I'd imagine this lag to become only more severe when playing MP over ethernet, which would have much more latency
-         * than a memory connection
+         * While a logical client don't really need to process fluid cells upon click (it could have just wait for
+         * server side to send the result), doing so would result in every fluid interaction having a noticeable delay
+         * between clicking and changes happening even on single player. I'd imagine this lag to become only more severe
+         * when playing MP over ethernet, which would have much more latency than a memory connection
          */
         ClickData clickData = ClickData.create(buttonId, doubleClick);
         ItemStack verifyToken = executeRealClick(clickData);
@@ -124,8 +128,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         ItemStack serverVerifyToken = executeRealClick(clickData);
         // similar to what NetHandlerPlayServer#processClickWindow does
         if (!ItemStack.areItemStacksEqual(clientVerifyToken, serverVerifyToken)) {
-            ((EntityPlayerMP) getContext().getPlayer())
-                    .sendContainerToPlayer(getContext().getContainer());
+            ((EntityPlayerMP) getContext().getPlayer()).sendContainerToPlayer(getContext().getContainer());
         }
     }
 
@@ -138,8 +141,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         ItemStack ret = null;
         if (actionRealClick == Action.TRANSFER) {
             if (fluidAccessConstructor == null) {
-                GT_Mod.GT_FML_LOGGER.warn(
-                        "FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
+                GT_Mod.GT_FML_LOGGER
+                        .warn("FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
                 return null;
             }
             ret = transferFluid(
@@ -156,12 +159,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         return ret;
     }
 
-    protected ItemStack transferFluid(
-            IFluidAccess aFluidAccess,
-            EntityPlayer aPlayer,
-            boolean aProcessFullStack,
-            boolean aCanDrain,
-            boolean aCanFill) {
+    protected ItemStack transferFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, boolean aProcessFullStack,
+            boolean aCanDrain, boolean aCanFill) {
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
@@ -176,6 +175,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             if (tFluidHeld == null)
                 // no fluid to fill
                 return null;
+            // apply filter here
+            if (canFillFilter != null && !canFillFilter.test(tFluidHeld.getFluid())) return null;
             return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
         }
         // tank not empty, both action possible
@@ -183,6 +184,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             // both nonnull and have space left for filling.
             if (aCanFill)
                 // actually both pickup and fill is reasonable, but I'll go with fill here
+                // there is already fluid in here. so we assume the slot will not accept this fluid anyway if it doesn't
+                // pass the filter.
                 return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
             if (!aCanDrain)
                 // cannot take AND cannot fill, why make this call then?
@@ -218,12 +221,10 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             if (aProcessFullStack) {
                 int tFilledAmount = tOriginalFluidAmount - tTankStack.amount;
                 /*
-                 work out how many more items we can fill
-                 one cell is already used, so account for that
-                 the round down behavior will left over a fraction of a cell worth of fluid
-                 the user then get to decide what to do with it
-                 it will not be too fancy if it spills out partially filled cells
-                */
+                 * work out how many more items we can fill one cell is already used, so account for that the round down
+                 * behavior will left over a fraction of a cell worth of fluid the user then get to decide what to do
+                 * with it it will not be too fancy if it spills out partially filled cells
+                 */
                 int tAdditionalParallel = Math.min(tStackHeld.stackSize - 1, tTankStack.amount / tFilledAmount);
                 tTankStack.amount -= tFilledAmount * tAdditionalParallel;
                 tFilledContainer.stackSize += tAdditionalParallel;
@@ -234,8 +235,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         return tFilledContainer;
     }
 
-    protected static ItemStack fillFluid(
-            IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld, boolean aProcessFullStack) {
+    protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld,
+            boolean aProcessFullStack) {
         // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
         if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld)) return null;
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
@@ -396,8 +397,16 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     }
 
     /**
-     * Sets action called on drag-and-drop from NEI.
-     * You can't use {@link Action#TRANSFER} here.
+     * Add a predicate on whether a client stack will be accepted. Note this will only be called when this slot is
+     * already empty. It is assumed whatever is already in the slot will pass the filter.
+     */
+    public FluidDisplaySlotWidget setEmptyCanFillFilter(Predicate<Fluid> canFillFilter) {
+        this.canFillFilter = canFillFilter;
+        return this;
+    }
+
+    /**
+     * Sets action called on drag-and-drop from NEI. You can't use {@link Action#TRANSFER} here.
      */
     public FluidDisplaySlotWidget setActionDragAndDrop(Action actionDragAndDrop) {
         this.actionDragAndDrop = actionDragAndDrop;
@@ -406,6 +415,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
 
     /**
      * Sets function called before {@link #executeRealClick}.
+     * 
      * @param beforeRealClick (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeRealClick(
@@ -416,6 +426,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
 
     /**
      * Sets function called before {@link #executeDragAndDrop}.
+     * 
      * @param beforeDragAndDrop (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeDragAndDrop(
@@ -426,7 +437,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
 
     /**
      * Sets function called before both of {@link #executeRealClick} and {@link #executeDragAndDrop}.
-     * @param beforeClick  (click data, this widget) -> if allow click
+     * 
+     * @param beforeClick (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeClick(BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeClick) {
         setBeforeRealClick(beforeClick);
@@ -435,8 +447,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     }
 
     /**
-     * By default, this widget runs {@link IHasFluidDisplayItem#updateFluidDisplayItem} after click.
-     * You can specify custom update action with this method.
+     * By default, this widget runs {@link IHasFluidDisplayItem#updateFluidDisplayItem} after click. You can specify
+     * custom update action with this method.
      */
     public FluidDisplaySlotWidget setUpdateFluidDisplayItem(Runnable updateFluidDisplayItem) {
         this.updateFluidDisplayItem = updateFluidDisplayItem;
@@ -449,20 +461,17 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     public enum Action {
 
         /**
-         * Fill/drain fluid into/from the tank.
-         * Uses fluid amount, so drag-and-drop cannot use this mode.
+         * Fill/drain fluid into/from the tank. Uses fluid amount, so drag-and-drop cannot use this mode.
          */
         TRANSFER,
 
         /**
-         * Lock fluid for {@link IFluidLockable}.
-         * Does not use fluid amount.
+         * Lock fluid for {@link IFluidLockable}. Does not use fluid amount.
          */
         LOCK,
 
         /**
-         * Set filter for the tank. (not implemented yet)
-         * Does not use fluid amount.
+         * Set filter for the tank. (not implemented yet) Does not use fluid amount.
          */
         FILTER,
 

@@ -3,6 +3,7 @@ package gregtech.api.util.extensions;
 import java.util.function.IntFunction;
 
 public class ArrayExt {
+
     public static int[] of(int... objects) {
         return objects;
     }

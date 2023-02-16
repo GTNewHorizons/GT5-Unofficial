@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 class CombTypeTest {
+
     @Test
     void noDuplicateID() {
         Set<Integer> seen = new HashSet<>();

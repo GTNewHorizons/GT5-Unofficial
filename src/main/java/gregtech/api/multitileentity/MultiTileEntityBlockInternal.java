@@ -3,12 +3,6 @@ package gregtech.api.multitileentity;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.util.GT_Util.setTileEntity;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.IRenderedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,7 +14,15 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
+import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.render.IRenderedBlock;
+
 public class MultiTileEntityBlockInternal extends Block implements IRenderedBlock {
+
     public MultiTileEntityRegistry mMultiTileEntityRegistry;
 
     public MultiTileEntityBlockInternal() {
@@ -47,18 +49,10 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         return StatCollector.translateToLocal(mMultiTileEntityRegistry.mNameInternal + ".name");
     }
 
-    public boolean placeBlock(
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            byte aSide,
-            short aMetaData,
-            NBTTagCompound aNBT,
-            boolean aCauseBlockUpdates,
-            boolean aForcePlacement) {
-        final MultiTileEntityContainer aMTEContainer =
-                mMultiTileEntityRegistry.getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
+    public boolean placeBlock(World aWorld, int aX, int aY, int aZ, byte aSide, short aMetaData, NBTTagCompound aNBT,
+            boolean aCauseBlockUpdates, boolean aForcePlacement) {
+        final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry
+                .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
         if (aMTEContainer == null) return false;
 
         final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);
@@ -92,7 +86,8 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         try {
             if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData) {
                 if (((IMTE_HasMultiBlockMachineRelevantData) aMTEContainer.mTileEntity)
-                        .hasMultiBlockMachineRelevantData()) GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+                        .hasMultiBlockMachineRelevantData())
+                    GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
             }
         } catch (Throwable e) {
             GT_FML_LOGGER.error("causeMachineUpdate", e);
@@ -114,7 +109,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         }
 
         try {
-            aWorld.func_147451_t /*updateAllLightTypes*/(aX, aY, aZ);
+            aWorld.func_147451_t /* updateAllLightTypes */(aX, aY, aZ);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("updateAllLightTypes", e);
         }

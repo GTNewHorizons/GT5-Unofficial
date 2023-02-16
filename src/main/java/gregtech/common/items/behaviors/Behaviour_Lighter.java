@@ -1,11 +1,7 @@
 package gregtech.common.items.behaviors;
 
-import codechicken.lib.math.MathHelper;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,20 +12,27 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import codechicken.lib.math.MathHelper;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+
 public class Behaviour_Lighter extends Behaviour_None {
+
     private final ItemStack mEmptyLighter;
     private final ItemStack mUsedLighter;
     private final ItemStack mFullLighter;
     private final long mFuelAmount;
-    private final String mTooltip =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
-    private final String mTooltipUses =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+    private final String mTooltip = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
+    private final String mTooltipUses = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
+    private final String mTooltipUnstackable = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
-    public Behaviour_Lighter(
-            ItemStack aEmptyLighter, ItemStack aUsedLighter, ItemStack aFullLighter, long aFuelAmount) {
+    public Behaviour_Lighter(ItemStack aEmptyLighter, ItemStack aUsedLighter, ItemStack aFullLighter,
+            long aFuelAmount) {
         this.mFullLighter = aFullLighter;
         this.mUsedLighter = aUsedLighter;
         this.mEmptyLighter = aEmptyLighter;
@@ -69,34 +72,14 @@ public class Behaviour_Lighter extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUse(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         return false;
     }
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
@@ -147,10 +130,8 @@ public class Behaviour_Lighter extends Behaviour_None {
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
-        long tFuelAmount = tNBT == null
-                ? 0L
-                : GT_Utility.areStacksEqual(aStack, this.mFullLighter, true)
-                        ? this.mFuelAmount
+        long tFuelAmount = tNBT == null ? this.mFuelAmount
+                : GT_Utility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount
                         : tNBT.getLong("GT.LighterFuel");
         aList.add(this.mTooltipUses + " " + tFuelAmount);
         aList.add(this.mTooltipUnstackable);

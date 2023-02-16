@@ -1,17 +1,22 @@
 package gregtech.api.items;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Utility;
-import ic2.api.reactor.IReactor;
-import ic2.api.reactor.IReactorComponent;
-import ic2.core.IC2Potion;
 import java.util.ArrayList;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
+import ic2.api.reactor.IReactor;
+import ic2.api.reactor.IReactorComponent;
+import ic2.core.IC2Potion;
+
 public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implements IReactorComponent {
+
+    private static final int MYSTERIOUS_MULTIPLIER_HEAT = 4;
     public final int numberOfCells;
     public final float sEnergy;
     public final int sRadiation;
@@ -19,16 +24,8 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
     public final ItemStack sDepleted;
     public final boolean sMox;
 
-    public GT_RadioactiveCellIC_Item(
-            String aUnlocalized,
-            String aEnglish,
-            int aCellcount,
-            int maxDamage,
-            float aEnergy,
-            int aRadiation,
-            float aHeat,
-            ItemStack aDepleted,
-            boolean aMox) {
+    public GT_RadioactiveCellIC_Item(String aUnlocalized, String aEnglish, int aCellcount, int maxDamage, float aEnergy,
+            int aRadiation, float aHeat, ItemStack aDepleted, boolean aMox) {
         super(aUnlocalized, aEnglish, aCellcount);
         setMaxStackSize(64);
         this.maxDmg = maxDamage;
@@ -38,12 +35,21 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
         this.sHeat = aHeat;
         this.sDepleted = aDepleted;
         this.sMox = aMox;
+        if (aDepleted != null && aEnergy > 0 && aHeat > 0) {
+            // avoid adding depleted cells to recipe map
+            GT_Values.RA.addIC2ReactorFuelCell(
+                    new ItemStack(this),
+                    aDepleted,
+                    aMox,
+                    aHeat * MYSTERIOUS_MULTIPLIER_HEAT,
+                    aEnergy,
+                    aCellcount);
+        }
     }
 
     private static int checkPulseable(IReactor reactor, int x, int y, ItemStack me, int mex, int mey, boolean heatrun) {
         ItemStack other = reactor.getItemAt(x, y);
-        if ((other != null)
-                && ((other.getItem() instanceof IReactorComponent))
+        if ((other != null) && ((other.getItem() instanceof IReactorComponent))
                 && (((IReactorComponent) other.getItem())
                         .acceptUraniumPulse(reactor, other, me, x, y, mex, mey, heatrun))) {
             return 1;
@@ -72,13 +78,13 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
                         + checkPulseable(reactor, x, y - 1, yourStack, x, y, heatrun)
                         + checkPulseable(reactor, x, y + 1, yourStack, x, y, heatrun);
 
-                //                int heat = sumUp(pulses) * 4;
+                // int heat = sumUp(pulses) * 4;
 
-                int heat = triangularNumber(pulses) * 4;
+                int heat = triangularNumber(pulses) * MYSTERIOUS_MULTIPLIER_HEAT;
 
                 heat = getFinalHeat(reactor, yourStack, x, y, heat);
 
-                ArrayList<ItemStackCoord> heatAcceptors = new ArrayList();
+                ArrayList<ItemStackCoord> heatAcceptors = new ArrayList<>();
                 checkHeatAcceptor(reactor, x - 1, y, heatAcceptors);
                 checkHeatAcceptor(reactor, x + 1, y, heatAcceptors);
                 checkHeatAcceptor(reactor, x, y - 1, heatAcceptors);
@@ -88,13 +94,12 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
 
                     int dheat = heat / heatAcceptors.size();
                     heat -= dheat;
-                    dheat = ((IReactorComponent) ((ItemStackCoord) heatAcceptors.get(0)).stack.getItem())
-                            .alterHeat(
-                                    reactor,
-                                    ((ItemStackCoord) heatAcceptors.get(0)).stack,
-                                    ((ItemStackCoord) heatAcceptors.get(0)).x,
-                                    ((ItemStackCoord) heatAcceptors.get(0)).y,
-                                    dheat);
+                    dheat = ((IReactorComponent) ((ItemStackCoord) heatAcceptors.get(0)).stack.getItem()).alterHeat(
+                            reactor,
+                            ((ItemStackCoord) heatAcceptors.get(0)).stack,
+                            ((ItemStackCoord) heatAcceptors.get(0)).x,
+                            ((ItemStackCoord) heatAcceptors.get(0)).y,
+                            dheat);
                     heat += dheat;
                     heatAcceptors.remove(0);
                 }
@@ -122,23 +127,15 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
 
     private void checkHeatAcceptor(IReactor reactor, int x, int y, ArrayList<ItemStackCoord> heatAcceptors) {
         ItemStack thing = reactor.getItemAt(x, y);
-        if ((thing != null)
-                && ((thing.getItem() instanceof IReactorComponent))
+        if ((thing != null) && ((thing.getItem() instanceof IReactorComponent))
                 && (((IReactorComponent) thing.getItem()).canStoreHeat(reactor, thing, x, y))) {
             heatAcceptors.add(new ItemStackCoord(thing, x, y));
         }
     }
 
     @Override
-    public boolean acceptUraniumPulse(
-            IReactor reactor,
-            ItemStack yourStack,
-            ItemStack pulsingStack,
-            int youX,
-            int youY,
-            int pulseX,
-            int pulseY,
-            boolean heatrun) {
+    public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
+            int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
             if (sMox) {
                 float breedereffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();
@@ -187,6 +184,7 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
     }
 
     private class ItemStackCoord {
+
         public ItemStack stack;
         public int x;
         public int y;

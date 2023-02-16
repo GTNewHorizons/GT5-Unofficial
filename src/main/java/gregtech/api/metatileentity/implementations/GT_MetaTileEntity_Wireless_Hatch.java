@@ -2,22 +2,24 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.*;
 
+import java.math.BigInteger;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
-import java.math.BigInteger;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_Energy
         implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
-    private final BigInteger eu_transferred_per_operation =
-            BigInteger.valueOf(2 * V[mTier] * ticks_between_energy_addition);
+    private final BigInteger eu_transferred_per_operation = BigInteger
+            .valueOf(2 * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
     private String owner_uuid;
@@ -28,26 +30,24 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
     }
 
     public GT_MetaTileEntity_Wireless_Hatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] {""});
+        super(aID, aName, aNameRegional, aTier, new String[] { "" });
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-            EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-            AuthorColen
-        };
+        return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+                EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+                AuthorColen };
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
     }
 
     @Override
@@ -101,8 +101,13 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
     }
 
     @Override
+    public ConnectionType getConnectionType() {
+        return ConnectionType.WIRELESS;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Wireless_Hatch(mName, mTier, new String[] {""}, mTextures);
+        return new GT_MetaTileEntity_Wireless_Hatch(mName, mTier, new String[] { "" }, mTextures);
     }
 
     @Override

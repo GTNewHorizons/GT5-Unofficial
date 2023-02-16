@@ -1,14 +1,16 @@
 package gregtech.common;
 
-import gregtech.GT_Mod;
-import gregtech.api.util.GT_Log;
 import java.util.ArrayList;
 
+import gregtech.GT_Mod;
+import gregtech.api.util.GT_Log;
+
 public class GT_PlayerActivityLogger implements Runnable {
+
     @Override
     public void run() {
         try {
-            for (; ; ) {
+            for (;;) {
                 if (GT_Log.pal == null) {
                     return;
                 }
@@ -24,7 +26,6 @@ public class GT_PlayerActivityLogger implements Runnable {
                 }
                 Thread.sleep(10000L);
             }
-        } catch (Throwable e) {
-        }
+        } catch (Throwable e) {}
     }
 }

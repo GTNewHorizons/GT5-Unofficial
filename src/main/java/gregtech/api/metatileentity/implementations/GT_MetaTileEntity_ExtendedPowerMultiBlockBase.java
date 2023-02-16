@@ -1,16 +1,26 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.api.util.GT_ExoticEnergyInputHelper;
+import static gregtech.api.enums.GT_Values.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_ExoticEnergyInputHelper;
+import gregtech.api.util.GT_Utility;
 
 /**
  * Multiblock base class that allows machine to use power over int.
  */
-public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
-                T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>>
+public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>>
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
 
     public long lEUt;
@@ -37,8 +47,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
     }
 
     @Override
-    protected void calculateOverclockedNessMultiInternal(
-            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
+            boolean perfectOC) {
         // 5% space for cable loss
         long zMaxInputVoltage = maxInputVoltage / 100L * 95L;
         long zTime = aDuration;
@@ -100,5 +110,115 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
     @Override
     public boolean drainEnergyInput(long aEU) {
         return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+            int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+        final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
+        if (tileEntity != null) {
+            if (tileEntity.isActive()) {
+                if (mEUt >= 0) tag.setLong("energyUsage", lEUt * mEfficiency / 10000);
+            }
+        }
+    }
+
+    @Override
+    public String[] getInfoData() {
+        int mPollutionReduction = 0;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+            }
+        }
+
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        long voltage = getAverageInputVoltage();
+        long amps = getMaxInputAmps();
+
+        return new String[] {
+                /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(getActualEnergyUsage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(voltage)
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*"
+                        + amps
+                        + " A)"
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GT_Utility.getTier(voltage)]
+                        + EnumChatFormatting.RESET,
+                /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (getIdealStatus() - getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + Float.toString(mEfficiency / 100.0F)
+                        + EnumChatFormatting.RESET
+                        + " %",
+                /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                        + EnumChatFormatting.GREEN
+                        + mPollutionReduction
+                        + EnumChatFormatting.RESET
+                        + " %" };
+    }
+
+    @Override
+    public long getMaxInputVoltage() {
+        return GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
+    }
+
+    public long getAverageInputVoltage() {
+        return GT_ExoticEnergyInputHelper.getAverageInputVoltageMulti(getExoticAndNormalEnergyHatchList());
+    }
+
+    public long getMaxInputAmps() {
+        return GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList());
+    }
+
+    public long getMaxInputEu() {
+        return GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mExoticEnergyHatches.clear();
     }
 }

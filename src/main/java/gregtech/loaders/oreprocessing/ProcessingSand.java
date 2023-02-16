@@ -1,21 +1,23 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingSand implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingSand() {
         OrePrefixes.sand.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         if (aOreDictName.equals("sandOil")) {
             GT_Values.RA.addCentrifugeRecipe(
                     GT_Utility.copyAmount(2L, aStack),

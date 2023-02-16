@@ -6,6 +6,7 @@ import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
  * Implemented by all my Machines. However without any security checks, if the Players are even allowed to rotate it.
  */
 public interface ITurnable {
+
     /**
      * Get the block's facing.
      *

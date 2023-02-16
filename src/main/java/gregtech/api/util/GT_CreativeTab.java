@@ -1,12 +1,14 @@
 package gregtech.api.util;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.ItemList;
+
 public class GT_CreativeTab extends CreativeTabs {
+
     public GT_CreativeTab(String aName, String aLocalName) {
         super("GregTech." + aName);
         GT_LanguageManager.addStringLocalization("itemGroup.GregTech." + aName, aLocalName);

@@ -2,9 +2,9 @@ package gregtech.common.power;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.util.EnumChatFormatting;
 
 public class EUPower extends Power {
+
     protected final int amperage;
     protected int originalVoltage;
 
@@ -23,7 +23,7 @@ public class EUPower extends Power {
 
     @Override
     public String getTierString() {
-        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
+        return GT_Utility.getColoredTierNameFromTier(tier);
     }
 
     @Override
@@ -52,6 +52,6 @@ public class EUPower extends Power {
     }
 
     protected int computeVoltageForEuRate(int euPerTick) {
-        return euPerTick / amperage;
+        return amperage != 0 ? euPerTick / amperage : euPerTick;
     }
 }

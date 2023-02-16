@@ -1,14 +1,16 @@
 package gregtech.loaders.postload;
 
-import gregtech.GT_Mod;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_Log;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
+import gregtech.GT_Mod;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_Log;
+
 public class GT_ItemMaxStacksizeLoader implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Changing maximum Stacksizes if configured.");

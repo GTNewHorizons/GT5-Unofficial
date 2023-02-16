@@ -2,17 +2,14 @@ package gregtech.api.util;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
 import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -20,21 +17,26 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
+
 public class GT_AssemblyLineUtils {
 
     /**
      * A cache of Recipes using the Output as Key.
      */
-    private static HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput =
-            new HashMap<GT_ItemStack, GT_Recipe_AssemblyLine>();
+    private static HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<GT_ItemStack, GT_Recipe_AssemblyLine>();
     /**
      * A cache of Recipes using the Recipe Hash String as Key.
      */
-    private static HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash =
-            new HashMap<String, GT_Recipe_AssemblyLine>();
+    private static HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<String, GT_Recipe_AssemblyLine>();
 
     /**
      * Checks the DataStick for deprecated/invalid recipes, updating them as required.
+     * 
      * @param aDataStick - The DataStick to process
      * @return Is this DataStick now valid with a current recipe?
      */
@@ -55,6 +57,7 @@ public class GT_AssemblyLineUtils {
 
     /**
      * Finds an Assembly Line recipe from a DataStick.
+     * 
      * @param aDataStick - The DataStick to check.
      * @return The GT_Recipe_AssemblyLine recipe contained on the DataStick, if any.
      */
@@ -64,8 +67,10 @@ public class GT_AssemblyLineUtils {
 
     /**
      * Finds an Assembly Line recipe from a DataStick.
-     * @param aDataStick - The DataStick to check.
-     * @param aReturnBuiltRecipe - Do we return a GT_Recipe_AssemblyLine built from the data on the Data Stick instead of searching the Recipe Map?
+     * 
+     * @param aDataStick         - The DataStick to check.
+     * @param aReturnBuiltRecipe - Do we return a GT_Recipe_AssemblyLine built from the data on the Data Stick instead
+     *                           of searching the Recipe Map?
      * @return The GT_Recipe_AssemblyLine recipe contained on the DataStick, if any.
      */
     @Nonnull
@@ -131,8 +136,7 @@ public class GT_AssemblyLineUtils {
                 GT_FML_LOGGER.info("Fluid " + i + " " + tLoaded.getUnlocalizedName());
             }
         }
-        if (!aTag.hasKey("output")
-                || !aTag.hasKey("time")
+        if (!aTag.hasKey("output") || !aTag.hasKey("time")
                 || aTag.getInteger("time") <= 0
                 || !aTag.hasKey("eu")
                 || !GT_Utility.isStackValid(aOutput)) {
@@ -147,14 +151,15 @@ public class GT_AssemblyLineUtils {
 
         // Try build a recipe instance
         if (aReturnBuiltRecipe) {
-            return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(new GT_Recipe_AssemblyLine(
-                    null,
-                    0,
-                    aInputs.toArray(new ItemStack[0]),
-                    aFluidInputs.toArray(new FluidStack[0]),
-                    aOutput,
-                    aTime,
-                    aEU));
+            return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(
+                    new GT_Recipe_AssemblyLine(
+                            null,
+                            0,
+                            aInputs.toArray(new ItemStack[0]),
+                            aFluidInputs.toArray(new FluidStack[0]),
+                            aOutput,
+                            aTime,
+                            aEU));
         }
 
         for (GT_Recipe_AssemblyLine aRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
@@ -186,13 +191,13 @@ public class GT_AssemblyLineUtils {
     }
 
     private static boolean areStacksEqual(ItemStack[] lhs, List<ItemStack> rhs) {
-        return lhs == null
-                ? rhs.isEmpty()
+        return lhs == null ? rhs.isEmpty()
                 : !rhs.isEmpty() && GT_Utility.areStackListsEqual(Arrays.asList(lhs), rhs, false, true);
     }
 
     /**
      * Finds a GT_Recipe_AssemblyLine based on the expected output ItemStack.
+     * 
      * @param aOutput - The Output of a GT_Recipe_AssemblyLine.
      * @return First found GT_Recipe_AssemblyLine with matching output.
      */
@@ -273,8 +278,7 @@ public class GT_AssemblyLineUtils {
      * @return Does this Data Stick have a valid output ItemStack?
      */
     public static boolean doesDataStickHaveOutput(ItemStack aDataStick) {
-        if (isItemDataStick(aDataStick)
-                && aDataStick.hasTagCompound()
+        if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
                 && aDataStick.getTagCompound().hasKey("output")) {
             return true;
         }
@@ -306,8 +310,7 @@ public class GT_AssemblyLineUtils {
     public static boolean doesDataStickHaveRecipeHash(ItemStack aDataStick) {
         if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
             NBTTagCompound aNBT = aDataStick.getTagCompound();
-            if (aNBT.hasKey("Data.Recipe.Hash")
-                    && !aNBT.getString("Data.Recipe.Hash").equals("Hash.0")) {
+            if (aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash").equals("Hash.0")) {
                 return true;
             }
         }
@@ -316,6 +319,7 @@ public class GT_AssemblyLineUtils {
 
     /**
      * Get the Output ItemStack from a Data Stick.
+     * 
      * @param aDataStick - The Data Stick to check.
      * @return Output ItemStack contained on the Data Stick.
      */
@@ -329,9 +333,11 @@ public class GT_AssemblyLineUtils {
 
     /**
      * @param aDataStick - The Data Stick to process.
-     * @return The stored Recipe Hash String on the Data Stick, will return an invalid Hash if one is not found. <p>
-     * The hash will be guaranteed to pass isValidHash(). <p>
-     * Will not return Null.
+     * @return The stored Recipe Hash String on the Data Stick, will return an invalid Hash if one is not found.
+     *         <p>
+     *         The hash will be guaranteed to pass isValidHash().
+     *         <p>
+     *         Will not return Null.
      */
     public static String getHashFromDataStack(ItemStack aDataStick) {
         if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
@@ -346,7 +352,7 @@ public class GT_AssemblyLineUtils {
 
     /**
      *
-     * @param aDataStick - The Data Stick to update.
+     * @param aDataStick  - The Data Stick to update.
      * @param aRecipeHash - The Recipe Hash String to update with.
      * @return Did we update the Recipe Hash String on the Data Stick?
      */
@@ -379,8 +385,12 @@ public class GT_AssemblyLineUtils {
             String aHash = generateRecipeHash(aNewRecipe);
             if (GT_Values.D1) {
                 GT_Recipe_AssemblyLine aOldRecipe = findAssemblyLineRecipeFromDataStick(aDataStick, true).recipe;
-                GT_FML_LOGGER.info("Updating data stick: " + aDataStick.getDisplayName() + " | Old Recipe Hash: "
-                        + generateRecipeHash(aOldRecipe) + ", New Recipe Hash: " + aHash);
+                GT_FML_LOGGER.info(
+                        "Updating data stick: " + aDataStick.getDisplayName()
+                                + " | Old Recipe Hash: "
+                                + generateRecipeHash(aOldRecipe)
+                                + ", New Recipe Hash: "
+                                + aHash);
             }
 
             String author = "Assembling Line Recipe Generator";
@@ -434,8 +444,15 @@ public class GT_AssemblyLineUtils {
                 s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mOutput.getDisplayName());
                 if (s == null) s = aNewRecipe.mOutput.getDisplayName();
             }
-            tNBTList.appendTag(new NBTTagString("Construction plan for " + aNewRecipe.mOutput.stackSize + " " + s
-                    + ". Needed EU/t: " + aNewRecipe.mEUt + " Production time: " + (aNewRecipe.mDuration / 20)));
+            tNBTList.appendTag(
+                    new NBTTagString(
+                            "Construction plan for " + aNewRecipe.mOutput.stackSize
+                                    + " "
+                                    + s
+                                    + ". Needed EU/t: "
+                                    + aNewRecipe.mEUt
+                                    + " Production time: "
+                                    + (aNewRecipe.mDuration / 20)));
             for (int i = 0; i < aNewRecipe.mInputs.length; i++) {
                 if (aNewRecipe.mOreDictAlt[i] != null) {
                     int count = 0;
@@ -448,10 +465,7 @@ public class GT_AssemblyLineUtils {
                                 if (s == null) s = tStack.getDisplayName();
                             }
 
-                            tBuilder.append(count == 0 ? "" : "\nOr ")
-                                    .append(tStack.stackSize)
-                                    .append(" ")
-                                    .append(s);
+                            tBuilder.append(count == 0 ? "" : "\nOr ").append(tStack.stackSize).append(" ").append(s);
                             count++;
                         }
                     }
@@ -462,8 +476,9 @@ public class GT_AssemblyLineUtils {
                         s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mInputs[i].getDisplayName());
                         if (s == null) s = aNewRecipe.mInputs[i].getDisplayName();
                     }
-                    tNBTList.appendTag(new NBTTagString(
-                            "Input Bus " + (i + 1) + ": " + aNewRecipe.mInputs[i].stackSize + " " + s));
+                    tNBTList.appendTag(
+                            new NBTTagString(
+                                    "Input Bus " + (i + 1) + ": " + aNewRecipe.mInputs[i].stackSize + " " + s));
                 }
             }
             for (int i = 0; i < aNewRecipe.mFluidInputs.length; i++) {
@@ -473,8 +488,9 @@ public class GT_AssemblyLineUtils {
                         s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mFluidInputs[i].getLocalizedName());
                         if (s == null) s = aNewRecipe.mFluidInputs[i].getLocalizedName();
                     }
-                    tNBTList.appendTag(new NBTTagString(
-                            "Input Hatch " + (i + 1) + ": " + aNewRecipe.mFluidInputs[i].amount + "L " + s));
+                    tNBTList.appendTag(
+                            new NBTTagString(
+                                    "Input Hatch " + (i + 1) + ": " + aNewRecipe.mFluidInputs[i].amount + "L " + s));
                 }
             }
             tNBT.setTag("pages", tNBTList);
@@ -488,6 +504,7 @@ public class GT_AssemblyLineUtils {
     }
 
     public enum LookupResultType {
+
         INVALID_STICK(true),
         VALID_STACK_BUT_INVALID_RECIPE(true),
         VALID_STACK_AND_VALID_RECIPE(false),
@@ -514,6 +531,7 @@ public class GT_AssemblyLineUtils {
     }
 
     public static class LookupResult {
+
         private final GT_Recipe_AssemblyLine recipe;
         private final LookupResultType type;
 

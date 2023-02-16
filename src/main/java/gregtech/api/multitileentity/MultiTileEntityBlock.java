@@ -1,5 +1,6 @@
 package gregtech.api.multitileentity;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.OFFX;
 import static gregtech.api.enums.GT_Values.OFFY;
 import static gregtech.api.enums.GT_Values.OFFZ;
@@ -7,41 +8,12 @@ import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 import static gregtech.api.util.GT_Util.getTileEntity;
 import static gregtech.api.util.GT_Util.setTileEntity;
 
-import com.cricketcraft.chisel.api.IFacade;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetBlockHardness;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetComparatorInputOverride;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetWeakChanges;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_IsProvidingStrongPower;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_IsProvidingWeakPower;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_ShouldCheckWeakPower;
-import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.IRenderedBlock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -67,11 +39,46 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 
+import com.cricketcraft.chisel.api.IFacade;
+
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetBlockHardness;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetComparatorInputOverride;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetWeakChanges;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_IsProvidingStrongPower;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_IsProvidingWeakPower;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_ShouldCheckWeakPower;
+import gregtech.api.objects.XSTR;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.CoverInfo;
+import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.render.IRenderedBlock;
+
 /*
  * MultiTileEntityBlock ported from GT6
  */
+@Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
 public class MultiTileEntityBlock extends Block
         implements IDebugableBlock, ITileEntityProvider, IRenderedBlock, IFacade {
+
     protected static final Map<String, MultiTileEntityBlock> MULTI_BLOCK_MAP = new HashMap<>();
     private static boolean LOCK = false;
 
@@ -79,51 +86,51 @@ public class MultiTileEntityBlock extends Block
     protected final int mHarvestLevelOffset, mHarvestLevelMinimum, mHarvestLevelMaximum;
     protected final boolean mOpaque, mNormalCube;
 
-    public static String getName(
-            String aMaterialName,
-            SoundType aSoundType,
-            String aTool,
-            int aHarvestLevelOffset,
-            int aHarvestLevelMinimum,
-            int aHarvestLevelMaximum,
-            boolean aOpaque,
-            boolean aNormalCube) {
-        return "gt.block.multiblock." + aMaterialName + "." + aSoundType.soundName + "." + aTool + "."
-                + aHarvestLevelOffset + "." + aHarvestLevelMinimum + "." + aHarvestLevelMaximum + "." + aOpaque + "."
+    public static String getName(String aMaterialName, SoundType aSoundType, String aTool, int aHarvestLevelOffset,
+            int aHarvestLevelMinimum, int aHarvestLevelMaximum, boolean aOpaque, boolean aNormalCube) {
+        return "gt.block.multiblock." + aMaterialName
+                + "."
+                + aSoundType.soundName
+                + "."
+                + aTool
+                + "."
+                + aHarvestLevelOffset
+                + "."
+                + aHarvestLevelMinimum
+                + "."
+                + aHarvestLevelMaximum
+                + "."
+                + aOpaque
+                + "."
                 + aNormalCube;
     }
+
     /**
-     * @param aMaterialName the Name of the vanilla Material Field. In case this is not a vanilla Material, insert the Name you want to give your own Material instead.
-     * @param aMaterial the Material used to determine the Block.
-     * @param aSoundType the Sound Type of the Block.
-     * @param aTool the Tool used to harvest this Block.
-     * @param aHarvestLevelOffset obvious
+     * @param aMaterialName        the Name of the vanilla Material Field. In case this is not a vanilla Material,
+     *                             insert the Name you want to give your own Material instead.
+     * @param aMaterial            the Material used to determine the Block.
+     * @param aSoundType           the Sound Type of the Block.
+     * @param aTool                the Tool used to harvest this Block.
+     * @param aHarvestLevelOffset  obvious
      * @param aHarvestLevelMinimum obvious
      * @param aHarvestLevelMaximum obvious
-     * @param aOpaque if this Block is Opaque.
-     * @param aNormalCube if this Block is a normal Cube (for Redstone Stuff).
+     * @param aOpaque              if this Block is Opaque.
+     * @param aNormalCube          if this Block is a normal Cube (for Redstone Stuff).
      */
-    public static MultiTileEntityBlock getOrCreate(
-            String aModID,
-            String aMaterialName,
-            Material aMaterial,
-            SoundType aSoundType,
-            String aTool,
-            int aHarvestLevelOffset,
-            int aHarvestLevelMinimum,
-            int aHarvestLevelMaximum,
-            boolean aOpaque,
-            boolean aNormalCube) {
-        final MultiTileEntityBlock rBlock = MULTI_BLOCK_MAP.get(aModID + ":"
-                + getName(
-                        aMaterialName,
-                        aSoundType,
-                        aTool = aTool.toLowerCase(),
-                        aHarvestLevelOffset,
-                        aHarvestLevelMinimum,
-                        aHarvestLevelMaximum,
-                        aOpaque,
-                        aNormalCube));
+    public static MultiTileEntityBlock getOrCreate(String aModID, String aMaterialName, Material aMaterial,
+            SoundType aSoundType, String aTool, int aHarvestLevelOffset, int aHarvestLevelMinimum,
+            int aHarvestLevelMaximum, boolean aOpaque, boolean aNormalCube) {
+        final MultiTileEntityBlock rBlock = MULTI_BLOCK_MAP.get(
+                aModID + ":"
+                        + getName(
+                                aMaterialName,
+                                aSoundType,
+                                aTool = aTool.toLowerCase(),
+                                aHarvestLevelOffset,
+                                aHarvestLevelMinimum,
+                                aHarvestLevelMaximum,
+                                aOpaque,
+                                aNormalCube));
         return rBlock == null
                 ? new MultiTileEntityBlock(
                         aModID,
@@ -139,16 +146,8 @@ public class MultiTileEntityBlock extends Block
                 : rBlock;
     }
 
-    protected MultiTileEntityBlock(
-            String aModID,
-            String aMaterialName,
-            Material aMaterial,
-            SoundType aSoundType,
-            String aTool,
-            int aHarvestLevelOffset,
-            int aHarvestLevelMinimum,
-            int aHarvestLevelMaximum,
-            boolean aOpaque,
+    protected MultiTileEntityBlock(String aModID, String aMaterialName, Material aMaterial, SoundType aSoundType,
+            String aTool, int aHarvestLevelOffset, int aHarvestLevelMinimum, int aHarvestLevelMaximum, boolean aOpaque,
             boolean aNormalCube) {
         super(aMaterial);
         if (GregTech_API.sPreloadFinished)
@@ -204,7 +203,7 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final boolean func_149730_j /*isFullBlock*/() {
+    public final boolean func_149730_j /* isFullBlock */() {
         return mOpaque;
     }
 
@@ -226,8 +225,7 @@ public class MultiTileEntityBlock extends Block
     @Override
     public final float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_GetBlockHardness
-                ? ((IMTE_GetBlockHardness) aTileEntity).getBlockHardness()
+        return aTileEntity instanceof IMTE_GetBlockHardness ? ((IMTE_GetBlockHardness) aTileEntity).getBlockHardness()
                 : 1.0F;
     }
 
@@ -245,8 +243,8 @@ public class MultiTileEntityBlock extends Block
 
     @Override
     @SuppressWarnings("unchecked")
-    public final void addCollisionBoxesToList(
-            World aWorld, int aX, int aY, int aZ, AxisAlignedBB aAABB, List aList, Entity aEntity) {
+    public final void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB aAABB, List aList,
+            Entity aEntity) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aTileEntity instanceof IMultiTileEntity)
             ((IMultiTileEntity) aTileEntity).addCollisionBoxesToList(aAABB, aList, aEntity);
@@ -285,8 +283,8 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final void onNeighborChange(
-            IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
+    public final void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY,
+            int aTileZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!LOCK) {
             LOCK = true;
@@ -318,11 +316,9 @@ public class MultiTileEntityBlock extends Block
     @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity
-                        && ((IMultiTileEntity) aTileEntity).privateAccess()
-                        && !((IMultiTileEntity) aTileEntity).playerOwnsThis(aPlayer, true)
-                ? -1.0F
-                : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
+        return aTileEntity instanceof IMultiTileEntity && ((IMultiTileEntity) aTileEntity).privateAccess()
+                && !((IMultiTileEntity) aTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
+                        : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
     }
 
     @Override
@@ -333,16 +329,8 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public boolean onBlockActivated(
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            EntityPlayer aPlayer,
-            int aSide,
-            float aHitX,
-            float aHitY,
-            float aHitZ) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float aHitX,
+            float aHitY, float aHitZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer != null && ItemList.TC_Thaumometer.isStackEqual(aPlayer.getHeldItem(), true, true)) return false;
         return aTileEntity instanceof IMultiTileEntity
@@ -376,8 +364,7 @@ public class MultiTileEntityBlock extends Block
     @Override
     public final boolean getWeakChanges(IBlockAccess aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_GetWeakChanges
-                ? ((IMTE_GetWeakChanges) aTileEntity).getWeakChanges()
+        return aTileEntity instanceof IMTE_GetWeakChanges ? ((IMTE_GetWeakChanges) aTileEntity).getWeakChanges()
                 : super.getWeakChanges(aWorld, aX, aY, aZ);
     }
 
@@ -393,7 +380,17 @@ public class MultiTileEntityBlock extends Block
         if (aTileEntity instanceof IMultiTileEntity) {
             final ArrayList<ItemStack> tList = ((IMultiTileEntity) aTileEntity).getDrops(aFortune, aSilkTouch);
             aChance = ForgeEventFactory.fireBlockHarvesting(
-                    tList, aWorld, this, aX, aY, aZ, aMeta, aFortune, aChance, aSilkTouch, aPlayer);
+                    tList,
+                    aWorld,
+                    this,
+                    aX,
+                    aY,
+                    aZ,
+                    aMeta,
+                    aFortune,
+                    aChance,
+                    aSilkTouch,
+                    aPlayer);
             for (ItemStack tStack : tList)
                 if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
         }
@@ -451,16 +448,13 @@ public class MultiTileEntityBlock extends Block
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
-                        .getFacadeBlock(
-                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                final Block facadeBlock = tile.getCoverInfoAtSide(aSide).getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte i = 0; i < 6; i++) {
-                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
-                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                for (byte tSide : ALL_VALID_SIDES) {
+                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide).getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }
@@ -477,22 +471,17 @@ public class MultiTileEntityBlock extends Block
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
-                        .getFacadeBlock(
-                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
-                if (facadeBlock != null)
-                    return tile.getCoverBehaviorAtSideNew(aSide)
-                            .getFacadeMeta(
-                                    aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
+                final Block facadeBlock = coverInfo.getFacadeBlock();
+                if (facadeBlock != null) return coverInfo.getFacadeMeta();
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte i = 0; i < 6; i++) {
-                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
-                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                for (byte tSide : ALL_VALID_SIDES) {
+                    final CoverInfo coverInfo = tile.getCoverInfoAtSide(tSide);
+                    final Block facadeBlock = coverInfo.getFacadeBlock();
                     if (facadeBlock != null) {
-                        return tile.getCoverBehaviorAtSideNew(i)
-                                .getFacadeMeta(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                        return coverInfo.getFacadeMeta();
                     }
                 }
             }
@@ -589,8 +578,8 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final ArrayList<ItemStack> getDrops(
-            World aWorld, int aX, int aY, int aZ, int aUnusableMetaData, int aFortune) {
+    public final ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aUnusableMetaData,
+            int aFortune) {
         final TileEntity aTileEntity = getTileEntity(aWorld, aX, aY, aZ, true);
         if (aTileEntity instanceof IMultiTileEntity) return ((IMultiTileEntity) aTileEntity).getDrops(aFortune, false);
         return new ArrayList<>();
@@ -602,15 +591,8 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final float getExplosionResistance(
-            Entity aExploder,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            double aExplosionX,
-            double aExplosionY,
-            double aExplosionZ) {
+    public final float getExplosionResistance(Entity aExploder, World aWorld, int aX, int aY, int aZ,
+            double aExplosionX, double aExplosionY, double aExplosionZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity instanceof IMultiTileEntity
                 ? ((IMultiTileEntity) aTileEntity)
@@ -626,7 +608,10 @@ public class MultiTileEntityBlock extends Block
         if (aTileEntity instanceof IMultiTileEntity) {
             GT_Log.exp.printf(
                     "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                    aX, aY, aZ, aWorld.provider.dimensionId);
+                    aX,
+                    aY,
+                    aZ,
+                    aWorld.provider.dimensionId);
             ((IMultiTileEntity) aTileEntity).onExploded(aExplosion);
         } else aWorld.setBlockToAir(aX, aY, aZ);
     }
@@ -659,8 +644,8 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final ItemStack getPickBlock(
-            MovingObjectPosition aTarget, World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer) {
+    public final ItemStack getPickBlock(MovingObjectPosition aTarget, World aWorld, int aX, int aY, int aZ,
+            EntityPlayer aPlayer) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity instanceof IMultiTileEntity ? ((IMultiTileEntity) aTileEntity).getPickBlock(aTarget) : null;
     }
@@ -671,59 +656,47 @@ public class MultiTileEntityBlock extends Block
         return aTileEntity instanceof IMultiTileEntity ? ((IMultiTileEntity) aTileEntity).getPickBlock(aTarget) : null;
     }
 
-    public final void receiveMultiTileEntityData(
-            IBlockAccess aWorld,
-            int aX,
-            short aY,
-            int aZ,
-            short aRID,
-            short aID,
-            int aCover0,
-            int aCover1,
-            int aCover2,
-            int aCover3,
-            int aCover4,
-            int aCover5,
-            byte aTextureData,
-            byte aTexturePage,
-            byte aUpdateData,
-            byte aRedstoneData,
-            byte aColorData) {
-        if (!(aWorld instanceof World)) return;
-        final IMultiTileEntity te;
-
+    public final IMultiTileEntity receiveMultiTileEntityData(IBlockAccess aWorld, int aX, short aY, int aZ, short aRID,
+            short aID) {
+        if (!(aWorld instanceof World)) return null;
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         if (!(aTileEntity instanceof IMultiTileEntity)
                 || ((IMultiTileEntity) aTileEntity).getMultiTileEntityRegistryID() != aRID
                 || ((IMultiTileEntity) aTileEntity).getMultiTileEntityID() != aID) {
             final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRID);
-            if (tRegistry == null) return;
+            if (tRegistry == null) return null;
 
             aTileEntity = tRegistry.getNewTileEntity((World) aWorld, aX, aY, aZ, aID);
-            if (!(aTileEntity instanceof IMultiTileEntity)) return;
+            if (!(aTileEntity instanceof IMultiTileEntity)) return null;
+
             setTileEntity((World) aWorld, aX, aY, aZ, aTileEntity, false);
         }
-        te = (IMultiTileEntity) aTileEntity;
+        return ((IMultiTileEntity) aTileEntity);
+    }
 
+    public void receiveCoverData(IMultiTileEntity mte, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4,
+            int aCover5) {
         boolean updated;
-        updated = te.setCoverIDAtSideNoUpdate((byte) 0, aCover0);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 1, aCover1);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 2, aCover2);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 3, aCover3);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 4, aCover4);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 5, aCover5);
+        updated = mte.setCoverIDAtSideNoUpdate((byte) 0, aCover0);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 1, aCover1);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 2, aCover2);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 3, aCover3);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 4, aCover4);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 5, aCover5);
 
         if (updated) {
-            te.issueBlockUpdate();
+            mte.issueBlockUpdate();
         }
-
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
     }
+    //
+    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
+    //
+    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
+    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
+    //
+    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
+    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
 
     @Override
     public final TileEntity createTileEntity(World aWorld, int aMeta) {

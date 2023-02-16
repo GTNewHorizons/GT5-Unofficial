@@ -8,6 +8,7 @@ import java.util.Map;
  * This is some kind of Periodic Table, which I use to determine Properties of the Materials.
  */
 public enum Element {
+
     _NULL(0, 0, 0, -1, null, "", false),
     H(1, 0, 0, -1, null, "Hydrogen", false),
     D(1, 1, 0, -1, "H", "Deuterium", true),
@@ -141,7 +142,7 @@ public enum Element {
 
     Ma(0, 0, 100, -1, null, "Magic", false),
     Nq(130, 200, 0, -1, null, "Naquadah", false),
-    Nt(0, 1000, 0, -1, null, "Neutronium", false),
+    Nt(0, 100, 0, -1, null, "Neutronium", false),
 
     $H(-1, -0, 0, -1, null, "Anti-Hydrogen", false),
     $D(-1, -1, 0, -1, "H", "Anti-Deuterium", true),
@@ -288,18 +289,13 @@ public enum Element {
 
     /**
      * @param aProtons         Amount of Protons. Antiprotons if negative.
-     * @param aNeutrons        Amount of Neutrons. Antineutrons if negative. (I could have made mistakes with the Neutron amount calculation, please tell me if I did something wrong)
+     * @param aNeutrons        Amount of Neutrons. Antineutrons if negative. (I could have made mistakes with the
+     *                         Neutron amount calculation, please tell me if I did something wrong)
      * @param aHalfLifeSeconds Amount of Half Life this Material has in Seconds. -1 for stable Materials.
      * @param aDecayTo         String representing the Elements it decays to. Separated by an '&' Character.
      * @param aName            Name of the Element
      */
-    Element(
-            long aProtons,
-            long aNeutrons,
-            long aAdditionalMass,
-            long aHalfLifeSeconds,
-            String aDecayTo,
-            String aName,
+    Element(long aProtons, long aNeutrons, long aAdditionalMass, long aHalfLifeSeconds, String aDecayTo, String aName,
             boolean aIsIsotope) {
         mProtons = aProtons;
         mNeutrons = aNeutrons;
@@ -331,6 +327,7 @@ public enum Element {
      * A companion object to workaround java limitations
      */
     private static final class Companion {
+
         /**
          * Why is this a separate map and populated by enum constructor instead of a Map prepoluated with values()?
          * Because apparently there are people hacking into this enum via EnumHelper.

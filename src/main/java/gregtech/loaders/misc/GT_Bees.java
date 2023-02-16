@@ -2,6 +2,9 @@ package gregtech.loaders.misc;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
+
 import cpw.mods.fml.common.Loader;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.core.IClimateProvider;
@@ -14,8 +17,6 @@ import gregtech.common.items.ItemComb;
 import gregtech.common.items.ItemDrop;
 import gregtech.common.items.ItemPollen;
 import gregtech.common.items.ItemPropolis;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 
 public class GT_Bees {
 
@@ -78,6 +79,7 @@ public class GT_Bees {
     }
 
     private static class AlleleFloat extends Allele implements IAlleleFloat {
+
         private float value;
 
         public AlleleFloat(String id, float val, boolean isDominant) {
@@ -114,7 +116,7 @@ public class GT_Bees {
 
         public AlleleArea(String id, int rangeXZ, int rangeY, boolean isDominant) {
             super("gregtech." + id, "gregtech." + id, isDominant);
-            this.value = new int[] {rangeXZ, rangeY, rangeXZ};
+            this.value = new int[] { rangeXZ, rangeY, rangeXZ };
             AlleleManager.alleleRegistry.registerAllele(this, EnumBeeChromosome.TERRITORY);
         }
 
@@ -135,16 +137,8 @@ public class GT_Bees {
         }
 
         @Override
-        public float getChance(
-                World world,
-                int x,
-                int y,
-                int z,
-                IAllele allele0,
-                IAllele allele1,
-                IGenome genome0,
-                IGenome genome1,
-                IClimateProvider climate) {
+        public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
+                IGenome genome1, IClimateProvider climate) {
             if (world.provider.dimensionId == dimID) return 1;
             return 0;
         }
@@ -166,16 +160,8 @@ public class GT_Bees {
         }
 
         @Override
-        public float getChance(
-                World world,
-                int x,
-                int y,
-                int z,
-                IAllele allele0,
-                IAllele allele1,
-                IGenome genome0,
-                IGenome genome1,
-                IClimateProvider climate) {
+        public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
+                IGenome genome1, IClimateProvider climate) {
             if (climate.getBiome().biomeID == biomeID) return 1;
             return 0;
         }

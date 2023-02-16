@@ -19,16 +19,16 @@ public class GT_Cover_RedstoneTransmitterInternal extends GT_Cover_RedstoneWirel
     }
 
     @Override
-    public boolean isRedstoneSensitive(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(
-            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        GregTech_API.sWirelessRedstone.put(
-                Integer.valueOf(aCoverVariable), Byte.valueOf(aTileEntity.getOutputRedstoneSignal(aSide)));
+    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
+        GregTech_API.sWirelessRedstone
+                .put(Integer.valueOf(aCoverVariable), Byte.valueOf(aTileEntity.getOutputRedstoneSignal(aSide)));
         return aCoverVariable;
     }
 
@@ -43,8 +43,8 @@ public class GT_Cover_RedstoneTransmitterInternal extends GT_Cover_RedstoneWirel
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable,
+            ICoverable aTileEntity) {
         return true;
     }
 }

@@ -1,10 +1,5 @@
 package gregtech.common.render;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,9 +8,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_Utility;
+
 public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
+
     public GT_MetaGenerated_Tool_Renderer() {
         for (GT_MetaGenerated_Tool tItem : GT_MetaGenerated_Tool.sInstances.values()) {
             if (tItem != null) {
@@ -36,8 +39,8 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
     }
 
     @Override
-    public boolean shouldUseRenderHelper(
-            IItemRenderer.ItemRenderType aType, ItemStack aStack, IItemRenderer.ItemRendererHelper aHelper) {
+    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType aType, ItemStack aStack,
+            IItemRenderer.ItemRendererHelper aHelper) {
         if (GT_Utility.isStackInvalid(aStack)) {
             return false;
         }
@@ -157,9 +160,8 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                 } else if (tDamage >= tMaxDamage) {
                     aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[0];
                 } else {
-                    aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[
-                            ((int) java.lang.Math.max(
-                                    0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
+                    aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[((int) java.lang.Math
+                            .max(0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
                 }
                 if (aIcon != null) {
                     IIcon tIcon = aIcon.getIcon();
@@ -207,10 +209,8 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     } else if (tCharge >= tStats[0]) {
                         aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[8];
                     } else {
-                        aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[
-                                (7
-                                        - (int) java.lang.Math.max(
-                                                0L, java.lang.Math.min(6L, (tStats[0] - tCharge) * 7L / tStats[0])))];
+                        aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[(7 - (int) java.lang.Math
+                                .max(0L, java.lang.Math.min(6L, (tStats[0] - tCharge) * 7L / tStats[0])))];
                     }
                 } else {
                     aIcon = null;

@@ -2,15 +2,16 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.*;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo
         implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
@@ -18,23 +19,23 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     private String owner_uuid;
     private String owner_name;
 
-    public GT_MetaTileEntity_Wireless_Dynamo(
-            String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Wireless_Dynamo(String aName, byte aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Wireless_Dynamo(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] {""});
+        super(aID, aName, aNameRegional, aTier, new String[] { "" });
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
     }
 
     @Override
@@ -84,11 +85,9 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-            EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
-            AuthorColen
-        };
+        return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+                EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
+                AuthorColen };
     }
 
     @Override
@@ -97,8 +96,13 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
+    public ConnectionType getConnectionType() {
+        return ConnectionType.WIRELESS;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Wireless_Dynamo(mName, mTier, new String[] {""}, mTextures);
+        return new GT_MetaTileEntity_Wireless_Dynamo(mName, mTier, new String[] { "" }, mTextures);
     }
 
     @Override

@@ -1,11 +1,5 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.ISerializableObject;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -14,10 +8,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.ISerializableObject;
+import io.netty.buffer.ByteBuf;
+
 /**
  * Client -> Server: Update cover data
  */
 public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
+
     protected int mX;
     protected short mY;
     protected int mZ;
@@ -32,8 +35,8 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_TileEntityCoverNew(
-            int mX, short mY, int mZ, byte coverSide, int coverID, ISerializableObject coverData, int dimID) {
+    public GT_Packet_TileEntityCoverNew(int mX, short mY, int mZ, byte coverSide, int coverID,
+            ISerializableObject coverData, int dimID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -100,7 +103,7 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
     @Override
     public void process(IBlockAccess aWorld) {
         if (mPlayer == null) // impossible, but who knows
-        return;
+            return;
         World world = DimensionManager.getWorld(dimID);
         if (world != null) {
             TileEntity tile = world.getTileEntity(mX, mY, mZ);

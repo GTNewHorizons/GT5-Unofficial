@@ -1,12 +1,15 @@
 package gregtech.api.interfaces.tileentity;
 
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.ISerializableObject;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
+
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
+
     boolean canPlaceCoverIDAtSide(byte aSide, int aID);
 
     boolean canPlaceCoverItemAtSide(byte aSide, ItemStack aCover);
@@ -32,6 +35,10 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     @Deprecated
     int getCoverDataAtSide(byte aSide);
 
+    default CoverInfo getCoverInfoAtSide(byte aSide) {
+        return null;
+    }
+
     default ISerializableObject getComplexCoverDataAtSide(byte aSide) {
         return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(aSide));
     }
@@ -48,20 +55,19 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     }
 
     /**
-     * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone.
-     * Don't use this if you are a Cover Behavior. Only for MetaTileEntities.
+     * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone. Don't use this if you are
+     * a Cover Behavior. Only for MetaTileEntities.
      */
     byte getInternalInputRedstoneSignal(byte aSide);
 
     /**
-     * For use by the regular MetaTileEntities. This makes it not conflict with Cover based Redstone Signals.
-     * Don't use this if you are a Cover Behavior. Only for MetaTileEntities.
+     * For use by the regular MetaTileEntities. This makes it not conflict with Cover based Redstone Signals. Don't use
+     * this if you are a Cover Behavior. Only for MetaTileEntities.
      */
     void setInternalOutputRedstoneSignal(byte aSide, byte aStrength);
 
     /**
-     * Causes a general Cover Texture update.
-     * Sends 6 Integers to Client + causes @issueTextureUpdate()
+     * Causes a general Cover Texture update. Sends 6 Integers to Client + causes @issueTextureUpdate()
      */
     void issueCoverUpdate(byte aSide);
 
@@ -72,10 +78,11 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     /**
      * Receiving a packet with cover data.
+     * 
      * @param aPlayer the player who made the change
      */
-    default void receiveCoverData(
-            byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
+    default void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData,
+            EntityPlayerMP aPlayer) {
         if (aCoverData instanceof ISerializableObject.LegacyCoverData)
             receiveCoverData(aCoverSide, aCoverID, ((ISerializableObject.LegacyCoverData) aCoverData).get());
     }

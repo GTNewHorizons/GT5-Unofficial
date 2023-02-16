@@ -1,12 +1,8 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -14,24 +10,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+
 public class Behaviour_Scanner extends Behaviour_None {
+
     public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Scanner();
-    private final String mTooltip =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
+    private final String mTooltip = GT_LanguageManager
+            .addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         NBTTagCompound tNBT = aStack.getTagCompound();
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
             ArrayList<String> tList = new ArrayList<>();

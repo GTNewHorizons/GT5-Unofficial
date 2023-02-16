@@ -3,7 +3,14 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER_GLOW;
 
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gtnewhorizons.modularui.api.drawable.Text;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,29 +19,28 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilt
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Item_Machines;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFilter {
+
     public GT_Recipe.GT_Recipe_Map mRecipeMap;
 
     public GT_MetaTileEntity_RecipeFilter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] {
-            "Filters 1 Recipe Type",
-            "Use Screwdriver to regulate output stack size",
-            "Does not consume energy to move Item"
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size",
+                        "Does not consume energy to move Item" });
     }
 
-    public GT_MetaTileEntity_RecipeFilter(
-            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_RecipeFilter(String aName, int aTier, int aInvSlotCount, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_RecipeFilter(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_RecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -59,17 +65,18 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_RecipeFilter(
-                this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_RECIPEFILTER),
-                TextureFactory.builder()
-                        .addIcon(AUTOMATION_RECIPEFILTER_GLOW)
-                        .glow()
-                        .build());
+                TextureFactory.builder().addIcon(AUTOMATION_RECIPEFILTER_GLOW).glow().build());
     }
 
     @Override

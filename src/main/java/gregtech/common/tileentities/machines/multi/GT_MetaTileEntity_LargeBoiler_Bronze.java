@@ -1,10 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
+import net.minecraft.block.Block;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 
 public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_LargeBoiler {
 

@@ -1,16 +1,19 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_LanguageManager;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_LanguageManager;
+
 public class GT_Item_Stones_Abstract extends ItemBlock {
-    private final String mNoMobsToolTip =
-            GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
+
+    private final String mNoMobsToolTip = GT_LanguageManager
+            .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
 
     public GT_Item_Stones_Abstract(Block block) {
         super(block);

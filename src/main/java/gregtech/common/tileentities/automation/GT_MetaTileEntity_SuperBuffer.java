@@ -3,54 +3,61 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER_GLOW;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer {
+
     public GT_MetaTileEntity_SuperBuffer(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 257, new String[] {
-            "Buffers up to 256 Item Stacks",
-            "Use Screwdriver to regulate output stack size",
-            "Does not consume energy to move Item",
-            getTickRateDesc(aTier)
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                257,
+                new String[] { "Buffers up to 256 Item Stacks", "Use Screwdriver to regulate output stack size",
+                        "Does not consume energy to move Item", getTickRateDesc(aTier) });
     }
 
-    public GT_MetaTileEntity_SuperBuffer(
-            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_SuperBuffer(String aName, int aTier, int aInvSlotCount, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_SuperBuffer(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_SuperBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_SuperBuffer(
-                this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_SUPERBUFFER),
-                TextureFactory.builder()
-                        .addIcon(AUTOMATION_SUPERBUFFER_GLOW)
-                        .glow()
-                        .build());
+                TextureFactory.builder().addIcon(AUTOMATION_SUPERBUFFER_GLOW).glow().build());
     }
 
     @Override
@@ -86,9 +93,7 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
 
     @Override
     protected void addMainUI(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER)
-                .setPos(61, 4)
-                .setSize(54, 54));
+        builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER).setPos(61, 4).setSize(54, 54));
     }
 }

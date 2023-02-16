@@ -1,5 +1,15 @@
 package gregtech.common.gui.modularui.uifactory;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -11,23 +21,15 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 /**
- * Creates UI for selecting item from given list.
- * This is client-only UI to allow using client-preferred settings.
+ * Creates UI for selecting item from given list. This is client-only UI to allow using client-preferred settings.
  */
 public class SelectItemUIFactory {
 
@@ -46,7 +48,7 @@ public class SelectItemUIFactory {
     private final ItemStackHandler currentDisplayItemHandler = new ItemStackHandler();
     private Supplier<ItemStack> currentGetter;
 
-    private final GT_GUIColorOverride colorOverride = new GT_GUIColorOverride("SelectItemUIFactory");
+    private final GT_GUIColorOverride colorOverride = GT_GUIColorOverride.get("SelectItemUIFactory");
 
     private int getTextColorOrDefault(String textType, int defaultColor) {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
@@ -55,36 +57,31 @@ public class SelectItemUIFactory {
     private final Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
     private final Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
 
-    public SelectItemUIFactory(
-            String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback, List<ItemStack> stacks) {
+    public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
+            List<ItemStack> stacks) {
         this(header, headerItem, selectedCallback, stacks, UNSELECTED);
     }
 
-    public SelectItemUIFactory(
-            String header,
-            ItemStack headerItem,
-            Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks,
-            int selected) {
+    public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
+            List<ItemStack> stacks, int selected) {
         this(header, headerItem, selectedCallback, stacks, selected, false);
     }
 
     /**
-     * Constructor for a dialog to select an item from given list. Given callback may be called zero or more times depending on user action.
+     * Constructor for a dialog to select an item from given list. Given callback may be called zero or more times
+     * depending on user action.
+     * 
      * @param header           Header text
      * @param headerItem       ItemStack to use as Dialog icon
      * @param selectedCallback callback upon selected
      * @param stacks           list to choose from
-     * @param selected         preselected item. Use {@link #UNSELECTED} for unselected. Invalid selected will be clamped to 0 or highest index
-     * @param noDeselect	   true if player cannot deselect, false otherwise. If this is set to true, selectedCallback is guaranteed to be called with a nonnull stack
+     * @param selected         preselected item. Use {@link #UNSELECTED} for unselected. Invalid selected will be
+     *                         clamped to 0 or highest index
+     * @param noDeselect       true if player cannot deselect, false otherwise. If this is set to true, selectedCallback
+     *                         is guaranteed to be called with a nonnull stack
      */
-    public SelectItemUIFactory(
-            String header,
-            ItemStack headerItem,
-            Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks,
-            int selected,
-            boolean noDeselect) {
+    public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
+            List<ItemStack> stacks, int selected, boolean noDeselect) {
         this.header = header;
         this.headerItem = headerItem;
         this.selectedCallback = selectedCallback;
@@ -96,7 +93,8 @@ public class SelectItemUIFactory {
 
     /**
      * @param anotherWindow If UI is shown on top of another window
-     * @param dialogOpened Flag to store whether this UI is opened and hence it should block duplicated creation of this UI
+     * @param dialogOpened  Flag to store whether this UI is opened and hence it should block duplicated creation of
+     *                      this UI
      */
     public SelectItemUIFactory setAnotherWindow(boolean anotherWindow, AtomicBoolean dialogOpened) {
         this.anotherWindow = anotherWindow;
@@ -118,8 +116,8 @@ public class SelectItemUIFactory {
     }
 
     public ModularWindow createWindow(UIBuildContext buildContext) {
-        ModularWindow.Builder builder =
-                ModularWindow.builder(getGUIWidth(), 53 + 18 * ((stacks.size() - 1) / cols + 1));
+        ModularWindow.Builder builder = ModularWindow
+                .builder(getGUIWidth(), 53 + 18 * ((stacks.size() - 1) / cols + 1));
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.setGuiTint(guiTint);
 
@@ -128,33 +126,29 @@ public class SelectItemUIFactory {
         }
         builder.widget(new TextWidget(header).setDefaultColor(COLOR_TITLE.get()).setPos(25, 9));
 
-        builder.widget(
-                        new SlotWidget(BaseSlot.phantom(currentDisplayItemHandler, 0)) {
-                            @Override
-                            public void draw(float partialTicks) {
-                                if (currentGetter != null) {
-                                    ItemStack current = currentGetter.get();
-                                    currentDisplayItemHandler.setStackInSlot(0, current);
-                                    selected = GT_Utility.findMatchingStackInList(stacks, current);
-                                }
-                                super.draw(partialTicks);
-                            }
-                        }.disableInteraction()
-                                .setBackground(GT_UITextures.SLOT_DARK_GRAY)
-                                .setPos(
-                                        9
-                                                + getFontRenderer()
-                                                        .getStringWidth(StatCollector.translateToLocal(
-                                                                "GT5U.gui.select.current")),
-                                        24))
-                .widget(new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
+        builder.widget(new SlotWidget(BaseSlot.phantom(currentDisplayItemHandler, 0)) {
+
+            @Override
+            public void draw(float partialTicks) {
+                if (currentGetter != null) {
+                    ItemStack current = currentGetter.get();
+                    currentDisplayItemHandler.setStackInSlot(0, current);
+                    selected = GT_Utility.findMatchingStackInList(stacks, current);
+                }
+                super.draw(partialTicks);
+            }
+        }.disableInteraction().setBackground(GT_UITextures.SLOT_DARK_GRAY).setPos(
+                9 + getFontRenderer().getStringWidth(StatCollector.translateToLocal("GT5U.gui.select.current")),
+                24)).widget(
+                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
+                                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
 
         for (int i = 0; i < stacks.size(); i++) {
             final int index = i;
             builder.widget(
-                    new SlotWidget(new BaseSlot(new ItemStackHandler(new ItemStack[] {stacks.get(index)}), 0, true)) {
+                    new SlotWidget(new BaseSlot(new ItemStackHandler(new ItemStack[] { stacks.get(index) }), 0, true)) {
+
                         @Override
                         public ClickResult onClick(int buttonId, boolean doubleClick) {
                             if (buttonId == 0) {
@@ -171,24 +165,22 @@ public class SelectItemUIFactory {
                         @Override
                         public IDrawable[] getBackground() {
                             return new IDrawable[] {
-                                index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT
-                            };
+                                    index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT };
                         }
                     }.disableInteraction().setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols)));
         }
 
         if (anotherWindow) {
             dialogOpened.set(true);
-            builder.widget(
-                    new ButtonWidget() {
-                        @Override
-                        public void onDestroy() {
-                            dialogOpened.set(false);
-                        }
-                    }.setOnClick((clickData, widget) -> widget.getWindow().tryClose())
-                            .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
-                            .setPos(getGUIWidth() - 15, 3)
-                            .setSize(12, 12));
+            builder.widget(new ButtonWidget() {
+
+                @Override
+                public void onDestroy() {
+                    dialogOpened.set(false);
+                }
+            }.setOnClick((clickData, widget) -> widget.getWindow().tryClose())
+                    .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x")).setPos(getGUIWidth() - 15, 3)
+                    .setSize(12, 12));
         }
 
         return builder.build();

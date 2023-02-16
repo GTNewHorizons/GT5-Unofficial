@@ -4,6 +4,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 public interface IAddInventorySlots {
+
     default void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {}
 
     default void add2by2Slots(ModularWindow.Builder builder, IDrawable... background) {}

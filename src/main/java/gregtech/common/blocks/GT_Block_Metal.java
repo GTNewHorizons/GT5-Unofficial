@@ -1,16 +1,18 @@
 package gregtech.common.blocks;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class GT_Block_Metal extends GT_Block_Storage {
+
     public Materials[] mMats;
     public OrePrefixes mPrefix;
     public IIconContainer[] mBlockIcons;

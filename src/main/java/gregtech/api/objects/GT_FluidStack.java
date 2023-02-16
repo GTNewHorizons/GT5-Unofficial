@@ -1,22 +1,25 @@
 package gregtech.api.objects;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
 
 /**
  * Because Forge fucked this one up royally.
  */
 public class GT_FluidStack extends FluidStack {
-    private static final Collection<GT_FluidStack> sAllFluidStacks =
-            Collections.newSetFromMap(new WeakHashMap<>(10000));
+
+    private static final Collection<GT_FluidStack> sAllFluidStacks = Collections
+            .newSetFromMap(new WeakHashMap<>(10000));
     private static volatile boolean lock = false;
     private Fluid mFluid;
 
@@ -38,8 +41,7 @@ public class GT_FluidStack extends FluidStack {
                 while (lock) {
                     Thread.sleep(1);
                 }
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
             lock = true;
             for (GT_FluidStack tFluid : sAllFluidStacks) tFluid.fixFluidIDForFucksSake();
             try {
@@ -77,7 +79,7 @@ public class GT_FluidStack extends FluidStack {
 
     @Override
     public String toString() {
-        return String.format(
-                "GT_FluidStack: %s x %s, ID:%s", this.amount, this.getFluid().getName(), this.getFluidID());
+        return String
+                .format("GT_FluidStack: %s x %s, ID:%s", this.amount, this.getFluid().getName(), this.getFluidID());
     }
 }

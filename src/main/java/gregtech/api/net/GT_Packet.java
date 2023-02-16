@@ -1,15 +1,17 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.INetHandler;
 import net.minecraft.world.IBlockAccess;
+
+import com.google.common.io.ByteArrayDataInput;
+import io.netty.buffer.ByteBuf;
 
 /**
  * @deprecated Use {@link GT_Packet_New} instead
  */
 @Deprecated
 public abstract class GT_Packet {
+
     public GT_Packet(boolean aIsReference) {
         //
     }
@@ -29,8 +31,8 @@ public abstract class GT_Packet {
     public abstract byte[] encode();
 
     /**
-     * Encode the data into given byte buffer without creating an intermediate byte array.
-     * Default implementation just throw {@link UnsupportedOperationException}.
+     * Encode the data into given byte buffer without creating an intermediate byte array. Default implementation just
+     * throw {@link UnsupportedOperationException}.
      */
     public void encode(ByteBuf aOut) {
         throw new UnsupportedOperationException();
@@ -49,7 +51,8 @@ public abstract class GT_Packet {
     public abstract void process(IBlockAccess aWorld);
 
     /**
-     * This will be called just before {@link #process(IBlockAccess)} to inform the handler about the source and type of connection
+     * This will be called just before {@link #process(IBlockAccess)} to inform the handler about the source and type of
+     * connection
      */
     public void setINetHandler(INetHandler aHandler) {}
 }

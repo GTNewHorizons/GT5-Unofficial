@@ -1,13 +1,16 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GregTech_API;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.GregTech_API;
+
 public class GT_Item_Storage extends ItemBlock {
+
     public GT_Item_Storage(Block block) {
         super(block);
         setMaxDamage(0);

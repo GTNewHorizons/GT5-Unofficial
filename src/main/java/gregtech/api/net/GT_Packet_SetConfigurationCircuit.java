@@ -1,14 +1,5 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasInventory;
-import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.ISerializableObject;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -17,10 +8,22 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasInventory;
+import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import io.netty.buffer.ByteBuf;
+
 /**
  * Client -> Server: Update machine configuration data
  */
 public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
+
     protected int mX;
     protected short mY;
     protected int mZ;
@@ -98,8 +101,7 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         final IConfigurationCircuitSupport machine = ((BaseTileEntity) tile).getConfigurationCircuitSupport();
         if (machine == null) return;
         if (!machine.allowSelectCircuit()) return;
-        machine.getConfigurationCircuits().stream()
-                .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
+        machine.getConfigurationCircuits().stream().filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
                 .findFirst()
                 .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }

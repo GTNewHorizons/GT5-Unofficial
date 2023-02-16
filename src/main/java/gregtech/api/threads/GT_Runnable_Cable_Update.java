@@ -1,16 +1,20 @@
 package gregtech.api.threads;
 
-import gregtech.GT_Mod;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.common.GT_Proxy;
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.GT_Mod;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.common.GT_Proxy;
+
 public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
+
     protected GT_Runnable_Cable_Update(World aWorld, ChunkCoordinates aCoords) {
         super(aWorld, aCoords);
     }
@@ -50,23 +54,28 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                 if (tTileEntity instanceof BaseMetaPipeEntity
                         && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ChunkCoordinates tCoords;
-                    for (byte i = 0; i < 6; i++) {
+                    for (byte tSide : ALL_VALID_SIDES) {
                         if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity())
-                                .isConnectedAtSide(i)) {
-                            ForgeDirection offset = ForgeDirection.getOrientation(i);
+                                .isConnectedAtSide(tSide)) {
+                            final ForgeDirection offset = ForgeDirection.getOrientation(tSide);
                             if (visited.add(
                                     tCoords = new ChunkCoordinates(
                                             aCoords.posX + offset.offsetX,
                                             aCoords.posY + offset.offsetY,
-                                            aCoords.posZ + offset.offsetZ))) tQueue.add(tCoords);
+                                            aCoords.posZ + offset.offsetZ)))
+                                tQueue.add(tCoords);
                         }
                     }
                 }
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId "
-                            + world.provider.dimensionId + "}",
+                    "Well this update was broken... " + mCoords
+                            + ", mWorld={"
+                            + world.getProviderName()
+                            + " @dimId "
+                            + world.provider.dimensionId
+                            + "}",
                     e);
         }
     }

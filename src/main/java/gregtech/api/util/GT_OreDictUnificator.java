@@ -4,6 +4,21 @@ import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.W;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
@@ -13,18 +28,6 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import javax.annotation.Nullable;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -36,6 +39,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
  */
 public class GT_OreDictUnificator {
+
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();
     private static final Map<GT_ItemStack2, ItemData> sItemStack2DataMap = new HashMap<>();
     private static final Map<GT_ItemStack2, List<ItemStack>> sUnificationTable = new HashMap<>();
@@ -50,8 +54,8 @@ public class GT_OreDictUnificator {
     }
 
     /**
-     * The Blacklist just prevents the Item from being unificated into something else.
-     * Useful if you have things like the Industrial Diamond, which is better than regular Diamond, but also usable in absolutely all Diamond Recipes.
+     * The Blacklist just prevents the Item from being unificated into something else. Useful if you have things like
+     * the Industrial Diamond, which is better than regular Diamond, but also usable in absolutely all Diamond Recipes.
      */
     public static void addToBlacklist(ItemStack aStack) {
         if (GT_Utility.isStackValid(aStack) && !GT_Utility.isStackInList(aStack, sNoUnificationList))
@@ -70,23 +74,17 @@ public class GT_OreDictUnificator {
         set(aPrefix, aMaterial, aStack, true, false);
     }
 
-    public static void set(
-            OrePrefixes aPrefix,
-            Materials aMaterial,
-            ItemStack aStack,
-            boolean aOverwrite,
+    public static void set(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aOverwrite,
             boolean aAlreadyRegistered) {
-        if (aMaterial == null
-                || aPrefix == null
+        if (aMaterial == null || aPrefix == null
                 || GT_Utility.isStackInvalid(aStack)
-                || Items.feather.getDamage(aStack) == W) return;
+                || Items.feather.getDamage(aStack) == W)
+            return;
         isAddingOre++;
         aStack = GT_Utility.copyAmount(1, aStack);
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
         addAssociation(aPrefix, aMaterial, aStack, isBlacklisted(aStack));
-        if (aOverwrite
-                || GT_Utility.isStackInvalid(
-                        sName2StackMap.get(aPrefix.get(aMaterial).toString())))
+        if (aOverwrite || GT_Utility.isStackInvalid(sName2StackMap.get(aPrefix.get(aMaterial).toString())))
             sName2StackMap.put(aPrefix.get(aMaterial).toString(), aStack);
         isAddingOre--;
     }
@@ -118,11 +116,15 @@ public class GT_OreDictUnificator {
         return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
     }
 
-    public static ItemStack get(
-            Object aName,
-            ItemStack aReplacement,
-            long aAmount,
-            boolean aMentionPossibleTypos,
+    public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, long aAmount, boolean aNoInvalidAmounts) {
+        // if (Materials.mDefaultComponents.contains(aPrefix) && !aPrefix.mDynamicItems.contains((Materials)aMaterial))
+        // aPrefix.mDynamicItems.add((Materials) aMaterial);
+        if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial))
+            return null;
+        return get(aPrefix.get(aMaterial), null, aAmount, false, aNoInvalidAmounts);
+    }
+
+    public static ItemStack get(Object aName, ItemStack aReplacement, long aAmount, boolean aMentionPossibleTypos,
             boolean aNoInvalidAmounts) {
         if (aNoInvalidAmounts && aAmount < 1) return null;
         final ItemStack stackFromName = sName2StackMap.get(aName.toString());
@@ -168,40 +170,50 @@ public class GT_OreDictUnificator {
     }
 
     public static ItemStack get(boolean aUseBlackList, ItemStack aStack) {
+        return get(aUseBlackList, aStack, false);
+    }
+
+    public static ItemStack get(boolean aUseBlackList, ItemStack aStack, boolean unsafe) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
-        ItemStack rStack = null;
-        if (tPrefixMaterial == null
-                || !tPrefixMaterial.hasValidPrefixMaterialData()
-                || (aUseBlackList && tPrefixMaterial.mBlackListed)) return GT_Utility.copyOrNull(aStack);
+        if (tPrefixMaterial == null || !tPrefixMaterial.hasValidPrefixMaterialData()
+                || (aUseBlackList && tPrefixMaterial.mBlackListed))
+            return GT_Utility.copyOrNull(aStack);
         if (aUseBlackList && !GregTech_API.sUnificationEntriesRegistered && isBlacklisted(aStack)) {
             tPrefixMaterial.mBlackListed = true;
             return GT_Utility.copyOrNull(aStack);
         }
         if (tPrefixMaterial.mUnificationTarget == null)
             tPrefixMaterial.mUnificationTarget = sName2StackMap.get(tPrefixMaterial.toString());
-        rStack = tPrefixMaterial.mUnificationTarget;
+        ItemStack rStack = tPrefixMaterial.mUnificationTarget;
         if (GT_Utility.isStackInvalid(rStack)) return GT_Utility.copyOrNull(aStack);
-        assert rStack != null;
         rStack.setTagCompound(aStack.getTagCompound());
-        return GT_Utility.copyAmount(aStack.stackSize, rStack);
+        if (unsafe) {
+            return GT_Utility.copyAmountUnsafe(aStack.stackSize, rStack);
+        } else {
+            return GT_Utility.copyAmount(aStack.stackSize, rStack);
+        }
     }
 
-    /** Doesn't copy the returned stack or set quantity. Be careful and do not mutate it;
-     * intended only to optimize comparisons */
+    /**
+     * Doesn't copy the returned stack or set quantity. Be careful and do not mutate it; intended only to optimize
+     * comparisons
+     */
     public static ItemStack get_nocopy(ItemStack aStack) {
         return get_nocopy(true, aStack);
     }
 
-    /** Doesn't copy the returned stack or set quantity. Be careful and do not mutate it;
-     * intended only to optimize comparisons */
+    /**
+     * Doesn't copy the returned stack or set quantity. Be careful and do not mutate it; intended only to optimize
+     * comparisons
+     */
     static ItemStack get_nocopy(boolean aUseBlackList, ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
         ItemStack rStack = null;
-        if (tPrefixMaterial == null
-                || !tPrefixMaterial.hasValidPrefixMaterialData()
-                || (aUseBlackList && tPrefixMaterial.mBlackListed)) return aStack;
+        if (tPrefixMaterial == null || !tPrefixMaterial.hasValidPrefixMaterialData()
+                || (aUseBlackList && tPrefixMaterial.mBlackListed))
+            return aStack;
         if (aUseBlackList && !GregTech_API.sUnificationEntriesRegistered && isBlacklisted(aStack)) {
             tPrefixMaterial.mBlackListed = true;
             return aStack;
@@ -215,8 +227,10 @@ public class GT_OreDictUnificator {
         return rStack;
     }
 
-    /** Compares the first argument against an already-unificated second argument as if
-     * aUseBlackList was both true and false. */
+    /**
+     * Compares the first argument against an already-unificated second argument as if aUseBlackList was both true and
+     * false.
+     */
     public static boolean isInputStackEqual(ItemStack aStack, ItemStack unified_tStack) {
         boolean alreadyCompared = false;
         if (GT_Utility.isStackInvalid(aStack)) return false;
@@ -263,7 +277,7 @@ public class GT_OreDictUnificator {
             }
         }
         ItemStack[] aStacks = {};
-        if (obj instanceof ItemStack) aStacks = new ItemStack[] {(ItemStack) obj};
+        if (obj instanceof ItemStack) aStacks = new ItemStack[] { (ItemStack) obj };
         else if (obj instanceof ItemStack[]) aStacks = (ItemStack[]) obj;
         else if (obj instanceof List) aStacks = (ItemStack[]) ((List) obj).toArray(new ItemStack[0]);
         List<ItemStack> rList = new ArrayList<>();
@@ -289,9 +303,8 @@ public class GT_OreDictUnificator {
         if (GT_Utility.isStackInvalid(aStack) || aData == null) return;
         ItemData tData = getItemData(aStack);
         if (tData == null || !tData.hasValidPrefixMaterialData()) {
-            if (tData != null)
-                for (Object tObject : tData.mExtraData)
-                    if (!aData.mExtraData.contains(tObject)) aData.mExtraData.add(tObject);
+            if (tData != null) for (Object tObject : tData.mExtraData)
+                if (!aData.mExtraData.contains(tObject)) aData.mExtraData.add(tObject);
             if (aStack.stackSize > 1) {
                 if (aData.mMaterial != null) aData.mMaterial.mAmount /= aStack.stackSize;
                 for (MaterialStack tMaterial : aData.mByProducts) tMaterial.mAmount /= aStack.stackSize;
@@ -299,12 +312,10 @@ public class GT_OreDictUnificator {
             }
             sItemStack2DataMap.put(new GT_ItemStack2(aStack), aData);
             if (aData.hasValidMaterialData()) {
-                long tValidMaterialAmount = aData.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING)
-                        ? 0
+                long tValidMaterialAmount = aData.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING) ? 0
                         : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
                 for (MaterialStack tMaterial : aData.mByProducts)
-                    tValidMaterialAmount += tMaterial.mMaterial.contains(SubTag.NO_RECYCLING)
-                            ? 0
+                    tValidMaterialAmount += tMaterial.mMaterial.contains(SubTag.NO_RECYCLING) ? 0
                             : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
                 if (tValidMaterialAmount < M) GT_ModHandler.addToRecyclerBlackList(aStack);
             }
@@ -313,8 +324,8 @@ public class GT_OreDictUnificator {
                     mRunThroughTheList = false;
                     for (Entry<GT_ItemStack2, ItemData> tEntry : sItemStack2DataMap.entrySet())
                         if (!tEntry.getValue().hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
-                            GT_RecipeRegistrator.registerMaterialRecycling(
-                                    tEntry.getKey().toStack(), tEntry.getValue());
+                            GT_RecipeRegistrator
+                                    .registerMaterialRecycling(tEntry.getKey().toStack(), tEntry.getValue());
                 }
             } else {
                 if (!aData.hasValidPrefixData() || aData.mPrefix.mAllowNormalRecycling)
@@ -326,13 +337,11 @@ public class GT_OreDictUnificator {
         }
     }
 
-    public static void addAssociation(
-            OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aBlackListed) {
+    public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack,
+            boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GT_Utility.isStackInvalid(aStack)) return;
-        if (Items.feather.getDamage(aStack) == W)
-            for (byte i = 0; i < 16; i++)
-                setItemData(
-                        GT_Utility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
+        if (Items.feather.getDamage(aStack) == W) for (byte i = 0; i < 16; i++)
+            setItemData(GT_Utility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
         setItemData(aStack, new ItemData(aPrefix, aMaterial, aBlackListed));
     }
 
@@ -499,14 +508,13 @@ public class GT_OreDictUnificator {
     }
 
     /**
-     * Fast version of {@link #getOres(Object)},
-     * which doesn't call {@link System#arraycopy(Object, int, Object, int, int)} in {@link ArrayList#addAll}
+     * Fast version of {@link #getOres(Object)}, which doesn't call
+     * {@link System#arraycopy(Object, int, Object, int, int)} in {@link ArrayList#addAll}
      */
     public static List<ItemStack> getOresImmutable(@Nullable Object aOreName) {
         String aName = aOreName == null ? E : aOreName.toString();
 
-        return GT_Utility.isStringValid(aName)
-                ? Collections.unmodifiableList(OreDictionary.getOres(aName))
+        return GT_Utility.isStringValid(aName) ? Collections.unmodifiableList(OreDictionary.getOres(aName))
                 : Collections.emptyList();
     }
 }

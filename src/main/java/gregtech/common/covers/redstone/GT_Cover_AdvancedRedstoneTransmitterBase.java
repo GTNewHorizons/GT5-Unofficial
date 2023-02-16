@@ -1,8 +1,19 @@
 package gregtech.common.covers.redstone;
 
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -11,16 +22,8 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import java.util.Objects;
-import java.util.UUID;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
-                T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData>
+public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData>
         extends GT_Cover_AdvancedWirelessRedstoneBase<T> {
 
     public GT_Cover_AdvancedRedstoneTransmitterBase(Class<T> typeToken, ITexture coverTexture) {
@@ -33,28 +36,21 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
     }
 
     @Override
-    public boolean onCoverRemovalImpl(
-            byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+    public boolean onCoverRemovalImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
+            boolean aForced) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
         return true;
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(
-            byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity) {
+    protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
+            ICoverable aTileEntity) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected T onCoverScrewdriverClickImpl(
-            byte aSide,
-            int aCoverID,
-            T aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected T onCoverScrewdriverClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.invert = !aCoverVariable.invert;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
@@ -64,8 +60,8 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
     }
 
     @Override
-    protected void preDataChangedImpl(
-            byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {
+    protected void preDataChangedImpl(byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable,
+            ICoverable aTileEntity) {
         if (aCoverVariable.frequency != aNewCoverVariable.frequency
                 || !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
             unregisterSignal(aSide, aCoverVariable, aTileEntity);
@@ -73,6 +69,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
     }
 
     public static class TransmitterData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
+
         protected boolean invert;
 
         public TransmitterData(int frequency, UUID uuid, boolean invert) {
@@ -159,17 +156,14 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
         protected void addUIWidgets(ModularWindow.Builder builder) {
             super.addUIWidgets(builder);
             builder.widget(TextWidget.dynamicString(() -> {
-                        T coverData = getCoverData();
-                        if (coverData != null) {
-                            return getCoverData().invert
-                                    ? GT_Utility.trans("INVERTED", "Inverted")
-                                    : GT_Utility.trans("NORMAL", "Normal");
-                        } else {
-                            return "";
-                        }
-                    })
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                T coverData = getCoverData();
+                if (coverData != null) {
+                    return getCoverData().invert ? GT_Utility.trans("INVERTED", "Inverted")
+                            : GT_Utility.trans("NORMAL", "Normal");
+                } else {
+                    return "";
+                }
+            }).setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
         }
 

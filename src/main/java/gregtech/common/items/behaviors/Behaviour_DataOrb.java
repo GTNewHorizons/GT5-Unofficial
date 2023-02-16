@@ -1,13 +1,16 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_Utility;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.GT_Utility;
+
 public class Behaviour_DataOrb extends Behaviour_None {
+
     public static void copyInventory(ItemStack[] aInventory, ItemStack[] aNewContent, int aIndexlength) {
         for (int i = 0; i < aIndexlength; i++) {
             if (aNewContent[i] == null) {

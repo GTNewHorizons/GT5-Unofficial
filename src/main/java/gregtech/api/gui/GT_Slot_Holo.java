@@ -1,26 +1,22 @@
 package gregtech.api.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class GT_Slot_Holo extends Slot {
+
     public final int mSlotIndex;
     public boolean mEnabled = true;
     public boolean mCanInsertItem, mCanStackItem;
     public int mMaxStacksize = 127;
 
-    public GT_Slot_Holo(
-            IInventory inventory,
-            int slotIndex,
-            int xPos,
-            int yPos,
-            boolean aCanInsertItem,
-            boolean aCanStackItem,
-            int aMaxStacksize) {
+    public GT_Slot_Holo(IInventory inventory, int slotIndex, int xPos, int yPos, boolean aCanInsertItem,
+            boolean aCanStackItem, int aMaxStacksize) {
         super(inventory, slotIndex, xPos, yPos);
         mCanInsertItem = aCanInsertItem;
         mCanStackItem = aCanStackItem;
@@ -55,8 +51,8 @@ public class GT_Slot_Holo extends Slot {
     }
 
     /**
-     * Whether this slot should be ignored in event processing,
-     * for example highlight the slot on mouseOver
+     * Whether this slot should be ignored in event processing, for example highlight the slot on mouseOver
+     * 
      * @param enabled
      */
     public void setEnabled(boolean enabled) {

@@ -1,34 +1,15 @@
 package gregtech.common.blocks;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import com.cricketcraft.chisel.api.IFacade;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.GT_BaseCrop;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -51,8 +32,33 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cricketcraft.chisel.api.IFacade;
+
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.util.GT_BaseCrop;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.CoverInfo;
+import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
+
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
 public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider, IFacade {
+
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
     private boolean renderAsNormalBlock;
 
@@ -224,8 +230,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @SuppressWarnings("unchecked") // Old API uses raw List type
     @Override
-    public void addCollisionBoxesToList(
-            World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List outputAABB, Entity collider) {
+    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List outputAABB,
+            Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity
                 && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
@@ -332,35 +338,25 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return tTileEntity instanceof BaseMetaTileEntity
-                        && ((BaseMetaTileEntity) tTileEntity).privateAccess()
-                        && !((BaseMetaTileEntity) tTileEntity).playerOwnsThis(aPlayer, true)
-                ? -1.0F
-                : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
+        return tTileEntity instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tTileEntity).privateAccess()
+                && !((BaseMetaTileEntity) tTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
+                        : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
     }
 
     @Override
-    public boolean onBlockActivated(
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            EntityPlayer aPlayer,
-            int aSide,
-            float aOffsetX,
-            float aOffsetY,
-            float aOffsetZ) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide,
+            float aOffsetX, float aOffsetY, float aOffsetZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity == null) {
             return false;
         }
         if (aPlayer.isSneaking()) {
             final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null
-                    && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)
+            if (tCurrentItem != null && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)
                     && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)
                     && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)
-                    && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) return false;
+                    && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList))
+                return false;
         }
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             if (((IGregTechTileEntity) tTileEntity).getTimer() < 50L) {
@@ -398,7 +394,10 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if (tTileEntity instanceof BaseMetaTileEntity) {
             GT_Log.exp.printf(
                     "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                    aX, aY, aZ, aWorld.provider.dimensionId);
+                    aX,
+                    aY,
+                    aZ,
+                    aWorld.provider.dimensionId);
             ((BaseMetaTileEntity) tTileEntity).doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
@@ -410,12 +409,12 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
             final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
+            tGregTechTileEntity.onBlockDestroyed();
             mTemporaryTileEntity.set(tGregTechTileEntity);
             if (!(tGregTechTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest)) {
                 for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
                     final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
-                    if ((tItem != null)
-                            && (tItem.stackSize > 0)
+                    if ((tItem != null) && (tItem.stackSize > 0)
                             && (tGregTechTileEntity.isValidSlot(i))
                             && tGregTechTileEntity.shouldDropItemAt(i)) {
                         final EntityItem tItemEntity = new EntityItem(
@@ -425,8 +424,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                                 aZ + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
                                 new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
                         if (tItem.hasTagCompound()) {
-                            tItemEntity.getEntityItem().setTagCompound((NBTTagCompound)
-                                    tItem.getTagCompound().copy());
+                            tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
                         }
                         tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
                         tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.25D);
@@ -505,15 +503,18 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public void dropBlockAsItemWithChance(
-            World aWorld, int aX, int aY, int aZ, int aMetadata, float chance, int aFortune) {
+    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int aMetadata, float chance,
+            int aFortune) {
         if (!aWorld.isRemote) {
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null && (chance < 1.0F)) {
                 if (tTileEntity instanceof BaseMetaTileEntity && (GregTech_API.sMachineNonWrenchExplosions)) {
                     GT_Log.exp.printf(
                             "Explosion at : %d | %d | %d DIMID: %s NonWrench picking/Rain!%n",
-                            aX, aY, aZ, aWorld.provider.dimensionId);
+                            aX,
+                            aY,
+                            aZ,
+                            aWorld.provider.dimensionId);
                     ((BaseMetaTileEntity) tTileEntity).doEnergyExplosion();
                 }
             } else {
@@ -592,15 +593,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity entity,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            double explosionX,
-            double explosionY,
-            double explosionZ) {
+    public float getExplosionResistance(Entity entity, World aWorld, int aX, int aY, int aZ, double explosionX,
+            double explosionY, double explosionZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
             return ((IGregTechTileEntity) tTileEntity).getBlastResistance((byte) 6);
@@ -657,16 +651,13 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
-                        .getFacadeBlock(
-                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                final Block facadeBlock = tile.getCoverInfoAtSide(aSide).getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte i = 0; i < 6; i++) {
-                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
-                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                for (byte tSide : ALL_VALID_SIDES) {
+                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide).getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }
@@ -683,22 +674,17 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
-                        .getFacadeBlock(
-                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
-                if (facadeBlock != null)
-                    return tile.getCoverBehaviorAtSideNew(aSide)
-                            .getFacadeMeta(
-                                    aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
+                final Block facadeBlock = coverInfo.getFacadeBlock();
+                if (facadeBlock != null) return coverInfo.getFacadeMeta();
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte i = 0; i < 6; i++) {
-                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
-                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                for (byte tSide : ALL_VALID_SIDES) {
+                    final CoverInfo coverInfo = tile.getCoverInfoAtSide(tSide);
+                    final Block facadeBlock = coverInfo.getFacadeBlock();
                     if (facadeBlock != null) {
-                        return tile.getCoverBehaviorAtSideNew(i)
-                                .getFacadeMeta(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                        return coverInfo.getFacadeMeta();
                     }
                 }
             }

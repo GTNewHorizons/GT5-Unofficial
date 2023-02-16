@@ -1,9 +1,11 @@
 package gregtech.api.interfaces.tileentity;
 
-import gregtech.api.interfaces.ITexture;
 import net.minecraft.block.Block;
 
+import gregtech.api.interfaces.ITexture;
+
 public interface ITexturedTileEntity {
+
     /**
      * @return the Textures rendered by the GT Rendering
      */

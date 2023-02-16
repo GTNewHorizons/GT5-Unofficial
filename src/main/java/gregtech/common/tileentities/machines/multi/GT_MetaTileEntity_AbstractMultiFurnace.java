@@ -1,9 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import net.minecraft.item.ItemStack;
 
 public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTileEntity_AbstractMultiFurnace<T>>
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {

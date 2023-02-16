@@ -3,22 +3,26 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.*;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import java.util.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock {
+
     private static final int OUTPUT_INDEX = 0;
     private static final int ARROW_RIGHT_INDEX = 1;
     private static final int ARROW_DOWN_INDEX = 2;
@@ -28,30 +32,27 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     public int mMaxStackSize = 64;
     public static int MAX = 8;
-    public boolean bOutput = false,
-            bRedstoneIfFull = false,
-            bInvert = false,
-            bStockingMode = false,
+    public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = false,
             bSortStacks = false;
     public int mSuccess = 0, mTargetStackSize = 0;
 
-    public GT_MetaTileEntity_Buffer(
-            int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
+    public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GT_MetaTileEntity_Buffer(
-            int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
+    public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+            String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GT_MetaTileEntity_Buffer(
-            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Buffer(String aName, int aTier, int aInvSlotCount, String aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Buffer(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Buffer(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -60,37 +61,28 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         ITexture[][][] rTextures = new ITexture[ForgeDirection.VALID_DIRECTIONS.length][17][];
         ITexture tIcon = getOverlayIcon();
         ITexture tOut = TextureFactory.of(OVERLAY_PIPE_OUT);
-        ITexture tUp = TextureFactory.of(
-                TextureFactory.of(ARROW_UP),
-                TextureFactory.builder().addIcon(ARROW_UP_GLOW).glow().build());
-        ITexture tDown = TextureFactory.of(
-                TextureFactory.of(ARROW_DOWN),
-                TextureFactory.builder().addIcon(ARROW_DOWN_GLOW).glow().build());
-        ITexture tLeft = TextureFactory.of(
-                TextureFactory.of(ARROW_LEFT),
-                TextureFactory.builder().addIcon(ARROW_LEFT_GLOW).glow().build());
-        ITexture tRight = TextureFactory.of(
-                TextureFactory.of(ARROW_RIGHT),
-                TextureFactory.builder().addIcon(ARROW_RIGHT_GLOW).glow().build());
+        ITexture tUp = TextureFactory
+                .of(TextureFactory.of(ARROW_UP), TextureFactory.builder().addIcon(ARROW_UP_GLOW).glow().build());
+        ITexture tDown = TextureFactory
+                .of(TextureFactory.of(ARROW_DOWN), TextureFactory.builder().addIcon(ARROW_DOWN_GLOW).glow().build());
+        ITexture tLeft = TextureFactory
+                .of(TextureFactory.of(ARROW_LEFT), TextureFactory.builder().addIcon(ARROW_LEFT_GLOW).glow().build());
+        ITexture tRight = TextureFactory
+                .of(TextureFactory.of(ARROW_RIGHT), TextureFactory.builder().addIcon(ARROW_RIGHT_GLOW).glow().build());
         for (int i = 0; i < rTextures[0].length; i++) {
-            rTextures[OUTPUT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tOut};
-            rTextures[ARROW_RIGHT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tRight, tIcon};
-            rTextures[ARROW_DOWN_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tDown, tIcon};
-            rTextures[ARROW_LEFT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tLeft, tIcon};
-            rTextures[ARROW_UP_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tUp, tIcon};
-            rTextures[FRONT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tIcon};
+            rTextures[OUTPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tOut };
+            rTextures[ARROW_RIGHT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tRight, tIcon };
+            rTextures[ARROW_DOWN_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tDown, tIcon };
+            rTextures[ARROW_LEFT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tLeft, tIcon };
+            rTextures[ARROW_UP_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tUp, tIcon };
+            rTextures[FRONT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tIcon };
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
         int colorIndex = aColorIndex + 1;
         ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[aSide];
         ForgeDirection facing = ForgeDirection.VALID_DIRECTIONS[aFacing];
@@ -278,14 +270,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("098", "Do not regulate Item Stack Size"));
             } else {
                 GT_Utility.sendChatToPlayer(
-                        aPlayer, GT_Utility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
+                        aPlayer,
+                        GT_Utility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
             }
         }
     }
 
     @Override
-    public boolean onWrenchRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         aWrenchingSide = GT_Utility.getOppositeSide(aWrenchingSide);
         if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
@@ -313,10 +306,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isAllowedToWork()
-                && aBaseMetaTileEntity.isServerSide()
-                && (aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                        || aBaseMetaTileEntity.hasInventoryBeenModified()
+        if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()
+                && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()
                         || aTimer % 200 == 0
                         || mSuccess > 0)) {
             mSuccess--;
@@ -337,32 +328,30 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer, int stacks) {
         int tCost;
-        if (bStockingMode)
-            tCost = GT_Utility.moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    null,
-                    false,
-                    mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
-                    mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
-                    (byte) 64,
-                    (byte) 1,
-                    stacks);
-        else
-            tCost = GT_Utility.moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
-                    mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
-                    stacks);
+        if (bStockingMode) tCost = GT_Utility.moveMultipleItemStacks(
+                aBaseMetaTileEntity,
+                aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
+                aBaseMetaTileEntity.getBackFacing(),
+                aBaseMetaTileEntity.getFrontFacing(),
+                null,
+                false,
+                mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
+                mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
+                (byte) 64,
+                (byte) 1,
+                stacks);
+        else tCost = GT_Utility.moveMultipleItemStacks(
+                aBaseMetaTileEntity,
+                aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
+                aBaseMetaTileEntity.getBackFacing(),
+                aBaseMetaTileEntity.getFrontFacing(),
+                null,
+                false,
+                (byte) 64,
+                (byte) 1,
+                mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
+                mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
+                stacks);
 
         if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
             mSuccess = 50;
@@ -420,8 +409,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean onSolderingToolRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
         if (aPlayer.isSneaking()) {
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
@@ -440,84 +429,73 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    bOutput = !bOutput;
-                    if (bOutput) {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(), GT_Utility.trans("116", "Emit Energy to Outputside"));
-                    } else {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(), GT_Utility.trans("117", "Don't emit Energy"));
-                    }
-                })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
-                .setPos(7, 62)
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            bOutput = !bOutput;
+            if (bOutput) {
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext().getPlayer(),
+                        GT_Utility.trans("116", "Emit Energy to Outputside"));
+            } else {
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext().getPlayer(),
+                        GT_Utility.trans("117", "Don't emit Energy"));
+            }
+        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY).setPos(7, 62)
                 .setSize(18, 18));
     }
 
     protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    bRedstoneIfFull = !bRedstoneIfFull;
-                    if (bRedstoneIfFull) {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(),
-                                GT_Utility.trans("118", "Emit Redstone if no Slot is free"));
-                    } else {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(), GT_Utility.trans("119", "Don't emit Redstone"));
-                    }
-                })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE)
-                .setPos(25, 62)
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            bRedstoneIfFull = !bRedstoneIfFull;
+            if (bRedstoneIfFull) {
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext().getPlayer(),
+                        GT_Utility.trans("118", "Emit Redstone if no Slot is free"));
+            } else {
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext().getPlayer(),
+                        GT_Utility.trans("119", "Don't emit Redstone"));
+            }
+        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE).setPos(25, 62)
                 .setSize(18, 18));
     }
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    bInvert = !bInvert;
-                    if (bInvert) {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(), GT_Utility.trans("120", "Invert Redstone"));
-                    } else {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(), GT_Utility.trans("121", "Don't invert Redstone"));
-                    }
-                })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
-                .setPos(43, 62)
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            bInvert = !bInvert;
+            if (bInvert) {
+                GT_Utility
+                        .sendChatToPlayer(widget.getContext().getPlayer(), GT_Utility.trans("120", "Invert Redstone"));
+            } else {
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext().getPlayer(),
+                        GT_Utility.trans("121", "Don't invert Redstone"));
+            }
+        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE).setPos(43, 62)
                 .setSize(18, 18));
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    bStockingMode = !bStockingMode;
-                    if (bStockingMode) {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(),
-                                GT_Utility.trans(
-                                        "217",
-                                        "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
-                    } else {
-                        GT_Utility.sendChatToPlayer(
-                                widget.getContext().getPlayer(),
-                                GT_Utility.trans(
-                                        "218",
-                                        "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
-                    }
-                })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE)
-                .setPos(61, 62)
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            bStockingMode = !bStockingMode;
+            if (bStockingMode) {
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext().getPlayer(),
+                        GT_Utility.trans(
+                                "217",
+                                "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
+            } else {
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext().getPlayer(),
+                        GT_Utility.trans(
+                                "218",
+                                "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
+            }
+        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE).setPos(61, 62)
                 .setSize(18, 18));
     }
 
     protected void addInventorySlots(ModularWindow.Builder builder) {
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 9)
-                .endAtSlot(26)
-                .build()
-                .setPos(7, 4));
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 9).endAtSlot(26).build().setPos(7, 4));
     }
 }

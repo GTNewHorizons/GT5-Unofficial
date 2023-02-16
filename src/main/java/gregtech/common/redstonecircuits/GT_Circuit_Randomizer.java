@@ -4,6 +4,7 @@ import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.GT_CircuitryBehavior;
 
 public class GT_Circuit_Randomizer extends GT_CircuitryBehavior {
+
     public GT_Circuit_Randomizer(int aIndex) {
         super(aIndex);
     }
@@ -45,8 +46,8 @@ public class GT_Circuit_Randomizer extends GT_CircuitryBehavior {
         }
         if (aCircuitData[4] >= aCircuitData[0]) {
             aCircuitData[4] = 0;
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) aRedstoneCircuitBlock.getRandom(16), aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock
+                    .setRedstone((byte) aRedstoneCircuitBlock.getRandom(16), aRedstoneCircuitBlock.getOutputFacing());
         }
     }
 

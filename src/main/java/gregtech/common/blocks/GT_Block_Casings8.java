@@ -1,5 +1,10 @@
 package gregtech.common.blocks;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -8,20 +13,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_RenderingWorld;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
+
     public static boolean mConnectedMachineTextures = true;
 
     // WATCH OUT FOR TEXTURE ID's
     public GT_Block_Casings8() {
-        super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE, 10);
+        super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE, 15);
         /*
-         * DO NOT USE INDEX 15 !
-         * USED HERE: https://github.com/GTNewHorizons/Electro-Magic-Tools/pull/17
+         * DO NOT USE INDEX 15 ! USED HERE: https://github.com/GTNewHorizons/Electro-Magic-Tools/pull/17
          */
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemically Inert Machine Casing");
@@ -30,13 +31,25 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Mining Black Plutonium Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Extreme Engine Intake Casing");
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".5.name", "Europium Reinforced Radiation Proof Machine Casing");
+                getUnlocalizedName() + ".5.name",
+                "Europium Reinforced Radiation Proof Machine Casing");
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".6.name", "Advanced Rhodium Plated Palladium Machine Casing");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".7.name", "Advanced Iridium Plated Machine Casing");
+                getUnlocalizedName() + ".6.name",
+                "Advanced Rhodium Plated Palladium Machine Casing");
+        GT_LanguageManager
+                .addStringLocalization(getUnlocalizedName() + ".7.name", "Advanced Iridium Plated Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Magical Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Turbine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Radiant Naquadah Alloy Casing");
+        GT_LanguageManager
+                .addStringLocalization(getUnlocalizedName() + ".11.name", "Basic Photolithographic Framework Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".12.name",
+                "Reinforced Photolithographic Framework Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".13.name",
+                "Radiation Proof Photolithographic Framework Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Infinity Cooled Casing");
 
         ItemList.Casing_Chemically_Inert.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Pipe_Polytetrafluoroethylene.set(new ItemStack(this, 1, 1));
@@ -48,6 +61,11 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Advanced_Iridium.set(new ItemStack(this, 1, 7));
         ItemList.Casing_Magical.set(new ItemStack(this, 1, 8));
         ItemList.Casing_TurbineGasAdvanced.set(new ItemStack(this, 1, 9));
+        ItemList.RadiantNaquadahAlloyCasing.set(new ItemStack(this, 1, 10));
+        ItemList.BasicPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 11));
+        ItemList.ReinforcedPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 12));
+        ItemList.RadiationProofPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 13));
+        ItemList.InfinityCooledCasing.set(new ItemStack(this, 1, 14));
     }
 
     @Override
@@ -68,8 +86,8 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
             case 3:
                 return Textures.BlockIcons.MACHINE_CASING_MINING_BLACKPLUTONIUM.getIcon();
             case 4:
-                return Textures.BlockIcons.MACHINE_CASING_EXTREME_ENGINE_INTAKE
-                        .getIcon(); // changed color in a terrible way
+                return Textures.BlockIcons.MACHINE_CASING_EXTREME_ENGINE_INTAKE.getIcon(); // changed color in a
+                                                                                           // terrible way
             case 5:
                 return Textures.BlockIcons.MACHINE_CASING_ADVANCEDRADIATIONPROOF.getIcon();
             case 6:
@@ -80,6 +98,16 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                 return Textures.BlockIcons.MACHINE_CASING_MAGICAL.getIcon();
             case 9:
                 return Textures.BlockIcons.MACHINE_CASING_ADVANCEDGAS.getIcon();
+            case 10:
+                return Textures.BlockIcons.MACHINE_CASING_RADIANT_NAQUADAH_ALLOY.getIcon();
+            case 11:
+                return Textures.BlockIcons.MACHINE_CASING_PCB_TIER_1.getIcon();
+            case 12:
+                return Textures.BlockIcons.MACHINE_CASING_PCB_TIER_2.getIcon();
+            case 13:
+                return Textures.BlockIcons.MACHINE_CASING_PCB_TIER_3.getIcon();
+            case 14:
+                return Textures.BlockIcons.INFINITY_COOLED_CASING.getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
     }
@@ -88,12 +116,10 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
         switch (meta) {
             case 9:
-                return active
-                        ? Textures.BlockIcons.TURBINE_ADVGASACTIVE[iconIndex].getIcon()
+                return active ? Textures.BlockIcons.TURBINE_ADVGASACTIVE[iconIndex].getIcon()
                         : Textures.BlockIcons.TURBINEADVGAS[iconIndex].getIcon();
             default:
-                return active
-                        ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
                         : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
         }
     }
@@ -101,16 +127,12 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
         switch (meta) {
             case 9:
-                return active
-                        ? Textures.BlockIcons.TURBINE_ADVGASACTIVE[iconIndex].getIcon()
-                        : hasTurbine
-                                ? Textures.BlockIcons.TURBINEADVGAS[iconIndex].getIcon()
+                return active ? Textures.BlockIcons.TURBINE_ADVGASACTIVE[iconIndex].getIcon()
+                        : hasTurbine ? Textures.BlockIcons.TURBINEADVGAS[iconIndex].getIcon()
                                 : Textures.BlockIcons.TURBINE_ADVGASEMPTY[iconIndex].getIcon();
             default:
-                return active
-                        ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
-                        : hasTurbine
-                                ? Textures.BlockIcons.TURBINE[iconIndex].getIcon()
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
+                        : hasTurbine ? Textures.BlockIcons.TURBINE[iconIndex].getIcon()
                                 : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
         }
     }
@@ -120,8 +142,10 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
         IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
         if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide) {
+            GT_MetaTileEntity_LargeTurbine turbine = (GT_MetaTileEntity_LargeTurbine) tTile.getMetaTileEntity();
+            if (turbine.isNewStyleRendering()) return 0;
             if (tTile.isActive()) return 1;
-            return ((GT_MetaTileEntity_LargeTurbine) tTile.getMetaTileEntity()).hasTurbine() ? 2 : 3;
+            return turbine.hasTurbine() ? 2 : 3;
         }
         return 0;
     }
@@ -157,7 +181,10 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide))
                                     != 0) {
                                 return getTurbineCasing(
-                                        tMeta, 4 + i * 3 - j * tInvertLeftRightMod, tState == 1, tState == 2);
+                                        tMeta,
+                                        4 + i * 3 - j * tInvertLeftRightMod,
+                                        tState == 1,
+                                        tState == 2);
                             }
                         }
                     }
@@ -170,7 +197,10 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide))
                                     != 0) {
                                 return getTurbineCasing(
-                                        tMeta, 4 + i * 3 + j * tInvertLeftRightMod, tState == 1, tState == 2);
+                                        tMeta,
+                                        4 + i * 3 + j * tInvertLeftRightMod,
+                                        tState == 1,
+                                        tState == 2);
                             }
                         }
                     }

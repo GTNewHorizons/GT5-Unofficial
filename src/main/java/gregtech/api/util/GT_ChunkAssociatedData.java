@@ -1,8 +1,5 @@
 package gregtech.api.util;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -30,19 +27,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
+
 import org.apache.commons.io.FileUtils;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 /**
  * A utility to save all kinds of data that is a function of any chunk.
  * <p>
- * GregTech takes care of saving and loading the data from disk, and an efficient mechanism to locate it.
- * Subclass only need to define the exact scheme of each element data (by overriding the three protected abstract method)
+ * GregTech takes care of saving and loading the data from disk, and an efficient mechanism to locate it. Subclass only
+ * need to define the exact scheme of each element data (by overriding the three protected abstract method)
  * <p>
  * Oh, there is no limit on how large your data is, though you'd not have the familiar NBT interface, but DataOutput
  * should be reasonably common anyway.
@@ -58,9 +62,10 @@ import org.apache.commons.io.FileUtils;
  */
 @ParametersAreNonnullByDefault
 public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.IData> {
+
     private static final Map<String, GT_ChunkAssociatedData<?>> instances = new ConcurrentHashMap<>();
-    private static final int IO_PARALLELISM =
-            Math.min(8, Math.max(1, Runtime.getRuntime().availableProcessors() * 2 / 3));
+    private static final int IO_PARALLELISM = Math
+            .min(8, Math.max(1, Runtime.getRuntime().availableProcessors() * 2 / 3));
     private static final ExecutorService IO_WORKERS = Executors.newWorkStealingPool(IO_PARALLELISM);
     private static final Pattern FILE_PATTERN = Pattern.compile("(.+)\\.(-?\\d+)\\.(-?\\d+)\\.dat");
 
@@ -75,9 +80,8 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     private final int version;
     private final boolean saveDefaults;
     /**
-     * Data is stored as a `(world id -> (super region id -> super region data))` hash map.
-     * where super region's size is determined by regionSize.
-     * Here it is called super region, to not confuse with vanilla's regions.
+     * Data is stored as a `(world id -> (super region id -> super region data))` hash map. where super region's size is
+     * determined by regionSize. Here it is called super region, to not confuse with vanilla's regions.
      */
     private final Map<Integer, Map<ChunkCoordIntPair, SuperRegion>> masterMap = new ConcurrentHashMap<>();
 
@@ -85,12 +89,14 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
      * Initialize this instance.
      *
      * @param aId          An arbitrary, but globally unique identifier for what this data is
-     * @param elementType The class of this element type. Used to create arrays.
-     * @param regionLength The length of one super region. Each super region will contain {@code regionLength * regionLength} chunks
-     * @param version      An integer marking the version of this data. Useful later when the data's serialized form changed.
+     * @param elementType  The class of this element type. Used to create arrays.
+     * @param regionLength The length of one super region. Each super region will contain
+     *                     {@code regionLength * regionLength} chunks
+     * @param version      An integer marking the version of this data. Useful later when the data's serialized form
+     *                     changed.
      */
-    protected GT_ChunkAssociatedData(
-            String aId, Class<T> elementType, int regionLength, byte version, boolean saveDefaults) {
+    protected GT_ChunkAssociatedData(String aId, Class<T> elementType, int regionLength, byte version,
+            boolean saveDefaults) {
         if (regionLength * regionLength > Short.MAX_VALUE || regionLength <= 0)
             throw new IllegalArgumentException("Region invalid: " + regionLength);
         if (!IData.class.isAssignableFrom(elementType)) throw new IllegalArgumentException("Data type invalid");
@@ -109,8 +115,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     /**
-     * Get a reference to data of the chunk that tile entity is in.
-     * The returned reference should be mutable.
+     * Get a reference to data of the chunk that tile entity is in. The returned reference should be mutable.
      */
     public final T get(IGregTechTileEntity tileEntity) {
         return get(tileEntity.getWorld(), tileEntity.getXCoord() >> 4, tileEntity.getZCoord() >> 4);
@@ -125,15 +130,13 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     public final T get(World world, int chunkX, int chunkZ) {
-        SuperRegion region = masterMap
-                .computeIfAbsent(world.provider.dimensionId, ignored -> new ConcurrentHashMap<>())
+        SuperRegion region = masterMap.computeIfAbsent(world.provider.dimensionId, ignored -> new ConcurrentHashMap<>())
                 .computeIfAbsent(getRegionID(chunkX, chunkZ), c -> new SuperRegion(world, c));
         return region.get(Math.floorMod(chunkX, regionLength), Math.floorMod(chunkZ, regionLength));
     }
 
     protected final void set(World world, int chunkX, int chunkZ, T data) {
-        SuperRegion region = masterMap
-                .computeIfAbsent(world.provider.dimensionId, ignored -> new ConcurrentHashMap<>())
+        SuperRegion region = masterMap.computeIfAbsent(world.provider.dimensionId, ignored -> new ConcurrentHashMap<>())
                 .computeIfAbsent(getRegionID(chunkX, chunkZ), c -> new SuperRegion(world, c));
         region.set(Math.floorMod(chunkX, regionLength), Math.floorMod(chunkZ, regionLength), data);
     }
@@ -150,13 +153,11 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
     public void clear() {
         if (GT_Values.debugWorldData) {
-            long dirtyRegionCount = masterMap.values().stream()
-                    .flatMap(m -> m.values().stream())
-                    .filter(SuperRegion::isDirty)
-                    .count();
-            if (dirtyRegionCount > 0)
-                GT_Log.out.println("Clearing ChunkAssociatedData with " + dirtyRegionCount
-                        + " regions dirty. Data might have been lost!");
+            long dirtyRegionCount = masterMap.values().stream().flatMap(m -> m.values().stream())
+                    .filter(SuperRegion::isDirty).count();
+            if (dirtyRegionCount > 0) GT_Log.out.println(
+                    "Clearing ChunkAssociatedData with " + dirtyRegionCount
+                            + " regions dirty. Data might have been lost!");
         }
         masterMap.clear();
     }
@@ -171,11 +172,8 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     private void saveRegions(Stream<SuperRegion> stream) {
-        stream.filter(r -> r.isDirty())
-                .map(c -> (Runnable) c::save)
-                .map(r -> CompletableFuture.runAsync(r, IO_WORKERS))
-                .reduce(CompletableFuture::allOf)
-                .ifPresent(f -> {
+        stream.filter(r -> r.isDirty()).map(c -> (Runnable) c::save).map(r -> CompletableFuture.runAsync(r, IO_WORKERS))
+                .reduce(CompletableFuture::allOf).ifPresent(f -> {
                     try {
                         f.get();
                     } catch (Exception e) {
@@ -208,26 +206,26 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     /**
-     * Load data for all chunks for a given world.
-     * Current data for that world will be discarded. If this is what you intended, call {@link #save(World)} beforehand.
+     * Load data for all chunks for a given world. Current data for that world will be discarded. If this is what you
+     * intended, call {@link #save(World)} beforehand.
      * <p>
      * Be aware of the memory consumption though.
      */
     protected void loadAll(World w) {
-        if (GT_Values.debugWorldData && masterMap.containsKey(w.provider.dimensionId))
-            GT_Log.err.println("Reloading ChunkAssociatedData " + mId + " for world " + w.provider.dimensionId
-                    + " discards old data!");
+        if (GT_Values.debugWorldData && masterMap.containsKey(w.provider.dimensionId)) GT_Log.err.println(
+                "Reloading ChunkAssociatedData " + mId
+                        + " for world "
+                        + w.provider.dimensionId
+                        + " discards old data!");
         if (!getSaveDirectory(w).isDirectory())
             // nothing to load...
             return;
         try (Stream<Path> stream = Files.list(getSaveDirectory(w).toPath())) {
             Map<ChunkCoordIntPair, SuperRegion> worldData = stream.map(f -> {
-                        Matcher matcher = FILE_PATTERN.matcher(f.getFileName().toString());
-                        return matcher.matches() ? matcher : null;
-                    })
-                    .filter(Objects::nonNull)
-                    .filter(m -> mId.equals(m.group(1)))
-                    .map(m -> CompletableFuture.supplyAsync(
+                Matcher matcher = FILE_PATTERN.matcher(f.getFileName().toString());
+                return matcher.matches() ? matcher : null;
+            }).filter(Objects::nonNull).filter(m -> mId.equals(m.group(1))).map(
+                    m -> CompletableFuture.supplyAsync(
                             () -> new SuperRegion(w, Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))),
                             IO_WORKERS))
                     .map(f -> {
@@ -238,9 +236,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
                             e.printStackTrace(GT_Log.err);
                             return null;
                         }
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toMap(SuperRegion::getCoord, Function.identity()));
+                    }).filter(Objects::nonNull).collect(Collectors.toMap(SuperRegion::getCoord, Function.identity()));
             masterMap.put(w.provider.dimensionId, worldData);
         } catch (IOException | UncheckedIOException e) {
             GT_Log.err.println("Error loading all region");
@@ -256,6 +252,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     public interface IData {
+
         /**
          * @return Whether the data is different from chunk default
          */
@@ -263,6 +260,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     protected final class SuperRegion {
+
         private final T[] data = createData();
         private final File backingStorage;
         private final WeakReference<World> world;
@@ -348,7 +346,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
         }
 
         private void save0() throws IOException {
-            //noinspection ResultOfMethodCallIgnored
+            // noinspection ResultOfMethodCallIgnored
             backingStorage.getParentFile().mkdirs();
             File tmpFile = getTmpFile();
             World world = Objects.requireNonNull(this.world.get(), "Attempting to save region of another world!");
@@ -445,6 +443,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     public static class EventHandler {
+
         private EventHandler() {
             MinecraftForge.EVENT_BUS.register(this);
         }

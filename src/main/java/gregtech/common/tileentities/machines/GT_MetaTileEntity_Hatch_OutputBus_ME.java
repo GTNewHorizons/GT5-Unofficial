@@ -3,7 +3,20 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import appeng.api.AEApi;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
@@ -18,7 +31,6 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
-import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -29,22 +41,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus {
+public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus
+        implements IPowerChannelState {
+
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    IItemList<IAEItemStack> itemCache =
-            GregTech_API.mAE2 ? AEApi.instance().storage().createItemList() : null;
+    IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance().storage().createItemList() : null;
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
@@ -56,16 +59,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 aName,
                 aNameRegional,
                 1,
-                new String[] {
-                    "Item Output for Multiblocks", "Stores directly into ME",
-                    "To use in GT++ multiblocks", "  turn off overflow control",
-                    "  with a soldering iron."
-                },
+                new String[] { "Item Output for Multiblocks", "Stores directly into ME", },
                 0);
     }
 
-    public GT_MetaTileEntity_Hatch_OutputBus_ME(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OutputBus_ME(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -76,12 +75,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_HATCH_ACTIVE)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_HATCH_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_HATCH)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_HATCH) };
     }
 
     @Override
@@ -100,24 +99,21 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     /**
      * Attempt to store items in connected ME network. Returns how many items did not fit (if the network was down e.g.)
      *
-     * @param stack  input stack
+     * @param stack input stack
      * @return amount of items left over
      */
-    @Optional.Method(modid = "appliedenergistics2")
     public int store(final ItemStack stack) {
         if (!infiniteCache && lastOutputFailed) return stack.stackSize;
         itemCache.add(AEApi.instance().storage().createItemStack(stack));
         return 0;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private BaseActionSource getRequest() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return isOutputFacing((byte) forgeDirection.ordinal()) ? AECableType.SMART : AECableType.NONE;
     }
@@ -129,40 +125,33 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
-                .isGUIClickable(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                        getBaseMetaTileEntity())) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
         infiniteCache = !infiniteCache;
-        GT_Utility.sendChatToPlayer(
-                aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCache." + infiniteCache));
+        GT_Utility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCache." + infiniteCache));
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                        (IGridProxyable) getBaseMetaTileEntity(), "proxy", ItemList.Hatch_Output_Bus_ME.get(1), true);
+                        (IGridProxyable) getBaseMetaTileEntity(),
+                        "proxy",
+                        ItemList.Hatch_Output_Bus_ME.get(1),
+                        true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                if (getBaseMetaTileEntity().getWorld() != null)
-                    gridProxy.setOwner(getBaseMetaTileEntity()
-                            .getWorld()
-                            .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
+                        getBaseMetaTileEntity().getWorld()
+                                .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
 
-    @Optional.Method(modid = "appliedenergistics2")
     private void flushCachedStack() {
         lastOutputFailed = false;
         AENetworkProxy proxy = getProxy();
@@ -186,6 +175,16 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             lastOutputFailed = true;
         }
         lastOutputTick = tickCounter;
+    }
+
+    @Override
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
     }
 
     @Override
@@ -236,8 +235,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                         continue;
                     }
                     NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
-                    final IAEItemStack s =
-                            AEApi.instance().storage().createItemStack(GT_Utility.loadItem(tagItemStack));
+                    final IAEItemStack s = AEApi.instance().storage()
+                            .createItemStack(GT_Utility.loadItem(tagItemStack));
                     if (s != null) {
                         s.setStackSize(tag.getLong("size"));
                         itemCache.add(s);
@@ -264,11 +263,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     public String[] getInfoData() {
         if (!GregTech_API.mAE2) return new String[] {};
         List<String> ss = new ArrayList<>();
-        ss.add("The bus is "
-                + ((getProxy() != null && getProxy().isActive())
-                        ? EnumChatFormatting.GREEN + "online"
-                        : EnumChatFormatting.RED + "offline" + getAEDiagnostics())
-                + EnumChatFormatting.RESET);
+        ss.add(
+                "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
+                        : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
         if (itemCache.isEmpty()) {
             ss.add("The bus has no cached items");
         } else {
@@ -276,8 +273,11 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             ss.add(String.format("The bus contains %d cached stacks: ", itemCache.size()));
             int counter = 0;
             for (IAEItemStack s : itemCache) {
-                ss.add(s.getItem().getItemStackDisplayName(s.getItemStack()) + ": " + EnumChatFormatting.GOLD
-                        + nc.toWideReadableForm(s.getStackSize()) + EnumChatFormatting.RESET);
+                ss.add(
+                        s.getItem().getItemStackDisplayName(s.getItemStack()) + ": "
+                                + EnumChatFormatting.GOLD
+                                + nc.toWideReadableForm(s.getStackSize())
+                                + EnumChatFormatting.RESET);
                 if (++counter > 100) break;
             }
         }

@@ -3,19 +3,23 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 
 public class Textures {
+
     public enum BlockIcons implements IIconContainer, Runnable {
+
         // ADDED
         MACHINE_UEV_SIDE,
         MACHINE_UIV_SIDE,
@@ -250,6 +254,7 @@ public class Textures {
         MACHINE_CASING_RHODIUM_PALLADIUM,
         MACHINE_CASING_IRIDIUM,
         MACHINE_CASING_MAGICAL,
+        MACHINE_CASING_RADIANT_NAQUADAH_ALLOY,
 
         MACHINE_CASING_FIREBOX_TITANIUM,
         MACHINE_CASING_FUSION_COIL,
@@ -859,7 +864,6 @@ public class Textures {
         LARGETURBINE_ST6,
         LARGETURBINE_ST7,
         LARGETURBINE_ST8,
-
         LARGETURBINE_ST9,
         LARGETURBINE_ST_ACTIVE1,
         LARGETURBINE_ST_ACTIVE2,
@@ -868,9 +872,9 @@ public class Textures {
         LARGETURBINE_ST_ACTIVE5,
         LARGETURBINE_ST_ACTIVE6,
         LARGETURBINE_ST_ACTIVE7,
-
         LARGETURBINE_ST_ACTIVE8,
         LARGETURBINE_ST_ACTIVE9,
+
         LARGETURBINE_SS1,
         LARGETURBINE_SS2,
         LARGETURBINE_SS3,
@@ -879,7 +883,6 @@ public class Textures {
         LARGETURBINE_SS6,
         LARGETURBINE_SS7,
         LARGETURBINE_SS8,
-
         LARGETURBINE_SS9,
         LARGETURBINE_SS_ACTIVE1,
         LARGETURBINE_SS_ACTIVE2,
@@ -888,9 +891,9 @@ public class Textures {
         LARGETURBINE_SS_ACTIVE5,
         LARGETURBINE_SS_ACTIVE6,
         LARGETURBINE_SS_ACTIVE7,
-
         LARGETURBINE_SS_ACTIVE8,
         LARGETURBINE_SS_ACTIVE9,
+
         LARGETURBINE_TI1,
         LARGETURBINE_TI2,
         LARGETURBINE_TI3,
@@ -898,7 +901,6 @@ public class Textures {
         LARGETURBINE_TI5,
         LARGETURBINE_TI6,
         LARGETURBINE_TI7,
-
         LARGETURBINE_TI8,
         LARGETURBINE_TI9,
         LARGETURBINE_TI_ACTIVE1,
@@ -907,17 +909,16 @@ public class Textures {
         LARGETURBINE_TI_ACTIVE4,
         LARGETURBINE_TI_ACTIVE5,
         LARGETURBINE_TI_ACTIVE6,
-
         LARGETURBINE_TI_ACTIVE7,
         LARGETURBINE_TI_ACTIVE8,
         LARGETURBINE_TI_ACTIVE9,
+
         LARGETURBINE_TU1,
         LARGETURBINE_TU2,
         LARGETURBINE_TU3,
         LARGETURBINE_TU4,
         LARGETURBINE_TU5,
         LARGETURBINE_TU6,
-
         LARGETURBINE_TU7,
         LARGETURBINE_TU8,
         LARGETURBINE_TU9,
@@ -926,11 +927,11 @@ public class Textures {
         LARGETURBINE_TU_ACTIVE3,
         LARGETURBINE_TU_ACTIVE4,
         LARGETURBINE_TU_ACTIVE5,
-
         LARGETURBINE_TU_ACTIVE6,
         LARGETURBINE_TU_ACTIVE7,
         LARGETURBINE_TU_ACTIVE8,
         LARGETURBINE_TU_ACTIVE9,
+
         MACHINE_CASING_TURBINE,
         MACHINE_CASING_ADVANCEDGAS,
         BLOCK_ADAMANTIUM,
@@ -1117,6 +1118,13 @@ public class Textures {
         MARBLE_COBBLE,
         BLOCK_NICKELALUMINIUM,
         BLOCK_SILICONSG,
+        BLOCK_TRANSCENDENTMETAL,
+        BLOCK_UNIVERSIUM,
+        BLOCK_ORIHARUKON,
+
+        BLOCK_WHITEDWARFMATTER,
+
+        BLOCK_BLACKDWARFMATTER,
 
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
@@ -1305,728 +1313,342 @@ public class Textures {
         UIV_SIDE_CYCLOTRON_SOLENOID,
         UMV_SIDE_CYCLOTRON_SOLENOID,
         ZPM_TOP_CYCLOTRON_SOLENOID,
-        ZPM_SIDE_CYCLOTRON_SOLENOID;
+        ZPM_SIDE_CYCLOTRON_SOLENOID,
+        MACHINE_CASING_PCB_TIER_1,
+        MACHINE_CASING_PCB_TIER_2,
+        MACHINE_CASING_PCB_TIER_3,
+        INFINITY_COOLED_CASING,
+
+        LARGETURBINE_NEW1,
+        LARGETURBINE_NEW2,
+        LARGETURBINE_NEW3,
+        LARGETURBINE_NEW4,
+        LARGETURBINE_NEW5,
+        LARGETURBINE_NEW6,
+        LARGETURBINE_NEW7,
+        LARGETURBINE_NEW8,
+        LARGETURBINE_NEW9,
+        LARGETURBINE_NEW_ACTIVE1,
+        LARGETURBINE_NEW_ACTIVE2,
+        LARGETURBINE_NEW_ACTIVE3,
+        LARGETURBINE_NEW_ACTIVE4,
+        LARGETURBINE_NEW_ACTIVE5,
+        LARGETURBINE_NEW_ACTIVE6,
+        LARGETURBINE_NEW_ACTIVE7,
+        LARGETURBINE_NEW_ACTIVE8,
+        LARGETURBINE_NEW_ACTIVE9,
+        LARGETURBINE_NEW_EMPTY1,
+        LARGETURBINE_NEW_EMPTY2,
+        LARGETURBINE_NEW_EMPTY3,
+        LARGETURBINE_NEW_EMPTY4,
+        LARGETURBINE_NEW_EMPTY5,
+        LARGETURBINE_NEW_EMPTY6,
+        LARGETURBINE_NEW_EMPTY7,
+        LARGETURBINE_NEW_EMPTY8,
+        LARGETURBINE_NEW_EMPTY9,;
 
         /**
          * Icon for Fresh CFoam
          */
-        public static final ITexture[] FRESHFOAM = {TextureFactory.of(CFOAM_FRESH)};
+        public static final ITexture[] FRESHFOAM = { TextureFactory.of(CFOAM_FRESH) };
         /**
-         * Icons for Hardened CFoam
-         * 0 = No Color
-         * 1 - 16 = Colors
+         * Icons for Hardened CFoam 0 = No Color 1 - 16 = Colors
          */
         public static final ITexture[][] HARDENEDFOAMS = {
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.CONSTRUCTION_FOAM.mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[0].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[1].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[2].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[3].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[4].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[5].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[6].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[7].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[8].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[9].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[10].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[11].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[12].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[13].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[14].mRGBa)},
-            new ITexture[] {TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[15].mRGBa)}
-        };
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.CONSTRUCTION_FOAM.mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[0].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[1].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[2].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[3].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[4].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[5].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[6].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[7].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[8].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[9].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[10].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[11].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[12].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[13].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[14].mRGBa) },
+                new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[15].mRGBa) } };
         /**
-         * Machine Casings by Tier
-         * 0 = 8V, 1 = LV, 2 = MV, 3 = HV, 4 = EV, 5 = IV, 6 = IV, 7 = IV, 8 = IV, 9 = IV
+         * Machine Casings by Tier 0 = 8V, 1 = LV, 2 = MV, 3 = HV, 4 = EV, 5 = IV, 6 = IV, 7 = IV, 8 = IV, 9 = IV
          */
-        public static final IIconContainer[]
-                MACHINECASINGS_SIDE =
-                        {
-                            MACHINE_8V_SIDE,
-                            MACHINE_LV_SIDE,
-                            MACHINE_MV_SIDE,
-                            MACHINE_HV_SIDE,
-                            MACHINE_EV_SIDE,
-                            MACHINE_IV_SIDE,
-                            MACHINE_LuV_SIDE,
-                            MACHINE_ZPM_SIDE,
-                            MACHINE_UV_SIDE,
-                            MACHINE_MAX_SIDE,
-                            MACHINE_UEV_SIDE,
-                            MACHINE_UIV_SIDE,
-                            MACHINE_UMV_SIDE,
-                            MACHINE_UXV_SIDE,
-                            MACHINE_MAXV_SIDE,
-                        },
-                MACHINECASINGS_TOP =
-                        {
-                            MACHINE_8V_TOP,
-                            MACHINE_LV_TOP,
-                            MACHINE_MV_TOP,
-                            MACHINE_HV_TOP,
-                            MACHINE_EV_TOP,
-                            MACHINE_IV_TOP,
-                            MACHINE_LuV_TOP,
-                            MACHINE_ZPM_TOP,
-                            MACHINE_UV_TOP,
-                            MACHINE_MAX_TOP,
-                            MACHINE_UEV_TOP,
-                            MACHINE_UIV_TOP,
-                            MACHINE_UMV_TOP,
-                            MACHINE_UXV_TOP,
-                            MACHINE_MAXV_TOP,
-                        },
-                MACHINECASINGS_BOTTOM =
-                        {
-                            MACHINE_8V_BOTTOM,
-                            MACHINE_LV_BOTTOM,
-                            MACHINE_MV_BOTTOM,
-                            MACHINE_HV_BOTTOM,
-                            MACHINE_EV_BOTTOM,
-                            MACHINE_IV_BOTTOM,
-                            MACHINE_LuV_BOTTOM,
-                            MACHINE_ZPM_BOTTOM,
-                            MACHINE_UV_BOTTOM,
-                            MACHINE_MAX_BOTTOM,
-                            MACHINE_UEV_BOTTOM,
-                            MACHINE_UIV_BOTTOM,
-                            MACHINE_UMV_BOTTOM,
-                            MACHINE_UXV_BOTTOM,
-                            MACHINE_MAXV_BOTTOM,
-                        },
-                GRANITES =
-                        {
-                            GRANITE_BLACK_STONE,
-                            GRANITE_BLACK_COBBLE,
-                            GRANITE_BLACK_COBBLE_MOSSY,
-                            GRANITE_BLACK_BRICKS,
-                            GRANITE_BLACK_BRICKS_CRACKED,
-                            GRANITE_BLACK_BRICKS_MOSSY,
-                            GRANITE_BLACK_BRICKS_CHISELED,
-                            GRANITE_BLACK_SMOOTH,
-                            GRANITE_RED_STONE,
-                            GRANITE_RED_COBBLE,
-                            GRANITE_RED_COBBLE_MOSSY,
-                            GRANITE_RED_BRICKS,
-                            GRANITE_RED_BRICKS_CRACKED,
-                            GRANITE_RED_BRICKS_MOSSY,
-                            GRANITE_RED_BRICKS_CHISELED,
-                            GRANITE_RED_SMOOTH,
-                        },
-                CONCRETES =
-                        {
-                            CONCRETE_DARK_STONE,
-                            CONCRETE_DARK_COBBLE,
-                            CONCRETE_DARK_COBBLE_MOSSY,
-                            CONCRETE_DARK_BRICKS,
-                            CONCRETE_DARK_BRICKS_CRACKED,
-                            CONCRETE_DARK_BRICKS_MOSSY,
-                            CONCRETE_DARK_BRICKS_CHISELED,
-                            CONCRETE_DARK_SMOOTH,
-                            CONCRETE_LIGHT_STONE,
-                            CONCRETE_LIGHT_COBBLE,
-                            CONCRETE_LIGHT_COBBLE_MOSSY,
-                            CONCRETE_LIGHT_BRICKS,
-                            CONCRETE_LIGHT_BRICKS_CRACKED,
-                            CONCRETE_LIGHT_BRICKS_MOSSY,
-                            CONCRETE_LIGHT_BRICKS_CHISELED,
-                            CONCRETE_LIGHT_SMOOTH,
-                        },
-                STONES =
-                        {
-                            MARBLE_STONE,
-                            MARBLE_COBBLE,
-                            MARBLE_COBBLE_MOSSY,
-                            MARBLE_BRICKS,
-                            MARBLE_BRICKS_CRACKED,
-                            MARBLE_BRICKS_MOSSY,
-                            MARBLE_BRICKS_CHISELED,
-                            MARBLE_SMOOTH,
-                            BASALT_STONE,
-                            BASALT_COBBLE,
-                            BASALT_COBBLE_MOSSY,
-                            BASALT_BRICKS,
-                            BASALT_BRICKS_CRACKED,
-                            BASALT_BRICKS_MOSSY,
-                            BASALT_BRICKS_CHISELED,
-                            BASALT_SMOOTH,
-                        },
-                TURBINE =
-                        {
-                            LARGETURBINE_ST1,
-                            LARGETURBINE_ST2,
-                            LARGETURBINE_ST3,
-                            LARGETURBINE_ST4,
-                            LARGETURBINE_ST5,
-                            LARGETURBINE_ST6,
-                            LARGETURBINE_ST7,
-                            LARGETURBINE_ST8,
-                            LARGETURBINE_ST9
-                        },
-                TURBINE_ACTIVE =
-                        {
-                            LARGETURBINE_ST_ACTIVE1,
-                            LARGETURBINE_ST_ACTIVE2,
-                            LARGETURBINE_ST_ACTIVE3,
-                            LARGETURBINE_ST_ACTIVE4,
-                            LARGETURBINE_ST_ACTIVE5,
-                            LARGETURBINE_ST_ACTIVE6,
-                            LARGETURBINE_ST_ACTIVE7,
-                            LARGETURBINE_ST_ACTIVE8,
-                            LARGETURBINE_ST_ACTIVE9
-                        },
-                TURBINE_EMPTY =
-                        {
-                            LARGETURBINE_ST_EMPTY1,
-                            LARGETURBINE_ST_EMPTY2,
-                            LARGETURBINE_ST_EMPTY3,
-                            LARGETURBINE_ST_EMPTY4,
-                            LARGETURBINE_ST_EMPTY5,
-                            LARGETURBINE_ST_EMPTY6,
-                            LARGETURBINE_ST_EMPTY7,
-                            LARGETURBINE_ST_EMPTY8,
-                            LARGETURBINE_ST_EMPTY9
-                        },
-                TURBINE1 =
-                        {
-                            LARGETURBINE_SS1,
-                            LARGETURBINE_SS2,
-                            LARGETURBINE_SS3,
-                            LARGETURBINE_SS4,
-                            LARGETURBINE_SS5,
-                            LARGETURBINE_SS6,
-                            LARGETURBINE_SS7,
-                            LARGETURBINE_SS8,
-                            LARGETURBINE_SS9
-                        },
-                TURBINE_ACTIVE1 =
-                        {
-                            LARGETURBINE_SS_ACTIVE1,
-                            LARGETURBINE_SS_ACTIVE2,
-                            LARGETURBINE_SS_ACTIVE3,
-                            LARGETURBINE_SS_ACTIVE4,
-                            LARGETURBINE_SS_ACTIVE5,
-                            LARGETURBINE_SS_ACTIVE6,
-                            LARGETURBINE_SS_ACTIVE7,
-                            LARGETURBINE_SS_ACTIVE8,
-                            LARGETURBINE_SS_ACTIVE9
-                        },
-                TURBINE_EMPTY1 =
-                        {
-                            LARGETURBINE_SS_EMPTY1,
-                            LARGETURBINE_SS_EMPTY2,
-                            LARGETURBINE_SS_EMPTY3,
-                            LARGETURBINE_SS_EMPTY4,
-                            LARGETURBINE_SS_EMPTY5,
-                            LARGETURBINE_SS_EMPTY6,
-                            LARGETURBINE_SS_EMPTY7,
-                            LARGETURBINE_SS_EMPTY8,
-                            LARGETURBINE_SS_EMPTY9
-                        },
-                TURBINE2 =
-                        {
-                            LARGETURBINE_TI1,
-                            LARGETURBINE_TI2,
-                            LARGETURBINE_TI3,
-                            LARGETURBINE_TI4,
-                            LARGETURBINE_TI5,
-                            LARGETURBINE_TI6,
-                            LARGETURBINE_TI7,
-                            LARGETURBINE_TI8,
-                            LARGETURBINE_TI9
-                        },
-                TURBINE_ACTIVE2 =
-                        {
-                            LARGETURBINE_TI_ACTIVE1,
-                            LARGETURBINE_TI_ACTIVE2,
-                            LARGETURBINE_TI_ACTIVE3,
-                            LARGETURBINE_TI_ACTIVE4,
-                            LARGETURBINE_TI_ACTIVE5,
-                            LARGETURBINE_TI_ACTIVE6,
-                            LARGETURBINE_TI_ACTIVE7,
-                            LARGETURBINE_TI_ACTIVE8,
-                            LARGETURBINE_TI_ACTIVE9
-                        },
-                TURBINE_EMPTY2 =
-                        {
-                            LARGETURBINE_TI_EMPTY1,
-                            LARGETURBINE_TI_EMPTY2,
-                            LARGETURBINE_TI_EMPTY3,
-                            LARGETURBINE_TI_EMPTY4,
-                            LARGETURBINE_TI_EMPTY5,
-                            LARGETURBINE_TI_EMPTY6,
-                            LARGETURBINE_TI_EMPTY7,
-                            LARGETURBINE_TI_EMPTY8,
-                            LARGETURBINE_TI_EMPTY9
-                        },
-                TURBINE3 =
-                        {
-                            LARGETURBINE_TU1,
-                            LARGETURBINE_TU2,
-                            LARGETURBINE_TU3,
-                            LARGETURBINE_TU4,
-                            LARGETURBINE_TU5,
-                            LARGETURBINE_TU6,
-                            LARGETURBINE_TU7,
-                            LARGETURBINE_TU8,
-                            LARGETURBINE_TU9
-                        },
-                TURBINE_ACTIVE3 =
-                        {
-                            LARGETURBINE_TU_ACTIVE1,
-                            LARGETURBINE_TU_ACTIVE2,
-                            LARGETURBINE_TU_ACTIVE3,
-                            LARGETURBINE_TU_ACTIVE4,
-                            LARGETURBINE_TU_ACTIVE5,
-                            LARGETURBINE_TU_ACTIVE6,
-                            LARGETURBINE_TU_ACTIVE7,
-                            LARGETURBINE_TU_ACTIVE8,
-                            LARGETURBINE_TU_ACTIVE9
-                        },
-                TURBINE_EMPTY3 =
-                        {
-                            LARGETURBINE_TU_EMPTY1,
-                            LARGETURBINE_TU_EMPTY2,
-                            LARGETURBINE_TU_EMPTY3,
-                            LARGETURBINE_TU_EMPTY4,
-                            LARGETURBINE_TU_EMPTY5,
-                            LARGETURBINE_TU_EMPTY6,
-                            LARGETURBINE_TU_EMPTY7,
-                            LARGETURBINE_TU_EMPTY8,
-                            LARGETURBINE_TU_EMPTY9
-                        },
-                TURBINEADVGAS =
-                        {
-                            LARGETURBINE_ADVGAS1,
-                            LARGETURBINE_ADVGAS2,
-                            LARGETURBINE_ADVGAS3,
-                            LARGETURBINE_ADVGAS4,
-                            LARGETURBINE_ADVGAS5,
-                            LARGETURBINE_ADVGAS6,
-                            LARGETURBINE_ADVGAS7,
-                            LARGETURBINE_ADVGAS8,
-                            LARGETURBINE_ADVGAS9
-                        },
-                TURBINE_ADVGASACTIVE =
-                        {
-                            LARGETURBINE_ADVGAS_ACTIVE1,
-                            LARGETURBINE_ADVGAS_ACTIVE2,
-                            LARGETURBINE_ADVGAS_ACTIVE3,
-                            LARGETURBINE_ADVGAS_ACTIVE4,
-                            LARGETURBINE_ADVGAS_ACTIVE5,
-                            LARGETURBINE_ADVGAS_ACTIVE6,
-                            LARGETURBINE_ADVGAS_ACTIVE7,
-                            LARGETURBINE_ADVGAS_ACTIVE8,
-                            LARGETURBINE_ADVGAS_ACTIVE9
-                        },
-                TURBINE_ADVGASEMPTY =
-                        {
-                            LARGETURBINE_ADVGAS_EMPTY1,
-                            LARGETURBINE_ADVGAS_EMPTY2,
-                            LARGETURBINE_ADVGAS_EMPTY3,
-                            LARGETURBINE_ADVGAS_EMPTY4,
-                            LARGETURBINE_ADVGAS_EMPTY5,
-                            LARGETURBINE_ADVGAS_EMPTY6,
-                            LARGETURBINE_ADVGAS_EMPTY7,
-                            LARGETURBINE_ADVGAS_EMPTY8,
-                            LARGETURBINE_ADVGAS_EMPTY9
-                        },
-                CONNECTED_HULLS =
-                        {
-                            CONCRETE_DARK_STONE,
-                            FUSIONI_1,
-                            FUSIONI_2,
-                            FUSIONI_3,
-                            FUSIONI_4,
-                            FUSIONI_5,
-                            FUSIONI_6,
-                            FUSIONI_7,
-                            FUSIONI_8,
-                            FUSIONI_9,
-                            FUSIONI_10,
-                            FUSIONI_11,
-                            FUSIONI_12,
-                            FUSIONII_1,
-                            FUSIONII_2,
-                            FUSIONII_3,
-                            FUSIONII_4,
-                            FUSIONII_5,
-                            FUSIONII_6,
-                            FUSIONII_7,
-                            FUSIONII_8,
-                            FUSIONII_9,
-                            FUSIONII_10,
-                            FUSIONII_11,
-                            FUSIONII_12,
-                        },
-                STORAGE_BLOCKS1 =
-                        {
-                            BLOCK_ADAMANTIUM,
-                            BLOCK_ALUMINIUM,
-                            BLOCK_AMERICIUM,
-                            BLOCK_ANNEALEDCOPPER,
-                            BLOCK_ANTIMONY,
-                            BLOCK_ARSENIC,
-                            BLOCK_ASTRALSILVER,
-                            BLOCK_BATTERYALLOY,
-                            BLOCK_BERYLLIUM,
-                            BLOCK_BISMUTH,
-                            BLOCK_BISMUTHBRONZE,
-                            BLOCK_BLACKBRONZE,
-                            BLOCK_BLACKSTEEL,
-                            BLOCK_BLUEALLOY,
-                            BLOCK_BLUESTEEL,
-                            BLOCK_BRASS
-                        },
-                STORAGE_BLOCKS2 =
-                        {
-                            BLOCK_BRONZE,
-                            BLOCK_CAESIUM,
-                            BLOCK_CERIUM,
-                            BLOCK_CHROME,
-                            BLOCK_CHROMIUMDIOXIDE,
-                            BLOCK_COBALT,
-                            BLOCK_COBALTBRASS,
-                            BLOCK_COPPER,
-                            BLOCK_CUPRONICKEL,
-                            BLOCK_DAMASCUSSTEEL,
-                            BLOCK_DARKIRON,
-                            BLOCK_DEEPIRON,
-                            BLOCK_DESH,
-                            BLOCK_DURANIUM,
-                            BLOCK_DYSPROSIUM,
-                            BLOCK_ELECTRUM
-                        },
-                STORAGE_BLOCKS3 =
-                        {
-                            BLOCK_ELECTRUMFLUX,
-                            BLOCK_ENDERIUM,
-                            BLOCK_ERBIUM,
-                            BLOCK_EUROPIUM,
-                            BLOCK_FIERYSTEEL,
-                            BLOCK_GADOLINIUM,
-                            BLOCK_GALLIUM,
-                            BLOCK_HOLMIUM,
-                            BLOCK_HSLA,
-                            BLOCK_INDIUM,
-                            BLOCK_INFUSEDGOLD,
-                            BLOCK_INVAR,
-                            BLOCK_IRIDIUM,
-                            BLOCK_IRONMAGNETIC,
-                            BLOCK_IRONWOOD,
-                            BLOCK_KANTHAL
-                        },
-                STORAGE_BLOCKS4 =
-                        {
-                            BLOCK_KNIGHTMETAL,
-                            BLOCK_LANTHANUM,
-                            BLOCK_LEAD,
-                            BLOCK_LUTETIUM,
-                            BLOCK_MAGNALIUM,
-                            BLOCK_MAGNESIUM,
-                            BLOCK_MANGANESE,
-                            BLOCK_METEORICIRON,
-                            BLOCK_METEORICSTEEL,
-                            BLOCK_TRINIUM,
-                            BLOCK_MITHRIL,
-                            BLOCK_MOLYBDENUM,
-                            BLOCK_NAQUADAH,
-                            BLOCK_NAQUADAHALLOY,
-                            BLOCK_NAQUADAHENRICHED,
-                            BLOCK_NAQUADRIA
-                        },
-                STORAGE_BLOCKS5 =
-                        {
-                            BLOCK_NEODYMIUM,
-                            BLOCK_NEODYMIUMMAGNETIC,
-                            BLOCK_NEUTRONIUM,
-                            BLOCK_NICHROME,
-                            BLOCK_NICKEL,
-                            BLOCK_NIOBIUM,
-                            BLOCK_NIOBIUMNITRIDE,
-                            BLOCK_NIOBIUMTITANIUM,
-                            BLOCK_OSMIRIDIUM,
-                            BLOCK_OSMIUM,
-                            BLOCK_PALLADIUM,
-                            BLOCK_PIGIRON,
-                            BLOCK_PLATINUM,
-                            BLOCK_PLUTONIUM,
-                            BLOCK_PLUTONIUM241,
-                            BLOCK_PRASEODYMIUM
-                        },
-                STORAGE_BLOCKS6 =
-                        {
-                            BLOCK_PROMETHIUM,
-                            BLOCK_REDALLOY,
-                            BLOCK_REDSTEEL,
-                            BLOCK_ROSEGOLD,
-                            BLOCK_RUBIDIUM,
-                            BLOCK_SAMARIUM,
-                            BLOCK_SCANDIUM,
-                            BLOCK_SHADOWIRON,
-                            BLOCK_SHADOWSTEEL,
-                            BLOCK_SILICON,
-                            BLOCK_SILVER,
-                            BLOCK_SOLDERINGALLOY,
-                            BLOCK_STAINLESSSTEEL,
-                            BLOCK_STEEL,
-                            BLOCK_STEELMAGNETIC,
-                            BLOCK_STERLINGSILVER
-                        },
-                STORAGE_BLOCKS7 =
-                        {
-                            BLOCK_SUNNARIUM,
-                            BLOCK_TANTALUM,
-                            BLOCK_TELLURIUM,
-                            BLOCK_TERBIUM,
-                            BLOCK_THAUMIUM,
-                            BLOCK_THORIUM,
-                            BLOCK_THULIUM,
-                            BLOCK_TIN,
-                            BLOCK_TINALLOY,
-                            BLOCK_TITANIUM,
-                            BLOCK_TRITANIUM,
-                            BLOCK_TUNGSTEN,
-                            BLOCK_TUNGSTENSTEEL,
-                            BLOCK_ULTIMET,
-                            BLOCK_URANIUM,
-                            BLOCK_URANIUM235
-                        },
-                STORAGE_BLOCKS8 =
-                        {
-                            BLOCK_VANADIUM,
-                            BLOCK_VANADIUMGALLIUM,
-                            BLOCK_WROUGHTIRON,
-                            BLOCK_YTTRBIUM,
-                            BLOCK_YTTRIUM,
-                            BLOCK_YTTRIUMBARIUMCUPRATE,
-                            BLOCK_ZINC,
-                            BLOCK_TUNGSTENCARBIDE,
-                            BLOCK_VANADIUMSTEEL,
-                            BLOCK_HSSG,
-                            BLOCK_HSSE,
-                            BLOCK_HSSS,
-                            BLOCK_STEELEAF,
-                            BLOCK_ICHORIUM,
-                            BLOCK_FIRESTONE,
-                            BLOCK_SHADOW
-                        },
-                STORAGE_BLOCKS9 =
-                        {
-                            BLOCK_AERCRYSTAL,
-                            BLOCK_AMBER,
-                            BLOCK_AMETHYST,
-                            BLOCK_AQUACRYSTAL,
-                            BLOCK_BLUETOPAZ,
-                            BLOCK_CERTUSQUARTZ,
-                            BLOCK_DILITHIUM,
-                            BLOCK_ENDEREYE,
-                            BLOCK_ENDERPEARL,
-                            BLOCK_FOOLSRUBY,
-                            BLOCK_FORCE,
-                            BLOCK_FORCICIUM,
-                            BLOCK_FORCILLIUM,
-                            BLOCK_GREENSAPPHIRE,
-                            BLOCK_IGNISCRYSTAL,
-                            BLOCK_JASPER
-                        },
-                STORAGE_BLOCKS10 =
-                        {
-                            BLOCK_LAZURITE,
-                            BLOCK_LIGNITE,
-                            BLOCK_MONAZITE,
-                            BLOCK_NITER,
-                            BLOCK_OLIVINE,
-                            BLOCK_OPAL,
-                            BLOCK_ORDOCRYSTAL,
-                            BLOCK_PERDITIOCRYSTAL,
-                            BLOCK_PHOSPHORUS,
-                            BLOCK_QUARTZITE,
-                            BLOCK_REDGARNET,
-                            BLOCK_RUBY,
-                            BLOCK_SAPPHIRE,
-                            BLOCK_SODALITE,
-                            BLOCK_TANZANITE,
-                            BLOCK_TERRACRYSTAL
-                        },
-                STORAGE_BLOCKS11 =
-                        {
-                            BLOCK_TOPAZ,
-                            BLOCK_VINTEUM,
-                            BLOCK_YELLOWGARNET,
-                            BLOCK_NETHERSTAR,
-                            BLOCK_CHARCOAL,
-                            BLOCK_BLAZE,
-                        },
-                STORAGE_BLOCKS12 = {BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME};
+        public static final IIconContainer[] MACHINECASINGS_SIDE = { MACHINE_8V_SIDE, MACHINE_LV_SIDE, MACHINE_MV_SIDE,
+                MACHINE_HV_SIDE, MACHINE_EV_SIDE, MACHINE_IV_SIDE, MACHINE_LuV_SIDE, MACHINE_ZPM_SIDE, MACHINE_UV_SIDE,
+                MACHINE_MAX_SIDE, MACHINE_UEV_SIDE, MACHINE_UIV_SIDE, MACHINE_UMV_SIDE, MACHINE_UXV_SIDE,
+                MACHINE_MAXV_SIDE, },
+                MACHINECASINGS_TOP = { MACHINE_8V_TOP, MACHINE_LV_TOP, MACHINE_MV_TOP, MACHINE_HV_TOP, MACHINE_EV_TOP,
+                        MACHINE_IV_TOP, MACHINE_LuV_TOP, MACHINE_ZPM_TOP, MACHINE_UV_TOP, MACHINE_MAX_TOP,
+                        MACHINE_UEV_TOP, MACHINE_UIV_TOP, MACHINE_UMV_TOP, MACHINE_UXV_TOP, MACHINE_MAXV_TOP, },
+                MACHINECASINGS_BOTTOM = { MACHINE_8V_BOTTOM, MACHINE_LV_BOTTOM, MACHINE_MV_BOTTOM, MACHINE_HV_BOTTOM,
+                        MACHINE_EV_BOTTOM, MACHINE_IV_BOTTOM, MACHINE_LuV_BOTTOM, MACHINE_ZPM_BOTTOM, MACHINE_UV_BOTTOM,
+                        MACHINE_MAX_BOTTOM, MACHINE_UEV_BOTTOM, MACHINE_UIV_BOTTOM, MACHINE_UMV_BOTTOM,
+                        MACHINE_UXV_BOTTOM, MACHINE_MAXV_BOTTOM, },
+                GRANITES = { GRANITE_BLACK_STONE, GRANITE_BLACK_COBBLE, GRANITE_BLACK_COBBLE_MOSSY,
+                        GRANITE_BLACK_BRICKS, GRANITE_BLACK_BRICKS_CRACKED, GRANITE_BLACK_BRICKS_MOSSY,
+                        GRANITE_BLACK_BRICKS_CHISELED, GRANITE_BLACK_SMOOTH, GRANITE_RED_STONE, GRANITE_RED_COBBLE,
+                        GRANITE_RED_COBBLE_MOSSY, GRANITE_RED_BRICKS, GRANITE_RED_BRICKS_CRACKED,
+                        GRANITE_RED_BRICKS_MOSSY, GRANITE_RED_BRICKS_CHISELED, GRANITE_RED_SMOOTH, },
+                CONCRETES = { CONCRETE_DARK_STONE, CONCRETE_DARK_COBBLE, CONCRETE_DARK_COBBLE_MOSSY,
+                        CONCRETE_DARK_BRICKS, CONCRETE_DARK_BRICKS_CRACKED, CONCRETE_DARK_BRICKS_MOSSY,
+                        CONCRETE_DARK_BRICKS_CHISELED, CONCRETE_DARK_SMOOTH, CONCRETE_LIGHT_STONE,
+                        CONCRETE_LIGHT_COBBLE, CONCRETE_LIGHT_COBBLE_MOSSY, CONCRETE_LIGHT_BRICKS,
+                        CONCRETE_LIGHT_BRICKS_CRACKED, CONCRETE_LIGHT_BRICKS_MOSSY, CONCRETE_LIGHT_BRICKS_CHISELED,
+                        CONCRETE_LIGHT_SMOOTH, },
+                STONES = { MARBLE_STONE, MARBLE_COBBLE, MARBLE_COBBLE_MOSSY, MARBLE_BRICKS, MARBLE_BRICKS_CRACKED,
+                        MARBLE_BRICKS_MOSSY, MARBLE_BRICKS_CHISELED, MARBLE_SMOOTH, BASALT_STONE, BASALT_COBBLE,
+                        BASALT_COBBLE_MOSSY, BASALT_BRICKS, BASALT_BRICKS_CRACKED, BASALT_BRICKS_MOSSY,
+                        BASALT_BRICKS_CHISELED, BASALT_SMOOTH, },
+                TURBINE = { LARGETURBINE_ST1, LARGETURBINE_ST2, LARGETURBINE_ST3, LARGETURBINE_ST4, LARGETURBINE_ST5,
+                        LARGETURBINE_ST6, LARGETURBINE_ST7, LARGETURBINE_ST8, LARGETURBINE_ST9 },
+                TURBINE_ACTIVE = { LARGETURBINE_ST_ACTIVE1, LARGETURBINE_ST_ACTIVE2, LARGETURBINE_ST_ACTIVE3,
+                        LARGETURBINE_ST_ACTIVE4, LARGETURBINE_ST_ACTIVE5, LARGETURBINE_ST_ACTIVE6,
+                        LARGETURBINE_ST_ACTIVE7, LARGETURBINE_ST_ACTIVE8, LARGETURBINE_ST_ACTIVE9 },
+                TURBINE_EMPTY = { LARGETURBINE_ST_EMPTY1, LARGETURBINE_ST_EMPTY2, LARGETURBINE_ST_EMPTY3,
+                        LARGETURBINE_ST_EMPTY4, LARGETURBINE_ST_EMPTY5, LARGETURBINE_ST_EMPTY6, LARGETURBINE_ST_EMPTY7,
+                        LARGETURBINE_ST_EMPTY8, LARGETURBINE_ST_EMPTY9 },
+                TURBINE_NEW = { LARGETURBINE_NEW1, LARGETURBINE_NEW2, LARGETURBINE_NEW3, LARGETURBINE_NEW4,
+                        LARGETURBINE_NEW5, LARGETURBINE_NEW6, LARGETURBINE_NEW7, LARGETURBINE_NEW8, LARGETURBINE_NEW9 },
+                TURBINE_NEW_ACTIVE = { LARGETURBINE_NEW_ACTIVE1, LARGETURBINE_NEW_ACTIVE2, LARGETURBINE_NEW_ACTIVE3,
+                        LARGETURBINE_NEW_ACTIVE4, LARGETURBINE_NEW_ACTIVE5, LARGETURBINE_NEW_ACTIVE6,
+                        LARGETURBINE_NEW_ACTIVE7, LARGETURBINE_NEW_ACTIVE8, LARGETURBINE_NEW_ACTIVE9 },
+                TURBINE_NEW_EMPTY = { LARGETURBINE_NEW_EMPTY1, LARGETURBINE_NEW_EMPTY2, LARGETURBINE_NEW_EMPTY3,
+                        LARGETURBINE_NEW_EMPTY4, LARGETURBINE_NEW_EMPTY5, LARGETURBINE_NEW_EMPTY6,
+                        LARGETURBINE_NEW_EMPTY7, LARGETURBINE_NEW_EMPTY8, LARGETURBINE_NEW_EMPTY9 },
+                TURBINE1 = { LARGETURBINE_SS1, LARGETURBINE_SS2, LARGETURBINE_SS3, LARGETURBINE_SS4, LARGETURBINE_SS5,
+                        LARGETURBINE_SS6, LARGETURBINE_SS7, LARGETURBINE_SS8, LARGETURBINE_SS9 },
+                TURBINE_ACTIVE1 = { LARGETURBINE_SS_ACTIVE1, LARGETURBINE_SS_ACTIVE2, LARGETURBINE_SS_ACTIVE3,
+                        LARGETURBINE_SS_ACTIVE4, LARGETURBINE_SS_ACTIVE5, LARGETURBINE_SS_ACTIVE6,
+                        LARGETURBINE_SS_ACTIVE7, LARGETURBINE_SS_ACTIVE8, LARGETURBINE_SS_ACTIVE9 },
+                TURBINE_EMPTY1 = { LARGETURBINE_SS_EMPTY1, LARGETURBINE_SS_EMPTY2, LARGETURBINE_SS_EMPTY3,
+                        LARGETURBINE_SS_EMPTY4, LARGETURBINE_SS_EMPTY5, LARGETURBINE_SS_EMPTY6, LARGETURBINE_SS_EMPTY7,
+                        LARGETURBINE_SS_EMPTY8, LARGETURBINE_SS_EMPTY9 },
+                TURBINE2 = { LARGETURBINE_TI1, LARGETURBINE_TI2, LARGETURBINE_TI3, LARGETURBINE_TI4, LARGETURBINE_TI5,
+                        LARGETURBINE_TI6, LARGETURBINE_TI7, LARGETURBINE_TI8, LARGETURBINE_TI9 },
+                TURBINE_ACTIVE2 = { LARGETURBINE_TI_ACTIVE1, LARGETURBINE_TI_ACTIVE2, LARGETURBINE_TI_ACTIVE3,
+                        LARGETURBINE_TI_ACTIVE4, LARGETURBINE_TI_ACTIVE5, LARGETURBINE_TI_ACTIVE6,
+                        LARGETURBINE_TI_ACTIVE7, LARGETURBINE_TI_ACTIVE8, LARGETURBINE_TI_ACTIVE9 },
+                TURBINE_EMPTY2 = { LARGETURBINE_TI_EMPTY1, LARGETURBINE_TI_EMPTY2, LARGETURBINE_TI_EMPTY3,
+                        LARGETURBINE_TI_EMPTY4, LARGETURBINE_TI_EMPTY5, LARGETURBINE_TI_EMPTY6, LARGETURBINE_TI_EMPTY7,
+                        LARGETURBINE_TI_EMPTY8, LARGETURBINE_TI_EMPTY9 },
+                TURBINE3 = { LARGETURBINE_TU1, LARGETURBINE_TU2, LARGETURBINE_TU3, LARGETURBINE_TU4, LARGETURBINE_TU5,
+                        LARGETURBINE_TU6, LARGETURBINE_TU7, LARGETURBINE_TU8, LARGETURBINE_TU9 },
+                TURBINE_ACTIVE3 = { LARGETURBINE_TU_ACTIVE1, LARGETURBINE_TU_ACTIVE2, LARGETURBINE_TU_ACTIVE3,
+                        LARGETURBINE_TU_ACTIVE4, LARGETURBINE_TU_ACTIVE5, LARGETURBINE_TU_ACTIVE6,
+                        LARGETURBINE_TU_ACTIVE7, LARGETURBINE_TU_ACTIVE8, LARGETURBINE_TU_ACTIVE9 },
+                TURBINE_EMPTY3 = { LARGETURBINE_TU_EMPTY1, LARGETURBINE_TU_EMPTY2, LARGETURBINE_TU_EMPTY3,
+                        LARGETURBINE_TU_EMPTY4, LARGETURBINE_TU_EMPTY5, LARGETURBINE_TU_EMPTY6, LARGETURBINE_TU_EMPTY7,
+                        LARGETURBINE_TU_EMPTY8, LARGETURBINE_TU_EMPTY9 },
+                TURBINEADVGAS = { LARGETURBINE_ADVGAS1, LARGETURBINE_ADVGAS2, LARGETURBINE_ADVGAS3,
+                        LARGETURBINE_ADVGAS4, LARGETURBINE_ADVGAS5, LARGETURBINE_ADVGAS6, LARGETURBINE_ADVGAS7,
+                        LARGETURBINE_ADVGAS8, LARGETURBINE_ADVGAS9 },
+                TURBINE_ADVGASACTIVE = { LARGETURBINE_ADVGAS_ACTIVE1, LARGETURBINE_ADVGAS_ACTIVE2,
+                        LARGETURBINE_ADVGAS_ACTIVE3, LARGETURBINE_ADVGAS_ACTIVE4, LARGETURBINE_ADVGAS_ACTIVE5,
+                        LARGETURBINE_ADVGAS_ACTIVE6, LARGETURBINE_ADVGAS_ACTIVE7, LARGETURBINE_ADVGAS_ACTIVE8,
+                        LARGETURBINE_ADVGAS_ACTIVE9 },
+                TURBINE_ADVGASEMPTY = { LARGETURBINE_ADVGAS_EMPTY1, LARGETURBINE_ADVGAS_EMPTY2,
+                        LARGETURBINE_ADVGAS_EMPTY3, LARGETURBINE_ADVGAS_EMPTY4, LARGETURBINE_ADVGAS_EMPTY5,
+                        LARGETURBINE_ADVGAS_EMPTY6, LARGETURBINE_ADVGAS_EMPTY7, LARGETURBINE_ADVGAS_EMPTY8,
+                        LARGETURBINE_ADVGAS_EMPTY9 },
+                CONNECTED_HULLS = { CONCRETE_DARK_STONE, FUSIONI_1, FUSIONI_2, FUSIONI_3, FUSIONI_4, FUSIONI_5,
+                        FUSIONI_6, FUSIONI_7, FUSIONI_8, FUSIONI_9, FUSIONI_10, FUSIONI_11, FUSIONI_12, FUSIONII_1,
+                        FUSIONII_2, FUSIONII_3, FUSIONII_4, FUSIONII_5, FUSIONII_6, FUSIONII_7, FUSIONII_8, FUSIONII_9,
+                        FUSIONII_10, FUSIONII_11, FUSIONII_12, },
+                STORAGE_BLOCKS1 = { BLOCK_ADAMANTIUM, BLOCK_ALUMINIUM, BLOCK_AMERICIUM, BLOCK_ANNEALEDCOPPER,
+                        BLOCK_ANTIMONY, BLOCK_ARSENIC, BLOCK_ASTRALSILVER, BLOCK_BATTERYALLOY, BLOCK_BERYLLIUM,
+                        BLOCK_BISMUTH, BLOCK_BISMUTHBRONZE, BLOCK_BLACKBRONZE, BLOCK_BLACKSTEEL, BLOCK_BLUEALLOY,
+                        BLOCK_BLUESTEEL, BLOCK_BRASS },
+                STORAGE_BLOCKS2 = { BLOCK_BRONZE, BLOCK_CAESIUM, BLOCK_CERIUM, BLOCK_CHROME, BLOCK_CHROMIUMDIOXIDE,
+                        BLOCK_COBALT, BLOCK_COBALTBRASS, BLOCK_COPPER, BLOCK_CUPRONICKEL, BLOCK_DAMASCUSSTEEL,
+                        BLOCK_DARKIRON, BLOCK_DEEPIRON, BLOCK_DESH, BLOCK_DURANIUM, BLOCK_DYSPROSIUM, BLOCK_ELECTRUM },
+                STORAGE_BLOCKS3 = { BLOCK_ELECTRUMFLUX, BLOCK_ENDERIUM, BLOCK_ERBIUM, BLOCK_EUROPIUM, BLOCK_FIERYSTEEL,
+                        BLOCK_GADOLINIUM, BLOCK_GALLIUM, BLOCK_HOLMIUM, BLOCK_HSLA, BLOCK_INDIUM, BLOCK_INFUSEDGOLD,
+                        BLOCK_INVAR, BLOCK_IRIDIUM, BLOCK_IRONMAGNETIC, BLOCK_IRONWOOD, BLOCK_KANTHAL },
+                STORAGE_BLOCKS4 = { BLOCK_KNIGHTMETAL, BLOCK_LANTHANUM, BLOCK_LEAD, BLOCK_LUTETIUM, BLOCK_MAGNALIUM,
+                        BLOCK_MAGNESIUM, BLOCK_MANGANESE, BLOCK_METEORICIRON, BLOCK_METEORICSTEEL, BLOCK_TRINIUM,
+                        BLOCK_MITHRIL, BLOCK_MOLYBDENUM, BLOCK_NAQUADAH, BLOCK_NAQUADAHALLOY, BLOCK_NAQUADAHENRICHED,
+                        BLOCK_NAQUADRIA },
+                STORAGE_BLOCKS5 = { BLOCK_NEODYMIUM, BLOCK_NEODYMIUMMAGNETIC, BLOCK_NEUTRONIUM, BLOCK_NICHROME,
+                        BLOCK_NICKEL, BLOCK_NIOBIUM, BLOCK_NIOBIUMNITRIDE, BLOCK_NIOBIUMTITANIUM, BLOCK_OSMIRIDIUM,
+                        BLOCK_OSMIUM, BLOCK_PALLADIUM, BLOCK_PIGIRON, BLOCK_PLATINUM, BLOCK_PLUTONIUM,
+                        BLOCK_PLUTONIUM241, BLOCK_PRASEODYMIUM },
+                STORAGE_BLOCKS6 = { BLOCK_PROMETHIUM, BLOCK_REDALLOY, BLOCK_REDSTEEL, BLOCK_ROSEGOLD, BLOCK_RUBIDIUM,
+                        BLOCK_SAMARIUM, BLOCK_SCANDIUM, BLOCK_SHADOWIRON, BLOCK_SHADOWSTEEL, BLOCK_SILICON,
+                        BLOCK_SILVER, BLOCK_SOLDERINGALLOY, BLOCK_STAINLESSSTEEL, BLOCK_STEEL, BLOCK_STEELMAGNETIC,
+                        BLOCK_STERLINGSILVER },
+                STORAGE_BLOCKS7 = { BLOCK_SUNNARIUM, BLOCK_TANTALUM, BLOCK_TELLURIUM, BLOCK_TERBIUM, BLOCK_THAUMIUM,
+                        BLOCK_THORIUM, BLOCK_THULIUM, BLOCK_TIN, BLOCK_TINALLOY, BLOCK_TITANIUM, BLOCK_TRITANIUM,
+                        BLOCK_TUNGSTEN, BLOCK_TUNGSTENSTEEL, BLOCK_ULTIMET, BLOCK_URANIUM, BLOCK_URANIUM235 },
+                STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_WROUGHTIRON, BLOCK_YTTRBIUM,
+                        BLOCK_YTTRIUM, BLOCK_YTTRIUMBARIUMCUPRATE, BLOCK_ZINC, BLOCK_TUNGSTENCARBIDE,
+                        BLOCK_VANADIUMSTEEL, BLOCK_HSSG, BLOCK_HSSE, BLOCK_HSSS, BLOCK_STEELEAF, BLOCK_ICHORIUM,
+                        BLOCK_FIRESTONE, BLOCK_SHADOW },
+                STORAGE_BLOCKS9 = { BLOCK_AERCRYSTAL, BLOCK_AMBER, BLOCK_AMETHYST, BLOCK_AQUACRYSTAL, BLOCK_BLUETOPAZ,
+                        BLOCK_CERTUSQUARTZ, BLOCK_DILITHIUM, BLOCK_ENDEREYE, BLOCK_ENDERPEARL, BLOCK_FOOLSRUBY,
+                        BLOCK_FORCE, BLOCK_FORCICIUM, BLOCK_FORCILLIUM, BLOCK_GREENSAPPHIRE, BLOCK_IGNISCRYSTAL,
+                        BLOCK_JASPER },
+                STORAGE_BLOCKS10 = { BLOCK_LAZURITE, BLOCK_LIGNITE, BLOCK_MONAZITE, BLOCK_NITER, BLOCK_OLIVINE,
+                        BLOCK_OPAL, BLOCK_ORDOCRYSTAL, BLOCK_PERDITIOCRYSTAL, BLOCK_PHOSPHORUS, BLOCK_QUARTZITE,
+                        BLOCK_REDGARNET, BLOCK_RUBY, BLOCK_SAPPHIRE, BLOCK_SODALITE, BLOCK_TANZANITE,
+                        BLOCK_TERRACRYSTAL },
+                STORAGE_BLOCKS11 = { BLOCK_TOPAZ, BLOCK_VINTEUM, BLOCK_YELLOWGARNET, BLOCK_NETHERSTAR, BLOCK_CHARCOAL,
+                        BLOCK_BLAZE },
+                STORAGE_BLOCKS12 = { BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME,
+                        BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
+                        BLOCK_UNIVERSIUM };
 
         public static final ITexture[] HIDDEN_TEXTURE = {
-            TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build()
-        };
-        public static final ITexture[] ERROR_RENDERING = {TextureFactory.of(RENDERING_ERROR)};
+                TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build() };
+        public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
         public static final ITexture[] OVERLAYS_ENERGY_IN = {
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {180, 180, 180, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {220, 220, 220, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {255, 100, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {255, 255, 30, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {128, 128, 128, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {240, 240, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {220, 220, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {200, 200, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {180, 180, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {160, 160, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {140, 140, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {120, 120, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {100, 100, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {80, 80, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {60, 60, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN, new short[] {40, 40, 245, 0}),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 180, 180, 180, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 220, 220, 220, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 255, 100, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 255, 255, 30, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 128, 128, 128, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 240, 240, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 220, 220, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 200, 200, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 180, 180, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 160, 160, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 140, 140, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 120, 120, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 100, 100, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 80, 80, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 60, 60, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 40, 40, 245, 0 }), };
         public static ITexture[] OVERLAYS_ENERGY_OUT = {
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {180, 180, 180, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {220, 220, 220, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {255, 100, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {255, 255, 30, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {128, 128, 128, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {240, 240, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {220, 220, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {200, 200, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {180, 180, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {160, 160, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {140, 140, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {120, 120, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {100, 100, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {80, 80, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {60, 60, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] {40, 40, 245, 0}),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 180, 180, 180, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 220, 220, 220, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 255, 100, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 255, 255, 30, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 128, 128, 128, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 240, 240, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 220, 220, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 200, 200, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 180, 180, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 160, 160, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 140, 140, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 120, 120, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 100, 100, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 80, 80, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 60, 60, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 40, 40, 245, 0 }), };
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI = {
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {180, 180, 180, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {220, 220, 220, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {255, 100, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {255, 255, 30, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {128, 128, 128, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {240, 240, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {220, 220, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {200, 200, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {180, 180, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {160, 160, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {140, 140, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {120, 120, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {100, 100, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {80, 80, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {60, 60, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] {40, 40, 245, 0}),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 180, 180, 180, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 220, 220, 220, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 255, 100, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 255, 255, 30, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 128, 128, 128, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 240, 240, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 220, 220, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 200, 200, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 180, 180, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 160, 160, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 140, 140, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 120, 120, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 100, 100, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 80, 80, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 60, 60, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[] { 40, 40, 245, 0 }), };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON = {
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] {255, 255, 255, 0}),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 255, 255, 0 }), };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_WIRELESS_OFF = {
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] {0, 0, 0, 0}),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS, new short[] { 0, 0, 0, 0 }), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI = {
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {180, 180, 180, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {220, 220, 220, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {255, 100, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {255, 255, 30, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {128, 128, 128, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {240, 240, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {220, 220, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {200, 200, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {180, 180, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {160, 160, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {140, 140, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {120, 120, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {100, 100, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {80, 80, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {60, 60, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] {40, 40, 245, 0}),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 180, 180, 180, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 220, 220, 220, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 255, 100, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 255, 255, 30, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 128, 128, 128, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 240, 240, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 220, 220, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 200, 200, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 180, 180, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 160, 160, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 140, 140, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 120, 120, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 100, 100, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 80, 80, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 60, 60, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[] { 40, 40, 245, 0 }), };
         public static final ITexture[] OVERLAYS_ENERGY_IN_POWER = {
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {180, 180, 180, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {220, 220, 220, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {255, 100, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {255, 255, 30, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {128, 128, 128, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {240, 240, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {220, 220, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {200, 200, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {180, 180, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {160, 160, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {140, 140, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {120, 120, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {100, 100, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {80, 80, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {60, 60, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] {40, 40, 245, 0}),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 180, 180, 180, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 220, 220, 220, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 255, 100, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 255, 255, 30, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 128, 128, 128, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 240, 240, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 220, 220, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 200, 200, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 180, 180, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 160, 160, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 140, 140, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 120, 120, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 100, 100, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 80, 80, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 60, 60, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[] { 40, 40, 245, 0 }), };
         public static final ITexture[] OVERLAYS_ENERGY_OUT_POWER = {
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {180, 180, 180, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {220, 220, 220, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {255, 100, 0, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {255, 255, 30, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {128, 128, 128, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {240, 240, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {220, 220, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {200, 200, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {180, 180, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {160, 160, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {140, 140, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {120, 120, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {100, 100, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {80, 80, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {60, 60, 245, 0}),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] {40, 40, 245, 0}),
-        };
-        public static final ITexture[] LOCKERS = {
-            TextureFactory.of(OVERLAY_LOCKER_000),
-            TextureFactory.of(OVERLAY_LOCKER_001),
-            TextureFactory.of(OVERLAY_LOCKER_002),
-            TextureFactory.of(OVERLAY_LOCKER_003),
-            TextureFactory.of(OVERLAY_LOCKER_004),
-            TextureFactory.of(OVERLAY_LOCKER_005),
-            TextureFactory.of(OVERLAY_LOCKER_006),
-            TextureFactory.of(OVERLAY_LOCKER_007),
-            TextureFactory.of(OVERLAY_LOCKER_008),
-            TextureFactory.of(OVERLAY_LOCKER_009),
-            TextureFactory.of(OVERLAY_LOCKER_010),
-            TextureFactory.of(OVERLAY_LOCKER_011),
-            TextureFactory.of(OVERLAY_LOCKER_012),
-            TextureFactory.of(OVERLAY_LOCKER_013),
-        };
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 180, 180, 180, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 220, 220, 220, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 255, 100, 0, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 255, 255, 30, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 128, 128, 128, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 240, 240, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 220, 220, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 200, 200, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 180, 180, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 160, 160, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 140, 140, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 120, 120, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 100, 100, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 80, 80, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 60, 60, 245, 0 }),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[] { 40, 40, 245, 0 }), };
+        public static final ITexture[] LOCKERS = { TextureFactory.of(OVERLAY_LOCKER_000),
+                TextureFactory.of(OVERLAY_LOCKER_001), TextureFactory.of(OVERLAY_LOCKER_002),
+                TextureFactory.of(OVERLAY_LOCKER_003), TextureFactory.of(OVERLAY_LOCKER_004),
+                TextureFactory.of(OVERLAY_LOCKER_005), TextureFactory.of(OVERLAY_LOCKER_006),
+                TextureFactory.of(OVERLAY_LOCKER_007), TextureFactory.of(OVERLAY_LOCKER_008),
+                TextureFactory.of(OVERLAY_LOCKER_009), TextureFactory.of(OVERLAY_LOCKER_010),
+                TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
+                TextureFactory.of(OVERLAY_LOCKER_013), };
         /**
          * USE casingTexturePages[page] instead of CASING_BLOCKS since it is casingTexturePages[0]
          */
@@ -2035,28 +1657,23 @@ public class Textures {
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         /**
-         * by Default pages are null
-         * page 0:  0-63 GT casing 1-4, 64-127 GT++
-         * page 1:  0-15 GT casing 5, 22-26 GS dyson swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks,
-         *          96 casing 2 meta 6, 97 error casing
-         * page 8:  0-111 TecTech, 112-127 GT casing 6
-         * page 12: 0-127 GlodBlock
-         * page 42: 0-126 glee8e, 127 KekzTech LSC base
+         * by Default pages are null page 0: 0-63 GT casing 1-4, 64-127 GT++ page 1: 0-15 GT casing 5, 22-26 GS dyson
+         * swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks, 96 casing 2 meta 6, 97 error casing page 8:
+         * 0-111 TecTech, 112-127 GT casing 6 page 12: 0-127 GlodBlock page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
-        public static ITexture[][] casingTexturePages =
-                new ITexture[128][]; // page holder so we don't make an short long array
+        public static ITexture[][] casingTexturePages = new ITexture[128][]; // page holder so we don't make an short
+                                                                             // long array
 
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
             for (byte i = 0; i < MACHINE_CASINGS.length; i++)
-                for (byte j = 0; j < MACHINE_CASINGS[i].length; j++)
-                    MACHINE_CASINGS[i][j] = TextureFactory.of(
-                            MACHINECASINGS_BOTTOM[i],
-                            MACHINECASINGS_TOP[i],
-                            MACHINECASINGS_SIDE[i],
-                            Dyes.getModulation(j - 1, Dyes.MACHINE_METAL.mRGBa));
+                for (byte j = 0; j < MACHINE_CASINGS[i].length; j++) MACHINE_CASINGS[i][j] = TextureFactory.of(
+                        MACHINECASINGS_BOTTOM[i],
+                        MACHINECASINGS_TOP[i],
+                        MACHINECASINGS_SIDE[i],
+                        Dyes.getModulation(j - 1, Dyes.MACHINE_METAL.mRGBa));
             casingTexturePages[0] = new ITexture[128];
             // adds some known pages, modders also can do it...
             GT_Utility.addTexturePage((byte) 1);
@@ -2071,7 +1688,9 @@ public class Textures {
         }
 
         public static ITexture getCasingTextureForId(int id) {
-            return casingTexturePages[(id >> 7) & 0x7f][id & 0x7f];
+            final ITexture[] page = casingTexturePages[(id >> 7) & 0x7f];
+            if (page == null) return null;
+            return page[id & 0x7f];
         }
 
         public static void setCasingTextureForId(int id, ITexture iTexture) {
@@ -2110,6 +1729,7 @@ public class Textures {
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
+
             protected IIcon mIcon;
             protected String mIconName;
 
@@ -2141,6 +1761,7 @@ public class Textures {
     }
 
     public enum ItemIcons implements IIconContainer, Runnable {
+
         VOID, // The Empty Texture
         RENDERING_ERROR,
         WRENCH,
@@ -2193,34 +1814,17 @@ public class Textures {
         POCKET_MULTITOOL_KNIFE,
         POCKET_MULTITOOL_SAW,
         POCKET_MULTITOOL_SCREWDRIVER,
-        POCKET_MULTITOOL_WIRECUTTER;
-        public static final IIconContainer[]
-                DURABILITY_BAR =
-                        {
-                            DURABILITY_BAR_0,
-                            DURABILITY_BAR_1,
-                            DURABILITY_BAR_2,
-                            DURABILITY_BAR_3,
-                            DURABILITY_BAR_4,
-                            DURABILITY_BAR_5,
-                            DURABILITY_BAR_6,
-                            DURABILITY_BAR_7,
-                            DURABILITY_BAR_8,
-                        },
-                ENERGY_BAR =
-                        {
-                            ENERGY_BAR_0,
-                            ENERGY_BAR_1,
-                            ENERGY_BAR_2,
-                            ENERGY_BAR_3,
-                            ENERGY_BAR_4,
-                            ENERGY_BAR_5,
-                            ENERGY_BAR_6,
-                            ENERGY_BAR_7,
-                            ENERGY_BAR_8,
-                        };
+        POCKET_MULTITOOL_WIRECUTTER,
+        HALO,
+        HALO_FUZZY;
 
-        public static final ITexture[] ERROR_RENDERING = {TextureFactory.of(RENDERING_ERROR)};
+        public static final IIconContainer[] DURABILITY_BAR = { DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2,
+                DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7,
+                DURABILITY_BAR_8, },
+                ENERGY_BAR = { ENERGY_BAR_0, ENERGY_BAR_1, ENERGY_BAR_2, ENERGY_BAR_3, ENERGY_BAR_4, ENERGY_BAR_5,
+                        ENERGY_BAR_6, ENERGY_BAR_7, ENERGY_BAR_8, };
+
+        public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
 
         protected IIcon mIcon, mOverlay;
 
@@ -2250,6 +1854,7 @@ public class Textures {
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
+
             protected IIcon mIcon, mOverlay;
             protected String mIconName;
 

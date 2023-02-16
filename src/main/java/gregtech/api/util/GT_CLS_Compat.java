@@ -1,10 +1,5 @@
 package gregtech.api.util;
 
-import cpw.mods.fml.common.ProgressManager;
-import gregtech.GT_Mod;
-import gregtech.api.enums.Materials;
-import gregtech.common.GT_Proxy;
-import gregtech.loaders.postload.GT_PostLoad;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,6 +8,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import cpw.mods.fml.common.ProgressManager;
+import gregtech.GT_Mod;
+import gregtech.api.enums.Materials;
+import gregtech.common.GT_Proxy;
+import gregtech.loaders.postload.GT_PostLoad;
 
 @SuppressWarnings("rawtypes, unchecked, deprecation")
 public class GT_CLS_Compat {
@@ -71,12 +72,8 @@ public class GT_CLS_Compat {
 
     private GT_CLS_Compat() {}
 
-    private static <T> void registerAndReportProgression(
-            String materialsType,
-            Collection<T> materials,
-            ProgressManager.ProgressBar progressBar,
-            Function<T, Object> getName,
-            Consumer<T> action) {
+    private static <T> void registerAndReportProgression(String materialsType, Collection<T> materials,
+            ProgressManager.ProgressBar progressBar, Function<T, Object> getName, Consumer<T> action) {
         int sizeStep = materials.size();
         final long progressionReportsEvery = 100;
         final long bakingMsgEvery = 1000;
@@ -109,8 +106,7 @@ public class GT_CLS_Compat {
             }
             action.accept(m);
             currentStep += 1;
-        }
-        ;
+        } ;
         GT_Mod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
         try {
             progressBarStep.set(progressBar, currentStep);
@@ -119,23 +115,25 @@ public class GT_CLS_Compat {
         }
     }
 
-    public static void stepMaterialsCLS(
-            Collection<GT_Proxy.OreDictEventContainer> mEvents, ProgressManager.ProgressBar progressBar)
-            throws IllegalAccessException, InvocationTargetException {
+    public static void stepMaterialsCLS(Collection<GT_Proxy.OreDictEventContainer> mEvents,
+            ProgressManager.ProgressBar progressBar) throws IllegalAccessException, InvocationTargetException {
         try {
             isRegisteringGTmaterials.set(null, true);
         } catch (IllegalArgumentException | IllegalAccessException e) {
             GT_Mod.GT_FML_LOGGER.catching(e);
         }
         registerAndReportProgression(
-                "GregTech materials", mEvents, progressBar, m -> m.mMaterial, m -> GT_Proxy.registerRecipes(m));
+                "GregTech materials",
+                mEvents,
+                progressBar,
+                m -> m.mMaterial,
+                m -> GT_Proxy.registerRecipes(m));
         ProgressManager.pop(progressBar);
         isRegisteringGTmaterials.set(null, false);
     }
 
-    public static void doActualRegistrationCLS(
-            ProgressManager.ProgressBar progressBar, Set<Materials> replacedVanillaItemsSet)
-            throws InvocationTargetException, IllegalAccessException {
+    public static void doActualRegistrationCLS(ProgressManager.ProgressBar progressBar,
+            Set<Materials> replacedVanillaItemsSet) throws InvocationTargetException, IllegalAccessException {
         try {
             isReplacingVanillaMaterials.set(null, true);
         } catch (IllegalArgumentException | IllegalAccessException e) {

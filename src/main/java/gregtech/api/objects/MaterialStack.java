@@ -4,6 +4,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Utility;
 
 public class MaterialStack implements Cloneable {
+
     public long mAmount;
     public Materials mMaterial;
 
@@ -30,27 +31,27 @@ public class MaterialStack implements Cloneable {
         if (aObject == this) return true;
         if (aObject == null) return false;
         if (aObject instanceof Materials) return aObject == mMaterial;
-        if (aObject instanceof MaterialStack)
-            return ((MaterialStack) aObject).mMaterial == mMaterial
-                    && (mAmount < 0
-                            || ((MaterialStack) aObject).mAmount < 0
-                            || ((MaterialStack) aObject).mAmount == mAmount);
+        if (aObject instanceof MaterialStack) return ((MaterialStack) aObject).mMaterial == mMaterial
+                && (mAmount < 0 || ((MaterialStack) aObject).mAmount < 0
+                        || ((MaterialStack) aObject).mAmount == mAmount);
         return false;
     }
 
     @Override
     public String toString() {
+        return toString(false);
+    }
+
+    public String toString(boolean single) {
         String temp1 = "", temp2 = mMaterial.getToolTip(true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GT_Utility.toSubscript(mAmount);
-
-            if (mMaterial.mMaterialList.size() > 1 || isMaterialListComplex(this)) {
-                temp1 = "(";
-                temp3 = ")";
-            }
         }
-        return String.valueOf(
-                new StringBuilder().append(temp1).append(temp2).append(temp3).append(temp4));
+        if ((!single || mAmount > 1) && isMaterialListComplex(this)) {
+            temp1 = "(";
+            temp3 = ")";
+        }
+        return temp1 + temp2 + temp3 + temp4;
     }
 
     private boolean isMaterialListComplex(MaterialStack materialStack) {

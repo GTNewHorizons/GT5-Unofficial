@@ -3,22 +3,25 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GT_Values.NI;
 import static gregtech.api.enums.GT_Values.W;
 
+import java.util.Locale;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import java.util.Locale;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
  */
 public enum ItemList implements IItemContainer {
+
     Display_ITS_FREE,
     Display_Fluid,
     TE_Slag,
@@ -133,6 +136,7 @@ public enum ItemList implements IItemContainer {
     Arrow_Plastic_Glass_Weakness_Long,
     Arrow_Plastic_Glass_Holy_Water,
     Shape_Empty,
+
     Shape_Mold_Bottle,
     Shape_Mold_Plate,
     Shape_Mold_Ingot,
@@ -163,6 +167,7 @@ public enum ItemList implements IItemContainer {
     Shape_Mold_Pipe_Medium,
     Shape_Mold_Pipe_Large,
     Shape_Mold_Pipe_Huge,
+    Shape_Mold_ToolHeadDrill,
     Shape_Slicer_Flat,
     Shape_Slicer_Stripes,
     Shape_Extruder_Bottle,
@@ -192,6 +197,37 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rotor,
     Shape_Extruder_Turbine_Blade,
     Shape_Extruder_Small_Gear,
+    Shape_Extruder_ToolHeadDrill,
+
+    White_Dwarf_Shape_Extruder_Bottle,
+    White_Dwarf_Shape_Extruder_Plate,
+    White_Dwarf_Shape_Extruder_Cell,
+    White_Dwarf_Shape_Extruder_Ring,
+    White_Dwarf_Shape_Extruder_Rod,
+    White_Dwarf_Shape_Extruder_Bolt,
+    White_Dwarf_Shape_Extruder_Ingot,
+    White_Dwarf_Shape_Extruder_Wire,
+    White_Dwarf_Shape_Extruder_Casing,
+    White_Dwarf_Shape_Extruder_Pipe_Tiny,
+    White_Dwarf_Shape_Extruder_Pipe_Small,
+    White_Dwarf_Shape_Extruder_Pipe_Medium,
+    White_Dwarf_Shape_Extruder_Pipe_Large,
+    White_Dwarf_Shape_Extruder_Pipe_Huge,
+    White_Dwarf_Shape_Extruder_Block,
+    White_Dwarf_Shape_Extruder_Sword,
+    White_Dwarf_Shape_Extruder_Pickaxe,
+    White_Dwarf_Shape_Extruder_Shovel,
+    White_Dwarf_Shape_Extruder_Axe,
+    White_Dwarf_Shape_Extruder_Hoe,
+    White_Dwarf_Shape_Extruder_Hammer,
+    White_Dwarf_Shape_Extruder_File,
+    White_Dwarf_Shape_Extruder_Saw,
+    White_Dwarf_Shape_Extruder_Gear,
+    White_Dwarf_Shape_Extruder_Rotor,
+    White_Dwarf_Shape_Extruder_Turbine_Blade,
+    White_Dwarf_Shape_Extruder_Small_Gear,
+    White_Dwarf_Shape_Extruder_ToolHeadDrill,
+
     Crate_Empty,
     Credit_Copper,
     Credit_Iron,
@@ -370,6 +406,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_Wiring_Elite,
     Circuit_Parts_Crystal_Chip_Elite,
     Circuit_Parts_Crystal_Chip_Master,
+    Circuit_Parts_Crystal_Chip_Wetware,
     Circuit_Primitive,
     Circuit_Basic,
     Circuit_Good,
@@ -1018,6 +1055,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Multi_2x2_LuV,
     Hatch_Input_Multi_2x2_ZPM,
     Hatch_Input_Multi_2x2_UV,
+    Hatch_Input_Multi_2x2_UHV,
+    Hatch_Input_Multi_2x2_UEV,
+    Hatch_Input_Multi_2x2_UIV,
 
     Hatch_Input_Bus_ULV,
     Hatch_Input_Bus_LV,
@@ -1525,7 +1565,7 @@ public enum ItemList implements IItemContainer {
     Distillation_Tower,
     Energy_LapotronicOrb2,
     Ore_Processor,
-
+    ZPM4,
     ZPM3,
     ZPM2,
     Energy_Module,
@@ -1684,6 +1724,7 @@ public enum ItemList implements IItemContainer {
     OreDrill4,
     PyrolyseOven,
     OilCracker,
+    NanoForge,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
     Empty_Board_Basic,
@@ -1779,6 +1820,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Board_Plastic_Advanced,
     Circuit_Board_Bio,
     Circuit_Board_Bio_Ultra,
+    Circuit_Board_Optical,
 
     Circuit_Parts_Resistor,
     Circuit_Parts_ResistorSMD,
@@ -1806,11 +1848,14 @@ public enum ItemList implements IItemContainer {
     Circuit_Silicon_Ingot3,
     Circuit_Silicon_Ingot4,
     Circuit_Silicon_Ingot5,
+    Circuit_Silicon_Ingot6,
     Circuit_Silicon_Wafer,
     Circuit_Silicon_Wafer2,
     Circuit_Silicon_Wafer3,
     Circuit_Silicon_Wafer4,
     Circuit_Silicon_Wafer5,
+    Circuit_Silicon_Wafer6,
+    Circuit_Silicon_Wafer7,
     Circuit_Wafer_ILC,
     Circuit_Chip_ILC,
     Circuit_Wafer_Ram,
@@ -1858,6 +1903,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_Stemcell,
     Circuit_Parts_RawCrystalParts,
     Circuit_Chip_Biocell,
+    Circuit_Chip_Optical,
 
     Tube_Wires,
     KevlarFiber,
@@ -1893,6 +1939,9 @@ public enum ItemList implements IItemContainer {
     Circuit_OpticalAssembly,
     Circuit_OpticalComputer,
     Circuit_OpticalMainframe,
+    Optical_Cpu_Containment_Housing,
+    Optically_Perfected_CPU,
+    Optically_Compatible_Memory,
 
     Circuit_ExoticProcessor,
     Circuit_ExoticAssembly,
@@ -1959,168 +2008,48 @@ public enum ItemList implements IItemContainer {
     Superconducting_Magnet_Solenoid_UHV,
     Superconducting_Magnet_Solenoid_UEV,
     Superconducting_Magnet_Solenoid_UIV,
-    Superconducting_Magnet_Solenoid_UMV;
-    public static final ItemList[]
-            DYE_ONLY_ITEMS =
-                    {
-                        Color_00, Color_01, Color_02, Color_03, Color_04, Color_05, Color_06, Color_07, Color_08,
-                        Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15
-                    },
-            SPRAY_CAN_DYES =
-                    {
-                        Spray_Color_00,
-                        Spray_Color_01,
-                        Spray_Color_02,
-                        Spray_Color_03,
-                        Spray_Color_04,
-                        Spray_Color_05,
-                        Spray_Color_06,
-                        Spray_Color_07,
-                        Spray_Color_08,
-                        Spray_Color_09,
-                        Spray_Color_10,
-                        Spray_Color_11,
-                        Spray_Color_12,
-                        Spray_Color_13,
-                        Spray_Color_14,
-                        Spray_Color_15
-                    },
-            SPRAY_CAN_DYES_USED =
-                    {
-                        Spray_Color_Used_00,
-                        Spray_Color_Used_01,
-                        Spray_Color_Used_02,
-                        Spray_Color_Used_03,
-                        Spray_Color_Used_04,
-                        Spray_Color_Used_05,
-                        Spray_Color_Used_06,
-                        Spray_Color_Used_07,
-                        Spray_Color_Used_08,
-                        Spray_Color_Used_09,
-                        Spray_Color_Used_10,
-                        Spray_Color_Used_11,
-                        Spray_Color_Used_12,
-                        Spray_Color_Used_13,
-                        Spray_Color_Used_14,
-                        Spray_Color_Used_15
-                    },
-            TRANSFORMERS =
-                    {
-                        Transformer_LV_ULV,
-                        Transformer_MV_LV,
-                        Transformer_HV_MV,
-                        Transformer_EV_HV,
-                        Transformer_IV_EV,
-                        Transformer_LuV_IV,
-                        Transformer_ZPM_LuV,
-                        Transformer_UV_ZPM,
-                        Transformer_MAX_UV
-                    },
-            MACHINE_HULLS =
-                    {Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX},
-            HATCHES_DYNAMO =
-                    {
-                        Hatch_Dynamo_ULV,
-                        Hatch_Dynamo_LV,
-                        Hatch_Dynamo_MV,
-                        Hatch_Dynamo_HV,
-                        Hatch_Dynamo_EV,
-                        Hatch_Dynamo_IV,
-                        Hatch_Dynamo_LuV,
-                        Hatch_Dynamo_ZPM,
-                        Hatch_Dynamo_UV,
-                        Hatch_Dynamo_MAX
-                    },
-            HATCHES_ENERGY =
-                    {
-                        Hatch_Energy_ULV,
-                        Hatch_Energy_LV,
-                        Hatch_Energy_MV,
-                        Hatch_Energy_HV,
-                        Hatch_Energy_EV,
-                        Hatch_Energy_IV,
-                        Hatch_Energy_LuV,
-                        Hatch_Energy_ZPM,
-                        Hatch_Energy_UV,
-                        Hatch_Energy_MAX
-                    },
-            HATCHES_INPUT =
-                    {
-                        Hatch_Input_ULV,
-                        Hatch_Input_LV,
-                        Hatch_Input_MV,
-                        Hatch_Input_HV,
-                        Hatch_Input_EV,
-                        Hatch_Input_IV,
-                        Hatch_Input_LuV,
-                        Hatch_Input_ZPM,
-                        Hatch_Input_UV,
-                        Hatch_Input_MAX
-                    },
-            HATCHES_INPUT_BUS =
-                    {
-                        Hatch_Input_Bus_ULV,
-                        Hatch_Input_Bus_LV,
-                        Hatch_Input_Bus_MV,
-                        Hatch_Input_Bus_HV,
-                        Hatch_Input_Bus_EV,
-                        Hatch_Input_Bus_IV,
-                        Hatch_Input_Bus_LuV,
-                        Hatch_Input_Bus_ZPM,
-                        Hatch_Input_Bus_UV,
-                        Hatch_Input_Bus_MAX
-                    },
-            HATCHES_OUTPUT =
-                    {
-                        Hatch_Output_ULV,
-                        Hatch_Output_LV,
-                        Hatch_Output_MV,
-                        Hatch_Output_HV,
-                        Hatch_Output_EV,
-                        Hatch_Output_IV,
-                        Hatch_Output_LuV,
-                        Hatch_Output_ZPM,
-                        Hatch_Output_UV,
-                        Hatch_Output_MAX
-                    },
-            HATCHES_OUTPUT_BUS =
-                    {
-                        Hatch_Output_Bus_ULV,
-                        Hatch_Output_Bus_LV,
-                        Hatch_Output_Bus_MV,
-                        Hatch_Output_Bus_HV,
-                        Hatch_Output_Bus_EV,
-                        Hatch_Output_Bus_IV,
-                        Hatch_Output_Bus_LuV,
-                        Hatch_Output_Bus_ZPM,
-                        Hatch_Output_Bus_UV,
-                        Hatch_Output_Bus_MAX
-                    },
-            HATCHES_MUFFLER =
-                    {
-                        Hatch_Muffler_LV,
-                        Hatch_Muffler_LV,
-                        Hatch_Muffler_MV,
-                        Hatch_Muffler_HV,
-                        Hatch_Muffler_EV,
-                        Hatch_Muffler_IV,
-                        Hatch_Muffler_LuV,
-                        Hatch_Muffler_ZPM,
-                        Hatch_Muffler_UV,
-                        Hatch_Muffler_MAX
-                    };
-    public static Fluid sOilExtraHeavy,
-            sEpichlorhydrin,
-            sDrillingFluid,
-            sBlueVitriol,
-            sNickelSulfate,
-            sGreenVitriol,
-            sToluene,
-            sNitrationMixture,
-            sRocketFuel,
-            sHydricSulfur,
-            sIndiumConcentrate,
-            sLeadZincSolution,
+    Superconducting_Magnet_Solenoid_UMV,
+    RadiantNaquadahAlloyCasing,
+    PCBFactory,
+    BasicPhotolithographicFrameworkCasing,
+    ReinforcedPhotolithographicFrameworkCasing,
+    RadiationProofPhotolithographicFrameworkCasing,
+    InfinityCooledCasing,
+    Machine_Multi_TranscendentPlasmaMixer;
+
+    public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
+            Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },
+            SPRAY_CAN_DYES = { Spray_Color_00, Spray_Color_01, Spray_Color_02, Spray_Color_03, Spray_Color_04,
+                    Spray_Color_05, Spray_Color_06, Spray_Color_07, Spray_Color_08, Spray_Color_09, Spray_Color_10,
+                    Spray_Color_11, Spray_Color_12, Spray_Color_13, Spray_Color_14, Spray_Color_15 },
+            SPRAY_CAN_DYES_USED = { Spray_Color_Used_00, Spray_Color_Used_01, Spray_Color_Used_02, Spray_Color_Used_03,
+                    Spray_Color_Used_04, Spray_Color_Used_05, Spray_Color_Used_06, Spray_Color_Used_07,
+                    Spray_Color_Used_08, Spray_Color_Used_09, Spray_Color_Used_10, Spray_Color_Used_11,
+                    Spray_Color_Used_12, Spray_Color_Used_13, Spray_Color_Used_14, Spray_Color_Used_15 },
+            TRANSFORMERS = { Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV,
+                    Transformer_IV_EV, Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM,
+                    Transformer_MAX_UV },
+            MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV,
+                    Hull_MAX },
+            HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
+                    Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX },
+            HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,
+                    Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX },
+            HATCHES_INPUT = { Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV,
+                    Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_MAX },
+            HATCHES_INPUT_BUS = { Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV,
+                    Hatch_Input_Bus_EV, Hatch_Input_Bus_IV, Hatch_Input_Bus_LuV, Hatch_Input_Bus_ZPM,
+                    Hatch_Input_Bus_UV, Hatch_Input_Bus_MAX },
+            HATCHES_OUTPUT = { Hatch_Output_ULV, Hatch_Output_LV, Hatch_Output_MV, Hatch_Output_HV, Hatch_Output_EV,
+                    Hatch_Output_IV, Hatch_Output_LuV, Hatch_Output_ZPM, Hatch_Output_UV, Hatch_Output_MAX },
+            HATCHES_OUTPUT_BUS = { Hatch_Output_Bus_ULV, Hatch_Output_Bus_LV, Hatch_Output_Bus_MV, Hatch_Output_Bus_HV,
+                    Hatch_Output_Bus_EV, Hatch_Output_Bus_IV, Hatch_Output_Bus_LuV, Hatch_Output_Bus_ZPM,
+                    Hatch_Output_Bus_UV, Hatch_Output_Bus_MAX },
+            HATCHES_MUFFLER = { Hatch_Muffler_LV, Hatch_Muffler_LV, Hatch_Muffler_MV, Hatch_Muffler_HV,
+                    Hatch_Muffler_EV, Hatch_Muffler_IV, Hatch_Muffler_LuV, Hatch_Muffler_ZPM, Hatch_Muffler_UV,
+                    Hatch_Muffler_MAX };
+    public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid, sBlueVitriol, sNickelSulfate, sGreenVitriol,
+            sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
             sHydrochloricAcid;
     private ItemStack mStack;
     private boolean mHasNotBeenSet;
@@ -2225,10 +2154,8 @@ public enum ItemList implements IItemContainer {
         StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
         final String[] tDisplayNameWords = aDisplayName.split("\\W");
         for (String tWord : tDisplayNameWords) {
-            if (tWord.length() > 0)
-                tCamelCasedDisplayNameBuilder.append(tWord.substring(0, 1).toUpperCase(Locale.US));
-            if (tWord.length() > 1)
-                tCamelCasedDisplayNameBuilder.append(tWord.substring(1).toLowerCase(Locale.US));
+            if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(tWord.substring(0, 1).toUpperCase(Locale.US));
+            if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(tWord.substring(1).toLowerCase(Locale.US));
         }
         if (tCamelCasedDisplayNameBuilder.length() == 0) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
@@ -2272,9 +2199,8 @@ public enum ItemList implements IItemContainer {
     }
 
     /**
-     * Returns the internal stack.
-     * This method is unsafe. It's here only for quick operations.
-     * DON'T CHANGE THE RETURNED VALUE!
+     * Returns the internal stack. This method is unsafe. It's here only for quick operations. DON'T CHANGE THE RETURNED
+     * VALUE!
      */
     public ItemStack getInternalStack_unsafe() {
         return mStack;

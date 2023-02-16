@@ -1,15 +1,17 @@
 package gregtech.common.render;
 
-import gregtech.api.interfaces.IBlockContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GT_RenderingWorld;
-import gregtech.api.util.LightingHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.interfaces.IBlockContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.util.GT_RenderingWorld;
+import gregtech.api.util.LightingHelper;
+
 class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBlockContainer {
+
     private final Block mBlock;
     private final byte mSide, mMeta;
 
@@ -40,10 +42,9 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), aX, aY, aZ, aRenderer);
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
-        new LightingHelper(aRenderer)
-                .setupLightingXPos(aBlock, aX, aY, aZ)
-                .setupColor(
-                        ForgeDirection.EAST.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+        new LightingHelper(aRenderer).setupLightingXPos(aBlock, aX, aY, aZ).setupColor(
+                ForgeDirection.EAST.ordinal(),
+                mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;
@@ -53,10 +54,9 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
     public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), aX, aY, aZ, aRenderer);
-        new LightingHelper(aRenderer)
-                .setupLightingXNeg(aBlock, aX, aY, aZ)
-                .setupColor(
-                        ForgeDirection.WEST.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+        new LightingHelper(aRenderer).setupLightingXNeg(aBlock, aX, aY, aZ).setupColor(
+                ForgeDirection.WEST.ordinal(),
+                mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -65,8 +65,7 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
     public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), aX, aY, aZ, aRenderer);
-        new LightingHelper(aRenderer)
-                .setupLightingYPos(aBlock, aX, aY, aZ)
+        new LightingHelper(aRenderer).setupLightingYPos(aBlock, aX, aY, aZ)
                 .setupColor(ForgeDirection.UP.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -76,10 +75,9 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
     public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), aX, aY, aZ, aRenderer);
-        new LightingHelper(aRenderer)
-                .setupLightingYNeg(aBlock, aX, aY, aZ)
-                .setupColor(
-                        ForgeDirection.DOWN.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+        new LightingHelper(aRenderer).setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(
+                ForgeDirection.DOWN.ordinal(),
+                mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -88,10 +86,9 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
     public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), aX, aY, aZ, aRenderer);
-        new LightingHelper(aRenderer)
-                .setupLightingZPos(aBlock, aX, aY, aZ)
-                .setupColor(
-                        ForgeDirection.SOUTH.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+        new LightingHelper(aRenderer).setupLightingZPos(aBlock, aX, aY, aZ).setupColor(
+                ForgeDirection.SOUTH.ordinal(),
+                mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -101,10 +98,9 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), aX, aY, aZ, aRenderer);
         aRenderer.field_152631_f = true;
-        new LightingHelper(aRenderer)
-                .setupLightingZNeg(aBlock, aX, aY, aZ)
-                .setupColor(
-                        ForgeDirection.NORTH.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+        new LightingHelper(aRenderer).setupLightingZNeg(aBlock, aX, aY, aZ).setupColor(
+                ForgeDirection.NORTH.ordinal(),
+                mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;

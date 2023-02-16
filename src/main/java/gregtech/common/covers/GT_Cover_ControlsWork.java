@@ -1,10 +1,18 @@
 package gregtech.common.covers;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.covers.IControlsWorkCover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GT_CoverBehavior;
@@ -12,11 +20,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_ControlsWork extends GT_CoverBehavior {
+public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControlsWorkCover {
 
     /**
      * @deprecated use {@link #GT_Cover_ControlsWork(ITexture coverTexture)} instead
@@ -31,8 +36,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     }
 
     @Override
-    public int doCoverThings(
-            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         if (!makeSureOnlyOne(aSide, aTileEntity)) return 0;
         if (aTileEntity instanceof IMachineProgress) {
             IMachineProgress machine = (IMachineProgress) aTileEntity;
@@ -67,19 +72,20 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         return aCoverVariable;
     }
 
+    @Override
+    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return aCoverVariable.get() != 2; // always off, so no redstone needed either
+    }
+
     /**
-     * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity
+     * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity TODO this is a migration thing. Remove this
+     * after 2.3.0 is released.
+     * 
      * @return true if the cover is the first (side) one
      **/
     private boolean makeSureOnlyOne(byte aSide, ICoverable aTileEntity) {
-        for (byte i = 0; i < 6; i++) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_ControlsWork && i < aSide) {
-                aTileEntity.dropCover(aSide, aSide, true);
-                aTileEntity.markDirty();
-                return false;
-            }
-        }
-        return true;
+        return IControlsWorkCover.makeSureOnlyOne(aSide, aTileEntity);
     }
 
     @Override
@@ -113,8 +119,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean onCoverRemoval(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+    public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            boolean aForced) {
         if ((aTileEntity instanceof IMachineProgress)) {
             ((IMachineProgress) aTileEntity).enableWorking();
             ((IMachineProgress) aTileEntity).setWorkDataValue((byte) 0);
@@ -123,15 +129,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 5;
         if (aCoverVariable < 0) {
             aCoverVariable = 2;
@@ -163,8 +162,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     @Override
     public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        for (byte i = 0; i < 6; i++) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_ControlsWork) {
+        for (byte tSide : ALL_VALID_SIDES) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
                 return false;
             }
         }
@@ -202,50 +201,58 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+            builder.widget(
+                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_ControlsWork.this,
+                            (id, coverData) -> !getClickable(id, convert(coverData)),
+                            (id, coverData) -> new ISerializableObject.LegacyCoverData(
+                                    getNewCoverVariable(id, convert(coverData)))).addToggleButton(
+                                            0,
+                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                                    .setPos(spaceX * 0, spaceY * 0))
+                                            .addToggleButton(
+                                                    1,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                                            .setPos(spaceX * 0, spaceY * 1))
+                                            .addToggleButton(
+                                                    2,
+                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                    widget -> widget
+                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                                                            .setPos(spaceX * 0, spaceY * 2))
+                                            .setPos(startX, startY))
+                    .widget(
+                            new CoverDataControllerWidget<>(
                                     this::getCoverData,
                                     this::setCoverData,
-                                    GT_Cover_ControlsWork.this,
-                                    (id, coverData) -> !getClickable(id, convert(coverData)),
-                                    (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                                            getNewCoverVariable(id, convert(coverData))))
-                            .addToggleButton(
-                                    0,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                            .setPos(spaceX * 0, spaceY * 0))
-                            .addToggleButton(
-                                    1,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                            .setPos(spaceX * 0, spaceY * 1))
-                            .addToggleButton(
-                                    2,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CROSS)
-                                            .setPos(spaceX * 0, spaceY * 2))
-                            .setPos(startX, startY))
-                    .widget(new CoverDataControllerWidget<>(
-                                    this::getCoverData, this::setCoverData, GT_Cover_ControlsWork.this)
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                    coverData -> convert(coverData) > 2,
-                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                            adjustCoverVariable(state, convert(coverData))),
-                                    widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                            .setPos(startX, startY))
-                    .widget(new TextWidget(GT_Utility.trans("243", "Enable with Redstone"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                    .widget(new TextWidget(GT_Utility.trans("244", "Disable with Redstone"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                    .widget(new TextWidget(GT_Utility.trans("245", "Disable machine"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                    .widget(new TextWidget(GT_Utility.trans("507", "Safe Mode"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+                                    GT_Cover_ControlsWork.this)
+                                            .addFollower(
+                                                    CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                                    coverData -> convert(coverData) > 2,
+                                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(
+                                                            adjustCoverVariable(state, convert(coverData))),
+                                                    widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                                            .setPos(startX, startY))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("243", "Enable with Redstone"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("244", "Disable with Redstone"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("245", "Disable machine"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("507", "Safe Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {

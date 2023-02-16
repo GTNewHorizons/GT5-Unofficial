@@ -1,26 +1,31 @@
 package gregtech.common.gui.modularui.widget;
 
-import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.modularui.IDataFollowerWidget;
-import gregtech.api.util.ISerializableObject;
 import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
 import net.minecraft.network.PacketBuffer;
 
+import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.gui.modularui.IDataFollowerWidget;
+import gregtech.api.util.ISerializableObject;
+
 /**
- * Controls state of child widgets with specific data, and allows centralized control of multiple widgets.
- * e.g. clicking button B will set machine mode to B, so button A, whose state is bound to the mode,
- * will be automatically deactivated by this widget.
- * <br> This widget wraps data and handles validation, e.g. tell client to close GUI when tile is broken or cover is removed.
- * <br> Data can be anything, e.g. {@link ISerializableObject} or machine recipe mode.
+ * Controls state of child widgets with specific data, and allows centralized control of multiple widgets. e.g. clicking
+ * button B will set machine mode to B, so button A, whose state is bound to the mode, will be automatically deactivated
+ * by this widget. <br>
+ * This widget wraps data and handles validation, e.g. tell client to close GUI when tile is broken or cover is removed.
+ * <br>
+ * Data can be anything, e.g. {@link ISerializableObject} or machine recipe mode.
+ * 
  * @param <T> Data type stored in this widget
  * @see IDataFollowerWidget
  */
@@ -139,15 +144,15 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
     }
 
     /**
-     * @param widget widget to add that implements {@link IDataFollowerWidget}
+     * @param widget            widget to add that implements {@link IDataFollowerWidget}
      * @param dataToStateGetter given data -> state of the widget to add
-     * @param dataUpdater (current data, state of the widget to add) -> new data to set
-     * @param applyForWidget methods to call for the widget to add
-     * @param <U> state type stored in the widget to add
-     * @param <W> widget type to add
+     * @param dataUpdater       (current data, state of the widget to add) -> new data to set
+     * @param applyForWidget    methods to call for the widget to add
+     * @param <U>               state type stored in the widget to add
+     * @param <W>               widget type to add
      */
-    public <U, W extends Widget & IDataFollowerWidget<T, U>> DataControllerWidget<T> addFollower(
-            W widget, Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
+    public <U, W extends Widget & IDataFollowerWidget<T, U>> DataControllerWidget<T> addFollower(W widget,
+            Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
         widget.setDataToStateGetter(dataToStateGetter);
         widget.setStateSetter(state -> {
             T newData = dataUpdater.apply(getLastData(), state);

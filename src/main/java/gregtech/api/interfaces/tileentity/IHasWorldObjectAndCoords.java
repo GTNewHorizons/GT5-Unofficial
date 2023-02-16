@@ -11,13 +11,16 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.IFluidHandler;
 
 /**
- * This is a bunch of Functions my TileEntities provide, to make life much easier, and to get rid of internal TileEntity stuff.
+ * This is a bunch of Functions my TileEntities provide, to make life much easier, and to get rid of internal TileEntity
+ * stuff.
  * <p/>
  * This also makes access to adjacent TileEntities more Efficient.
  * <p/>
- * Note: It doesn't have to be a TileEntity in certain cases! And only certain cases, such as the Recipe checking of the findRecipe Function.
+ * Note: It doesn't have to be a TileEntity in certain cases! And only certain cases, such as the Recipe checking of the
+ * findRecipe Function.
  */
 public interface IHasWorldObjectAndCoords {
+
     World getWorld();
 
     int getXCoord();
@@ -132,7 +135,8 @@ public interface IHasWorldObjectAndCoords {
     boolean isDead();
 
     /**
-     * Sends a Block Event to the Client TileEntity, the byte Parameters are only for validation as Minecraft doesn't properly write Packet Data.
+     * Sends a Block Event to the Client TileEntity, the byte Parameters are only for validation as Minecraft doesn't
+     * properly write Packet Data.
      */
     void sendBlockEvent(byte aID, byte aValue);
 
@@ -142,8 +146,8 @@ public interface IHasWorldObjectAndCoords {
     long getTimer();
 
     /**
-     * Sets the Light Level of this Block on a Scale of 0 - 15
-     * It could be that it doesn't work. This is just for convenience.
+     * Sets the Light Level of this Block on a Scale of 0 - 15 It could be that it doesn't work. This is just for
+     * convenience.
      */
     void setLightValue(byte aLightValue);
 
@@ -164,6 +168,7 @@ public interface IHasWorldObjectAndCoords {
 
     /**
      * Opens the GUI with this ID of this MetaTileEntity
+     * 
      * @deprecated Use ModularUI
      */
     @Deprecated
@@ -173,6 +178,7 @@ public interface IHasWorldObjectAndCoords {
 
     /**
      * Opens the GUI with the ID = 0 of this TileEntity
+     * 
      * @deprecated Use ModularUI
      */
     @Deprecated

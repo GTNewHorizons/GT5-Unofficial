@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -7,20 +9,20 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingSaplings() {
         OrePrefixes.treeSapling.add(this);
     }
 
     @Override
-    public void registerOre(
-            OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
+            ItemStack aStack) {
         GT_Values.RA.addPulveriserRecipe(
                 GT_Utility.copyAmount(1L, aStack),
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L)},
-                new int[] {10000},
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L) },
+                new int[] { 10000 },
                 100,
                 2);
         GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(8L, aStack), ItemList.IC2_Plantball.get(1L));

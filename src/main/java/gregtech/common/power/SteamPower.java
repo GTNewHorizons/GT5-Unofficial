@@ -3,9 +3,10 @@ package gregtech.common.power;
 import gregtech.api.util.GT_Utility;
 
 public class SteamPower extends Power {
+
     private final double euPerTickOverride;
     private final double durationOverride;
-    private final String[] STEAM_TIER_NAMES = {"Bronze", "Steel"};
+    private final String[] STEAM_TIER_NAMES = { "Bronze", "Steel" };
 
     public SteamPower(byte tier, double euPerTickMultiplier, double durationMultiplier) {
         super(tier);

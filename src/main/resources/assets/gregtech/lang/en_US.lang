@@ -109,8 +109,7 @@ GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
 GT5U.machines.digitaltank.tooltip=Stores %sL of fluid
-GT5U.machines.digitaltank.tooltip1=Can keep its contents when harvested
-GT5U.machines.digitaltank.tooltip2=Sneak when harvesting to void its contents
+GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.autooutput.tooltip=Fluid Auto-Output
 GT5U.machines.digitaltank.lockfluid.tooltip=Lock Fluid Mode
 GT5U.machines.digitaltank.lockfluid.tooltip.1=§7This tank will be locked to only accept one type of fluid
@@ -219,6 +218,11 @@ GT5U.item.programmed_circuit.no_screwdriver.0=Trying to mangle a CIRCUIT with yo
 GT5U.item.programmed_circuit.no_screwdriver.1=Your thumb is not a screwdriver. Try a real one.
 GT5U.item.programmed_circuit.no_screwdriver.2=Chuck Norris stares at the circuit until it reprograms itself. You do not.
 
+GT5U.item.cable.max_voltage=Max Voltage
+GT5U.item.cable.max_amperage=Max Amperage
+GT5U.item.cable.loss=Loss/Meter/Ampere
+GT5U.item.cable.eu_volt=EU-Volt
+
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
 GT5U.hatch.disableMultiStack.true=Multi Stack Input §cOff§r
@@ -240,6 +244,7 @@ GT5U.multiblock.problems=Problems
 GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.usage=Probably uses
 GT5U.multiblock.parallelism=Max parallelism
+GT5U.multiblock.curparallelism=Current parallelism
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
@@ -298,9 +303,24 @@ GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
 
+# NEI
+nei.options.tools.dump.gt5u=GT5u
+nei.options.tools.dump.gt5u.metatileentity=MetaTileEntity
+nei.options.tools.dump.gt5u.metatileentitys=MetaTileEntities
+nei.options.tools.dump.gt5u.material=Material
+nei.options.tools.dump.gt5u.materials=Materials
+nei.options.tools.dump.gt5u.warn_env=You're outside of the pack. Some IDs present in the full pack might be missing in this dump.
+nei.options.tools.dump.gt5u.mode.0=Free
+nei.options.tools.dump.gt5u.mode.1=Used
+
 # Waila
 GT5U.waila.cover=Cover (%s): %s
 GT5U.waila.cover.current_facing=Current Facing
+GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
+GT5U.waila.energy.avg_in=Average Input: §a%s§r EU/t (%s)
+GT5U.waila.energy.avg_out=Average Output: §c%s§r EU/t (%s)
+GT5U.waila.energy.use=Probably uses: §e%s§r EU/t (%s)
+GT5U.waila.energy.produce=Probably generates: §a%s§r EU/t (%s)
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
@@ -777,6 +797,8 @@ achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item 
 achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
 achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
+achievement.gt.blockmachines.multimachine.oildrilinfinite=Infinite Oil/Gas/Fluid Drilling Rig
+achievement.gt.blockmachines.multimachine.oildrilinfinite.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.oreprocessor=Integrated Ore Factory
 achievement.gt.blockmachines.multimachine.oreprocessor.desc=Processing all those ores.
 
@@ -796,6 +818,8 @@ achievement.gt.metaitem.01.32605=Ultimate Battery
 achievement.gt.metaitem.01.32605.desc=Pickup this item to see the recipe in NEI
 achievement.gt.metaitem.01.32609=Really Ultimate Battery
 achievement.gt.metaitem.01.32609.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32594=Extremely Ultimate Battery
+achievement.gt.metaitem.01.32594.desc=Pickup this item to see the recipe in NEI
 achievement.gt.metaitem.01.32736=Energy Module
 achievement.gt.metaitem.01.32736.desc=Pickup this item to see the recipe in NEI
 achievement.gt.metaitem.01.32737=Energy Cluster

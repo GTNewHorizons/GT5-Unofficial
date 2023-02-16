@@ -4,6 +4,7 @@ import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.GT_CircuitryBehavior;
 
 public class GT_Circuit_BitAnd extends GT_CircuitryBehavior {
+
     public GT_Circuit_BitAnd(int aIndex) {
         super(aIndex);
     }
@@ -47,13 +48,8 @@ public class GT_Circuit_BitAnd extends GT_CircuitryBehavior {
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         aRedstoneCircuitBlock.setRedstone(
-                (byte)
-                        ((getStrongestRedstone(aRedstoneCircuitBlock)
-                                                & (aCircuitData[0]
-                                                        | aCircuitData[1] << 1
-                                                        | aCircuitData[2] << 2
-                                                        | aCircuitData[3] << 3))
-                                        != 0
+                (byte) ((getStrongestRedstone(aRedstoneCircuitBlock)
+                        & (aCircuitData[0] | aCircuitData[1] << 1 | aCircuitData[2] << 2 | aCircuitData[3] << 3)) != 0
                                 ? 15
                                 : 0),
                 aRedstoneCircuitBlock.getOutputFacing());

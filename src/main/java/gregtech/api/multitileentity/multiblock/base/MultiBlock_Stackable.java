@@ -1,9 +1,11 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> extends MultiBlockController<T> {
+
     protected static String STACKABLE_TOP = "STACKABLE_TOP";
     protected static String STACKABLE_MIDDLE = "STACKABLE_MIDDLE";
     protected static String STACKABLE_BOTTOM = "STACKABLE_BOTTOM";
@@ -31,6 +33,7 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
             buildState.stopBuilding();
         }
     }
+
     /**
      * Stackable
      *
@@ -62,7 +65,7 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
     /**
      * Stackable
      *
-     * @return Whether this structure has a Top/Cap.  Defaults to true.
+     * @return Whether this structure has a Top/Cap. Defaults to true.
      */
     public boolean hasTop() {
         return true;
@@ -101,10 +104,5 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
 
         buildState.addOffset(getAfterLastStackOffset());
         return checkPiece(STACKABLE_TOP, buildState.stopBuilding());
-    }
-
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        return false;
     }
 }

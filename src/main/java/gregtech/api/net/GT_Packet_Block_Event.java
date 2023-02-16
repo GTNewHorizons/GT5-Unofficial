@@ -1,14 +1,16 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+
+import com.google.common.io.ByteArrayDataInput;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Used to transfer Block Events in a much better fashion
  */
 public class GT_Packet_Block_Event extends GT_Packet_New {
+
     private int mX, mZ;
     private short mY;
     private byte mID, mValue;
@@ -38,13 +40,17 @@ public class GT_Packet_Block_Event extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_Block_Event(
-                aData.readInt(), aData.readShort(), aData.readInt(), aData.readByte(), aData.readByte());
+                aData.readInt(),
+                aData.readShort(),
+                aData.readInt(),
+                aData.readByte(),
+                aData.readByte());
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
-            TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
+            final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
             if (tTileEntity != null) tTileEntity.receiveClientEvent(mID, mValue);
         }
     }

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Mouse;
 
 /**
@@ -27,7 +28,7 @@ public class GT_GUIContainer extends GuiContainer {
     public GT_GUIContainer(Container aContainer, String aGUIbackground) {
         super(aContainer);
         mGUIbackground = new ResourceLocation(mGUIbackgroundPath = aGUIbackground);
-        colorOverride = new GT_GUIColorOverride(aGUIbackground);
+        colorOverride = GT_GUIColorOverride.get(aGUIbackground);
     }
 
     protected int getTextColorOrDefault(String textType, int defaultColor) {
@@ -90,19 +91,9 @@ public class GT_GUIContainer extends GuiContainer {
     }
 
     /*
-    @Override
-    protected void drawSlotInventory(Slot slot) {
-        try {
-        	super.drawSlotInventory(slot);
-        } catch(Throwable e) {
-            try {
-            	Tessellator.instance.draw();
-            } catch(Throwable f) {}
-        	if (!mCrashed) {
-        		GT_Log.out.println("Clientside Slot drawing Crash prevented. Seems one Itemstack causes Problems with negative Damage Values or the Wildcard Damage Value. This is absolutely NOT a Bug of the GregTech-Addon, so don't even think about reporting it to me, it's a Bug of the Mod, which belongs to the almost-crash-causing Item, so bug that Mods Author and not me! Did you hear it? NOT ME!!!");
-        		e.printStackTrace();
-            	mCrashed = true;
-        	}
-        }
-    }*/
+     * @Override protected void drawSlotInventory(Slot slot) { try { super.drawSlotInventory(slot); } catch(Throwable e)
+     * { try { Tessellator.instance.draw(); } catch(Throwable f) {} if (!mCrashed) { GT_Log.out.
+     * println("Clientside Slot drawing Crash prevented. Seems one Itemstack causes Problems with negative Damage Values or the Wildcard Damage Value. This is absolutely NOT a Bug of the GregTech-Addon, so don't even think about reporting it to me, it's a Bug of the Mod, which belongs to the almost-crash-causing Item, so bug that Mods Author and not me! Did you hear it? NOT ME!!!"
+     * ); e.printStackTrace(); mCrashed = true; } } }
+     */
 }

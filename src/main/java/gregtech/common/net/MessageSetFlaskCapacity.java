@@ -1,9 +1,5 @@
 package gregtech.common.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.net.GT_Packet_New;
-import gregtech.common.items.GT_VolumetricFlask;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,8 +7,15 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.net.GT_Packet_New;
+import gregtech.common.items.GT_VolumetricFlask;
+import io.netty.buffer.ByteBuf;
+
 @Deprecated
 public final class MessageSetFlaskCapacity extends GT_Packet_New {
+
     private int capacity, dimID, playerID;
 
     public MessageSetFlaskCapacity() {

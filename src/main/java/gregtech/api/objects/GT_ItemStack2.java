@@ -4,8 +4,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * GT_ItemStack, but with a better hashCode(). Due to this change, it should not be placed in the same hash based
- * data structure with GT_ItemStack. It also shouldn't be used to construct search query into a hash based data structure
+ * GT_ItemStack, but with a better hashCode(). Due to this change, it should not be placed in the same hash based data
+ * structure with GT_ItemStack. It also shouldn't be used to construct search query into a hash based data structure
  * that contains GT_ItemStack.
  */
 public class GT_ItemStack2 extends GT_ItemStack {

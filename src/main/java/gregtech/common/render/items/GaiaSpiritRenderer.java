@@ -1,15 +1,19 @@
 package gregtech.common.render.items;
 
-import gregtech.GT_Mod;
-import gregtech.common.render.GT_RenderUtil;
 import java.awt.*;
+
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
 import org.lwjgl.opengl.GL11;
 
+import gregtech.GT_Mod;
+import gregtech.common.render.GT_RenderUtil;
+
 public class GaiaSpiritRenderer extends GT_GeneratedMaterial_Renderer {
+
     @Override
     public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
         long animationTicks = GT_Mod.gregtechproxy.getAnimationTicks();

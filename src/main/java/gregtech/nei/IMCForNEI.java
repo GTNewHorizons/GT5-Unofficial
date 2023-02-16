@@ -1,14 +1,19 @@
 package gregtech.nei;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.nbt.NBTTagCompound;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInterModComms;
+
 public class IMCForNEI {
+
     public static void IMCSender() {
         if (!Loader.isModLoaded("NotEnoughItems")) {
             return;
         }
+
+        sendHandler("gt.recipe.transcendentplasmamixerrecipes", "gregtech:gt.blockmachines:1006", 1);
+        sendCatalyst("gt.recipe.transcendentplasmamixerrecipes", "gregtech:gt.blockmachines:1006");
 
         sendHandler("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004", 1);
         sendCatalyst("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004");
@@ -19,9 +24,17 @@ public class IMCForNEI {
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1195");
 
         sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1005", -1);
+        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1118");
+        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1119");
 
         // overwrite yShift to 6
         sendHandler("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:1170");
+        sendHandler("gt.recipe.nanoforge", "gregtech:gt.blockmachines:357");
+        sendCatalyst("gt.recipe.nanoforge", "gregtech:gt.blockmachines:357");
+        sendHandler("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
+        sendCatalyst("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
+        sendHandler("gt.recipe.ic2nuke", "IC2:blockGenerator:5");
+        sendCatalyst("gt.recipe.ic2nuke", "IC2:blockGenerator:5");
     }
 
     private static void sendHandler(String aName, String aBlock, int aMaxRecipesPerPage) {

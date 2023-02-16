@@ -1,9 +1,21 @@
 package gregtech.common.covers.redstone;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -15,17 +27,8 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 
-public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
-                T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData>
+public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData>
         extends GT_CoverBehaviorBase<T> {
 
     public GT_Cover_AdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture) {
@@ -41,39 +44,23 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
 
         switch (mode) {
             case AND:
-                return (byte)
-                        (signals.values().stream()
-                                        .map(signal -> signal > 0)
-                                        .reduce(true, (signalA, signalB) -> signalA && signalB)
-                                ? 15
-                                : 0);
+                return (byte) (signals.values().stream().map(signal -> signal > 0)
+                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
             case NAND:
-                return (byte)
-                        (signals.values().stream()
-                                        .map(signal -> signal > 0)
-                                        .reduce(true, (signalA, signalB) -> signalA && signalB)
-                                ? 0
-                                : 15);
+                return (byte) (signals.values().stream().map(signal -> signal > 0)
+                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
             case OR:
-                return (byte)
-                        (signals.values().stream()
-                                        .map(signal -> signal > 0)
-                                        .reduce(false, (signalA, signalB) -> signalA || signalB)
-                                ? 15
-                                : 0);
+                return (byte) (signals.values().stream().map(signal -> signal > 0)
+                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
             case NOR:
-                return (byte)
-                        (signals.values().stream()
-                                        .map(signal -> signal > 0)
-                                        .reduce(false, (signalA, signalB) -> signalA || signalB)
-                                ? 0
-                                : 15);
+                return (byte) (signals.values().stream().map(signal -> signal > 0)
+                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
             case SINGLE_SOURCE:
                 if (signals.values().isEmpty()) {
                     return 0;
                 }
 
-                return (Byte) signals.values().toArray()[0];
+                return signals.values().iterator().next();
             default:
                 return 0;
         }
@@ -89,24 +76,19 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
     }
 
     public static void setSignalAt(UUID uuid, int frequency, long hash, byte value) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(
-                String.valueOf(uuid), k -> new ConcurrentHashMap<>());
+        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone
+                .computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
         Map<Long, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
         signals.put(hash, value);
     }
 
     /**
-     *  x    hashed into first 20 bytes
-     *  y    hashed into second 20 bytes
-     *  z    hashed into fifth 10 bytes
-     *  dim  hashed into sixth 10 bytes
-     *  side hashed into last 4 bytes
+     * x hashed into first 20 bytes y hashed into second 20 bytes z hashed into fifth 10 bytes dim hashed into sixth 10
+     * bytes side hashed into last 4 bytes
      */
     public static long hashCoverCoords(ICoverable tile, byte side) {
         return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
-                                + tile.getWorld().provider.dimensionId
-                        << 4)
-                + side;
+                + tile.getWorld().provider.dimensionId << 4) + side;
     }
 
     @Override
@@ -141,7 +123,8 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
 
     @Override
     public String getDescriptionImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
-        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: "
+        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency
+                + ", Transmission: "
                 + (aCoverVariable.uuid == null ? "Public" : "Private");
     }
 
@@ -151,6 +134,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
     }
 
     public abstract static class WirelessData implements ISerializableObject {
+
         protected int frequency;
 
         /**
@@ -247,40 +231,39 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
             final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
 
             CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
-                    this::getCoverData, this::setCoverData, GT_Cover_AdvancedWirelessRedstoneBase.this);
+                    this::getCoverData,
+                    this::setCoverData,
+                    GT_Cover_AdvancedWirelessRedstoneBase.this);
             dataController.setPos(startX, startY);
             addUIForDataController(dataController);
 
             builder.widget(dataController)
-                    .widget(new TextWidget(GT_Utility.trans("246", "Frequency"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
-                    .widget(new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
+                    .widget(
+                            new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(
+                                            startX + spaceX * privateExtraColumn,
+                                            4 + startY + spaceY * getButtonRow()));
         }
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
-            controller
-                    .addFollower(
-                            new CoverDataFollower_TextFieldWidget<>(),
-                            coverData -> String.valueOf(coverData.frequency),
-                            (coverData, state) -> {
-                                coverData.frequency = (int) MathExpression.parseMathExpression(state);
-                                return coverData;
-                            },
-                            widget -> widget.setOnScrollNumbers()
-                                    .setNumbers(0, Integer.MAX_VALUE)
-                                    .setFocusOnGuiOpen(true)
-                                    .setPos(1, 2 + spaceY * getFrequencyRow())
-                                    .setSize(spaceX * 5 - 4, 12))
+            controller.addFollower(
+                    new CoverDataFollower_TextFieldWidget<>(),
+                    coverData -> String.valueOf(coverData.frequency),
+                    (coverData, state) -> {
+                        coverData.frequency = (int) MathExpression.parseMathExpression(state);
+                        return coverData;
+                    },
+                    widget -> widget.setOnScrollNumbers().setNumbers(0, Integer.MAX_VALUE).setFocusOnGuiOpen(true)
+                            .setPos(1, 2 + spaceY * getFrequencyRow()).setSize(spaceX * 5 - 4, 12))
                     .addFollower(
                             CoverDataFollower_ToggleButtonWidget.ofCheck(),
                             coverData -> coverData.uuid != null,
                             (coverData, state) -> {
                                 if (state) {
-                                    coverData.uuid =
-                                            getUIBuildContext().getPlayer().getUniqueID();
+                                    coverData.uuid = getUIBuildContext().getPlayer().getUniqueID();
                                 } else {
                                     coverData.uuid = null;
                                 }

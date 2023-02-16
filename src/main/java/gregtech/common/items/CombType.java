@@ -1,10 +1,12 @@
 package gregtech.common.items;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
 import java.util.Arrays;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_LanguageManager;
+
 public enum CombType {
+
     // Organic Line
     LIGNIE(0, "lignite", true, Materials.Lignite, 100, 0x58300B, 0x906237, ItemComb.Voltage.LV),
     COAL(1, "coal", true, Materials.Coal, 100, 0x525252, 0x666666, ItemComb.Voltage.LV),
@@ -26,8 +28,8 @@ public enum CombType {
     CONDUCTIVEIRON(13, "conductiveiron", true, Materials.ConductiveIron, 80, 0x817671, 0xCEADA3, ItemComb.Voltage.MV),
     VIBRANTALLOY(14, "vibrantalloy", true, Materials.VibrantAlloy, 50, 0x86A12D, 0xC4F2AE, ItemComb.Voltage.HV),
     ENERGETICALLOY(15, "energeticalloy", true, Materials.EnergeticAlloy, 70, 0xFF9933, 0xFFAD5C, ItemComb.Voltage.HV),
-    ELECTRICALSTEEL(
-            16, "electricalsteel", true, Materials.ElectricalSteel, 90, 0x787878, 0xD8D8D8, ItemComb.Voltage.LV),
+    ELECTRICALSTEEL(16, "electricalsteel", true, Materials.ElectricalSteel, 90, 0x787878, 0xD8D8D8,
+            ItemComb.Voltage.LV),
     DARKSTEEL(17, "darksteel", true, Materials.DarkSteel, 80, 0x252525, 0x443B44, ItemComb.Voltage.MV),
     PULSATINGIRON(18, "pulsatingiron", true, Materials.PulsatingIron, 80, 0x006600, 0x6DD284, ItemComb.Voltage.HV),
     STAINLESSSTEEL(19, "stainlesssteel", true, Materials.StainlessSteel, 75, 0x778899, 0xC8C8DC, ItemComb.Voltage.HV),
@@ -124,8 +126,8 @@ public enum CombType {
     MYTRYL(96, "mytryl", true, Materials.Mytryl, 65, 0xDAA520, 0xF26404, ItemComb.Voltage.IV),
     QUANTIUM(97, "quantium", true, Materials.Quantium, 50, 0x00FF00, 0x00D10B, ItemComb.Voltage.IV),
     ORIHARUKON(98, "oriharukon", true, Materials.Oriharukon, 50, 0x228B22, 0x677D68, ItemComb.Voltage.IV),
-    MYSTERIOUSCRYSTAL(
-            99, "mysteriouscrystal", true, Materials.MysteriousCrystal, 45, 0x3CB371, 0x16856C, ItemComb.Voltage.LuV),
+    MYSTERIOUSCRYSTAL(99, "mysteriouscrystal", true, Materials.MysteriousCrystal, 45, 0x3CB371, 0x16856C,
+            ItemComb.Voltage.LuV),
     BLACKPLUTONIUM(100, "blackplutonium", true, Materials.Quantium, 25, 0x000000, 0x323232, ItemComb.Voltage.LuV),
     TRINIUM(101, "trinium", true, Materials.Trinium, 25, 0xB0E0E6, 0xC8C8D2, ItemComb.Voltage.ZPM),
 
@@ -200,7 +202,8 @@ public enum CombType {
     // ESSENTIA gets a use soon. Dont remove.
     ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50, ItemComb.Voltage.MV),
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF, ItemComb.Voltage.ZPM),
-    BLIZZ(160, "cryotheum", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
+    BLIZZ(160, "blizz", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
+    KEVLAR(161, "kevlar", true, Materials._NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
@@ -223,19 +226,13 @@ public enum CombType {
         this.material = material;
         this.chance = chance;
         this.showInList = show;
-        this.color = new int[] {color1, color2};
+        this.color = new int[] { color1, color2 };
         this.localizedName = GT_LanguageManager.addStringLocalization(
-                "comb." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
+                "comb." + this.name,
+                this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
     }
 
-    CombType(
-            int id,
-            String pName,
-            boolean show,
-            Materials material,
-            int chance,
-            int color1,
-            int color2,
+    CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2,
             ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;
@@ -244,9 +241,10 @@ public enum CombType {
         this.material = material;
         this.chance = chance;
         this.showInList = show;
-        this.color = new int[] {color1, color2};
+        this.color = new int[] { color1, color2 };
         this.localizedName = GT_LanguageManager.addStringLocalization(
-                "comb." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
+                "comb." + this.name,
+                this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
     }
 
     public void setHidden() {
@@ -259,7 +257,7 @@ public enum CombType {
     }
 
     public int[] getColours() {
-        return color == null || color.length != 2 ? new int[] {0, 0} : color;
+        return color == null || color.length != 2 ? new int[] { 0, 0 } : color;
     }
 
     public int getId() {
@@ -271,13 +269,11 @@ public enum CombType {
     }
 
     private static final class Companion {
+
         private static final CombType[] VALUES;
 
         static {
-            int biggestId = Arrays.stream(CombType.values())
-                    .mapToInt(CombType::getId)
-                    .max()
-                    .getAsInt();
+            int biggestId = Arrays.stream(CombType.values()).mapToInt(CombType::getId).max().getAsInt();
             VALUES = new CombType[biggestId + 1];
             Arrays.fill(VALUES, _NULL);
             for (CombType type : CombType.values()) {

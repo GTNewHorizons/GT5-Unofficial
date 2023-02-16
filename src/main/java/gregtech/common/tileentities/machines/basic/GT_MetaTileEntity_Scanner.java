@@ -4,6 +4,13 @@ import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 
+import java.util.Objects;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
 import gregtech.GT_Mod;
@@ -24,11 +31,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import java.util.Objects;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
 
@@ -46,73 +48,49 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                 "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_SCANNER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_SCANNER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_SCANNER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_SCANNER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_SIDE_SCANNER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_SCANNER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_SCANNER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_SCANNER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_SCANNER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_SCANNER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_FRONT_SCANNER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_SCANNER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_SCANNER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_SCANNER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_SCANNER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_SCANNER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_TOP_SCANNER_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_SCANNER_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_SCANNER_ACTIVE),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_SCANNER_ACTIVE_GLOW)
-                                .glow()
-                                .build()),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_SCANNER_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_SCANNER),
-                        TextureFactory.builder()
-                                .addIcon(OVERLAY_BOTTOM_SCANNER_GLOW)
-                                .glow()
-                                .build()));
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_SCANNER_GLOW).glow().build()));
     }
 
-    public GT_MetaTileEntity_Scanner(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GT_MetaTileEntity_Scanner(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
-    public GT_MetaTileEntity_Scanner(
-            String aName,
-            int aTier,
-            String[] aDescription,
-            ITexture[][][] aTextures,
-            String aGUIName,
-            String aNEIName) {
+    public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+            String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Scanner(
-                this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures,
+                this.mGUIName,
+                this.mNEIName);
     }
 
     @Override
@@ -182,8 +160,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     return 2;
                 }
                 ItemData tData = GT_OreDictUnificator.getAssociation(aStack);
-                if ((tData != null)
-                        && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
+                if ((tData != null) && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
                         && (tData.mMaterial.mMaterial.mElement != null)
                         && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
                         && (tData.mMaterial.mMaterial != Materials.Magic)
@@ -230,8 +207,11 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
 
                     this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
-                    this.mOutputItems[0].setTagCompound(GT_Utility.getNBTContainingShort(
-                            new NBTTagCompound(), "map_id", (short) aStack.getItemDamage()));
+                    this.mOutputItems[0].setTagCompound(
+                            GT_Utility.getNBTContainingShort(
+                                    new NBTTagCompound(),
+                                    "map_id",
+                                    (short) aStack.getItemDamage()));
                     calculateOverclockedNess(30, 128);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
@@ -240,56 +220,47 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                 }
 
                 if ((aStack.getItem().getUnlocalizedName().contains("Schematic")
-                                || aStack.getItem().getUnlocalizedName().contains("schematic"))
+                        || aStack.getItem().getUnlocalizedName().contains("schematic"))
                         && !aStack.getItem().getUnlocalizedName().contains("Schematics")) {
                     if (mTier < 3) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     String sTier = "";
 
                     int stackItemID = Item.getIdFromItem(aStack.getItem());
                     int stackItemDamage = aStack.getItemDamage();
-                    if (stackItemID
-                            == Item.getIdFromItem(Objects.requireNonNull(
-                                            GT_ModHandler.getModItem(MOD_ID_GC_CORE, "item.schematic", 1L, 0))
+                    if (stackItemID == Item.getIdFromItem(
+                            Objects.requireNonNull(GT_ModHandler.getModItem(MOD_ID_GC_CORE, "item.schematic", 1L, 0))
                                     .getItem())) {
-                        if (stackItemDamage == 0
-                                && aStack.toString()
-                                        .equals(Objects.requireNonNull(GT_ModHandler.getModItem(
-                                                        MOD_ID_GC_CORE, "item.schematic", 1L, 0))
-                                                .copy()
-                                                .toString())) sTier = "100";
-                        else if (stackItemDamage == 1
-                                && aStack.toString()
-                                        .equals(Objects.requireNonNull(GT_ModHandler.getModItem(
-                                                        MOD_ID_GC_CORE, "item.schematic", 1L, 1))
-                                                .copy()
-                                                .toString())) sTier = "2";
+                        if (stackItemDamage == 0 && aStack.toString().equals(
+                                Objects.requireNonNull(
+                                        GT_ModHandler.getModItem(MOD_ID_GC_CORE, "item.schematic", 1L, 0)).copy()
+                                        .toString()))
+                            sTier = "100";
+                        else if (stackItemDamage == 1 && aStack.toString().equals(
+                                Objects.requireNonNull(
+                                        GT_ModHandler.getModItem(MOD_ID_GC_CORE, "item.schematic", 1L, 1)).copy()
+                                        .toString()))
+                            sTier = "2";
                     } else {
-                        if (stackItemID
-                                == Item.getIdFromItem(Objects.requireNonNull(
-                                                GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 0))
-                                        .getItem())) {
-                            if (stackItemDamage == 0
-                                    && aStack.toString()
-                                            .equals(Objects.requireNonNull(GT_ModHandler.getModItem(
-                                                            MOD_ID_GC_MARS, "item.schematic", 1L, 0))
-                                                    .copy()
-                                                    .toString())) sTier = "3";
-                            else if (stackItemDamage == 1
-                                    && aStack.toString()
-                                            .equals(Objects.requireNonNull(GT_ModHandler.getModItem(
-                                                            MOD_ID_GC_MARS, "item.schematic", 1L, 1))
-                                                    .copy()
-                                                    .toString())) sTier = "101";
-                            else if (stackItemDamage == 2
-                                    && aStack.toString()
-                                            .equals(Objects.requireNonNull(GT_ModHandler.getModItem(
-                                                            MOD_ID_GC_MARS, "item.schematic", 1L, 2))
-                                                    .copy()
-                                                    .toString())) sTier = "102";
+                        if (stackItemID == Item.getIdFromItem(
+                                Objects.requireNonNull(
+                                        GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 0)).getItem())) {
+                            if (stackItemDamage == 0 && aStack.toString().equals(
+                                    Objects.requireNonNull(
+                                            GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 0)).copy()
+                                            .toString()))
+                                sTier = "3";
+                            else if (stackItemDamage == 1 && aStack.toString().equals(
+                                    Objects.requireNonNull(
+                                            GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 1)).copy()
+                                            .toString()))
+                                sTier = "101";
+                            else if (stackItemDamage == 2 && aStack.toString().equals(
+                                    Objects.requireNonNull(
+                                            GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 2)).copy()
+                                            .toString()))
+                                sTier = "102";
                         } else if (aStack.getUnlocalizedName().matches(".*\\d+.*"))
-                            sTier = aStack.getUnlocalizedName()
-                                    .split("(?<=\\D)(?=\\d)")[1]
-                                    .substring(0, 1);
+                            sTier = aStack.getUnlocalizedName().split("(?<=\\D)(?=\\d)")[1].substring(0, 1);
                         else sTier = "1";
                     }
 
@@ -298,8 +269,11 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
 
                     this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
-                    this.mOutputItems[0].setTagCompound(GT_Utility.getNBTContainingShort(
-                            new NBTTagCompound(), "rocket_tier", Short.parseShort(sTier)));
+                    this.mOutputItems[0].setTagCompound(
+                            GT_Utility.getNBTContainingShort(
+                                    new NBTTagCompound(),
+                                    "rocket_tier",
+                                    Short.parseShort(sTier)));
 
                     calculateOverclockedNess(480, 36000);
                     // In case recipe is too OP for that machine
@@ -379,8 +353,8 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
     }
 
     @Override
-    protected boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
                 && getRecipeList().containsInput(aStack);
     }

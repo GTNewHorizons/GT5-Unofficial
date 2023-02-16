@@ -1,16 +1,18 @@
 package gregtech.api.util;
 
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SetMultimap;
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -29,13 +31,13 @@ import net.minecraft.util.StatCollector;
  * addMaintenanceHatch<br>
  * addMufflerHatch<br>
  * addInputBus/addInputHatch/addOutputBus/addOutputHatch, in that order<br>
- * Use addStructureInfo for any comments on nonstandard structure info wherever needed
- * <br>
+ * Use addStructureInfo for any comments on nonstandard structure info wherever needed <br>
  * toolTipFinisher goes at the very end<br>
  * <br>
  * Originally created by kekzdealer
  */
 public class GT_Multiblock_Tooltip_Builder {
+
     private static final String TAB = "   ";
     private static final String COLON = ": ";
     private static final String SEPARATOR = ", ";
@@ -87,8 +89,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * Add a line telling you what the machine type is. Usually, this will be the name of a SB version.<br>
      * Machine Type: machine
      *
-     * @param machine
-     * 		Name of the machine type
+     * @param machine Name of the machine type
      *
      * @return Instance this method was called on.
      */
@@ -100,8 +101,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a basic line of information about this structure
      *
-     * @param info
-     * 		The line to be added.
+     * @param info The line to be added.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addInfo(String info) {
@@ -123,29 +123,29 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line telling how much this machine pollutes.
      *
-     * @param pollution
-     * 		Amount of pollution per second when active
+     * @param pollution Amount of pollution per second when active
      *
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addPollutionAmount(int pollution) {
-        iLines.add(TT_causes + COLON + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY
-                + TT_pps);
+        iLines.add(
+                TT_causes + COLON
+                        + EnumChatFormatting.DARK_PURPLE
+                        + pollution
+                        + " "
+                        + EnumChatFormatting.GRAY
+                        + TT_pps);
         return this;
     }
 
     /**
-     * Begin adding structural information by adding a line about the structure's dimensions
-     * and then inserting a "Structure:" line.
+     * Begin adding structural information by adding a line about the structure's dimensions and then inserting a
+     * "Structure:" line.
      *
-     * @param w
-     * 		Structure width.
-     * @param h
-     * 		Structure height.
-     * @param l
-     * 		Structure depth/length.
-     * @param hollow
-     * 		T/F, adds a (hollow) comment if true
+     * @param w      Structure width.
+     * @param h      Structure height.
+     * @param l      Structure depth/length.
+     * @param hollow T/F, adds a (hollow) comment if true
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder beginStructureBlock(int w, int h, int l, boolean hollow) {
@@ -162,30 +162,48 @@ public class GT_Multiblock_Tooltip_Builder {
      * Begin adding structural information by adding a line about the structure's dimensions<br>
      * and then inserting a "Structure:" line. Variable version displays min and max
      *
-     * @param wmin
-     * 		Structure min width.
-     * @param wmax
-     * 		Structure max width.
-     * @param hmin
-     * 		Structure min height.
-     * @param hmax
-     * 		Structure max height.
-     * @param lmin
-     * 		Structure min depth/length.
-     * @param lmax
-     * 		Structure max depth/length.
-     * @param hollow
-     * 		T/F, adds a (hollow) comment if true
+     * @param wmin   Structure min width.
+     * @param wmax   Structure max width.
+     * @param hmin   Structure min height.
+     * @param hmax   Structure max height.
+     * @param lmin   Structure min depth/length.
+     * @param lmax   Structure max depth/length.
+     * @param hollow T/F, adds a (hollow) comment if true
      * @return Instance this method was called on.
      */
-    public GT_Multiblock_Tooltip_Builder beginVariableStructureBlock(
-            int wmin, int wmax, int hmin, int hmax, int lmin, int lmax, boolean hollow) {
+    public GT_Multiblock_Tooltip_Builder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
+            int lmax, boolean hollow) {
         if (hollow) {
-            sLines.add(TT_dimensions + COLON + wmin + "-" + wmax + "x" + hmin + "-" + hmax + "x" + lmin + "-" + lmax
-                    + " (WxHxL) " + TT_hollow);
+            sLines.add(
+                    TT_dimensions + COLON
+                            + wmin
+                            + "-"
+                            + wmax
+                            + "x"
+                            + hmin
+                            + "-"
+                            + hmax
+                            + "x"
+                            + lmin
+                            + "-"
+                            + lmax
+                            + " (WxHxL) "
+                            + TT_hollow);
         } else {
-            sLines.add(TT_dimensions + COLON + wmin + "-" + wmax + "x" + hmin + "-" + hmax + "x" + lmin + "-" + lmax
-                    + " (WxHxL)");
+            sLines.add(
+                    TT_dimensions + COLON
+                            + wmin
+                            + "-"
+                            + wmax
+                            + "x"
+                            + hmin
+                            + "-"
+                            + hmax
+                            + "x"
+                            + lmin
+                            + "-"
+                            + lmax
+                            + " (WxHxL)");
         }
         sLines.add(TT_structure + COLON);
         return this;
@@ -193,9 +211,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Controller: info
-     * @param info
-     * 		Positional information.
+     * (indent)Controller: info
+     * 
+     * @param info Positional information.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addController(String info) {
@@ -205,11 +223,10 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)minCountx casingName (minimum)
-     * @param casingName
-     * 		Name of the Casing.
-     * @param minCount
-     * 		Minimum needed for valid structure check.
+     * (indent)minCountx casingName (minimum)
+     * 
+     * @param casingName Name of the Casing.
+     * @param minCount   Minimum needed for valid structure check.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfo(String casingName, int minCount) {
@@ -220,10 +237,9 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add a structural part that isn't covered by the other methods.<br>
      * (indent)name: info
-     * @param name
-     * 		Name of the hatch or other component.
-     * @param info
-     * 		Positional information.
+     * 
+     * @param name Name of the hatch or other component.
+     * @param info Positional information.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOtherStructurePart(String name, String info) {
@@ -233,9 +249,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Maintenance Hatch: info
-     * @param info
-     * 		Positional information.
+     * (indent)Maintenance Hatch: info
+     * 
+     * @param info Positional information.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addMaintenanceHatch(String info) {
@@ -245,9 +261,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Muffler Hatch: info
-     * @param info
-     * 		Location where the hatch goes
+     * (indent)Muffler Hatch: info
+     * 
+     * @param info Location where the hatch goes
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addMufflerHatch(String info) {
@@ -257,9 +273,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Energy Hatch: info
-     * @param info
-     * 		Positional information.
+     * (indent)Energy Hatch: info
+     * 
+     * @param info Positional information.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addEnergyHatch(String info) {
@@ -269,9 +285,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Dynamo Hatch: info
-     * @param info
-     * 		Positional information.
+     * (indent)Dynamo Hatch: info
+     * 
+     * @param info Positional information.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addDynamoHatch(String info) {
@@ -281,9 +297,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Input Bus: info
-     * @param info
-     * 		Location where the bus goes
+     * (indent)Input Bus: info
+     * 
+     * @param info Location where the bus goes
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addInputBus(String info) {
@@ -293,9 +309,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Input Hatch: info
-     * @param info
-     * 		Location where the hatch goes
+     * (indent)Input Hatch: info
+     * 
+     * @param info Location where the hatch goes
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addInputHatch(String info) {
@@ -305,9 +321,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Output Bus: info
-     * @param info
-     * 		Location where the bus goes
+     * (indent)Output Bus: info
+     * 
+     * @param info Location where the bus goes
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOutputBus(String info) {
@@ -317,9 +333,9 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * 	(indent)Output Hatch: info
-     * @param info
-     * 		Location where the bus goes
+     * (indent)Output Hatch: info
+     * 
+     * @param info Location where the bus goes
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOutputHatch(String info) {
@@ -330,12 +346,10 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add a structural part that isn't covered by the other methods.<br>
      * (indent)name: info
-     * @param name
-     * 		Name of the hatch or other component.
-     * @param info
-     * 		Positional information.
-     * @param dots
-     * 		The valid locations for this part when asked to display hints
+     * 
+     * @param name Name of the hatch or other component.
+     * @param info Positional information.
+     * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOtherStructurePart(String name, String info, int... dots) {
@@ -459,8 +473,8 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
-     * @param info
-     * 		The line to be added.
+     * 
+     * @param info The line to be added.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addStructureInfo(String info) {
@@ -471,6 +485,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
+     * 
      * @param channel the name of subchannel
      * @param purpose the purpose of subchannel
      * @return Instance this method was called on.
@@ -482,8 +497,8 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Use this method to add non-standard structural hint. This info will appear before the standard structural hint.
-     * @param info
-     * 		The line to be added. This should be an entry into minecraft's localization system.
+     * 
+     * @param info The line to be added. This should be an entry into minecraft's localization system.
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addStructureHint(String info) {
@@ -492,11 +507,11 @@ public class GT_Multiblock_Tooltip_Builder {
     }
 
     /**
-     * Use this method to add an entry to standard structural hint without creating a corresponding line in structure information
-     * @param name
-     * 		The name of block This should be an entry into minecraft's localization system.
-     * @param dots
-     * 		Possible locations of this block
+     * Use this method to add an entry to standard structural hint without creating a corresponding line in structure
+     * information
+     * 
+     * @param name The name of block This should be an entry into minecraft's localization system.
+     * @param dots Possible locations of this block
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addStructureHint(String name, int... dots) {
@@ -509,18 +524,24 @@ public class GT_Multiblock_Tooltip_Builder {
      * Adds a final line with the mod name and information on how to display the structure guidelines.<br>
      * Ends the building process.
      *
-     * @param mod
-     * 		Name of the mod that adds this multiblock machine
+     * @param mod Name of the mod that adds this multiblock machine
      */
     public void toolTipFinisher(String mod) {
-        iLines.add(TT_hold + " " + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET
-                + EnumChatFormatting.GRAY + " " + TT_todisplay);
+        iLines.add(
+                TT_hold + " "
+                        + EnumChatFormatting.BOLD
+                        + "[LSHIFT]"
+                        + EnumChatFormatting.RESET
+                        + EnumChatFormatting.GRAY
+                        + " "
+                        + TT_todisplay);
         iLines.add(TT_mod + COLON + EnumChatFormatting.GREEN + mod + EnumChatFormatting.GRAY);
         hLines.add(TT_structurehint);
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
         // e.getKey() - 1 because 1 dot is meta 0.
-        hArray = Stream.concat(
+        hArray = Stream
+                .concat(
                         hLines.stream(),
                         hBlocks.asMap().entrySet().stream()
                                 .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))

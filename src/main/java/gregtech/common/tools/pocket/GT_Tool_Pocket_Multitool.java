@@ -1,14 +1,16 @@
 package gregtech.common.tools.pocket;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.behaviors.Behaviour_Switch_Metadata;
 import gregtech.common.tools.GT_Tool;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Pocket_Multitool extends GT_Tool {
+
     public final int mSwitchIndex;
 
     public GT_Tool_Pocket_Multitool(int aSwitchIndex) {

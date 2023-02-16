@@ -3,6 +3,11 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -11,26 +16,32 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
+
     public GT_Recipe_Map mRecipeMap = null;
 
     public GT_MetaTileEntity_Hatch_Input(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3, new String[] {
-            "Fluid Input for Multiblocks", "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier)) + "L"
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                3,
+                new String[] { "Fluid Input for Multiblocks",
+                        "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier)) + "L" });
     }
 
     public GT_MetaTileEntity_Hatch_Input(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, aSlot, new String[] {
-            "Fluid Input for Multiblocks",
-            "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier) / aSlot) + "L",
-            "Can hold " + aSlot + " types of fluid."
-        });
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                aSlot,
+                new String[] { "Fluid Input for Multiblocks",
+                        "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier) / aSlot) + "L",
+                        "Can hold " + aSlot + " types of fluid." });
     }
 
     public GT_MetaTileEntity_Hatch_Input(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -41,23 +52,23 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_Input(
-            String aName, int aSlots, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Input(String aName, int aSlots, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN)}
-                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN)}
-                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
@@ -146,10 +157,8 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing()
-                && aIndex == 0
-                && (mRecipeMap == null
-                        || mRecipeMap.containsInput(aStack)
+        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0
+                && (mRecipeMap == null || mRecipeMap.containsInput(aStack)
                         || mRecipeMap.containsInput(GT_Utility.getFluidForFilledItem(aStack, true)));
     }
 

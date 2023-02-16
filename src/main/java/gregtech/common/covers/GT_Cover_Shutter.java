@@ -1,7 +1,11 @@
 package gregtech.common.covers;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fluids.Fluid;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -12,8 +16,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_Shutter extends GT_CoverBehavior {
 
@@ -30,27 +32,20 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(
-            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            long aTimer) {
         return aCoverVariable;
     }
 
     @Override
-    public int onCoverScrewdriverclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 4;
         if (aCoverVariable < 0) {
             aCoverVariable = 3;
@@ -77,64 +72,56 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
 
     @Override
     public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 3
+        return aCoverVariable >= 2 ? aCoverVariable == 3
                 : !(aTileEntity instanceof IMachineProgress)
                         || (((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0));
     }
 
     @Override
     public boolean letsRedstoneGoOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 2
+        return aCoverVariable >= 2 ? aCoverVariable == 2
                 : !(aTileEntity instanceof IMachineProgress)
                         || (((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0));
     }
 
     @Override
     public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 3
+        return aCoverVariable >= 2 ? aCoverVariable == 3
                 : !(aTileEntity instanceof IMachineProgress)
                         || (((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0));
     }
 
     @Override
     public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 2
+        return aCoverVariable >= 2 ? aCoverVariable == 2
                 : !(aTileEntity instanceof IMachineProgress)
                         || ((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0);
     }
 
     @Override
     public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 3
+        return aCoverVariable >= 2 ? aCoverVariable == 3
                 : !(aTileEntity instanceof IMachineProgress)
                         || ((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0);
     }
 
     @Override
     public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 2
+        return aCoverVariable >= 2 ? aCoverVariable == 2
                 : !(aTileEntity instanceof IMachineProgress)
                         || ((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0);
     }
 
     @Override
     public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 3
+        return aCoverVariable >= 2 ? aCoverVariable == 3
                 : !(aTileEntity instanceof IMachineProgress)
                         || ((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0);
     }
 
     @Override
     public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return aCoverVariable >= 2
-                ? aCoverVariable == 2
+        return aCoverVariable >= 2 ? aCoverVariable == 2
                 : !(aTileEntity instanceof IMachineProgress)
                         || ((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0);
     }
@@ -180,41 +167,46 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                                    this::getCoverData,
-                                    this::setCoverData,
-                                    GT_Cover_Shutter.this,
-                                    (index, coverData) -> index == convert(coverData),
-                                    (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
-                            .addToggleButton(
-                                    0,
-                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                    widget -> widget.setPos(spaceX * 0, spaceY * 0))
-                            .addToggleButton(
-                                    1,
-                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                    widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                            .addToggleButton(
-                                    2,
-                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                    widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                            .addToggleButton(
-                                    3,
-                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                    widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                            .setPos(startX, startY))
-                    .widget(new TextWidget(GT_Utility.trans("082", "Open if work enabled"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                    .widget(new TextWidget(GT_Utility.trans("083", "Open if work disabled"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                    .widget(new TextWidget(GT_Utility.trans("084", "Only Output allowed"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                    .widget(new TextWidget(GT_Utility.trans("085", "Only Input allowed"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+            builder.widget(
+                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_Shutter.this,
+                            (index, coverData) -> index == convert(coverData),
+                            (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
+                                    .addToggleButton(
+                                            0,
+                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                            widget -> widget.setPos(spaceX * 0, spaceY * 0))
+                                    .addToggleButton(
+                                            1,
+                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                            widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                                    .addToggleButton(
+                                            2,
+                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                            widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                                    .addToggleButton(
+                                            3,
+                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                            widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                                    .setPos(startX, startY))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("082", "Open if work enabled"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("083", "Open if work disabled"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("084", "Only Output allowed"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
+                    .widget(
+                            new TextWidget(GT_Utility.trans("085", "Only Input allowed"))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
         }
     }
 }

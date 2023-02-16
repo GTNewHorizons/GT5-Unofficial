@@ -1,17 +1,18 @@
 package gregtech.api.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.IFluidAccess;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.IFluidAccess;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.util.GT_Utility;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -28,8 +29,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     }
 
     /**
-     * Subclasses must ensure third slot (aSlotIndex==2) is drainable fluid display item slot.
-     * Otherwise, subclasses must intercept the appropriate the slotClick event and call super.slotClick(2, xxx) if necessary
+     * Subclasses must ensure third slot (aSlotIndex==2) is drainable fluid display item slot. Otherwise, subclasses
+     * must intercept the appropriate the slotClick event and call super.slotClick(2, xxx) if necessary
      */
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
@@ -46,16 +47,20 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                 /*
                  * While a logical client don't really need to process fluid cells upon click (it could have just wait
                  * for server side to send the result), doing so would result in every fluid interaction having a
-                 * noticeable delay between clicking and changes happening even on single player.
-                 * I'd imagine this lag to become only more severe when playing MP over ethernet, which would have much more latency
-                 * than a memory connection
+                 * noticeable delay between clicking and changes happening even on single player. I'd imagine this lag
+                 * to become only more severe when playing MP over ethernet, which would have much more latency than a
+                 * memory connection
                  */
                 Slot slot = (Slot) inventorySlots.get(aSlotIndex);
                 tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
             }
             IFluidAccess tDrainableAccess = constructFluidAccess(tTank, false);
             return handleFluidSlotClick(
-                    tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());
+                    tDrainableAccess,
+                    aPlayer,
+                    aMouseclick == 0,
+                    true,
+                    !tTank.isDrainableStackSeparate());
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
@@ -110,6 +115,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     }
 
     static class BasicTankFluidAccess implements IFluidAccess {
+
         protected final GT_MetaTileEntity_BasicTank mTank;
         protected final boolean mIsFillableStack;
 

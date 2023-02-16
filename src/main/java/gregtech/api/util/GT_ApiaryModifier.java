@@ -3,6 +3,7 @@ package gregtech.api.util;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class GT_ApiaryModifier {
+
     public float territory = 1f;
     public float mutation = 1f;
     public float lifespan = 1f;
