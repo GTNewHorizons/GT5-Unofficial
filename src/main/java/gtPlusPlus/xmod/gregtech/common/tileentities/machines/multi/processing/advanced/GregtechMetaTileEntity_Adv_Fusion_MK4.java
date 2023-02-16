@@ -17,6 +17,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.AdvFusionPower;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
@@ -33,11 +34,14 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     }
 
     public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6);
+        super(aID, aName, aNameRegional, 9);
+        // Theoretically this fusion reactor has a slightly higher startup power, but special value only uses integer
+        power = new AdvFusionPower((byte) 9, Integer.MAX_VALUE);
     }
 
     public GregtechMetaTileEntity_Adv_Fusion_MK4(String aName) {
         super(aName);
+        power = new AdvFusionPower((byte) 9, Integer.MAX_VALUE);
     }
 
     @Override
