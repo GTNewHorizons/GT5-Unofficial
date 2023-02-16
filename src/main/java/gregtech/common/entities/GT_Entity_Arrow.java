@@ -77,9 +77,8 @@ public class GT_Entity_Arrow extends EntityArrow {
         if ((this.prevRotationPitch == 0.0F) && (this.prevRotationYaw == 0.0F)) {
             float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.prevRotationYaw = (this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D
-                    / 3.141592653589793D));
-            this.prevRotationPitch = (this.rotationPitch = (float) (Math.atan2(this.motionY, f) * 180.0D
-                    / 3.141592653589793D));
+                    / Math.PI));
+            this.prevRotationPitch = (this.rotationPitch = (float) (Math.atan2(this.motionY, f) * 180.0D / Math.PI));
         }
         if (this.mTicksAlive++ == 3000) {
             setDead();
@@ -123,7 +122,7 @@ public class GT_Entity_Arrow extends EntityArrow {
             List tAllPotentiallyHitEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(
                     this,
                     this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
-            double tLargestDistance = 1.7976931348623157E+308D;
+            double tLargestDistance = Double.MAX_VALUE;
             for (int i = 0; i < tAllPotentiallyHitEntities.size(); i++) {
                 Entity entity1 = (Entity) tAllPotentiallyHitEntities.get(i);
                 if ((entity1.canBeCollidedWith()) && ((entity1 != tShootingEntity) || (this.ticksInAir >= 5))) {
@@ -336,11 +335,11 @@ public class GT_Entity_Arrow extends EntityArrow {
             this.posY += this.motionY;
             this.posZ += this.motionZ;
 
-            this.rotationYaw = ((float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / 3.141592653589793D));
+            this.rotationYaw = ((float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI));
             for (this.rotationPitch = ((float) (Math.atan2(
                     this.motionY,
                     MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ)) * 180.0D
-                    / 3.141592653589793D)); this.rotationPitch - this.prevRotationPitch
+                    / Math.PI)); this.rotationPitch - this.prevRotationPitch
                             < -180.0F; this.prevRotationPitch -= 360.0F) {}
             while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
                 this.prevRotationPitch += 360.0F;

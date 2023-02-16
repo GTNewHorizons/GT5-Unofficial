@@ -520,7 +520,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     // mSize = aRandom.nextInt((int) (gcMaxSize - gcMinSize));
                 }
                 if ((mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
-                    float randomRadian = aRandom.nextFloat() * 3.141593F;
+                    float randomRadian = aRandom.nextFloat() * (float) Math.PI;
                     double xBase = tX + 8 + MathHelper.sin(randomRadian) * mSize / 8.0F;
                     double xFactor = tX + 8 - MathHelper.sin(randomRadian) * mSize / 8.0F;
                     double zBase = tZ + 8 + MathHelper.cos(randomRadian) * mSize / 8.0F;
@@ -532,8 +532,10 @@ public class GT_Worldgenerator implements IWorldGenerator {
                         double yCenter = yBase + (yFactor - yBase) * i / mSize;
                         double zCenter = zBase + (zFactor - zBase) * i / mSize;
                         double randomDistance = aRandom.nextDouble() * mSize / 16.0D;
-                        double halfLength = (MathHelper.sin(i * 3.141593F / mSize) + 1.0F) * randomDistance + 1.0D;
-                        double halfHeight = (MathHelper.sin(i * 3.141593F / mSize) + 1.0F) * randomDistance + 1.0D;
+                        double halfLength = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance
+                                + 1.0D;
+                        double halfHeight = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance
+                                + 1.0D;
                         int tMinX = MathHelper.floor_double(xCenter - halfLength / 2.0D);
                         int tMinY = MathHelper.floor_double(yCenter - halfHeight / 2.0D);
                         int tMinZ = MathHelper.floor_double(zCenter - halfLength / 2.0D);
