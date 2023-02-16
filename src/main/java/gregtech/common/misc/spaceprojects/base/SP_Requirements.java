@@ -5,7 +5,6 @@ import java.util.List;
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.StarType;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Requirements;
-import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 
 public class SP_Requirements implements ISP_Requirements {
 
@@ -14,7 +13,7 @@ public class SP_Requirements implements ISP_Requirements {
     private SpaceBodyType spaceBody = SpaceBodyType.NONE;
     private StarType star = StarType.NotAStar;
     private List<SpaceProject> spaceProjects;
-    private List<ISP_Upgrade> upgrades;
+    private List<SP_Upgrade> upgrades;
 
     // #endregion
 
@@ -36,7 +35,7 @@ public class SP_Requirements implements ISP_Requirements {
     }
 
     @Override
-    public List<ISP_Upgrade> getUpgrades() {
+    public List<SP_Upgrade> getUpgrades() {
         return upgrades;
     }
 
@@ -54,8 +53,8 @@ public class SP_Requirements implements ISP_Requirements {
         return this;
     }
 
-    public SP_Requirements setUpgrades(ISP_Upgrade... requirementUpgrades) {
-        for (ISP_Upgrade upgrade : requirementUpgrades) {
+    public SP_Requirements setUpgrades(SP_Upgrade... requirementUpgrades) {
+        for (SP_Upgrade upgrade : requirementUpgrades) {
             upgrades.add(upgrade);
         }
         return this;
