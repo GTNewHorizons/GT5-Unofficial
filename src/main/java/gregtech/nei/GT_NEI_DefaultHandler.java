@@ -190,6 +190,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
+        if (aResult.getUnlocalizedName().startsWith("gt.blockores")) {
+            for (int i = 0; i < 8; i++) {
+                tResults.add(new ItemStack(aResult.getItem(), 1, aResult.getItemDamage() % 1000 + i * 1000));
+            }
+        }
         addFluidStacks(aResult, tResults);
         for (CachedDefaultRecipe recipe : getCache()) {
             if (tResults.stream().anyMatch(stack -> recipe.contains(recipe.mOutputs, stack))) arecipes.add(recipe);
