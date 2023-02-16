@@ -2624,7 +2624,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public boolean useComparatorForNEI;
 
         /**
-         * s Initialises a new type of Recipe Handler.
+         * Initialises a new type of Recipe Handler.
          *
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a
          *                                   pre-initialised Size.
