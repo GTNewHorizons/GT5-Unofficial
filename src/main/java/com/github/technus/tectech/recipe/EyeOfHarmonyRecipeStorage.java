@@ -51,30 +51,23 @@ public class EyeOfHarmonyRecipeStorage {
                             .getOrDefault(dimAbbreviation, null);
                     GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
                             .getOrDefault(dimAbbreviation, null);
-
-                    if ((normalOre == null) || (smallOre == null)) {
-                        System.out.println(
-                                dimAbbreviation
-                                        + " dimension not found in dimToOreWrapper. Report error to GTNH team.");
+                    if (normalOre == null && smallOre == null) {
+                        // no ores are generated in this dimension. fail silently
                         continue;
                     }
 
-                    try {
-                        put(
-                                dimAbbreviation,
-                                new EyeOfHarmonyRecipe(
-                                        normalOre,
-                                        smallOre,
-                                        blockDimensionDisplay,
-                                        0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
-                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                        timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
-                                        blockDimensionDisplay.getDimensionRocketTier(),
-                                        1.0 - 0.05 * blockDimensionDisplay.getDimensionRocketTier()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    put(
+                            dimAbbreviation,
+                            new EyeOfHarmonyRecipe(
+                                    normalOre,
+                                    smallOre,
+                                    blockDimensionDisplay,
+                                    0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
+                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                    timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
+                                    blockDimensionDisplay.getDimensionRocketTier(),
+                                    1.0 - 0.05 * blockDimensionDisplay.getDimensionRocketTier()));
                 }
             }
         }

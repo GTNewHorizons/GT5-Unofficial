@@ -270,6 +270,7 @@ public class EyeOfHarmonyRecipe {
 
     public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
             double probability) {
+        if (material == null) return;
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
         int index = 0;
@@ -287,21 +288,25 @@ public class EyeOfHarmonyRecipe {
 
         double mainMultiplier = timeInSeconds * 384.0;
 
-        normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-            processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
-            processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
-            // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-            processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
-            processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
-        });
+        if (normalOreDimWrapper != null) {
+            normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
+                processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
+                // 8.0 to replicate void miner getDropsVanillaVeins method yields.
+                processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
+            });
+        }
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
-        smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach(
-                (veinInfo, probability) -> processHelper(
-                        outputMap,
-                        veinInfo.getOreMaterial(),
-                        mainMultiplier,
-                        probability));
+        if (smallOreDimWrapper != null) {
+            smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach(
+                    (veinInfo, probability) -> processHelper(
+                            outputMap,
+                            veinInfo.getOreMaterial(),
+                            mainMultiplier,
+                            probability));
+        }
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
 
