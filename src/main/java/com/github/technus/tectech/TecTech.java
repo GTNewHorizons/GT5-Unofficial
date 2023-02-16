@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -52,6 +53,7 @@ import gregtech.common.GT_Proxy;
                 + "required-after:structurelib;"
                 + "after:ComputerCraft;"
                 + "after:OpenComputers;"
+                + "required-after:gtneioreplugin;"
                 + "required-after:gregtech;"
                 + "after:dreamcraft;"
                 + "after:appliedenergistics2;"
@@ -247,12 +249,11 @@ public class TecTech {
             pEvent.registerServerCommand(new ChargeCommand());
             pEvent.registerServerCommand(new MassCommand());
         }
+    }
 
-        // This must be done after game load otherwise it fails.
+    @Mod.EventHandler
+    public void onLoadCompleted(FMLLoadCompleteEvent event) {
         eyeOfHarmonyRecipeStorage = new EyeOfHarmonyRecipeStorage();
-        // The reason we do this is to force the fields inside the class to instantiate at world load so NEI
-        // displays properly.
-        eyeOfHarmonyRecipeStorage.recipeLookUp(new ItemStack(ModBlocks.blocks.get("Ow")));
     }
 
     public static EyeOfHarmonyRecipeStorage eyeOfHarmonyRecipeStorage = null;
