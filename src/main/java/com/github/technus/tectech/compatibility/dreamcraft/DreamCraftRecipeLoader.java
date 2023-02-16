@@ -2967,8 +2967,7 @@ public class DreamCraftRecipeLoader {
                     32768,
                     (int) TierEU.RECIPE_UXV,
                     64,
-                    new ItemStack[] {
-                            ItemList.Casing_Dim_Bridge.get(64),
+                    new ItemStack[] { ItemList.Casing_Dim_Bridge.get(64),
                             CustomItemList.StabilisationFieldGeneratorTier8.get(64),
                             GT_OreDictUnificator.get("blockShirabon", 64L),
                             GT_OreDictUnificator.get("blockShirabon", 64L),
@@ -2980,8 +2979,7 @@ public class DreamCraftRecipeLoader {
                             GT_OreDictUnificator.get("plateDenseShirabon", 8L), ItemList.Sensor_UXV.get(16L),
                             ItemList.Emitter_UXV.get(16L), getModItem("eternalsingularity", "eternal_singularity", 16L),
                             Materials.Universium.getNanite(16), Materials.BlackDwarfMatter.getNanite(16),
-                            Materials.WhiteDwarfMatter.getNanite(16)
-                    },
+                            Materials.WhiteDwarfMatter.getNanite(16) },
                     new FluidStack[] { Materials.Neutronium.getMolten(32_768_000L),
                             Materials.SpaceTime.getMolten(4 * 36864L),
                             Materials.SuperconductorUMVBase.getMolten(4 * 36864L),
