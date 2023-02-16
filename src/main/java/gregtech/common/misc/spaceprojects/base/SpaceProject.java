@@ -1,7 +1,7 @@
 package gregtech.common.misc.spaceprojects.base;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -10,7 +10,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -25,8 +24,8 @@ public class SpaceProject implements ISpaceProject {
     protected int projectTier;
     protected int currentStage;
     protected int totalStage;
-    protected Map<String, SP_Upgrade> upgradesAvailable;
-    protected Map<String, SP_Upgrade> upgradesInstalled;
+    protected Map<String, SP_Upgrade> upgradesAvailable = new HashMap<>();
+    protected Map<String, SP_Upgrade> upgradesInstalled = new HashMap<>();
     protected SP_Requirements requirements;
     protected SP_Upgrade currentUpgrade;
     protected ItemStack[] itemsCost;
@@ -86,20 +85,18 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public List<ISP_Upgrade> getUpgradesAvailable() {
-        List<ISP_Upgrade> upgrades = new ArrayList<>();
-        for (ISP_Upgrade upgrade : upgradesAvailable.values()) {
-            if (upgrade.getStatus() == UpgradeStatus.Unlocked) {
-                upgrades.add(upgrade);
-            }
-        }
-
-        return upgrades;
+    public Collection<SP_Upgrade> getAllUpgrades() {
+        return upgradesAvailable.values();
     }
 
     @Override
     public Map<String, SP_Upgrade> getUpgradesBuilt() {
         return upgradesInstalled;
+    }
+
+    @Override
+    public ISP_Upgrade getUpgrade(String upgradeName) {
+        return upgradesAvailable.get(upgradeName);
     }
 
     @Override
