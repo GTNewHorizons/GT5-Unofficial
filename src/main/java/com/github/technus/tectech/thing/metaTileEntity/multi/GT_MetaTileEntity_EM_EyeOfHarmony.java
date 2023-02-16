@@ -692,8 +692,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addElement(
                     'H',
                     buildHatchAdder(GT_MetaTileEntity_EM_EyeOfHarmony.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance)
-                            .casingIndex(texturePage << 7).dot(1).buildAndChain(sBlockCasingsBA0, 12))
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus).casingIndex(texturePage << 7).dot(1)
+                            .buildAndChain(sBlockCasingsBA0, 12))
             .addElement(
                     'E',
                     ofBlocksTiered(
@@ -842,8 +842,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             return false;
         }
 
-        // 1 Maintenance hatch, as usual.
-        return (mMaintenanceHatches.size() == 1);
+        mHardHammer = true;
+        mSoftHammer = true;
+        mScrewdriver = true;
+        mCrowbar = true;
+        mSolderingTool = true;
+        mWrench = true;
+        return true;
     }
 
     @Override
@@ -915,7 +920,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + EnumChatFormatting.GRAY
                                 + " Reinforced Temporal Structure Casing.")
                 .addStructureInfo(
-                        EnumChatFormatting.GOLD + "31"
+                        EnumChatFormatting.GOLD + "32"
                                 + EnumChatFormatting.GRAY
                                 + " Infinite SpaceTime Energy Boundary Casing.")
                 .addStructureInfo(
@@ -927,8 +932,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + EnumChatFormatting.GRAY
                                 + " Spacetime Compression Field Generator.")
                 .addStructureInfo("--------------------------------------------")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " maintenance hatch.")
                 .addStructureInfo(
                         "Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
                 .addStructureInfo(
@@ -1011,6 +1014,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             // No item in multi gui slot.
 
             currentRecipe = eyeOfHarmonyRecipeStorage.recipeLookUp(aStack);
+            if (currentRecipe == null) {
+                return false;
+            }
             if (processRecipe(currentRecipe)) {
                 return true;
             }

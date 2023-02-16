@@ -111,14 +111,15 @@ public class TileEyeOfHarmony extends TileEntity {
     private static final Set<String> BLACKLISTED_BLOCKS = Collections
             .unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
     // Map of strings to blocks
-    private static final Map<String, Block> BLOCKS;
+    private static final Map<String, Block> BLOCKS = new HashMap<>();
 
     static {
         // Initialize the map of blocks
-        BLOCKS = ModBlocks.blocks;
-
-        // Remove blacklisted blocks from the map
-        BLOCKS.keySet().removeAll(BLACKLISTED_BLOCKS);
+        ModBlocks.blocks.forEach((dimString, dimBlock) -> {
+            if (!BLACKLISTED_BLOCKS.contains(dimString)) {
+                BLOCKS.put(dimString, dimBlock);
+            }
+        });
     }
 
     private static final float MAX_ANGLE = 30;
