@@ -8,6 +8,9 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 
+/**
+ * @author BlueWeabo
+ */
 public enum SolarSystem implements ISpaceBody {
 
     Sol(Star, GClass),
