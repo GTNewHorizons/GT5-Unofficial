@@ -15,6 +15,9 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
+/**
+ * @author BlueWeabo
+ */
 public class SpaceProject implements ISpaceProject {
 
     // #region Variables

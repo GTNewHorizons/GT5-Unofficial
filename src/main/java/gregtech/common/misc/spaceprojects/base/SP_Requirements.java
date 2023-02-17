@@ -6,6 +6,9 @@ import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.StarType;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Requirements;
 
+/**
+ * @author BlueWeabo
+ */
 public class SP_Requirements implements ISP_Requirements {
 
     // #region Variables
