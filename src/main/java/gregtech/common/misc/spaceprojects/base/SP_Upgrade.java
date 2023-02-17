@@ -14,16 +14,16 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     // #region Variables
 
-    private String name;
-    private String unlocalizedName;
-    private ItemStack[] itemsCost;
-    private FluidStack[] fluidsCost;
-    private int totalStages;
-    private int currentStage;
-    private int buildTime;
-    private long voltage;
-    private SP_Requirements requirements;
-    private SpaceProject projectBelongingTo;
+    protected String name;
+    protected String unlocalizedName;
+    protected ItemStack[] itemsCost;
+    protected FluidStack[] fluidsCost;
+    protected int totalStages;
+    protected int currentStage;
+    protected int buildTime;
+    protected long voltage;
+    protected SP_Requirements requirements;
+    protected SpaceProject projectBelongingTo;
 
     // #endregion
 
