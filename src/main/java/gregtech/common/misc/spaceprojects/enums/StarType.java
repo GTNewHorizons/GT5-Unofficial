@@ -1,5 +1,8 @@
 package gregtech.common.misc.spaceprojects.enums;
 
+/**
+ * @author BlueWeabo
+ */
 public enum StarType {
 
     OClass(30000, 100),

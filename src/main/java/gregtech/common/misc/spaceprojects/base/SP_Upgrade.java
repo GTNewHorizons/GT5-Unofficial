@@ -10,6 +10,9 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 
+/**
+ * @author BlueWeabo
+ */
 public class SP_Upgrade implements ISP_Upgrade {
 
     // #region Variables
@@ -182,7 +185,7 @@ public class SP_Upgrade implements ISP_Upgrade {
     }
 
     @Override
-    public int getTotalBuildTime() {
+    public int getUpgradeBuildTime() {
         return buildTime;
     }
 
