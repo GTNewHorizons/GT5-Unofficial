@@ -656,7 +656,8 @@ public class PlatinumSludgeOverHaul {
         // gt machines
         maploop: for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
             if (map == GT_Recipe.GT_Recipe_Map.sFusionRecipes || map == GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes
-                    || map == GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes)
+                    || map == GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes
+                    || map.mUnlocalizedName.equals("gt.recipe.eyeofharmony"))
                 continue;
             HashSet<GT_Recipe> toDel = new HashSet<>();
             recipeloop: for (GT_Recipe recipe : map.mRecipeList) {
