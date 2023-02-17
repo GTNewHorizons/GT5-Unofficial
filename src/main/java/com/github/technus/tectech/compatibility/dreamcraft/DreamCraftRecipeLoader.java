@@ -5349,7 +5349,7 @@ public class DreamCraftRecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 2),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 32),
-                GT_OreDictUnificator.get(OrePrefixes.rod, Materials.BlackDwarfMatter, 32),
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.BlackDwarfMatter, 32),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2) };
 
         // EOH Controller Recipe.
