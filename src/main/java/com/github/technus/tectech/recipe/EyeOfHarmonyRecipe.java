@@ -3,6 +3,7 @@ package com.github.technus.tectech.recipe;
 import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage.BILLION;
 import static com.google.common.math.IntMath.pow;
 import static gregtech.api.GregTech_API.getUnificatedOreDictStack;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
 import static java.lang.Math.min;
 
@@ -10,12 +11,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
@@ -30,6 +31,18 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class EyeOfHarmonyRecipe {
+
+    static final FluidStack[] SPECIAL_FLUIDS = new FluidStack[] {
+            Materials.WhiteDwarfMatter.getMolten(576),
+            Materials.WhiteDwarfMatter.getMolten(576),
+            Materials.WhiteDwarfMatter.getMolten(2_304),
+            Materials.WhiteDwarfMatter.getMolten(9_216),
+            Materials.BlackDwarfMatter.getMolten(576),
+            Materials.BlackDwarfMatter.getMolten(2_304),
+            Materials.BlackDwarfMatter.getMolten(9_216),
+            Materials.Universium.getMolten(576),
+            Materials.Universium.getMolten(2_304),
+    };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
 
@@ -95,7 +108,7 @@ public class EyeOfHarmonyRecipe {
         return rocketTier;
     }
 
-    public EyeOfHarmonyRecipe(ArrayList<Pair<Materials, Long>> materialList, Block block,
+    public EyeOfHarmonyRecipe(final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
             final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
             final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
 
@@ -108,8 +121,7 @@ public class EyeOfHarmonyRecipe {
 
         this.sumOfItems = this.outputItems.stream().map(ItemStackLong::getStackSize).reduce(0L, Long::sum);
 
-        this.outputItems.add(
-                new ItemStackLong(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), this.sumOfItems * 3));
+        this.outputItems.add(new ItemStackLong(getStoneDustType(block.getDimension()), this.sumOfItems * 3L));
         this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
         Collections.reverse(this.outputItems);
 
@@ -132,29 +144,19 @@ public class EyeOfHarmonyRecipe {
         // Add a bonus fluid of compressed star matter.
         fluidStackArrayList.add(Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000));
 
-        // Tier 0 - 576 White
-        // Tier 1 - 2304 White
-        // Tier 2 - 9216 White
-        // Tier 3 - 36864 White
+        // Tier 0 & 1 - 576 White
+        // Tier 2 - 2304 White
+        // Tier 3 - 9216 White
 
         // Tier 4 - 576 Black
         // Tier 5 - 2304 Black
         // Tier 6 - 9216 Black
-        // Tier 7 - 36864 Black
 
-        // Tier 8 - 576 Universium
-        // Tier 9 - 2304 Universium
+        // Tier 7 - 576 Universium
+        // Tier 8 - 2304 Universium
 
         if (rocketTierOfRecipe <= 2) {
-            fluidStackArrayList.add(Materials.WhiteDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe)));
-        }
-
-        if ((3 <= rocketTierOfRecipe) && (rocketTierOfRecipe <= 7)) {
-            fluidStackArrayList.add(Materials.BlackDwarfMatter.getMolten(576L * pow(4, (int) rocketTierOfRecipe - 3)));
-        }
-
-        if (rocketTierOfRecipe >= 8) {
-            fluidStackArrayList.add(Materials.Universium.getMolten(576L * pow(4, (int) (rocketTierOfRecipe - 8))));
+            fluidStackArrayList.add(SPECIAL_FLUIDS[(int) rocketTierOfRecipe]);
         }
 
         outputFluids = fluidStackArrayList;
@@ -174,10 +176,78 @@ public class EyeOfHarmonyRecipe {
         this.euOutput = (long) (euStartCost * recipeEnergyEfficiency);
     }
 
+    private ItemStack getStoneDustType(String key) {
+
+        switch (key) {
+            case "Ne":
+                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
+            case "ED":
+            case "VA":
+            case "EA":
+                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
+            case "Mo":
+                return getModItem("dreamcraft", "item.MoonStoneDust", 1);
+            case "De":
+                return getModItem("dreamcraft", "item.DeimosStoneDust", 1);
+            case "Ma":
+                return getModItem("dreamcraft", "item.MarsStoneDust", 1);
+            case "Ph":
+                return getModItem("dreamcraft", "item.PhobosStoneDust", 1);
+            case "As":
+            case "KB":
+                return getModItem("dreamcraft", "item.AsteroidsStoneDust", 1);
+            case "Ca":
+                return getModItem("dreamcraft", "item.CallistoStoneDust", 1);
+            case "Ce":
+                return getModItem("dreamcraft", "item.CeresStoneDust", 1);
+            case "Eu":
+                return getModItem("dreamcraft", "item.EuropaStoneDust", 1);
+            case "Ga":
+                return getModItem("dreamcraft", "item.GanymedeStoneDust", 1);
+            case "Io":
+                return getModItem("dreamcraft", "item.IoStoneDust", 1);
+            case "Me":
+                return getModItem("dreamcraft", "item.MercuryStoneDust", 1);
+            case "Ve":
+                return getModItem("dreamcraft", "item.VenusStoneDust", 1);
+            case "En":
+                return getModItem("dreamcraft", "item.EnceladusStoneDust", 1);
+            case "Mi":
+                return getModItem("dreamcraft", "item.MirandaStoneDust", 1);
+            case "Ob":
+                return getModItem("dreamcraft", "item.OberonStoneDust", 1);
+            case "Ti":
+                return getModItem("dreamcraft", "item.TitanStoneDust", 1);
+            case "Pr":
+                return getModItem("dreamcraft", "item.ProteusStoneDust", 1);
+            case "Tr":
+                return getModItem("dreamcraft", "item.TritonStoneDust", 1);
+            case "Ha":
+                return getModItem("dreamcraft", "item.HaumeaStoneDust", 1);
+            case "MM":
+                return getModItem("dreamcraft", "item.MakeMakeStoneDust", 1);
+            case "Pl":
+                return getModItem("dreamcraft", "item.PlutoStoneDust", 1);
+            case "BE":
+                return getModItem("dreamcraft", "item.BarnardaEStoneDust", 1);
+            case "BF":
+                return getModItem("dreamcraft", "item.BarnardaFStoneDust", 1);
+            case "CB":
+                return getModItem("dreamcraft", "item.CentauriAStoneDust", 1);
+            case "TE":
+                return getModItem("dreamcraft", "item.TCetiEStoneDust", 1);
+            case "VB":
+                return getModItem("dreamcraft", "item.VegaBStoneDust", 1);
+            default:
+                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
+        }
+    }
+
     public EyeOfHarmonyRecipe(final GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
-            final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper, final Block block,
-            final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
-            final long miningTimeSeconds, final long spacetimeCasingTierRequired, final double baseSuccessChance) {
+            final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper,
+            final BlockDimensionDisplay block, final double recipeEnergyEfficiency, final long hydrogenRequirement,
+            final long heliumRequirement, final long miningTimeSeconds, final long spacetimeCasingTierRequired,
+            final double baseSuccessChance) {
 
         // Process recipes output items.
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.

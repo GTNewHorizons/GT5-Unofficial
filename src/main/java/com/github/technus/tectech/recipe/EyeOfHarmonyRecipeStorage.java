@@ -52,7 +52,7 @@ public class EyeOfHarmonyRecipeStorage {
                     GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
                             .getOrDefault(dimAbbreviation, null);
                     if (normalOre == null && smallOre == null) {
-                        // no ores are generated in this dimension. fail silently
+                        // No ores are generated in this dimension. Fail silently.
                         continue;
                     }
 
