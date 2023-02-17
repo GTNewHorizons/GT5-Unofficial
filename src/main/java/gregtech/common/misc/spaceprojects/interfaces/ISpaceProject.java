@@ -8,6 +8,8 @@ import java.util.UUID;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+
 import gregtech.common.misc.spaceprojects.base.SP_Upgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
@@ -67,6 +69,8 @@ public interface ISpaceProject {
     ISP_Upgrade getUpgradeBeingBuilt();
 
     ISpaceBody getProjectLocation();
+
+    UITexture getTexture();
 
     void setProjectStage(int stage);
 

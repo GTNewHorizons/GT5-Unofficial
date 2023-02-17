@@ -3,6 +3,8 @@ package gregtech.common.misc.spaceprojects.enums;
 import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.*;
 import static gregtech.common.misc.spaceprojects.enums.StarType.*;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 
@@ -49,6 +51,7 @@ public enum SolarSystem implements ISpaceBody {
 
     private SpaceBodyType spaceBody;
     private StarType star;
+    private UITexture texture;
 
     SolarSystem(SpaceBodyType aType) {
         this(aType, NotAStar);
@@ -57,6 +60,7 @@ public enum SolarSystem implements ISpaceBody {
     SolarSystem(SpaceBodyType aType, StarType aStarType) {
         star = aStarType;
         spaceBody = aType;
+        texture = UITexture.fullImage("gregtech", "solarsystem/" + getName());
         SpaceProjectManager.addLocation(this);
     }
 
@@ -73,5 +77,10 @@ public enum SolarSystem implements ISpaceBody {
     @Override
     public String getName() {
         return name();
+    }
+
+    @Override
+    public UITexture getTexture() {
+        return texture;
     }
 }
