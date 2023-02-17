@@ -68,14 +68,14 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     private float totalWeight;
     private int multiplier = 1;
 
-    protected byte TIER_MULTIPLIER;
+    protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
 
     /**
      * Public method giving other mods the ability to add manually a material with an ore version into the external
      * dromap for a specified dim id
-     * 
+     *
      * @param DimensionID the dim id targetted
      * @param Material    the material with an ore version
      * @param weight      the non normalised version of the given weight
@@ -101,14 +101,12 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("TIER_MULTIPLIER", TIER_MULTIPLIER);
         aNBT.setBoolean("mBlacklist", mBlacklist);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        TIER_MULTIPLIER = aNBT.getByte("TIER_MULTIPLIER");
         mBlacklist = aNBT.getBoolean("mBlacklist");
     }
 
@@ -187,7 +185,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * getter for the external drop map
-     * 
+     *
      * @return the extraDriosDimMap
      */
     public static ArrayListMultimap<Integer, Pair<Pair<Integer, Boolean>, Float>> getExtraDropsDimMap() {
@@ -196,7 +194,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Makes a predicate for the GT normal ore veins worldgen
-     * 
+     *
      * @return the predicate
      */
     private Predicate<GT_Worldgen_GT_Ore_Layer> makeOreLayerPredicate() {
@@ -222,7 +220,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Makes a predicate for the GT normal small ore worldgen
-     * 
+     *
      * @return the predicate
      */
     private Predicate<GT_Worldgen_GT_Ore_SmallPieces> makeSmallOresPredicate() {
@@ -247,7 +245,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Method used to add an ore to the droplist
-     * 
+     *
      * @param key   a Pair of <int, bool> where the int is the meta of the ore, and the bool is true for BW ores, false
      *              for GT ores
      * @param value the non normalised weight
@@ -266,7 +264,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Method to add the ores of a vanilla GT worldgen
-     * 
+     *
      * @param oreLayerPredicate the predicate made by makeOreLayerPredicate
      */
     private void getDropsVanillaVeins(Predicate<GT_Worldgen_GT_Ore_Layer> oreLayerPredicate) {
@@ -281,7 +279,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Method to add the small ores of a vanilla GT worldgen
-     * 
+     *
      * @param smallOresPredicate the predicate made by makeSmallOresPredicate
      */
     private void getDropsVanillaSmallOres(Predicate<GT_Worldgen_GT_Ore_SmallPieces> smallOresPredicate) {
@@ -292,7 +290,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * add to the dropmap the ores from the gagreg space worldgen corresponding to the target dim
-     * 
+     *
      * @param finalDef ModDimensionDef corresponding to the target dim
      */
     private void getDropsOreVeinsSpace(ModDimensionDef finalDef) {
@@ -320,7 +318,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * add to the dropmap the small ores from the gagreg space worldgen corresponding to the target dim
-     * 
+     *
      * @param finalDef ModDimensionDef corresponding to the target dim
      */
     private void getDropsSmallOreSpace(ModDimensionDef finalDef) {
@@ -337,7 +335,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * method used to pick the next key in the dropmap that will be used to generate the ore.
-     * 
+     *
      * @return the chosen key
      */
     private Pair<Integer, Boolean> getOreDamage() {
@@ -353,7 +351,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Method used to check the current gat and its corresponding multiplier
-     * 
+     *
      * @return the noble gas in the hatch. returns null if there is no noble gas found.
      */
     private FluidStack getNobleGasInputAndSetMultiplier() {
@@ -371,7 +369,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * method used to decrement the quantity of gas in the hatch
-     * 
+     *
      * @param gasToConsume the fluid stack in the hatch
      * @return if yes or no it was able to decrement the quantity of the fluidstack
      */
@@ -396,7 +394,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Handles the addition of Ross dims' ores into the drop map
-     * 
+     *
      * @param aID dim id of Ross128b or Ross128ba
      */
     private void getDropMapRoss(int aID) {
@@ -410,7 +408,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Method used to generate a consumer used specifically to add BW ores into the dropmap
-     * 
+     *
      * @return the consumer
      */
     private Consumer<BW_OreLayer> makeAddToList() {
@@ -425,7 +423,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Method used to build the ModDimensionDef object corresponding to the dimension the VM is in.
-     * 
+     *
      * @return the ModDimensionDef object.
      */
     private ModDimensionDef makeModDimDef() {
@@ -439,7 +437,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Handles the addition of small ores for bartwork dims
-     * 
+     *
      * @param finalDef  the ModDimensionDef object corresponding to the dim
      * @param addToList a consumer used to add the ores from the vein with proper weight
      */
@@ -457,7 +455,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Handles the addition of small ores for bartwork dims
-     * 
+     *
      * @param finalDef the ModDimensionDef object corresponding to the dim
      */
     private void addSmallOresBartworks(ModDimensionDef finalDef) {
@@ -479,7 +477,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Handles the ores added manually with addMatierialToDimensionList
-     * 
+     *
      * @param id the specified dim id
      */
     private void handleExtraDrops(int id) {
@@ -497,7 +495,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Computes the ores of the dim for the specifed dim id
-     * 
+     *
      * @param id the dim number
      */
     private void handleModDimDef(int id) {
@@ -554,7 +552,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Builds the ore item stack from the key specified in the dropmap
-     * 
+     *
      * @param stats the key of the dropmap
      * @return an ItemStack corresponding to the target ore, with a stacksize corresponding to the mutiplier induced by
      *         the gas used
