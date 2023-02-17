@@ -10,10 +10,10 @@ public class SP_Requirements implements ISP_Requirements {
 
     // #region Variables
 
-    private SpaceBodyType spaceBody = SpaceBodyType.NONE;
-    private StarType star = StarType.NotAStar;
-    private List<SpaceProject> spaceProjects;
-    private List<SP_Upgrade> upgrades;
+    protected SpaceBodyType spaceBody = SpaceBodyType.NONE;
+    protected StarType star = StarType.NotAStar;
+    protected List<SpaceProject> spaceProjects;
+    protected List<SP_Upgrade> upgrades;
 
     // #endregion
 
