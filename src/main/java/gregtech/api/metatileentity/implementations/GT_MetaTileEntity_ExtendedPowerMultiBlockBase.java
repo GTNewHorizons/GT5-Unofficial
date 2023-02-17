@@ -120,7 +120,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             if (tileEntity.isActive()) {
-                if (mEUt >= 0) tag.setLong("energyUsage", lEUt * mEfficiency / 10000);
+                if (lEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
+                else tag.setLong("energyUsage", -lEUt * mEfficiency / 10000);
             }
         }
     }
