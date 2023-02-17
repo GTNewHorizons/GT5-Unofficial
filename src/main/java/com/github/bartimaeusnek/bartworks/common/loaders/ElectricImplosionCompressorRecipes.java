@@ -59,8 +59,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     // OUT.
                     new ItemStack[] { ItemList.Circuit_Chip_Optical.get(16L) },
                     new FluidStack[] { GT_Values.NF },
-                    (int) TierEU.RECIPE_UMV,
-                    5 * 20);
+                    5 * 20,
+                    (int) TierEU.RECIPE_UMV);
 
         }
 
