@@ -145,6 +145,10 @@ public class SpaceProjectManager {
         return spaceLocations.values();
     }
 
+    public static Collection<String> getLocationNames() {
+        return spaceLocations.keySet();
+    }
+
     public static ISpaceBody getLocation(String locationName) {
         return spaceLocations.get(locationName);
     }

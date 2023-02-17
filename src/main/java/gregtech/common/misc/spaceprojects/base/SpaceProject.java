@@ -62,10 +62,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public float getProjectCurrentProgress() {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getCurrentProgress();
-        }
-
         return currentStage / totalStage * 100.0f;
     }
 
@@ -95,16 +91,12 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public ISP_Upgrade getUpgrade(String upgradeName) {
+    public SP_Upgrade getUpgrade(String upgradeName) {
         return upgradesAvailable.get(upgradeName);
     }
 
     @Override
     public ItemStack[] getItemsCostPerStage() {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getItemsCostPerStage();
-        }
-
         return itemsCost;
     }
 
@@ -114,19 +106,11 @@ public class SpaceProject implements ISpaceProject {
             return null;
         }
 
-        if (currentUpgrade != null) {
-            return currentUpgrade.getItemCostPerStage(index);
-        }
-
         return itemsCost[index];
     }
 
     @Override
     public ItemStack[] getCurrentItemsProgress() {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getCurrentItemsProgress();
-        }
-
         ItemStack[] currentItemsProgress = new ItemStack[itemsCost.length];
         int index = 0;
         for (ItemStack item : itemsCost) {
@@ -140,10 +124,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public ItemStack getCurrentItemProgress(int index) {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getCurrentItemProgress(index);
-        }
-
         if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
@@ -155,10 +135,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public ItemStack[] getTotalItemsCost() {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getTotalItemsCost();
-        }
-
         ItemStack[] totalItemsCost = new ItemStack[itemsCost.length];
         int index = 0;
         for (ItemStack item : itemsCost) {
@@ -172,10 +148,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public ItemStack getTotalItemCost(int index) {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getTotalItemCost(index);
-        }
-
         if (itemsCost == null || index < 0 || index >= itemsCost.length) {
             return null;
         }
@@ -187,19 +159,11 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public FluidStack[] getFluidsCostPerStage() {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getFluidsCostPerStage();
-        }
-
         return fluidsCost;
     }
 
     @Override
     public FluidStack getFluidCostPerStage(int index) {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getFluidCostPerStage(index);
-        }
-
         if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
@@ -209,10 +173,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public FluidStack[] getCurrentFluidsProgress() {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getCurrentFluidsProgress();
-        }
-
         if (fluidsCost == null) {
             return null;
         }
@@ -230,10 +190,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public FluidStack getCurrentFluidProgress(int index) {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getCurrentFluidProgress(index);
-        }
-
         if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
@@ -245,10 +201,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public FluidStack[] getTotalFluidsCost() {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getTotalFluidsCost();
-        }
-
         if (fluidsCost == null) {
             return null;
         }
@@ -266,10 +218,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public FluidStack getTotalFluidCost(int index) {
-        if (currentUpgrade != null) {
-            return currentUpgrade.getTotalFluidCost(index);
-        }
-
         if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
             return null;
         }
@@ -280,7 +228,7 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public ISP_Upgrade getUpgradeBeingBuilt() {
+    public SP_Upgrade getUpgradeBeingBuilt() {
         return currentUpgrade;
     }
 
@@ -375,17 +323,6 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public void goToNextStage() {
-        if (getCurrentStage() == getTotalStages()) {
-            if (currentUpgrade != null) {
-                upgradesInstalled.put(currentUpgrade.getUpgradeName(), currentUpgrade);
-                currentUpgrade = null;
-            }
-            return;
-        }
-        if (currentUpgrade != null) {
-            currentUpgrade.goToNextStage();
-            return;
-        }
         currentStage++;
     }
 
