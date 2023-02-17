@@ -125,6 +125,7 @@ public class GT_PreLoad {
         GregTech_API.mTConstruct = Loader.isModLoaded("TConstruct");
         GregTech_API.mGalacticraft = Loader.isModLoaded("GalacticraftCore");
         GregTech_API.mAE2 = Loader.isModLoaded(MOD_ID_AE);
+        GregTech_API.mHodgepodge = Loader.isModLoaded("hodgepodge");
     }
 
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {

@@ -16,7 +16,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
-    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();;
+    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();
     private final IItemRenderer mMaterialRenderer = new GT_GeneratedMaterial_Renderer();
 
     public GT_MetaGenerated_Item_Renderer() {

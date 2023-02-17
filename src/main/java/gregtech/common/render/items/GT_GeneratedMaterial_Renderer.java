@@ -11,6 +11,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.render.TextureUtils;
+
+import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
+
+import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
@@ -36,7 +40,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
      * {@link IItemRenderer#renderItem(ItemRenderType, ItemStack, Object...)} verbatim. Do not modify the argument.
      *
      * While this is called, BLEND and ALPHA_TEST is on. It is expected that these remain enabled while exit.
-     * 
+     *
      * @return true if did special fluid display rendering. false otherwise.
      */
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -63,12 +67,14 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         if (tIcon != null) {
+            markNeedsAnimationUpdate(tIcon);
             renderRegularItem(type, aStack, tIcon, aFluid == null);
         }
 
         if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
             IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
             if (fluidIcon != null) {
+                markNeedsAnimationUpdate(fluidIcon);
                 // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
                 renderContainedFluid(type, aFluid, fluidIcon);
             }
@@ -77,6 +83,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         if (tOverlay != null) {
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
             TextureUtils.bindAtlas(aItem.getSpriteNumber());
+            markNeedsAnimationUpdate(tOverlay);
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                 GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
@@ -139,5 +146,11 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
                     0.0625F);
         }
         GL11.glDepthFunc(GL11.GL_LEQUAL);
+    }
+
+    protected void markNeedsAnimationUpdate(IIcon icon) {
+        if (GregTech_API.mHodgepodge && icon instanceof IPatchedTextureAtlasSprite) {
+            ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
+        }
     }
 }

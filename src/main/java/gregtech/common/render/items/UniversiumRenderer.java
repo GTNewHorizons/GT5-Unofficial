@@ -267,17 +267,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 }
                 break;
             }
-            case EQUIPPED: {
-                EntityLivingBase ent = (EntityLivingBase) (data[1]);
-                if (ent != null) {
-                    CosmicRenderStuffs.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
-                }
-                break;
-            }
+            case EQUIPPED:
             case EQUIPPED_FIRST_PERSON: {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {

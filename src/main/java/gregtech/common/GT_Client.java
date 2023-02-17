@@ -49,7 +49,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
@@ -581,12 +580,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             } catch (Throwable e) {
                 e.printStackTrace(GT_Log.err);
             }
-        }
-
-        if (Loader.isModLoaded("Avaritia")) {
-            // TODO make this work
-            // CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
-            CosmicItemRendererGT.init();
         }
 
         // reobf doesn't work with lambda, so this must be a class

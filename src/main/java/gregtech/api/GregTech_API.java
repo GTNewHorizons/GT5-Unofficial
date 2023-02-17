@@ -171,7 +171,7 @@ public class GregTech_API {
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
     /**
      * The List of all Sounds used in GT, indices are in the static Block at the bottom
-     * 
+     *
      * @deprecated Use {@link SoundResource}
      */
     @Deprecated
@@ -279,7 +279,8 @@ public class GregTech_API {
             sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
             sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
             mServerStarted = false, mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
-            mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false;
+            mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false,
+            mHodgepodge = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -733,7 +734,7 @@ public class GregTech_API {
 
     /**
      * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     * 
+     *
      * @param minTier the minimal tier this circuit can be offered for free, e.g. normal configuration circuit is
      *                available in LV+ single blocks, GT++ breakthrough circuit is offered in HV+ single blocks
      */
@@ -841,7 +842,7 @@ public class GregTech_API {
 
     /**
      * returns a Cover behavior, guaranteed to not return null after preload
-     * 
+     *
      * @return The Cover behavior
      */
     public static GT_CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack aStack) {
@@ -982,7 +983,7 @@ public class GregTech_API {
 
     /**
      * Sets the {@link IIconRegister} for Block Icons
-     * 
+     *
      * @param aIconRegister The {@link IIconRegister} Icon Register
      */
     @SideOnly(Side.CLIENT)
@@ -992,7 +993,7 @@ public class GregTech_API {
 
     /**
      * Sets the {@link IIconRegister} for Items Icons
-     * 
+     *
      * @param aIconRegister The {@link IIconRegister} Icon Register
      */
     @SideOnly(Side.CLIENT)
