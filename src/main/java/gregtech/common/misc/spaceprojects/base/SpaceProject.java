@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -31,6 +33,7 @@ public class SpaceProject implements ISpaceProject {
     protected ItemStack[] itemsCost;
     protected FluidStack[] fluidsCost;
     protected ISpaceBody location;
+    protected UITexture texture;
 
     // #endregion
 
@@ -237,6 +240,11 @@ public class SpaceProject implements ISpaceProject {
         return location;
     }
 
+    @Override
+    public UITexture getTexture() {
+        return texture;
+    }
+
     // #endregion
 
     // #region Setter/Builder
@@ -280,6 +288,11 @@ public class SpaceProject implements ISpaceProject {
         for (SP_Upgrade upgrade : spaceProjectUpgrades) {
             upgradesAvailable.put(upgrade.getUpgradeName(), upgrade);
         }
+        return this;
+    }
+
+    public SpaceProject setProjectTexture(UITexture projectTexture) {
+        texture = projectTexture;
         return this;
     }
 
