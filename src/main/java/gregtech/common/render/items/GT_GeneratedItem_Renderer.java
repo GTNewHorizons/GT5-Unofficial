@@ -16,6 +16,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
+
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.GT_MetaGenerated_Item;
@@ -71,6 +74,8 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
 
         if (tIcon == null) tIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
 
+        markNeedsAnimationUpdate(tIcon);
+
         ItemList largeFluidCell = getLargeFluidCell(aStack);
         if (largeFluidCell != null) {
             renderLargeFluidCellExtraParts(type, largeFluidCell, aStack);
@@ -109,8 +114,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
         return null;
     }
 
-    private static void renderLargeFluidCellExtraParts(IItemRenderer.ItemRenderType type, ItemList item,
-            ItemStack stack) {
+    private void renderLargeFluidCellExtraParts(IItemRenderer.ItemRenderType type, ItemList item, ItemStack stack) {
 
         IIcon inner;
         if (item == Large_Fluid_Cell_Steel) inner = ExtraIcons.steelLargeCellInner;
@@ -125,6 +129,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
 
         // Empty inner side
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
+        markNeedsAnimationUpdate(inner);
         if (type.equals(ItemRenderType.INVENTORY)) {
             GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
         } else {
@@ -146,6 +151,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
             int fluidColor = fluidStack.getFluid().getColor(fluidStack);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+            markNeedsAnimationUpdate(fluidIcon);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
@@ -173,5 +179,11 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
         if (GT_Utility.isStackInvalid(internal)) return false;
 
         return internal.getItem() == stack.getItem() && internal.getItemDamage() == stack.getItemDamage();
+    }
+
+    protected void markNeedsAnimationUpdate(IIcon icon) {
+        if (GregTech_API.mHodgepodge && icon instanceof IPatchedTextureAtlasSprite) {
+            ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
+        }
     }
 }
