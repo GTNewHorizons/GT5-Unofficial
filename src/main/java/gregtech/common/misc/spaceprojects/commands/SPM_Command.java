@@ -18,6 +18,9 @@ import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
+/**
+ * @author BlueWeabo
+ */
 public class SPM_Command extends CommandBase {
 
     private static final String RESET = "reset";
@@ -158,7 +161,7 @@ public class SPM_Command extends CommandBase {
     }
 
     private String[] getProjects() {
-        return SpaceProjectManager.getProjects().stream().map(project -> project.getProjectName())
+        return SpaceProjectManager.getAllProjects().stream().map(project -> project.getProjectName())
                 .collect(Collectors.toList()).toArray(new String[0]);
     }
 
@@ -195,7 +198,7 @@ public class SPM_Command extends CommandBase {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         switch (argument) {
             case ALL:
-                for (String project : SpaceProjectManager.getAllProjects().keySet()) {
+                for (String project : SpaceProjectManager.getProjectsMap().keySet()) {
                     sender.addChatMessage(new ChatComponentText(project));
                 }
                 break;

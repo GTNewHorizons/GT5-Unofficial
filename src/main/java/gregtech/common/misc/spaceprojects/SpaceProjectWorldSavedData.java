@@ -43,6 +43,9 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 
+/**
+ * @author BlueWeabo
+ */
 public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     public static SpaceProjectWorldSavedData INSTANCE;
