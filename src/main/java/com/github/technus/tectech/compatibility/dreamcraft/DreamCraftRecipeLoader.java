@@ -2503,7 +2503,9 @@ public class DreamCraftRecipeLoader {
 
         addWirelessEnergyRecipes();
 
-        addEOHRecipes();
+        if (Loader.isModLoaded("TGregworks")) {
+            addEOHRecipes();
+        }
 
         // UHV-UMV Energy Hatch & Dynamo
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -5043,14 +5045,15 @@ public class DreamCraftRecipeLoader {
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
 
-        // Fluid mutatedLivingSolder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-        // ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-        // : FluidRegistry.getFluid("molten.solderingalloy");
+        Fluid mutatedLivingSolder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
+                ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
+                : FluidRegistry.getFluid("molten.solderingalloy");
 
         FluidStack fluid_0 = Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(576);
         FluidStack fluid_1 = Materials.SpaceTime.getMolten(576);
         FluidStack fluid_2 = Materials.Universium.getMolten(576);
-        FluidStack fluid_3 = Materials.Lubricant.getFluid(8000);
+        FluidStack lubricantFluid = Materials.Lubricant.getFluid(8000);
+        FluidStack solderingAlloy = new FluidStack(mutatedLivingSolder, 14_400);
 
         int totalComputation = 384_000;
         int compPerSecond = 512;
@@ -5094,7 +5097,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 2L),
                         Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
                 ItemList.Electric_Motor_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5115,15 +5118,15 @@ public class DreamCraftRecipeLoader {
                                 .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 4L),
                         GT_OreDictUnificator
                                 .get(OrePrefixes.screw, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16L),
-                        new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 64L },
-                        new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 64L },
+                        GT_OreDictUnificator.get(OrePrefixes.ring, MaterialsKevlar.Kevlar, 64L),
+                        GT_OreDictUnificator.get("ringRadoxPoly", 64L),
                         GT_OreDictUnificator
                                 .get(OrePrefixes.rotor, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 4L),
                         GT_OreDictUnificator.get("rotorShirabon", 4),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 2L),
                         Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
                 ItemList.Electric_Pump_UXV.get(1),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5150,7 +5153,7 @@ public class DreamCraftRecipeLoader {
                         MaterialsKevlar.Kevlar.getPlates(64), MaterialsKevlar.Kevlar.getPlates(16),
                         GT_OreDictUnificator.get("plateRadoxPoly", 64L),
                         GT_OreDictUnificator.get("plateRadoxPoly", 16L), Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
                 ItemList.Conveyor_Module_UXV.get(1),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5183,7 +5186,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 6L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 6L),
                         Materials.Neutronium.getNanite(8) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
                 ItemList.Robot_Arm_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5218,7 +5221,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 4L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 4L),
                         Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
                 ItemList.Electric_Piston_UXV.get(1),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5250,7 +5253,7 @@ public class DreamCraftRecipeLoader {
                         Materials.Neutronium.getNanite(8)
 
                 },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, solderingAlloy },
                 ItemList.Emitter_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5280,7 +5283,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 7L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 7L),
                         Materials.Neutronium.getNanite(8) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, solderingAlloy },
                 ItemList.Sensor_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5317,7 +5320,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 8L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 8L),
                         Materials.Neutronium.getNanite(12) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
+                new FluidStack[] { fluid_0, fluid_1, fluid_2, solderingAlloy },
                 ItemList.Field_Generator_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
