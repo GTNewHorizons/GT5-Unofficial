@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 
 /**
@@ -26,7 +27,7 @@ public class SP_Upgrade implements ISP_Upgrade {
     protected int buildTime;
     protected long voltage;
     protected SP_Requirements requirements;
-    protected SpaceProject projectBelongingTo;
+    protected ISpaceProject projectBelongingTo;
 
     // #endregion
 
@@ -221,6 +222,11 @@ public class SP_Upgrade implements ISP_Upgrade {
         return requirements;
     }
 
+    @Override
+    public ISpaceProject getParentProject() {
+        return projectBelongingTo;
+    }
+
     // #endregion
 
     // #region Setter/Builder
@@ -268,8 +274,13 @@ public class SP_Upgrade implements ISP_Upgrade {
     }
 
     @Override
-    public void setUpgradeProject(SpaceProject project) {
+    public void setUpgradeProject(ISpaceProject project) {
         projectBelongingTo = project;
+    }
+
+    @Override
+    public void setUpgradeCurrentStage(int stage) {
+        currentStage = stage;
     }
 
     // #endregion

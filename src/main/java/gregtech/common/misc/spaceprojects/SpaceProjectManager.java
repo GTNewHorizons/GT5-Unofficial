@@ -11,6 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 /**
  * @author BlueWeabo
@@ -20,7 +21,7 @@ public class SpaceProjectManager {
     /**
      * Do not use! Only meant to be used in SpaceProjectWorldSavedData.java
      */
-    public static Map<UUID, Map<Pair<ISpaceBody, String>, SpaceProject>> spaceTeamProjects = new HashMap<>();
+    public static Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> spaceTeamProjects = new HashMap<>();
     /**
      * Do not use! Only meant to be used in SpaceProjectWorldSavedData.java Stores a Players UUID to the Leader UUID,
      * players in lone groups give back their own UUID.
@@ -36,15 +37,15 @@ public class SpaceProjectManager {
      * Stores all projects that have been made. Only adds them to this map if
      * {@link #addTeamProject(UUID, ISpaceBody, String, SpaceProject)} has been used
      */
-    private static final Map<String, SpaceProject> spaceProjects = new HashMap<>();
+    private static final Map<String, ISpaceProject> spaceProjects = new HashMap<>();
 
     // #region Space Project Team Helper methods
 
     /**
      * Used to get a specific project of the team dependent on the location and the project's name
      */
-    public static SpaceProject getTeamProject(UUID member, ISpaceBody location, String projectName) {
-        Map<Pair<ISpaceBody, String>, SpaceProject> map = spaceTeamProjects.get(getLeader(member));
+    public static ISpaceProject getTeamProject(UUID member, ISpaceBody location, String projectName) {
+        Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));
         if (map == null) {
             return null;
         }
@@ -62,10 +63,10 @@ public class SpaceProjectManager {
      */
     public static boolean addTeamProject(UUID member, ISpaceBody location, String projectName, SpaceProject project) {
         if (!spaceTeamProjects.containsKey(getLeader(member)) || spaceTeamProjects.get(getLeader(member)) == null) {
-            spaceTeamProjects.put(getLeader(member), new HashMap<Pair<ISpaceBody, String>, SpaceProject>());
+            spaceTeamProjects.put(getLeader(member), new HashMap<Pair<ISpaceBody, String>, ISpaceProject>());
         }
 
-        Map<Pair<ISpaceBody, String>, SpaceProject> map = spaceTeamProjects.get(getLeader(member));
+        Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));
         if (map.containsKey(Pair.of(location, projectName))) {
             return false;
         }
@@ -84,7 +85,7 @@ public class SpaceProjectManager {
      * @return True if the team has said project, false otherwise
      */
     public static boolean teamHasProject(UUID member, SpaceProject project) {
-        Map<Pair<ISpaceBody, String>, SpaceProject> map = spaceTeamProjects.get(getLeader(member));
+        Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));
         if (map == null) {
             return false;
         }
@@ -141,8 +142,8 @@ public class SpaceProjectManager {
      * @param member UUID of the team member, used to find the leader of the team.
      * @return All the projects a team has.
      */
-    public static Collection<SpaceProject> getTeamSpaceProjects(UUID member) {
-        Map<Pair<ISpaceBody, String>, SpaceProject> map = spaceTeamProjects.get(getLeader(member));
+    public static Collection<ISpaceProject> getTeamSpaceProjects(UUID member) {
+        Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));
         if (map == null) {
             return null;
         }
@@ -158,8 +159,8 @@ public class SpaceProjectManager {
      * @param location    The location at which the project is found at.
      * @return the project that the team has or a copy of a project.
      */
-    public static SpaceProject getTeamProjectOrCopy(UUID member, String projectName, ISpaceBody location) {
-        Map<Pair<ISpaceBody, String>, SpaceProject> map = spaceTeamProjects.get(getLeader(member));
+    public static ISpaceProject getTeamProjectOrCopy(UUID member, String projectName, ISpaceBody location) {
+        Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));
         if (map == null) {
             return getProject(projectName);
         }
@@ -184,8 +185,8 @@ public class SpaceProjectManager {
      * @param projectName Internal name of the project.
      * @return a copy of the stored project.
      */
-    public static SpaceProject getProject(String projectName) {
-        SpaceProject tProject = spaceProjects.get(projectName);
+    public static ISpaceProject getProject(String projectName) {
+        ISpaceProject tProject = spaceProjects.get(projectName);
         return tProject != null ? tProject.copy() : null;
     }
 
@@ -194,7 +195,7 @@ public class SpaceProjectManager {
      * 
      * @return The Map that the projects are stored at.
      */
-    public static Map<String, SpaceProject> getProjectsMap() {
+    public static Map<String, ISpaceProject> getProjectsMap() {
         return spaceProjects;
     }
 
@@ -203,7 +204,7 @@ public class SpaceProjectManager {
      * 
      * @return A Collection of all the projects contained in the map.
      */
-    public static Collection<SpaceProject> getAllProjects() {
+    public static Collection<ISpaceProject> getAllProjects() {
         return spaceProjects.values();
     }
 

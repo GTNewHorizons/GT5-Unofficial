@@ -70,12 +70,17 @@ public interface ISpaceProject {
     /**
      * @return a Collection of all upgrades the project has
      */
-    Collection<SP_Upgrade> getAllUpgrades();
+    Collection<ISP_Upgrade> getAllUpgrades();
 
     /**
      * @return a Map of all upgrades that have been built.
      */
-    Map<String, SP_Upgrade> getUpgradesBuilt();
+    Map<String, ISP_Upgrade> getUpgradesBuiltMap();
+
+    /**
+     * @return
+     */
+    Collection<ISP_Upgrade> getAllBuiltUpgrades();
 
     /**
      * @param upgradeName The name of the upgrade wanted
@@ -178,12 +183,17 @@ public interface ISpaceProject {
     /**
      * Sets the current upgrade, which needs to be built
      */
-    void setCurrentUpgradeBeingBuilt(SP_Upgrade upgrade);
+    void setCurrentUpgradeBeingBuilt(ISP_Upgrade upgrade);
 
     /**
      * Sets the project's location when it starts being built
      */
     void setProjectLocation(ISpaceBody newLocation);
+
+    /**
+     * Sets the project's upgrades, which have been built
+     */
+    void setBuiltUpgrade(ISP_Upgrade... upgrades);
 
     /**
      * Goes to the next stage of the project
@@ -344,9 +354,21 @@ public interface ISpaceProject {
         ISP_Requirements getUpgradeRequirements();
 
         /**
+         * @return the parent project, which the upgrade belongs to
+         */
+        ISpaceProject getParentProject();
+
+        /**
          * @param project The project the upgrade belongs to
          */
-        void setUpgradeProject(SpaceProject project);
+        void setUpgradeProject(ISpaceProject project);
+
+        /**
+         * Sets the current stage of the upgrade
+         * 
+         * @param stage
+         */
+        void setUpgradeCurrentStage(int stage);
 
         /**
          * Checks if the team has met all requirements to be able to build said upgrade
@@ -359,7 +381,7 @@ public interface ISpaceProject {
         /**
          * Creates a copy of the upgrade
          */
-        SP_Upgrade copy();
+        ISP_Upgrade copy();
 
         /**
          * Goes to the next stage of the upgrade

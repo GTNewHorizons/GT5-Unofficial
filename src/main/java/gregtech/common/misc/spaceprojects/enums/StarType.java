@@ -14,19 +14,19 @@ public enum StarType {
     MClass(0.08, 0.1f),
     NotAStar(0, 0);
 
-    private double mSolarLuminosity;
-    private float mCostMultiplier;
+    private double solarLuminosity;
+    private float costMultiplier;
 
-    private StarType(double aSolarLuminosity, float aCostMultiplier) {
-        mSolarLuminosity = aSolarLuminosity;
-        mCostMultiplier = aCostMultiplier;
+    private StarType(double solarLuminosity, float costMultiplier) {
+        this.solarLuminosity = solarLuminosity;
+        this.costMultiplier = costMultiplier;
     }
 
     public double getSolarLuminosity() {
-        return mSolarLuminosity;
+        return solarLuminosity;
     }
 
     public float getCostMultiplier() {
-        return mCostMultiplier;
+        return costMultiplier;
     }
 }

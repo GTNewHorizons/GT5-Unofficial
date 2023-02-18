@@ -29,10 +29,10 @@ public class SpaceProject implements ISpaceProject {
     protected int projectTier;
     protected int currentStage;
     protected int totalStage;
-    protected Map<String, SP_Upgrade> upgradesAvailable = new HashMap<>();
-    protected Map<String, SP_Upgrade> upgradesInstalled = new HashMap<>();
+    protected Map<String, ISP_Upgrade> upgradesAvailable = new HashMap<>();
+    protected Map<String, ISP_Upgrade> upgradesInstalled = new HashMap<>();
     protected SP_Requirements requirements;
-    protected SP_Upgrade currentUpgrade;
+    protected ISP_Upgrade currentUpgrade;
     protected ItemStack[] itemsCost;
     protected FluidStack[] fluidsCost;
     protected ISpaceBody location;
@@ -87,17 +87,22 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public Collection<SP_Upgrade> getAllUpgrades() {
+    public Collection<ISP_Upgrade> getAllUpgrades() {
         return upgradesAvailable.values();
     }
 
     @Override
-    public Map<String, SP_Upgrade> getUpgradesBuilt() {
+    public Map<String, ISP_Upgrade> getUpgradesBuiltMap() {
         return upgradesInstalled;
     }
 
     @Override
-    public SP_Upgrade getUpgrade(String upgradeName) {
+    public Collection<ISP_Upgrade> getAllBuiltUpgrades() {
+        return upgradesInstalled.values();
+    }
+
+    @Override
+    public ISP_Upgrade getUpgrade(String upgradeName) {
         return upgradesAvailable.get(upgradeName);
     }
 
@@ -234,7 +239,7 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public SP_Upgrade getUpgradeBeingBuilt() {
+    public ISP_Upgrade getUpgradeBeingBuilt() {
         return currentUpgrade;
     }
 
@@ -287,8 +292,8 @@ public class SpaceProject implements ISpaceProject {
         return this;
     }
 
-    public SpaceProject setUpgrades(SP_Upgrade... spaceProjectUpgrades) {
-        for (SP_Upgrade upgrade : spaceProjectUpgrades) {
+    public SpaceProject setUpgrades(ISP_Upgrade... spaceProjectUpgrades) {
+        for (ISP_Upgrade upgrade : spaceProjectUpgrades) {
             upgradesAvailable.put(upgrade.getUpgradeName(), upgrade);
         }
         return this;
@@ -300,7 +305,7 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public void setCurrentUpgradeBeingBuilt(SP_Upgrade newCurrentUpgrade) {
+    public void setCurrentUpgradeBeingBuilt(ISP_Upgrade newCurrentUpgrade) {
         if (totalStage == currentStage) {
             currentUpgrade = newCurrentUpgrade.copy();
             currentUpgrade.setUpgradeProject(this);
@@ -317,19 +322,26 @@ public class SpaceProject implements ISpaceProject {
         location = newLocation;
     }
 
+    @Override
+    public void setBuiltUpgrade(ISP_Upgrade... upgrades) {
+        for (ISP_Upgrade upgrade : upgrades) {
+            upgradesInstalled.put(upgrade.getUpgradeName(), upgrade);
+        }
+    }
+
     // #endregion
 
     // #region Other
 
     @Override
-    public SpaceProject copy() {
+    public ISpaceProject copy() {
         SpaceProject copy = new SpaceProject().setProjectName(name).setProjectUnlocalizedName(unlocalizedName)
                 .setProjectVoltage(voltage).setProjectBuildTime(buildTime).setItemCosts(itemsCost)
                 .setFluidCosts(fluidsCost).setTotalStages(totalStage);
         if (upgradesAvailable != null) {
-            SP_Upgrade[] upgrades = new SP_Upgrade[upgradesAvailable.size()];
+            ISP_Upgrade[] upgrades = new SP_Upgrade[upgradesAvailable.size()];
             int index = 0;
-            for (SP_Upgrade upgrade : upgradesAvailable.values()) {
+            for (ISP_Upgrade upgrade : upgradesAvailable.values()) {
                 upgrades[index++] = upgrade.copy();
             }
             copy.setUpgrades(upgrades);

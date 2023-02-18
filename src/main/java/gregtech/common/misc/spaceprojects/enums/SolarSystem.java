@@ -9,6 +9,8 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 
 /**
+ * An enum of all space bodies in the Sol Solar System. Or to be exact the more important ones
+ * 
  * @author BlueWeabo
  */
 public enum SolarSystem implements ISpaceBody {
