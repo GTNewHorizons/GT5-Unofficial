@@ -43,8 +43,7 @@ public class GT_Item_Casings_Spacetime extends GT_Item_Casings_Abstract {
                                 + GT_LanguageManager.addStringLocalization(
                                         "EOH.Spacetime.Standard.Tooltip.1",
                                         "Capable of running recipes up to tier ")
-                                + (aStack.getItemDamage()
-                                + 1));
+                                + (aStack.getItemDamage() + 1));
                 break;
             default:
                 aList.add(
