@@ -1177,7 +1177,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
         double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
         this.getBaseMetaTileEntity().getWorld()
                 .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
