@@ -59,8 +59,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
     private static final boolean EOH_DEBUG_MODE = false;
-    private static final long SPACETIME_PER_FAILURE_TIER = 14_400L;
-    private static final double SPACETIME_FAILURE_BASE = 1.6;
+    private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
+    private static final double SPACETIME_FAILURE_BASE = 2;
     private boolean disableAnimation = false;
 
     // Region variables.
@@ -73,7 +73,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private static final double SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE = 0.03;
     private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.1;
-    private static final double STABILITY_INCREASE_PROBABILITY_PER_TIER = 0.05;
+    private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
 
     private String userUUID = "";
     private long euOutput = 0;
@@ -736,8 +736,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     private double recipeChanceCalculator() {
-        double chance = currentRecipe.getBaseRecipeSuccessChance() - timeAccelerationFieldMetadata * TIME_ACCEL_DECREASE_CHANCE_PER_TIER
-                + stabilisationFieldMetadata * 0.05
+        double chance = currentRecipe.getBaseRecipeSuccessChance()
+                - timeAccelerationFieldMetadata * TIME_ACCEL_DECREASE_CHANCE_PER_TIER
+                + stabilisationFieldMetadata * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER
                 - hydrogenOverflowProbabilityAdjustment
                 - heliumOverflowProbabilityAdjustment;
 
@@ -751,7 +752,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private double recipeYieldCalculator() {
         double yield = 1.0 - hydrogenOverflowProbabilityAdjustment
                 - heliumOverflowProbabilityAdjustment
-                - stabilisationFieldMetadata * 0.05;
+                - stabilisationFieldMetadata * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER;
 
         return clamp(yield, 0.0, 1.0);
     }
@@ -768,7 +769,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
         double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata)
-                * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, spacetimeCasingDifference) / max(1, pow(2, currentCircuitMultiplier));
+                * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, spacetimeCasingDifference)
+                / max(1, pow(2, currentCircuitMultiplier));
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
 
@@ -873,37 +875,46 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("  spacetime compression field block exceeds the requirements of the recipe it")
                 .addInfo(
                         "  will decrease the processing time by " + RED
-                                + formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100) + "%"
+                                + formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100)
+                                + "%"
                                 + GRAY
                                 + " per tier over the requirement (multiplicative).")
                 .addInfo(BLUE + "Time Dilation Field Generator:")
                 .addInfo(
-                        "- Decreases the time required for a recipe by " + RED + "50%"
+                        "- Decreases the time required for a recipe by " + RED
+                                + "50%"
                                 + GRAY
                                 + " per tier of block (multiplicative).")
                 .addInfo(
                         "  Decreases the probability of a recipe succeeding by " + RED
-                                + formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100) + "%"
+                                + formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100)
+                                + "%"
                                 + GRAY
                                 + " per tier (additive)")
                 .addInfo(BLUE + "Stabilisation Field Generator:")
                 .addInfo(
                         "- Increases the probability of a recipe succeeding by " + RED
-                                + formatNumbers(STABILITY_INCREASE_PROBABILITY_PER_TIER * 100) + "%"
+                                + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
+                                + "%"
                                 + GRAY
                                 + " per tier (additive).")
-                .addInfo("  Decreases the yield of a recipe by " + RED + "5%" + GRAY + " per tier (additive). ")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe")
                 .addInfo(
-                        "chance. All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
+                        "  Decreases the yield of a recipe by " + RED
+                                + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
+                                + "%"
+                                + GRAY
+                                + " per tier (additive). ")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(
+                        "Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance.")
+                .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
                 .addInfo(GREEN + "percentageOverflow = abs(1 - fluidStored/recipeRequirement)")
                 .addInfo(GREEN + "adjustmentValue = 1 - exp(-(30 * percentageOverflow)^2)")
                 .addInfo("The value of adjustmentValue is then subtracted from the total yield and recipe chance.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("It should be noted that base recipe chance is determined per recipe and yield always")
-                .addInfo("starts at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied")
-                .addInfo("by the yield calculated.")
+                .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
+                .addInfo("at recipe base chance and subtracts depending on penalities. All fluid/item outputs are")
+                .addInfo("multiplied by the yield. Failure fluid is exempt.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("This multiblock can only output to ME output busses/hatches. If no space in the network")
                 .addInfo(
@@ -911,12 +922,21 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
                 .addInfo(
-                        "E.g. A circuit of 1 will provide 1 OC, 4x EU consumed and 0.5x the time. All outputs are equal.")
+                        "E.g. A circuit of 2 will provide 2 OCs, 16x EU consumed and 0.25x the time. All outputs are equal.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("If a recipe fails the EOH will output " + GREEN + formatNumbers(SPACETIME_PER_FAILURE_TIER) + "*" + SPACETIME_FAILURE_BASE + "^(Recipe tier)" + GRAY + ".")
                 .addInfo(
-                        "E.g. A circuit of 1 will provide 1 OC, 4x EU consumed and 0.5x the time. All outputs are equal.")
-                .addSeparator().addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
+                        "If a recipe fails the EOH will output " + GREEN
+                                + "successChance * "
+                                + formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER)
+                                + " * ("
+                                + SPACETIME_FAILURE_BASE
+                                + ")^(Recipe tier)"
+                                + GRAY
+                                + "L of molten "
+                                + Materials.SpaceTime.getLocalizedNameForItem("%material")
+                                + " and")
+                .addInfo("return half the start EU.").addSeparator()
+                .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "896"
                                 + EnumChatFormatting.GRAY
@@ -1164,8 +1184,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private void outputFailedChance() {
         // 2^Tier spacetime released upon recipe failure.
-        mOutputFluids = new FluidStack[] {
-                Materials.SpaceTime.getMolten((long) (SPACETIME_PER_FAILURE_TIER * pow(SPACETIME_FAILURE_BASE, currentRecipe.getRocketTier() + 1))) };
+        mOutputFluids = new FluidStack[] { Materials.SpaceTime.getMolten(
+                (long) (successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
+                        * pow(SPACETIME_FAILURE_BASE, currentRecipe.getRocketTier() + 1))) };
         super.outputAfterRecipe_EM();
     }
 
@@ -1199,7 +1220,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         if (successChance < random()) {
             outputFailedChance();
             outputItems = new ArrayList<>();
-            addEUToGlobalEnergyMap(userUUID, currentRecipe.getEUStartCost() / 2);
+            addEUToGlobalEnergyMap(
+                    userUUID,
+                    (long) (currentRecipe.getEUStartCost() * pow(4, currentCircuitMultiplier) / 2L));
         } else {
             addEUToGlobalEnergyMap(userUUID, euOutput);
             euOutput = 0;
