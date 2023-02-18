@@ -59,6 +59,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
     private static final boolean EOH_DEBUG_MODE = false;
+    private static final long SPACETIME_PER_FAILURE_TIER = 14_400L;
+    private static final double SPACETIME_FAILURE_BASE = 1.6;
     private boolean disableAnimation = false;
 
     // Region variables.
@@ -70,9 +72,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private int stabilisationFieldMetadata = -1;
 
     private static final double SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE = 0.03;
+    private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.1;
+    private static final double STABILITY_INCREASE_PROBABILITY_PER_TIER = 0.05;
 
     private String userUUID = "";
-    private String userName = "";
     private long euOutput = 0;
 
     @Override
@@ -733,7 +736,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     private double recipeChanceCalculator() {
-        double chance = currentRecipe.getBaseRecipeSuccessChance() - timeAccelerationFieldMetadata * 0.1
+        double chance = currentRecipe.getBaseRecipeSuccessChance() - timeAccelerationFieldMetadata * TIME_ACCEL_DECREASE_CHANCE_PER_TIER
                 + stabilisationFieldMetadata * 0.05
                 - hydrogenOverflowProbabilityAdjustment
                 - heliumOverflowProbabilityAdjustment;
@@ -753,7 +756,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         return clamp(yield, 0.0, 1.0);
     }
 
-    private int recipeProcessTimeCalculator(long recipeTime, long recipeSpacetimeCasingRequired) {
+    private int recipeProcessTimeCalculator(final long recipeTime, final long recipeSpacetimeCasingRequired) {
 
         // Tier 1 recipe.
         // Tier 2 spacetime blocks.
@@ -765,7 +768,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
         double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata)
-                * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, spacetimeCasingDifference);
+                * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, spacetimeCasingDifference) / max(1, pow(2, currentCircuitMultiplier));
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
 
@@ -870,24 +873,23 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("  spacetime compression field block exceeds the requirements of the recipe it")
                 .addInfo(
                         "  will decrease the processing time by " + RED
-                                + "3%"
+                                + formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100) + "%"
                                 + GRAY
-                                + " per tier over the requirement. This")
-                .addInfo("  is multiplicative.").addInfo(BLUE + "Time Dilation Field Generator:")
+                                + " per tier over the requirement (multiplicative).")
+                .addInfo(BLUE + "Time Dilation Field Generator:")
                 .addInfo(
-                        "- Decreases the time required by a recipe by a factor of " + RED
-                                + "2"
+                        "- Decreases the time required for a recipe by " + RED + "50%"
                                 + GRAY
-                                + " per tier of block.")
+                                + " per tier of block (multiplicative).")
                 .addInfo(
                         "  Decreases the probability of a recipe succeeding by " + RED
-                                + "10%"
+                                + formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100) + "%"
                                 + GRAY
                                 + " per tier (additive)")
                 .addInfo(BLUE + "Stabilisation Field Generator:")
                 .addInfo(
                         "- Increases the probability of a recipe succeeding by " + RED
-                                + "5%"
+                                + formatNumbers(STABILITY_INCREASE_PROBABILITY_PER_TIER * 100) + "%"
                                 + GRAY
                                 + " per tier (additive).")
                 .addInfo("  Decreases the yield of a recipe by " + RED + "5%" + GRAY + " per tier (additive). ")
@@ -908,6 +910,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                         "is avaliable the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
+                .addInfo(
+                        "E.g. A circuit of 1 will provide 1 OC, 4x EU consumed and 0.5x the time. All outputs are equal.")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo("If a recipe fails the EOH will output " + GREEN + formatNumbers(SPACETIME_PER_FAILURE_TIER) + "*" + SPACETIME_FAILURE_BASE + "^(Recipe tier)" + GRAY + ".")
                 .addInfo(
                         "E.g. A circuit of 1 will provide 1 OC, 4x EU consumed and 0.5x the time. All outputs are equal.")
                 .addSeparator().addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
@@ -1056,8 +1062,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             }
         }
 
+        if (spacetimeCompressionFieldMetadata == -1) {
+            return false;
+        }
+
         // Check tier of spacetime compression blocks is high enough.
-        if (spacetimeCompressionFieldMetadata < recipeObject.getSpacetimeCasingTierRequired()) {
+        if ((spacetimeCompressionFieldMetadata + 1) < recipeObject.getSpacetimeCasingTierRequired()) {
             return false;
         }
 
@@ -1071,7 +1081,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         mMaxProgresstime = recipeProcessTimeCalculator(
                 recipeObject.getRecipeTimeInTicks(),
                 recipeObject.getSpacetimeCasingTierRequired());
-        mMaxProgresstime /= max(1, pow(2, currentCircuitMultiplier));
 
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(),
@@ -1154,11 +1163,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private double successChance;
 
     private void outputFailedChance() {
-        // todo Replace with proper fluid once added to GT.
-        int exoticMaterialOutputAmount = (int) ((successChance) * 1440
-                * (getHydrogenStored() + getHeliumStored())
-                / 1_000_000_000.0);
-        mOutputFluids = new FluidStack[] { Materials.SpaceTime.getFluid(exoticMaterialOutputAmount) };
+        // 2^Tier spacetime released upon recipe failure.
+        mOutputFluids = new FluidStack[] {
+                Materials.SpaceTime.getMolten((long) (SPACETIME_PER_FAILURE_TIER * pow(SPACETIME_FAILURE_BASE, currentRecipe.getRocketTier() + 1))) };
         super.outputAfterRecipe_EM();
     }
 
@@ -1192,11 +1199,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         if (successChance < random()) {
             outputFailedChance();
             outputItems = new ArrayList<>();
-            return;
+            addEUToGlobalEnergyMap(userUUID, currentRecipe.getEUStartCost() / 2);
+        } else {
+            addEUToGlobalEnergyMap(userUUID, euOutput);
+            euOutput = 0;
         }
-
-        addEUToGlobalEnergyMap(userUUID, euOutput);
-        euOutput = 0;
 
         for (ItemStackLong itemStack : outputItems) {
             outputItemToAENetwork(itemStack.itemStack, itemStack.stackSize);
@@ -1215,7 +1222,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         if (aTick == 1) {
             userUUID = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
-            userName = getBaseMetaTileEntity().getOwnerName();
+            String userName = getBaseMetaTileEntity().getOwnerName();
             strongCheckOrAddUser(userUUID, userName);
         }
 
