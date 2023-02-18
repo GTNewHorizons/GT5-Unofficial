@@ -10,11 +10,23 @@ import gregtech.common.misc.spaceprojects.enums.StarType;
  */
 public interface ISpaceBody {
 
+    /**
+     * @return The star type of the space body, if its a star
+     */
     StarType getStarType();
 
+    /**
+     * @return The type of space body it is
+     */
     SpaceBodyType getType();
 
+    /**
+     * @return The internal name of the space body
+     */
     String getName();
 
+    /**
+     * @return The texture of the space body used for UI
+     */
     UITexture getTexture();
 }
