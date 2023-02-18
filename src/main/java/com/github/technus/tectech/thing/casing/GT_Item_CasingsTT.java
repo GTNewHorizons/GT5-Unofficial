@@ -123,17 +123,11 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
                 break;
             case 15: // "Debug Sides"
                 aList.add(translateToLocal("gt.blockcasingsTT.15.desc.0")); // Lazy man way of determining sides.
-                aList.add(EnumChatFormatting.BLUE.toString() + translateToLocal("gt.blockcasingsTT.15.desc.1")); // 0,
-                                                                                                                 // 1,
-                                                                                                                 // 2,
-                                                                                                                 // 3,
-                                                                                                                 // 4,
-                                                                                                                 // 5,
-                                                                                                                 // 6?!
+                aList.add(EnumChatFormatting.BLUE + translateToLocal("gt.blockcasingsTT.15.desc.1"));
                 break;
             default: // WTF?
                 aList.add("Damn son where did you get that!?");
-                aList.add(EnumChatFormatting.BLUE.toString() + "From outer space... I guess...");
+                aList.add(EnumChatFormatting.BLUE + "From outer space... I guess...");
         }
     }
 }
