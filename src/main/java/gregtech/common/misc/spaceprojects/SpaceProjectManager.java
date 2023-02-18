@@ -61,7 +61,7 @@ public class SpaceProjectManager {
      * @param project     Project which will be added to the team.
      * @return Returns true when a project was added to the map of the player. Returns false otherwise.
      */
-    public static boolean addTeamProject(UUID member, ISpaceBody location, String projectName, SpaceProject project) {
+    public static boolean addTeamProject(UUID member, ISpaceBody location, String projectName, ISpaceProject project) {
         if (!spaceTeamProjects.containsKey(getLeader(member)) || spaceTeamProjects.get(getLeader(member)) == null) {
             spaceTeamProjects.put(getLeader(member), new HashMap<Pair<ISpaceBody, String>, ISpaceProject>());
         }
@@ -84,7 +84,7 @@ public class SpaceProjectManager {
      * @param project The project, which you are checking for. This only compares the internal names of the project.
      * @return True if the team has said project, false otherwise
      */
-    public static boolean teamHasProject(UUID member, SpaceProject project) {
+    public static boolean teamHasProject(UUID member, ISpaceProject project) {
         Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));
         if (map == null) {
             return false;
