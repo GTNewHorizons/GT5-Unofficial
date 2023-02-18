@@ -30,6 +30,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IFoodStat;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
@@ -56,7 +57,7 @@ import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
  *         Item.
  */
 @Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = MOD_ID_APC)
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IEdible {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IGT_ItemWithMaterialRenderer, IEdible {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -256,9 +257,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         return true;
     }
 
-    /**
-     * @return the Color Modulation the Material is going to be rendered with.
-     */
+    @Override
     public short[] getRGBa(ItemStack aStack) {
         return Materials._NULL.getRGBA();
     }
@@ -270,11 +269,31 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         return null;
     }
 
-    /**
-     * @return the Custom renderer of the Material with offset < 32000
-     */
+    @Override
+    public IIcon getIcon(int aMetaData, int pass) {
+        IIconContainer iconContainer = getIconContainer(aMetaData);
+        return iconContainer != null ? iconContainer.getIcon() : null;
+    }
+
+    @Override
+    public IIcon getOverlayIcon(int aMetaData, int pass) {
+        IIconContainer iconContainer = getIconContainer(aMetaData);
+        return iconContainer != null ? iconContainer.getOverlayIcon() : null;
+    }
+
+    @Override
+    public boolean shouldUseCustomRenderer(int aMetaData) {
+        return true;
+    }
+
+    @Override
     public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
         return null;
+    }
+
+    @Override
+    public boolean allowMaterialRenderer(int aMetaData) {
+        return aMetaData < this.mOffset;
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */

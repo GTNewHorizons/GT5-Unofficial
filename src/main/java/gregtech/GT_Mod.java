@@ -329,7 +329,9 @@ public class GT_Mod implements IGT_Mod {
             gregtechproxy.registerUnificationEntries();
             new GT_FuelLoader().run();
         }
-        Waila.init();
+        if (Loader.isModLoaded("Waila")) {
+            Waila.init();
+        }
         IMCForNEI.IMCSender();
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");

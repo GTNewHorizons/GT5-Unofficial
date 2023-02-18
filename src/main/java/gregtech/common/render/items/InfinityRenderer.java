@@ -17,8 +17,7 @@ import org.lwjgl.opengl.GL12;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 
@@ -34,43 +33,47 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
+        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
 
-        IIconContainer aIconContainer = aItem.getIconContainer(aMetaData);
-
-        if (aIconContainer == null) {
-            return;
+        int passes = 1;
+        if (aItem.requiresMultipleRenderPasses()) {
+            passes = aItem.getRenderPasses(aMetaData);
         }
 
-        IIcon tIcon = aIconContainer.getIcon();
-        IIcon tOverlay = aIconContainer.getOverlayIcon();
-        FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
+        for (int pass = 0; pass < passes; pass++) {
+            IIcon tIcon = aItem.getIcon(aMetaData, pass);
+            IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
+            FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
 
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        renderHalo();
-
-        if (tOverlay != null) {
-            GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            TextureUtils.bindAtlas(aItem.getSpriteNumber());
-            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-            } else {
-                ItemRenderer.renderItemIn2D(
-                        Tessellator.instance,
-                        tOverlay.getMaxU(),
-                        tOverlay.getMinV(),
-                        tOverlay.getMinU(),
-                        tOverlay.getMaxV(),
-                        tOverlay.getIconWidth(),
-                        tOverlay.getIconHeight(),
-                        0.0625F);
+            if (pass == 0) {
+                renderHalo();
             }
-        }
 
-        if (tIcon != null) {
-            renderRegularItem(type, aStack, tIcon, aFluid == null);
+            if (tOverlay != null) {
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+                TextureUtils.bindAtlas(aItem.getSpriteNumber());
+                if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                    GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                } else {
+                    ItemRenderer.renderItemIn2D(
+                            Tessellator.instance,
+                            tOverlay.getMaxU(),
+                            tOverlay.getMinV(),
+                            tOverlay.getMinU(),
+                            tOverlay.getMaxV(),
+                            tOverlay.getIconWidth(),
+                            tOverlay.getIconHeight(),
+                            0.0625F);
+                }
+            }
+
+            if (tIcon != null) {
+                renderRegularItem(type, aStack, tIcon, aFluid == null);
+            }
         }
     }
 
