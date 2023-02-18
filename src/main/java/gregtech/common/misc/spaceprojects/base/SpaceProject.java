@@ -337,7 +337,7 @@ public class SpaceProject implements ISpaceProject {
     public ISpaceProject copy() {
         SpaceProject copy = new SpaceProject().setProjectName(name).setProjectUnlocalizedName(unlocalizedName)
                 .setProjectVoltage(voltage).setProjectBuildTime(buildTime).setItemCosts(itemsCost)
-                .setFluidCosts(fluidsCost).setTotalStages(totalStage);
+                .setFluidCosts(fluidsCost).setTotalStages(totalStage).setProjectTexture(texture);
         if (upgradesAvailable != null) {
             ISP_Upgrade[] upgrades = new SP_Upgrade[upgradesAvailable.size()];
             int index = 0;
