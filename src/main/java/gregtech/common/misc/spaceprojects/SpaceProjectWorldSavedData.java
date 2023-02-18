@@ -2,6 +2,7 @@ package gregtech.common.misc.spaceprojects;
 
 import static gregtech.common.misc.spaceprojects.SpaceProjectManager.spaceTeamProjects;
 import static gregtech.common.misc.spaceprojects.SpaceProjectManager.spaceTeams;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,14 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -37,13 +35,14 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 
 /**
+ * This class is used so that I can write and read to a json file before the world is opened. On server starting is too
+ * late for this as the data stored in the files is needed before entities load their nbt data
+ * 
  * @author BlueWeabo
  */
 public class SpaceProjectWorldSavedData extends WorldSavedData {
@@ -52,13 +51,13 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     private static final Gson GSON_READER = new GsonBuilder().serializeNulls()
             .registerTypeAdapter(Pair.class, new PairDeserializer())
-            .registerTypeAdapter(ItemStack.class, new ItemStackDeserializer())
-            .registerTypeAdapter(FluidStack.class, new FluidStackDeserializer()).create();
+            .registerTypeAdapter(ISpaceProject.class, new SpaceProjectDeserializer())
+            .registerTypeAdapter(ISP_Upgrade.class, new SP_UpgradeDeserializer()).create();
 
     private static final Gson GSON_WRITER = new GsonBuilder().serializeNulls()
             .registerTypeAdapter(Pair.class, new PairSerializer())
-            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
-            .registerTypeAdapter(FluidStack.class, new FluidStackSerializer()).create();
+            .registerTypeAdapter(ISpaceProject.class, new SpaceProjectSerializer())
+            .registerTypeAdapter(ISP_Upgrade.class, new SP_UpgradeSerializer()).create();
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
 
@@ -79,7 +78,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
-        Type teamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, SpaceProject>>>() {}.getType();
+        Type teamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>>() {}.getType();
         try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
             spaceTeamProjects = GSON_READER.fromJson(reader, teamProjectsType);
         } catch (IOException e) {
@@ -147,8 +146,8 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         @Override
         public JsonElement serialize(Pair<ISpaceBody, String> src, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject pair = new JsonObject();
-            pair.addProperty("left", src.getLeft().getName());
-            pair.addProperty("right", src.getRight());
+            pair.addProperty(PAIR_LEFT, src.getLeft().getName());
+            pair.addProperty(PAIR_RIGHT, src.getRight());
             return pair;
         }
     }
@@ -162,69 +161,82 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             if (json.isJsonObject()) {
                 JsonObject obj = json.getAsJsonObject();
                 pair = Pair.of(
-                        SpaceProjectManager.getLocation(obj.get("left").getAsString()),
-                        obj.get("right").getAsString());
+                        SpaceProjectManager.getLocation(obj.get(PAIR_LEFT).getAsString()),
+                        obj.get(PAIR_RIGHT).getAsString());
             }
             return pair;
         }
     }
 
-    private static class ItemStackSerializer implements JsonSerializer<ItemStack> {
+    private static class SpaceProjectSerializer implements JsonSerializer<ISpaceProject> {
 
         @Override
-        public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
-            UniqueIdentifier identification = GameRegistry.findUniqueIdentifierFor(src.getItem());
-            JsonObject itemStack = new JsonObject();
-            itemStack.addProperty("modId", identification.modId);
-            itemStack.addProperty("itemName", identification.name);
-            itemStack.addProperty("stackSize", src.stackSize);
-            itemStack.addProperty("meta", src.getItemDamage());
-            return itemStack;
+        public JsonElement serialize(ISpaceProject src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty(PROJECT_NAME, src.getProjectName());
+            obj.addProperty(PROJECT_CURRENT_STAGE, src.getCurrentStage());
+            obj.addProperty(PROJECT_LOCATION, src.getProjectLocation().getName());
+            obj.add(PROJECT_CURRENT_UPGRADE, context.serialize(src.getUpgradeBeingBuilt()));
+            obj.add(PROJECT_UPGRADES_BUILT, context.serialize(src.getAllBuiltUpgrades()));
+            return obj;
         }
     }
 
-    private static class ItemStackDeserializer implements JsonDeserializer<ItemStack> {
+    private static class SpaceProjectDeserializer implements JsonDeserializer<ISpaceProject> {
 
         @Override
-        public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+        public ISpaceProject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
-            ItemStack itemStack = null;
-            if (json.isJsonObject()) {
-                JsonObject obj = json.getAsJsonObject();
-                itemStack = GT_ModHandler.getModItem(
-                        obj.get("modId").getAsString(),
-                        obj.get("itemName").getAsString(),
-                        obj.get("stackSize").getAsLong(),
-                        obj.get("meta").getAsInt());
+            if (!json.isJsonObject()) {
+                return null;
             }
-            return itemStack;
+            JsonObject obj = json.getAsJsonObject();
+            String projectName = obj.get(PROJECT_NAME).getAsString();
+            ISpaceProject project = SpaceProjectManager.getProject(projectName);
+            int projectCurrentStage = obj.get(PROJECT_CURRENT_STAGE).getAsInt();
+            ISP_Upgrade[] projectUpgradesBuilt = context
+                    .deserialize(obj.get(PROJECT_UPGRADES_BUILT), ISP_Upgrade.class);
+            ISP_Upgrade projectCurrentUpgrade = context
+                    .deserialize(obj.get(PROJECT_CURRENT_UPGRADE), ISP_Upgrade.class);
+            ISpaceBody projectLocation = SpaceProjectManager.getLocation(obj.get(PROJECT_LOCATION).getAsString());
+            project.setBuiltUpgrade(projectUpgradesBuilt);
+            project.setCurrentUpgradeBeingBuilt(projectCurrentUpgrade);
+            project.setProjectLocation(projectLocation);
+            project.setProjectStage(projectCurrentStage);
+            return project;
         }
     }
 
-    private static class FluidStackSerializer implements JsonSerializer<FluidStack> {
+    private static class SP_UpgradeSerializer implements JsonSerializer<ISP_Upgrade> {
 
         @Override
-        public JsonElement serialize(FluidStack src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject fluidStack = new JsonObject();
-            fluidStack.addProperty("fluidName", src.getFluid().getName());
-            fluidStack.addProperty("amount", src.amount);
-            return fluidStack;
+        public JsonElement serialize(ISP_Upgrade src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty(UPGRADE_NAME, src.getUpgradeName());
+            obj.addProperty(UPGRADE_PROJECT_PARENT, src.getParentProject().getProjectName());
+            obj.addProperty(UPGRADE_CURRENT_STAGE, src.getCurrentStage());
+            return obj;
         }
     }
 
-    private static class FluidStackDeserializer implements JsonDeserializer<FluidStack> {
+    private static class SP_UpgradeDeserializer implements JsonDeserializer<ISP_Upgrade> {
 
         @Override
-        public FluidStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+        public ISP_Upgrade deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
-            FluidStack fluidStack = null;
-            if (json.isJsonObject()) {
-                JsonObject obj = json.getAsJsonObject();
-                fluidStack = new FluidStack(
-                        FluidRegistry.getFluid(obj.get("fluidName").getAsString()),
-                        obj.get("amount").getAsInt());
+            if (!json.isJsonObject()) {
+                return null;
             }
-            return fluidStack;
+            JsonObject obj = json.getAsJsonObject();
+            String projectName = obj.get(UPGRADE_PROJECT_PARENT).getAsString();
+            ISpaceProject project = SpaceProjectManager.getProject(projectName);
+            ISP_Upgrade upgrade = project.getUpgrade(obj.get(UPGRADE_NAME).getAsString());
+            if (upgrade == null) {
+                return null;
+            }
+            upgrade = upgrade.copy();
+            upgrade.setUpgradeCurrentStage(obj.get(UPGRADE_CURRENT_STAGE).getAsInt());
+            return upgrade;
         }
     }
 }
