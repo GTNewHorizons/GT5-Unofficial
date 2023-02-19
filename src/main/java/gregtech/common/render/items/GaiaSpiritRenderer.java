@@ -15,7 +15,7 @@ import gregtech.common.render.GT_RenderUtil;
 public class GaiaSpiritRenderer extends GT_GeneratedMaterial_Renderer {
 
     @Override
-    public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
+    protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
         long animationTicks = GT_Mod.gregtechproxy.getAnimationTicks();
         float partialTicks = GT_Mod.gregtechproxy.getPartialRenderTicks();
 

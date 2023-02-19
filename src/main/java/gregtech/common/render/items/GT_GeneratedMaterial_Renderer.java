@@ -68,7 +68,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
 
             if (tIcon != null) {
                 markNeedsAnimationUpdate(tIcon);
-                renderRegularItem(type, aStack, tIcon, aFluid == null, pass);
+                renderRegularItem(type, aStack, tIcon, aFluid == null, pass, data);
             }
 
             if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
@@ -84,31 +84,19 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
                 markNeedsAnimationUpdate(tOverlay);
-                if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                    GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-                } else {
-                    ItemRenderer.renderItemIn2D(
-                            Tessellator.instance,
-                            tOverlay.getMaxU(),
-                            tOverlay.getMinV(),
-                            tOverlay.getMinU(),
-                            tOverlay.getMaxV(),
-                            tOverlay.getIconWidth(),
-                            tOverlay.getIconHeight(),
-                            0.0625F);
-                }
+                renderItemOverlay(type, tOverlay);
             }
 
             GL11.glDisable(GL11.GL_BLEND);
         }
     }
 
-    public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor,
-            int pass) {
+    protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor,
+            int pass, Object... data) {
         renderRegularItem(type, aStack, icon, shouldModulateColor);
     }
 
-    public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
+    protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
         if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
         IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
 
@@ -132,7 +120,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         }
     }
 
-    public void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
+    protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
         Fluid aFluid = aFluidStack.getFluid();
         int tColor = aFluid.getColor(aFluidStack);
         GL11.glColor3f((tColor >> 16 & 0xFF) / 255.0F, (tColor >> 8 & 0xFF) / 255.0F, (tColor & 0xFF) / 255.0F);
@@ -153,6 +141,22 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
                     0.0625F);
         }
         GL11.glDepthFunc(GL11.GL_LEQUAL);
+    }
+
+    protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
+        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+            GT_RenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+        } else {
+            ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    overlay.getMaxU(),
+                    overlay.getMinV(),
+                    overlay.getMinU(),
+                    overlay.getMaxV(),
+                    overlay.getIconWidth(),
+                    overlay.getIconHeight(),
+                    0.0625F);
+        }
     }
 
     protected void markNeedsAnimationUpdate(IIcon icon) {

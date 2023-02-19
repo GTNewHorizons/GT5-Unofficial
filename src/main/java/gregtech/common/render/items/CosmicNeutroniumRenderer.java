@@ -66,7 +66,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor, int pass) {
+    protected void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor, int pass, Object... data) {
         RenderItem r = RenderItem.getInstance();
 
         GL11.glPushMatrix();
