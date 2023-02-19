@@ -9,7 +9,6 @@ import net.minecraft.server.MinecraftServer;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -34,8 +33,8 @@ public class SpaceProjectManager {
     private static final HashMap<String, ISpaceBody> spaceLocations = new HashMap<>();
 
     /**
-     * Stores all projects that have been made. Only adds them to this map if
-     * {@link #addTeamProject(UUID, ISpaceBody, String, SpaceProject)} has been used
+     * Stores all projects that have been made. Only adds them to this map if {@link #addProject(ISpaceProject)} has
+     * been used
      */
     private static final Map<String, ISpaceProject> spaceProjects = new HashMap<>();
 
