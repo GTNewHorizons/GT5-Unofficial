@@ -4,7 +4,9 @@ import java.util.List;
 
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.StarType;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Requirements;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 
 /**
  * @author BlueWeabo
@@ -15,8 +17,8 @@ public class SP_Requirements implements ISP_Requirements {
 
     protected SpaceBodyType spaceBody = SpaceBodyType.NONE;
     protected StarType star = StarType.NotAStar;
-    protected List<SpaceProject> spaceProjects;
-    protected List<SP_Upgrade> upgrades;
+    protected List<ISpaceProject> spaceProjects;
+    protected List<ISP_Upgrade> upgrades;
 
     // #endregion
 
@@ -33,12 +35,12 @@ public class SP_Requirements implements ISP_Requirements {
     }
 
     @Override
-    public List<SpaceProject> getProjects() {
+    public List<ISpaceProject> getProjects() {
         return spaceProjects;
     }
 
     @Override
-    public List<SP_Upgrade> getUpgrades() {
+    public List<ISP_Upgrade> getUpgrades() {
         return upgrades;
     }
 
@@ -56,15 +58,15 @@ public class SP_Requirements implements ISP_Requirements {
         return this;
     }
 
-    public SP_Requirements setUpgrades(SP_Upgrade... requirementUpgrades) {
-        for (SP_Upgrade upgrade : requirementUpgrades) {
+    public SP_Requirements setUpgrades(ISP_Upgrade... requirementUpgrades) {
+        for (ISP_Upgrade upgrade : requirementUpgrades) {
             upgrades.add(upgrade);
         }
         return this;
     }
 
-    public SP_Requirements setSpaceProjects(SpaceProject... requirementProjects) {
-        for (SpaceProject project : requirementProjects) {
+    public SP_Requirements setSpaceProjects(ISpaceProject... requirementProjects) {
+        for (ISpaceProject project : requirementProjects) {
             spaceProjects.add(project);
         }
         return this;
