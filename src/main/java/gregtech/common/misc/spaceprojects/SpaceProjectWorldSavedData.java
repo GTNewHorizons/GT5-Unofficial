@@ -7,10 +7,10 @@ import static gregtech.common.misc.spaceprojects.enums.JsonVariables.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -30,11 +31,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
@@ -49,15 +50,16 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     public static SpaceProjectWorldSavedData INSTANCE;
 
-    private static final Gson GSON_READER = new GsonBuilder().serializeNulls()
-            .registerTypeAdapter(Pair.class, new PairDeserializer())
-            .registerTypeAdapter(ISpaceProject.class, new SpaceProjectDeserializer())
-            .registerTypeAdapter(ISP_Upgrade.class, new SP_UpgradeDeserializer()).create();
-
-    private static final Gson GSON_WRITER = new GsonBuilder().serializeNulls()
-            .registerTypeAdapter(Pair.class, new PairSerializer())
-            .registerTypeAdapter(ISpaceProject.class, new SpaceProjectSerializer())
-            .registerTypeAdapter(ISP_Upgrade.class, new SP_UpgradeSerializer()).create();
+    private static final Gson GSON_SPACE_PROJECT = new GsonBuilder().serializeNulls().enableComplexMapKeySerialization()
+            .registerTypeAdapter(spaceTeamProjects.getClass(), new SpaceTeamProjectsMapAdapter())
+            .registerTypeAdapter(Map.class, new SpaceTeamProjectsMapAdapter())
+            .registerTypeAdapter(Pair.of((ISpaceBody) SolarSystem.Ariel, "").getClass(), new PairAdapter())
+            .registerTypeAdapter(Pair.class, new PairAdapter())
+            .registerTypeAdapter(ISpaceProject.class, new SpaceProjectAdapter())
+            .registerTypeAdapter(ISP_Upgrade.class, new SP_UpgradeAdapter())
+            .registerTypeHierarchyAdapter(ISpaceProject.class, new SpaceProjectAdapter())
+            .registerTypeHierarchyAdapter(ISP_Upgrade.class, new SP_UpgradeAdapter()).create();
+    private static final Gson GSON_TEAMS = new GsonBuilder().serializeNulls().create();
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
 
@@ -78,22 +80,16 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
-        Type teamProjectsType = new TypeToken<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>>() {}.getType();
         try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
-            spaceTeamProjects = GSON_READER.fromJson(reader, teamProjectsType);
-        } catch (IOException e) {
+            spaceTeamProjects = GSON_SPACE_PROJECT.fromJson(reader, spaceTeamProjects.getClass());
+        } catch (Exception e) {
             System.out.print("FAILED TO LOAD: " + SPACE_TEAM_PROJECTS_JSON);
             e.printStackTrace();
         }
 
-        if (spaceTeamProjects == null) {
-            spaceTeamProjects = new HashMap<>();
-        }
-
-        Type spaceTeamsType = new TypeToken<Map<UUID, UUID>>() {}.getType();
         try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
-            spaceTeams = GSON_READER.fromJson(reader, spaceTeamsType);
-        } catch (IOException e) {
+            spaceTeams = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
+        } catch (Exception e) {
             System.out.print("FAILED TO LOAD: " + SPACE_TEAMS_JSON);
             e.printStackTrace();
         }
@@ -106,15 +102,15 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         try (JsonWriter writer = new JsonWriter(new FileWriter(teamProjectsFile))) {
-            GSON_WRITER.toJson(spaceTeamProjects, spaceTeamProjects.getClass(), writer);
-        } catch (IOException ex) {
+            GSON_SPACE_PROJECT.toJson(spaceTeamProjects, spaceTeamProjects.getClass(), writer);
+        } catch (Exception ex) {
             System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
             ex.printStackTrace();
         }
 
         try (JsonWriter writer = new JsonWriter(new FileWriter(spaceTeamsFile))) {
-            GSON_WRITER.toJson(spaceTeams, spaceTeams.getClass(), writer);
-        } catch (IOException ex) {
+            GSON_TEAMS.toJson(spaceTeams, spaceTeams.getClass(), writer);
+        } catch (Exception ex) {
             System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
             ex.printStackTrace();
         }
@@ -141,7 +137,8 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         }
     }
 
-    private static class PairSerializer implements JsonSerializer<Pair<ISpaceBody, String>> {
+    private static class PairAdapter
+            implements JsonSerializer<Pair<ISpaceBody, String>>, JsonDeserializer<Pair<ISpaceBody, String>> {
 
         @Override
         public JsonElement serialize(Pair<ISpaceBody, String> src, Type typeOfSrc, JsonSerializationContext context) {
@@ -150,9 +147,6 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             pair.addProperty(PAIR_RIGHT, src.getRight());
             return pair;
         }
-    }
-
-    private static class PairDeserializer implements JsonDeserializer<Pair<ISpaceBody, String>> {
 
         @Override
         public Pair<ISpaceBody, String> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -168,7 +162,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         }
     }
 
-    private static class SpaceProjectSerializer implements JsonSerializer<ISpaceProject> {
+    private static class SpaceProjectAdapter implements JsonSerializer<ISpaceProject>, JsonDeserializer<ISpaceProject> {
 
         @Override
         public JsonElement serialize(ISpaceProject src, Type typeOfSrc, JsonSerializationContext context) {
@@ -180,9 +174,6 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             obj.add(PROJECT_UPGRADES_BUILT, context.serialize(src.getAllBuiltUpgrades()));
             return obj;
         }
-    }
-
-    private static class SpaceProjectDeserializer implements JsonDeserializer<ISpaceProject> {
 
         @Override
         public ISpaceProject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -207,7 +198,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         }
     }
 
-    private static class SP_UpgradeSerializer implements JsonSerializer<ISP_Upgrade> {
+    private static class SP_UpgradeAdapter implements JsonSerializer<ISP_Upgrade>, JsonDeserializer<ISP_Upgrade> {
 
         @Override
         public JsonElement serialize(ISP_Upgrade src, Type typeOfSrc, JsonSerializationContext context) {
@@ -217,9 +208,6 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             obj.addProperty(UPGRADE_CURRENT_STAGE, src.getCurrentStage());
             return obj;
         }
-    }
-
-    private static class SP_UpgradeDeserializer implements JsonDeserializer<ISP_Upgrade> {
 
         @Override
         public ISP_Upgrade deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -237,6 +225,51 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             upgrade = upgrade.copy();
             upgrade.setUpgradeCurrentStage(obj.get(UPGRADE_CURRENT_STAGE).getAsInt());
             return upgrade;
+        }
+    }
+
+    private static class SpaceTeamProjectsMapAdapter
+            implements JsonSerializer<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>>,
+            JsonDeserializer<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>> {
+
+        @Override
+        public JsonElement serialize(Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> src, Type typeOfSrc,
+                JsonSerializationContext context) {
+            JsonArray map = new JsonArray();
+            for (Entry<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> firstEntry : src.entrySet()) {
+                JsonObject teamMap = new JsonObject();
+                teamMap.add(MAP_UUID, context.serialize(firstEntry.getKey()));
+                JsonArray teamProjectMap = new JsonArray();
+                for (Entry<Pair<ISpaceBody, String>, ISpaceProject> secondEntry : firstEntry.getValue().entrySet()) {
+                    JsonObject projectMap = new JsonObject();
+                    projectMap.add(MAP_PAIR, context.serialize(secondEntry.getKey()));
+                    projectMap.add(MAP_PROJECT, context.serialize(secondEntry.getValue()));
+                    teamProjectMap.add(projectMap);
+                }
+                teamMap.add(MAP_MAP, teamProjectMap);
+                map.add(teamMap);
+            }
+            return map;
+        }
+
+        @Override
+        public Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> deserialize(JsonElement json, Type typeOfT,
+                JsonDeserializationContext context) throws JsonParseException {
+            JsonArray mapArray = json.getAsJsonArray();
+            Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> map = new HashMap<>();
+            for (JsonElement teamMapElement : mapArray) {
+                JsonObject teamMap = teamMapElement.getAsJsonObject();
+                UUID uuid = context.deserialize(teamMap.get(MAP_UUID), UUID.class);
+                Map<Pair<ISpaceBody, String>, ISpaceProject> projectMap = new HashMap<>();
+                for (JsonElement teamProjectMapElement : teamMap.get(MAP_MAP).getAsJsonArray()) {
+                    JsonObject teamProjectMap = teamProjectMapElement.getAsJsonObject();
+                    Pair<ISpaceBody, String> pair = context.deserialize(teamProjectMap.get(MAP_PAIR), Pair.class);
+                    ISpaceProject project = context.deserialize(teamProjectMap.get(MAP_PROJECT), ISpaceProject.class);
+                    projectMap.put(pair, project);
+                }
+                map.put(uuid, projectMap);
+            }
+            return map;
         }
     }
 }

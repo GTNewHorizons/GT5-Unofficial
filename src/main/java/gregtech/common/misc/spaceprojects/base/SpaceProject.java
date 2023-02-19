@@ -311,6 +311,10 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public void setCurrentUpgradeBeingBuilt(ISP_Upgrade newCurrentUpgrade) {
+        if (newCurrentUpgrade == null) {
+            return;
+        }
+
         if (totalStage == currentStage) {
             currentUpgrade = newCurrentUpgrade.copy();
             currentUpgrade.setUpgradeProject(this);
@@ -329,6 +333,10 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public void setBuiltUpgrade(ISP_Upgrade... upgrades) {
+        if (upgrades == null) {
+            return;
+        }
+
         for (ISP_Upgrade upgrade : upgrades) {
             upgradesInstalled.put(upgrade.getUpgradeName(), upgrade);
         }
