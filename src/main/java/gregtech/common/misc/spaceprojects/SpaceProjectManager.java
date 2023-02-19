@@ -177,7 +177,7 @@ public class SpaceProjectManager {
      * 
      * @param project Newly created project.
      */
-    public static void addProject(SpaceProject project) {
+    public static void addProject(ISpaceProject project) {
         spaceProjects.put(project.getProjectName(), project);
     }
 
