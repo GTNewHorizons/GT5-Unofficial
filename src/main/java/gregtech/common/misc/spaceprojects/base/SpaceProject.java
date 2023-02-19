@@ -31,7 +31,7 @@ public class SpaceProject implements ISpaceProject {
     protected int totalStage;
     protected Map<String, ISP_Upgrade> upgradesAvailable = new HashMap<>();
     protected Map<String, ISP_Upgrade> upgradesInstalled = new HashMap<>();
-    protected SP_Requirements requirements;
+    protected ISP_Requirements requirements;
     protected ISP_Upgrade currentUpgrade;
     protected ItemStack[] itemsCost;
     protected FluidStack[] fluidsCost;
@@ -135,7 +135,7 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public ItemStack getCurrentItemProgress(int index) {
-        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length || itemsCost[index] == null) {
             return null;
         }
 
@@ -159,7 +159,7 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public ItemStack getTotalItemCost(int index) {
-        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length || itemsCost[index] == null) {
             return null;
         }
 
@@ -175,7 +175,7 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public FluidStack getFluidCostPerStage(int index) {
-        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length || fluidsCost[index] == null) {
             return null;
         }
 
@@ -201,7 +201,7 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public FluidStack getCurrentFluidProgress(int index) {
-        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length || fluidsCost[index] == null) {
             return null;
         }
 
@@ -277,22 +277,22 @@ public class SpaceProject implements ISpaceProject {
         return this;
     }
 
-    public SpaceProject setTotalStages(int spaceProjectTotalStages) {
+    public SpaceProject setProjectStages(int spaceProjectTotalStages) {
         totalStage = spaceProjectTotalStages;
         return this;
     }
 
-    public SpaceProject setItemCosts(ItemStack... spaceProjectItemsCost) {
+    public SpaceProject setProjectItemsCost(ItemStack... spaceProjectItemsCost) {
         itemsCost = spaceProjectItemsCost;
         return this;
     }
 
-    public SpaceProject setFluidCosts(FluidStack... spaceProjectFluidsCost) {
+    public SpaceProject setProjectFluidsCost(FluidStack... spaceProjectFluidsCost) {
         fluidsCost = spaceProjectFluidsCost;
         return this;
     }
 
-    public SpaceProject setUpgrades(ISP_Upgrade... spaceProjectUpgrades) {
+    public SpaceProject setProjectUpgrades(ISP_Upgrade... spaceProjectUpgrades) {
         for (ISP_Upgrade upgrade : spaceProjectUpgrades) {
             upgradesAvailable.put(upgrade.getUpgradeName(), upgrade);
         }
@@ -301,6 +301,11 @@ public class SpaceProject implements ISpaceProject {
 
     public SpaceProject setProjectTexture(UITexture projectTexture) {
         texture = projectTexture;
+        return this;
+    }
+
+    public SpaceProject setProjectRequirements(ISP_Requirements projectRequirements) {
+        requirements = projectRequirements;
         return this;
     }
 
@@ -313,8 +318,8 @@ public class SpaceProject implements ISpaceProject {
     }
 
     @Override
-    public void setProjectStage(int aStage) {
-        currentStage = aStage;
+    public void setProjectCurrentStage(int newCurrentStage) {
+        currentStage = newCurrentStage;
     }
 
     @Override
@@ -336,15 +341,16 @@ public class SpaceProject implements ISpaceProject {
     @Override
     public ISpaceProject copy() {
         SpaceProject copy = new SpaceProject().setProjectName(name).setProjectUnlocalizedName(unlocalizedName)
-                .setProjectVoltage(voltage).setProjectBuildTime(buildTime).setItemCosts(itemsCost)
-                .setFluidCosts(fluidsCost).setTotalStages(totalStage).setProjectTexture(texture);
+                .setProjectVoltage(voltage).setProjectBuildTime(buildTime).setProjectItemsCost(itemsCost)
+                .setProjectFluidsCost(fluidsCost).setProjectStages(totalStage).setProjectTexture(texture)
+                .setProjectRequirements(requirements);
         if (upgradesAvailable != null) {
             ISP_Upgrade[] upgrades = new SP_Upgrade[upgradesAvailable.size()];
             int index = 0;
             for (ISP_Upgrade upgrade : upgradesAvailable.values()) {
                 upgrades[index++] = upgrade.copy();
             }
-            copy.setUpgrades(upgrades);
+            copy.setProjectUpgrades(upgrades);
         }
         return copy;
     }
@@ -373,7 +379,7 @@ public class SpaceProject implements ISpaceProject {
         }
 
         if (requirements.getProjects() != null) {
-            for (SpaceProject project : requirements.getProjects()) {
+            for (ISpaceProject project : requirements.getProjects()) {
                 if (!SpaceProjectManager.teamHasProject(team, project)) {
                     return false;
                 }

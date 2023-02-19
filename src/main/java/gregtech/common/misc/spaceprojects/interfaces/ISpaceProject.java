@@ -10,8 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
-import gregtech.common.misc.spaceprojects.base.SP_Upgrade;
-import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.StarType;
 import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
@@ -178,7 +176,7 @@ public interface ISpaceProject {
     /**
      * Sets the current stage of the project
      */
-    void setProjectStage(int stage);
+    void setProjectCurrentStage(int stage);
 
     /**
      * Sets the current upgrade, which needs to be built
@@ -412,11 +410,11 @@ public interface ISpaceProject {
         /**
          * @return a list of all project required for the team to have to unlock it
          */
-        List<SpaceProject> getProjects();
+        List<ISpaceProject> getProjects();
 
         /**
          * @return a list of all upgrades an upgrade can have as required.
          */
-        List<SP_Upgrade> getUpgrades();
+        List<ISP_Upgrade> getUpgrades();
     }
 }

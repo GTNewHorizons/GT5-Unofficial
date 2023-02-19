@@ -306,7 +306,7 @@ public class SP_Upgrade implements ISP_Upgrade {
         }
 
         if (requirements.getProjects() != null) {
-            for (SpaceProject tProject : requirements.getProjects()) {
+            for (ISpaceProject tProject : requirements.getProjects()) {
                 if (!SpaceProjectManager.teamHasProject(aTeam, tProject)) {
                     return false;
                 }
@@ -314,7 +314,7 @@ public class SP_Upgrade implements ISP_Upgrade {
         }
 
         if (requirements.getUpgrades() != null) {
-            for (SP_Upgrade upgrade : requirements.getUpgrades()) {
+            for (ISP_Upgrade upgrade : requirements.getUpgrades()) {
                 if (!projectBelongingTo.hasUpgrade(upgrade.getUpgradeName())) {
                     return false;
                 }
