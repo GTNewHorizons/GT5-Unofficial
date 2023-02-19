@@ -186,7 +186,7 @@ public class SPM_Command extends CommandBase {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         ISpaceProject tProject = SpaceProjectManager.getProject(projectName);
         if (tProject != null) {
-            tProject.setProjectStage(tProject.getTotalStages());
+            tProject.setProjectCurrentStage(tProject.getTotalStages());
             SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
         } else {
             sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
