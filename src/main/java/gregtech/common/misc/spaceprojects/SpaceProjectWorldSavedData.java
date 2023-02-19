@@ -202,7 +202,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             project.setBuiltUpgrade(projectUpgradesBuilt);
             project.setCurrentUpgradeBeingBuilt(projectCurrentUpgrade);
             project.setProjectLocation(projectLocation);
-            project.setProjectStage(projectCurrentStage);
+            project.setProjectCurrentStage(projectCurrentStage);
             return project;
         }
     }
