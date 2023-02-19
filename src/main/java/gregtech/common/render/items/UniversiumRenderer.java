@@ -204,7 +204,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         float scale = 1F / 16F;
 
         for (int i = 0; i < passes; i++) {
-            icon = this.getStackIcon(item, player);
+            icon = this.getTrueIcon(item, i);
 
             f = icon.getMinU();
             f1 = icon.getMaxU();
@@ -292,11 +292,11 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         }
     }
 
-    public IIcon getStackIcon(ItemStack stack, EntityPlayer player) {
-        return getTrueIcon(stack);
+    public IIcon getTrueIcon(ItemStack stack, int pass) {
+        return ((IGT_ItemWithMaterialRenderer) stack.getItem()).getIcon(stack.getItemDamage(), pass);
     }
 
     public IIcon getTrueIcon(ItemStack stack) {
-        return ((IGT_ItemWithMaterialRenderer) stack.getItem()).getIcon(stack.getItemDamage(), 0);
+        return getTrueIcon(stack, 0);
     }
 }
