@@ -77,7 +77,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public ItemStack getCurrentItemProgress(int index) {
-        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length || itemsCost[index] == null) {
             return null;
         }
 
@@ -101,7 +101,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public ItemStack getTotalItemCost(int index) {
-        if (itemsCost == null || index < 0 || index >= itemsCost.length) {
+        if (itemsCost == null || index < 0 || index >= itemsCost.length || itemsCost[index] == null) {
             return null;
         }
 
@@ -143,7 +143,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public FluidStack getCurrentFluidProgress(int index) {
-        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length || fluidsCost[index] == null) {
             return null;
         }
 
@@ -171,7 +171,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public FluidStack getTotalFluidCost(int index) {
-        if (fluidsCost == null || index < 0 || index >= fluidsCost.length) {
+        if (fluidsCost == null || index < 0 || index >= fluidsCost.length || fluidsCost[index] == null) {
             return null;
         }
 

@@ -1,5 +1,6 @@
 package gregtech.common.misc.spaceprojects.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
@@ -17,8 +18,8 @@ public class SP_Requirements implements ISP_Requirements {
 
     protected SpaceBodyType spaceBody = SpaceBodyType.NONE;
     protected StarType star = StarType.NotAStar;
-    protected List<ISpaceProject> spaceProjects;
-    protected List<ISP_Upgrade> upgrades;
+    protected List<ISpaceProject> spaceProjects = new ArrayList<>();
+    protected List<ISP_Upgrade> upgrades = new ArrayList<>();
 
     // #endregion
 
