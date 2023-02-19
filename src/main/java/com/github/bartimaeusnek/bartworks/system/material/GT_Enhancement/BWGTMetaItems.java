@@ -26,6 +26,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -44,6 +45,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 
 public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
@@ -98,10 +100,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     private Materials getMaterial(ItemStack is) {
         if (is == null || is.getItem() != this) return null;
         final int meta = is.getItemDamage();
-        Materials material;
-        if (meta > 1000 && hasList) material = NoMetaValue.get(meta - 1001);
-        else material = Materials.values()[meta];
-        return material;
+        return getMaterialFromMeta(meta);
     }
 
     @Override
@@ -127,11 +126,12 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
         if (this.orePrefixes.mTextureIndex == -1) return getIconContainerBartWorks(aMetaData);
-        if (aMetaData > 1000 && hasList)
-            return NoMetaValue.get(aMetaData - 1001).mIconSet.mTextures[this.orePrefixes.mTextureIndex];
-        if (aMetaData < 0 || aMetaData > Materials.values().length || Materials.values()[(short) aMetaData] == null)
+        Materials material = getMaterialFromMeta(aMetaData);
+        if (material != null) {
+            return material.mIconSet.mTextures[this.orePrefixes.mTextureIndex];
+        } else {
             return null;
-        return Materials.values()[(short) aMetaData].mIconSet.mTextures[this.orePrefixes.mTextureIndex];
+        }
     }
 
     @Override
@@ -142,14 +142,32 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
         if (iconLink == null) return null;
 
-        Materials material;
-
-        if (aMetaData > 1000 && hasList) material = NoMetaValue.get(aMetaData - 1001);
-        else material = Materials.values()[aMetaData];
+        Materials material = getMaterialFromMeta(aMetaData);
 
         if (material == null || material.mIconSet == null) return null;
 
-        return iconLink.get(material.mIconSet);
+        return iconLink.getOrDefault(material.mIconSet, iconLink.get(TextureSet.SET_DULL));
+    }
+
+    @Override
+    public IIcon getIconFromDamage(int aMetaData) {
+        return getIcon(aMetaData, 0);
+    }
+
+    @Override
+    public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
+        return getMaterialFromMeta(aMetaData).renderer;
+    }
+
+    public Materials getMaterialFromMeta(int aMetaData) {
+        if (aMetaData > 1000 && hasList) {
+            return NoMetaValue.get(aMetaData - 1001);
+        } else {
+            if (aMetaData < 0 || aMetaData >= Materials.values().length) {
+                return null;
+            }
+            return Materials.values()[aMetaData];
+        }
     }
 
     @Override
@@ -184,15 +202,12 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     @Override
     public short[] getColorForGUI(ItemStack aStack) {
-        if (aStack.getItemDamage() > 1000 && hasList) return NoMetaValue.get(aStack.getItemDamage() - 1001).mRGBa;
-        return Materials.values()[aStack.getItemDamage()].mRGBa;
+        return getMaterial(aStack).mRGBa;
     }
 
     @Override
     public String getNameForGUI(ItemStack aStack) {
-        if (aStack.getItemDamage() > 1000 && hasList)
-            return NoMetaValue.get(aStack.getItemDamage() - 1001).mDefaultLocalName;
-        return Materials.values()[aStack.getItemDamage()].mDefaultLocalName;
+        return getMaterial(aStack).mDefaultLocalName;
     }
 
     @Override
@@ -200,8 +215,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        if (aStack.getItemDamage() > 1000 && hasList) return NoMetaValue.get(aStack.getItemDamage() - 1001).mRGBa;
-        return Materials.values()[aStack.getItemDamage()].mRGBa;
+        return getMaterial(aStack).mRGBa;
     }
 
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {

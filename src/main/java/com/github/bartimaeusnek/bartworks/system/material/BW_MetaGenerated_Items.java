@@ -216,7 +216,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     @Override
-    public final IIcon getIconFromDamage(int aMetaData) {
+    public IIcon getIconFromDamage(int aMetaData) {
         if (aMetaData < 0) return null;
         Werkstoff tMaterial = werkstoffHashMap.get((short) aMetaData);
         if (tMaterial == null) return null;
