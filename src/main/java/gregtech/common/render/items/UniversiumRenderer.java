@@ -18,9 +18,9 @@ import org.lwjgl.opengl.GL12;
 
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 import codechicken.lib.render.TextureUtils;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.common.render.GT_RenderUtil;
 
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
@@ -50,47 +50,50 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
+        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
 
-        IIconContainer aIconContainer = aItem.getIconContainer(aMetaData);
-
-        if (aIconContainer == null) {
-            return;
+        int passes = 1;
+        if (aItem.requiresMultipleRenderPasses()) {
+            passes = aItem.getRenderPasses(aMetaData);
         }
 
-        IIcon tIcon = aIconContainer.getIcon();
-        IIcon tOverlay = aIconContainer.getOverlayIcon();
+        for (int pass = 0; pass < passes; pass++) {
+            IIcon tIcon = aItem.getIcon(aMetaData, pass);
+            IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
 
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        if (tOverlay != null) {
-            GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            TextureUtils.bindAtlas(aItem.getSpriteNumber());
-            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-            } else {
-                ItemRenderer.renderItemIn2D(
-                        Tessellator.instance,
-                        tOverlay.getMaxU(),
-                        tOverlay.getMinV(),
-                        tOverlay.getMinU(),
-                        tOverlay.getMaxV(),
-                        tOverlay.getIconWidth(),
-                        tOverlay.getIconHeight(),
-                        0.0625F);
+            if (tOverlay != null) {
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+                TextureUtils.bindAtlas(aItem.getSpriteNumber());
+                if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                    GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                } else {
+                    ItemRenderer.renderItemIn2D(
+                            Tessellator.instance,
+                            tOverlay.getMaxU(),
+                            tOverlay.getMinV(),
+                            tOverlay.getMinU(),
+                            tOverlay.getMaxV(),
+                            tOverlay.getIconWidth(),
+                            tOverlay.getIconHeight(),
+                            0.0625F);
+                }
             }
-        }
 
-        GL11.glDisable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_BLEND);
 
-        if (tIcon != null) {
-            magicRenderMethod(type, aStack, getTrueIcon(aStack), data);
+            if (tIcon != null) {
+                magicRenderMethod(type, aStack, getTrueIcon(aStack), data);
+            }
         }
     }
 
     private void magicRenderMethod(ItemRenderType type, ItemStack tmpItem, IIcon tIcon, Object... data) {
+        if (!GregTech_API.mEternalSingularity) return;
 
         RenderItem r = RenderItem.getInstance();
         Minecraft mc = Minecraft.getMinecraft();
@@ -201,7 +204,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         float scale = 1F / 16F;
 
         for (int i = 0; i < passes; i++) {
-            icon = this.getStackIcon(item, player);
+            icon = this.getTrueIcon(item, i);
 
             f = icon.getMinU();
             f1 = icon.getMaxU();
@@ -289,16 +292,11 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         }
     }
 
-    public IIcon getStackIcon(ItemStack stack, EntityPlayer player) {
-        return getTrueIcon(stack);
+    public IIcon getTrueIcon(ItemStack stack, int pass) {
+        return ((IGT_ItemWithMaterialRenderer) stack.getItem()).getIcon(stack.getItemDamage(), pass);
     }
 
     public IIcon getTrueIcon(ItemStack stack) {
-        short aMetaData = (short) stack.getItemDamage();
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) stack.getItem();
-
-        IIconContainer aIconContainer = aItem.getIconContainer(aMetaData);
-
-        return aIconContainer.getIcon();
+        return getTrueIcon(stack, 0);
     }
 }

@@ -51,6 +51,9 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.9-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.0.34:dev") { transitive = false }
 
+    // fix universium animation
+    runtimeOnly("com.github.GTNewHorizons:Avaritia:1.33:dev")
+
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 

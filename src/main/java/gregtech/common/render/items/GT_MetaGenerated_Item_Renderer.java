@@ -1,8 +1,7 @@
 package gregtech.common.render.items;
 
-import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
-
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -10,8 +9,9 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
@@ -19,15 +19,17 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
     private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();
     private final IItemRenderer mMaterialRenderer = new GT_GeneratedMaterial_Renderer();
 
-    public GT_MetaGenerated_Item_Renderer() {
-        for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
-            MinecraftForgeClient.registerItemRenderer(item, this);
-        }
+    public GT_MetaGenerated_Item_Renderer() {}
+
+    public <T extends Item & IGT_ItemWithMaterialRenderer> void registerItem(T item) {
+        MinecraftForgeClient.registerItemRenderer(item, this);
     }
 
     @Override
     public boolean handleRenderType(ItemStack aStack, ItemRenderType aType) {
-        if ((GT_Utility.isStackInvalid(aStack)) || (aStack.getItemDamage() < 0)) {
+        if ((GT_Utility.isStackInvalid(aStack)) || (aStack.getItemDamage() < 0)
+                || !(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)
+                || !((IGT_ItemWithMaterialRenderer) aStack.getItem()).shouldUseCustomRenderer(aStack.getItemDamage())) {
             return false;
         }
         return getRendererForItemStack(aStack).handleRenderType(aStack, aType);
@@ -59,14 +61,14 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
     private IItemRenderer getRendererForItemStack(ItemStack aStack) {
         short aMetaData = (short) aStack.getItemDamage();
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
 
-        if (aMetaData < aItem.mOffset) {
+        if (aItem != null && aItem.allowMaterialRenderer(aMetaData)) {
             IItemRenderer aMaterialRenderer = aItem.getMaterialRenderer(aMetaData);
 
             // Handle fluid rendering.
             if (aMaterialRenderer == null) {
-                ItemData itemData = getAssociation(aStack);
+                ItemData itemData = GT_OreDictUnificator.getAssociation(aStack);
                 if (itemData != null) {
                     Materials material = itemData.mMaterial.mMaterial;
                     if (material.renderer != null) {

@@ -66,8 +66,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
-
+    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor, int pass) {
         RenderItem r = RenderItem.getInstance();
 
         GL11.glPushMatrix();
@@ -79,7 +78,9 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
         }
 
-        drawHalo(type);
+        if (pass == 0) {
+            drawHalo(type);
+        }
 
         //spotless:on
         {

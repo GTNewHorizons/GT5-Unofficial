@@ -280,7 +280,7 @@ public class GregTech_API {
             sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
             mServerStarted = false, mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
             mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false,
-            mHodgepodge = false;
+            mHodgepodge = false, mEternalSingularity = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
