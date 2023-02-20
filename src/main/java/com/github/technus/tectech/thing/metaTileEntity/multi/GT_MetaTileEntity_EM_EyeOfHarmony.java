@@ -943,7 +943,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + SPACETIME_FAILURE_BASE
                                 + ")^(Recipe tier)"
                                 + GRAY
-                                + "L of molten ")
+                                + "L of molten")
                 .addInfo(Materials.SpaceTime.getLocalizedNameForItem("%material")
                         + " and return half the start EU.")
                 .addInfo(TOOLTIP_BAR)
