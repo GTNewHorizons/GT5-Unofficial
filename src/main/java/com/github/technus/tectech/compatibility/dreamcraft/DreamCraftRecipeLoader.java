@@ -5335,7 +5335,9 @@ public class DreamCraftRecipeLoader {
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
-        ItemStack largeShirabonPlate = TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1);
+        ItemStack largeShirabonPlate = Loader.isModLoaded("TGregworks")
+                ? TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1)
+                : GT_OreDictUnificator.get("plateDenseShirabon", 1);
 
         final FluidStack[] specialFluid = new FluidStack[] { Materials.SpaceTime.getMolten(1_440),
                 Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440),

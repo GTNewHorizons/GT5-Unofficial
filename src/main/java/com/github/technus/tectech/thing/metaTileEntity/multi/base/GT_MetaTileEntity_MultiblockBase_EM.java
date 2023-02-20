@@ -18,13 +18,10 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
@@ -42,12 +39,7 @@ import com.github.technus.tectech.util.TT_Utility;
 import com.google.common.collect.Iterables;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -62,7 +54,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -81,7 +72,8 @@ import gregtech.common.GT_Pollution;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_TooltipMultiBlockBase
+public abstract class GT_MetaTileEntity_MultiblockBase_EM
+        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiblockBase_EM>
         implements IAlignment, IBindPlayerInventoryUI {
     // region Client side variables (static - one per class)
 
@@ -182,9 +174,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     // just some info - private so hidden
     private boolean explodedThisTick = false;
 
-    // front rotation val
-    private IAlignmentLimits alignmentLimits = IAlignmentLimits.UNLIMITED;
-    private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
+    /** Flag if the new long power variable should be used */
+    protected boolean useLongPower = false;
+
     // endregion
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
@@ -202,65 +194,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     // region SUPER STRUCT
-    @Override
-    public IAlignmentLimits getAlignmentLimits() {
-        return alignmentLimits;
-    }
-
-    @Override
-    public ExtendedFacing getExtendedFacing() {
-        return extendedFacing;
-    }
-
-    @Override
-    public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
-        if (extendedFacing != newExtendedFacing) {
-            if (mMachine) stopMachine();
-            extendedFacing = newExtendedFacing;
-            final IGregTechTileEntity base = getBaseMetaTileEntity();
-            mMachine = false;
-            mUpdated = false;
-            mUpdate = 100;
-            if (getBaseMetaTileEntity().isServerSide()) {
-                StructureLibAPI.sendAlignment(
-                        (IAlignmentProvider) base,
-                        new NetworkRegistry.TargetPoint(
-                                base.getWorld().provider.dimensionId,
-                                base.getXCoord(),
-                                base.getYCoord(),
-                                base.getZCoord(),
-                                512));
-            } else {
-                base.issueTextureUpdate();
-            }
-        }
-    }
-
-    @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
-        if (aWrenchingSide != getBaseMetaTileEntity().getFrontFacing())
-            return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
-        if (aPlayer.isSneaking()) {
-            // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
-            // horizontally
-            // allowing an extra round of flip make it hard to draw meaningful flip markers in GT_Proxy#drawGrid
-            toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
-        } else {
-            toolSetRotation(null);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
-    }
-
-    @Override
-    public void onFacingChange() {
-        toolSetDirection(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));
-    }
 
     /**
      * Gets structure
@@ -272,6 +205,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @SuppressWarnings("unchecked")
     private IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM_Internal() {
         return (IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM>) getStructure_EM();
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructureDefinition() {
+        return getStructure_EM_Internal();
     }
 
     public final boolean structureCheck_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
@@ -306,44 +244,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 verticalOffset,
                 depthOffset,
                 hintsOnly);
-    }
-
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
-        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        return getStructure_EM_Internal().survivalBuild(
-                this,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check);
-    }
-
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
-            boolean checkIfPlaced) {
-        int built = survivialBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check);
-        if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
-        return built;
     }
     // endregion
 
@@ -493,8 +393,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         + GT_Utility.formatNumbers(maxEnergy)
                         + EnumChatFormatting.RESET
                         + " EU",
-                (mEUt * eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(Math.abs(mEUt))
+                (getPowerFlow() * eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(Math.abs(getPowerFlow()))
                         + EnumChatFormatting.RESET
                         + " EU/t at "
                         + EnumChatFormatting.RED
@@ -767,6 +667,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return result;
     }
 
+    protected long getPowerFlow() {
+        return useLongPower ? lEUt : mEUt;
+    }
+
+    protected void setPowerFlow(long lEUt) {
+        if (useLongPower) {
+            this.lEUt = lEUt;
+        } else {
+            mEUt = (int) Math.min(Integer.MAX_VALUE, lEUt);
+        }
+    }
+
     /**
      * Extra hook on cyclic updates (not really needed for machines smaller than 1 chunk) BUT NEEDED WHEN - machine
      * blocks are not touching each other or they don't implement IMachineBlockUpdateable (ex. air,stone,weird TE's)
@@ -828,8 +740,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setByte("eCertainM", eCertainMode);
         aNBT.setByte("eCertainS", eCertainStatus);
         aNBT.setByte("eMinRepair", minRepairStatus);
-        aNBT.setByte("eRotation", (byte) extendedFacing.getRotation().getIndex());
-        aNBT.setByte("eFlip", (byte) extendedFacing.getFlip().getIndex());
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("ePowerPassCover", ePowerPassCover);
@@ -919,10 +829,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eCertainMode = aNBT.getByte("eCertainM");
         eCertainStatus = aNBT.getByte("eCertainS");
         minRepairStatus = aNBT.hasKey("eMinRepair") ? aNBT.getByte("eMinRepair") : 3;
-        extendedFacing = ExtendedFacing.of(
-                ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
-                Rotation.byIndex(aNBT.getByte("eRotation")),
-                Flip.byIndex(aNBT.getByte("eFlip")));
         eParameters = !aNBT.hasKey("eParam") || aNBT.getBoolean("eParam");
         ePowerPass = aNBT.getBoolean("ePass");
         ePowerPassCover = aNBT.getBoolean("ePowerPassCover");
@@ -1807,16 +1713,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     // new method
     public boolean energyFlowOnRunningTick_EM(ItemStack aStack, boolean allowProduction) {
-        long euFlow = mEUt * eAmpereFlow; // quick scope sign
+        long euFlow = getPowerFlow() * eAmpereFlow; // quick scope sign
         if (allowProduction && euFlow > 0) {
-            addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
+            addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
             if (POWERLESS_MODE) {
                 return true;
             }
             if (!drainEnergyInput_EM(
-                    mEUt,
-                    (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
+                    getPowerFlow(),
+                    getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
                     eAmpereFlow)) {
                 criticalStopMachine();
                 return false;
@@ -1826,14 +1732,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     public boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
-        long euFlow = mEUt * eAmpereFlow; // quick scope sign
+        long euFlow = getPowerFlow() * eAmpereFlow; // quick scope sign
         if (allowProduction && euFlow > 0) {
-            addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
+            addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
             if (POWERLESS_MODE) {
                 return true;
             }
-            if (!drainEnergyInput((long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
+            if (!drainEnergyInput(
+                    getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
+                    eAmpereFlow)) {
                 criticalStopMachine();
                 return false;
             }
@@ -1998,7 +1906,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     // new method
     public final boolean overclockAndPutValuesIn_EM(long EU, int time) { // TODO revise
         if (EU == 0L) {
-            mEUt = 0;
+            setPowerFlow(0);
             mMaxProgresstime = time;
             return true;
         }
@@ -2011,11 +1919,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                                 // power
         }
         if (EU > Integer.MAX_VALUE || EU < Integer.MIN_VALUE) {
-            mEUt = Integer.MAX_VALUE - 1;
+            setPowerFlow(Integer.MAX_VALUE - 1);
             mMaxProgresstime = Integer.MAX_VALUE - 1;
             return false;
         }
-        mEUt = (int) EU;
+        setPowerFlow(EU);
         mMaxProgresstime = time == 0 ? 1 : time;
         return true;
     } // Use in EM check recipe return statement if you want overclocking
