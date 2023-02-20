@@ -5345,15 +5345,15 @@ public class DreamCraftRecipeLoader {
 
         final ItemStack[] plateList = new ItemStack[] {
                 // Dense Shirabon plate.
-                GT_OreDictUnificator.get("plateDenseShirabon", 1),
+                GT_OreDictUnificator.get("boltShirabon", 2),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 2),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 32),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 2),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 32),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.BlackDwarfMatter, 32),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2) };
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8) };
 
         // EOH Controller Recipe.
         {

@@ -36,7 +36,8 @@ public class EyeOfHarmonyRecipe {
             Materials.WhiteDwarfMatter.getMolten(576), Materials.WhiteDwarfMatter.getMolten(2_304),
             Materials.WhiteDwarfMatter.getMolten(9_216), Materials.BlackDwarfMatter.getMolten(576),
             Materials.BlackDwarfMatter.getMolten(2_304), Materials.BlackDwarfMatter.getMolten(9_216),
-            Materials.Universium.getMolten(576), Materials.Universium.getMolten(2_304), };
+            Materials.Universium.getMolten(576), Materials.Universium.getMolten(2_304),
+            Materials.Universium.getMolten(9_216) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
 
@@ -148,10 +149,9 @@ public class EyeOfHarmonyRecipe {
 
         // Tier 7 - 576 Universium
         // Tier 8 - 2304 Universium
+        // Tier 9 - 9216 Universium (DD only)
 
-        if (rocketTierOfRecipe <= 2) {
-            fluidStackArrayList.add(SPECIAL_FLUIDS[(int) rocketTierOfRecipe]);
-        }
+        fluidStackArrayList.add(SPECIAL_FLUIDS[(int) rocketTierOfRecipe]);
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
