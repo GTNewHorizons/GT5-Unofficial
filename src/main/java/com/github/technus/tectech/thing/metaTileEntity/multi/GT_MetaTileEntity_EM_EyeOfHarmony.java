@@ -16,10 +16,12 @@ import java.util.*;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -61,7 +63,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
     private static final double SPACETIME_FAILURE_BASE = 2;
-    private boolean disableAnimation = false;
+    private static final String TOOLTIP_BAR = GOLD + "------------------------------------------------------------------------------------";
 
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -768,8 +770,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         // Tier 3 spacetime blocks.
         // = 3%*3% = 5.91% discount.
 
-        long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
-        double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata)
+        final long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
+        final double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata)
                 * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, spacetimeCasingDifference)
                 / max(1, pow(2, currentCircuitMultiplier));
         return (int) Math.max(recipeTimeDiscounted, 1.0);
@@ -857,16 +859,24 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         return true;
     }
 
+    private boolean animationsEnabled = true;
+
+    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        animationsEnabled = !animationsEnabled;
+        aPlayer.addChatMessage(
+                new ChatComponentText("Animations are now " + (animationsEnabled ? "enabled" : "disabled") + "."));
+    }
+
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Spacetime Manipulator, EOH")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
                 .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
                 .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
                 .addInfo("your wireless EU network.")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
                 .addInfo("recipe as fast as it can. It will store this internally, you can see the totals by")
                 .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
@@ -905,26 +915,26 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + "%"
                                 + GRAY
                                 + " per tier (additive). ")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo(
                         "Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance.")
                 .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
                 .addInfo(GREEN + "percentageOverflow = abs(1 - fluidStored/recipeRequirement)")
                 .addInfo(GREEN + "adjustmentValue = 1 - exp(-(30 * percentageOverflow)^2)")
                 .addInfo("The value of adjustmentValue is then subtracted from the total yield and recipe chance.")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
                 .addInfo("at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied by the")
                 .addInfo("yield. Failure fluid is exempt.")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock can only output to ME output busses/hatches. If no space in the network")
                 .addInfo(
                         "is avaliable the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
                 .addInfo(
                         "E.g. A circuit of 2 will provide 2 OCs, 16x EU consumed and 0.25x the time. All outputs are equal.")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo(
                         "If a recipe fails the EOH will output " + GREEN
                                 + "successChance * "
@@ -933,10 +943,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + SPACETIME_FAILURE_BASE
                                 + ")^(Recipe tier)"
                                 + GRAY
-                                + "L of molten "
-                                + Materials.SpaceTime.getLocalizedNameForItem("%material")
-                                + " and")
-                .addInfo("return half the start EU.").addSeparator()
+                                + "L of molten ")
+                .addInfo(Materials.SpaceTime.getLocalizedNameForItem("%material")
+                        + " and return half the start EU.")
+                .addInfo(TOOLTIP_BAR)
+                .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
+                .addSeparator()
                 .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "896"
@@ -1144,7 +1156,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         updateSlots();
 
-        createRenderBlock(currentRecipe);
+        if (animationsEnabled) {
+            createRenderBlock(currentRecipe);
+        }
 
         recipeRunning = true;
         return true;
@@ -1335,6 +1349,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String RECIPE_EU_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "euOutput";
     private static final String RECIPE_SUCCESS_CHANCE_NBT_TAG = EYE_OF_HARMONY + "recipeSuccessChance";
     private static final String CURRENT_CIRCUIT_MULTIPLIER_TAG = EYE_OF_HARMONY + "currentCircuitMultiplier";
+    private static final String ANIMATIONS_ENABLED = EYE_OF_HARMONY + "animationsEnabled";
 
     // Sub tags, less specific names required.
     private static final String STACK_SIZE = "stackSize";
@@ -1349,6 +1364,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         aNBT.setLong(RECIPE_EU_OUTPUT_NBT_TAG, euOutput);
         aNBT.setDouble(RECIPE_SUCCESS_CHANCE_NBT_TAG, successChance);
         aNBT.setLong(CURRENT_CIRCUIT_MULTIPLIER_TAG, currentCircuitMultiplier);
+        aNBT.setBoolean(ANIMATIONS_ENABLED, animationsEnabled);
 
         // Store damage values/stack sizes of GT items being outputted.
         NBTTagCompound itemStackListNBTTag = new NBTTagCompound();
@@ -1382,6 +1398,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         euOutput = aNBT.getLong(RECIPE_EU_OUTPUT_NBT_TAG);
         successChance = aNBT.getDouble(RECIPE_SUCCESS_CHANCE_NBT_TAG);
         currentCircuitMultiplier = aNBT.getLong(CURRENT_CIRCUIT_MULTIPLIER_TAG);
+        animationsEnabled = aNBT.getBoolean(ANIMATIONS_ENABLED);
 
         // Load damage values/stack sizes of GT items being outputted and convert back to items.
         NBTTagCompound tempItemTag = aNBT.getCompoundTag(ITEM_OUTPUT_NBT_TAG);
