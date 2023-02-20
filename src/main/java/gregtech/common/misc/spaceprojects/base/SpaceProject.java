@@ -125,6 +125,10 @@ public class SpaceProject implements ISpaceProject {
         ItemStack[] currentItemsProgress = new ItemStack[itemsCost.length];
         int index = 0;
         for (ItemStack item : itemsCost) {
+            if (item == null) {
+                currentItemsProgress[index++] = null;
+                continue;
+            }
             ItemStack copy = item.copy();
             copy.stackSize *= getCurrentStage();
             currentItemsProgress[index++] = copy;
@@ -149,6 +153,10 @@ public class SpaceProject implements ISpaceProject {
         ItemStack[] totalItemsCost = new ItemStack[itemsCost.length];
         int index = 0;
         for (ItemStack item : itemsCost) {
+            if (item == null) {
+                totalItemsCost[index++] = null;
+                continue;
+            }
             ItemStack copy = item.copy();
             copy.stackSize *= getTotalStages();
             totalItemsCost[index++] = copy;
@@ -190,8 +198,12 @@ public class SpaceProject implements ISpaceProject {
 
         FluidStack[] currentFluidsProgress = new FluidStack[fluidsCost.length];
         int index = 0;
-        for (FluidStack tFluid : fluidsCost) {
-            FluidStack copy = tFluid.copy();
+        for (FluidStack fluid : fluidsCost) {
+            if (fluid == null) {
+                currentFluidsProgress[index++] = null;
+                continue;
+            }
+            FluidStack copy = fluid.copy();
             copy.amount *= getCurrentStage();
             currentFluidsProgress[index++] = copy;
         }
@@ -219,6 +231,10 @@ public class SpaceProject implements ISpaceProject {
         FluidStack[] totalFluidsCost = new FluidStack[fluidsCost.length];
         int index = 0;
         for (FluidStack fluid : fluidsCost) {
+            if (fluid == null) {
+                totalFluidsCost[index++] = null;
+                continue;
+            }
             FluidStack copy = fluid.copy();
             copy.amount *= getTotalStages();
             totalFluidsCost[index++] = copy;
