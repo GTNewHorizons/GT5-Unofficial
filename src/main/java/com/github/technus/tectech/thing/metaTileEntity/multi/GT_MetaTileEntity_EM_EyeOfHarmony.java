@@ -73,6 +73,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private static final double SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE = 0.03;
     private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.1;
+    // % Increase in recipe chance and % decrease in yield per tier.
     private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
 
     private String userUUID = "";
@@ -913,8 +914,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("The value of adjustmentValue is then subtracted from the total yield and recipe chance.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
-                .addInfo("at recipe base chance and subtracts depending on penalities. All fluid/item outputs are")
-                .addInfo("multiplied by the yield. Failure fluid is exempt.")
+                .addInfo("at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied by the")
+                .addInfo("yield. Failure fluid is exempt.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("This multiblock can only output to ME output busses/hatches. If no space in the network")
                 .addInfo(
