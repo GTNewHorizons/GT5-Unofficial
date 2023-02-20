@@ -149,6 +149,7 @@ public class SpaceProject implements ISpaceProject {
         ItemStack[] totalItemsCost = new ItemStack[itemsCost.length];
         int index = 0;
         for (ItemStack item : itemsCost) {
+            if (item == null) continue;
             ItemStack copy = item.copy();
             copy.stackSize *= getTotalStages();
             totalItemsCost[index++] = copy;
