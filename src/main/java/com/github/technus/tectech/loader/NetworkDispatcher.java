@@ -4,7 +4,6 @@ import static com.github.technus.tectech.Reference.MODID;
 
 import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
-import com.github.technus.tectech.mechanics.enderStorage.EnderLinkCoverMessage;
 import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
 
@@ -30,11 +29,5 @@ public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher 
         registerMessage(PlayerDataMessage.ClientHandler.class, PlayerDataMessage.PlayerDataData.class);
 
         registerMessage(RendererMessage.ClientHandler.class, RendererMessage.RendererData.class);
-
-        registerMessage(EnderLinkCoverMessage.ServerHandler.class, EnderLinkCoverMessage.EnderLinkCoverQuery.class);
-        registerMessage(
-                EnderLinkCoverMessage.ServerUpdateHandler.class,
-                EnderLinkCoverMessage.EnderLinkCoverUpdate.class);
-        registerMessage(EnderLinkCoverMessage.ClientHandler.class, EnderLinkCoverMessage.EnderLinkCoverData.class);
     }
 }
