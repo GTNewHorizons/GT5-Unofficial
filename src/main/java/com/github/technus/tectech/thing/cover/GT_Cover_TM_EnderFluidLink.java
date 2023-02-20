@@ -11,9 +11,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.github.technus.tectech.loader.NetworkDispatcher;
-import com.github.technus.tectech.mechanics.enderStorage.EnderLinkCoverMessage;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkTag;
+import com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -24,6 +23,7 @@ import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -35,17 +35,8 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     private static final int L_PER_TICK = 8000;
     private static final int IMPORT_EXPORT_MASK = 0b0001;
     private static final int PUBLIC_PRIVATE_MASK = 0b0010;
-    private static EnderLinkTag tag = new EnderLinkTag("", null); // Client-Sided
 
     public GT_Cover_TM_EnderFluidLink() {}
-
-    public static void setEnderLinkTag(EnderLinkTag inputTag) {
-        if (inputTag != null) {
-            tag = inputTag;
-            // Hacky Way to update the gui
-            GUI_INSTANCE.resetTextField();
-        }
-    }
 
     private void transferFluid(IFluidHandler source, byte sSide, IFluidHandler target, byte tSide, int amount) {
         FluidStack fluidStack = source.drain(ForgeDirection.getOrientation(sSide), amount, false);
@@ -116,8 +107,6 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
 
     // region GUI
 
-    private static EnderFluidLinkUIFactory GUI_INSTANCE;
-
     @Override
     public boolean hasCoverGUI() {
         return true;
@@ -148,8 +137,6 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         private static final int IMPORT_BUTTON_ID = 2;
         private static final int EXPORT_BUTTON_ID = 3;
 
-        private TextFieldWidget frequencyField;
-
         public EnderFluidLinkUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
         }
@@ -157,31 +144,29 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            NetworkDispatcher.INSTANCE.sendToServer(
-                    new EnderLinkCoverMessage.EnderLinkCoverQuery(tag, (IFluidHandler) getUIBuildContext().getTile()));
-            GUI_INSTANCE = this;
-            frequencyField = new TextFieldWidget() {
-
-                @Override
-                public void onRemoveFocus() {
-                    super.onRemoveFocus();
-                    try {
-                        String string = getText();
-                        tag = new EnderLinkTag(string, tag.getUUID());
-                        NetworkDispatcher.INSTANCE.sendToServer(
-                                new EnderLinkCoverMessage.EnderLinkCoverUpdate(
-                                        tag,
-                                        (IFluidHandler) getUIBuildContext().getTile()));
-                    } catch (NumberFormatException ignored) {}
-                    resetTextField();
+            TextFieldWidget frequencyField = new TextFieldWidget();
+            builder.widget(frequencyField.setGetter(() -> {
+                ICoverable te = getUIBuildContext().getTile();
+                if (!frequencyField.isClient() && te instanceof IFluidHandler) {
+                    return EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te).getFrequency();
                 }
-            };
-
-            builder.widget(
-                    frequencyField.setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft)
-                            .setFocusOnGuiOpen(true)
-                            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0).setSize(SPACE_X * 5 - 8, 12))
+                return "";
+            }).setSetter(val -> {
+                ICoverable te = getUIBuildContext().getTile();
+                if (!frequencyField.isClient() && te instanceof IFluidHandler) {
+                    UUID uuid;
+                    if (testBit(convert(getCoverData()), PUBLIC_PRIVATE_MASK)) {
+                        uuid = getUUID();
+                        if (!(te instanceof IGregTechTileEntity)) return;
+                        if (!uuid.equals(((IGregTechTileEntity) te).getOwnerUuid())) return;
+                    } else {
+                        uuid = null;
+                    }
+                    EnderWorldSavedData.bindEnderLinkTag((IFluidHandler) te, new EnderLinkTag(val, uuid));
+                }
+            }).setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft).setFocusOnGuiOpen(true)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0).setSize(SPACE_X * 5 - 8, 12))
                     .widget(
                             new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                                     this::getCoverData,
@@ -237,59 +222,36 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
                             new TextWidget(GT_Utility.trans("229", "Import/Export"))
                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
-
-            resetTextField();
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {
-            int tempCoverVariable = coverVariable;
             switch (id) {
                 case PUBLIC_BUTTON_ID:
                 case PRIVATE_BUTTON_ID:
-                    tempCoverVariable = toggleBit(tempCoverVariable, PUBLIC_PRIVATE_MASK);
-                    switchPrivatePublic(tempCoverVariable);
-                    break;
+                    return toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
                 case IMPORT_BUTTON_ID:
                 case EXPORT_BUTTON_ID:
-                    tempCoverVariable = toggleBit(tempCoverVariable, IMPORT_EXPORT_MASK);
+                    return toggleBit(coverVariable, IMPORT_EXPORT_MASK);
             }
-            return tempCoverVariable;
+            return coverVariable;
         }
 
         private boolean getClickable(int id, int coverVariable) {
-            boolean canBeClicked = false;
             switch (id) {
                 case PUBLIC_BUTTON_ID:
-                    canBeClicked = testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-                    break;
+                    return testBit(coverVariable, PUBLIC_PRIVATE_MASK);
                 case PRIVATE_BUTTON_ID:
-                    canBeClicked = !testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-                    break;
+                    return !testBit(coverVariable, PUBLIC_PRIVATE_MASK);
                 case IMPORT_BUTTON_ID:
-                    canBeClicked = testBit(coverVariable, IMPORT_EXPORT_MASK);
-                    break;
+                    return testBit(coverVariable, IMPORT_EXPORT_MASK);
                 case EXPORT_BUTTON_ID:
-                    canBeClicked = !testBit(coverVariable, IMPORT_EXPORT_MASK);
+                    return !testBit(coverVariable, IMPORT_EXPORT_MASK);
             }
-            return canBeClicked;
+            return false;
         }
 
-        private void resetTextField() {
-            frequencyField.setText(tag.getFrequency());
-        }
-
-        private void switchPrivatePublic(int coverVar) {
-            UUID ownerUUID;
-            if (testBit(coverVar, PUBLIC_PRIVATE_MASK)) {
-                ownerUUID = getUIBuildContext().getPlayer().getUniqueID();
-            } else {
-                ownerUUID = null;
-            }
-            EnderLinkTag newTag = new EnderLinkTag(tag.getFrequency(), ownerUUID);
-            NetworkDispatcher.INSTANCE.sendToServer(
-                    new EnderLinkCoverMessage.EnderLinkCoverUpdate(
-                            newTag,
-                            (IFluidHandler) getUIBuildContext().getTile()));
+        private UUID getUUID() {
+            return getUIBuildContext().getPlayer().getUniqueID();
         }
     }
 }
