@@ -584,7 +584,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation();
+                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
         if (!mVoidExcess) {
             helper.enableVoidProtection(this);
         }

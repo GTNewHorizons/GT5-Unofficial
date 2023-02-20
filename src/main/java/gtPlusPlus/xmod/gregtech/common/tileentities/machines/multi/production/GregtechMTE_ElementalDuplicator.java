@@ -321,7 +321,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tVoltage).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation();
+                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
         if (!mVoidExcess) {
             helper.enableVoidProtection(this);
         }
