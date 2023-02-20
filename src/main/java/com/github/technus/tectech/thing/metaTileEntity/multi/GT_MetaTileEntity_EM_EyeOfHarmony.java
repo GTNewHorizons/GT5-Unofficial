@@ -63,7 +63,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
     private static final double SPACETIME_FAILURE_BASE = 2;
-    private static final String TOOLTIP_BAR = GOLD + "------------------------------------------------------------------------------------";
+    private static final String TOOLTIP_BAR = GOLD
+            + "------------------------------------------------------------------------------------";
 
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -870,13 +871,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Spacetime Manipulator, EOH")
-                .addInfo(TOOLTIP_BAR)
+        tt.addMachineType("Spacetime Manipulator, EOH").addInfo(TOOLTIP_BAR)
                 .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
                 .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
                 .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
-                .addInfo("your wireless EU network.")
-                .addInfo(TOOLTIP_BAR)
+                .addInfo("your wireless EU network.").addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
                 .addInfo("recipe as fast as it can. It will store this internally, you can see the totals by")
                 .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
@@ -925,8 +924,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(TOOLTIP_BAR)
                 .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
                 .addInfo("at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied by the")
-                .addInfo("yield. Failure fluid is exempt.")
-                .addInfo(TOOLTIP_BAR)
+                .addInfo("yield. Failure fluid is exempt.").addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock can only output to ME output busses/hatches. If no space in the network")
                 .addInfo(
                         "is avaliable the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
@@ -944,12 +942,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + ")^(Recipe tier)"
                                 + GRAY
                                 + "L of molten")
-                .addInfo(Materials.SpaceTime.getLocalizedNameForItem("%material")
-                        + " and return half the start EU.")
-                .addInfo(TOOLTIP_BAR)
-                .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
-                .addSeparator()
-                .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
+                .addInfo(Materials.SpaceTime.getLocalizedNameForItem("%material") + " and return half the start EU.")
+                .addInfo(TOOLTIP_BAR).addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
+                .addSeparator().addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "896"
                                 + EnumChatFormatting.GRAY
