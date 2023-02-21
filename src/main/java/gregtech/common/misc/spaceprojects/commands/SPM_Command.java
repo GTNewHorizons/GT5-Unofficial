@@ -121,11 +121,13 @@ public class SPM_Command extends CommandBase {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] arguments) {
         List<String> autoComplete = new ArrayList<>();
+        String filter = arguments.length == 0 ? "" : arguments[0].trim();
         switch (arguments.length) {
             case 1:
                 autoComplete.addAll(Arrays.asList(getSubCommands()));
                 break;
             case 2:
+                filter = arguments.length == 1 ? "" : arguments[1].trim();
                 if (arguments[0].equals(LIST)) {
                     autoComplete.addAll(Arrays.asList(getListArguments()));
                 } else if (arguments[0].equals(COPY) || arguments[0].equals(RESET)) {
@@ -135,6 +137,7 @@ public class SPM_Command extends CommandBase {
                 }
                 break;
             case 3:
+                filter = arguments.length == 2 ? "" : arguments[2].trim();
                 if (arguments[1].equals(ALL)) {
                     break;
                 } else if (arguments[0].equals(LIST)) {
@@ -144,10 +147,13 @@ public class SPM_Command extends CommandBase {
                 }
                 break;
             case 4:
+                filter = arguments.length == 3 ? "" : arguments[3].trim();
                 autoComplete.addAll(Arrays.asList(getPlayers()));
                 break;
         }
-        return autoComplete;
+        String finalFilter = filter;
+        return autoComplete.stream().filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
+                .collect(Collectors.toList());
     }
 
     private String[] getPlayers() {
@@ -155,13 +161,11 @@ public class SPM_Command extends CommandBase {
     }
 
     private String[] getLocations() {
-        return SpaceProjectManager.getLocations().stream().map(body -> body.getName()).collect(Collectors.toList())
-                .toArray(new String[0]);
+        return SpaceProjectManager.getLocationNames().toArray(new String[0]);
     }
 
     private String[] getProjects() {
-        return SpaceProjectManager.getAllProjects().stream().map(project -> project.getProjectName())
-                .collect(Collectors.toList()).toArray(new String[0]);
+        return SpaceProjectManager.getProjectsMap().keySet().toArray(new String[0]);
     }
 
     private String[] getSubCommands() {
@@ -175,11 +179,13 @@ public class SPM_Command extends CommandBase {
     private void processReset(ICommandSender sender, String playerName) {
         SpaceProjectManager.spaceTeamProjects.clear();
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
+        sender.addChatMessage(new ChatComponentText("Cleared away map"));
     }
 
     private void processLock(ICommandSender sender, String projectName, String location, String playerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, null);
+        sender.addChatMessage(new ChatComponentText("Project locked"));
     }
 
     private void processUnlock(ICommandSender sender, String projectName, String location, String playerName) {
@@ -188,6 +194,7 @@ public class SPM_Command extends CommandBase {
         if (tProject != null) {
             tProject.setProjectCurrentStage(tProject.getTotalStages());
             SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
+            sender.addChatMessage(new ChatComponentText("Project unlocked"));
         } else {
             sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
         }
@@ -202,7 +209,11 @@ public class SPM_Command extends CommandBase {
                 }
                 break;
             case AVAILABLE:
-                // Needs more thought
+                for (ISpaceProject project : SpaceProjectManager.getAllProjects()) {
+                    if (project.meetsRequirements(tID, false)) {
+                        sender.addChatMessage(new ChatComponentText(project.getProjectName()));
+                    }
+                }
                 break;
             case UNLOCKED:
                 for (ISpaceProject project : SpaceProjectManager.getTeamSpaceProjects(tID)) {
