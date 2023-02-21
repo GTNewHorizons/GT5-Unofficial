@@ -206,10 +206,20 @@ public interface ISpaceProject {
     /**
      * Checks if the project meets all requirements with its current location
      * 
-     * @param team Team being checked
-     * @return return true if all requirements met, false otherwise
+     * @param team Team wanting said project and checking their projects
+     * @return true if all requirements met, false otherwise
      */
     boolean meetsRequirements(UUID team);
+
+    /**
+     * Checks if the project meets requirements if it requires other projects, unless {@code checkLocation} is true,
+     * then it also checks for the location
+     * 
+     * @param team          Team wanting said project and checking their projects
+     * @param checkLocation If the location position should be checked
+     * @return true if all requirements met, false otherwise
+     */
+    boolean meetsRequirements(UUID team, boolean checkLocation);
 
     /**
      * Checks if the projects is finished
