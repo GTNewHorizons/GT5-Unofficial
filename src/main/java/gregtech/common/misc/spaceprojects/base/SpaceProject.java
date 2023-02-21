@@ -386,17 +386,22 @@ public class SpaceProject implements ISpaceProject {
 
     @Override
     public boolean meetsRequirements(UUID team) {
+        return meetsRequirements(team, true);
+    }
+
+    @Override
+    public boolean meetsRequirements(UUID team, boolean checkLocation) {
         if (requirements == null) {
             return true;
         }
 
-        if (requirements.getBodyType() != null) {
+        if (requirements.getBodyType() != null && checkLocation) {
             if (!requirements.getBodyType().equals(location.getType())) {
                 return false;
             }
         }
 
-        if (requirements.getStarType() != null) {
+        if (requirements.getStarType() != null && checkLocation) {
             if (!requirements.getStarType().equals(location.getStarType())) {
                 return false;
             }
