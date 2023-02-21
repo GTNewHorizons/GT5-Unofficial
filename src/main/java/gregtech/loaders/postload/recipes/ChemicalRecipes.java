@@ -32,6 +32,15 @@ public class ChemicalRecipes implements Runnable {
                 GT_ModHandler.getIC2Item("dynamite", 1L),
                 160,
                 4);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Galena, 3),
+                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 1),
+                Materials.SulfuricAcid.getFluid(4000),
+                new FluidStack(ItemList.sIndiumConcentrate, 8000),
+                null,
+                null,
+                60,
+                150);
         GT_Values.RA.addChemicalRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
                 GT_Utility.getIntegratedCircuit(1),
