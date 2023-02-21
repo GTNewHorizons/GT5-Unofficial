@@ -3903,8 +3903,8 @@ public class ChemicalRecipes implements Runnable {
                 new FluidStack[] { Materials.SulfuricAcid.getFluid(4000) },
                 new FluidStack[] { new FluidStack(ItemList.sIndiumConcentrate, 8000) },
                 null,
-                160,
-                480);
+                60,
+                150);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] { GT_Utility.getIntegratedCircuit(8),
