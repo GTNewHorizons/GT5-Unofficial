@@ -98,7 +98,11 @@ public class SP_Command extends CommandBase {
 
     private void processLeave(ICommandSender sender) {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
-        String message = "Are you sure you want to leave the team. You will lose all progress. Use /sp confirm to confirm this. This does nothing if you are the team leader.";
+        String message = "Are you sure you want to leave the team. You will lose all progress. Use "
+                + EnumChatFormatting.GOLD
+                + "/sp confirm"
+                + EnumChatFormatting.RESET
+                + " to confirm this. This does nothing if you are the team leader.";
         GT_Utility.sendChatToPlayer(player, message);
         confirm.add(player);
     }
