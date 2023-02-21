@@ -117,6 +117,7 @@ public class SpaceProjectManager {
      * @return The UUID of the team leader.
      */
     public static UUID getLeader(UUID teamMember) {
+        checkOrCreateTeam(teamMember);
         return spaceTeams.get(teamMember);
     }
 
