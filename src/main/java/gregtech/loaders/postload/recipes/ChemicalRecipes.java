@@ -32,16 +32,6 @@ public class ChemicalRecipes implements Runnable {
                 GT_ModHandler.getIC2Item("dynamite", 1L),
                 160,
                 4);
-
-        GT_Values.RA.addChemicalRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Galena, 3),
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 1),
-                Materials.SulfuricAcid.getFluid(4000),
-                new FluidStack(ItemList.sIndiumConcentrate, 8000),
-                null,
-                60,
-                150);
-
         GT_Values.RA.addChemicalRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
                 GT_Utility.getIntegratedCircuit(1),
@@ -3905,6 +3895,16 @@ public class ChemicalRecipes implements Runnable {
                 null,
                 4000,
                 120);
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
+                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Galena, 3),
+                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 1) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(4000) },
+                new FluidStack[] { new FluidStack(ItemList.sIndiumConcentrate, 8000) },
+                null,
+                60,
+                150);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] { GT_Utility.getIntegratedCircuit(8),
