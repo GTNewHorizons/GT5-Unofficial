@@ -761,7 +761,7 @@ public enum OrePrefixes {
         ingotTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        turbine.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        turbineBlade.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         dust.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         dustSmall.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -1369,7 +1369,9 @@ public enum OrePrefixes {
                         || aMaterial == Materials.Graphene
                         || aMaterial == Materials.NiobiumTitanium
                         || aMaterial == Materials.YttriumBariumCuprate
-                        || aMaterial == Materials.BloodInfusedIron))
+                        || aMaterial == Materials.BloodInfusedIron
+                        || aMaterial == Materials.Universium
+                        || aMaterial == Materials.MagnetohydrodynamicallyConstrainedStarMatter))
                     wireFine.mDisabledItems.add(aMaterial);
                 // Gears
                 if (!enableUnusedGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium

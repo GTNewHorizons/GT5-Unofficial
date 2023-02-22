@@ -27,13 +27,15 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.misc.GT_Bees;
 
-public class ItemComb extends Item {
+public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     @SideOnly(Side.CLIENT)
     private IIcon secondIcon;
@@ -97,6 +99,36 @@ public class ItemComb extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return CombType.valueOf(stack.getItemDamage()).getName();
+    }
+
+    @Override
+    public boolean shouldUseCustomRenderer(int aMetaData) {
+        return CombType.valueOf(aMetaData).material.renderer != null;
+    }
+
+    @Override
+    public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
+        return CombType.valueOf(aMetaData).material.renderer;
+    }
+
+    @Override
+    public boolean allowMaterialRenderer(int aMetaData) {
+        return true;
+    }
+
+    @Override
+    public IIcon getIcon(int aMetaData, int pass) {
+        return (pass == 0) ? itemIcon : secondIcon;
+    }
+
+    @Override
+    public IIcon getOverlayIcon(int aMetaData, int pass) {
+        return null;
+    }
+
+    @Override
+    public short[] getRGBa(ItemStack aStack) {
+        return CombType.valueOf(aStack.getItemDamage()).material.mRGBa;
     }
 
     public void initCombsRecipes() {
@@ -1272,10 +1304,10 @@ public class ItemComb extends Item {
                 new int[] { 30 * 100, (int) (7.5 * 100), 20 * 100 },
                 Voltage.IV);
         // Walrus Recipe
-        if (Loader.isModLoaded("extracells")) {
+        if (Loader.isModLoaded("ae2fc")) {
             addCentrifugeToItemStack(
                     CombType.WALRUS,
-                    new ItemStack[] { GT_ModHandler.getModItem("extracells", "walrus", 1L, 0) },
+                    new ItemStack[] { GT_ModHandler.getModItem("ae2fc", "walrus", 1L, 0) },
                     new int[] { 100 * 100 },
                     Voltage.LV);
         }
@@ -1538,7 +1570,7 @@ public class ItemComb extends Item {
 
     /**
      * Currently only used for CombType.MOLYBDENUM
-     * 
+     *
      * @param circuitNumber should not conflict with addProcessGT
      *
      **/
@@ -1569,7 +1601,7 @@ public class ItemComb extends Item {
     /**
      * this only adds Chemical and AutoClave process. If you need Centrifuge recipe. use addCentrifugeToMaterial or
      * addCentrifugeToItemStack
-     * 
+     *
      * @param volt      This determine the required Tier of process for this recipes. This decide the required aEU/t,
      *                  progress time, required additional UU-Matter, requirement of cleanRoom, needed fluid stack for
      *                  Chemical.
@@ -1644,7 +1676,7 @@ public class ItemComb extends Item {
     /**
      * this method only adds Centrifuge based on Material. If volt is lower than MV than it will also adds forestry
      * centrifuge recipe.
-     * 
+     *
      * @param comb      BeeComb
      * @param aMaterial resulting Material of processing. can be more than 6. but over 6 will be ignored in Gregtech
      *                  Centrifuge.

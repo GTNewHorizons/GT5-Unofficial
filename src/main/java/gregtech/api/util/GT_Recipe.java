@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.awt.*;
@@ -1635,7 +1636,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 " EU",
                 true,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                        .setUsualFluidInputCount(2).setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
+                        .useComparatorForNEI(true).setUsualFluidInputCount(2)
+                        .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
                 new HashSet<>(50),
                 "gt.recipe.complexfusionreactor",
@@ -1794,9 +1796,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             @Override
             protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
-                Power power = recipeInfo.power;
-                drawNEIText(recipeInfo, GT_Utility.trans("152", "Total: ") + power.getTotalPowerString());
-                drawNEIText(recipeInfo, "Average: " + power.getPowerUsageString());
+                // These look odd because recipeInfo.recipe.mEUt is actually the EU per litre of fluid processed, not
+                // the EU/t.
+                drawNEIText(
+                        recipeInfo,
+                        GT_Utility.trans("152", "Total: ") + formatNumbers(1000L * recipeInfo.recipe.mEUt) + " EU");
+                // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
+                drawNEIText(recipeInfo, "Average: " + formatNumbers(10L * recipeInfo.recipe.mEUt) + " EU/t");
             }
         }
 
@@ -2612,6 +2618,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private INEISpecialInfoFormatter neiSpecialInfoFormatter;
 
         /**
+         * Flag if a comparator should be used to search the recipe in NEI (which is defined in {@link Power}). Else
+         * only the voltage will be used to find recipes
+         */
+        public boolean useComparatorForNEI;
+
+        /**
          * Initialises a new type of Recipe Handler.
          *
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a
@@ -2692,6 +2704,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe_Map setNEIUnificateOutput(boolean mNEIUnificateOutput) {
             this.mNEIUnificateOutput = mNEIUnificateOutput;
+            return this;
+        }
+
+        public GT_Recipe_Map useComparatorForNEI(boolean use) {
+            this.useComparatorForNEI = use;
             return this;
         }
 
@@ -3472,7 +3489,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         protected String formatSpecialValue(int specialValue) {
-            return mNEISpecialValuePre + GT_Utility.formatNumbers((long) specialValue * mNEISpecialValueMultiplier)
+            return mNEISpecialValuePre + formatNumbers((long) specialValue * mNEISpecialValueMultiplier)
                     + mNEISpecialValuePost;
         }
 

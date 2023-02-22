@@ -127,7 +127,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             return false;
         }
 
-        if (!addEUToGlobalEnergyMap(ownerUUID, 1000 * originalRecipe.mEUt * multiplier)) {
+        if (!addEUToGlobalEnergyMap(ownerUUID, -1000L * (long) originalRecipe.mEUt * (long) multiplier)) {
             return false;
         }
 

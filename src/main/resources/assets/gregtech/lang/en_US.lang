@@ -303,6 +303,16 @@ GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
 
+# NEI
+nei.options.tools.dump.gt5u=GT5u
+nei.options.tools.dump.gt5u.metatileentity=MetaTileEntity
+nei.options.tools.dump.gt5u.metatileentitys=MetaTileEntities
+nei.options.tools.dump.gt5u.material=Material
+nei.options.tools.dump.gt5u.materials=Materials
+nei.options.tools.dump.gt5u.warn_env=You're outside of the pack. Some IDs present in the full pack might be missing in this dump.
+nei.options.tools.dump.gt5u.mode.0=Free
+nei.options.tools.dump.gt5u.mode.1=Used
+
 # Waila
 GT5U.waila.cover=Cover (%s): %s
 GT5U.waila.cover.current_facing=Current Facing
@@ -505,7 +515,7 @@ achievement.replication.desc=Craft a Replicator
 achievement.tungstensteel=Tungstensteel
 achievement.tungstensteel.desc=Cool down a Hot Tungstensteel Ingot
 achievement.upgrade3=Upgrade your Coils (level III)
-achievement.upgrade3.desc=Craft a Tungstensteel Heating Coil
+achievement.upgrade3.desc=Craft a TPV-Alloy Heating Coil
 achievement.hssg=HSS-G
 achievement.hssg.desc=Cool down a Hot HSS-G Ingot
 achievement.upgrade4=Upgrade your Coils (level IV)

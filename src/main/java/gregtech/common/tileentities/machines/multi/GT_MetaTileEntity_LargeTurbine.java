@@ -81,6 +81,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
 
     // client side stuff
     protected boolean mHasTurbine;
+    // mMachine got overwritten by StructureLib extended facing query response
+    // so we use a separate field for this
+    protected boolean mFormed;
 
     public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -130,7 +133,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
 
     @Override
     public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!isNewStyleRendering() || !mMachine) return false;
+        if (!isNewStyleRendering() || !mFormed) return false;
         int[] tABCCoord = new int[] { -1, -1, 0 };
         int[] tXYZOffset = new int[3];
         byte tFacing = getBaseMetaTileEntity().getFrontFacing();
@@ -168,9 +171,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
                 GT_RenderUtil.renderBlockIcon(
                         aRenderer,
                         tBlock,
-                        tX + tDirection.offsetX * 0.001,
-                        tY + tDirection.offsetY * 0.001,
-                        tZ + tDirection.offsetZ * 0.001,
+                        tX + tDirection.offsetX * 0.01,
+                        tY + tDirection.offsetY * 0.01,
+                        tZ + tDirection.offsetZ * 0.01,
                         tTextures[i].getIcon(),
                         tFacing);
             }
@@ -187,7 +190,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
     @Override
     public void onValueUpdate(byte aValue) {
         mHasTurbine = (aValue & 0x1) != 0;
-        mMachine = (aValue & 0x2) != 0;
+        mFormed = (aValue & 0x2) != 0;
         super.onValueUpdate(aValue);
     }
 

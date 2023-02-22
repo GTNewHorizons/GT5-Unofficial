@@ -5,11 +5,15 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import codechicken.lib.render.TextureUtils;
 import gregtech.GT_Mod;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.util.GT_Util;
 import gregtech.common.render.GT_RenderUtil;
 
 public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
@@ -37,8 +41,48 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
+    protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
         GL11.glPushMatrix();
+        applyEffect(type, ((IGT_ItemWithMaterialRenderer) aStack.getItem()).getRGBa(aStack), shouldModulateColor);
+        super.renderRegularItem(type, aStack, icon, false);
+        GL11.glPopMatrix();
+    }
+
+    @Override
+    protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
+        GL11.glPushMatrix();
+
+        Fluid fluid = aFluidStack.getFluid();
+        applyEffect(type, GT_Util.getRGBaArray(fluid.getColor()), true);
+
+        TextureUtils.bindAtlas(fluid.getSpriteNumber());
+        GL11.glDepthFunc(GL11.GL_EQUAL);
+        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+            GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+        } else {
+            ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    fluidIcon.getMaxU(),
+                    fluidIcon.getMinV(),
+                    fluidIcon.getMinU(),
+                    fluidIcon.getMaxV(),
+                    fluidIcon.getIconWidth(),
+                    fluidIcon.getIconHeight(),
+                    0.0625F);
+        }
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+        GL11.glPopMatrix();
+    }
+
+    @Override
+    protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
+        GL11.glPushMatrix();
+        applyEffect(type, null, false);
+        super.renderItemOverlay(type, overlay);
+        GL11.glPopMatrix();
+    }
+
+    private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
         long animationTicks = GT_Mod.gregtechproxy.getAnimationTicks();
         int frameCurrent = frameIndex[(int) (animationTicks / 2 % frameIndex.length)];
         int frameNext = frameIndex[(int) ((animationTicks + 2) / 2 % frameIndex.length)];
@@ -55,33 +99,15 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
         } else {
             GL11.glTranslatef(-0.5f, -0.5f, 0.0f);
         }
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
 
         if (shouldModulateColor) {
-            short[] tModulation = aItem.getRGBa(aStack);
             GL11.glColor4f(
-                    tModulation[0] / 255.0F,
-                    tModulation[1] / 255.0F,
-                    tModulation[2] / 255.0F,
+                    modulation[0] / 255.0F,
+                    modulation[1] / 255.0F,
+                    modulation[2] / 255.0F,
                     linearInterpolation(frameAlpha, frameCurrent, frameNext, partialTicks));
         } else {
             GL11.glColor4f(1f, 1f, 1f, linearInterpolation(frameAlpha, frameCurrent, frameNext, partialTicks));
         }
-
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-            GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-        } else {
-            ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    icon.getMaxU(),
-                    icon.getMinV(),
-                    icon.getMinU(),
-                    icon.getMaxV(),
-                    icon.getIconWidth(),
-                    icon.getIconHeight(),
-                    0.0625F);
-        }
-
-        GL11.glPopMatrix();
     }
 }

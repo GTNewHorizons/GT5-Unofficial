@@ -5,17 +5,7 @@ import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.IntFunction;
@@ -194,7 +184,7 @@ public class GregTech_API {
 
     private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
             .newListMultimap(new TreeMap<>(), ArrayList::new);
-    private static final Map<Integer, List<ItemStack>> sConfigurationLists = new HashMap<>();
+    private static final Map<Integer, List<ItemStack>> sConfigurationLists = new ConcurrentHashMap<>();
     private static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sRealCircuitProgrammerList = new LinkedHashMap<>();
     public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections
             .unmodifiableMap(sRealCircuitProgrammerList);
@@ -280,7 +270,8 @@ public class GregTech_API {
             sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
             sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
             mServerStarted = false, mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
-            mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false;
+            mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false,
+            mHodgepodge = false, mEternalSingularity = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
     public static int mLastMaterialID = 0;
@@ -745,8 +736,12 @@ public class GregTech_API {
             if (GT_Utility.areStacksEqual(tRegistered, aStack)) return;
         ItemStack stack = GT_Utility.copyAmount(0, aStack);
         sRealConfigurationList.put(minTier, stack);
-        sConfigurationLists.entrySet().stream().filter(e -> e.getKey() >= minTier)
-                .forEach(e -> e.getValue().add(stack));
+        for (Map.Entry<Integer, List<ItemStack>> e : sConfigurationLists.entrySet()) {
+            if (e.getKey() >= minTier) {
+                e.getValue().add(stack);
+                e.getValue().sort(getConfigurationCircuitsComparator());
+            }
+        }
     }
 
     /**
@@ -758,12 +753,11 @@ public class GregTech_API {
      */
     public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
         return Collections.unmodifiableList(
-                sConfigurationLists
-                        .computeIfAbsent(
-                                machineTier,
-                                (t) -> sRealConfigurationList.entries().stream().filter(e -> e.getKey() <= machineTier)
-                                        .map(Map.Entry::getValue).collect(Collectors.toList()))
-                        .stream().sorted(getConfigurationCircuitsComparator()).collect(Collectors.toList()));
+                sConfigurationLists.computeIfAbsent(
+                        machineTier,
+                        (t) -> sRealConfigurationList.entries().stream().filter(e -> e.getKey() <= machineTier)
+                                .map(Map.Entry::getValue).sorted(getConfigurationCircuitsComparator())
+                                .collect(Collectors.toList())));
     }
 
     public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
@@ -772,8 +766,9 @@ public class GregTech_API {
             // player is exposed
             if (GT_Mod.gregtechproxy.mCircuitsOrder.isEmpty())
                 return is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1;
-            return GT_Mod.gregtechproxy.mCircuitsOrder
-                    .getOrDefault(GameRegistry.findUniqueIdentifierFor(is.getItem()).toString(), Integer.MAX_VALUE);
+            return GT_Mod.gregtechproxy.mCircuitsOrder.getOrDefault(
+                    String.valueOf(GameRegistry.findUniqueIdentifierFor(is.getItem())),
+                    Integer.MAX_VALUE);
         }).thenComparing(ItemStack::getUnlocalizedName).thenComparing(ItemStack::getItemDamage);
     }
 

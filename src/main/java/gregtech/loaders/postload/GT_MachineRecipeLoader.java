@@ -35,7 +35,9 @@ public class GT_MachineRecipeLoader implements Runnable {
     public static final Boolean isTinkersConstructLoaded = Loader.isModLoaded("TConstruct");
     public static final Boolean isHardcoreEnderExpansionLoaded = Loader.isModLoaded("HardcoreEnderExpansion");
     public static final Boolean isForestryLoaded = Loader.isModLoaded(MOD_ID_FR);
-    public static final Boolean isAE2Loaded = Loader.isModLoaded("appliedenergistics2");
+    /** @deprecated AE2 is a required dependency now */
+    @Deprecated
+    public static final Boolean isAE2Loaded = true;
 
     @Override
     public void run() {

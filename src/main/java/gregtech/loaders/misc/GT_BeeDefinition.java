@@ -286,8 +286,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Hermitic"), LAPIS, 10);
-        if (Loader.isModLoaded("appliedenergistics2"))
-            tMutation.requireResource(GameRegistry.findBlock("appliedenergistics2", "tile.BlockQuartz"), 0);
+        tMutation.requireResource(GameRegistry.findBlock("appliedenergistics2", "tile.BlockQuartz"), 0);
     }),
     FLUIX(GT_BranchDefinition.GEM, "FluixDust", true, new Color(0xA375FF), new Color(0xB591FF), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
@@ -296,8 +295,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, LAPIS, 7);
-        if (Loader.isModLoaded("appliedenergistics2"))
-            tMutation.requireResource(GameRegistry.findBlock("appliedenergistics2", "tile.BlockFluix"), 0);
+        tMutation.requireResource(GameRegistry.findBlock("appliedenergistics2", "tile.BlockFluix"), 0);
     }),
     DIAMOND(GT_BranchDefinition.GEM, "Diamond", false, new Color(0xCCFFFF), new Color(0xA3CCCC), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);

@@ -15,13 +15,18 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
     public List<String> format(NEIRecipeInfo recipeInfo, Function<Integer, String> applyPrefixAndSuffix) {
         int euToStart = recipeInfo.recipe.mSpecialValue;
         int voltage = recipeInfo.recipe.mEUt;
-        int tier;
+        int tier = getFusionTier(euToStart, voltage);
 
-        if (euToStart <= 10 * M * 16) {
+        return Collections.singletonList(applyPrefixAndSuffix.apply(euToStart) + " (MK " + tier + ")");
+    }
+
+    public static int getFusionTier(int startupPower, long voltage) {
+        int tier;
+        if (startupPower <= 10 * M * 16) {
             tier = 1;
-        } else if (euToStart <= 20 * M * 16) {
+        } else if (startupPower <= 20 * M * 16) {
             tier = 2;
-        } else if (euToStart <= 40 * M * 16) {
+        } else if (startupPower <= 40 * M * 16) {
             tier = 3;
         } else {
             tier = 4;
@@ -36,7 +41,6 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         } else {
             tier = 4;
         }
-
-        return Collections.singletonList(applyPrefixAndSuffix.apply(euToStart) + " (MK " + tier + ")");
+        return tier;
     }
 }

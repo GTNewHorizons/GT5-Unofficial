@@ -89,9 +89,9 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency,
             float[] flowMultipliers) {
         if (looseFit) {
-            long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-            aOptFlow = GT_Utility.safeInt(calculatedFlow[0]);
-            aBaseEff = GT_Utility.safeInt(calculatedFlow[1]);
+            float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
+            aOptFlow = GT_Utility.safeInt((long) calculatedFlow[0]);
+            aBaseEff = GT_Utility.safeInt((long) calculatedFlow[1]);
         }
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow

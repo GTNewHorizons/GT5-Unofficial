@@ -136,6 +136,7 @@ public enum ItemList implements IItemContainer {
     Arrow_Plastic_Glass_Weakness_Long,
     Arrow_Plastic_Glass_Holy_Water,
     Shape_Empty,
+
     Shape_Mold_Bottle,
     Shape_Mold_Plate,
     Shape_Mold_Ingot,

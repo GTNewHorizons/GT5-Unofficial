@@ -61,6 +61,7 @@ import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
@@ -81,6 +82,7 @@ import gregtech.common.render.*;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
+import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
 
@@ -163,6 +165,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public static final int ROTATION_MARKER_RESOLUTION = 120;
     private int mReloadCount;
     private float renderTickTime;
+    public static GT_MetaGenerated_Item_Renderer metaGeneratedItemRenderer;
 
     public GT_Client() {
         mCapeRenderer = new GT_CapeRenderer(mCapeList);
@@ -554,7 +557,13 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onLoad() {
         super.onLoad();
         new GT_Renderer_Block();
-        new GT_MetaGenerated_Item_Renderer();
+        metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
+        for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
+            metaGeneratedItemRenderer.registerItem(item);
+        }
+        if (Loader.isModLoaded(GT_Values.MOD_ID_FR)) {
+            metaGeneratedItemRenderer.registerItem(GT_Bees.combs);
+        }
         new GT_MetaGenerated_Tool_Renderer();
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow.class, "arrow");
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions");
@@ -581,12 +590,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             } catch (Throwable e) {
                 e.printStackTrace(GT_Log.err);
             }
-        }
-
-        if (Loader.isModLoaded("Avaritia")) {
-            // TODO make this work
-            // CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
-            CosmicItemRendererGT.init();
         }
 
         // reobf doesn't work with lambda, so this must be a class

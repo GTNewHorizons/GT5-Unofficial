@@ -8,13 +8,13 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
 public class GT_RenderUtil {
 
     public static void colorGTItem(ItemStack aStack) {
-        if (aStack.getItem() instanceof GT_MetaGenerated_Item) {
-            GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+        if (aStack.getItem() instanceof IGT_ItemWithMaterialRenderer) {
+            IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
 
             short[] tModulation = aItem.getRGBa(aStack);
             GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 255.0f);

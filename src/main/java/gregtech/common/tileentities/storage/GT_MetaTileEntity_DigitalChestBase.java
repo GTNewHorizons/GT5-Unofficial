@@ -27,7 +27,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -40,7 +39,6 @@ import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-@Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
         implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack>, IAddUIWidgets {
 
@@ -96,13 +94,11 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     public static void registerAEIntegration() {
         appeng.api.AEApi.instance().registries().externalStorage()
                 .addExternalStorageInterface(new AE2DigitalChestHandler());
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public void addListener(
             appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver,
@@ -111,7 +107,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         listeners.put(imeMonitorHandlerReceiver, o);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public void removeListener(
             appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver) {
@@ -119,13 +114,11 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         listeners.remove(imeMonitorHandlerReceiver);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public appeng.api.config.AccessRestriction getAccess() {
         return appeng.api.config.AccessRestriction.READ_WRITE;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public boolean isPrioritized(appeng.api.storage.data.IAEItemStack iaeItemStack) {
         ItemStack s = getItemStack();
@@ -133,7 +126,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         return iaeItemStack.isSameType(s);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public boolean canAccept(appeng.api.storage.data.IAEItemStack iaeItemStack) {
         ItemStack s = getItemStack();
@@ -141,19 +133,16 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         return iaeItemStack.isSameType(s);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public int getPriority() {
         return 0;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public int getSlot() {
         return 0;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public boolean validForPass(int i) {
         return true;
@@ -164,7 +153,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     protected abstract void setItemStack(ItemStack s);
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public appeng.api.storage.data.IItemList<appeng.api.storage.data.IAEItemStack> getAvailableItems(
             final appeng.api.storage.data.IItemList out) {
         ItemStack storedStack = getItemStack();
@@ -176,7 +164,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         return out;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public appeng.api.storage.data.IItemList<appeng.api.storage.data.IAEItemStack> getStorageList() {
         appeng.api.storage.data.IItemList<appeng.api.storage.data.IAEItemStack> res = new appeng.util.item.ItemList();
@@ -205,7 +192,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public appeng.api.storage.data.IAEItemStack injectItems(final appeng.api.storage.data.IAEItemStack input,
             final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
         final ItemStack inputStack = input.getItemStack();
@@ -234,7 +220,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         return null;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private appeng.api.storage.data.IAEItemStack createOverflowStack(long size, appeng.api.config.Actionable mode) {
         final appeng.api.storage.data.IAEItemStack overflow = appeng.util.item.AEItemStack.create(getItemStack());
         overflow.setStackSize(size - getMaxItemCount());
@@ -243,7 +228,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public appeng.api.storage.data.IAEItemStack extractItems(final appeng.api.storage.data.IAEItemStack request,
             final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
         if (request.isSameType(getItemStack())) {
@@ -264,7 +248,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public appeng.api.storage.StorageChannel getChannel() {
         return appeng.api.storage.StorageChannel.ITEMS;
     }
@@ -416,7 +399,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     protected abstract String chestName();
 
-    @Optional.Method(modid = "appliedenergistics2")
     private void notifyListeners(int count, ItemStack stack) {
         if (listeners == null) {
             listeners = new HashMap<>();
@@ -433,7 +415,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         });
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private boolean hasActiveMEConnection() {
         if (listeners == null || listeners.isEmpty()) return false;
         for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners

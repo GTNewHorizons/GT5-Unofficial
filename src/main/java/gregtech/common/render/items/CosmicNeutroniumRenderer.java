@@ -34,6 +34,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
             return;
         }
 
+        markNeedsAnimationUpdate(haloFuzzy);
         GL11.glPushMatrix();
 
         // Ideally this magic haloColour number should scale depending on the # of transparent pixels,
@@ -65,8 +66,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
-
+    protected void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor, int pass, Object... data) {
         RenderItem r = RenderItem.getInstance();
 
         GL11.glPushMatrix();
@@ -78,7 +78,9 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
         }
 
-        drawHalo(type);
+        if (pass == 0) {
+            drawHalo(type);
+        }
 
         //spotless:on
         {

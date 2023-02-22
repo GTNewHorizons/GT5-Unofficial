@@ -98,9 +98,9 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency,
             float[] flowMultipliers) {
         if (looseFit) {
-            long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-            aOptFlow = GT_Utility.safeInt(calculatedFlow[0]);
-            aBaseEff = GT_Utility.safeInt(calculatedFlow[1]);
+            float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
+            aOptFlow = GT_Utility.safeInt((long) calculatedFlow[0]);
+            aBaseEff = GT_Utility.safeInt((long) calculatedFlow[1]);
         }
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
@@ -184,37 +184,37 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         return efficiency;
     }
 
-    public static long[] calculateLooseFlow(int aOptFlow, int aBaseEff) {
-        aOptFlow *= 4;
-        if (aBaseEff >= 26000) {
-            aOptFlow *= Math.pow(1.1f, ((aBaseEff - 8000) / 10000F) * 20f);
-            aBaseEff *= 0.6f;
-        } else if (aBaseEff > 22000) {
-            aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7000) / 10000F) * 20f);
-            aBaseEff *= 0.65f;
-        } else if (aBaseEff > 18000) {
-            aOptFlow *= Math.pow(1.1f, ((aBaseEff - 6000) / 10000F) * 20f);
-            aBaseEff *= 0.70f;
-        } else if (aBaseEff > 14000) {
-            aOptFlow *= Math.pow(1.1f, ((aBaseEff - 5000) / 10000F) * 20f);
-            aBaseEff *= 0.75f;
-        } else if (aBaseEff > 10000) {
-            aOptFlow *= Math.pow(1.1f, ((aBaseEff - 4000) / 10000F) * 20f);
-            aBaseEff *= 0.8f;
-        } else if (aBaseEff > 6000) {
-            aOptFlow *= Math.pow(1.1f, ((aBaseEff - 3000) / 10000F) * 20f);
-            aBaseEff *= 0.85f;
+    public static float[] calculateLooseFlow(float aOptFlow, float aBaseEff) {
+        aOptFlow *= 4f;
+        if (aBaseEff >= 26000f) {
+            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 8000f) / 10000f) * 20f);
+            aBaseEff = aBaseEff * 0.6f;
+        } else if (aBaseEff > 22000f) {
+            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 7000f) / 10000f) * 20f);
+            aBaseEff = aBaseEff * 0.65f;
+        } else if (aBaseEff > 18000f) {
+            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 6000f) / 10000f) * 20f);
+            aBaseEff = aBaseEff * 0.70f;
+        } else if (aBaseEff > 14000f) {
+            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 5000f) / 10000f) * 20f);
+            aBaseEff = aBaseEff * 0.75f;
+        } else if (aBaseEff > 10000f) {
+            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 4000f) / 10000f) * 20f);
+            aBaseEff = aBaseEff * 0.8f;
+        } else if (aBaseEff > 6000f) {
+            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 3000f) / 10000f) * 20f);
+            aBaseEff = aBaseEff * 0.85f;
         } else {
-            aBaseEff *= 0.9f;
+            aBaseEff = aBaseEff * 0.9f;
         }
 
         if (aBaseEff % 100 != 0) {
             aBaseEff -= aBaseEff % 100;
         }
 
-        long[] looseFlow = new long[2];
-        looseFlow[0] = GT_Utility.safeInt(aOptFlow);
-        looseFlow[1] = GT_Utility.safeInt(aBaseEff);
+        float[] looseFlow = new float[2];
+        looseFlow[0] = aOptFlow;
+        looseFlow[1] = aBaseEff;
         return looseFlow;
     }
 

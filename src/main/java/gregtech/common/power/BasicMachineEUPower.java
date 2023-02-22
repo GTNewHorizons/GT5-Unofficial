@@ -11,6 +11,10 @@ public class BasicMachineEUPower extends EUPower {
         super(tier, amperage);
     }
 
+    public BasicMachineEUPower(byte tier, int amperage, int specialValue) {
+        super(tier, amperage, specialValue);
+    }
+
     @Override
     public void computePowerUsageAndDuration(int euPerTick, int duration) {
         super.computePowerUsageAndDuration(euPerTick, duration);

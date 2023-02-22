@@ -93,8 +93,8 @@ public class GT_CapeRenderer extends RenderPlayer {
                         - (aPlayer.prevPosZ + (aPlayer.posZ - aPlayer.prevPosZ) * aPartialTicks);
                 float f6 = aPlayer.prevRenderYawOffset
                         + (aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks;
-                double d3 = MathHelper.sin(f6 * 3.141593F / 180.0F);
-                double d4 = -MathHelper.cos(f6 * 3.141593F / 180.0F);
+                double d3 = MathHelper.sin(f6 * (float) Math.PI / 180.0F);
+                double d4 = -MathHelper.cos(f6 * (float) Math.PI / 180.0F);
                 float f7 = (float) d1 * 10.0F;
                 float f8 = (float) (d0 * d3 + d2 * d4) * 100.0F;
                 float f9 = (float) (d0 * d4 - d2 * d3) * 100.0F;

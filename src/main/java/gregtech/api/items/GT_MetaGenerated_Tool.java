@@ -420,14 +420,12 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                 // Optimal Flow -> toolSpeed
                 // EU/t -> toolCombatDamage, toolSpeed
                 // Overflow Tier -> toolQuality
-                int aBaseEff = (int) (5 + getToolCombatDamage(aStack)) * 1000;
-                int aOptFlow = GT_Utility.safeInt(
-                        (long) Math.max(
-                                Float.MIN_NORMAL,
-                                ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
-                                        * ((GT_MetaGenerated_Tool) aStack.getItem())
-                                                .getPrimaryMaterial(aStack).mToolSpeed
-                                        * 50));
+                float aBaseEff = (5f + getToolCombatDamage(aStack)) * 1000f;
+                float aOptFlow = (Math.max(
+                        Float.MIN_NORMAL,
+                        ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
+                                * ((GT_MetaGenerated_Tool) aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed
+                                * 50F));
                 aList.add(
                         tOffset + 0,
                         EnumChatFormatting.GRAY + String.format(
@@ -479,16 +477,16 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                                                 / 200)))
                                         + EnumChatFormatting.GRAY));
                 {
-                    long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-                    int aOptFlowLoose = (int) calculatedFlow[0];
-                    int aBaseEffLoose = (int) calculatedFlow[1];
+                    float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
+                    float aOptFlowLoose = calculatedFlow[0];
+                    float aBaseEffLoose = calculatedFlow[1];
 
                     aList.add(
                             tOffset + 5,
                             EnumChatFormatting.AQUA + String.format(
                                     transItem("500", "Turbine Efficiency (Loose): %s"),
                                     "" + EnumChatFormatting.BLUE
-                                            + aBaseEffLoose / 100
+                                            + (long) aBaseEffLoose / 100
                                             + "%"
                                             + EnumChatFormatting.GRAY));
                     aList.add(
@@ -497,7 +495,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                     transItem("501", "Optimal Steam flow (Loose): %s L/t"),
                                     "" + EnumChatFormatting.GOLD
                                             + formatNumbers(
-                                                    (aOptFlowLoose * getPrimaryMaterial(aStack).mSteamMultiplier))
+                                                    ((long) aOptFlowLoose
+                                                            * getPrimaryMaterial(aStack).mSteamMultiplier))
                                             + EnumChatFormatting.GRAY));
                     aList.add(
                             tOffset + 7,
@@ -505,8 +504,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                     transItem("901", "Energy from Optimal Steam Flow (Loose): %s EU/t"),
                                     "" + EnumChatFormatting.GOLD
                                             + formatNumbers(
-                                                    (aOptFlowLoose * getPrimaryMaterial(aStack).mSteamMultiplier
-                                                            / 10000) * (aBaseEffLoose / 2))
+                                                    ((long) aOptFlowLoose * getPrimaryMaterial(aStack).mSteamMultiplier
+                                                            / 10000) * ((long) aBaseEffLoose / 2))
                                             + EnumChatFormatting.GRAY));
                     aList.add(
                             tOffset + 8,

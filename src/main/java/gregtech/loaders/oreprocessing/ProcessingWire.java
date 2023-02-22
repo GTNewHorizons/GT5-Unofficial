@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 
 import appeng.api.config.TunnelType;
 import appeng.core.Api;
-import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_Log;
@@ -449,17 +448,14 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
         if (GT_Mod.gregtechproxy.mAE2Integration) setAE2Field();
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private static void setAE2Field() {
         tt = TunnelType.ME;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private void AE2addNewAttunement(ItemStack aStack) {
         Api.INSTANCE.registries().p2pTunnel().addNewAttunement(aStack, (TunnelType) tt);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     private void AE2AddNetAttunementCable(ItemStack aStack, OrePrefixes correspondingCable, Materials aMaterial) {
         Api.INSTANCE.registries().p2pTunnel().addNewAttunement(aStack, (TunnelType) tt);
         Api.INSTANCE.registries().p2pTunnel()

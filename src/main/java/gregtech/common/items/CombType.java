@@ -149,9 +149,11 @@ public enum CombType {
     VEGA(116, "vega", true, Materials._NULL, 10, 0x1A2036, 0xB5C0DE, ItemComb.Voltage.ZPM),
 
     // Infinity
-    COSMICNEUTRONIUM(117, "cosmicneutronium", true, Materials._NULL, 5, 0x484848, 0x323232, ItemComb.Voltage.UV),
-    INFINITYCATALYST(118, "infinitycatalyst", true, Materials._NULL, 2, 0xFFFFFF, 0xFFFFFF, ItemComb.Voltage.UHV),
-    INFINITY(119, "infinity", true, Materials._NULL, 1, 0xFFFFFF, 0xFFFFFF, ItemComb.Voltage.UEV),
+    COSMICNEUTRONIUM(117, "cosmicneutronium", true, Materials.CosmicNeutronium, 5, 0x484848, 0x323232,
+            ItemComb.Voltage.UV),
+    INFINITYCATALYST(118, "infinitycatalyst", true, Materials.InfinityCatalyst, 2, 0xFFFFFF, 0xFFFFFF,
+            ItemComb.Voltage.UHV),
+    INFINITY(119, "infinity", true, Materials.Infinity, 1, 0xFFFFFF, 0xFFFFFF, ItemComb.Voltage.UEV),
 
     // HEE
     ENDDUST(120, "enddust", true, Materials._NULL, 50, 0x003A7D, 0xCC00FA, ItemComb.Voltage.HV),
@@ -219,17 +221,7 @@ public enum CombType {
     private final int[] color;
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2) {
-        if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
-        this.id = id;
-        this.name = pName;
-        this.voltage = null;
-        this.material = material;
-        this.chance = chance;
-        this.showInList = show;
-        this.color = new int[] { color1, color2 };
-        this.localizedName = GT_LanguageManager.addStringLocalization(
-                "comb." + this.name,
-                this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
+        this(id, pName, show, material, chance, color1, color2, null);
     }
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2,

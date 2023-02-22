@@ -105,9 +105,4 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
         buildState.addOffset(getAfterLastStackOffset());
         return checkPiece(STACKABLE_TOP, buildState.stopBuilding());
     }
-
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        return false;
-    }
 }

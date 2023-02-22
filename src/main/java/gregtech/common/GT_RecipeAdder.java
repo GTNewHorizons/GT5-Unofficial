@@ -1793,6 +1793,23 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addFluidSolidifierRecipe(final ItemStack[] itemInputs, final FluidStack[] fluidInputs,
+            final ItemStack[] itemOutputs, final FluidStack[] fluidOutputs, final int EUPerTick,
+            final int aDurationInTicks) {
+        GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes.addRecipe(
+                true,
+                itemInputs,
+                itemOutputs,
+                null,
+                fluidInputs,
+                fluidOutputs,
+                aDurationInTicks,
+                EUPerTick,
+                0);
+        return true;
+    }
+
+    @Override
     public boolean addFluidSolidifierRecipe(ItemStack aMold, FluidStack aInput, ItemStack aOutput, int aDuration,
             int aEUt) {
         if ((aMold == null) || (aInput == null) || (aOutput == null)) {

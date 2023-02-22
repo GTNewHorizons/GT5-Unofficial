@@ -11,8 +11,11 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.render.TextureUtils;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
+
+import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 
@@ -36,7 +39,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
      * {@link IItemRenderer#renderItem(ItemRenderType, ItemStack, Object...)} verbatim. Do not modify the argument.
      *
      * While this is called, BLEND and ALPHA_TEST is on. It is expected that these remain enabled while exit.
-     * 
+     *
      * @return true if did special fluid display rendering. false otherwise.
      */
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -46,57 +49,56 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
+        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
 
-        IIconContainer aIconContainer = aItem.getIconContainer(aMetaData);
-
-        if (aIconContainer == null) {
-            return;
+        int passes = 1;
+        if (aItem.requiresMultipleRenderPasses()) {
+            passes = aItem.getRenderPasses(aMetaData);
         }
 
-        IIcon tIcon = aIconContainer.getIcon();
-        IIcon tOverlay = aIconContainer.getOverlayIcon();
-        FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
+        for (int pass = 0; pass < passes; pass++) {
+            IIcon tIcon = aItem.getIcon(aMetaData, pass);
+            IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
+            FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
 
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        if (tIcon != null) {
-            renderRegularItem(type, aStack, tIcon, aFluid == null);
-        }
-
-        if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
-            IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
-            if (fluidIcon != null) {
-                // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
-                renderContainedFluid(type, aFluid, fluidIcon);
+            if (tIcon != null) {
+                markNeedsAnimationUpdate(tIcon);
+                renderRegularItem(type, aStack, tIcon, aFluid == null, pass, data);
             }
-        }
 
-        if (tOverlay != null) {
-            GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            TextureUtils.bindAtlas(aItem.getSpriteNumber());
-            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-            } else {
-                ItemRenderer.renderItemIn2D(
-                        Tessellator.instance,
-                        tOverlay.getMaxU(),
-                        tOverlay.getMinV(),
-                        tOverlay.getMinU(),
-                        tOverlay.getMaxV(),
-                        tOverlay.getIconWidth(),
-                        tOverlay.getIconHeight(),
-                        0.0625F);
+            if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
+                IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
+                if (fluidIcon != null) {
+                    markNeedsAnimationUpdate(fluidIcon);
+                    // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
+                    renderContainedFluid(type, aFluid, fluidIcon);
+                }
             }
-        }
 
-        GL11.glDisable(GL11.GL_BLEND);
+            if (tOverlay != null) {
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+                TextureUtils.bindAtlas(aItem.getSpriteNumber());
+                markNeedsAnimationUpdate(tOverlay);
+                renderItemOverlay(type, tOverlay);
+            }
+
+            GL11.glDisable(GL11.GL_BLEND);
+        }
     }
 
-    public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+    protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor,
+            int pass, Object... data) {
+        renderRegularItem(type, aStack, icon, shouldModulateColor);
+    }
+
+    protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
+        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
+        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
 
         if (shouldModulateColor) {
             short[] tModulation = aItem.getRGBa(aStack);
@@ -118,7 +120,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         }
     }
 
-    public void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
+    protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
         Fluid aFluid = aFluidStack.getFluid();
         int tColor = aFluid.getColor(aFluidStack);
         GL11.glColor3f((tColor >> 16 & 0xFF) / 255.0F, (tColor >> 8 & 0xFF) / 255.0F, (tColor & 0xFF) / 255.0F);
@@ -139,5 +141,27 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
                     0.0625F);
         }
         GL11.glDepthFunc(GL11.GL_LEQUAL);
+    }
+
+    protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
+        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+            GT_RenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+        } else {
+            ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    overlay.getMaxU(),
+                    overlay.getMinV(),
+                    overlay.getMinU(),
+                    overlay.getMaxV(),
+                    overlay.getIconWidth(),
+                    overlay.getIconHeight(),
+                    0.0625F);
+        }
+    }
+
+    protected void markNeedsAnimationUpdate(IIcon icon) {
+        if (GregTech_API.mHodgepodge && icon instanceof IPatchedTextureAtlasSprite) {
+            ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
+        }
     }
 }
