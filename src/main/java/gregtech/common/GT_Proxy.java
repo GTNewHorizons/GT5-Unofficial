@@ -141,6 +141,7 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
+import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IGlobalWirelessEnergy {
 
@@ -1051,6 +1052,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         }
 
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
+        MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
 
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");
