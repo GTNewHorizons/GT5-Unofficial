@@ -542,7 +542,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 
     // Same speed bonus as pyro oven
     public int getSpeedBonus() {
-        return 50 * (this.mCoilTier - 1);
+        return 50 * (this.mCoilTier + 1);
     }
 
     public int getMaxCatalystDurability() {
