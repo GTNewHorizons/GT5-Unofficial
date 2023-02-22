@@ -193,19 +193,22 @@ public class GT_OreDictUnificator {
         } else {
             newStack = GT_Utility.copyAmount(aStack.stackSize, rStack);
         }
+        // NBT is assigned by reference here, so mutating it may have unexpected side effects.
         newStack.setTagCompound(aStack.getTagCompound());
         return newStack;
     }
 
     /**
-     * Doesn't copy the returned stack. Be careful and do not mutate it; intended only to optimize comparisons
+     * Doesn't copy the returned stack or set quantity. Be careful and do not mutate it; intended only to optimize
+     * comparisons
      */
     public static ItemStack get_nocopy(ItemStack aStack) {
         return get_nocopy(true, aStack);
     }
 
     /**
-     * Doesn't copy the returned stack. Be careful and do not mutate it; intended only to optimize comparisons
+     * Doesn't copy the returned stack or set quantity. Be careful and do not mutate it; intended only to optimize
+     * comparisons
      */
     static ItemStack get_nocopy(boolean aUseBlackList, ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
@@ -221,12 +224,25 @@ public class GT_OreDictUnificator {
             tPrefixMaterial.mUnificationTarget = sName2StackMap.get(tPrefixMaterial.toString());
         ItemStack rStack = tPrefixMaterial.mUnificationTarget;
         if (GT_Utility.isStackInvalid(rStack)) return aStack;
+
+        // Yes, == and not .equals().
+        // This check is primarily intended to optimize for the case where both rStack and aStack
+        // do not have NBT, and so we would be comparing null == null.
+        //
+        // Even if aStack and rStack may have equal NBT, we prefer to do an inexpensive
+        // new ItemStack() over the potentially expensive NBTTagCompound.equals().
+        if (aStack.getTagCompound() == rStack.getTagCompound()) {
+            // Warning: rStack's stack size may not be equal to aStack's stack size.
+            return rStack;
+        }
+
         // Okay, okay, I lied, we actually do need to make a copy.
         // This is to fix a long-standing bug where we were mutating NBT directly on rStack,
         // which had unexpected and unpredictable ripple effects.
         //
         // We will do some custom copying here, to avoid ItemStack.copy(),
         // which calls the potentially expensive NBTTagCompound.copy()
+        // NBT is assigned by reference here, so mutating it may have unexpected side effects.
         ItemStack newStack = new ItemStack(rStack.getItem(), aStack.stackSize, Items.feather.getDamage(rStack));
         newStack.setTagCompound(aStack.getTagCompound());
         return newStack;
