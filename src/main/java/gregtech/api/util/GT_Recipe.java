@@ -1817,12 +1817,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
 
             @Override
-            public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-                    GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-                super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
-                if (stack == null || (stack.getItem() != null && stack.getItem() instanceof GT_FluidDisplayItem))
-                    return currentTip;
-                currentTip.add(GRAY + translateToLocal("Item Count: ") + formatNumbers(stack.stackSize));
+            protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
+                    GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+                super.handleNEIItemOutputTooltip(currentTip, pStack);
+                if (pStack.item != null && pStack.item.getItem() instanceof GT_FluidDisplayItem) return currentTip;
+                currentTip.add(GRAY + translateToLocal("Item Count: ") + formatNumbers(pStack.realStackSize));
                 return currentTip;
             }
 
