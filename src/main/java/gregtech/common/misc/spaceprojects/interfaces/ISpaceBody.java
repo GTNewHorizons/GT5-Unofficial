@@ -29,4 +29,9 @@ public interface ISpaceBody {
      * @return The texture of the space body used for UI
      */
     UITexture getTexture();
+
+    /**
+     * @return The Unlocalized name for this body
+     */
+    String getUnlocalizedName();
 }
