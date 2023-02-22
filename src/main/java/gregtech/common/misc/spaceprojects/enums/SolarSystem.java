@@ -88,4 +88,9 @@ public enum SolarSystem implements ISpaceBody {
     public UITexture getTexture() {
         return texture;
     }
+
+    @Override
+    public String getUnlocalizedName() {
+        return "gt.solar.system." + getName().toLowerCase();
+    }
 }
