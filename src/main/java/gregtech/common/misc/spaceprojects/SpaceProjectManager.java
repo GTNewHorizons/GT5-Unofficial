@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import gregtech.api.util.GT_Recipe;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -53,7 +54,7 @@ public class SpaceProjectManager {
 
     /**
      * Makes a new Map for the teams if they don't have one. Adds a project to the team's project map.
-     * 
+     *
      * @param member      Member of the team.
      * @param location    The location of where the project will belong to.
      * @param projectName The name of the project being added.
@@ -78,7 +79,7 @@ public class SpaceProjectManager {
 
     /**
      * Check whether a team has a project or not
-     * 
+     *
      * @param member  Member of the team
      * @param project The project, which you are checking for. This only compares the internal names of the project.
      * @return True if the team has said project, false otherwise
@@ -95,7 +96,7 @@ public class SpaceProjectManager {
     /**
      * Used to handle when 2 players want to join together in a team. Player A can join player B's team. If player C
      * gets an invite from A, C will join player B's team.
-     * 
+     *
      * @param teamMember Member which is joining the teamLeader
      * @param teamLeader Leader of the party
      */
@@ -113,7 +114,7 @@ public class SpaceProjectManager {
 
     /**
      * Used to give back the UUID of the team leader.
-     * 
+     *
      * @return The UUID of the team leader.
      */
     public static UUID getLeader(UUID teamMember) {
@@ -124,7 +125,7 @@ public class SpaceProjectManager {
     /**
      * Used the multiblocks to check whether a given player has a team or not. If they don't have a team create one
      * where they are their own leader.
-     * 
+     *
      * @param teamMember Member to check for.
      */
     public static void checkOrCreateTeam(UUID teamMember) {
@@ -138,7 +139,7 @@ public class SpaceProjectManager {
 
     /**
      * Will give back all the projects a team has made or is making.
-     * 
+     *
      * @param member UUID of the team member, used to find the leader of the team.
      * @return All the projects a team has.
      */
@@ -153,7 +154,7 @@ public class SpaceProjectManager {
 
     /**
      * Getting the project of a Team or a new copy.
-     * 
+     *
      * @param member      UUID of the team member, which is used to find the team leader.
      * @param projectName The name of the project, which needs to be found.
      * @param location    The location at which the project is found at.
@@ -174,11 +175,20 @@ public class SpaceProjectManager {
 
     /**
      * Used to add projects to the internal map.
-     * 
+     *
      * @param project Newly created project.
      */
     public static void addProject(ISpaceProject project) {
         spaceProjects.put(project.getProjectName(), project);
+        GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.add(
+                new GT_Recipe.GT_Recipe_Map.GT_FakeSpaceProjectRecipe(
+                        false,
+                        project.getTotalItemsCost(),
+                        project.getTotalFluidsCost(),
+                        project.getProjectBuildTime(),
+                        (int) project.getProjectVoltage(),
+                        project.getTotalStages(),
+                        project.getProjectName()));
     }
 
     /**
@@ -192,7 +202,7 @@ public class SpaceProjectManager {
 
     /**
      * Should only be used for GUIs!
-     * 
+     *
      * @return The Map that the projects are stored at.
      */
     public static Map<String, ISpaceProject> getProjectsMap() {
@@ -201,7 +211,7 @@ public class SpaceProjectManager {
 
     /**
      * Should only be used for GUIs!
-     * 
+     *
      * @return A Collection of all the projects contained in the map.
      */
     public static Collection<ISpaceProject> getAllProjects() {
@@ -214,7 +224,7 @@ public class SpaceProjectManager {
 
     /**
      * Adds a location to the internal map. For it to be used later
-     * 
+     *
      * @param location to add to the internal map
      */
     public static void addLocation(ISpaceBody location) {
@@ -222,7 +232,7 @@ public class SpaceProjectManager {
     }
 
     /**
-     * 
+     *
      * @return a Collection of all locations, which have been registered.
      */
     public static Collection<ISpaceBody> getLocations() {
@@ -230,7 +240,7 @@ public class SpaceProjectManager {
     }
 
     /**
-     * 
+     *
      * @return a Collection fo all location names, which have been registered
      */
     public static Collection<String> getLocationNames() {
@@ -238,7 +248,7 @@ public class SpaceProjectManager {
     }
 
     /**
-     * 
+     *
      * @param locationName Name used to search for the location
      * @return The location, which has been registered with said name
      */

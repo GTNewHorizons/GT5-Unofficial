@@ -1094,6 +1094,7 @@ fluid.fuelgc=fuelgc
 fluid.dirtywater=dirtywater
 fluid.oilgc=oilgc
 
+# Space projects
 gt.solar.system.overworld=Overworld
 gt.solar.system.sol=Sol
 gt.solar.system.moon=Moon
@@ -1106,7 +1107,6 @@ gt.solar.system.tethys=Tethys
 gt.solar.system.iapetus=Iapetus
 gt.solar.system.saturn=Saturn
 gt.solar.system.umbriel=Umbriel
-gt.solar.system.moon=Moon
 gt.solar.system.io=Io
 gt.solar.system.uranus=Uranus
 gt.solar.system.titania=Titania
@@ -1133,3 +1133,4 @@ gt.solar.system.nereid=Nereid
 gt.solar.system.mercury=Mercury
 gt.solar.system.titan=Titan
 gt.solar.system.phobos=Phobos
+gt.specialvalue.stages=Stages:
