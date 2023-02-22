@@ -4472,6 +4472,7 @@ public class AssemblerRecipes implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33L),
                             3200,
                             (int) TierEU.RECIPE_UMV);
+
         }
     }
 

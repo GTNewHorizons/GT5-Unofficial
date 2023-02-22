@@ -667,7 +667,7 @@ public class AssemblyLineRecipes implements Runnable {
                         new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Duranium, 32),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 32) },
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polybenzimidazole, 64),
-                        new ItemStack[] { ItemList.Component_Grinder_Tungsten.get(4L),
+                        new ItemStack[] { ItemList.Component_Grinder_Tungsten.get(64L),
                                 ItemList.Component_Grinder_Diamond.get(64L) },
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 32),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Chrome, 16) },
