@@ -4912,11 +4912,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aFluids,
                     aSpecialSlot,
                     aInputs);
-            if (aInputs == null || aInputs.length < 2
-                    || aInputs[0] == null
-                    || aInputs[1] == null
-                    || !GregTech_API.sPostloadFinished)
-                return rRecipe;
+            if (aInputs == null || aInputs.length < 2 || !GregTech_API.sPostloadFinished) return rRecipe;
             if (rRecipe == null) return findRenamingRecipe(aInputs);
             for (ItemStack aMold : aInputs) {
                 if (ItemList.Shape_Mold_Credit.isStackEqual(aMold, false, true)) {
