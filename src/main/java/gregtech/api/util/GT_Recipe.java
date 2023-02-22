@@ -2624,6 +2624,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public boolean useComparatorForNEI;
 
         /**
+         * Whether to render the actual size of stacks or a size of 1.
+         */
+        public boolean renderRealStackSizes = true;
+
+        /**
          * Initialises a new type of Recipe Handler.
          *
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a
@@ -2709,6 +2714,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe_Map useComparatorForNEI(boolean use) {
             this.useComparatorForNEI = use;
+            return this;
+        }
+
+        public GT_Recipe_Map setRenderRealStackSizes(boolean renderRealStackSizes) {
+            this.renderRealStackSizes = renderRealStackSizes;
             return this;
         }
 
