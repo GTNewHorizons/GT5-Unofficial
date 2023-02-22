@@ -190,8 +190,12 @@ public class GT_UITextures {
             .adaptableTexture(MODID, "gui/tab/title_angular_%s", 28, 28, 4);
 
     public static final UITexture BUTTON_STANDARD = AdaptableUITexture.of(MODID, "gui/button/standard", 18, 18, 1);
+    public static final UITexture BUTTON_STANDARD_DISABLED = AdaptableUITexture
+            .of(MODID, "gui/button/standard_disabled", 18, 18, 1);
     public static final UITexture BUTTON_STANDARD_TOGGLE = AdaptableUITexture
             .of(MODID, "gui/button/standard_toggle", 18, 18, 1);
+    public static final UITexture BUTTON_STANDARD_TOGGLE_DISABLED = AdaptableUITexture
+            .of(MODID, "gui/button/standard_toggle_disabled", 18, 18, 1);
     public static final UITexture BUTTON_COVER_NORMAL = UITexture.fullImage(MODID, "gui/button/cover_normal");
     public static final UITexture BUTTON_COVER_NORMAL_HOVERED = UITexture
             .fullImage(MODID, "gui/button/cover_normal_hovered");
