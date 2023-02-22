@@ -23,7 +23,6 @@ public class BW_Utils {
     public static ItemStack getCorrespondingItemStack(OrePrefixes orePrefixes, short werkstoffID, int amount) {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get(werkstoffID);
         if (werkstoff == null) return null;
-        return WerkstoffLoader
-                .getCorrespondingItemStackUnsafe(orePrefixes, Werkstoff.werkstoffHashMap.get(werkstoffID), amount);
+        return WerkstoffLoader.getCorrespondingItemStackUnsafe(orePrefixes, werkstoff, amount);
     }
 }
