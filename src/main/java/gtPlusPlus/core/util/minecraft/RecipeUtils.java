@@ -614,8 +614,8 @@ public class RecipeUtils {
                 GameRegistry.addRecipe(mRecipe);
             } else {
                 Logger.RECIPE(
-                        "[Fix] Invalid shapped recipe outputting " + mOutput != null ? mOutput.getDisplayName()
-                                : "Bad Output Item");
+                        "[Fix] Invalid shapped recipe outputting "
+                                + (mOutput != null ? mOutput.getDisplayName() : "Bad Output Item"));
             }
         }
 
