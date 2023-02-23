@@ -27,6 +27,7 @@ import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.ItemData;
@@ -400,6 +401,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 .addInputHatch("Drilling Fluid, any base casing", 1).addOutputBus("Any base casing", 1)
                 .toolTipFinisher("Gregtech");
         return tt;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_MINER_OP;
     }
 
     @Override
