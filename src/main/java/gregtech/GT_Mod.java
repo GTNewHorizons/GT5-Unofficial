@@ -45,7 +45,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.ModernMaterials.ModernMaterialsGenerator;
+import gregtech.api.ModernMaterials.ModernMaterialsRegistration;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
@@ -215,7 +215,7 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
 
-        new ModernMaterialsGenerator().run(aEvent);
+        new ModernMaterialsRegistration().run(aEvent);
 
         Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {

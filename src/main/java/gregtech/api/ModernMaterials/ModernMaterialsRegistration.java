@@ -16,7 +16,7 @@ import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Config;
 
-public class ModernMaterialsGenerator {
+public class ModernMaterialsRegistration {
 
     public void run(FMLPreInitializationEvent aEvent) {
 
@@ -26,10 +26,10 @@ public class ModernMaterialsGenerator {
         GregTech_API.mLastMaterialID = GregTech_API.sModernMaterialIDs.mConfig
                 .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0).getInt();
 
-        ModernMaterial tIron = new ModernMaterial().setName("Iron").setColor(0, 255, 255, 255).addAllParts()
+        ModernMaterial iron = new ModernMaterial().setName("Iron").setColor(0, 255, 255, 255).addAllParts()
                 .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom)).build();
 
-        ModernMaterial tin = new ModernMaterial().setName("Amazium").setColor(100, 0, 200, 255).addAllParts()
+        ModernMaterial amazium = new ModernMaterial().setName("Amazium").setColor(100, 0, 200, 255).addAllParts()
                 .setMaterialTier(TierEU.UXV).setMaterialTimeMultiplier(2.5).build();
 
         ModernMaterial samarium = new ModernMaterial().setName("Samarium").setColor(100, 200, 200, 255).addAllParts()
@@ -42,8 +42,9 @@ public class ModernMaterialsGenerator {
             .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
             .build();
 
-        registerMaterial(tIron);
-        registerMaterial(tin);
+        registerMaterial(samarium);
+        registerMaterial(iron);
+        registerMaterial(amazium);
         registerMaterial(copper);
 
         registerAllMaterials();
