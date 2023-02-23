@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -47,7 +47,6 @@ import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import ic2.core.Ic2Items;
 
 public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<PreciseAssembler>
         implements IConstructable, ISurvivalConstructable {
@@ -111,7 +110,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                                                             PreciseAssembler::setCasingTier,
                                                             PreciseAssembler::getCasingTier))))
                     .addElement('F', ofFrame(Materials.TungstenSteel))
-                    .addElement('G', ofBlock(Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0))
+                    .addElement('G', ofGlassTieredMixed((byte) 4, (byte) 127, 2))
                     .addElement(
                             'M',
                             StructureUtility.ofBlocksTiered(
@@ -354,7 +353,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("PreciseAssembler.hint", 6);
+        return DescTextLocalization.addText("PreciseAssembler.hint", 7);
     }
 
     @Override
