@@ -21,6 +21,7 @@ GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
 GT5U.MBTT.Controller=Controller
 GT5U.MBTT.Minimum=(minimum)
+GT5U.MBTT.Tiered=(tiered)
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
