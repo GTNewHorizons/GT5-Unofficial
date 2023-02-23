@@ -1,38 +1,39 @@
 package gregtech.api.ModernMaterials;
 
-import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 import java.awt.*;
 import java.util.HashMap;
+
+import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
+import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 
 public class ModernMaterial {
 
     private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
-    private Color mColor;
-    private int mID;
-    private String mName;
+    private Color color;
+    private int ID;
+    private String name;
     private long materialTier;
     private double materialTimeMultiplier;
 
     public ModernMaterial() {}
 
     public ModernMaterial setColor(Color aColor) {
-        mColor = aColor;
+        color = aColor;
         return this;
     }
 
     public ModernMaterial setColor(int aRed, int aGreen, int aBlue, int aAlpha) {
-        mColor = new Color(aRed, aGreen, aBlue, aAlpha);
+        color = new Color(aRed, aGreen, aBlue, aAlpha);
         return this;
     }
 
     public ModernMaterial setColor(int aRed, int aGreen, int aBlue) {
-        mColor = new Color(aRed, aGreen, aBlue);
+        color = new Color(aRed, aGreen, aBlue);
         return this;
     }
 
     public ModernMaterial setName(String aName) {
-        mName = aName;
+        name = aName;
         return this;
     }
 
@@ -60,19 +61,19 @@ public class ModernMaterial {
     }
 
     public void setID(int aID) {
-        mID = aID;
+        ID = aID;
     }
 
     public Color getColor() {
-        return mColor;
+        return color;
     }
 
     public int getID() {
-        return mID;
+        return ID;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public double getMaterialTimeMultiplier() {
@@ -106,7 +107,7 @@ public class ModernMaterial {
         return this;
     }
 
-    public CustomPartInfo getPart(final PartsEnum aPart) {
+    public CustomPartInfo getCustomPartInfo(final PartsEnum aPart) {
         return existingPartsForMaterial.get(aPart);
     }
 
