@@ -53,7 +53,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 .addInfo("Needs a Turbine, place inside controller")
                 .addInfo("Use your Fusion Reactor to produce the Plasma").addSeparator()
                 .beginStructureBlock(3, 3, 4, true).addController("Front center")
-                .addCasingInfo("Tungstensteel Turbine Casing", 24).addDynamoHatch("Back center", 1)
+                .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 31, false).addDynamoHatch("Back center", 1)
                 .addMaintenanceHatch("Side centered", 2).addInputHatch("Plasma Fluid, Side centered", 2)
                 .addOutputHatch("Molten Fluid, optional, Side centered", 2).toolTipFinisher("Gregtech");
         return tt;

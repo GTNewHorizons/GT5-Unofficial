@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_DieselEngine extends
                 .addInfo("Boosted: Produces 6144EU/t at 150% fuel efficiency")
                 .addInfo("You need to wait for it to reach 300% to output full power")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, false)
-                .addController("Front center").addCasingInfo("Stable Titanium Machine Casing", 16)
+                .addController("Front center").addCasingInfoRange("Stable Titanium Machine Casing", 16, 22, false)
                 .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
                 .addOtherStructurePart("Engine Intake Machine Casing", "8x, ring around controller")
                 .addStructureInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")

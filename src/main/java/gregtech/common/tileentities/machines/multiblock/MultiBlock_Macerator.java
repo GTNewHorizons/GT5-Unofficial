@@ -93,7 +93,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Macerator").addInfo("Controller for the Macerator").addSeparator()
                 .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
-                .addController("Bottom Front Center").addCasingInfo("Test Casing", 60)
+                .addController("Bottom Front Center").addCasingInfoExactly("Test Casing", 60, false)
                 .addEnergyHatch("Any bottom layer casing")
                 .addInputHatch("Any non-optional external facing casing on the stacks")
                 .addInputBus("Any non-optional external facing casing on the stacks")
