@@ -1027,6 +1027,19 @@ public class RecipeLoader_02 {
                     7680,
                     false);
 
+            CrackRecipeAdder.addUniversalAssemblerRecipe(
+                    new ItemStack[] { ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedGoldChip", 16),
+                            ItemList.Circuit_Chip_SoC2.get(8), ItemList.Circuit_Chip_NOR.get(32),
+                            MyMaterial.signalium.get(OrePrefixes.bolt, 32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TinAlloy, 1) },
+                    ItemRefer.HiC_T1.get(1),
+                    288,
+                    1200,
+                    7680,
+                    false);
+
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] { ItemList.Robot_Arm_IV.get(4), ItemRefer.HiC_T1.get(4),
                             ItemList.Tool_DataOrb.get(3),
@@ -1064,11 +1077,32 @@ public class RecipeLoader_02 {
                     30720,
                     100,
                     1);
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] { ItemRefer.HiC_T1.get(2),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedDiamondCrystalChip", 8),
+                            ItemList.Circuit_Chip_NAND.get(16),
+                            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 2) },
+                    new FluidStack[] { Materials.Plastic.getMolten(288), MyMaterial.signalium.getMolten(144),
+                            MyMaterial.lumiium.getMolten(72), Materials.Enderium.getMolten(72) },
+                    ItemRefer.HiC_T2.get(1),
+                    30720,
+                    100,
+                    1);
 
             MyRecipeAdder.instance.addPreciseAssemblerRecipe(
                     new ItemStack[] { ItemRefer.HiC_T2.get(2), ItemList.Circuit_Parts_Crystal_Chip_Master.get(8),
                             ItemList.Circuit_Chip_CrystalSoC2.get(1),
                             GT_ModHandler.getIC2Item("reactorVentDiamond", 1L, 1) },
+                    new FluidStack[] { MyMaterial.adamantiumAlloy.getMolten(576), MyMaterial.signalium.getMolten(288),
+                            MyMaterial.lumiium.getMolten(144), Materials.TungstenCarbide.getMolten(72) },
+                    ItemRefer.HiC_T3.get(1),
+                    122880,
+                    100,
+                    2);
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] { ItemRefer.HiC_T2.get(2), ItemList.Circuit_Parts_Crystal_Chip_Master.get(8),
+                            ItemList.Circuit_Chip_CrystalSoC2.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 2) },
                     new FluidStack[] { MyMaterial.adamantiumAlloy.getMolten(576), MyMaterial.signalium.getMolten(288),
                             MyMaterial.lumiium.getMolten(144), Materials.TungstenCarbide.getMolten(72) },
                     ItemRefer.HiC_T3.get(1),
@@ -1087,11 +1121,33 @@ public class RecipeLoader_02 {
                     491520,
                     100,
                     3);
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] { ItemRefer.HiC_T3.get(2),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedEnergyChip", 8),
+                            ItemList.Circuit_Chip_QuantumCPU.get(16),
+                            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.EnergeticAlloy, 2) },
+                    new FluidStack[] { MyMaterial.marM200.getMolten(1152), MyMaterial.signalium.getMolten(576),
+                            MyMaterial.lumiium.getMolten(288), MyMaterial.artheriumSn.getMolten(144) },
+                    ItemRefer.HiC_T4.get(1),
+                    491520,
+                    100,
+                    3);
 
             MyRecipeAdder.instance.addPreciseAssemblerRecipe(
                     new ItemStack[] { ItemRefer.HiC_T4.get(2),
                             GT_ModHandler.getModItem("dreamcraft", "item.EngravedManyullynCrystalChip", 8),
                             ItemList.Circuit_Chip_BioCPU.get(1), Ic2Items.reactorVentSpread },
+                    new FluidStack[] { MyMaterial.titaniumBetaC.getMolten(1728), MyMaterial.signalium.getMolten(1152),
+                            MyMaterial.lumiium.getMolten(576), MyMaterial.dalisenite.getMolten(288) },
+                    ItemRefer.HiC_T5.get(1),
+                    1966080,
+                    100,
+                    3);
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] { ItemRefer.HiC_T4.get(2),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedManyullynCrystalChip", 8),
+                            ItemList.Circuit_Chip_BioCPU.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenCarbide, 2) },
                     new FluidStack[] { MyMaterial.titaniumBetaC.getMolten(1728), MyMaterial.signalium.getMolten(1152),
                             MyMaterial.lumiium.getMolten(576), MyMaterial.dalisenite.getMolten(288) },
                     ItemRefer.HiC_T5.get(1),
