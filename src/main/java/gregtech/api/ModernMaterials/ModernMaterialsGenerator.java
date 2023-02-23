@@ -35,11 +35,12 @@ public class ModernMaterialsGenerator {
         ModernMaterial samarium = new ModernMaterial().setName("Samarium").setColor(100, 200, 200, 255).addAllParts()
                 .setMaterialTier(TierEU.UMV).setMaterialTimeMultiplier(0.5).build();
 
-        ModernMaterial copper = new ModernMaterial().setName("Copper").setColor(255, 0, 0, 255)
-                // .addAllParts()
-                // .addPartsCustom(
-                // new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
-                .build();
+        ModernMaterial copper = new ModernMaterial()
+            .setName("Copper")
+            .setColor(255, 0, 0, 255)
+            .addAllParts()
+            .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
+            .build();
 
         registerMaterial(tIron);
         registerMaterial(tin);
