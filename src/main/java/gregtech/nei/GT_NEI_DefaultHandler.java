@@ -558,31 +558,31 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public final boolean renderRealStackSize;
 
         @Deprecated
-        public FixedPositionedStack(Object object, int y, int x) {
+        public FixedPositionedStack(Object object, int x, int y) {
             this(object, true, x, y, 0, true);
         }
 
         @Deprecated
-        public FixedPositionedStack(Object object, int y, boolean aUnificate, int x) {
+        public FixedPositionedStack(Object object, int x, int y, boolean aUnificate) {
             this(object, true, x, y, 0, aUnificate);
         }
 
         @Deprecated
-        public FixedPositionedStack(Object object, int y, int aChance, boolean aUnificate, int x) {
+        public FixedPositionedStack(Object object, int x, int y, int aChance) {
+            this(object, true, x, y, aChance, true);
+        }
+
+        @Deprecated
+        public FixedPositionedStack(Object object, int x, int y, int aChance, boolean aUnificate) {
             this(object, true, x, y, aChance, aUnificate);
         }
 
-        public FixedPositionedStack(Object object, boolean renderRealStackSizes, int y, int x) {
+        public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y) {
             this(object, renderRealStackSizes, x, y, 0, true);
         }
 
-        public FixedPositionedStack(Object object, boolean renderRealStackSizes, int y, boolean aUnificate, int x) {
+        public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y, boolean aUnificate) {
             this(object, renderRealStackSizes, x, y, 0, aUnificate);
-        }
-
-        public FixedPositionedStack(Object object, boolean renderRealStackSizes, int y, int aChance, boolean aUnificate,
-                int x) {
-            this(object, renderRealStackSizes, x, y, aChance, aUnificate);
         }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSize, int x, int y, int aChance,
@@ -640,18 +640,18 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         item,
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
+                                        x_coord,
                                         y_coord,
-                                        true,
-                                        x_coord));
+                                        true));
                     } else {
                         mOutputs.add(
                                 new FixedPositionedStack(
                                         item,
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
+                                        x_coord,
                                         y_coord,
                                         Recipe.getOutputChance(special_counter),
-                                        GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput,
-                                        x_coord));
+                                        GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
                         special_counter++;
                     }
                     x_coord += 18;
@@ -729,9 +729,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                         new FixedPositionedStack(
                                                 input,
                                                 GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
+                                                widget.getPos().x + 1,
                                                 widget.getPos().y + 1,
-                                                true,
-                                                widget.getPos().x + 1));
+                                                true));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == itemOutputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();
@@ -740,10 +740,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                         new FixedPositionedStack(
                                                 aRecipe.mOutputs[i],
                                                 GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
+                                                widget.getPos().x + 1,
                                                 widget.getPos().y + 1,
                                                 aRecipe.getOutputChance(i),
-                                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput,
-                                                widget.getPos().x + 1));
+                                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == specialSlotInventory) {
                             if (aRecipe.mSpecialItems != null) {
@@ -751,8 +751,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                         new FixedPositionedStack(
                                                 aRecipe.mSpecialItems,
                                                 GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                                widget.getPos().y + 1,
-                                                widget.getPos().x + 1));
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == fluidInputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();
@@ -762,8 +762,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                         new FixedPositionedStack(
                                                 GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true),
                                                 GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                                widget.getPos().y + 1,
-                                                widget.getPos().x + 1));
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == fluidOutputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();
@@ -773,8 +773,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                         new FixedPositionedStack(
                                                 GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true),
                                                 GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                                widget.getPos().y + 1,
-                                                widget.getPos().x + 1));
+                                                widget.getPos().x + 1,
+                                                widget.getPos().y + 1));
                             }
                         }
                     }
@@ -787,9 +787,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         aRecipe.mInputs[i],
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
+                                        pos.x + 1,
                                         pos.y + 1,
-                                        true,
-                                        pos.x + 1));
+                                        true));
                     }
                 }, (i, backgrounds, pos) -> {
                     if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount && aRecipe.mOutputs[i] != null) {
@@ -797,10 +797,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         aRecipe.mOutputs[i],
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
+                                        pos.x + 1,
                                         pos.y + 1,
                                         aRecipe.getOutputChance(i),
-                                        GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput,
-                                        pos.x + 1));
+                                        GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
                     }
                 }, (i, backgrounds, pos) -> {}, (i, backgrounds, pos) -> {
                     if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidInputCount()
@@ -810,8 +810,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        pos.y + 1,
-                                        pos.x + 1));
+                                        pos.x + 1,
+                                        pos.y + 1));
                     }
                 }, (i, backgrounds, pos) -> {
                     if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidOutputCount()
@@ -821,8 +821,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        pos.y + 1,
-                                        pos.x + 1));
+                                        pos.x + 1,
+                                        pos.y + 1));
                     }
                 },
                         null,
@@ -889,8 +889,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             new FixedPositionedStack(
                                     aRecipe.mSpecialItems,
                                     GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                    52,
-                                    120));
+                                    120,
+                                    52));
                 }
 
                 if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null)
@@ -899,16 +899,16 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             new FixedPositionedStack(
                                     GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true),
                                     GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                    52,
-                                    48));
+                                    48,
+                                    52));
                     if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null)
                             && (aRecipe.mFluidInputs[1].getFluid() != null)) {
                         this.mInputs.add(
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        52,
-                                        30));
+                                        30,
+                                        52));
                     }
                 }
 
@@ -918,16 +918,16 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        5,
-                                        120));
+                                        120,
+                                        5));
                     }
                     if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
                         this.mOutputs.add(
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        5,
-                                        138));
+                                        138,
+                                        5));
                     }
                     if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null
                             && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
@@ -935,8 +935,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        23,
-                                        102));
+                                        102,
+                                        23));
                     }
                     if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null
                             && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
@@ -944,8 +944,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        23,
-                                        120));
+                                        120,
+                                        23));
                     }
                     if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null
                             && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
@@ -953,8 +953,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                 new FixedPositionedStack(
                                         GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true),
                                         GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                        23,
-                                        138));
+                                        138,
+                                        23));
                     }
                 } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null)
                         && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
@@ -962,8 +962,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                     new FixedPositionedStack(
                                             GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true),
                                             GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                            52,
-                                            102));
+                                            102,
+                                            52));
                         }
             }
         }
