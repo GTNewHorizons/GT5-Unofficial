@@ -174,38 +174,18 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     public GT_Multiblock_Tooltip_Builder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
             int lmax, boolean hollow) {
-        if (hollow) {
-            sLines.add(
-                    TT_dimensions + COLON
-                            + wmin
-                            + "-"
-                            + wmax
-                            + "x"
-                            + hmin
-                            + "-"
-                            + hmax
-                            + "x"
-                            + lmin
-                            + "-"
-                            + lmax
-                            + " (WxHxL) "
-                            + TT_hollow);
-        } else {
-            sLines.add(
-                    TT_dimensions + COLON
-                            + wmin
-                            + "-"
-                            + wmax
-                            + "x"
-                            + hmin
-                            + "-"
-                            + hmax
-                            + "x"
-                            + lmin
-                            + "-"
-                            + lmax
-                            + " (WxHxL)");
-        }
+        sLines.add(
+                TT_dimensions + COLON
+                        + wmin
+                        + (wmin != wmax ? "-" + wmax : "")
+                        + "x"
+                        + hmin
+                        + (hmin != hmax ? "-" + hmax : "")
+                        + "x"
+                        + lmin
+                        + (lmin != lmax ? "-" + lmax : "")
+                        + " (WxHxL) "
+                        + (hollow ? TT_hollow : ""));
         sLines.add(TT_structure + COLON);
         return this;
     }
