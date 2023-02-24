@@ -215,8 +215,7 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     @Deprecated
     public GT_Multiblock_Tooltip_Builder addCasingInfo(String casingName, int minCount) {
-        addCasingInfoMin(casingName, minCount, false);
-        return this;
+        return addCasingInfoMin(casingName, minCount, false);
     }
 
     /**
