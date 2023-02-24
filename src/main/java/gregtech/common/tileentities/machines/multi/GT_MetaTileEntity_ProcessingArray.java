@@ -610,12 +610,11 @@ public class GT_MetaTileEntity_ProcessingArray
                 new ButtonWidget().setOnClick((clickData, widget) -> downtierUEV = !downtierUEV).setPlayClickSound(true)
                         .setBackground(() -> {
                             List<UITexture> ret = new ArrayList<>();
-                            // TODO: Add texture
                             ret.add(GT_UITextures.BUTTON_STANDARD);
                             if (downtierUEV) {
-                                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                                ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON);
                             } else {
-                                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                                ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF);
                             }
                             return ret.toArray(new IDrawable[0]);
                         }).setPos(80, 91).setSize(16, 16)

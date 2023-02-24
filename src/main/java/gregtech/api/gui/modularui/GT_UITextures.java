@@ -203,10 +203,46 @@ public class GT_UITextures {
             .fullImage(MODID, "gui/overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = UITexture
             .fullImage(MODID, "gui/overlay_button/redstone_on");
-    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
-            .fullImage(MODID, "gui/overlay_button/power_switch_off");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
             .fullImage(MODID, "gui/overlay_button/power_switch_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
+            .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ON = UITexture
+            .fullImage(MODID, "gui/overlay_button/void_excess_on");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ON_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/void_excess_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_OFF = UITexture
+            .fullImage(MODID, "gui/overlay_button/void_excess_off");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_OFF_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/void_excess_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
+            .fullImage(MODID, "gui/overlay_button/input_separation_on");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/input_separation_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
+            .fullImage(MODID, "gui/overlay_button/input_separation_off");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/input_separation_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
+            .fullImage(MODID, "gui/overlay_button/recipe_locked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/recipe_locked_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
+            .fullImage(MODID, "gui/overlay_button/recipe_unlocked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/recipe_unlocked_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture
+            .fullImage(MODID, "gui/overlay_button/batch_mode_on");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/batch_mode_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
+            .fullImage(MODID, "gui/overlay_button/batch_mode_off");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
+            .fullImage(MODID, "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_DOWN_TIERING_ON = UITexture
+            .fullImage(MODID, "gui/overlay_button/down_tiering_on");
+    public static final UITexture OVERLAY_BUTTON_DOWN_TIERING_OFF = UITexture
+            .fullImage(MODID, "gui/overlay_button/down_tiering_off");
     public static final UITexture OVERLAY_BUTTON_CHECKMARK = UITexture.fullImage(MODID, "gui/overlay_button/checkmark");
     public static final UITexture OVERLAY_BUTTON_CROSS = UITexture.fullImage(MODID, "gui/overlay_button/cross");
     public static final UITexture OVERLAY_BUTTON_WHITELIST = UITexture.fullImage(MODID, "gui/overlay_button/whitelist");

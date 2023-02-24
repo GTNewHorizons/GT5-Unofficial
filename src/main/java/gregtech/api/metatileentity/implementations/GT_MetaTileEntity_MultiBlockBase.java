@@ -1584,16 +1584,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }).setPlayClickSound(true).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
-            // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (isVoidExcessButtonEnabled()) {
                 if (isVoidExcessEnabled()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON);
                 } else {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF);
                 }
             } else {
-
+                if (isVoidExcessEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF_DISABLED);
+                }
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(8, 91).setSize(16, 16);
@@ -1609,16 +1612,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }).setPlayClickSound(true).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
-            // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (isInputSeparationButtonEnabled()) {
                 if (isInputSeparationEnabled()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
                 } else {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
                 }
             } else {
-
+                if (isInputSeparationEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
+                }
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(26, 91).setSize(16, 16);
@@ -1634,16 +1640,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }).setPlayClickSound(true).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
-            // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (isBatchModeButtonEnabled()) {
                 if (isBatchModeEnabled()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
                 } else {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
                 }
             } else {
-
+                if (isBatchModeEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
+                }
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(44, 91).setSize(16, 16);
@@ -1659,16 +1668,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }).setPlayClickSound(true).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
-            // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (supportsSingleRecipeLocking()) {
                 if (isRecipeLockingEnabled()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
                 } else {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
                 }
             } else {
-
+                if (isRecipeLockingEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
+                }
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(62, 91).setSize(16, 16);
