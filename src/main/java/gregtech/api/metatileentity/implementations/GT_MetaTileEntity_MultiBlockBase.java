@@ -1381,9 +1381,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @return if the multi supports void protection. If you want to use it you need to use {@link #voidExcess}.
+     * @return if the multi supports void excess to be toggled. If you want to use it you need to use
+     *         {@link #voidExcess}.
      */
-    protected boolean isVoidProtectionButtonEnabled() {
+    protected boolean isVoidExcessButtonEnabled() {
         return false;
     }
 
@@ -1438,7 +1439,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     else getBaseMetaTileEntity().disableWorking();
                 }));
 
-        builder.widget(createVoidProtectionButton())
+        builder.widget(createVoidExcessButton())
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcess, val -> voidExcess = val));
 
         builder.widget(createInputSeparationButton())
@@ -1576,16 +1577,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return (ButtonWidget) button;
     }
 
-    protected ButtonWidget createVoidProtectionButton() {
+    protected ButtonWidget createVoidExcessButton() {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isVoidProtectionButtonEnabled()) {
+            if (isVoidExcessButtonEnabled()) {
                 voidExcess = !voidExcess;
             }
         }).setPlayClickSound(true).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
             // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
-            if (isVoidProtectionButtonEnabled()) {
+            if (isVoidExcessButtonEnabled()) {
                 if (isVoidExcessEnabled()) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                 } else {
