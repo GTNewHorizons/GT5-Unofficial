@@ -87,9 +87,10 @@ public class GT_MetaTileEntity_ProcessingArray
                 .addInfo("Doesn't work on certain machines, deal with it")
                 .addInfo("Use it if you hate GT++, or want even more speed later on").addSeparator()
                 .beginStructureBlock(3, 3, 3, true).addController("Front center")
-                .addCasingInfo("Robust Tungstensteel Machine Casing", 14).addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1).addInputBus("Any casing", 1).addInputHatch("Any casing", 1)
-                .addOutputBus("Any casing", 1).addOutputHatch("Any casing", 1).toolTipFinisher("Gregtech");
+                .addCasingInfoRange("Robust Tungstensteel Machine Casing", 14, 24, false)
+                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addInputBus("Any casing", 1)
+                .addInputHatch("Any casing", 1).addOutputBus("Any casing", 1).addOutputHatch("Any casing", 1)
+                .toolTipFinisher("Gregtech");
         return tt;
     }
 

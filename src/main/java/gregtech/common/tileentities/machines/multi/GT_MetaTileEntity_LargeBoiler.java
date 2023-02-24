@@ -126,7 +126,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
                         formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 5, 3, false)
                 .addController("Front bottom")
-                .addCasingInfo(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24) // ?
+                .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
                 .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
                 .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
                 .addMaintenanceHatch("Any firebox", 1).addMufflerHatch("Any firebox", 1)
