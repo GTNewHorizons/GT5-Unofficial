@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
                 .addInfo("Needs a Turbine, place inside controller").addInfo("Only accepts gases above 800k EU/bucket")
                 .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, true)
-                .addController("Front center").addCasingInfo("Advanced Gas Turbine Casing", 24)
+                .addController("Front center").addCasingInfoRange("Advanced Gas Turbine Casing", 8, 30, false)
                 .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
                 .addMufflerHatch("Side centered", 2).addInputHatch("Gas Fuel, Side centered", 2)
                 .toolTipFinisher("Gregtech");

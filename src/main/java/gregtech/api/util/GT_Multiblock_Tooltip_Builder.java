@@ -58,6 +58,7 @@ public class GT_Multiblock_Tooltip_Builder {
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
     private static final String TT_controller = StatCollector.translateToLocal("GT5U.MBTT.Controller");
     private static final String TT_minimum = StatCollector.translateToLocal("GT5U.MBTT.Minimum");
+    private static final String TT_tiered = StatCollector.translateToLocal("GT5U.MBTT.Tiered");
     private static final String TT_maintenancehatch = StatCollector.translateToLocal("GT5U.MBTT.MaintenanceHatch");
     private static final String TT_energyhatch = StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch");
     private static final String TT_dynamohatch = StatCollector.translateToLocal("GT5U.MBTT.DynamoHatch");
@@ -173,38 +174,18 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     public GT_Multiblock_Tooltip_Builder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
             int lmax, boolean hollow) {
-        if (hollow) {
-            sLines.add(
-                    TT_dimensions + COLON
-                            + wmin
-                            + "-"
-                            + wmax
-                            + "x"
-                            + hmin
-                            + "-"
-                            + hmax
-                            + "x"
-                            + lmin
-                            + "-"
-                            + lmax
-                            + " (WxHxL) "
-                            + TT_hollow);
-        } else {
-            sLines.add(
-                    TT_dimensions + COLON
-                            + wmin
-                            + "-"
-                            + wmax
-                            + "x"
-                            + hmin
-                            + "-"
-                            + hmax
-                            + "x"
-                            + lmin
-                            + "-"
-                            + lmax
-                            + " (WxHxL)");
-        }
+        sLines.add(
+                TT_dimensions + COLON
+                        + wmin
+                        + (wmin != wmax ? "-" + wmax : "")
+                        + "x"
+                        + hmin
+                        + (hmin != hmax ? "-" + hmax : "")
+                        + "x"
+                        + lmin
+                        + (lmin != lmax ? "-" + lmax : "")
+                        + " (WxHxL) "
+                        + (hollow ? TT_hollow : ""));
         sLines.add(TT_structure + COLON);
         return this;
     }
@@ -212,7 +193,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Controller: info
-     * 
+     *
      * @param info Positional information.
      * @return Instance this method was called on.
      */
@@ -223,21 +204,67 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)minCountx casingName (minimum)
-     * 
+     * (indent)minCountx casingName (minimum) (tiered)
+     *
      * @param casingName Name of the Casing.
      * @param minCount   Minimum needed for valid structure check.
      * @return Instance this method was called on.
+     *
+     * @deprecated Replaced by {@link #addCasingInfoMin(String, int, boolean)}
+     *
      */
+    @Deprecated
     public GT_Multiblock_Tooltip_Builder addCasingInfo(String casingName, int minCount) {
-        sLines.add(TAB + minCount + "x " + casingName + " " + TT_minimum);
+        return addCasingInfoMin(casingName, minCount, false);
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)countx casingName (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoExactly(String casingName, int count, boolean isTiered) {
+        sLines.add(TAB + count + "x " + casingName + (isTiered ? " " + TT_tiered : ""));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)minCountx casingName (minimum) (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param minCount   Minimum needed for valid structure check.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoMin(String casingName, int minCount, boolean isTiered) {
+        sLines.add(TAB + minCount + "x " + casingName + " " + TT_minimum + (isTiered ? " " + TT_tiered : ""));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)minCountx - maxCountx casingName (minimum) (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param minCount   Minimum needed for valid structure check.
+     * @param maxCount   Maximum needed for valid structure check.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoRange(String casingName, int minCount, int maxCount,
+            boolean isTiered) {
+        sLines.add(TAB + minCount + "x - " + maxCount + "x " + casingName + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
     /**
      * Use this method to add a structural part that isn't covered by the other methods.<br>
      * (indent)name: info
-     * 
+     *
      * @param name Name of the hatch or other component.
      * @param info Positional information.
      * @return Instance this method was called on.
@@ -250,7 +277,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Maintenance Hatch: info
-     * 
+     *
      * @param info Positional information.
      * @return Instance this method was called on.
      */
@@ -262,7 +289,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Muffler Hatch: info
-     * 
+     *
      * @param info Location where the hatch goes
      * @return Instance this method was called on.
      */
@@ -274,7 +301,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Energy Hatch: info
-     * 
+     *
      * @param info Positional information.
      * @return Instance this method was called on.
      */
@@ -286,7 +313,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Dynamo Hatch: info
-     * 
+     *
      * @param info Positional information.
      * @return Instance this method was called on.
      */
@@ -298,7 +325,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Input Bus: info
-     * 
+     *
      * @param info Location where the bus goes
      * @return Instance this method was called on.
      */
@@ -310,7 +337,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Input Hatch: info
-     * 
+     *
      * @param info Location where the hatch goes
      * @return Instance this method was called on.
      */
@@ -322,7 +349,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Output Bus: info
-     * 
+     *
      * @param info Location where the bus goes
      * @return Instance this method was called on.
      */
@@ -334,7 +361,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)Output Hatch: info
-     * 
+     *
      * @param info Location where the bus goes
      * @return Instance this method was called on.
      */
@@ -346,7 +373,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add a structural part that isn't covered by the other methods.<br>
      * (indent)name: info
-     * 
+     *
      * @param name Name of the hatch or other component.
      * @param info Positional information.
      * @param dots The valid locations for this part when asked to display hints
@@ -473,7 +500,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
-     * 
+     *
      * @param info The line to be added.
      * @return Instance this method was called on.
      */
@@ -485,7 +512,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
-     * 
+     *
      * @param channel the name of subchannel
      * @param purpose the purpose of subchannel
      * @return Instance this method was called on.
@@ -497,7 +524,7 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Use this method to add non-standard structural hint. This info will appear before the standard structural hint.
-     * 
+     *
      * @param info The line to be added. This should be an entry into minecraft's localization system.
      * @return Instance this method was called on.
      */
@@ -509,7 +536,7 @@ public class GT_Multiblock_Tooltip_Builder {
     /**
      * Use this method to add an entry to standard structural hint without creating a corresponding line in structure
      * information
-     * 
+     *
      * @param name The name of block This should be an entry into minecraft's localization system.
      * @param dots Possible locations of this block
      * @return Instance this method was called on.

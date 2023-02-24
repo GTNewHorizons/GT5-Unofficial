@@ -99,7 +99,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                 .addInfo("Read the wiki article to understand how it works")
                 .addInfo("Then go to the Discord to understand the wiki").addSeparator()
                 .beginStructureBlock(3, 4, 3, false).addController("Front bottom")
-                .addCasingInfo("Stable Titanium Machine Casing", 20)
+                .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
                 .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks").addMaintenanceHatch("Any casing", 1)
                 .addInputHatch("Hot fluid, bottom center", 2).addInputHatch("Distilled water, any casing", 1)
                 .addOutputHatch("Cold fluid, top center", 3).addOutputHatch("Steam/SH Steam, any casing", 1)

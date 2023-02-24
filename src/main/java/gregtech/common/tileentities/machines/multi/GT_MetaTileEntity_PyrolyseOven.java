@@ -100,7 +100,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends
                 .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
                 .addInfo("EU/t is not affected by Coil tier").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(5, 4, 5, true).addController("Front center")
-                .addCasingInfo("Pyrolyse Oven Casing", 60)
+                .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
                 .addOtherStructurePart("Heating Coils", "Center 3x1x3 of the bottom layer")
                 .addEnergyHatch("Any bottom layer casing", 1).addMaintenanceHatch("Any bottom layer casing", 1)
                 .addMufflerHatch("Center 3x1x3 area in top layer", 2).addInputBus("Center 3x1x3 area in top layer", 2)

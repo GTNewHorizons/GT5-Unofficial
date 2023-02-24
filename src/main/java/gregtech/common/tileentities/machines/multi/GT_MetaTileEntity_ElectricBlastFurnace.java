@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                         "For each perfect overclock the EBF will reduce recipe time 4 times (instead of 2) (100% efficiency)")
                 .addInfo("Additionally gives +100K for every tier past MV")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 4, 3, true)
-                .addController("Front bottom").addCasingInfo("Heat Proof Machine Casing", 0)
+                .addController("Front bottom").addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
                 .addOtherStructurePart("Heating Coils", "Two middle Layers")
                 .addEnergyHatch("Any bottom layer casing", 3).addMaintenanceHatch("Any bottom layer casing", 3)
                 .addMufflerHatch("Top middle", 2).addInputBus("Any bottom layer casing", 3)

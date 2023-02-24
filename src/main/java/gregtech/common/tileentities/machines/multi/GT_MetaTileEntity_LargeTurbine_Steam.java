@@ -55,10 +55,10 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
                 .addInfo("Outputs Distilled Water as well as producing power")
                 .addInfo("Power output depends on turbine and fitting")
                 .addInfo("Use screwdriver to adjust fitting of turbine").addSeparator()
-                .beginStructureBlock(3, 3, 4, true).addController("Front center").addCasingInfo("Turbine Casing", 24)
-                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
-                .addInputHatch("Steam, Side centered", 2).addOutputHatch("Distilled Water, Side centered", 2)
-                .toolTipFinisher("Gregtech");
+                .beginStructureBlock(3, 3, 4, true).addController("Front center")
+                .addCasingInfoRange("Turbine Casing", 8, 31, false).addDynamoHatch("Back center", 1)
+                .addMaintenanceHatch("Side centered", 2).addInputHatch("Steam, Side centered", 2)
+                .addOutputHatch("Distilled Water, Side centered", 2).toolTipFinisher("Gregtech");
         return tt;
     }
 

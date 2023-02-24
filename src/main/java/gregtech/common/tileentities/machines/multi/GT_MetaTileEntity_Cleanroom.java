@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                 .addInfo("the height of empty space within").addInfo("Make sure your Energy Hatch matches! ?")
                 .addInfo("Machines that cause pollution aren't allowed to be put in.").addSeparator()
                 .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true).addController("Top center")
-                .addCasingInfo("Plascrete", 20)
+                .addCasingInfoRange("Plascrete", 20, 1007, false)
                 .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass") // check
                 .addStructureInfo("Other material can be used in place of Plascrete. See config for detail") // check
                 .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
