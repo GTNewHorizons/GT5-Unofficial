@@ -1050,7 +1050,7 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey("inputSeparation")) {
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");

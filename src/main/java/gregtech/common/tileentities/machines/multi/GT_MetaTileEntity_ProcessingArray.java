@@ -372,10 +372,10 @@ public class GT_MetaTileEntity_ProcessingArray
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey("inputSeparation")) {
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
-        if (!aNBT.hasKey("batchMode")) {
+        if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
             batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
         downtierUEV = aNBT.getBoolean("downtierUEV");

@@ -75,6 +75,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = false;
     protected boolean voidExcess = true;
     protected boolean batchMode = false;
+    protected static String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
+    protected static String VOID_EXCESS_NBT_KEY = "voidExcess";
+    protected static String BATCH_MODE_NBT_KEY = "batchMode";
     public GT_Single_Recipe_Check mSingleRecipeCheck = null;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
@@ -210,9 +213,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setBoolean("mHardHammer", mHardHammer);
         aNBT.setBoolean("mSolderingTool", mSolderingTool);
         aNBT.setBoolean("mCrowbar", mCrowbar);
-        aNBT.setBoolean("batchMode", batchMode);
-        aNBT.setBoolean("inputSeparation", inputSeparation);
-        aNBT.setBoolean("voidProtection", voidExcess);
+        aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
+        aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
+        aNBT.setBoolean(VOID_EXCESS_NBT_KEY, voidExcess);
     }
 
     @Override
@@ -226,9 +229,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
         mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
-        batchMode = aNBT.getBoolean("batchMode");
-        inputSeparation = aNBT.getBoolean("inputSeparation");
-        voidExcess = aNBT.getBoolean("voidProtection");
+        batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
+        inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
+        voidExcess = aNBT.getBoolean(VOID_EXCESS_NBT_KEY);
 
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
