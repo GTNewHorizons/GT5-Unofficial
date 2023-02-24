@@ -203,6 +203,10 @@ public class GT_UITextures {
             .fullImage(MODID, "gui/overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = UITexture
             .fullImage(MODID, "gui/overlay_button/redstone_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
+            .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
+            .fullImage(MODID, "gui/overlay_button/power_switch_on");
     public static final UITexture OVERLAY_BUTTON_CHECKMARK = UITexture.fullImage(MODID, "gui/overlay_button/checkmark");
     public static final UITexture OVERLAY_BUTTON_CROSS = UITexture.fullImage(MODID, "gui/overlay_button/cross");
     public static final UITexture OVERLAY_BUTTON_WHITELIST = UITexture.fullImage(MODID, "gui/overlay_button/whitelist");
