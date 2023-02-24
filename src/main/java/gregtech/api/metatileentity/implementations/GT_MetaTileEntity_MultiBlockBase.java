@@ -1387,6 +1387,35 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    /**
+     * @return true if input separation is enabled, else false. This is getter is used for displaying the icon in the
+     *         GUI
+     */
+    protected boolean isInputSeparationEnabled() {
+        return inputSeparation;
+    }
+
+    /**
+     * @return true if batch mode is enabled, else false. This is getter is used for displaying the icon in the GUI
+     */
+    protected boolean isBatchModeEnabled() {
+        return batchMode;
+    }
+
+    /**
+     * @return true if void excess is enabled, else false. This is getter is used for displaying the icon in the GUI
+     */
+    protected boolean isVoidExcessEnabled() {
+        return voidExcess;
+    }
+
+    /**
+     * @return true if recipe locking is enabled, else false. This is getter is used for displaying the icon in the GUI
+     */
+    protected boolean isRecipeLockingEnabled() {
+        return mLockedToSingleRecipe;
+    }
+
     @Override
     public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(7, 109), getGUITextureSet().getItemSlot());
@@ -1557,7 +1586,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (isVoidProtectionButtonEnabled()) {
-                if (voidExcess) {
+                if (isVoidExcessEnabled()) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                 } else {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
@@ -1582,7 +1611,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (isInputSeparationButtonEnabled()) {
-                if (inputSeparation) {
+                if (isInputSeparationEnabled()) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                 } else {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
@@ -1607,7 +1636,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (isBatchModeButtonEnabled()) {
-                if (batchMode) {
+                if (isBatchModeEnabled()) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                 } else {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
@@ -1632,7 +1661,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (supportsSingleRecipeLocking()) {
-                if (mLockedToSingleRecipe) {
+                if (isRecipeLockingEnabled()) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                 } else {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
