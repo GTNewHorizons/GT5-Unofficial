@@ -73,7 +73,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public boolean mLockedToSingleRecipe = false;
     protected boolean inputSeparation = false;
-    protected boolean voidProtection = false;
+    protected boolean voidExcess = true;
     protected boolean batchMode = false;
     public GT_Single_Recipe_Check mSingleRecipeCheck = null;
 
@@ -212,7 +212,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setBoolean("mCrowbar", mCrowbar);
         aNBT.setBoolean("batchMode", batchMode);
         aNBT.setBoolean("inputSeparation", inputSeparation);
-        aNBT.setBoolean("voidProtection", voidProtection);
+        aNBT.setBoolean("voidProtection", voidExcess);
     }
 
     @Override
@@ -228,7 +228,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
         batchMode = aNBT.getBoolean("batchMode");
         inputSeparation = aNBT.getBoolean("inputSeparation");
-        voidProtection = aNBT.getBoolean("voidProtection");
+        voidExcess = aNBT.getBoolean("voidProtection");
 
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
@@ -1378,7 +1378,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @return if the multi supports void protection. If you want to use it you need to use {@link #voidProtection}.
+     * @return if the multi supports void protection. If you want to use it you need to use {@link #voidExcess}.
      */
     protected boolean isVoidProtectionButtonEnabled() {
         return false;
@@ -1407,7 +1407,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }));
 
         builder.widget(createVoidProtectionButton())
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> voidProtection, val -> voidProtection = val));
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcess, val -> voidExcess = val));
 
         builder.widget(createInputSeparationButton())
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> inputSeparation, val -> inputSeparation = val));
@@ -1547,14 +1547,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected ButtonWidget createVoidProtectionButton() {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (isVoidProtectionButtonEnabled()) {
-                voidProtection = !voidProtection;
+                voidExcess = !voidExcess;
             }
         }).setPlayClickSound(true).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
             // TODO: Add texture
             ret.add(GT_UITextures.BUTTON_STANDARD);
             if (isVoidProtectionButtonEnabled()) {
-                if (voidProtection) {
+                if (voidExcess) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                 } else {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
@@ -1564,7 +1564,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(8, 91).setSize(16, 16);
-        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.void_protection"))
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.void_excess"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }

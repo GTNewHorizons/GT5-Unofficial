@@ -209,7 +209,7 @@ GT5U.type_filter.representation_slot.tooltip.1=right click to back
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.power_switch=Power Switch
-GT5U.gui.button.void_protection=Void Protection
+GT5U.gui.button.void_excess=Void Excess
 GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.batch_mode=Batch Mode
 GT5U.gui.button.lock_recipe=Lock Recipe
