@@ -3902,44 +3902,6 @@ public class DreamCraftRecipeLoader {
 
         // region items
 
-        // Optically Compatible Memory
-        GT_Values.RA.addCircuitAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem("OpenComputers", "item", 1L, 39), // Memory tier 3.5
-                        ItemList.Circuit_Chip_Optical.get(1L), CustomItemList.DATApipe.get(4L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 4L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 8L),
-                        GT_ModHandler.getModItem("supersolarpanel", "solarsplitter", 1L, 0) // Solar Light Splitter
-                },
-                new FluidStack(solderUEV, 288),
-                ItemList.Optically_Compatible_Memory.get(2),
-                20 * 20,
-                1_966_080,
-                false);
-        GT_Values.RA.addCircuitAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem("OpenComputers", "item", 4L, 39), // Memory tier 3.5
-                        ItemList.Circuit_Chip_Optical.get(1L), CustomItemList.DATApipe.get(16L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 4L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 16L),
-                        GT_ModHandler.getModItem("supersolarpanel", "solarsplitter", 4L, 0) // Solar Light Splitter
-                },
-                new FluidStack(solderUEV, 576),
-                ItemList.Optically_Compatible_Memory.get(8),
-                20 * 20,
-                7_864_320,
-                false);
-        GT_Values.RA.addCircuitAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem("OpenComputers", "item", 16L, 39), // Memory tier 3.5
-                        ItemList.Circuit_Chip_Optical.get(1L), CustomItemList.DATApipe.get(64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 4L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 32L),
-                        GT_ModHandler.getModItem("supersolarpanel", "solarsplitter", 16L, 0) // Solar Light Splitter
-                },
-                new FluidStack(solderUEV, 1152),
-                ItemList.Optically_Compatible_Memory.get(32),
-                20 * 20,
-                31_457_280,
-                false);
-
         // Optical Processor
         GT_Values.RA.addCircuitAssemblerRecipe(
                 new ItemStack[] { ItemList.Optically_Perfected_CPU.get(1L),
