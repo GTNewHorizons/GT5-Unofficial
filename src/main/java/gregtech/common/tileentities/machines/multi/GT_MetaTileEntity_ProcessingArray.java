@@ -44,6 +44,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Single_Recipe_Check_Processing_Array;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
@@ -162,13 +163,7 @@ public class GT_MetaTileEntity_ProcessingArray
         }
 
         if (mLastRecipe == null) {
-            IMetaTileEntity aMachine = GT_Item_Machines.getMetaTileEntity(mInventory[1]);
-            if (aMachine != null) tTier = ((GT_MetaTileEntity_TieredMachineBlock) aMachine).mTier;
-            mMult = 0;
-            if (downtierUEV && tTier > 9) {
-                tTier--; // Lowers down the tier by 1 to allow for bigger parallel
-                mMult = 2; // Multiplies Parallels by 4x, keeping the energy cost
-            }
+            setTierAndMult();
         }
         ArrayList<FluidStack> tFluidList = getStoredFluids();
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
@@ -191,8 +186,23 @@ public class GT_MetaTileEntity_ProcessingArray
         return false;
     }
 
+    private void setTierAndMult() {
+        IMetaTileEntity aMachine = GT_Item_Machines.getMetaTileEntity(mInventory[1]);
+        if (aMachine != null) tTier = ((GT_MetaTileEntity_TieredMachineBlock) aMachine).mTier;
+        mMult = 0;
+        if (downtierUEV && tTier > 9) {
+            tTier--; // Lowers down the tier by 1 to allow for bigger parallel
+            mMult = 2; // Multiplies Parallels by 4x, keeping the energy cost
+        }
+    }
+
     public boolean processLockedRecipe() {
         GT_Single_Recipe_Check_Processing_Array tSingleRecipeCheck = (GT_Single_Recipe_Check_Processing_Array) mSingleRecipeCheck;
+
+        if (mLastRecipe == null) {
+            setTierAndMult();
+            mLastRecipe = tSingleRecipeCheck.getRecipe();
+        }
 
         int machines = mInventory[1].stackSize << mMult;
         int parallel = tSingleRecipeCheck.checkRecipeInputs(true, machines);
@@ -376,6 +386,11 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     @Override
+    protected GT_Single_Recipe_Check loadSingleRecipeChecker(NBTTagCompound aNBT) {
+        return GT_Single_Recipe_Check_Processing_Array.tryLoad(this, getRecipeMap(), aNBT, mInventory[1]);
+    }
+
+    @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             // Lock to single recipe
@@ -384,7 +399,7 @@ public class GT_MetaTileEntity_ProcessingArray
             mSeparate = !mSeparate;
             GT_Utility.sendChatToPlayer(
                     aPlayer,
-                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
+                    StatCollector.translateToLocal("GT5U.machinesx.separatebus") + " " + mSeparate);
         }
     }
 
