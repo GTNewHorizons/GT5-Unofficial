@@ -399,7 +399,7 @@ public class GT_MetaTileEntity_ProcessingArray
             mSeparate = !mSeparate;
             GT_Utility.sendChatToPlayer(
                     aPlayer,
-                    StatCollector.translateToLocal("GT5U.machinesx.separatebus") + " " + mSeparate);
+                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
         }
     }
 
