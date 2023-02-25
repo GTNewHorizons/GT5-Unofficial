@@ -299,8 +299,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
         for (ItemStack item : itemInputs) {
             if (item != null) {
-                if (GT_Utility.getFluidForFilledItem(aInput1, true) != null || GT_Utility.isCellEmpty(item)
-                        || GT_Utility.checkIfSameIntegratedCircuit(item)) {
+                if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)
+                        || GT_Utility.isAnyIntegratedCircuit(item)) {
                     fluidInputs[iNumber + 1] = GT_Utility.convertCellToFluid(item);
                     itemInputs[iNumber] = null;
                 }
@@ -2812,7 +2812,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("cracking", aInput.getUnlocalizedName(), aDuration)) <= 0) {
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sCrakingRecipes.addRecipe(
+        GT_Recipe.GT_Recipe_Map.sCrackingRecipes.addRecipe(
                 false,
                 new ItemStack[] { GT_Utility.getIntegratedCircuit(circuitConfig) },
                 null,
@@ -2926,7 +2926,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                                 Comparator
                                         .<ItemStack, String>comparing(
                                                 s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
-                                        .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                        .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
                                         .thenComparingInt(Items.feather::getDamage).thenComparingInt(s -> s.stackSize));
                         int tAmount = ((Number) objs[1]).intValue();
                         List<ItemStack> uList = new ArrayList<>();
@@ -3173,5 +3173,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             }
         }
         return itemsNull && fluidsNull;
+    }
+
+    @Override
+    public GT_RecipeBuilder stdBuilder() {
+        return GT_RecipeBuilder.builder();
     }
 }
