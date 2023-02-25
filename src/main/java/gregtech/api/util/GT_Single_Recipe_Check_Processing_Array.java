@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -129,6 +132,22 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         }
 
         return finalParallel;
+    }
+
+    @Nullable
+
+    public static GT_Single_Recipe_Check tryLoad(GT_MetaTileEntity_MultiBlockBase parent,
+            GT_Recipe.GT_Recipe_Map recipeMap, NBTTagCompound tag, ItemStack machineStack) {
+        if (recipeMap == null || machineStack == null) return null;
+        GT_Recipe found = tryFindRecipe(parent, recipeMap, tag);
+        if (found == null) return null;
+        return new GT_Single_Recipe_Check_Processing_Array(
+                parent,
+                found,
+                loadItemCost(tag),
+                loadFluidCost(tag),
+                recipeMap.mAmperage,
+                machineStack.copy());
     }
 
     public static Builder processingArrayBuilder(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {

@@ -129,6 +129,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
+    }
+
+    @Override
     public boolean checkRecipe(ItemStack aStack) {
         long tVoltage = getMaxInputVoltage();
         byte tier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));

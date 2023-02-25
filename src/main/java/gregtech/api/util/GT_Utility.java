@@ -24,6 +24,9 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -82,6 +85,7 @@ import cofh.api.transport.IItemDuct;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -2421,7 +2425,7 @@ public class GT_Utility {
     /**
      * Return texture id from page and index, for use when determining hatches, but can also be precomputed from:
      * (page<<7)+index
-     * 
+     *
      * @param page  0 to 127 page
      * @param index 0 to 127 texture index
      * @return casing texture 0 to 16383
@@ -2436,7 +2440,7 @@ public class GT_Utility {
     /**
      * Return texture id from page and index, for use when determining hatches, but can also be precomputed from:
      * (page<<7)+index
-     * 
+     *
      * @param page       0 to 127 page
      * @param startIndex 0 to 127 start texture index
      * @param blockMeta  meta of the block
@@ -2459,7 +2463,7 @@ public class GT_Utility {
 
     /**
      * Return texture id from item stack, unoptimized but readable?
-     * 
+     *
      * @return casing texture 0 to 16383
      */
     @Deprecated
@@ -2469,7 +2473,7 @@ public class GT_Utility {
 
     /**
      * Return texture id from item stack, unoptimized but readable?
-     * 
+     *
      * @return casing texture 0 to 16383
      */
     public static int getTextureId(Block blockFromBlock, byte metaFromBlock) {
@@ -4379,8 +4383,41 @@ public class GT_Utility {
         return new ItemStack(aItem.getItem(), 0, aItem.getItemDamage());
     }
 
+    public static Stream<NBTTagCompound> stream(NBTTagList list) {
+        if (list == null) return Stream.empty();
+        return IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt);
+    }
+
+    public static boolean equals(ItemStack[] a, ItemStack[] b) {
+        // because stupid mojang didn't override equals for us
+        if (a == null && b == null) return true;
+        if ((a == null) != (b == null)) return false;
+        if (a.length != b.length) return false;
+        for (int i = 0; i < a.length; i++) {
+            if (!areStacksEqual(a[i], b[i], false)) return false;
+        }
+        return true;
+    }
+
+    public static <T, K, U> Collector<T, ?, ImmutableMap<K, U>> toImmutableMap(
+            Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends U> valueMapper) {
+        // petty type inference cannot work out the correct type parameter
+        return Collector.<T, ImmutableMap.Builder<K, U>, ImmutableMap<K, U>>of(
+                ImmutableMap::builder,
+                (b, t) -> b.put(keyMapper.apply(t), valueMapper.apply(t)),
+                (b1, b2) -> b1.putAll(b2.build()),
+                ImmutableMap.Builder::build);
+    }
+
     @AutoValue
     public abstract static class ItemId {
+
+        public static AutoValue_GT_Utility_ItemId create(NBTTagCompound tag) {
+            return new AutoValue_GT_Utility_ItemId(
+                    Item.getItemById(tag.getShort("item")),
+                    tag.getShort("meta"),
+                    tag.hasKey("tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("tag") : null);
+        }
 
         /** This method copies NBT, as it is mutable. */
         public static ItemId create(ItemStack itemStack) {
@@ -4406,6 +4443,14 @@ public class GT_Utility {
 
         @Nullable
         protected abstract NBTTagCompound nbt();
+
+        public NBTTagCompound writeToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setShort("item", (short) Item.getIdFromItem(item()));
+            tag.setShort("meta", (short) metaData());
+            if (nbt() != null) tag.setTag("tag", nbt());
+            return tag;
+        }
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
