@@ -313,18 +313,26 @@ public class GT_ParallelHelper {
                 mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
                 for (int i = 0; i < mRecipe.mOutputs.length; i++) {
                     if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                        ItemStack tItem = mRecipe.getOutput(i).copy();
-                        tItem.stackSize *= mCurrentParallel;
-                        mItemOutputs[i] = tItem;
+                        if (mRecipe.getOutput(i) == null) {
+                            mItemOutputs[i] = null;
+                        } else {
+                            ItemStack tItem = mRecipe.getOutput(i).copy();
+                            tItem.stackSize *= mCurrentParallel;
+                            mItemOutputs[i] = tItem;
+                        }
                     }
                 }
             }
             if (mRecipe.mFluidOutputs != null) {
                 mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
                 for (int i = 0; i < mRecipe.mFluidOutputs.length; i++) {
-                    FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
-                    tFluid.amount *= mCurrentParallel;
-                    mFluidOutputs[i] = tFluid;
+                    if (mRecipe.getFluidOutput(i) == null) {
+                        mFluidOutputs[i] = null;
+                    } else {
+                        FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
+                        tFluid.amount *= mCurrentParallel;
+                        mFluidOutputs[i] = tFluid;
+                    }
                 }
             }
         }
