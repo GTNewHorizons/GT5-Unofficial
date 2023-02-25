@@ -102,8 +102,8 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single))
             if (GT_Values.RA.addCutterRecipe(
                     block,
-                    null,
                     plate_SingleNine,
+                    null,
                     (int) Math.max(material.getMass() * 10L, 1L),
                     material.vVoltageMultiplier)) {
                         Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Success");
