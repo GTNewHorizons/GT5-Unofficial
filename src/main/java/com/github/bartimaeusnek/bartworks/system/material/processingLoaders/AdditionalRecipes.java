@@ -318,9 +318,8 @@ public class AdditionalRecipes {
         // Zr + 2O =Y22O3= ZrO2
         GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(
                 false,
-                new ItemStack[] { WerkstoffLoader.Zirconium.get(dust, 10), WerkstoffLoader.YttriumOxide.get(dust) },
-                new ItemStack[] { WerkstoffLoader.YttriumOxide.get(dust),
-                        WerkstoffLoader.CubicZirconia.get(gemFlawed, 40) },
+                new ItemStack[] { WerkstoffLoader.Zirconium.get(dust, 10), WerkstoffLoader.YttriumOxide.get(dust, 0) },
+                new ItemStack[] { WerkstoffLoader.CubicZirconia.get(gemFlawed, 40) },
                 null,
                 null,
                 new FluidStack[] { Materials.Oxygen.getGas(20000) },
