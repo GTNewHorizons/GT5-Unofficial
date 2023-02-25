@@ -234,16 +234,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
- 	batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
+        batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         voidExcess = aNBT.getBoolean(VOID_EXCESS_NBT_KEY);
-if (supportsSingleRecipeLocking()) {
-        mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
-if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
+        if (supportsSingleRecipeLocking()) {
+            mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
+            if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
                 GT_Single_Recipe_Check c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
                 if (c != null) mSingleRecipeCheck = c;
             }
-}
+        }
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
             mOutputItems = new ItemStack[aOutputItemsLength];
