@@ -38,6 +38,7 @@ import com.gtnewhorizons.modularui.common.widget.*;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -397,6 +398,9 @@ if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG
     protected boolean checkRecipe() {
         startRecipeProcessing();
         boolean result = checkRecipe(mInventory[1]);
+        if (result && getProcessStartSound() != null) {
+            sendLoopStart((byte) 1);
+        }
         endRecipeProcessing();
         return result;
     }
@@ -473,6 +477,43 @@ if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG
             }
         }
         return mPollution < 10000;
+    }
+
+    @Override
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        super.doSound(aIndex, aX, aY, aZ);
+        switch (aIndex) {
+            case 1:
+                if (getProcessStartSound() != null)
+                    GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+                break;
+            case 8:
+                GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                break;
+        }
+    }
+
+    @Override
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1) {
+            if (getProcessStartSound() != null)
+                GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+        }
+    }
+
+    /**
+     * @return Time before the start process sound is played again
+     */
+    protected int getTimeBetweenProcessSounds() {
+        return 100;
+    }
+
+    /**
+     * @return Sound that will be played once, when the recipe check was valid
+     */
+    protected SoundResource getProcessStartSound() {
+        return null;
     }
 
     /**
@@ -553,6 +594,7 @@ if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG
 
     public void criticalStopMachine() {
         stopMachine();
+        sendSound((byte) 8);
         getBaseMetaTileEntity().setShutdownStatus(true);
     }
 

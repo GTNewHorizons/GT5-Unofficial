@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -273,6 +274,11 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         }
         mOilFlow = tOil.amount;
         return tOil.amount == 0 ? null : tOil;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_PUMP_OP;
     }
 
     @Override

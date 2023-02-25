@@ -49,6 +49,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -1070,6 +1071,11 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
     }
 
     @Override

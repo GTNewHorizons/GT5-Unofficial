@@ -127,11 +127,13 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 20) {
-            GT_Utility.doSoundAtClient(SoundResource.RANDOM_EXPLODE, 10, 1.0F, aX, aY, aZ);
-        }
+    protected int getTimeBetweenProcessSounds() {
+        return 10;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.RANDOM_EXPLODE;
     }
 
     @Override
