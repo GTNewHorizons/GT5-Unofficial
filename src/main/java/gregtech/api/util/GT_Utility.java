@@ -4383,7 +4383,7 @@ public class GT_Utility {
         return new ItemStack(aItem.getItem(), 0, aItem.getItemDamage());
     }
 
-    public static Stream<NBTTagCompound> stream(NBTTagList list) {
+    public static Stream<NBTTagCompound> streamCompounds(NBTTagList list) {
         if (list == null) return Stream.empty();
         return IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt);
     }
@@ -4399,7 +4399,10 @@ public class GT_Utility {
         return true;
     }
 
-    public static <T, K, U> Collector<T, ?, ImmutableMap<K, U>> toImmutableMap(
+    /**
+     * Guava ImmutableMap variant of Collectors.toMap. Optimized for serial streams.
+     */
+    public static <T, K, U> Collector<T, ?, ImmutableMap<K, U>> toImmutableMapSerial(
             Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends U> valueMapper) {
         // petty type inference cannot work out the correct type parameter
         return Collector.<T, ImmutableMap.Builder<K, U>, ImmutableMap<K, U>>of(

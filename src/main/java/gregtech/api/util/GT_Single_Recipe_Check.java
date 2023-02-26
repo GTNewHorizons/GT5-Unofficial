@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -246,13 +247,13 @@ public class GT_Single_Recipe_Check {
     }
 
     protected static ImmutableMap<Fluid, Integer> loadFluidCost(NBTTagCompound tag) {
-        return GT_Utility.stream(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND)).collect(
-                GT_Utility.toImmutableMap(t -> FluidRegistry.getFluid(t.getString("id")), t -> t.getInteger("count")));
+        return GT_Utility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND)).collect(
+                GT_Utility.toImmutableMapSerial(t -> FluidRegistry.getFluid(t.getString("id")), t -> t.getInteger("count")));
     }
 
     protected static ImmutableMap<GT_Utility.ItemId, Integer> loadItemCost(NBTTagCompound tag) {
-        return GT_Utility.stream(tag.getTagList("itemCost", Constants.NBT.TAG_COMPOUND)).collect(
-                GT_Utility.toImmutableMap(
+        return GT_Utility.streamCompounds(tag.getTagList("itemCost", Constants.NBT.TAG_COMPOUND)).collect(
+                GT_Utility.toImmutableMapSerial(
                         t -> GT_Utility.ItemId.create(t.getCompoundTag("id")),
                         t -> t.getInteger("count")));
     }
@@ -260,23 +261,24 @@ public class GT_Single_Recipe_Check {
     protected static GT_Recipe tryFindRecipe(GT_MetaTileEntity_MultiBlockBase parent, GT_Recipe.GT_Recipe_Map recipeMap,
             NBTTagCompound tag) {
         if (tag == null || tag.hasNoTags()) return null;
-        ItemStack[] inputs = GT_Utility.stream(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
+        ItemStack[] inputs = GT_Utility.streamCompounds(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
                 .map(GT_Utility::loadItem).toArray(ItemStack[]::new);
-        ItemStack[] outputs = GT_Utility.stream(tag.getTagList("outputs", Constants.NBT.TAG_COMPOUND))
+        ItemStack[] outputs = GT_Utility.streamCompounds(tag.getTagList("outputs", Constants.NBT.TAG_COMPOUND))
                 .map(GT_Utility::loadItem).toArray(ItemStack[]::new);
-        FluidStack[] fInputs = GT_Utility.stream(tag.getTagList("fInputs", Constants.NBT.TAG_COMPOUND))
+        FluidStack[] fInputs = GT_Utility.streamCompounds(tag.getTagList("fInputs", Constants.NBT.TAG_COMPOUND))
                 .map(FluidStack::loadFluidStackFromNBT).toArray(FluidStack[]::new);
-        FluidStack[] fOutputs = GT_Utility.stream(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
+        FluidStack[] fOutputs = GT_Utility.streamCompounds(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
                 .map(FluidStack::loadFluidStackFromNBT).toArray(FluidStack[]::new);
+        int eut = tag.getInteger("eut");
+        GT_Recipe found = recipeMap.findRecipe(parent.getBaseMetaTileEntity(), false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
         int[] chances = tag.getIntArray("chances");
-        GT_Recipe found = recipeMap.findRecipe(parent.getBaseMetaTileEntity(), false, Long.MAX_VALUE, fInputs, inputs);
         if (found == null || !GT_Utility.equals(inputs, found.mInputs)
                 || !Arrays.equals(fInputs, found.mFluidInputs)
                 || !GT_Utility.equals(outputs, found.mOutputs)
                 || !Arrays.equals(fOutputs, found.mFluidOutputs)
                 || !Arrays.equals(chances, found.mChances)
                 || found.mDuration != tag.getInteger("duration")
-                || found.mEUt != tag.getInteger("eut")
+                || found.mEUt != eut
                 || found.mSpecialValue != tag.getInteger("specialValue"))
             return null;
         return found;
