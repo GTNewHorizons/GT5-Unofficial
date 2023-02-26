@@ -83,6 +83,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected final List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
 
+    protected static final byte INTERRUPT_SOUND_INDEX = 8;
+    protected static final byte PROCESS_START_SOUND_INDEX = 1;
+
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
         GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
@@ -371,7 +374,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         startRecipeProcessing();
         boolean result = checkRecipe(mInventory[1]);
         if (result && getProcessStartSound() != null) {
-            sendLoopStart((byte) 1);
+            sendLoopStart(PROCESS_START_SOUND_INDEX);
         }
         endRecipeProcessing();
         return result;
@@ -455,11 +458,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
         switch (aIndex) {
-            case 1:
+            case PROCESS_START_SOUND_INDEX:
                 if (getProcessStartSound() != null)
                     GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
                 break;
-            case 8:
+            case INTERRUPT_SOUND_INDEX:
                 GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
                 break;
         }
@@ -468,7 +471,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
+        if (aIndex == PROCESS_START_SOUND_INDEX) {
             if (getProcessStartSound() != null)
                 GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
         }
@@ -566,7 +569,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public void criticalStopMachine() {
         stopMachine();
-        sendSound((byte) 8);
+        sendSound(INTERRUPT_SOUND_INDEX);
         getBaseMetaTileEntity().setShutdownStatus(true);
     }
 
