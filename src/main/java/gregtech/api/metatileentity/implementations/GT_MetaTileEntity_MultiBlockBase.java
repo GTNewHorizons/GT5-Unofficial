@@ -227,6 +227,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
                 GT_Single_Recipe_Check c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
                 if (c != null) mSingleRecipeCheck = c;
+                // the old recipe is gone. we disable the machine to prevent making garbage in case of shared inputs
+                // maybe use a better way to inform player in the future.
+                else getBaseMetaTileEntity().disableWorking();
             }
         }
 
