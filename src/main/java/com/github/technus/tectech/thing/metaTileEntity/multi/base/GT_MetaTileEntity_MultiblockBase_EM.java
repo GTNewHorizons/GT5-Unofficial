@@ -3131,7 +3131,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                     && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED) {
                 // We don't use CloseAllButMain here in case MB implementation adds their own window
                 for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
-                    widget.getContext().closeWindow(LED_WINDOW_BASE_ID + i);
+                    if (widget.getContext().isWindowOpen(LED_WINDOW_BASE_ID + i)) {
+                        widget.getContext().closeWindow(LED_WINDOW_BASE_ID + i);
+                    }
                 }
                 widget.getContext().openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
             }
