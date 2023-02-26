@@ -538,6 +538,16 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
+    public int getGUIWidth() {
+        return 176;
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 166;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
                 new TextWidget(GT_Utility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
