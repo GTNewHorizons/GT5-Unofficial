@@ -5049,11 +5049,11 @@ public class DreamCraftRecipeLoader {
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
-        FluidStack fluid_0 = Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(576);
-        FluidStack fluid_1 = Materials.SpaceTime.getMolten(576);
-        FluidStack fluid_2 = Materials.Universium.getMolten(576);
-        FluidStack lubricantFluid = Materials.Lubricant.getFluid(8000);
-        FluidStack solderingAlloy = new FluidStack(mutatedLivingSolder, 14_400);
+        FluidStack moltenMHDCSM_576 = Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(576);
+        FluidStack moltenSpaceTime_576 = Materials.SpaceTime.getMolten(576);
+        FluidStack moltenUniversium_576 = Materials.Universium.getMolten(576);
+        FluidStack lubricantFluid_8000 = Materials.Lubricant.getFluid(8000);
+        FluidStack solderingAlloy_14_400 = new FluidStack(mutatedLivingSolder, 14_400);
 
         int totalComputation = 384_000;
         int compPerSecond = 512;
@@ -5097,7 +5097,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 2L),
                         Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, lubricantFluid_8000 },
                 ItemList.Electric_Motor_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5126,7 +5126,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 2L),
                         Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, lubricantFluid_8000 },
                 ItemList.Electric_Pump_UXV.get(1),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5153,7 +5153,7 @@ public class DreamCraftRecipeLoader {
                         MaterialsKevlar.Kevlar.getPlates(64), MaterialsKevlar.Kevlar.getPlates(16),
                         GT_OreDictUnificator.get("plateRadoxPoly", 64L),
                         GT_OreDictUnificator.get("plateRadoxPoly", 16L), Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, lubricantFluid_8000 },
                 ItemList.Conveyor_Module_UXV.get(1),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5186,7 +5186,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 6L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 6L),
                         Materials.Neutronium.getNanite(8) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, lubricantFluid_8000 },
                 ItemList.Robot_Arm_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5221,7 +5221,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 4L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 4L),
                         Materials.Neutronium.getNanite(4) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, lubricantFluid },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, lubricantFluid_8000 },
                 ItemList.Electric_Piston_UXV.get(1),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5253,7 +5253,7 @@ public class DreamCraftRecipeLoader {
                         Materials.Neutronium.getNanite(8)
 
                 },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, solderingAlloy },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, solderingAlloy_14_400 },
                 ItemList.Emitter_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5283,7 +5283,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 7L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 7L),
                         Materials.Neutronium.getNanite(8) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, solderingAlloy },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, solderingAlloy_14_400 },
                 ItemList.Sensor_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
@@ -5320,7 +5320,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 8L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 8L),
                         Materials.Neutronium.getNanite(12) },
-                new FluidStack[] { fluid_0, fluid_1, fluid_2, solderingAlloy },
+                new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, solderingAlloy_14_400 },
                 ItemList.Field_Generator_UXV.get(1L),
                 craftingTimeInTicks,
                 craftingEuPerTick);
