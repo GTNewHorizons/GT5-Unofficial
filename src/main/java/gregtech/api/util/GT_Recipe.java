@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.awt.*;
 import java.util.*;
@@ -29,6 +30,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import appeng.util.ReadableNumberConverter;
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 
 import com.gtnewhorizons.modularui.api.GlStateManager;
@@ -65,6 +68,9 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.items.GT_FluidDisplayItem;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
@@ -1748,6 +1754,131 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 false,
                 true);
 
+        public static class GT_FakeSpaceProjectRecipe extends GT_Recipe {
+
+            public final String projectName;
+
+            public GT_FakeSpaceProjectRecipe(boolean aOptimize, ItemStack[] aInputs, FluidStack[] aFluidInputs,
+                    int aDuration, int aEUt, int aSpecialValue, String projectName) {
+                super(aOptimize, aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
+                this.projectName = projectName;
+            }
+        }
+
+        public static final GT_Recipe_Map sFakeSpaceProjectRecipes = new GT_Recipe_Map(
+                new HashSet<>(20),
+                "gt.recipe.fakespaceprojects",
+                "Space Projects",
+                null,
+                RES_PATH_GUI + "basicmachines/Default",
+                12,
+                0,
+                0,
+                0,
+                1,
+                translateToLocal("gt.specialvalue.stages") + " ",
+                1,
+                "",
+                false,
+                true) {
+
+            IDrawable projectTexture;
+
+            @Override
+            public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
+                    IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
+                    IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
+                    Supplier<Float> progressSupplier, Pos2d windowOffset) {
+                ModularWindow.Builder builder = super.createNEITemplate(
+                        itemInputsInventory,
+                        itemOutputsInventory,
+                        specialSlotInventory,
+                        fluidInputsInventory,
+                        fluidOutputsInventory,
+                        progressSupplier,
+                        windowOffset);
+                addRecipeSpecificDrawable(
+                        builder,
+                        windowOffset,
+                        () -> projectTexture,
+                        new Pos2d(124, 28),
+                        new Size(18, 18));
+                return builder;
+            }
+
+            @Override
+            public List<Pos2d> getItemInputPositions(int itemInputCount) {
+                return UIHelper.getGridPositions(itemInputCount, 16, 28, 3);
+            }
+
+            @Override
+            public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+                return UIHelper.getGridPositions(fluidInputCount, 88, 28, 1);
+            }
+
+            @Override
+            protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
+                    GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+                super.handleNEIItemOutputTooltip(currentTip, pStack);
+                if (pStack.item != null && pStack.item.getItem() instanceof GT_FluidDisplayItem) return currentTip;
+                currentTip.add(GRAY + translateToLocal("Item Count: ") + formatNumbers(pStack.realStackSize));
+                return currentTip;
+            }
+
+            @Override
+            public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+                for (PositionedStack stack : neiCachedRecipe.mInputs) {
+                    if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack && stack.item != null
+                            && !(stack.item.getItem() instanceof GT_FluidDisplayItem)) {
+                        int stackSize = ((GT_NEI_DefaultHandler.FixedPositionedStack) stack).realStackSize;
+                        String displayString;
+                        if (stack.item.stackSize > 9999) {
+                            displayString = ReadableNumberConverter.INSTANCE.toWideReadableForm(stackSize);
+                        } else {
+                            displayString = String.valueOf(stackSize);
+                        }
+                        drawNEIOverlayText(displayString, stack, 0xffffff, 0.5f, true, Alignment.BottomRight);
+                    }
+                }
+                if (neiCachedRecipe.mRecipe instanceof GT_FakeSpaceProjectRecipe) {
+                    ISpaceProject project = SpaceProjectManager
+                            .getProject(((GT_FakeSpaceProjectRecipe) neiCachedRecipe.mRecipe).projectName);
+                    if (project != null) {
+                        projectTexture = project.getTexture();
+                        GuiDraw.drawStringC(
+                                EnumChatFormatting.BOLD + project.getLocalizedName(),
+                                85,
+                                0,
+                                0x404040,
+                                false);
+                    }
+                }
+            }
+
+            @Override
+            public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+                    Pos2d windowOffset) {
+                int bar1Width = 17;
+                int bar2Width = 18;
+                builder.widget(
+                        new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
+                                .setDirection(ProgressBar.Direction.RIGHT)
+                                .setProgress(
+                                        () -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
+                                .setSynced(false, false).setPos(new Pos2d(70, 28).add(windowOffset))
+                                .setSize(bar1Width, 72));
+                builder.widget(
+                        new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
+                                .setDirection(ProgressBar.Direction.RIGHT)
+                                .setProgress(
+                                        () -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
+                                                * ((float) (bar1Width + bar2Width) / bar2Width))
+                                .setSynced(false, false).setPos(new Pos2d(106, 28).add(windowOffset))
+                                .setSize(bar2Width, 72));
+            }
+        }.useModularUI(true).setRenderRealStackSizes(false).setUsualFluidInputCount(4).setNEIBackgroundOffset(2, 23)
+                .setLogoPos(152, 83);
+
         public static class TranscendentPlasmaMixerRecipeMap extends GT_Recipe_Map {
 
             public TranscendentPlasmaMixerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
@@ -2624,6 +2755,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public boolean useComparatorForNEI;
 
         /**
+         * Whether to render the actual size of stacks or a size of 1.
+         */
+        public boolean renderRealStackSizes = true;
+
+        /**
          * Initialises a new type of Recipe Handler.
          *
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a
@@ -2709,6 +2845,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe_Map useComparatorForNEI(boolean use) {
             this.useComparatorForNEI = use;
+            return this;
+        }
+
+        public GT_Recipe_Map setRenderRealStackSizes(boolean renderRealStackSizes) {
+            this.renderRealStackSizes = renderRealStackSizes;
             return this;
         }
 
@@ -3360,6 +3501,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {
             builder.widget(new DrawableWidget().setDrawable(logo).setSize(logoSize).setPos(logoPos.add(windowOffset)));
+        }
+
+        public void addRecipeSpecificDrawable(ModularWindow.Builder builder, Pos2d windowOffset,
+                Supplier<IDrawable> supplier, Pos2d pos, Size size) {
+            builder.widget(new DrawableWidget().setDrawable(supplier).setSize(size).setPos(pos.add(windowOffset)));
         }
 
         /**
