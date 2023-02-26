@@ -348,11 +348,11 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
                 .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
-        if (!mVoidExcess) {
+        if (!voidExcess) {
             helper.enableVoidProtection(this);
         }
 
-        if (mUseMultiparallelMode) {
+        if (batchMode) {
             helper.enableBatchMode(128);
         }
 

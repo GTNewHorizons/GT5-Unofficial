@@ -40,14 +40,15 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
-    private boolean isBussesSeparate = true;
 
     public GregtechMetaTileEntity_IndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
+        inputSeparation = true;
     }
 
     public GregtechMetaTileEntity_IndustrialWireMill(final String aName) {
         super(aName);
+        inputSeparation = true;
     }
 
     @Override
@@ -144,7 +145,7 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
     @Override
     public boolean checkRecipeGeneric(int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent,
             int aOutputChanceRoll) {
-        if (!isBussesSeparate)
+        if (!inputSeparation)
             return super.checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
         List<ItemStack> buffer = new ArrayList<>(16);
         FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
@@ -169,23 +170,19 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
 
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        isBussesSeparate = !isBussesSeparate;
+        inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
                 new ChatComponentTranslation(
-                        isBussesSeparate ? "interaction.separateBusses.enabled"
+                        inputSeparation ? "interaction.separateBusses.enabled"
                                 : "interaction.separateBusses.disabled"));
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
         super.loadNBTData(aNBT);
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("isBussesSeparate");
+        }
     }
 
     @Override
@@ -228,5 +225,10 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
 
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(6);
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }

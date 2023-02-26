@@ -59,8 +59,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     private int mCasing;
     protected int mCraftingTier = 0;
     protected int mFocusingTier = 0;
-    private boolean mSeparateInputBusses = false;
-    private boolean mFluidMode = false, doFermium = false, doNeptunium = false, mBatchMode;
+    private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
     private static final Fluid mNeptunium = ELEMENT.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = ELEMENT.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
@@ -421,7 +420,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         doFermium = false;
         doNeptunium = false;
         FluidStack[] tFluidList = getStoredFluids().toArray(new FluidStack[0]);
-        if (mSeparateInputBusses) {
+        if (inputSeparation) {
             ArrayList<ItemStack> tInputList = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
@@ -491,7 +490,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                     .setFluidInputs(aFluidInputs).setAvailableEUt(getMaxInputAmps() * getAverageInputVoltage())
                     .setMaxParallel(mCurrentMaxParallel).enableConsumption();
 
-            if (mBatchMode) {
+            if (batchMode) {
                 helper.enableBatchMode(128);
             }
 
@@ -725,18 +724,18 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
             float aZ) {
         if (aPlayer.isSneaking()) {
-            mBatchMode = !mBatchMode;
-            if (mBatchMode) {
+            batchMode = !batchMode;
+            if (batchMode) {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
             }
             return true;
         }
-        mSeparateInputBusses = !mSeparateInputBusses;
+        inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparateInputBusses);
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
         return true;
     }
 
@@ -784,22 +783,24 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mSeparateInputBusses", mSeparateInputBusses);
         aNBT.setBoolean("mFluidMode", mFluidMode);
         aNBT.setBoolean("doFermium", doFermium);
         aNBT.setBoolean("doNeptunium", doNeptunium);
-        aNBT.setBoolean("mBatchMode", mBatchMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mSeparateInputBusses = aNBT.getBoolean("mSeparateInputBusses");
+        super.loadNBTData(aNBT);
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("mSeparateInputBusses");
+        }
+        if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
+            batchMode = aNBT.getBoolean("mBatchMode");
+        }
         mFluidMode = aNBT.getBoolean("mFluidMode");
         doFermium = aNBT.getBoolean("doFermium");
         doNeptunium = aNBT.getBoolean("doNeptunium");
-        mBatchMode = aNBT.getBoolean("mBatchMode");
-        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -951,5 +952,10 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         // Needs to be false to render the controller
         return false;
         //spotless:on
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }

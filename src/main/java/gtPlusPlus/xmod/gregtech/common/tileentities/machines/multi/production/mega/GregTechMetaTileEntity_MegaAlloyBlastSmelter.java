@@ -43,7 +43,6 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     private static final int MAX_PARALLELS = 256;
     private HeatingCoilLevel coilLevel;
     private byte glassTier = -1;
-    private boolean separateBusses = false;
     private int currentParallels;
     private boolean hasNormalCoils;
 
@@ -139,7 +138,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         ItemStack[] tInputs;
         FluidStack[] tFluids = this.getStoredFluids().toArray(new FluidStack[0]);
 
-        if (separateBusses) {
+        if (inputSeparation) {
             ArrayList<ItemStack> tInputList = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
                 IGregTechTileEntity tInputBus = tHatch.getBaseMetaTileEntity();
@@ -415,10 +414,10 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
             // Lock to single recipe
             super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
         } else {
-            separateBusses = !separateBusses;
+            inputSeparation = !inputSeparation;
             GT_Utility.sendChatToPlayer(
                     aPlayer,
-                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + separateBusses);
+                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
         }
     }
 
@@ -434,15 +433,21 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.glassTier = aNBT.getByte("glassTier");
-        this.separateBusses = aNBT.getBoolean("separateBusses");
         super.loadNBTData(aNBT);
+        this.glassTier = aNBT.getByte("glassTier");
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("separateBusses");
+        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("glassTier", glassTier);
-        aNBT.setBoolean("separateBusses", separateBusses);
         super.saveNBTData(aNBT);
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }

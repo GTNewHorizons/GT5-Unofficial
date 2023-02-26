@@ -487,11 +487,11 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
                 .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
-        if (!mVoidExcess) {
+        if (!voidExcess) {
             helper.enableVoidProtection(this);
         }
 
-        if (mUseMultiparallelMode) {
+        if (batchMode) {
             helper.enableBatchMode(128);
         }
 

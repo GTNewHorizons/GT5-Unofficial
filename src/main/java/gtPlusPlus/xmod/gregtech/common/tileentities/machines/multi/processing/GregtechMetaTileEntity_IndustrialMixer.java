@@ -40,34 +40,31 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public static String mCasingName = "Multi-Use Casing";
     public static String mCasingName2 = "Titanium Turbine Casing";
     private int mCasing;
-    private boolean isBussesSeparate = true;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialMixer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
+        inputSeparation = true;
     }
 
     public GregtechMetaTileEntity_IndustrialMixer(final String aName) {
         super(aName);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
+        inputSeparation = true;
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("isBussesSeparate")) {
-            isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
-        }
-        // Fallback for existing mixers
-        else {
-            isBussesSeparate = true;
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            if (aNBT.hasKey("isBussesSeparate")) {
+                inputSeparation = aNBT.getBoolean("isBussesSeparate");
+            }
+            // Fallback for existing mixers
+            else {
+                inputSeparation = true;
+            }
         }
     }
 
@@ -159,7 +156,7 @@ public class GregtechMetaTileEntity_IndustrialMixer
 
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
-        if (isBussesSeparate) {
+        if (inputSeparation) {
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 ArrayList<ItemStack> rList = new ArrayList<>();
                 for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
@@ -223,10 +220,10 @@ public class GregtechMetaTileEntity_IndustrialMixer
 
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        isBussesSeparate = !isBussesSeparate;
+        inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override
@@ -237,5 +234,10 @@ public class GregtechMetaTileEntity_IndustrialMixer
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }

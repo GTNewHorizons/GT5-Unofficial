@@ -180,11 +180,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         GT_Recipe tRecipe = new GT_Recipe(null, toOutput, null, null, null, null, 0, 0, 0);
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setAvailableEUt(tVoltage);
-        if (!mVoidExcess) {
+        if (!voidExcess) {
             helper.enableVoidProtection(this);
         }
 
-        if (mUseMultiparallelMode) {
+        if (batchMode) {
             helper.enableBatchMode(128);
         }
 

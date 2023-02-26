@@ -92,7 +92,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public GT_Recipe mLastRecipe;
     private boolean mInternalCircuit = false;
     protected long mTotalRunTime = 0;
-    protected boolean mVoidExcess = false;
 
     public ArrayList<GT_MetaTileEntity_Hatch_ControlCore> mControlCoreBus = new ArrayList<>();
     /**
@@ -110,10 +109,12 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     public GregtechMeta_MultiBlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
+        voidExcess = false;
     }
 
     public GregtechMeta_MultiBlockBase(final String aName) {
         super(aName);
+        voidExcess = false;
     }
 
     public static boolean isValidMetaTileEntity(final MetaTileEntity aMetaTileEntity) {
@@ -585,11 +586,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
                 .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
-        if (!mVoidExcess) {
+        if (!voidExcess) {
             helper.enableVoidProtection(this);
         }
 
-        if (mUseMultiparallelMode) {
+        if (batchMode) {
             helper.enableBatchMode(128);
         }
 
@@ -794,11 +795,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
                 .enableConsumption().enableOutputCalculation();
-        if (!mVoidExcess) {
+        if (!voidExcess) {
             helper.enableVoidProtection(this);
         }
 
-        if (mUseMultiparallelMode) {
+        if (batchMode) {
             helper.enableBatchMode(128);
         }
 
@@ -1603,17 +1604,19 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
-        aNBT.setBoolean("mVoidExcess", this.mVoidExcess);
-        aNBT.setBoolean("mUseMultiparallelMode", mUseMultiparallelMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
-        this.mVoidExcess = aNBT.getBoolean("mVoidExcess");
-        this.mUseMultiparallelMode = aNBT.getBoolean("mUseMultiparallelMode");
         super.loadNBTData(aNBT);
+        this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
+        if (!aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
+            voidExcess = aNBT.getBoolean("mVoidExcess");
+        }
+        if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
+            batchMode = aNBT.getBoolean("mUseMultiparallelMode");
+        }
     }
 
     /**
@@ -1863,21 +1866,19 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             float aZ) {
         boolean tSuper = super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) return tSuper;
-        mVoidExcess = !mVoidExcess;
+        voidExcess = !voidExcess;
         aPlayer.addChatMessage(
                 new ChatComponentTranslation(
-                        mVoidExcess ? "interaction.voidexcess.enabled" : "interaction.voidexcess.disabled"));
+                        voidExcess ? "interaction.voidexcess.enabled" : "interaction.voidexcess.disabled"));
         return true;
     }
-
-    protected boolean mUseMultiparallelMode = false;
 
     @Override
     public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
             float aZ) {
         if (aPlayer.isSneaking()) {
-            mUseMultiparallelMode = !mUseMultiparallelMode;
-            if (mUseMultiparallelMode) {
+            batchMode = !batchMode;
+            if (batchMode) {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
@@ -2127,6 +2128,16 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     private static final Materials GOOD = Materials.Uranium;
     private static final Materials BAD = Materials.Plutonium;
     private static final ConcurrentHashMap<String, ItemStack> mToolStacks = new ConcurrentHashMap<>();
+
+    @Override
+    protected boolean isVoidExcessButtonEnabled() {
+        return true;
+    }
+
+    @Override
+    protected boolean isBatchModeButtonEnabled() {
+        return true;
+    }
 
     protected void addNoPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(

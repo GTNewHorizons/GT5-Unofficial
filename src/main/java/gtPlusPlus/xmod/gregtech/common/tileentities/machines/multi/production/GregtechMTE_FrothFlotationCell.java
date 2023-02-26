@@ -286,4 +286,9 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     public String[] getExtraInfoData() {
         return new String[] { "Locked material: " + lockedMaterialName };
     }
+
+    @Override
+    protected boolean isRecipeLockingEnabled() {
+        return lockedMaterialName != null && !lockedMaterialName.equals("");
+    }
 }

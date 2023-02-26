@@ -50,7 +50,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     private final ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase> mPyrotheumHatches = new ArrayList<>();
 
     private HeatingCoilLevel mHeatingCapacity;
-    private boolean isBussesSeparate = false;
 
     public GregtechMetaTileEntity_Adv_EBF(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -205,7 +204,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        if (isBussesSeparate) {
+        if (inputSeparation) {
             FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 ArrayList<ItemStack> tInputs = new ArrayList<>();
@@ -276,11 +275,11 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
                 .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
-        if (!mVoidExcess) {
+        if (!voidExcess) {
             helper.enableVoidProtection(this);
         }
 
-        if (mUseMultiparallelMode) {
+        if (batchMode) {
             helper.enableBatchMode(128);
         }
 
@@ -345,23 +344,19 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        isBussesSeparate = !isBussesSeparate;
+        inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
                 new ChatComponentTranslation(
-                        isBussesSeparate ? "interaction.separateBusses.enabled"
+                        inputSeparation ? "interaction.separateBusses.enabled"
                                 : "interaction.separateBusses.disabled"));
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
         super.loadNBTData(aNBT);
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("isBussesSeparate");
+        }
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -370,5 +365,10 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         mHeatingCapacity = aCoilLevel;
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }
