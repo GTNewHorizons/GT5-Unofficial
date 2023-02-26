@@ -130,6 +130,11 @@ public class GT_MetaTileEntity_PyrolyseOven extends
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes;
+    }
+
+    @Override
     public boolean checkRecipe(ItemStack aStack) {
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
