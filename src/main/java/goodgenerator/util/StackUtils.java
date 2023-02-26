@@ -16,7 +16,7 @@ public class StackUtils {
 
     /**
      * Multiplies one ItemStack by a multiplier, and splits it into as many full stacks as it needs to.
-     * 
+     *
      * @param stack      The ItemStack you want to multiply
      * @param multiplier The number the stack is multiplied by
      * @return A List of stacks that, in total, are the same as the input ItemStack after it has been multiplied.
@@ -67,6 +67,10 @@ public class StackUtils {
         return output;
     }
 
+    /**
+     * Turns the {@code items} List into a {@code HashMap} containing each unique {@code ItemStack} as the key, and a
+     * value representing the total amount of the respective {@code ItemStack} in the List.
+     */
     public static HashMap<ItemStack, Integer> getTotalItems(List<ItemStack> items) {
         HashMap<ItemStack, Integer> totals = new HashMap<>();
         itemLoop: for (ItemStack item : items) {
@@ -77,6 +81,10 @@ public class StackUtils {
         return totals;
     }
 
+    /**
+     * Turns the {@code items} Array into a {@code HashMap} containing each unique {@code ItemStack} as the key, and a
+     * value representing the total amount of the respective {@code ItemStack} in the Array.
+     */
     public static HashMap<ItemStack, Integer> getTotalItems(ItemStack[] items) {
         return getTotalItems(Arrays.asList(items));
     }

@@ -84,8 +84,8 @@ public class ComponentAssemblyLineRecipeLoader {
                             compactItems(fixedInputs, info.getRight()).toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
                             info.getLeft().get(OUTPUT_MULTIPLIER),
-                            recipe.mDuration * INPUT_MULTIPLIER,
-                            energy,
+                            recipe.mDuration * OUTPUT_MULTIPLIER,
+                            energy * OUTPUT_MULTIPLIER,
                             info.getRight());
                 }
             }
@@ -143,15 +143,19 @@ public class ComponentAssemblyLineRecipeLoader {
                     MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
                             fixedInputs.toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
-                            info.getLeft().get(OUTPUT_MULTIPLIER),
-                            recipe.mDuration,
-                            recipe.mEUt,
-                            info.getRight());
+                            info.getLeft().get(OUTPUT_MULTIPLIER), // The component output
+                            recipe.mDuration * OUTPUT_MULTIPLIER, // Takes as long as this many
+                            recipe.mEUt * OUTPUT_MULTIPLIER, // Takes the power of this many
+                            info.getRight()); // Casing tier
                 }
             }
         });
     }
 
+    /**
+     * Looks for a matching FluidStack and merges the amount of the converted fluid with the one it found. Otherwise, it
+     * will add the converted to the fluid inputs.
+     */
     private static void replaceIntoFluids(List<ItemStack> inputs, List<FluidStack> fluidOutputs, int threshold) {
         HashMap<ItemStack, Integer> totals = getTotalItems(inputs.toArray(new ItemStack[0]));
         ArrayList<ItemStack> newInputs = new ArrayList<>();
@@ -160,13 +164,11 @@ public class ComponentAssemblyLineRecipeLoader {
             boolean isConverted = false;
             if (OreDictionary.getOreIDs(input).length > 0 && count > threshold) {
                 FluidStack foundFluidStack = tryConvertItemStackToFluidMaterial(input);
-                // Looks for a matching fluid stack and merges the amount of the converted fluid with
-                // the one it found. Otherwise it will add the converted to the fluid inputs.
+
+                ItemData data = GT_OreDictUnificator.getAssociation(input);
 
                 // Prevents the uncraftable molten magnetic samarium from being converted into fluid during auto
                 // generation
-
-                ItemData data = GT_OreDictUnificator.getAssociation(input);
                 if (data != null && data.mMaterial.mMaterial == Materials.SamariumMagnetic) {
                     input = GT_OreDictUnificator.get(data.mPrefix, Materials.Samarium, 1);
                     foundFluidStack = tryConvertItemStackToFluidMaterial(input);
@@ -244,7 +246,7 @@ public class ComponentAssemblyLineRecipeLoader {
      * For example: If your OreDictionary is something like {@code gearGtSmallSpaceTime}, a conventional search would
      * return something like {@code gearGt} instead of {@code gearGtSmall}. This makes the longer String the most
      * accurate.
-     * 
+     *
      * @param oreDict The Ore Dictionary entry
      * @return The longest ore prefix that the OreDict string starts with. This makes it the most accurate prefix.
      */

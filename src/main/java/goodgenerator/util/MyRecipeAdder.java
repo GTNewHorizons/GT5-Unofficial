@@ -515,7 +515,7 @@ public class MyRecipeAdder {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
-            setUsualFluidInputCount(8);
+            setUsualFluidInputCount(12);
             setNEITransferRect(new Rectangle(70, 15, 18, 54));
             setNEISpecialInfoFormatter(
                     (recipeInfo, applyPrefixAndSuffix) -> Collections.singletonList(
@@ -524,17 +524,18 @@ public class MyRecipeAdder {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getGridPositions(itemInputCount, 16, 15, 3);
+            return UIHelper.getGridPositions(itemInputCount, 16, 8, 3);
         }
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return Collections.singletonList(new Pos2d(142, 15));
+            return Collections.singletonList(new Pos2d(142, 8));
         }
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getGridPositions(fluidInputCount, 88, 37, 4);
+
+            return UIHelper.getGridPositions(fluidInputCount, 88, 26, 4);
         }
 
         @Override
@@ -545,7 +546,7 @@ public class MyRecipeAdder {
                 Pos2d windowOffset) {
             builder.widget(
                     new DrawableWidget().setDrawable(GG_UITextures.PICTURE_COMPONENT_ASSLINE)
-                            .setPos(new Pos2d(70, 22).add(windowOffset)).setSize(72, 40));
+                            .setPos(new Pos2d(70, 11).add(windowOffset)).setSize(72, 40));
         }
     }
 
@@ -555,7 +556,7 @@ public class MyRecipeAdder {
             "Component Assembly Line",
             null,
             "goodgenerator:textures/gui/ComponentAssline",
-            9,
+            12,
             1,
             0,
             0,

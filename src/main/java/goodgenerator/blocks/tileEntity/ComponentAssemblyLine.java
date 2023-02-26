@@ -1,12 +1,15 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -30,10 +33,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_Utility;
 
 public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<ComponentAssemblyLine>
         implements ISurvivalConstructable {
@@ -47,9 +52,9 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
                     STRUCTURE_PIECE_MAIN,
                     new String[][] {
                             { "         ", "   III   ", " HHI~IHH ", "HH III HH", "H       H", "H       H", "H  JJJ  H",
-                                    "H  N N  H", "H  N N  H", "HHHHHHHHH" },
-                            { "         ", " EHHHHHE ", "E       E", "H       H", "A       A", "A       A", "A  HHH  A",
-                                    "A       A", "A       A", "MHHHHHHHM" },
+                                    "H  JJJ  H", "H  N N  H", "HHHHHHHHH" },
+                            { "         ", " EHHHHHE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                                    "A  HHH  A", "A       A", "MHHHHHHHM" },
                             { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
                                     "A  HHH  A", "A       A", "MHHHHHHHM" },
                             { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
@@ -184,10 +189,10 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
                 .addInfo(
                         "The " + EnumChatFormatting.BOLD
                                 + EnumChatFormatting.YELLOW
-                                + "Special Component Assembly Line Casing"
+                                + "Component Assembly Line Casing "
                                 + EnumChatFormatting.RESET
-                                + EnumChatFormatting.GRAY)
-                .addInfo("limits the recipes the machine can perform. See the NEI pages for details.")
+                                + EnumChatFormatting.GRAY
+                                + "limits the recipes the machine can perform. See the NEI pages for details.")
                 .addInfo(
                         "Supports " + EnumChatFormatting.BLUE
                                 + "Tec"
@@ -197,6 +202,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
                                 + " laser and multi-amp hatches!")
                 .addInfo("Supports overclocking beyond MAX!")
                 .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
+                .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
                 .beginStructureBlock(9, 10, 33, false)
                 .addStructureInfo("This structure is too complex! See schematic for details.")
                 .addOtherStructurePart("Borosilicate Glass", "Can be UV tier or higher")
@@ -254,14 +260,33 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
     public boolean checkRecipe(ItemStack aStack) {
         this.mEfficiencyIncrease = 10000;
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        long totalEU = getRealVoltage();
-        ItemStack[] tItems = getStoredInputs().toArray(new ItemStack[0]);
         FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
+
+        if (inputSeparation) {
+            ArrayList<ItemStack> tInputList = new ArrayList<>();
+            for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
+                IGregTechTileEntity tInputBus = tHatch.getBaseMetaTileEntity();
+                for (int i = tInputBus.getSizeInventory() - 1; i >= 0; i--) {
+                    if (tInputBus.getStackInSlot(i) != null) tInputList.add(tInputBus.getStackInSlot(i));
+                }
+                ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
+                if (processRecipe(tInputs, tFluids)) return true;
+                else tInputList.clear();
+            }
+        } else {
+            ItemStack[] tItems = getStoredInputs().toArray(new ItemStack[0]);
+            return processRecipe(tItems, tFluids);
+        }
+        return false;
+    }
+
+    private boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluidInputs) {
+        long totalEU = getRealVoltage();
         this.lastRecipe = getRecipeMap()
-                .findRecipe(getBaseMetaTileEntity(), this.lastRecipe, false, totalEU, tFluids, tItems);
+                .findRecipe(getBaseMetaTileEntity(), this.lastRecipe, false, totalEU, tFluidInputs, tInputs);
         if (this.lastRecipe == null) return false;
         if (this.lastRecipe.mSpecialValue > casingTier + 1) return false;
-        if (!this.lastRecipe.isRecipeInputEqual(true, tFluids, tItems)) return false;
+        if (!this.lastRecipe.isRecipeInputEqual(true, tFluidInputs, tInputs)) return false;
 
         calculateOverclockedNessMulti((long) this.lastRecipe.mEUt, this.lastRecipe.mDuration, 1, totalEU);
         if (this.lEUt > 0) {
@@ -286,6 +311,19 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
     }
 
     @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        inputSeparation = !inputSeparation;
+        GT_Utility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
+    }
+
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
@@ -307,13 +345,16 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("casingTier", casingTier);
         super.saveNBTData(aNBT);
+        aNBT.setInteger("casingTier", casingTier);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
-        casingTier = aNBT.getInteger("casingTier");
         super.loadNBTData(aNBT);
+        casingTier = aNBT.getInteger("casingTier");
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("mSeparate");
+        }
     }
 }
