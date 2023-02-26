@@ -9,7 +9,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +20,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
+import gregtech.api.enums.GT_Values;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 
 /** Used by machines that are locked to a single recipe, for fast computation. */
@@ -248,7 +249,9 @@ public class GT_Single_Recipe_Check {
 
     protected static ImmutableMap<Fluid, Integer> loadFluidCost(NBTTagCompound tag) {
         return GT_Utility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND)).collect(
-                GT_Utility.toImmutableMapSerial(t -> FluidRegistry.getFluid(t.getString("id")), t -> t.getInteger("count")));
+                GT_Utility.toImmutableMapSerial(
+                        t -> FluidRegistry.getFluid(t.getString("id")),
+                        t -> t.getInteger("count")));
     }
 
     protected static ImmutableMap<GT_Utility.ItemId, Integer> loadItemCost(NBTTagCompound tag) {
@@ -270,7 +273,12 @@ public class GT_Single_Recipe_Check {
         FluidStack[] fOutputs = GT_Utility.streamCompounds(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
                 .map(FluidStack::loadFluidStackFromNBT).toArray(FluidStack[]::new);
         int eut = tag.getInteger("eut");
-        GT_Recipe found = recipeMap.findRecipe(parent.getBaseMetaTileEntity(), false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
+        GT_Recipe found = recipeMap.findRecipe(
+                parent.getBaseMetaTileEntity(),
+                false,
+                GT_Values.V[GT_Utility.getTier(eut)],
+                fInputs,
+                inputs);
         int[] chances = tag.getIntArray("chances");
         if (found == null || !GT_Utility.equals(inputs, found.mInputs)
                 || !Arrays.equals(fInputs, found.mFluidInputs)
