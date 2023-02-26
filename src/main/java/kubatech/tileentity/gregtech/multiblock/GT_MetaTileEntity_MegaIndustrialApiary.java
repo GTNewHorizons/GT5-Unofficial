@@ -644,12 +644,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                             return Collections.emptyList();
                         }).setSize(18, 18));
             }
-            beesContainer.widget(row.setPos(0, i * 18).setEnabled(widget -> {
-                int y = widget.getPos().y;
-                int cy = beesContainer.getVerticalScrollOffset();
-                int ch = beesContainer.getVisibleHeight();
-                return y >= cy - ch && y <= cy + ch;
-            }));
+            beesContainer.widget(
+                    row.setPos(0, i * 18).setEnabled(widget -> widget.getPos().y < beesContainer.getVisibleHeight()));
         }
         beesContainer.attachSyncer(
                 new FakeSyncWidget.ListSyncer<>(
