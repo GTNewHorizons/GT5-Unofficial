@@ -117,26 +117,25 @@ public class GT_TileEntity_MegaChemicalReactor
         return false;
     } // TO IMPLEMENT
 
-    private boolean mUseMultiparallelMode = false;
-
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mUseMultiparallelMode", mUseMultiparallelMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mUseMultiparallelMode = aNBT.getBoolean("mUseMultiparallelMode");
+        if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
+            batchMode = aNBT.getBoolean("mUseMultiparallelMode");
+        }
     }
 
     @Override
     public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
             float aZ) {
         if (aPlayer.isSneaking()) {
-            mUseMultiparallelMode = !mUseMultiparallelMode;
-            if (mUseMultiparallelMode) {
+            batchMode = !batchMode;
+            if (batchMode) {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
@@ -167,14 +166,12 @@ public class GT_TileEntity_MegaChemicalReactor
         if (tRecipe != null) {
             found_Recipe = true;
             long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
-            if (mUseMultiparallelMode && tMaxPara == ConfigHandler.megaMachinesMax) {
+            if (batchMode && tMaxPara == ConfigHandler.megaMachinesMax) {
                 tMaxPara *= 128;
             }
 
             int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
-            tBatchMultiplier = mUseMultiparallelMode
-                    ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f)
-                    : 1.0f;
+            tBatchMultiplier = batchMode ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f) : 1.0f;
 
             this.updateSlots();
             if (tCurrentPara <= 0) {
@@ -202,7 +199,7 @@ public class GT_TileEntity_MegaChemicalReactor
                 return false;
             }
 
-            if (mUseMultiparallelMode) {
+            if (batchMode) {
                 this.mMaxProgresstime = (int) Math.ceil(this.mMaxProgresstime * tBatchMultiplier);
             }
 
@@ -305,5 +302,10 @@ public class GT_TileEntity_MegaChemicalReactor
         if (!collection.isEmpty()) for (Object tecTechEnergyMulti : collection)
             if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier) return true;
         return false;
+    }
+
+    @Override
+    protected boolean isBatchModeButtonEnabled() {
+        return true;
     }
 }

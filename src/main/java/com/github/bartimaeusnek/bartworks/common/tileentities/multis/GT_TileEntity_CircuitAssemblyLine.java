@@ -39,6 +39,9 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -62,6 +65,8 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_NEXT = "next";
+
+    private String imprintedItemName;
 
     private static final IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
             .<GT_TileEntity_CircuitAssemblyLine>builder()
@@ -167,6 +172,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.type = aNBT.getCompoundTag("Type");
+        imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
         super.loadNBTData(aNBT);
     }
 
@@ -198,6 +204,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         }
 
         ItemStack stack = ItemStack.loadItemStackFromNBT(this.type);
+        imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(stack);
 
         if (stack == null) return false;
 
@@ -393,5 +400,16 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             if (built >= 0) return built;
         }
         return -1;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(new FakeSyncWidget.StringSyncer(() -> imprintedItemName, val -> imprintedItemName = val));
+    }
+
+    @Override
+    protected boolean isRecipeLockingEnabled() {
+        return imprintedItemName != null && !imprintedItemName.equals("");
     }
 }
