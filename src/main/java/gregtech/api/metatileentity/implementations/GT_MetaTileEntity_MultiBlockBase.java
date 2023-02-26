@@ -37,6 +37,7 @@ import com.gtnewhorizons.modularui.common.widget.*;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -89,6 +90,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected final List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
+
+    protected static final byte INTERRUPT_SOUND_INDEX = 8;
+    protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
@@ -383,6 +387,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean checkRecipe() {
         startRecipeProcessing();
         boolean result = checkRecipe(mInventory[1]);
+        if (result && getProcessStartSound() != null) {
+            sendLoopStart(PROCESS_START_SOUND_INDEX);
+        }
         endRecipeProcessing();
         return result;
     }
@@ -459,6 +466,43 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return mPollution < 10000;
+    }
+
+    @Override
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        super.doSound(aIndex, aX, aY, aZ);
+        switch (aIndex) {
+            case PROCESS_START_SOUND_INDEX:
+                if (getProcessStartSound() != null)
+                    GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+                break;
+            case INTERRUPT_SOUND_INDEX:
+                GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                break;
+        }
+    }
+
+    @Override
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == PROCESS_START_SOUND_INDEX) {
+            if (getProcessStartSound() != null)
+                GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+        }
+    }
+
+    /**
+     * @return Time before the start process sound is played again
+     */
+    protected int getTimeBetweenProcessSounds() {
+        return 100;
+    }
+
+    /**
+     * @return Sound that will be played once, when the recipe check was valid
+     */
+    protected SoundResource getProcessStartSound() {
+        return null;
     }
 
     /**
@@ -539,6 +583,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public void criticalStopMachine() {
         stopMachine();
+        sendSound(INTERRUPT_SOUND_INDEX);
         getBaseMetaTileEntity().setShutdownStatus(true);
     }
 

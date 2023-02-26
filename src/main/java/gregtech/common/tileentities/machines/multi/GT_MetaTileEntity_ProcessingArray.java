@@ -38,6 +38,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -148,6 +149,31 @@ public class GT_MetaTileEntity_ProcessingArray
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        SoundResource sound = SoundResource.get(aIndex < 0 ? aIndex + 256 : 0);
+        if (sound != null) {
+            GT_Utility.doSoundAtClient(sound, getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+        }
+    }
+
+    @Override
+    protected boolean checkRecipe() {
+        startRecipeProcessing();
+        boolean result = checkRecipe(mInventory[1]);
+        if (result) {
+            int length = mInventory[1].getUnlocalizedName().length();
+            String aMachineName = mInventory[1].getUnlocalizedName().substring(17, length - 8);
+            SoundResource sound = GT_ProcessingArray_Manager.getSoundResource(aMachineName);
+            if (sound != null) {
+                sendLoopStart((byte) sound.id);
+            }
+        }
+        endRecipeProcessing();
+        return result;
     }
 
     @Override
