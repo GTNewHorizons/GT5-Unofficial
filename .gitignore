@@ -7,3 +7,4 @@ out/
 run/
 bin/
 build/
+*.bat
