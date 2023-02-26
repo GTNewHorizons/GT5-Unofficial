@@ -54,6 +54,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
@@ -552,6 +553,21 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     @Override
     public boolean useModularUI() {
         return true;
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 166;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 176;
+    }
+
+    @Override
+    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(7, 83), this.getGUITextureSet().getItemSlot());
     }
 
     @Override
