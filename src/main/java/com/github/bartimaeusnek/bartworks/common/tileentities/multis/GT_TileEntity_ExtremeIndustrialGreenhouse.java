@@ -57,6 +57,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -542,6 +543,21 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
         if (val == 0) return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS };
         else return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK };
     };
+
+    @Override
+    public int getGUIHeight() {
+        return 166;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 176;
+    }
+
+    @Override
+    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(7, 83), this.getGUITextureSet().getItemSlot());
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
