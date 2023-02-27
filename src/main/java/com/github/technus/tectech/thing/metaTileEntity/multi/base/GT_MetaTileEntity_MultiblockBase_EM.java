@@ -3032,7 +3032,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                                         e.printStackTrace();
                                     }
                                 }).setTextAlignment(Alignment.CenterLeft).setFocusOnGuiOpen(true)
-                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD).setPos(5, 20).setSize(90, 15))
+                                .setMaximumFractionDigits(8).setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                .setPos(5, 20).setSize(90, 15))
                 .widget(
                         new TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I").setDefaultColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center).setPos(5, 5))
