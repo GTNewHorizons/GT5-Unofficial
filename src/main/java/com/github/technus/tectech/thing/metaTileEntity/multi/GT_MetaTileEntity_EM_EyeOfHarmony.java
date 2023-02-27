@@ -722,7 +722,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private double hydrogenOverflowProbabilityAdjustment;
     private double heliumOverflowProbabilityAdjustment;
-    private static final long TICKS_BETWEEN_HATCH_DRAIN = EOH_DEBUG_MODE ? 20 : 200;
+    private static final long TICKS_BETWEEN_HATCH_DRAIN = EOH_DEBUG_MODE ? 10 : 50;
 
     private List<ItemStackLong> outputItems = new ArrayList<>();
 
