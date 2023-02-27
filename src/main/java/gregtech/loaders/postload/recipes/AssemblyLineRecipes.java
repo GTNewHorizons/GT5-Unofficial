@@ -26,19 +26,140 @@ public class AssemblyLineRecipes implements Runnable {
                 ? FluidRegistry.getFluid("molten.indalloy140")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
+        if (isBartWorksLoaded) {
+            // Luv Motor, sensor, emitter, field generator
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Electric_Motor_IV.get(1, new Object() {}),
+                    144000,
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
+                            getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 64L, 90),
+                            getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 64L, 90),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
+                    ItemList.Electric_Motor_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Emitter_IV.get(1, new Object() {}),
+                    144000,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
+                            ItemList.Electric_Motor_LuV.get(1, new Object() {}),
+                            getModItem("bartworks", "gt.bwMetaGeneratedstick", 8L, 90),
+                            ItemList.QuantumStar.get(1, new Object() {}),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 576) },
+                    ItemList.Emitter_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Sensor_IV.get(1, new Object() {}),
+                    144000,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
+                            ItemList.Electric_Motor_LuV.get(1, new Object() {}),
+                            getModItem("bartworks", "gt.bwMetaGeneratedplate", 8L, 90),
+                            ItemList.QuantumStar.get(1, new Object() {}),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 576) },
+                    ItemList.Sensor_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Field_Generator_IV.get(1, new Object() {}),
+                    144000,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6L),
+                            ItemList.QuantumStar.get(2, new Object() {}), ItemList.Emitter_LuV.get(4, new Object() {}),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
+                            getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 64L, 90),
+                            getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 64L, 90),
+                            getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 64L, 90),
+                            getModItem("bartworks", "gt.bwMetaGeneratedwireFine", 64L, 90),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 8L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 576) },
+                    ItemList.Field_Generator_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+
+        } else {
+            // Luv Motor, sensor, emitter, field generator
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Electric_Motor_IV.get(1, new Object() {}),
+                    144000,
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
+                    ItemList.Electric_Motor_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Emitter_IV.get(1, new Object() {}),
+                    144000,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
+                            ItemList.Electric_Motor_LuV.get(1, new Object() {}),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 8L),
+                            ItemList.QuantumStar.get(1, new Object() {}),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 576) },
+                    ItemList.Emitter_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Sensor_IV.get(1, new Object() {}),
+                    144000,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
+                            ItemList.Electric_Motor_LuV.get(1, new Object() {}),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 8L),
+                            ItemList.QuantumStar.get(1, new Object() {}),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 576) },
+                    ItemList.Sensor_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemList.Field_Generator_IV.get(1, new Object() {}),
+                    144000,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6L),
+                            ItemList.QuantumStar.get(2, new Object() {}), ItemList.Emitter_LuV.get(4, new Object() {}),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
+                            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 8L) },
+                    new FluidStack[] { new FluidStack(solderIndalloy, 576) },
+                    ItemList.Field_Generator_LuV.get(1),
+                    600,
+                    (int) TierEU.RECIPE_IV);
+        }
+
         // Motors
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Electric_Motor_IV.get(1, new Object() {}),
-                144000,
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L) },
-                new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
-                ItemList.Electric_Motor_LuV.get(1),
-                600,
-                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Motor_LuV.get(1, new Object() {}),
@@ -271,22 +392,6 @@ public class AssemblyLineRecipes implements Runnable {
                 (int) TierEU.RECIPE_ZPM);
 
         // Emitters
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Emitter_IV.get(1, new Object() {}),
-                144000,
-                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
-                        ItemList.Electric_Motor_LuV.get(1, new Object() {}),
-                        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 8L),
-                        ItemList.QuantumStar.get(1, new Object() {}),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7L) },
-                new FluidStack[] { new FluidStack(solderIndalloy, 576) },
-                ItemList.Emitter_LuV.get(1),
-                600,
-                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Emitter_LuV.get(1, new Object() {}),
@@ -323,22 +428,6 @@ public class AssemblyLineRecipes implements Runnable {
                 (int) TierEU.RECIPE_ZPM);
 
         // Sensors
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Sensor_IV.get(1, new Object() {}),
-                144000,
-                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
-                        ItemList.Electric_Motor_LuV.get(1, new Object() {}),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 8L),
-                        ItemList.QuantumStar.get(1, new Object() {}),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7L) },
-                new FluidStack[] { new FluidStack(solderIndalloy, 576) },
-                ItemList.Sensor_LuV.get(1),
-                600,
-                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Sensor_LuV.get(1, new Object() {}),
@@ -375,22 +464,6 @@ public class AssemblyLineRecipes implements Runnable {
                 (int) TierEU.RECIPE_ZPM);
 
         // Field Generators
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Field_Generator_IV.get(1, new Object() {}),
-                144000,
-                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6L),
-                        ItemList.QuantumStar.get(2, new Object() {}), ItemList.Emitter_LuV.get(4, new Object() {}),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 8L) },
-                new FluidStack[] { new FluidStack(solderIndalloy, 576) },
-                ItemList.Field_Generator_LuV.get(1),
-                600,
-                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Field_Generator_LuV.get(1, new Object() {}),
