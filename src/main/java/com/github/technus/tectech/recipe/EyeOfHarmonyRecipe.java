@@ -149,12 +149,12 @@ public class EyeOfHarmonyRecipe {
 
         // Tier 7 - 576 Universium
         // Tier 8 - 2304 Universium
-        // Tier 9 - 9216 Universium (DD only)
-        long spacetimeTier = rocketTierOfRecipe;
+        // Tier 9 - 9216 Universium
+        int spacetimeTier = (int) rocketTierOfRecipe;
         if (spacetimeTier == 0 || spacetimeTier == 9) {
             spacetimeTier -= 1;
         }
-        fluidStackArrayList.add(SPECIAL_FLUIDS[(int) spacetimeTier + 1]);
+        fluidStackArrayList.add(SPECIAL_FLUIDS[spacetimeTier + 1]);
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
