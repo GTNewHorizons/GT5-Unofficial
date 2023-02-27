@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isBartWorksLoaded;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -9,7 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_ModHandler;
 
 public class AssemblyLineRecipes implements Runnable {
 
