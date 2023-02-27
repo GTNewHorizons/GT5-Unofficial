@@ -224,7 +224,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo("Supports perfect OC and past 1 tick (multiplies outputs)")
                 .addInfo("Recipe time is based on mob health")
                 .addInfo("You can additionally put a weapon to the ULV input bus")
-                .addInfo("It will speed up the process and apply looting level from the weapon")
+                .addInfo("It will speed up the process and apply looting level from the weapon (maximum 4 levels)")
                 .addInfo("Also produces 120 Liquid XP per operation").addInfo("If the mob spawns infernal")
                 .addInfo("it will drain 8 times more power")
                 .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver")
@@ -480,8 +480,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                     ex.printStackTrace();
                 }
                 weaponCache.isValid = true;
-                weaponCache.looting = EnchantmentHelper
-                        .getEnchantmentLevel(Enchantment.looting.effectId, lootingHolder);
+                weaponCache.looting = Math
+                        .min(4, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingHolder));
                 weaponCache.id = ItemID.create_NoCopy(lootingHolder, true, true);
             }
             if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
