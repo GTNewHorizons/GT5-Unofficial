@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.util.GT_ModHandler.getModItem;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
