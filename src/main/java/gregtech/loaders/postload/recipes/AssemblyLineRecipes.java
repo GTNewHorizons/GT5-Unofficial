@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_ModHandler;
 
 public class AssemblyLineRecipes implements Runnable {
 
