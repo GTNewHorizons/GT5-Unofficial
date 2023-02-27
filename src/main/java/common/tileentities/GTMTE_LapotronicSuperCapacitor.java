@@ -727,7 +727,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Every LSC_time_between_wireless_rebalance_in_ticks check against wireless network for re-balancing.
         counter++;
-        if (wireless_mode && (counter == LSC_time_between_wireless_rebalance_in_ticks)) {
+        if (wireless_mode && (counter >= LSC_time_between_wireless_rebalance_in_ticks)) {
 
             // Reset tick counter.
             counter = 1;
@@ -786,7 +786,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
     /**
      * To be called whenever the maintenance status changes or the capacity was recalculated
-     * 
+     *
      * @param repairStatus This machine's repair status
      * @return new BigInteger instance for passiveDischargeAmount
      */
@@ -813,7 +813,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
     /**
      * Calculate how much EU to draw from an Energy Hatch
-     * 
+     *
      * @param hatchWatts Hatch amperage * voltage
      * @return EU amount
      */
@@ -825,7 +825,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
     /**
      * Calculate how much EU to push into a Dynamo Hatch
-     * 
+     *
      * @param hatchWatts Hatch amperage * voltage
      * @return EU amount
      */
@@ -897,6 +897,7 @@ public class GTMTE_LapotronicSuperCapacitor
         nbt.setByteArray("capacity", capacity.toByteArray());
         nbt.setByteArray("stored", stored.toByteArray());
         nbt.setBoolean("wireless_mode", wireless_mode);
+        nbt.setInteger("wireless_mode_cooldown", counter);
 
         super.saveNBTData(nbt);
     }
@@ -908,6 +909,7 @@ public class GTMTE_LapotronicSuperCapacitor
         capacity = new BigInteger(nbt.getByteArray("capacity"));
         stored = new BigInteger(nbt.getByteArray("stored"));
         wireless_mode = nbt.getBoolean("wireless_mode");
+        counter = nbt.getInteger("wireless_mode_cooldown");
 
         super.loadNBTData(nbt);
     }
