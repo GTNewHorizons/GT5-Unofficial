@@ -27,6 +27,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 public class EyeOfHarmonyRecipeStorage {
 
     public static final long BILLION = LongMath.pow(10, 9);
+    private static final double CHANCE_DECREASE_PER_DIMENSION = 0.05;
 
     // Map is unique so this is fine.
     HashMap<Block, String> blocksMapInverted = new HashMap<Block, String>() {
@@ -52,8 +53,13 @@ public class EyeOfHarmonyRecipeStorage {
                     GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
                             .getOrDefault(dimAbbreviation, null);
                     if (normalOre == null && smallOre == null) {
-                        // no ores are generated in this dimension. fail silently
+                        // No ores are generated in this dimension. Fail silently.
                         continue;
+                    }
+
+                    long spacetimeTier = blockDimensionDisplay.getDimensionRocketTier();
+                    if (spacetimeTier == 0) {
+                        spacetimeTier += 1;
                     }
 
                     put(
@@ -66,8 +72,9 @@ public class EyeOfHarmonyRecipeStorage {
                                     BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                     BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                     timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
-                                    blockDimensionDisplay.getDimensionRocketTier(),
-                                    1.0 - 0.05 * blockDimensionDisplay.getDimensionRocketTier()));
+                                    spacetimeTier - 1,
+                                    1.0 - CHANCE_DECREASE_PER_DIMENSION
+                                            * blockDimensionDisplay.getDimensionRocketTier()));
                 }
             }
         }
@@ -138,7 +145,7 @@ public class EyeOfHarmonyRecipeStorage {
                         BILLION * (rocketTier + 1),
                         timeCalculator(rocketTier),
                         rocketTier, // -1 so that we avoid out of bounds exception on NEI render.
-                        1.0 - rocketTier / 10.0));
+                        1.0 - rocketTier * CHANCE_DECREASE_PER_DIMENSION));
     }
 
     private static long timeCalculator(final long rocketTier) {

@@ -732,8 +732,14 @@ gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Uses a black hole to 
 # Eye of Harmony
 achievement.gt.blockmachines.multimachine.em.eye_of_harmony=Eye of Harmony Controller
 achievement.gt.blockcasingsBA0.12=Infinite Spacetime Energy Boundary Casing
+gt.blockcasingsBA0.12.desc.0=Provides a stable bridge between spacetime regions.
 achievement.gt.blockcasingsBA0.11=Reinforced Spatial Structure Casing
+gt.blockcasingsBA0.11.desc.0=Designed to resist spatial shearing from internal volume expansion.
+gt.blockcasingsBA0.11.desc.1=Can survive at least one big bang, maybe two...
 achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
+gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation differences.
+gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
+
 
 achievement.gt.spacetime_compression_field_generator.0=Crude Spacetime Compression Field Generator
 achievement.gt.spacetime_compression_field_generator.1=Primitive Spacetime Compression Field Generator
