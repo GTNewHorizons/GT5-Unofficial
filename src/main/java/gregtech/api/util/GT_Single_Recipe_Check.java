@@ -1,15 +1,27 @@
 package gregtech.api.util;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
+import gregtech.api.enums.GT_Values;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 
 /** Used by machines that are locked to a single recipe, for fast computation. */
@@ -169,6 +181,115 @@ public class GT_Single_Recipe_Check {
         }
 
         return true;
+    }
+
+    public NBTTagCompound writeToNBT() {
+        // here we encode recipe input, output and all other important values
+        // at load time we do a recipe check again, so in case the recipe is gone, we can stop tracking
+        // of course the next step would be auto migrating to new recipe (if any), but given
+        // we don't yet have a mean to uniquely name a recipe, this will have to make do.
+        // consider move serialization code to GT_Recipe once this has been proven to work
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("inputs", writeList(recipe.mInputs, GT_Utility::saveItem));
+        tag.setTag("outputs", writeList(recipe.mOutputs, GT_Utility::saveItem));
+        tag.setIntArray("chances", recipe.mChances);
+        tag.setTag(
+                "fInputs",
+                writeList(
+                        recipe.mFluidInputs,
+                        s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        tag.setTag(
+                "fOutputs",
+                writeList(
+                        recipe.mFluidOutputs,
+                        s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        tag.setInteger("eut", recipe.mEUt);
+        tag.setInteger("duration", recipe.mDuration);
+        tag.setInteger("specialValue", recipe.mSpecialValue);
+        tag.setTag("itemCost", writeList(itemCost.entrySet(), e -> {
+            NBTTagCompound ret = new NBTTagCompound();
+            ret.setTag("id", e.getKey().writeToNBT());
+            ret.setInteger("count", e.getValue());
+            return ret;
+        }));
+        tag.setTag("fluidCost", writeList(fluidCost.entrySet(), e -> {
+            NBTTagCompound ret = new NBTTagCompound();
+            ret.setString("id", e.getKey().getName());
+            ret.setInteger("count", e.getValue());
+            return ret;
+        }));
+        return tag;
+    }
+
+    private static <T, NBT extends NBTBase> NBTTagList writeList(T[] arr, Function<T, NBT> ser) {
+        return writeList(Arrays.asList(arr), ser);
+    }
+
+    private static <T, NBT extends NBTBase> NBTTagList writeList(Collection<T> arr, Function<T, NBT> ser) {
+        NBTTagList l = new NBTTagList();
+        for (T t : arr) {
+            l.appendTag(ser.apply(t));
+        }
+        return l;
+    }
+
+    @Nullable
+    public static GT_Single_Recipe_Check tryLoad(GT_MetaTileEntity_MultiBlockBase parent, NBTTagCompound tag) {
+        return tryLoad(parent, parent.getRecipeMap(), tag);
+    }
+
+    @Nullable
+
+    public static GT_Single_Recipe_Check tryLoad(GT_MetaTileEntity_MultiBlockBase parent,
+            GT_Recipe.GT_Recipe_Map recipeMap, NBTTagCompound tag) {
+        GT_Recipe found = tryFindRecipe(parent, recipeMap, tag);
+        if (found == null) return null;
+        return new GT_Single_Recipe_Check(parent, found, loadItemCost(tag), loadFluidCost(tag));
+    }
+
+    protected static ImmutableMap<Fluid, Integer> loadFluidCost(NBTTagCompound tag) {
+        return GT_Utility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND)).collect(
+                GT_Utility.toImmutableMapSerial(
+                        t -> FluidRegistry.getFluid(t.getString("id")),
+                        t -> t.getInteger("count")));
+    }
+
+    protected static ImmutableMap<GT_Utility.ItemId, Integer> loadItemCost(NBTTagCompound tag) {
+        return GT_Utility.streamCompounds(tag.getTagList("itemCost", Constants.NBT.TAG_COMPOUND)).collect(
+                GT_Utility.toImmutableMapSerial(
+                        t -> GT_Utility.ItemId.create(t.getCompoundTag("id")),
+                        t -> t.getInteger("count")));
+    }
+
+    protected static GT_Recipe tryFindRecipe(GT_MetaTileEntity_MultiBlockBase parent, GT_Recipe.GT_Recipe_Map recipeMap,
+            NBTTagCompound tag) {
+        if (tag == null || tag.hasNoTags()) return null;
+        ItemStack[] inputs = GT_Utility.streamCompounds(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
+                .map(GT_Utility::loadItem).toArray(ItemStack[]::new);
+        ItemStack[] outputs = GT_Utility.streamCompounds(tag.getTagList("outputs", Constants.NBT.TAG_COMPOUND))
+                .map(GT_Utility::loadItem).toArray(ItemStack[]::new);
+        FluidStack[] fInputs = GT_Utility.streamCompounds(tag.getTagList("fInputs", Constants.NBT.TAG_COMPOUND))
+                .map(FluidStack::loadFluidStackFromNBT).toArray(FluidStack[]::new);
+        FluidStack[] fOutputs = GT_Utility.streamCompounds(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
+                .map(FluidStack::loadFluidStackFromNBT).toArray(FluidStack[]::new);
+        int eut = tag.getInteger("eut");
+        GT_Recipe found = recipeMap.findRecipe(
+                parent.getBaseMetaTileEntity(),
+                false,
+                GT_Values.V[GT_Utility.getTier(eut)],
+                fInputs,
+                inputs);
+        int[] chances = tag.getIntArray("chances");
+        if (found == null || !GT_Utility.equals(inputs, found.mInputs)
+                || !Arrays.equals(fInputs, found.mFluidInputs)
+                || !GT_Utility.equals(outputs, found.mOutputs)
+                || !Arrays.equals(fOutputs, found.mFluidOutputs)
+                || !Arrays.equals(chances, found.mChances)
+                || found.mDuration != tag.getInteger("duration")
+                || found.mEUt != eut
+                || found.mSpecialValue != tag.getInteger("specialValue"))
+            return null;
+        return found;
     }
 
     protected static Map<GT_Utility.ItemId, Integer> buildItemMap(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {

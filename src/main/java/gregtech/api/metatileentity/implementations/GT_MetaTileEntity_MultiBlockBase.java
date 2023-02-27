@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -195,7 +196,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
-        aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
+        if (supportsSingleRecipeLocking()) {
+            aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
+            if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
+                aNBT.setTag("mSingleRecipeCheck", mSingleRecipeCheck.writeToNBT());
+        }
 
         if (mOutputItems != null) {
             aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
@@ -232,7 +237,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
-        mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
+        if (supportsSingleRecipeLocking()) {
+            mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
+            if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
+                GT_Single_Recipe_Check c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
+                if (c != null) mSingleRecipeCheck = c;
+                // the old recipe is gone. we disable the machine to prevent making garbage in case of shared inputs
+                // maybe use a better way to inform player in the future.
+                else getBaseMetaTileEntity().disableWorking();
+            }
+        }
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         voidExcess = aNBT.getBoolean(VOID_EXCESS_NBT_KEY);
@@ -257,6 +271,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mHardHammer = aNBT.getBoolean("mHardHammer");
         mSolderingTool = aNBT.getBoolean("mSolderingTool");
         mCrowbar = aNBT.getBoolean("mCrowbar");
+    }
+
+    protected GT_Single_Recipe_Check loadSingleRecipeChecker(NBTTagCompound aNBT) {
+        return GT_Single_Recipe_Check.tryLoad(this, aNBT);
     }
 
     @Override
