@@ -8,6 +8,7 @@ dependencies {
     api("com.github.GTNewHorizons:GalacticGregGT5:1.0.8:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
+    api("com.github.GTNewHorizons:ModularUI:1.0.66:dev")
 
     compileOnly("com.github.GTNewHorizons:AppleCore:3.2.8:dev") {
         transitive = false

@@ -461,7 +461,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             }
 
             @Override
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings({ "unchecked", "rawtypes" })
             public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
                 if (tooltip.containsKey(getDamage(p_77624_1_))) aList.add(tooltip.get(getDamage(p_77624_1_)));
                 aList.add("Material for High Temperature Gas-cooled Reactor");

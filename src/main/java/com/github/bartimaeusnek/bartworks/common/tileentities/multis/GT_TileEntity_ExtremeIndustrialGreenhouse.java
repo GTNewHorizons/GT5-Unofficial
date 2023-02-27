@@ -632,12 +632,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                             return Collections.emptyList();
                         }).setSize(18, 18));
             }
-            cropsContainer.widget(row.setPos(0, i * 18).setEnabled(widget -> {
-                int y = widget.getPos().y;
-                int cy = cropsContainer.getVerticalScrollOffset();
-                int ch = cropsContainer.getVisibleHeight();
-                return y >= cy - ch && y <= cy + ch;
-            }));
+            cropsContainer.widget(
+                    row.setPos(0, i * 18).setEnabled(widget -> widget.getPos().y < cropsContainer.getVisibleHeight()));
         }
         cropsContainer.attachSyncer(
                 new FakeSyncWidget.ListSyncer<>(
@@ -1033,7 +1029,6 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
             World world = tileEntity.getBaseMetaTileEntity().getWorld();
             this.input = input.copy();
             this.isValid = false;
-            this.noHumidity = noHumidity;
             if (IC2) {
                 GreenHouseSlotIC2(tileEntity, world, input, noHumidity);
                 return;
@@ -1093,6 +1088,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                 ItemStack input, boolean noHumidity) {
             if (!ItemList.IC2_Crop_Seeds.isStackEqual(input, true, true)) return;
             this.isIC2Crop = true;
+            this.noHumidity = noHumidity;
             recalculate(tileEntity, world);
             if (this.isValid) input.stackSize--;
         }
