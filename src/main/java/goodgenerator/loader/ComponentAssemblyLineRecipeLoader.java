@@ -85,7 +85,7 @@ public class ComponentAssemblyLineRecipeLoader {
                             fixedFluids.toArray(new FluidStack[0]),
                             info.getLeft().get(OUTPUT_MULTIPLIER),
                             recipe.mDuration * OUTPUT_MULTIPLIER,
-                            energy * OUTPUT_MULTIPLIER,
+                            energy,
                             info.getRight());
                 }
             }
@@ -145,7 +145,7 @@ public class ComponentAssemblyLineRecipeLoader {
                             fixedFluids.toArray(new FluidStack[0]),
                             info.getLeft().get(OUTPUT_MULTIPLIER), // The component output
                             recipe.mDuration * OUTPUT_MULTIPLIER, // Takes as long as this many
-                            recipe.mEUt * OUTPUT_MULTIPLIER, // Takes the power of this many
+                            recipe.mEUt,
                             info.getRight()); // Casing tier
                 }
             }
