@@ -57,6 +57,11 @@ public class EyeOfHarmonyRecipeStorage {
                         continue;
                     }
 
+                    long spacetimeTier = blockDimensionDisplay.getDimensionRocketTier();
+                    if (spacetimeTier == 0) {
+                        spacetimeTier += 1;
+                    }
+
                     put(
                             dimAbbreviation,
                             new EyeOfHarmonyRecipe(
@@ -67,7 +72,7 @@ public class EyeOfHarmonyRecipeStorage {
                                     BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                     BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                     timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
-                                    blockDimensionDisplay.getDimensionRocketTier(),
+                                    spacetimeTier - 1,
                                     1.0 - CHANCE_DECREASE_PER_DIMENSION
                                             * blockDimensionDisplay.getDimensionRocketTier()));
                 }
