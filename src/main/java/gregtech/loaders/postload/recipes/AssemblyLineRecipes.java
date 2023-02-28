@@ -469,7 +469,7 @@ public class AssemblyLineRecipes implements Runnable {
                         new FluidStack(solderIndalloy, 1440) },
                 ItemList.Hatch_Energy_ZPM.get(1),
                 600,
-                (int) TierEU.ZPM);
+                (int) TierEU.RECIPE_ZPM);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Hatch_Energy_ZPM.get(1, new Object() {}),
