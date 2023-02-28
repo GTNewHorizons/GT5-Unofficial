@@ -223,7 +223,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 final String[] tRep = new String[tSplitStrings.length / 2];
                 for (int j = 0; j < tSplitStrings.length; j++) if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
                 else {
-                    tBuffer.append(" %s");
+                    tBuffer.append("%s");
                     tRep[j / 2] = tSplitStrings[j];
                 }
                 final String tTranslated = String.format(
