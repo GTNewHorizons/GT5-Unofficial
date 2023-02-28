@@ -215,21 +215,21 @@ public class BookHandler {
 
                         // Machine Casings
                         "Valid Solid Machine Casings:" + "\n"
-                                + "0 - Strong Bronze"
+                                + "1 - Strong Bronze"
                                 + "\n"
-                                + "1 - Solid Steel"
+                                + "2 - Solid Steel"
                                 + "\n"
-                                + "2 - Sturdy Aluminium"
+                                + "3 - Sturdy Aluminium"
                                 + "\n"
-                                + "3 - Clean Stainless Steel"
+                                + "4 - Clean Stainless Steel"
                                 + "\n"
-                                + "4 - Stable Titanium"
+                                + "5 - Stable Titanium"
                                 + "\n"
-                                + "5 - Robust Tungstensteel"
+                                + "6 - Robust Tungstensteel"
                                 + "\n"
-                                + "6 - Vigorous Laurenium"
+                                + "7 - Vigorous Laurenium"
                                 + "\n"
-                                + "7 - Rugged Botmium",
+                                + "8 - Rugged Botmium",
 
                         // Machine Casings
                         "Valid Tiered Machine Casings:" + "\n"

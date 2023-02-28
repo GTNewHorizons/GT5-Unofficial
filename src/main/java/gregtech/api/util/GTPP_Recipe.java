@@ -858,7 +858,8 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                         tierMaterial = tierMaterialNames.get(i);
                     }
                 }
-                return Collections.singletonList(applyPrefixAndSuffix.apply(specialValue) + " - " + tierMaterial);
+                // blockrenderer uses 1-indexed
+                return Collections.singletonList(applyPrefixAndSuffix.apply(specialValue + 1) + " - " + tierMaterial);
             });
         }
 
