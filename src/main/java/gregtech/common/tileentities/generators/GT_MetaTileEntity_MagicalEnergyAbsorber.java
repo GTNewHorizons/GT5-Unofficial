@@ -203,7 +203,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
     @Override
     public String[] getDescription() {
-        final String LI = "-%%%";
+        final String LI = "- %%%";
         final String EU_PER = "%%%EU per ";
         List<String> description = new ArrayList<>();
         description.add(
@@ -231,21 +231,21 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         }
         description.add(" ");
         description.add(UNDERLINE + "Lookup range (Use Screwdriver to change):");
-        description.add("Default:%%%" + GREEN + mMagicalEnergyBB.getDefaultRange());
-        description.add("Max:%%%" + GREEN + mMagicalEnergyBB.getMaxRange());
+        description.add("Default: %%%" + GREEN + mMagicalEnergyBB.getDefaultRange());
+        description.add("Max: %%%" + GREEN + mMagicalEnergyBB.getMaxRange());
         description.add(" ");
         description.add(
                 UNDERLINE + "Fuels on " + LIGHT_PURPLE + UNDERLINE + "enchantments" + GRAY + UNDERLINE + " input:");
         description.add(
-                "- Item:%%%" + (10000 * getEfficiency()) / 100
+                "- Item: %%%" + (10000 * getEfficiency()) / 100
                         + EU_PER
                         + LIGHT_PURPLE
                         + "enchant"
                         + GRAY
                         + " weight × level / max");
-        description.add("- Book:%%%" + 10000 + EU_PER + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
+        description.add("- Book: %%%" + 10000 + EU_PER + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
         description.add(" ");
-        description.add("Efficiency:%%%" + GREEN + getEfficiency() + "%");
+        description.add("Efficiency: %%%" + GREEN + getEfficiency() + "%");
         return description.toArray(new String[0]);
     }
 
