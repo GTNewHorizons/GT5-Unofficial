@@ -74,7 +74,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.client.GT_TooltipHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -489,7 +488,6 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.nerfVanillaTools();
         new GT_ExtremeDieselFuelLoader().run();
-        GT_TooltipHandler.init();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the
