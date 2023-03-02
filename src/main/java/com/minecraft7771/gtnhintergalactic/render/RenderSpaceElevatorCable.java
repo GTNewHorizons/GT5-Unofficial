@@ -33,7 +33,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     /** Location of the climber texture */
     private static final ResourceLocation climberTexture = new ResourceLocation(
             GTNHIntergalactic.ASSET_PREFIX,
-            "textures/model/climber.png");
+            "textures/models/climber.png");
     /** Model of the climber */
     private static IModelCustom modelCustom;
     /** Offset of the climber from the Space Elevator Cable block */
