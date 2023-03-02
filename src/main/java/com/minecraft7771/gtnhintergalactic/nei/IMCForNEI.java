@@ -8,9 +8,18 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 public class IMCForNEI {
 
     public static void IMCSender() {
-        sendHandler("galaxyspace.core.nei.SpacePumpModuleRecipeHandler", "gregtech:gt.blockmachines:14010", 160, 90, 3);
-        sendCatalyst("galaxyspace.core.nei.SpacePumpModuleRecipeHandler", "gregtech:gt.blockmachines:14010");
-        sendCatalyst("galaxyspace.core.nei.SpacePumpModuleRecipeHandler", "gregtech:gt.blockmachines:14011");
+        sendHandler(
+                "com.minecraft7771.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
+                "gregtech:gt.blockmachines:14010",
+                160,
+                90,
+                3);
+        sendCatalyst(
+                "com.minecraft7771.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
+                "gregtech:gt.blockmachines:14010");
+        sendCatalyst(
+                "com.minecraft7771.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
+                "gregtech:gt.blockmachines:14011");
 
         sendHandler("gt.recipe.spaceMining", "gregtech:gt.blockmachines:14007");
         sendCatalyst("gt.recipe.spaceMining", "gregtech:gt.blockmachines:14007");

@@ -197,19 +197,19 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void drawExtras(int recipeIndex) {
         GuiDraw.drawStringC(
-                I18n.format("gs.nei.elevatorpump.planettype") + ":",
+                I18n.format("ig.nei.elevatorpump.planettype") + ":",
                 CATEGORY_TITLE_X,
                 PLANET_TYPE_Y,
                 TEXT_COLOR,
                 false);
         GuiDraw.drawStringC(
-                I18n.format("gs.nei.elevatorpump.gastype") + ":",
+                I18n.format("ig.nei.elevatorpump.gastype") + ":",
                 CATEGORY_TITLE_X,
                 GAS_TYPE_Y,
                 TEXT_COLOR,
                 false);
         GuiDraw.drawStringC(
-                I18n.format("gs.nei.elevatorpump.amount") + ":",
+                I18n.format("ig.nei.elevatorpump.amount") + ":",
                 CATEGORY_TITLE_X,
                 OUT_AMOUNT_Y,
                 TEXT_COLOR,
@@ -244,7 +244,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
      */
     @Override
     public String getRecipeName() {
-        return I18n.format("gs.nei.elevatorpump.name");
+        return I18n.format("ig.nei.elevatorpump.name");
     }
 
     /**
