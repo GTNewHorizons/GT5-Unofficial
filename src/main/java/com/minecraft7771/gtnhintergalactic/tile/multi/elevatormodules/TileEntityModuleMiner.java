@@ -1,6 +1,5 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules;
 
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 import java.util.Arrays;
@@ -32,6 +31,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -223,6 +223,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             return false;
         }
 
+        float compModifier = 1f;
+        float plasmaModifier = 1f;
+
+        if (asteroidOutpost != null) {
+            compModifier -= asteroidOutpost.getComputationDiscount();
+            plasmaModifier -= asteroidOutpost.getPlasmaDiscount();
+        }
+
         // Get a recipe randomly with weight from the pool
         int totalWeight = recipes.stream().mapToInt(IG_Recipe.IG_SpaceMiningRecipe::getRecipeWeight).sum();
         int recipeIndex = 0;
@@ -238,23 +246,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         }
 
         // Limit parallels by available computation, return if not enough computation is available
-        maxParallels = (int) Math.min(maxParallels, getAvailableData_EM() / tRecipe.computation);
+        maxParallels = (int) Math.min(maxParallels, getAvailableData_EM() / (tRecipe.computation * compModifier));
         if (maxParallels <= 0) {
             return false;
         }
 
         // Check how many parallels we can actually do, return if none
-        int parallels = handleParallelRecipe(tRecipe, fluidInputs, inputs, maxParallels);
+        GT_ParallelHelper helper = new GT_ParallelHelper().setMaxParallel(maxParallels).setRecipe(tRecipe)
+                .setFluidInputs(fluidInputs).setItemInputs(inputs).setAvailableEUt(GT_Values.V[tTier])
+                .enableConsumption().build();
+        int parallels = helper.getCurrentParallel();
         if (parallels <= 0) {
             return false;
-        }
-
-        float compModifier = 1f;
-        float plasmaModifier = 1f;
-
-        if (asteroidOutpost != null) {
-            compModifier -= asteroidOutpost.getComputationDiscount();
-            plasmaModifier -= asteroidOutpost.getPlasmaDiscount();
         }
 
         // Randomly generate ore stacks with the given chances, ores and size
@@ -374,7 +377,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         if (plasma == null) {
             return 0;
         }
-        return Math.min((int) parallelSetting.get(), plasma.amount / plasmaUsage);
+        float plasmaModifier = asteroidOutpost != null ? 1f - asteroidOutpost.getPlasmaDiscount() : 1f;
+        return Math.min((int) parallelSetting.get(), (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
     }
 
     /**

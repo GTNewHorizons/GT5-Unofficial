@@ -47,6 +47,45 @@ public class MachineRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        ItemStack hypogenFrameBox_8, hypogenScrew_32, preciseAssembler_1, highComputationStationT3_32,
+                highComputationStationT4_32, highComputationStationT5_32, metaStableOgScrew_64, shirabonGear_8,
+                shirabonGearSmall_16, titaniumBetaCScrew_64, voidMiner;
+
+        if (Loader.isModLoaded("miscutils")) {
+            hypogenFrameBox_8 = ELEMENT.STANDALONE.HYPOGEN.getFrameBox(8);
+            hypogenScrew_32 = ELEMENT.STANDALONE.HYPOGEN.getScrew(32);
+        } else {
+            hypogenFrameBox_8 = GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 8);
+            hypogenScrew_32 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 32);
+        }
+
+        if (Loader.isModLoaded("GoodGenerator")) {
+            preciseAssembler_1 = ItemRefer.Precise_Assembler.get(1);
+            highComputationStationT3_32 = ItemRefer.HiC_T3.get(32);
+            highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
+            highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
+            metaStableOgScrew_64 = MyMaterial.metastableOganesson.get(OrePrefixes.screw, 64);
+            shirabonGear_8 = MyMaterial.shirabon.get(OrePrefixes.gearGt, 8);
+            shirabonGearSmall_16 = MyMaterial.shirabon.get(OrePrefixes.gearGtSmall, 16);
+            titaniumBetaCScrew_64 = MyMaterial.titaniumBetaC.get(OrePrefixes.screw, 64);
+        } else {
+            preciseAssembler_1 = ItemList.Machine_IV_Assembler.get(1);
+            highComputationStationT3_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 32);
+            highComputationStationT4_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 32);
+            highComputationStationT5_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 32);
+            metaStableOgScrew_64 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 64);
+            shirabonGear_8 = GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Infinity, 8);
+            shirabonGearSmall_16 = GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Infinity, 16);
+            titaniumBetaCScrew_64 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 64);
+        }
+
+        if (Loader.isModLoaded("bartworks")) {
+            voidMiner = ItemRegistry.voidminer[2];
+        } else {
+            voidMiner = ItemList.OreDrill4.get(1);
+        }
+
         // Space Elevator Controller
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GT_ModHandler.getModItem("OpenBlocks", "elevator", 1, 0),
@@ -280,8 +319,7 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 16 },
                         ItemList.Electric_Pump_UIV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 4),
-                        MyMaterial.metastableOganesson.get(OrePrefixes.screw, 64), },
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 4), metaStableOgScrew_64, },
                 new FluidStack[] { new FluidStack(solderUEV, 4608), Materials.TranscendentMetal.getMolten(2304) },
                 IGItems.SpaceElevatorModulePumpT2,
                 600 * 20,
@@ -293,8 +331,7 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 8),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 16),
                         ItemList.Electric_Pump_UIV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 8),
-                        MyMaterial.metastableOganesson.get(OrePrefixes.screw, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 8), metaStableOgScrew_64,
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TranscendentMetal, 16), },
                 new FluidStack(solderUEV, 4608),
                 IGItems.SpaceElevatorModulePumpT2,
@@ -304,7 +341,7 @@ public class MachineRecipes implements Runnable {
 
         // Assembler Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemRefer.Precise_Assembler.get(1),
+                preciseAssembler_1,
                 256000,
                 256,
                 4000000,
@@ -314,7 +351,8 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 1187),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.CosmicNeutronium, 8),
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.CosmicNeutronium, 16),
-                        ItemList.Robot_Arm_UHV.get(8), ItemList.Conveyor_Module_UHV.get(16), ItemRefer.HiC_T3.get(32),
+                        ItemList.Robot_Arm_UHV.get(8), ItemList.Conveyor_Module_UHV.get(16),
+                        highComputationStationT3_32,
                         new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 16 },
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 32) },
@@ -336,12 +374,9 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12091),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 8),
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TranscendentMetal, 16),
-                        ItemList.Robot_Arm_UIV.get(8), ItemList.Conveyor_Module_UIV.get(16), ItemRefer.HiC_T4.get(32),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 16 },
-                        Loader.isModLoaded("miscutils") ? ELEMENT.STANDALONE.HYPOGEN.getFrameBox(8)
-                                : GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 8),
-                        Loader.isModLoaded("miscutils") ? ELEMENT.STANDALONE.HYPOGEN.getScrew(32)
-                                : GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 32) },
+                        ItemList.Robot_Arm_UIV.get(8), ItemList.Conveyor_Module_UIV.get(16),
+                        highComputationStationT4_32, new Object[] { OrePrefixes.circuit.get(Materials.Optical), 16 },
+                        hypogenFrameBox_8, hypogenScrew_32 },
                 new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.Infinity.getMolten(1296),
                         Materials.UUMatter.getFluid(16000) },
                 IGItems.SpaceElevatorModuleAssemblerT2,
@@ -360,14 +395,13 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12093),
                         GT_OreDictUnificator
                                 .get(OrePrefixes.gearGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8),
-                        MyMaterial.shirabon.get(OrePrefixes.gearGt, 8),
+                        shirabonGear_8,
                         GT_OreDictUnificator.get(
                                 OrePrefixes.gearGtSmall,
                                 Materials.MagnetohydrodynamicallyConstrainedStarMatter,
                                 16),
-                        MyMaterial.shirabon.get(OrePrefixes.gearGtSmall, 16), ItemList.Robot_Arm_UXV.get(8),
-                        ItemList.Conveyor_Module_UXV.get(16), ItemRefer.HiC_T5.get(32),
-                        new ItemStack(quantumCircuit, 16),
+                        shirabonGearSmall_16, ItemList.Robot_Arm_UXV.get(8), ItemList.Conveyor_Module_UXV.get(16),
+                        highComputationStationT5_32, new ItemStack(quantumCircuit, 16),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Universium, 32) },
                 new FluidStack[] { new FluidStack(solderUEV, 5184), Materials.BlackDwarfMatter.getMolten(1296),
@@ -389,7 +423,7 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
-                        MyMaterial.metastableOganesson.get(OrePrefixes.screw, 64),
+                        metaStableOgScrew_64,
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
                 new FluidStack[] { new FluidStack(solderLuV, 4608), Materials.Infinity.getMolten(2304),
                         Materials.UUMatter.getFluid(8000), Materials.SuperCoolant.getFluid(4000) },
@@ -412,7 +446,7 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(
                                 GameRegistry.findItem("structurelib", "item.structurelib.constructableTrigger"),
                                 64),
-                        MyMaterial.titaniumBetaC.get(OrePrefixes.screw, 64), },
+                        titaniumBetaCScrew_64, },
                 new FluidStack[] { new FluidStack(solderLuV, 4608), Materials.Iridium.getMolten(2304),
                         Materials.UUMatter.getFluid(2000) },
                 IGItems.SpaceElevatorModuleManager,
@@ -421,7 +455,7 @@ public class MachineRecipes implements Runnable {
 
         // Miner Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemRegistry.voidminer[2],
+                voidMiner,
                 2000000,
                 512,
                 2000000,

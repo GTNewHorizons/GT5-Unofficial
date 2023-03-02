@@ -24,15 +24,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
         dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
                 + "required-after:gregtech;"
                 + "required-after:gtnhlib@[0.0.8.1,);"
-                + "required-after:bartworks;"
                 + "required-after:tectech;"
                 + "required-after:structurelib;"
                 + "required-after:galaxyspace;"
-                + "required:GoodGenerator;" // These are required for recipes in CraftingRecipes.java
-                + "required:miscutils;" // If those recipes are changed or moved
-                + "required:dreamcraft;" // these dependencies can also be changed or removed
-                + "required:openmodularturrets;" // IronChest was already made conditional - if you update these, update
-                + "after:EMT;" // mcmod.info
+                + "after:bartworks;"
+                + "after:GoodGenerator;"
+                + "after:miscutils;"
+                + "after:dreamcraft;"
+                + "after:openmodularturrets;"
+                + "after:EMT;"
                 + "after:IronChest;")
 public class GTNHIntergalactic {
 

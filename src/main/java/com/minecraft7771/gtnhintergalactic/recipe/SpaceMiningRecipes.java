@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.minecraft7771.gtnhintergalactic.item.IGItems;
 
+import cpw.mods.fml.common.Loader;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -199,26 +200,6 @@ public class SpaceMiningRecipes {
                 DroneTiers.ZPM.ordinal(),
                 130);
 
-        // PlatLine Pure Asteroid
-        addRecipesToDrones(
-                null,
-                null,
-                new int[] { 3800, 2000, 1500, 500, 1200, 1000 },
-                new Materials[] { Materials.Platinum, Materials.Palladium, Materials.Iridium, Materials.Osmium,
-                        WerkstoffLoader.Ruthenium.getBridgeMaterial(), WerkstoffLoader.Rhodium.getBridgeMaterial() },
-                OrePrefixes.dust,
-                10,
-                30,
-                25,
-                200,
-                360,
-                3,
-                500,
-                (int) VP[7],
-                DroneTiers.ZPM.ordinal(),
-                DroneTiers.UEV.ordinal(),
-                60);
-
         // Gem Asteroid
         addRecipesToDrones(
                 null,
@@ -390,44 +371,6 @@ public class SpaceMiningRecipes {
         addRecipesToDrones(
                 null,
                 null,
-                new int[] { 1500, 2000, 3000, 3500 },
-                new Materials[] { Materials.Trinium, Materials.Lanthanum, MyMaterial.orundum.getBridgeMaterial(),
-                        Materials.Silver },
-                OrePrefixes.ore,
-                30,
-                120,
-                30,
-                230,
-                120,
-                2,
-                25 * 20,
-                (int) VP[6],
-                DroneTiers.IV.ordinal(),
-                DroneTiers.UEV.ordinal(),
-                150);
-
-        addRecipesToDrones(
-                null,
-                null,
-                new int[] { 4000, 3000, 3000 },
-                new Materials[] { Materials.Magnesium, Materials.Manganese,
-                        WerkstoffLoader.Fluorspar.getBridgeMaterial() },
-                OrePrefixes.ore,
-                10,
-                80,
-                10,
-                200,
-                60,
-                1,
-                20 * 20,
-                (int) VP[5],
-                DroneTiers.EV.ordinal(),
-                DroneTiers.UHV.ordinal(),
-                250);
-
-        addRecipesToDrones(
-                null,
-                null,
                 new int[] { 4500, 2500, 3000 },
                 new Materials[] { Materials.Phosphate, Materials.TricalciumPhosphate, Materials.Sulfur },
                 OrePrefixes.oreEndstone,
@@ -442,25 +385,6 @@ public class SpaceMiningRecipes {
                 DroneTiers.IV.ordinal(),
                 DroneTiers.UEV.ordinal(),
                 150);
-
-        addRecipesToDrones(
-                null,
-                null,
-                new int[] { 100, 2200, 4700, 3000 },
-                new Materials[] { Materials.Dilithium, MyMaterial.orundum.getBridgeMaterial(), Materials.Vanadium,
-                        Materials.Ytterbium },
-                OrePrefixes.ore,
-                5,
-                80,
-                20,
-                100,
-                120,
-                3,
-                25 * 20,
-                (int) VP[6],
-                DroneTiers.UEV.ordinal(),
-                DroneTiers.UEV.ordinal(),
-                50);
 
         addRecipesToDrones(
                 null,
@@ -574,27 +498,6 @@ public class SpaceMiningRecipes {
                 DroneTiers.UHV.ordinal(),
                 190);
 
-        // Naquadah Asteroid
-        addRecipesToDrones(
-                null,
-                null,
-                new int[] { 4000, 3500, 2500 },
-                new Materials[] { MyMaterial.naquadahEarth.getBridgeMaterial(),
-                        MyMaterial.enrichedNaquadahEarth.getBridgeMaterial(),
-                        MyMaterial.naquadriaEarth.getBridgeMaterial() },
-                OrePrefixes.ore,
-                20,
-                80,
-                50,
-                150,
-                240,
-                1,
-                50 * 20,
-                (int) VP[6],
-                DroneTiers.IV.ordinal(),
-                DroneTiers.UV.ordinal(),
-                200);
-
         // Uranium-Plutonium Asteroid
         addRecipesToDrones(
                 null,
@@ -672,26 +575,6 @@ public class SpaceMiningRecipes {
                 DroneTiers.UEV.ordinal(),
                 100);
 
-        // Holmium/Samarium Asteroid
-        addRecipesToDrones(
-                null,
-                null,
-                new int[] { 2000, 3000, 3000, 2000 },
-                new Materials[] { Materials.Holmium, Materials.Samarium, WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                        Materials.Strontium },
-                OrePrefixes.ore,
-                5,
-                25,
-                40,
-                80,
-                260,
-                2,
-                25 * 20,
-                (int) VP[6],
-                DroneTiers.UV.ordinal(),
-                DroneTiers.UEV.ordinal(),
-                75);
-
         // Cosmic Asteroid
         addRecipesToDrones(
                 null,
@@ -767,25 +650,150 @@ public class SpaceMiningRecipes {
                 DroneTiers.LuV.ordinal(),
                 200);
 
-        // Draconic Core Ruin
-        addRecipesToDrones(
-                null,
-                null,
-                new int[] { 100, 100, 9800 },
-                new ItemStack[] { GT_ModHandler.getModItem("EMT", "EMTItems", 1, 16),
-                        GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
-                        ItemList.ZPM.getWithCharge(1, Integer.MAX_VALUE - 1) },
-                1,
-                1,
-                50,
-                200,
-                1000,
-                3,
-                100 * 20,
-                (int) VP[10],
-                DroneTiers.UHV.ordinal(),
-                DroneTiers.UEV.ordinal(),
-                1);
+        if (Loader.isModLoaded("bartworks")) {
+            // Holmium/Samarium Asteroid
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 2000, 3000, 3000, 2000 },
+                    new Materials[] { Materials.Holmium, Materials.Samarium,
+                            WerkstoffLoader.Tiberium.getBridgeMaterial(), Materials.Strontium },
+                    OrePrefixes.ore,
+                    5,
+                    25,
+                    40,
+                    80,
+                    260,
+                    2,
+                    25 * 20,
+                    (int) VP[6],
+                    DroneTiers.UV.ordinal(),
+                    DroneTiers.UEV.ordinal(),
+                    75);
+
+            // PlatLine Pure Asteroid
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 3800, 2000, 1500, 500, 1200, 1000 },
+                    new Materials[] { Materials.Platinum, Materials.Palladium, Materials.Iridium, Materials.Osmium,
+                            WerkstoffLoader.Ruthenium.getBridgeMaterial(),
+                            WerkstoffLoader.Rhodium.getBridgeMaterial() },
+                    OrePrefixes.dust,
+                    10,
+                    30,
+                    25,
+                    200,
+                    360,
+                    3,
+                    500,
+                    (int) VP[7],
+                    DroneTiers.ZPM.ordinal(),
+                    DroneTiers.UEV.ordinal(),
+                    60);
+
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 4000, 3000, 3000 },
+                    new Materials[] { Materials.Magnesium, Materials.Manganese,
+                            WerkstoffLoader.Fluorspar.getBridgeMaterial() },
+                    OrePrefixes.ore,
+                    10,
+                    80,
+                    10,
+                    200,
+                    60,
+                    1,
+                    20 * 20,
+                    (int) VP[5],
+                    DroneTiers.EV.ordinal(),
+                    DroneTiers.UHV.ordinal(),
+                    250);
+        }
+
+        if (Loader.isModLoaded("GoodGenerator")) {
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 1500, 2000, 3000, 3500 },
+                    new Materials[] { Materials.Trinium, Materials.Lanthanum, MyMaterial.orundum.getBridgeMaterial(),
+                            Materials.Silver },
+                    OrePrefixes.ore,
+                    30,
+                    120,
+                    30,
+                    230,
+                    120,
+                    2,
+                    25 * 20,
+                    (int) VP[6],
+                    DroneTiers.IV.ordinal(),
+                    DroneTiers.UEV.ordinal(),
+                    150);
+
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 100, 2200, 4700, 3000 },
+                    new Materials[] { Materials.Dilithium, MyMaterial.orundum.getBridgeMaterial(), Materials.Vanadium,
+                            Materials.Ytterbium },
+                    OrePrefixes.ore,
+                    5,
+                    80,
+                    20,
+                    100,
+                    120,
+                    3,
+                    25 * 20,
+                    (int) VP[6],
+                    DroneTiers.UEV.ordinal(),
+                    DroneTiers.UEV.ordinal(),
+                    50);
+
+            // Naquadah Asteroid
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 4000, 3500, 2500 },
+                    new Materials[] { MyMaterial.naquadahEarth.getBridgeMaterial(),
+                            MyMaterial.enrichedNaquadahEarth.getBridgeMaterial(),
+                            MyMaterial.naquadriaEarth.getBridgeMaterial() },
+                    OrePrefixes.ore,
+                    20,
+                    80,
+                    50,
+                    150,
+                    240,
+                    1,
+                    50 * 20,
+                    (int) VP[6],
+                    DroneTiers.IV.ordinal(),
+                    DroneTiers.UV.ordinal(),
+                    200);
+        }
+
+        if (Loader.isModLoaded("EMT")) {
+            // Draconic Core Ruin
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 100, 100, 9800 },
+                    new ItemStack[] { GT_ModHandler.getModItem("EMT", "EMTItems", 1, 16),
+                            GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
+                            ItemList.ZPM.getWithCharge(1, Integer.MAX_VALUE - 1) },
+                    1,
+                    1,
+                    50,
+                    200,
+                    1000,
+                    3,
+                    100 * 20,
+                    (int) VP[10],
+                    DroneTiers.UHV.ordinal(),
+                    DroneTiers.UEV.ordinal(),
+                    1);
+        }
     }
 
     private static void addRecipesToDrones(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int[] aChances,
