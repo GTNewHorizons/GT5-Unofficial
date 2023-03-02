@@ -17,21 +17,40 @@ import net.minecraft.util.EnumChatFormatting;
  */
 public class ItemBlockSpaceElevatorCable extends ItemBlock {
 
+    /**
+     * Create a new item for the cable block
+     *
+     * @param block Block which this item represents
+     */
     public ItemBlockSpaceElevatorCable(Block block) {
         super(block);
     }
 
+    /**
+     * Get the unlocalized name of this block
+     *
+     * @param stack Item stack, which contains this item
+     * @return Unlocalized name
+     */
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return "gt.blockcasings.gs.cable";
+        return "gt.blockcasings.ig.cable";
     }
 
+    /**
+     * Add more information to the tooltip of this block
+     *
+     * @param stack   Item stack, which contains this item
+     * @param player  Player which holds the item stack
+     * @param tooltip Tooltip of the item stack
+     * @param f3_h    Flag if advanced tooltips are enabled
+     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean f3_h) {
-        tooltip.add(GCCoreUtil.translate("gt.blockcasings.gs.cable.desc0"));
+        tooltip.add(GCCoreUtil.translate("gt.blockcasings.ig.cable.desc0"));
         tooltip.add(
                 EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockcasings.gs.cable.desc1"));
+                        + GCCoreUtil.translate("gt.blockcasings.ig.cable.desc1"));
     }
 }

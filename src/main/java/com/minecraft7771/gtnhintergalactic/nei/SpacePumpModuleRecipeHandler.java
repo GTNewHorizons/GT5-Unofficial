@@ -36,7 +36,7 @@ import gregtech.api.util.GT_Utility;
 public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
 
     /** Text for the button which will load all pumping recipes */
-    private static final String SEE_ALL = "gs.nei.elevatorpump.see_all";
+    private static final String SEE_ALL = "ig.nei.elevatorpump.see_all";
     /** Modular window used to display the recipes */
     protected final ModularWindow modularWindow;
     /** Offsets of the recipe window */

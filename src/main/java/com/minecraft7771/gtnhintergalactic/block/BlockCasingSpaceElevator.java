@@ -21,14 +21,25 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 
+/**
+ * Casings used to construct the Space Elevator
+ *
+ * @author minecraft7771
+ */
 public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
 
-    public static BlockCasingSpaceElevator INSTANCE;
+    /** Number of casings that exist */
     private static final int NUMBER_OF_CASINGS = 3;
+    /** Icon for the base casing */
     private static IIcon IconSECasing0;
+    /** Icons for the support structure */
     private static final IIcon[] IconSECasing1 = new IIcon[2];
+    /** Icons for the internal structure */
     private static final IIcon[] IconSECasing2 = new IIcon[2];
 
+    /**
+     * Create new Space Elevator casings
+     */
     public BlockCasingSpaceElevator() {
         super(ItemCasingSpaceElevator.class, "gt.blockcasingsSE", GT_Material_Casings.INSTANCE);
 
@@ -45,27 +56,39 @@ public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
         IGItems.SpaceElevatorCasing2 = new ItemStack(this, 1, 2);
     }
 
+    /**
+     * Register the block icons
+     *
+     * @param iconRegister Register to which the icons will be added
+     */
     @Override
-    public void registerBlockIcons(IIconRegister aIconRegister) {
-        IconSECasing0 = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/BaseCasing");
-        IconSECasing1[0] = aIconRegister
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        IconSECasing0 = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/BaseCasing");
+        IconSECasing1[0] = iconRegister
                 .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure");
-        IconSECasing1[1] = aIconRegister
+        IconSECasing1[1] = iconRegister
                 .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure_Side");
-        IconSECasing2[0] = aIconRegister
+        IconSECasing2[0] = iconRegister
                 .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure");
-        IconSECasing2[1] = aIconRegister
+        IconSECasing2[1] = iconRegister
                 .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure_Side");
     }
 
+    /**
+     * Get the icon for this block
+     *
+     * @param side Side for which the icon should be gotten
+     * @param meta Meta of the block
+     * @return Icon of the block
+     */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int aSide, int aMeta) {
-        switch (aMeta) {
+    public IIcon getIcon(int side, int meta) {
+        switch (meta) {
             case 0:
                 return IconSECasing0;
             case 1:
-                switch (aSide) {
+                switch (side) {
                     case 0:
                     case 1:
                         return IconSECasing1[0];
@@ -73,7 +96,7 @@ public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
                         return IconSECasing1[1];
                 }
             case 2:
-                switch (aSide) {
+                switch (side) {
                     case 0:
                     case 1:
                         return IconSECasing2[0];
@@ -85,18 +108,35 @@ public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
         }
     }
 
+    /**
+     * Get the icon for this block
+     *
+     * @param world World in which the block exists
+     * @param x     X coordinate of the block
+     * @param y     Y coordinate of the block
+     * @param z     Z coordinate of the block
+     * @param side  Side for which the icon should be gotten
+     * @return Icon of the block
+     */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(aSide, tMeta);
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+        int meta = world.getBlockMetadata(x, y, z);
+        return getIcon(side, meta);
     }
 
+    /**
+     * Get all sub blocks of this block
+     *
+     * @param item Item that represents this block
+     * @param tabs Create tab of the game
+     * @param list List to which the sub blocks will be added
+     */
     @Override
     @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List list) {
         for (int i = 0; i < NUMBER_OF_CASINGS; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 }

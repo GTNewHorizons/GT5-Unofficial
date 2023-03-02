@@ -105,17 +105,17 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.manager.desc0"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.manager.desc0"))
                 .addInfo(
                         EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.manager.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                                + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.manager.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1")).addSeparator()
+                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0)
+                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
         return tt;
     }
@@ -305,7 +305,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                     ret.add(IG_UITextures.OVERLAY_BUTTON_PROJECTS);
                     return ret.toArray(new IDrawable[0]);
                 }).setPos(174, doesBindPlayerInventory() ? 132 : 156).setSize(16, 16);
-        button.addTooltip(GCCoreUtil.translate("mui.manager.button.projects")).setTooltipShowUpDelay(TOOLTIP_DELAY);
+        button.addTooltip(GCCoreUtil.translate("ig.button.projects")).setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
 
@@ -329,7 +329,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         // Display for the details of the selected project
         final MultiChildWidget activeProjectDetail = new MultiChildWidget();
         activeProjectDetail.addChild(
-                generateCustomButton(StatCollector.translateToLocal("gs.text.project"), (tClickData, tWidget) -> {
+                generateCustomButton(StatCollector.translateToLocal("ig.text.project"), (tClickData, tWidget) -> {
                     projectMode = true;
                     upgradeMode = false;
                 },
@@ -340,7 +340,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                         (screenSize, window, parent) -> new Pos2d(0, 0)))
                 .addChild(
                         generateCustomButton(
-                                StatCollector.translateToLocal("gs.text.upgrades"),
+                                StatCollector.translateToLocal("ig.text.upgrades"),
                                 (tClickData, tWidget) -> {
                                     if (isUpgradeButtonClickable()) {
                                         projectMode = false;
@@ -353,7 +353,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                         parent.getSize().width * 0.5,
                                         parent.getSize().height * 0.05),
                                 (screenSize, window, parent) -> new Pos2d(parent.getSize().width * 0.5, 0)))
-                .addChild(generateCustomButton(StatCollector.translateToLocal("gs.text.start"), (clickData, widget) -> {
+                .addChild(generateCustomButton(StatCollector.translateToLocal("ig.text.start"), (clickData, widget) -> {
                     if (widget.getContext().isClient()) return;
                     if (selectedLocation != null && !selectedLocation.getName().equals(LOCATON_UNSELECTED)) {
                         if (selectedProject != null) {
@@ -366,29 +366,29 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                             selectedProject.getProjectName(),
                                             selectedProject);
                                     projectWorkingOn = selectedProject;
-                                    popupText = StatCollector.translateToLocal("gs.text.started");
+                                    popupText = StatCollector.translateToLocal("ig.text.started");
                                     widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                                 } else {
-                                    popupText = StatCollector.translateToLocal("gs.text.projectrequirements");
+                                    popupText = StatCollector.translateToLocal("ig.text.projectrequirements");
                                     widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                                 }
                             } else if (selectedUpgrade != null) {
                                 if (selectedUpgrade.meetsRequirements(getBaseMetaTileEntity().getOwnerUuid())) {
                                     selectedProject.setCurrentUpgradeBeingBuilt(selectedUpgrade);
                                 } else {
-                                    popupText = StatCollector.translateToLocal("gs.text.upgraderequirements");
+                                    popupText = StatCollector.translateToLocal("ig.text.upgraderequirements");
                                     widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                                 }
                             } else {
-                                popupText = StatCollector.translateToLocal("gs.text.finishedproject");
+                                popupText = StatCollector.translateToLocal("ig.text.finishedproject");
                                 widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                             }
                         } else {
-                            popupText = StatCollector.translateToLocal("gs.text.noproject");
+                            popupText = StatCollector.translateToLocal("ig.text.noproject");
                             widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                         }
                     } else {
-                        popupText = StatCollector.translateToLocal("gs.text.nolocation");
+                        popupText = StatCollector.translateToLocal("ig.text.nolocation");
                         widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                     }
                 },

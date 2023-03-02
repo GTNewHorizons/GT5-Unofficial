@@ -22,6 +22,11 @@ import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
+/**
+ * All space projects of this mod
+ *
+ * @author BlueWeabo
+ */
 public class SpaceProjectRegistration implements Runnable {
 
     Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
@@ -32,15 +37,21 @@ public class SpaceProjectRegistration implements Runnable {
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
+    /**
+     * Register space projects
+     */
     @Override
     public void run() {
         registerAsteroidOutpost();
         registerPlanetScan();
     }
 
+    /**
+     * Register the asteroid outpost
+     */
     private void registerAsteroidOutpost() {
         ISpaceProject.ISP_Upgrade reinforcedStructure = new SP_Upgrade().setUpgradeName("ReinforcedStructure")
-                .setUpgradeUnlocalizedName("gs.sp.upgrade.reinforcedstructure").setUpgradeTotalStages(40)
+                .setUpgradeUnlocalizedName("ig.sp.upgrade.reinforcedstructure").setUpgradeTotalStages(40)
                 .setUpgradeVoltage(TierEU.RECIPE_UHV).setUpgradeBuildTime(500 * 20)
                 .setUpgradeItemsCost(
                         getModItem("supersolarpanel", "AdminSolarPanel", 1L, 0),
@@ -52,7 +63,7 @@ public class SpaceProjectRegistration implements Runnable {
                         ItemList.Emitter_UHV.get(1))
                 .setUpgradeFluidsCost(new FluidStack(solderLuV, 144 * 30));
         ISpaceProject.ISP_Upgrade improvedComputation = new SP_Upgrade().setUpgradeName("ImprovedComputation")
-                .setUpgradeUnlocalizedName("gs.sp.upgrade.improvedcomputation").setUpgradeTotalStages(20)
+                .setUpgradeUnlocalizedName("ig.sp.upgrade.improvedcomputation").setUpgradeTotalStages(20)
                 .setUpgradeVoltage(TierEU.RECIPE_UEV).setUpgradeBuildTime(750 * 20)
                 .setUpgradeRequirements(new SP_Requirements().setUpgrades(reinforcedStructure))
                 .setUpgradeItemsCost(
@@ -65,7 +76,7 @@ public class SpaceProjectRegistration implements Runnable {
                         ItemList.Emitter_UEV.get(1))
                 .setUpgradeFluidsCost(new FluidStack(solderUEV, 144 * 10));
         ISpaceProject asteroidOutpost = new ProjectAsteroidOutpost().setProjectName("AsteroidOutpost")
-                .setProjectUnlocalizedName("gs.spaceproject.asteroidoutpost")
+                .setProjectUnlocalizedName("ig.spaceproject.asteroidoutpost")
                 .setProjectUpgrades(reinforcedStructure, improvedComputation)
                 .setProjectRequirements(new SP_Requirements().setSpaceBodyType(SolarSystem.KuiperBelt.getType()))
                 .setProjectBuildTime(250 * 20).setProjectStages(40).setProjectVoltage(TierEU.RECIPE_UV)
@@ -83,9 +94,12 @@ public class SpaceProjectRegistration implements Runnable {
         SpaceProjectManager.addProject(asteroidOutpost);
     }
 
+    /**
+     * Register the plant scan
+     */
     private void registerPlanetScan() {
         ISpaceProject planetScan = new SpaceProject().setProjectName("PlanetScan")
-                .setProjectUnlocalizedName("gs.spaceproject.planetscan").setProjectBuildTime(250 * 20)
+                .setProjectUnlocalizedName("ig.spaceproject.planetscan").setProjectBuildTime(250 * 20)
                 .setProjectTexture(IG_UITextures.PICTURE_SPACE_PROJECT_PLANETARY_SCAN).setProjectStages(8)
                 .setProjectVoltage(TierEU.RECIPE_UV).setProjectItemsCost(
                         // Osmium Borosilicate Glass

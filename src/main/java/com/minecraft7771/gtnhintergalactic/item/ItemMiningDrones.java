@@ -18,17 +18,25 @@ import gregtech.api.enums.Materials;
  */
 public class ItemMiningDrones extends Item {
 
-    private static final String[] names = new String[] { "MiningDroneLV", "MiningDroneMV", "MiningDroneHV",
+    /** Names of the mining drones */
+    private static final String[] NAMES = new String[] { "MiningDroneLV", "MiningDroneMV", "MiningDroneHV",
             "MiningDroneEV", "MiningDroneIV", "MiningDroneLuV", "MiningDroneZPM", "MiningDroneUV", "MiningDroneUHV",
             "MiningDroneUEV", };
-    private static final IIcon[] icons = new IIcon[names.length];
+    /** Icons of the mining drones */
+    private static final IIcon[] ICONS = new IIcon[NAMES.length];
 
+    /**
+     * Create a new item for the mining drones
+     */
     public ItemMiningDrones() {
         setCreativeTab(GTNHIntergalactic.tab);
         setHasSubtypes(true);
         setUnlocalizedName("MiningDrone");
     }
 
+    /**
+     * Enumeration for the available drone tiers
+     */
     public enum DroneTiers {
         LV,
         MV,
@@ -42,6 +50,9 @@ public class ItemMiningDrones extends Item {
         UEV
     }
 
+    /**
+     * Materials for the supplied drills and tool rods which each drone tier needs
+     */
     public enum DroneMaterials {
 
         LV(Materials.Steel),
@@ -55,39 +66,72 @@ public class ItemMiningDrones extends Item {
         UHV(Materials.NaquadahAlloy),
         UEV(Materials.Neutronium);
 
-        private Materials mat;
+        /** Material for this drone tier */
+        private final Materials mat;
 
+        /**
+         * Register a new drone tier material
+         *
+         * @param aMat needed material
+         */
         DroneMaterials(Materials aMat) {
             mat = aMat;
         }
 
+        /**
+         * @return Material which this drone tier needs
+         */
         public Materials getMaterial() {
             return mat;
         }
     }
 
+    /**
+     * Get the icon for this item
+     *
+     * @param meta Meta value of the item
+     * @return Icon for this item
+     */
     @Override
     public IIcon getIconFromDamage(int meta) {
-        return icons[meta % icons.length];
+        return ICONS[meta % ICONS.length];
     }
 
+    /**
+     * Get all possible variants of this item
+     *
+     * @param item     Item of which the variants should be gotten
+     * @param tab      Creative tab of this item
+     * @param variants List of variants to which will be added
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List variants) {
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0; i < NAMES.length; i++) {
             variants.add(new ItemStack(item, 1, i));
         }
     }
 
+    /**
+     * Get the unlocalized name of this item
+     *
+     * @param stack Item stack, which contains this item
+     * @return Unlocalized name
+     */
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return "item." + names[stack.getItemDamage() % names.length];
+        return "item." + NAMES[stack.getItemDamage() % NAMES.length];
     }
 
+    /**
+     * Register the icons for this item
+     *
+     * @param iconRegister Register to which the icons will be added
+     */
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        for (int i = 0; i < names.length; i++) {
-            icons[i] = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":drones/" + names[i]);
+        for (int i = 0; i < NAMES.length; i++) {
+            ICONS[i] = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":drones/" + NAMES[i]);
         }
     }
 }

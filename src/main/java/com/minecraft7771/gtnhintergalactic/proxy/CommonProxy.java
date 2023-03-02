@@ -2,14 +2,14 @@ package com.minecraft7771.gtnhintergalactic.proxy;
 
 import net.minecraft.util.IIcon;
 
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
 import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
 import com.minecraft7771.gtnhintergalactic.config.Config;
 import com.minecraft7771.gtnhintergalactic.item.IGItems;
 import com.minecraft7771.gtnhintergalactic.loader.MachineLoader;
 import com.minecraft7771.gtnhintergalactic.loader.RecipeLoader;
 import com.minecraft7771.gtnhintergalactic.nei.IMCForNEI;
+import com.minecraft7771.gtnhintergalactic.recipe.IG_RecipeAdder;
+import com.minecraft7771.gtnhintergalactic.recipe.MachineRecipes;
 import com.minecraft7771.gtnhintergalactic.recipe.SpaceProjectRegistration;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -30,9 +30,6 @@ public class CommonProxy {
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
         Config.synchronizeConfiguration(event.getSuggestedConfigurationFile());
-
-        IGItems.init();
-        IGBlocks.init();
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
@@ -41,15 +38,18 @@ public class CommonProxy {
         if (Textures.BlockIcons.casingTexturePages[32] == null) {
             Textures.BlockIcons.casingTexturePages[32] = new ITexture[128];
         }
-        BlockCasingSpaceElevator.INSTANCE = new BlockCasingSpaceElevator();
-        BlockCasingSpaceElevatorMotor.INSTANCE = new BlockCasingSpaceElevatorMotor();
+        IGItems.init();
+        IGBlocks.init();
         new MachineLoader().run();
+        IG_RecipeAdder.init();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         new RecipeLoader().run();
         new SpaceProjectRegistration().run();
+        new MachineRecipes().run();
+        IG_RecipeAdder.postInit();
     }
 
     // register server commands in this event handler (Remove if not needed)

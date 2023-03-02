@@ -266,10 +266,10 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
     }
 
     /** Recipe map for recipes in the Space Research Module */
-    public IG_Recipe.GT_Recipe_MapGS sSpaceResearchRecipes = (IG_Recipe.GT_Recipe_MapGS) new IG_Recipe.GT_Recipe_MapGS(
+    public IG_Recipe_Map sSpaceResearchRecipes = (IG_Recipe_Map) new IG_Recipe_Map(
             new HashSet<>(32),
             "gt.recipe.spaceResearch",
-            GCCoreUtil.translate("gs.nei.spaceresearch.name"),
+            GCCoreUtil.translate("ig.nei.spaceresearch.name"),
             null,
             "gregtech:textures/gui/FakeAssemblyline",
             7,
@@ -277,9 +277,9 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             1,
             0,
             1,
-            GCCoreUtil.translate("gs.nei.spacemining.computationPrefix") + " ",
+            GCCoreUtil.translate("ig.nei.spacemining.computationPrefix") + " ",
             1,
-            " " + GCCoreUtil.translate("gs.nei.spacemining.computationSuffix"),
+            " " + GCCoreUtil.translate("ig.nei.spacemining.computationSuffix"),
             true,
             true) {
 
@@ -317,13 +317,13 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
                     if (neededProject != null && !neededProject.equals("")) {
                         specialInfo.add(
                                 String.format(
-                                        GCCoreUtil.translate("gs.nei.spaceassembler.project"),
+                                        GCCoreUtil.translate("ig.nei.spaceassembler.project"),
                                         SpaceProjectManager.getProject(neededProject).getLocalizedName()));
                         specialInfo.add(
                                 String.format(
-                                        GCCoreUtil.translate("gs.nei.spaceassembler.projectAt"),
+                                        GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
                                         neededProjectLocation == null || neededProjectLocation.equals("")
-                                                ? GCCoreUtil.translate("gs.nei.spaceassembler.projectAnyLocation")
+                                                ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
                                                 : GCCoreUtil.translate(
                                                         SpaceProjectManager.getLocation(neededProjectLocation)
                                                                 .getUnlocalizedName())));
@@ -333,10 +333,10 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             });
 
     /** Recipe map for recipes in the Space Assembler Module */
-    public IG_Recipe.GT_Recipe_MapGS sSpaceAssemblerRecipes = (IG_Recipe.GT_Recipe_MapGS) new IG_Recipe.GT_Recipe_MapGS(
+    public IG_Recipe_Map sSpaceAssemblerRecipes = (IG_Recipe_Map) new IG_Recipe_Map(
             new HashSet<>(32),
             "gt.recipe.spaceAssembler",
-            GCCoreUtil.translate("gs.nei.spaceassembler.name"),
+            GCCoreUtil.translate("ig.nei.spaceassembler.name"),
             null,
             "gregtech:textures/gui/FakeAssemblyline",
             16,
@@ -344,9 +344,9 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             1,
             0,
             1,
-            GCCoreUtil.translate("gs.nei.spacemining.specialValue.0"),
+            GCCoreUtil.translate("ig.nei.spacemining.specialValue.0"),
             1,
-            GCCoreUtil.translate("gs.nei.spacemining.specialValue.1"),
+            GCCoreUtil.translate("ig.nei.spacemining.specialValue.1"),
             true,
             true) {
 
@@ -396,13 +396,13 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
                     if (neededProject != null && !neededProject.equals("")) {
                         specialInfo.add(
                                 String.format(
-                                        GCCoreUtil.translate("gs.nei.spaceassembler.project"),
+                                        GCCoreUtil.translate("ig.nei.spaceassembler.project"),
                                         SpaceProjectManager.getProject(neededProject).getLocalizedName()));
                         specialInfo.add(
                                 String.format(
-                                        GCCoreUtil.translate("gs.nei.spaceassembler.projectAt"),
+                                        GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
                                         neededProjectLocation == null || neededProjectLocation.equals("")
-                                                ? GCCoreUtil.translate("gs.nei.spaceassembler.projectAnyLocation")
+                                                ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
                                                 : GCCoreUtil.translate(
                                                         SpaceProjectManager.getLocation(neededProjectLocation)
                                                                 .getUnlocalizedName())));
@@ -412,10 +412,10 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             });
 
     /** Recipe map for recipes in the Space Mining Module */
-    public IG_Recipe.GT_Recipe_MapGS sSpaceMiningRecipes = (IG_Recipe.GT_Recipe_MapGS) new IG_Recipe.GT_Recipe_MapGS(
+    public IG_Recipe_Map sSpaceMiningRecipes = (IG_Recipe_Map) new IG_Recipe_Map(
             new HashSet<>(32),
             "gt.recipe.spaceMining",
-            GCCoreUtil.translate("gs.nei.spacemining.name"),
+            GCCoreUtil.translate("ig.nei.spacemining.name"),
             null,
             "gregtech:textures/gui/FakeSpaceMiningModule",
             5,
@@ -423,9 +423,9 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             1,
             0,
             1,
-            GCCoreUtil.translate("gs.nei.spacemining.specialValue.0"),
+            GCCoreUtil.translate("ig.nei.spacemining.specialValue.0"),
             1,
-            GCCoreUtil.translate("gs.nei.spacemining.specialValue.1"),
+            GCCoreUtil.translate("ig.nei.spacemining.specialValue.1"),
             true,
             true) {
 
@@ -470,21 +470,21 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
                 if (recipeInfo.recipe instanceof IG_Recipe.IG_SpaceMiningRecipe) {
                     IG_Recipe.IG_SpaceMiningRecipe miningRecipe = (IG_Recipe.IG_SpaceMiningRecipe) recipeInfo.recipe;
                     result.add(
-                            GCCoreUtil.translate("gs.nei.spacemining.distance") + " "
+                            GCCoreUtil.translate("ig.nei.spacemining.distance") + " "
                                     + miningRecipe.minDistance
                                     + "-"
                                     + miningRecipe.maxDistance);
                     result.add(
-                            GCCoreUtil.translate("gs.nei.spacemining.size") + " "
+                            GCCoreUtil.translate("ig.nei.spacemining.size") + " "
                                     + miningRecipe.minSize
                                     + "-"
                                     + miningRecipe.maxSize);
                     result.add(
-                            GCCoreUtil.translate("gs.nei.spacemining.computationPrefix") + " "
+                            GCCoreUtil.translate("ig.nei.spacemining.computationPrefix") + " "
                                     + GT_Utility.formatNumbers(miningRecipe.computation)
                                     + " "
-                                    + GCCoreUtil.translate("gs.nei.spacemining.computationSuffix"));
-                    result.add(GCCoreUtil.translate("gs.nei.spacemining.weight") + " " + miningRecipe.recipeWeight);
+                                    + GCCoreUtil.translate("ig.nei.spacemining.computationSuffix"));
+                    result.add(GCCoreUtil.translate("ig.nei.spacemining.weight") + " " + miningRecipe.recipeWeight);
                 }
                 return result;
             });

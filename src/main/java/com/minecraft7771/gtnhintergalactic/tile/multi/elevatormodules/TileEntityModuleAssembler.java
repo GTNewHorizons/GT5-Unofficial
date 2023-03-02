@@ -33,7 +33,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
 
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.gs.assembler.cfgi.0"); // Parallels
+            .translate("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0"); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleAssembler> PARALLEL_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
@@ -248,19 +248,19 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                     .addInfo(
                             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
                                     + GCCoreUtil
-                                            .translate("gt.blockmachines.multimachine.project.gs.assembler.t1.desc1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t1.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
+                                            .translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1")).addSeparator()
                     .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
@@ -327,19 +327,19 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                     .addInfo(
                             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
                                     + GCCoreUtil
-                                            .translate("gt.blockmachines.multimachine.project.gs.assembler.t2.desc1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t2.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT3")).addSeparator()
+                                            .translate("gt.blockmachines.multimachine.project.ig.assembler.t2.desc1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.t2.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3")).addSeparator()
                     .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
@@ -406,19 +406,19 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                     .addInfo(
                             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
                                     + GCCoreUtil
-                                            .translate("gt.blockmachines.multimachine.project.gs.assembler.t3.desc1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t3.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT5")).addSeparator()
+                                            .translate("gt.blockmachines.multimachine.project.ig.assembler.t3.desc1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.t3.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT5")).addSeparator()
                     .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }

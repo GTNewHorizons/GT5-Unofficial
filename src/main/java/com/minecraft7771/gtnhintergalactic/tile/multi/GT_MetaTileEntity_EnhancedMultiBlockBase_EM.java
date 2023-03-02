@@ -92,7 +92,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
     public abstract IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM();
 
     protected static String buildAddedBy(String... contributors) {
-        StringBuilder addedByString = new StringBuilder(GCCoreUtil.translate("gs.structure.author") + " ");
+        StringBuilder addedByString = new StringBuilder(GCCoreUtil.translate("ig.structure.author") + " ");
         int numOfContributors = contributors.length;
         while (numOfContributors > 1) {
             addedByString.append(
@@ -104,7 +104,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
             numOfContributors--;
         }
         if (contributors.length > 1) {
-            addedByString.append(GCCoreUtil.translate("gs.structure.and") + " ");
+            addedByString.append(GCCoreUtil.translate("ig.structure.and") + " ");
         }
         addedByString.append(contributors[contributors.length - 1]);
         return addedByString.toString();

@@ -14,7 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.*;
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
+import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
 import com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 
 import gregtech.api.interfaces.IHatchElement;
@@ -159,11 +159,11 @@ public class ElevatorUtil {
      */
     public static List<Pair<Block, Integer>> getMotorTiers() {
         return ImmutableList.of(
-                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 0),
-                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 1),
-                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 2),
-                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 3),
-                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 4));
+                Pair.of(IGBlocks.SpaceElevatorMotor, 0),
+                Pair.of(IGBlocks.SpaceElevatorMotor, 1),
+                Pair.of(IGBlocks.SpaceElevatorMotor, 2),
+                Pair.of(IGBlocks.SpaceElevatorMotor, 3),
+                Pair.of(IGBlocks.SpaceElevatorMotor, 4));
     }
 
     /**
@@ -175,7 +175,7 @@ public class ElevatorUtil {
         return (block, meta) -> {
             if (block == null) {
                 return -1;
-            } else if (block == BlockCasingSpaceElevatorMotor.INSTANCE) {
+            } else if (block == IGBlocks.SpaceElevatorMotor) {
                 return meta + 1;
             }
             return -1;

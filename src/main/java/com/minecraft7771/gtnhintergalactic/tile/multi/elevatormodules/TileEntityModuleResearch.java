@@ -63,17 +63,17 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.research.desc0"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc0"))
                 .addInfo(
                         EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.research.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT2")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                                + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2")).addSeparator()
+                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0)
+                .addInputBus(GCCoreUtil.translate("i.gelevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
         return tt;
     }

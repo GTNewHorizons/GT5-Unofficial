@@ -21,13 +21,23 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 
+/**
+ * Motors used to construct the Space Elevator
+ *
+ * @author minecraft7771
+ */
 public class BlockCasingSpaceElevatorMotor extends GT_Block_Casings_Abstract {
 
-    public static BlockCasingSpaceElevatorMotor INSTANCE;
+    /** Number of motors that exist */
     private static final int NUMBER_OF_MOTORS = 5;
+    /** Icon for the top and bottom of a motor */
     private static IIcon IconSEMotorTop;
-    private static IIcon[] IconSEMotorSide = new IIcon[NUMBER_OF_MOTORS];
+    /** Icons for the side of the different motors */
+    private static final IIcon[] IconSEMotorSide = new IIcon[NUMBER_OF_MOTORS];
 
+    /**
+     * Create new Space Elevator motors
+     */
     public BlockCasingSpaceElevatorMotor() {
         super(ItemCasingSpaceElevatorMotor.class, "gt.blockcasingsSEMotor", GT_Material_Casings.INSTANCE);
 
@@ -48,41 +58,70 @@ public class BlockCasingSpaceElevatorMotor extends GT_Block_Casings_Abstract {
         IGItems.SpaceElevatorMotorT5 = new ItemStack(this, 1, 4);
     }
 
+    /**
+     * Register the block icons
+     *
+     * @param iconRegister Register to which the icons will be added
+     */
     @Override
-    public void registerBlockIcons(IIconRegister aIconRegister) {
-        IconSEMotorTop = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/Motor");
-        IconSEMotorSide[0] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT1_Side");
-        IconSEMotorSide[1] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT2_Side");
-        IconSEMotorSide[2] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT3_Side");
-        IconSEMotorSide[3] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT4_Side");
-        IconSEMotorSide[4] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT5_Side");
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        IconSEMotorTop = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/Motor");
+        IconSEMotorSide[0] = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT1_Side");
+        IconSEMotorSide[1] = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT2_Side");
+        IconSEMotorSide[2] = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT3_Side");
+        IconSEMotorSide[3] = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT4_Side");
+        IconSEMotorSide[4] = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/MotorT5_Side");
     }
 
+    /**
+     * Get the icon for this block
+     *
+     * @param side Side for which the icon should be gotten
+     * @param meta Meta of the block
+     * @return Icon of the block
+     */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int aSide, int aMeta) {
-        if (aSide == 0 || aSide == 1) {
+    public IIcon getIcon(int side, int meta) {
+        if (side == 0 || side == 1) {
             return IconSEMotorTop;
         } else {
-            if (aMeta < NUMBER_OF_MOTORS) {
-                return IconSEMotorSide[aMeta];
+            if (meta < NUMBER_OF_MOTORS) {
+                return IconSEMotorSide[meta];
             }
             return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
     }
 
+    /**
+     * Get the icon for this block
+     *
+     * @param world World in which the block exists
+     * @param x     X coordinate of the block
+     * @param y     Y coordinate of the block
+     * @param z     Z coordinate of the block
+     * @param side  Side for which the icon should be gotten
+     * @return Icon of the block
+     */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(aSide, tMeta);
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+        int tMeta = world.getBlockMetadata(x, y, z);
+        return getIcon(side, tMeta);
     }
 
+    /**
+     * Get all sub blocks of this block
+     *
+     * @param item Item that represents this block
+     * @param tabs Create tab of the game
+     * @param list List to which the sub blocks will be added
+     */
     @Override
     @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List list) {
         for (int i = 0; i < NUMBER_OF_MOTORS; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 }

@@ -4,6 +4,11 @@ import static com.minecraft7771.gtnhintergalactic.GTNHIntergalactic.ASSET_PREFIX
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
+/**
+ * UI textures of this mod
+ *
+ * @author miozune
+ */
 public class IG_UITextures {
 
     public static final UITexture PROGRESSBAR_SPACE_MINING_MODULE_ARROW = UITexture

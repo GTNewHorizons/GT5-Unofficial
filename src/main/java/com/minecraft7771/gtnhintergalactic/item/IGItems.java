@@ -5,6 +5,11 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * List of all items of this mod
+ *
+ * @author minecraft7771
+ */
 public class IGItems {
 
     public static Item SpaceElevatorItems;
@@ -29,6 +34,9 @@ public class IGItems {
     public static ItemStack SpaceElevatorModuleManager;
     public static ItemStack SpaceElevatorModuleResearch;
 
+    /**
+     * Initialize the items of this mod
+     */
     public static void init() {
         SpaceElevatorItems = new ItemSpaceElevatorParts();
         MiningDrones = new ItemMiningDrones();
@@ -36,6 +44,11 @@ public class IGItems {
         registerItem(MiningDrones);
     }
 
+    /**
+     * Register an item in the game registry, using its unlocalized name
+     *
+     * @param item Item to be registered
+     */
     private static void registerItem(final Item item) {
         GameRegistry.registerItem(item, item.getUnlocalizedName());
     }

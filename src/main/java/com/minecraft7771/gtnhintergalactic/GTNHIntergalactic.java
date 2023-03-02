@@ -7,8 +7,6 @@ import net.minecraft.util.IIcon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
 import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
 import com.minecraft7771.gtnhintergalactic.item.IGItems;
 import com.minecraft7771.gtnhintergalactic.proxy.CommonProxy;
@@ -91,10 +89,10 @@ public class GTNHIntergalactic {
             if (mapping.type == GameRegistry.Type.BLOCK) {
                 switch (mapping.name) {
                     case "GalaxySpace:spaceelevatorparts":
-                        mapping.remap(BlockCasingSpaceElevator.INSTANCE);
+                        mapping.remap(IGBlocks.SpaceElevatorCasing);
                         break;
                     case "GalaxySpace:spaceelevatormotors":
-                        mapping.remap(BlockCasingSpaceElevatorMotor.INSTANCE);
+                        mapping.remap(IGBlocks.SpaceElevatorMotor);
                         break;
                     case "GalaxySpace:spaceelevatorcable":
                         mapping.remap(IGBlocks.SpaceElevatorCable);
@@ -106,10 +104,10 @@ public class GTNHIntergalactic {
             } else if (mapping.type == GameRegistry.Type.ITEM) {
                 switch (mapping.name) {
                     case "GalaxySpace:spaceelevatorparts":
-                        mapping.remap(Item.getItemFromBlock(BlockCasingSpaceElevator.INSTANCE));
+                        mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCasing));
                         break;
                     case "GalaxySpace:spaceelevatormotors":
-                        mapping.remap(Item.getItemFromBlock(BlockCasingSpaceElevatorMotor.INSTANCE));
+                        mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorMotor));
                         break;
                     case "GalaxySpace:spaceelevatorcable":
                         mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCable));

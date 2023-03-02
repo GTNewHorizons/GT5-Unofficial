@@ -12,7 +12,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.*;
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
+import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
 import com.minecraft7771.gtnhintergalactic.gui.IG_UITextures;
 import com.minecraft7771.gtnhintergalactic.tile.multi.GT_MetaTileEntity_EnhancedMultiBlockBase_EM;
 import com.minecraft7771.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
@@ -46,7 +46,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
 
     /** Name of the stored energy display */
     private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.gs.cfgo.0"); // Stored Energy
+            .translate("gt.blockmachines.multimachine.project.igcfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(
@@ -71,7 +71,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
                             TileEntityModuleBase::addClassicToMachineList,
                             TileEntitySpaceElevator.CASING_INDEX_BASE,
                             1,
-                            BlockCasingSpaceElevator.INSTANCE,
+                            IGBlocks.SpaceElevatorCasing,
                             0))
             .build();
 
@@ -368,16 +368,16 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements.widget(
-                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.ready"))
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.ready"))
                         .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
 
         screenElements.widget(
-                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.noRecipe"))
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.noRecipe"))
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setEnabled(widget -> mMachine && !getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(
-                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.recipe"))
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.recipe"))
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setEnabled(widget -> mMachine && getBaseMetaTileEntity().isActive()));
     }
