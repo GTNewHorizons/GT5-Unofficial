@@ -3,18 +3,18 @@
 	"modList": [{
 		"modid": "${modId}",
 		"name": "${modName}",
-		"description": "An example mod for Minecraft 1.7.10 with Forge focused on a stable setup.",
+		"description": "A mod designed to be used in GTNH, to expand space exploration even more.",
 		"version": "${modVersion}",
 		"mcversion": "${minecraftVersion}",
-		"url": "https://github.com/SinTh0r4s/MyMod",
+		"url": "https://github.com/minecraft7771/GTNH-Intergalactic",
 		"updateUrl": "",
-		"authorList": ["SinTho0r4s"],
+		"authorList": ["minecraft7771", "BlueWeabo"],
 		"credits": "",
-		"logoFile": "",
+		"logoFile": "assets/gtnhintergalactic/textures/gui/picture/space_elevator_logo.png",
 		"screenshots": [],
 		"parent": "",
 		"requiredMods": [],
-		"dependencies": [],
+		"dependencies": ["GT5-Unofficial", "TecTech", "ModularUI", "GalaxySpace", "GalactiCraft"],
 		"dependants": [],
 		"useDependencyInformation": true
 	}]
